@@ -57,9 +57,6 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6B4FBA6C55A04B9CA9AED806 /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2004FD539E84DDD82569B93 /* libRCTBEEPickerManager.a */; };
 		6EFC1612A1C141A990AA381C /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B52D7A8211964E0BBCE73C67 /* libsqlite3.0.tbd */; };
-		7D04BA7A1F31DCA5002B354A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D04BA791F31DCA5002B354A /* MBProgressHUD.m */; };
-		7D1A53A91F30981800EDD9CB /* ZNShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D1A53A81F30981800EDD9CB /* ZNShareViewController.m */; };
-		7D1A53CC1F30995600EDD9CB /* ZNShareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D1A53CB1F30995600EDD9CB /* ZNShareClass.m */; };
 		7D4BDE2A1ECAD84A002DD5E1 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */; };
 		7D5A48CF1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic in Resources */ = {isa = PBXBuildFile; fileRef = 7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */; };
 		7D5D8B681EE5565900892F2E /* (null) in Resources */ = {isa = PBXBuildFile; };
@@ -96,11 +93,12 @@
 		E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B817071E613EB600279287 /* CoreTelephony.framework */; };
 		E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2B1E602A630039526C /* libc++.tbd */; };
 		E3B8170B1E613ED600279287 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B8170A1E613ED600279287 /* libz.tbd */; };
-		EE4350601EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic in Resources */ = {isa = PBXBuildFile; fileRef = EE43505F1EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic */; };
 		EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE822B071F5D57D000E4249A /* libRCTCameraRoll.a */; };
-		EE8EF4D41F5C0BCD0002D11E /* ZNShareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4D11F5C0BCD0002D11E /* ZNShareClass.m */; };
 		EE8EF4D51F5C0BCD0002D11E /* ZNShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4D31F5C0BCD0002D11E /* ZNShareViewController.m */; };
 		EE8EF4DE1F5C0EA20002D11E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4DD1F5C0EA20002D11E /* MBProgressHUD.m */; };
+		EE9209C51F6A318500E44476 /* ZNShareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9209C21F6A318500E44476 /* ZNShareClass.m */; };
+		EE9209C61F6A318500E44476 /* ZNShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9209C41F6A318500E44476 /* ZNShareViewController.m */; };
+		EE9209C81F6A326F00E44476 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9209C71F6A326F00E44476 /* MBProgressHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -349,6 +347,20 @@
 			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
 			remoteInfo = RCTCameraRoll;
 		};
+		EE9209B11F6A30F300E44476 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A08B9B7AF08C41A082FB247D /* RCTWeChat.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 10D6D7A41F160C250066F0F3;
+			remoteInfo = RCTWeChatTests;
+		};
+		EE9209BE1F6A30F300E44476 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 641194871EC9FD4A00D4FC03;
+			remoteInfo = "RNSpinkit-tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -402,12 +414,6 @@
 		754AC2C278594A7D8ACD7F05 /* libRCTWeChat.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTWeChat.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7AF474FC8B6C4EC78759A9DA /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
-		7D04BA781F31DCA5002B354A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		7D04BA791F31DCA5002B354A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		7D1A53A71F30981800EDD9CB /* ZNShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZNShareViewController.h; sourceTree = "<group>"; };
-		7D1A53A81F30981800EDD9CB /* ZNShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZNShareViewController.m; sourceTree = "<group>"; };
-		7D1A53CA1F30995600EDD9CB /* ZNShareClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZNShareClass.h; sourceTree = "<group>"; };
-		7D1A53CB1F30995600EDD9CB /* ZNShareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZNShareClass.m; sourceTree = "<group>"; };
 		7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
 		7D769E2B1E602A630039526C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -457,14 +463,15 @@
 		E3B817051E613EAC00279287 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E3B817071E613EB600279287 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E3B8170A1E613ED600279287 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		EE43505F1EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
 		EE822AFD1F5D57D000E4249A /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
-		EE8EF4D01F5C0BCD0002D11E /* ZNShareClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZNShareClass.h; path = FE_Sass/ZNShareClass.h; sourceTree = "<group>"; };
-		EE8EF4D11F5C0BCD0002D11E /* ZNShareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZNShareClass.m; path = FE_Sass/ZNShareClass.m; sourceTree = "<group>"; };
-		EE8EF4D21F5C0BCD0002D11E /* ZNShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZNShareViewController.h; path = FE_Sass/ZNShareViewController.h; sourceTree = "<group>"; };
 		EE8EF4D31F5C0BCD0002D11E /* ZNShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZNShareViewController.m; path = FE_Sass/ZNShareViewController.m; sourceTree = "<group>"; };
-		EE8EF4DC1F5C0EA20002D11E /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = FE_Sass/MBProgressHUD.h; sourceTree = "<group>"; };
 		EE8EF4DD1F5C0EA20002D11E /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = FE_Sass/MBProgressHUD.m; sourceTree = "<group>"; };
+		EE9209C11F6A318500E44476 /* ZNShareClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZNShareClass.h; path = FE_Sass/ZNShareClass.h; sourceTree = "<group>"; };
+		EE9209C21F6A318500E44476 /* ZNShareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZNShareClass.m; path = FE_Sass/ZNShareClass.m; sourceTree = "<group>"; };
+		EE9209C31F6A318500E44476 /* ZNShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZNShareViewController.h; path = FE_Sass/ZNShareViewController.h; sourceTree = "<group>"; };
+		EE9209C41F6A318500E44476 /* ZNShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZNShareViewController.m; path = FE_Sass/ZNShareViewController.m; sourceTree = "<group>"; };
+		EE9209C71F6A326F00E44476 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = FE_Sass/MBProgressHUD.m; sourceTree = "<group>"; };
+		EE9209C91F6A332A00E44476 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = FE_Sass/MBProgressHUD.h; sourceTree = "<group>"; };
 		F0FC9342AFCC48C188DD558A /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -661,16 +668,17 @@
 		13B07FAE1A68108700A75B9A /* FE_Sass */ = {
 			isa = PBXGroup;
 			children = (
-				7D04BA771F31DCA5002B354A /* MBProgressHUD */,
 				1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */,
 				7DB2CBB31E779DDF00DE146C /* OCRSCancer */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				7D1A53CA1F30995600EDD9CB /* ZNShareClass.h */,
-				7D1A53CB1F30995600EDD9CB /* ZNShareClass.m */,
-				7D1A53A71F30981800EDD9CB /* ZNShareViewController.h */,
-				7D1A53A81F30981800EDD9CB /* ZNShareViewController.m */,
+				EE9209C91F6A332A00E44476 /* MBProgressHUD.h */,
+				EE9209C71F6A326F00E44476 /* MBProgressHUD.m */,
+				EE9209C11F6A318500E44476 /* ZNShareClass.h */,
+				EE9209C21F6A318500E44476 /* ZNShareClass.m */,
+				EE9209C31F6A318500E44476 /* ZNShareViewController.h */,
+				EE9209C41F6A318500E44476 /* ZNShareViewController.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -721,19 +729,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7D04BA771F31DCA5002B354A /* MBProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				7D04BA781F31DCA5002B354A /* MBProgressHUD.h */,
-				7D04BA791F31DCA5002B354A /* MBProgressHUD.m */,
-			);
-			path = MBProgressHUD;
-			sourceTree = "<group>";
-		};
 		7D769EEE1E6572180039526C /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				7D769F0F1E6572180039526C /* libRNSpinkit.a */,
+				EE9209BF1F6A30F300E44476 /* libRNSpinkit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -891,6 +891,7 @@
 			isa = PBXGroup;
 			children = (
 				E3B816F81E613DD400279287 /* libRCTWeChat.a */,
+				EE9209B21F6A30F300E44476 /* RCTWeChatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1340,6 +1341,20 @@
 			remoteRef = EE822B061F5D57D000E4249A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		EE9209B21F6A30F300E44476 /* RCTWeChatTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RCTWeChatTests.xctest;
+			remoteRef = EE9209B11F6A30F300E44476 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EE9209BF1F6A30F300E44476 /* libRNSpinkit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSpinkit.a;
+			remoteRef = EE9209BE1F6A30F300E44476 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1442,20 +1457,20 @@
 			files = (
 				124A59191E9C8B90007C1C15 /* CameraController.m in Sources */,
 				7DB2CBDF1E779DDF00DE146C /* TopView.m in Sources */,
+				EE9209C61F6A318500E44476 /* ZNShareViewController.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				EE8EF4D51F5C0BCD0002D11E /* ZNShareViewController.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				7D1A53CC1F30995600EDD9CB /* ZNShareClass.m in Sources */,
 				16FB421C1EF23352006C6077 /* SystomTools.m in Sources */,
+				EE9209C81F6A326F00E44476 /* MBProgressHUD.m in Sources */,
 				EE8EF4DE1F5C0EA20002D11E /* MBProgressHUD.m in Sources */,
 				124A590B1E9C700F007C1C15 /* OBDScanController.m in Sources */,
-				7D04BA7A1F31DCA5002B354A /* MBProgressHUD.m in Sources */,
 				124A58E81E9C6D48007C1C15 /* QrScan.m in Sources */,
+				EE9209C51F6A318500E44476 /* ZNShareClass.m in Sources */,
 				124A59161E9C8B4A007C1C15 /* CustomCamera.m in Sources */,
 				7DB2CBE11E779DDF00DE146C /* VinScan.m in Sources */,
 				7DB2CBE31E779DDF00DE146C /* VLTopView.m in Sources */,
 				7DB2CBE01E779DDF00DE146C /* VinCameraViewController.mm in Sources */,
-				7D1A53A91F30981800EDD9CB /* ZNShareViewController.m in Sources */,
 				7DB2CBE21E779DDF00DE146C /* VLCameraViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
