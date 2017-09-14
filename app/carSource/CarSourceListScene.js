@@ -360,14 +360,15 @@ export  default  class carSourceListScene extends BaseComponent {
 
         });
 
-            // this.props.showModal(true);
-            // request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
-            //     succeedAction(response.mjson.data);
-            //     this.props.showModal(false);
-            // }, (error) => {
-            //     this.props.showModal(false);
-            //     this.props.showToast(error.msg);
-            // });
+        // this.props.showModal(true);
+        // request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
+        //     succeedAction(response.mjson.data);
+        //     this.props.showModal(false);
+        // }, (error) => {
+        //     this.props.showModal(false);
+        //     this.props.showToast(error.msg);
+        // });
+
     }
 
     // 选择城市列表
