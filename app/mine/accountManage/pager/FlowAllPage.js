@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
-    InteractionManager
+    InteractionManagerm,
+    RefreshControl,
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -23,6 +24,13 @@ import * as Urls from '../../../constant/appUrls';
 import StorageUtil from "../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../constant/storageKeyNames";
 import BaseComponent from '../../../component/BaseComponent';
+import ListFooter from './../../../component/LoadMoreFooter';
+// let page = 1;
+// let allPage = 1;
+// let dataList = [];
+// let enter_base_id = '';
+// let user_type = '';
+
 export  default class FlowAllPage extends BaseComponent {
 
     constructor(props) {
@@ -32,8 +40,15 @@ export  default class FlowAllPage extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: 'blank',
             source: [],
-            time: ''
+            time: '',
+            isRefreshing: false,
+            haveMoreData: true,
         };
+        this.page = 1;
+        this.allPage = 1;
+        this.dataList = [];
+        this.enter_base_id = '';
+        this.user_type = '';
     }
 
     componentDidMount() {
@@ -58,6 +73,8 @@ export  default class FlowAllPage extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
+                            this.enter_base_id = datas.company_base_id;
+                            this.user_type = response.mjson.data.account.account_open_type;
                             this.getFlowData(datas.company_base_id, response.mjson.data.account.account_open_type);
                         },
                         (error) => {
@@ -78,29 +95,45 @@ export  default class FlowAllPage extends BaseComponent {
             create_time: this.state.time,
             enter_base_id: /*id*/"10556",
             transfer_type: this.props.transfer_type,
-            user_type: type
+            user_type: type,
+            page: this.page,
+            row: 10,
         };
         request(Urls.ACCOUNT_PAYLOG, 'Post', maps)
             .then((response) => {
                     if (response.mjson.data.data == null || response.mjson.data.data.length <= 0) {
                         this.setState({
+                            isRefreshing: false,
                             renderPlaceholderOnly: 'null',
                         });
                     } else {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        for (let i = 0; i < response.mjson.data.data.length; i++) {
+                            this.dataList.push(response.mjson.data.data[i]);
+                        }
+                        this.allPage = response.mjson.data.total_page;
                         this.setState({
+                            isRefreshing: false,
                             renderPlaceholderOnly: 'success',
-                            source: ds.cloneWithRows(response.mjson.data.data)
+                            source: ds.cloneWithRows(this.dataList)
                         });
+                        if (this.page == this.allPage) {
+                            this.setState({
+                                haveMoreData: false
+                            });
+                        }
+
                     }
                 },
                 (error) => {
                     if (error.mycode == '-2100045') {
                         this.setState({
+                            isRefreshing: false,
                             renderPlaceholderOnly: 'null',
                         });
                     } else {
                         this.setState({
+                            isRefreshing: false,
                             renderPlaceholderOnly: 'error',
                         });
                     }
@@ -120,15 +153,29 @@ export  default class FlowAllPage extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <ListView
-                    removeClippedSubviews={false}
-                    style={{marginTop:Pixel.getPixel(1)}}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                    renderSeparator={this._renderSeparator}
-                />
-            </View>
+            <ListView
+                removeClippedSubviews={false}
+                style={{marginTop:Pixel.getPixel(1),backgroundColor: fontAndColor.COLORA3, flex: 1}}
+                dataSource={this.state.source}
+                renderRow={this._renderRow}
+                renderSeparator={this._renderSeparator}
+
+                initialListSize={10}
+                onEndReachedThreshold={2}
+                stickyHeaderIndices={[]}//仅ios
+                enableEmptySections={true}
+                scrollRenderAheadDistance={10}
+                pageSize={10}
+                renderFooter={this.renderListFooter}
+                onEndReached={this.toEnd}
+                refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={this.refreshingData}
+                                        tintColor={[fontAndColor.COLORB0]}
+                                        colors={[fontAndColor.COLORB0]}
+                                    />}
+            />
         );
     }
 
@@ -213,11 +260,40 @@ export  default class FlowAllPage extends BaseComponent {
         return (
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
-
             </View>
         );
     }
 
+    renderListFooter = () => {
+
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<ListFooter isLoadAll={this.state.haveMoreData? false : true}/>)
+        }
+    }
+
+    toEnd = () => {
+        if (!this.state.isRefreshing && this.page != this.allPage) {
+            this.page = this.page + 1;
+            this.getFlowData(this.enter_base_id, this.user_type);
+        }
+
+    };
+
+    refreshingData = () => {
+
+        this.setState({
+            isRefreshing: true,
+        });
+        this.page = 1;
+        this.dataList = [];
+        this.setState({
+            haveMoreData: true
+        });
+        this.getFlowData(this.enter_base_id, this.user_type);
+
+    }
 
 }
 const styles = StyleSheet.create({
