@@ -25,11 +25,6 @@ import StorageUtil from "../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../constant/storageKeyNames";
 import BaseComponent from '../../../component/BaseComponent';
 import ListFooter from './../../../component/LoadMoreFooter';
-// let page = 1;
-// let allPage = 1;
-// let dataList = [];
-// let enter_base_id = '';
-// let user_type = '';
 
 export  default class FlowAllPage extends BaseComponent {
 
