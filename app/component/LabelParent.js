@@ -16,16 +16,36 @@ let {width, height, scale} = Dimensions.get('window');
 import  * as FontAndColor from '../constant/fontAndColor';
 import  LabelForOrderScreen from './LabelForOrderScreen';
 
-let clickitems = '0';
+//let clickitems = '0';
 
 export default class LabelParent extends PureComponent {
     constructor(props) {
         super(props);
-        clickitems = this.props.orderState;
+        //this.clickitems = this.props.orderState;
+        this.firstRef = '';
+        this.state = {
+            clickitems: this.props.orderState,
+            items: this.props.items
+        };
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            clickitems: nextProps.orderState,
+            items: nextProps.items
+        });
+    }
+
+    resetLabel = () => {
+/*        this.setState({
+         clickitems: clickitems,
+         //items: items
+         });*/
+        this.firstRef.setPressDown();
+    };
+
     render() {
-        let items = this.props.items;
+        let items = this.state.items;
         //let parameters = this.props.parameters.orderState;
         let item = [];
         let line = Math.ceil(items.length / 3);
@@ -39,21 +59,20 @@ export default class LabelParent extends PureComponent {
             }
             for (let j = 3 * i - 3; j < allSize; j++) {
                 //console.log(items[j].title);
-                childitem.push(<LabelForOrderScreen callBack={(item, status)=>{
+                childitem.push(<LabelForOrderScreen callBack={(item, status) => {
                     // console.log(items[j].ref);
-                    // this.refs.a10.unSelected();
-                    if (clickitems !== item) {
-                        /*if(clickitems === ''){
-                            clickitems = item;
-                        }else{*/
+                    if (this.state.clickitems !== item) {
                         this.props.updateState(item);
                         this.props.updateStatus(status);
-                        items[clickitems].ref.unSelected();
-                        clickitems = item;
-                        //}
+                        items[this.state.clickitems].ref.unSelected();
+                        this.state.clickitems = item;
                     }
-
-                }} ref={(modal)=>{items[j].ref = modal}} index={j} item={items[j]} key={j + 'child'} />)
+                }} ref={(modal) => {
+                    items[j].ref = modal
+                    if (j === 0) {
+                        this.firstRef = modal;
+                    }
+                }} index={j} item={items[j]} key={j + 'child'}/>)
             }
             item.push(<View key={i + 'parent'} style={{
                 width: width,

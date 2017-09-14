@@ -54,7 +54,7 @@ export default class VinInfo extends Component{
                 transparent={true}
                 visible={this.state.modalVisible}
                 onRequestClose={() => {}}>
-                <View style={styles.container}>
+                <TouchableOpacity style={styles.container} activeOpacity={1} onPress={this._hiedModal}>
                     <View>
                         <ListView
                             removeClippedSubviews={false}
@@ -62,7 +62,7 @@ export default class VinInfo extends Component{
                             renderRow={this._renderRow}
                         />
                     </View>
-                </View>
+                </TouchableOpacity>
             </Modal>
         );
     }

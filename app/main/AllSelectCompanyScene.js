@@ -94,45 +94,62 @@ export  default class AllSelectCompanyScene extends BaseComponent {
     }
 
     setLoan = (movie) => {
-        if (movie.is_done_credit == '1') {
-            this.props.showModal(true);
-            let maps = {
-                api: Urls.OPT_LOAN_SUBJECT,
-                opt_merge_id: movie.merge_id,
-                opt_user_id: movie.user_id,
-            };
-            request(Urls.FINANCE, 'Post', maps)
-                .then((response) => {
-                        this.props.showModal(false);
-                        StorageUtil.mSetItem(StorageKeyNames.LOAN_SUBJECT, JSON.stringify(movie) + "");
-                        this.loginPage({name:'MainPage',component:MainPage,params:{}});
-                    },
-                    (error) => {
-                        if (error.mycode == -300 || error.mycode == -500) {
-                            this.props.showToast('网络连接失败');
-                        } else {
-                            this.props.showToast(error.mjson.msg);
-                        }
-                    });
-        } else {
-            this.props.showModal(true);
-            let maps = {
 
-            };
-            request(Urls.CONTRACT_APPLYPLSEAL, 'Post', maps)
-                .then((response) => {
-                        this.props.showModal(false);
-                        StorageUtil.mSetItem(StorageKeyNames.LOAN_SUBJECT, JSON.stringify(movie) + "");
-                        this.loginPage({name:'MainPage',component:MainPage,params:{}});
-                    },
-                    (error) => {
-                        if (error.mycode == -300 || error.mycode == -500) {
-                            this.props.showToast('网络连接失败');
-                        } else {
-                            this.props.showToast(error.mjson.msg);
-                        }
-                    });
-        }
+        global.companyBaseID = movie.company_base_id;
+
+        this.props.showModal(true);
+        request(Urls.USER_GET_SELECT_ENTERPRISE_INFO, 'Post', {
+            enterprise_id:movie.company_base_id,
+        })
+            .then((response) => {
+                    if (movie.is_done_credit == '1') {
+                        let maps = {
+                            api: Urls.OPT_LOAN_SUBJECT,
+                            opt_merge_id: movie.merge_id,
+                            opt_user_id: movie.user_id,
+                        };
+                        request(Urls.FINANCE, 'Post', maps)
+                            .then((response) => {
+                                    this.props.showModal(false);
+                                    StorageUtil.mSetItem(StorageKeyNames.LOAN_SUBJECT, JSON.stringify(movie) + "");
+                                    this.loginPage({name:'MainPage',component:MainPage,params:{}});
+                                },
+                                (error) => {
+                                    if (error.mycode == -300 || error.mycode == -500) {
+                                        this.props.showToast('网络连接失败');
+                                    } else {
+                                        this.props.showToast(error.mjson.msg);
+                                    }
+                                });
+                    } else {
+                        this.props.showModal(true);
+                        let maps = {
+
+                        };
+                        request(Urls.CONTRACT_APPLYPLSEAL, 'Post', maps)
+                            .then((response) => {
+                                    this.props.showModal(false);
+                                    StorageUtil.mSetItem(StorageKeyNames.LOAN_SUBJECT, JSON.stringify(movie) + "");
+                                    this.loginPage({name:'MainPage',component:MainPage,params:{}});
+                                },
+                                (error) => {
+                                    if (error.mycode == -300 || error.mycode == -500) {
+                                        this.props.showToast('网络连接失败');
+                                    } else {
+                                        this.props.showToast(error.mjson.msg);
+                                    }
+                                });
+                    }
+                },
+                (error) => {
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('网络连接失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
+
+
     }
 
     loginPage = (mProps) => {
@@ -145,6 +162,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
+
         let names = '';
         if (movie.companyname == null || movie.companyname == '') {
             names = movie.name;
