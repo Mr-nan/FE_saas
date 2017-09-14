@@ -808,7 +808,6 @@ export default class FinanceSence extends BaseComponet {
                                             this.refs.showAlert.setModelVisible(true)
                                         }else if (this.state.mnyData.is_microchinese_mny == 1){
                                             if(this.state.mnyData.microchinese_apply_status == 0){
-
                                             }
                                             else{
                                                 let navigationParams={
