@@ -84,7 +84,7 @@ export  default class AccountFlowScene extends BaseComponent {
                     {/*提现*/}
                     <FlowAllPage ref="flowwithdrawalspage" tabLabel="ios-paper3" transfer_type="4"/>
                     {/*还款*/}
-                    <FlowAllPage ref="flowrepaymentpage" tabLabel="ios-paper4" transfer_type="100，101"/>
+                    <FlowAllPage ref="flowrepaymentpage" tabLabel="ios-paper4" transfer_type="100,101"/>
                     {/*交易*/}
                     <FlowAllPage ref="flowtransactionpage" tabLabel="ios-paper5" transfer_type="104"/>
 

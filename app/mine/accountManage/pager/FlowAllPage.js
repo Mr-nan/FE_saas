@@ -88,7 +88,7 @@ export  default class FlowAllPage extends BaseComponent {
     getFlowData = (id, type) => {
         let maps = {
             create_time: this.state.time,
-            enter_base_id: /*id*/"10556",
+            enter_base_id: id,
             transfer_type: this.props.transfer_type,
             user_type: type,
             page: this.page,
