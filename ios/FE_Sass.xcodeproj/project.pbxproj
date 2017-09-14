@@ -58,6 +58,9 @@
 		6B4FBA6C55A04B9CA9AED806 /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2004FD539E84DDD82569B93 /* libRCTBEEPickerManager.a */; };
 		6EFC1612A1C141A990AA381C /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B52D7A8211964E0BBCE73C67 /* libsqlite3.0.tbd */; };
 		7D4BDE2A1ECAD84A002DD5E1 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */; };
+		7D55EA9E1F6A55D10027155D /* ZNShareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D55EA9B1F6A55D10027155D /* ZNShareClass.m */; };
+		7D55EA9F1F6A55D10027155D /* ZNShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D55EA9D1F6A55D10027155D /* ZNShareViewController.m */; };
+		7D55EAB31F6A57920027155D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D55EA711F6A54E90027155D /* MBProgressHUD.m */; };
 		7D5A48CF1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic in Resources */ = {isa = PBXBuildFile; fileRef = 7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */; };
 		7D5D8B681EE5565900892F2E /* (null) in Resources */ = {isa = PBXBuildFile; };
 		7D769E2E1E602A800039526C /* libc++abi.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2D1E602A800039526C /* libc++abi.tbd */; };
@@ -94,9 +97,6 @@
 		E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2B1E602A630039526C /* libc++.tbd */; };
 		E3B8170B1E613ED600279287 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B8170A1E613ED600279287 /* libz.tbd */; };
 		EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE822B071F5D57D000E4249A /* libRCTCameraRoll.a */; };
-		EE8EF4D41F5C0BCD0002D11E /* ZNShareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4D11F5C0BCD0002D11E /* ZNShareClass.m */; };
-		EE8EF4D51F5C0BCD0002D11E /* ZNShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4D31F5C0BCD0002D11E /* ZNShareViewController.m */; };
-		EE8EF4DE1F5C0EA20002D11E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4DD1F5C0EA20002D11E /* MBProgressHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -399,6 +399,12 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7AF474FC8B6C4EC78759A9DA /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		7D55EA701F6A54E90027155D /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		7D55EA711F6A54E90027155D /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		7D55EA9A1F6A55D10027155D /* ZNShareClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZNShareClass.h; sourceTree = "<group>"; };
+		7D55EA9B1F6A55D10027155D /* ZNShareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZNShareClass.m; sourceTree = "<group>"; };
+		7D55EA9C1F6A55D10027155D /* ZNShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZNShareViewController.h; sourceTree = "<group>"; };
+		7D55EA9D1F6A55D10027155D /* ZNShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZNShareViewController.m; sourceTree = "<group>"; };
 		7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
 		7D769E2B1E602A630039526C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		7D769E2D1E602A800039526C /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = "usr/lib/libc++abi.tbd"; sourceTree = SDKROOT; };
@@ -448,9 +454,6 @@
 		E3B817071E613EB600279287 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E3B8170A1E613ED600279287 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		EE822AFD1F5D57D000E4249A /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
-		EE8EF4D11F5C0BCD0002D11E /* ZNShareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZNShareClass.m; path = FE_Sass/ZNShareClass.m; sourceTree = "<group>"; };
-		EE8EF4D31F5C0BCD0002D11E /* ZNShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZNShareViewController.m; path = FE_Sass/ZNShareViewController.m; sourceTree = "<group>"; };
-		EE8EF4DD1F5C0EA20002D11E /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = FE_Sass/MBProgressHUD.m; sourceTree = "<group>"; };
 		F0FC9342AFCC48C188DD558A /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -647,11 +650,16 @@
 		13B07FAE1A68108700A75B9A /* FE_Sass */ = {
 			isa = PBXGroup;
 			children = (
+				7D55EA6F1F6A54E90027155D /* MBProgressHUD */,
 				1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */,
 				7DB2CBB31E779DDF00DE146C /* OCRSCancer */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				7D55EA9A1F6A55D10027155D /* ZNShareClass.h */,
+				7D55EA9B1F6A55D10027155D /* ZNShareClass.m */,
+				7D55EA9C1F6A55D10027155D /* ZNShareViewController.h */,
+				7D55EA9D1F6A55D10027155D /* ZNShareViewController.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -700,6 +708,15 @@
 				3DAD3E881DF850E9000B6D8A /* libRCTLinking-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		7D55EA6F1F6A54E90027155D /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				7D55EA701F6A54E90027155D /* MBProgressHUD.h */,
+				7D55EA711F6A54E90027155D /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
 		7D769EEE1E6572180039526C /* Products */ = {
@@ -1412,15 +1429,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D55EAB31F6A57920027155D /* MBProgressHUD.m in Sources */,
 				124A59191E9C8B90007C1C15 /* CameraController.m in Sources */,
 				7DB2CBDF1E779DDF00DE146C /* TopView.m in Sources */,
+				7D55EA9F1F6A55D10027155D /* ZNShareViewController.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				EE8EF4D51F5C0BCD0002D11E /* ZNShareViewController.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				EE8EF4D41F5C0BCD0002D11E /* ZNShareClass.m in Sources */,
 				16FB421C1EF23352006C6077 /* SystomTools.m in Sources */,
-				EE8EF4DE1F5C0EA20002D11E /* MBProgressHUD.m in Sources */,
 				124A590B1E9C700F007C1C15 /* OBDScanController.m in Sources */,
+				7D55EA9E1F6A55D10027155D /* ZNShareClass.m in Sources */,
 				124A58E81E9C6D48007C1C15 /* QrScan.m in Sources */,
 				124A59161E9C8B4A007C1C15 /* CustomCamera.m in Sources */,
 				7DB2CBE11E779DDF00DE146C /* VinScan.m in Sources */,

@@ -274,14 +274,14 @@ class SharedView extends Component {
                                 this.sharedWechatSession(this.props.carData);
                                 this.isVisible(false);
                             }}>
-                                <Image source={require('../../../images/carSourceImages/shared_ wx.png')}/>
+                                <Image source={require('../../../images/carSourceImages/shared_wx.png')}/>
                                 <Text allowFontScaling={false}  style={SharedViewStyle.sharedText}>微信好友</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={SharedViewStyle.sharedItemView} onPress={() => {
                                 this.sharedWechatTimeline(this.props.carData);
                                 this.isVisible(false);
                             }}>
-                                <Image source={require('../../../images/carSourceImages/shared_ friend.png')}/>
+                                <Image source={require('../../../images/carSourceImages/shared_friend.png')}/>
                                 <Text allowFontScaling={false}  style={SharedViewStyle.sharedText}>朋友圈</Text>
                             </TouchableOpacity>
                         </View>
