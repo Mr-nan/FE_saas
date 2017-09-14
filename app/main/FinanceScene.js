@@ -63,8 +63,6 @@ import BindCardScene from '../mine/accountManage/BindCardScene'
 let firstType = '-1';
 let lastType = '-1';
 
-import GetPermissionUtil from '../utils/GetPermissionUtil';
-const GetPermission = new GetPermissionUtil();
 
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
@@ -85,6 +83,7 @@ const bossFuncArray = [
 
 
 export default class FinanceSence extends BaseComponet {
+
     handleBack = () => {
         NativeModules.VinScan.goBack();
         return true;
@@ -111,9 +110,6 @@ export default class FinanceSence extends BaseComponet {
     }
 
 
-    /**
-     * 获取金融首页顶部信息
-     */
     getMnyData = () => {
         let that = this;
         let maps = {
@@ -161,9 +157,6 @@ export default class FinanceSence extends BaseComponet {
 
     };
 
-    /**
-     * 获取借款记录
-     */
     getApplyData = () => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let maps = {
@@ -224,9 +217,6 @@ export default class FinanceSence extends BaseComponet {
         this.getMnyData();
     }
 
-    /**
-     * 获取账号信息
-     */
     getAccountInfo = () => {
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
@@ -286,50 +276,46 @@ export default class FinanceSence extends BaseComponet {
                     StorageUtil.mGetItem(storageKeyNames.ENTERPRISE_LIST, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
-                            GetPermission.getMineList((mineList) => {
-                                for (let i = 0; i < mineList.length; i++) {
-                                    if (mineList[i].id == 36) {
-                                        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (datac) => {
-                                            if (datac.code == 1) {
-                                                let datasc = JSON.parse(datac.result);
-                                                let maps = {
-                                                    enter_base_ids: datasc.company_base_id,
-                                                    child_type: '1'
-                                                };
-                                                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                                                    .then((response) => {
-                                                            lastType = response.mjson.data.account.status;
-                                                            if (lastType == '0') {
-                                                                this.refs.accountmodal.changeShowType(true,
-                                                                    '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                                                    '请尽快开通！', '去开户', '看看再说', () => {
-                                                                        this.toPage();
-                                                                    });
-                                                            } else if (lastType == '1') {
-                                                                this.refs.accountmodal.changeShowType(true,
-                                                                    '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                                                    , '去绑卡', '看看再说', () => {
-                                                                        this.toPage();
-                                                                    });
-                                                            } else if (lastType == '2') {
-                                                                this.refs.accountmodal.changeShowType(true,
-                                                                    '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                                                    , '去激活', '看看再说', () => {
-                                                                        this.toPage();
-                                                                    });
-                                                            }
-                                                            firstType = lastType;
-                                                        },
-                                                        (error) => {
+                            console.log(datas);
+                            if (datas[0].role_type == '1') {
+                                StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (datac) => {
+                                    if (datac.code == 1) {
+                                        let datasc = JSON.parse(datac.result);
+                                        let maps = {
+                                            enter_base_ids: datasc.company_base_id,
+                                            child_type: '1'
+                                        };
+                                        request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                            .then((response) => {
+                                                    lastType = response.mjson.data.account.status;
+                                                    if (lastType == '0') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                                            '请尽快开通！', '去开户', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    } else if (lastType == '1') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                                            , '去绑卡', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    } else if (lastType == '2') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                                            , '去激活', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    }
+                                                    firstType = lastType;
+                                                },
+                                                (error) => {
 
-                                                        });
-                                            }
-                                        });
-
+                                                });
                                     }
-                                }
-                            });
+                                });
 
+                            }
                         }
                     });
                 }
@@ -402,18 +388,25 @@ export default class FinanceSence extends BaseComponet {
                                   title={'审核未通过'}
                                   subtitle={this.state.mnyData.microchinese_audit_reason}
                                   confimClick={()=>{
-                                      let navigationParams={
-                                          name: "QuotaApplication",
-                                          component: QuotaApplication,
-                                          params: {
-                                              callBack:()=>{
-                                                  this.allRefresh()
+                                      if(this.state.mnyData.microchinese_apply_status == 0){
+
+                                      }
+                                      else {
+                                          let navigationParams={
+                                              name: "QuotaApplication",
+                                              component: QuotaApplication,
+                                              params: {
+                                                  callBack:()=>{
+                                                      this.allRefresh()
+                                                  }
                                               }
                                           }
+                                          this.props.callBack(navigationParams);
                                       }
-                                      this.props.callBack(navigationParams);
+
                                   }}
-                                  confimTitle="重新审核"
+
+                                  confimTitle={this.state.mnyData.microchinese_apply_status == 0 ? "好的":"重新审核"}
 
                 />
                 <AccountModal ref="accountmodal"/>
@@ -495,13 +488,7 @@ export default class FinanceSence extends BaseComponet {
                 this.buttonParams.content = '订单';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
-            }else if(movie.type == 8){
-                nextPage = ChedidaiDetaileScene;
-                this.buttonParams.content = '车抵';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB3}];
-                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB3}];
             }
-
 
             if (movie.status == 1) {
                 this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB3}];
@@ -584,6 +571,7 @@ export default class FinanceSence extends BaseComponet {
                             justifyContent: 'flex-start', flex: 3, flexDirection: 'row',
                             alignItems: 'center'
                         }]}>
+
                             <MyButton {...this.buttonParams}/>
                             <Text allowFontScaling={false} numberOfLines={1}
                                   style={cellSheet.rowTopTextStyle}>{this.state.customerName}</Text>
@@ -594,6 +582,7 @@ export default class FinanceSence extends BaseComponet {
                             justifyContent: 'center',
                             alignItems: 'flex-end'
                         }]}>
+
                             <Text allowFontScaling={false}
                                   style={cellSheet.rowTopGrayTextStyle}>{movie.loan_code}</Text>
                         </View>
@@ -621,6 +610,7 @@ export default class FinanceSence extends BaseComponet {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                             }}>
+
                                 <Text allowFontScaling={false} style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: fontAndColor.COLORB3,
@@ -675,7 +665,6 @@ export default class FinanceSence extends BaseComponet {
                         purchase_archives_first_status: mnyData.purchase_archives_first_status,
                         purchase_status: mnyData.purchase_status,
                         customerName: this.state.customerName,
-                        car_loan_status:mnyData.car_loan_status,//是否可申请车抵贷
                         backRefresh: () => {
                             this.allRefresh()
                         }
@@ -744,20 +733,22 @@ export default class FinanceSence extends BaseComponet {
                             <View style={{flex: 1, alignItems: 'center',}}>
                                 <Text allowFontScaling={false}
                                       style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                        color: '#fff',
-                                        backgroundColor: '#00000000'
-                                    }}>{this.state.mnyData.is_microchinese_mny == 3 && '综合'}可用额度(万)</Text>
+                                          fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                          color: '#fff',
+                                          backgroundColor: '#00000000'
+                                      }}>{this.state.mnyData.is_microchinese_mny == 3 && '综合'}可用额度(万)</Text>
+
                                 <Text allowFontScaling={false}
                                       style={{
-                                        fontSize: Pixel.getFontPixel(28),
-                                        color: '#fff',
-                                        marginTop: Pixel.getPixel(7),
-                                        fontWeight: 'bold',
-                                        backgroundColor: '#00000000',
-                                        flex: 1,
-                                        textAlign: 'center'
-                                    }}>{this.state.allData.keyongedu}</Text>
+                                          fontSize: Pixel.getFontPixel(28),
+                                          color: '#fff',
+                                          marginTop: Pixel.getPixel(7),
+                                          fontWeight: 'bold',
+                                          backgroundColor: '#00000000',
+                                          flex: 1,
+                                          textAlign: 'center'
+                                      }}>{this.state.allData.keyongedu}</Text>
+
                             </View>
                             {
                                 (this.state.mnyData.is_microchinese_mny == 3 || this.state.mnyData.is_microchinese_mny == 5) && (
@@ -766,43 +757,46 @@ export default class FinanceSence extends BaseComponet {
                                                           onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
                                             <Text allowFontScaling={false}
                                                   style={{
-                                                fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                                color: '#fff',
-                                                backgroundColor: '#00000000'
-                                            }}>微众可用额度(万)</Text>
+                                                      fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                                      color: '#fff',
+                                                      backgroundColor: '#00000000'
+                                                  }}>微众可用额度(万)</Text>
+
                                             <Image source={require('../../images/financeImages/titleAlert.png')}
                                                    style={{marginLeft:5}}/>
                                         </TouchableOpacity>
                                         <Text allowFontScaling={false}
                                               style={{
-                                            fontSize: Pixel.getFontPixel(28),
-                                            color: '#fff',
-                                            marginTop: Pixel.getPixel(7),
-                                            fontWeight: 'bold',
-                                            backgroundColor: '#00000000',
-                                            flex: 1,
-                                            textAlign: 'center'
-                                        }}>{this.state.mnyData.is_microchinese_mny == 5 ? 0 : this.state.mnyData.microchinese_mny / 10000}</Text>
+                                                  fontSize: Pixel.getFontPixel(28),
+                                                  color: '#fff',
+                                                  marginTop: Pixel.getPixel(7),
+                                                  fontWeight: 'bold',
+                                                  backgroundColor: '#00000000',
+                                                  flex: 1,
+                                                  textAlign: 'center'
+                                              }}>{this.state.mnyData.is_microchinese_mny == 5 ? 0 : this.state.mnyData.microchinese_mny / 10000}</Text>
+
                                     </View>)
                             }
                             <View
                                 style={{flex: 1, alignItems: 'center',borderLeftColor:'white',borderLeftWidth:StyleSheet.hairlineWidth}}>
                                 <Text allowFontScaling={false}
                                       style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                        color: '#fff',
-                                        backgroundColor: '#00000000'
-                                    }}>贷款余额(万)</Text>
+                                          fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                          color: '#fff',
+                                          backgroundColor: '#00000000'
+                                      }}>贷款余额(万)</Text>
+
                                 <Text allowFontScaling={false}
                                       style={{
-                                        fontSize: Pixel.getFontPixel(28),
-                                        color: '#fff',
-                                        marginTop: Pixel.getPixel(7),
-                                        fontWeight: 'bold',
-                                        backgroundColor: '#00000000',
-                                        flex: 1,
-                                        textAlign: 'center'
-                                    }}>{this.state.allData.daikuanyue}</Text>
+                                          fontSize: Pixel.getFontPixel(28),
+                                          color: '#fff',
+                                          marginTop: Pixel.getPixel(7),
+                                          fontWeight: 'bold',
+                                          backgroundColor: '#00000000',
+                                          flex: 1,
+                                          textAlign: 'center'
+                                      }}>{this.state.allData.daikuanyue}</Text>
                             </View>
                         </View>
                         {
@@ -813,25 +807,30 @@ export default class FinanceSence extends BaseComponet {
                                         if(this.state.mnyData.is_microchinese_mny==4){
                                             this.refs.showAlert.setModelVisible(true)
                                         }else if (this.state.mnyData.is_microchinese_mny == 1){
-                                            let navigationParams={
-                                                name: "QuotaApplication",
-                                                component: QuotaApplication,
-                                                params: {
-                                                    callBack:()=>{
-                                                        this.allRefresh()
+                                            if(this.state.mnyData.microchinese_apply_status == 0){
+                                            }
+                                            else{
+                                                let navigationParams={
+                                                    name: "QuotaApplication",
+                                                    component: QuotaApplication,
+                                                    params: {
+                                                        callBack:()=>{
+                                                            this.allRefresh()
+                                                        }
                                                     }
                                                 }
+                                                this.props.callBack(navigationParams);
                                             }
-                                            this.props.callBack(navigationParams);
                                         }
 
                                     }} activeOpacity={1}>
                                         <View style={{height:Pixel.getPixel(24),borderRadius:Pixel.getPixel(12),
-                                        borderColor:'white',borderWidth:Pixel.getPixel(1),alignItems:'center',
-                                        justifyContent:'center',overflow:'hidden',
+                                            borderColor:this.state.mnyData.microchinese_apply_status == 0 ? 'gray':'white',borderWidth:Pixel.getPixel(1),alignItems:'center',
+                                            justifyContent:'center',overflow:'hidden',
                                             paddingHorizontal:Pixel.getPixel(20),
                                         }}>
-                                            <Text allowFontScaling={false} style={{color:'white', fontSize:Pixel.getFontPixel(14),
+
+                                            <Text allowFontScaling={false} style={{color:this.state.mnyData.microchinese_apply_status == 0 ? 'gray':'white', fontSize:Pixel.getFontPixel(14),
                                                 backgroundColor:'#00000000',fontWeight: 'bold',}}>  {this.state.allData.microchineseTitle}  </Text>
                                         </View>
                                     </TouchableOpacity>
@@ -844,36 +843,40 @@ export default class FinanceSence extends BaseComponet {
                             paddingRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(15), flexDirection: 'row',
                             bottom:0,position: 'absolute',
                         }}>
+
                         <View
                             style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
                             <Text allowFontScaling={false}
                                   style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                    color: '#fff',
-                                    backgroundColor: '#00000000'
-                                }}>保证金额度:</Text>
+                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                      color: '#fff',
+                                      backgroundColor: '#00000000'
+                                  }}>保证金额度:</Text>
+
                             <Text allowFontScaling={false}
                                   style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                    color: '#fff',
-                                    backgroundColor: '#00000000',
-                                    fontWeight: 'bold'
-                                }}>{this.state.allData.baozhengjinedu}万</Text>
+                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                      color: '#fff',
+                                      backgroundColor: '#00000000',
+                                      fontWeight: 'bold'
+                                  }}>{this.state.allData.baozhengjinedu}万</Text>
+
                         </View>
                         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
                             <Text allowFontScaling={false}
                                   style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                    color: '#fff',
-                                    backgroundColor: '#00000000'
-                                }}>保证金余额:</Text>
+                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                      color: '#fff',
+                                      backgroundColor: '#00000000'
+                                  }}>保证金余额:</Text>
+
                             <Text allowFontScaling={false}
                                   style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                    color: '#fff',
-                                    backgroundColor: '#00000000',
-                                    fontWeight: 'bold'
-                                }}>{this.state.allData.baozhengjinyue}万</Text>
+                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                      color: '#fff',
+                                      backgroundColor: '#00000000',
+                                      fontWeight: 'bold'
+                                  }}>{this.state.allData.baozhengjinyue}万</Text>
                         </View>
                     </View>
                 </Image>
