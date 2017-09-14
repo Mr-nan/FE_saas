@@ -192,6 +192,29 @@ return [
         24=>'融资单确认验收失败',         //--3
     ],
 
+
+    订单数据里：
+    cancel_side为：1买家 2卖家 3系统后台
+    cancel_is_agree  1卖家同意 2卖家不同意 0后台强制取消
+
+    refund_data为退款单数据
+    is_who：1为买家，2为卖家
+    status：退款状态：0创建 1处理中 2 退款完成
+    done_back_deposit_amount 已退定金
+    done_back_balance_amount 已退余款
+    done_back_seller_add_amount  已退补差价款
+    done_back_firstpay_amount  已退首付款
+
+    下面两个按钮是这样：
+    cancel_is_agree==2  && is_who==1 && status==2
+    cancel_is_agree==2  && is_who==2 && status==2
+
+
+    卖家同意： cancel_is_agree == 1
+    退买家：  (cancel_is_agree == 0 || cancel_is_agree == 2) && refund_data.is_who == 1 && refund_data.status == 2
+    退卖家：  (cancel_is_agree == 0 || cancel_is_agree == 2) && refund_data.is_who == 2 && refund_data.status == 2
+    卖家不同意：cancel_is_agree == 2
+
    {
        "roleList":[
            "taskPGS",

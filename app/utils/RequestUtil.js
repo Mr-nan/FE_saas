@@ -3,7 +3,7 @@ var Platform = require('Platform');
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import {all} from '../constant/AllBackLogin';
 import LoginScene from '../login/LoginScene';
-const request = (url, method, params,backToLogin) => {
+const request = (url, method, params, backToLogin) => {
     let loginSuccess = {
         name: 'LoginScene',
         component: LoginScene,
@@ -36,7 +36,7 @@ const request = (url, method, params,backToLogin) => {
                 device_code = 'dycd_platform_ios';
             }
 
-            console.log(url + '?token=' + token + '&device_code=' + device_code+'&'+body);
+            console.log(url + '?token=' + token + '&device_code=' + device_code + '&' + body);
 
             fetch(url + '?token=' + token + '&device_code=' + device_code+'&version='+StorageKeyNames.VERSON_CODE+'&'+body, {
                 method,
@@ -54,23 +54,25 @@ const request = (url, method, params,backToLogin) => {
                 .then((responseData) => {
                     if (isOk) {
                         for (let key of Object.keys(params)) {
-                            console.log(key+"===" + params[key]);
+                            console.log(key + "===" + params[key]);
                         }
                         console.log("success----------" + JSON.stringify(responseData));
                         if (responseData.code == 1) {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
-                            if(responseData.code==7040011||responseData.code==7040020){
+                            if (responseData.code == 7040011 || responseData.code == 7040020) {
+                                StorageUtil.mSetItem(StorageKeyNames.ISLOGIN,'');
+                                StorageUtil.mSetItem(StorageKeyNames.NEED_TOAST_ERROR, responseData.msg + '');
                                 if (all) {
                                     all.immediatelyResetRouteStack([{
-                                       ...loginSuccess
+                                        ...loginSuccess
                                     }])
                                 }
-                            }else{
+                            } else {
                                 reject({mycode: responseData.code, mjson: responseData});
                             }
                         }
-                    }else{
+                    } else {
                         console.log("error----------" + JSON.stringify(responseData));
                         reject({mycode: -300});
                     }
