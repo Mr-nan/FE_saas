@@ -324,6 +324,7 @@ export default class MineScene extends BaseComponent {
                 "title": "section3"
             },
         ]
+
         // StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
         //     if (data.code == 1) {
         //         let datas = JSON.parse(data.result);
