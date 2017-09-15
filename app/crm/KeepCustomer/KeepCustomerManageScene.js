@@ -239,7 +239,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
                 <View style={styles.container}>
                     <NavigationView
                         backIconClick={this.backPage}
-                        title="保有客户管理"
+                        title="保有客户"
                         renderRihtFootView={this._navigatorRightView}/>
                     <Image style={{
                         marginTop: Pixel.getTitlePixel(64),
@@ -284,7 +284,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
                 <View style={styles.container}>
                     <NavigationView
                         backIconClick={this.backPage}
-                        title="保有客户管理"
+                        title="保有客户"
                         renderRihtFootView={this._navigatorRightView}/>
                     {/*<ClientScreeningHeadView ref="headView"/>*/}
                     <Image style={{

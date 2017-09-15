@@ -190,60 +190,46 @@ export default class FollowUpTaskScene extends BaseComponent {
         let maps = [];
         let clientInfo = [];
         let inputData = this.followTaskInfoItem.getItemData();
-        for (let key in inputData) {
-            clientInfo.push(inputData[key]);
+        if (this.checkInfo(inputData)) {
+            for (let key in inputData) {
+                clientInfo.push(inputData[key]);
+            }
+            for (let i = 0; i < clientInfo.length; i++) {
+                maps[clientInfo[i].parameter] = clientInfo[i].value;
+            }
+            maps['custI'] = this.props.rowData.id;
+            maps['custN'] = '';
+            maps['custP'] = '';
+            /*        let maps = {
+             custP: "",
+             custN: "",
+             custI: 4,
+             custFlow: "跟踪内容11111",
+             customerStatus: 4,
+             remind: "11112222", // 日期
+             comeIf: ""
+             };*/
+            let url = AppUrls.CUSTOMER_FLOW;
+            request(url, 'post', maps).then((response) => {
+                // 提交成功并刷新信息页数据
+                this.props.showModal(false);
+                this.props.callBack();
+                this.backPage();
+            }, (error) => {
+                //this.props.showModal(false);
+                this.props.showToast("提交跟进任务失败");
+            });
         }
-        for (let i = 0; i < clientInfo.length; i++) {
-            maps[clientInfo[i].parameter] = clientInfo[i].value;
-        }
-        maps['custI'] = this.props.rowData.id;
-        maps['custN'] = '';
-        maps['custP'] = '';
-        /*        let maps = {
-         custP: "",
-         custN: "",
-         custI: 4,
-         custFlow: "跟踪内容11111",
-         customerStatus: 4,
-         remind: "11112222", // 日期
-         comeIf: ""
-         };*/
-        let url = AppUrls.CUSTOMER_FLOW;
-        request(url, 'post', maps).then((response) => {
-            // 提交成功并刷新信息页数据
-            this.props.showModal(false);
-            this.props.callBack();
-            this.backPage();
-        }, (error) => {
-            //this.props.showModal(false);
-            this.props.showToast("提交跟进任务失败");
-        });
     };
 
     /**
      *  18131137998
      **/
-    checkInfo = () => {
-        this.clientInfo = [];
-        let baseInfoItems = this.baseInfoItem.getItemData();
-        for (let key in baseInfoItems) {
-            this.clientInfo.push(baseInfoItems[key]);
-        }
-
-        let buyerDemandItems = this.buyerDemandItem.getItemData();
-        for (let key in buyerDemandItems) {
-            this.clientInfo.push(buyerDemandItems[key]);
-        }
-
-        let communicationRecordItems = this.communicationRecordItem.getItemData();
-        for (let key in communicationRecordItems) {
-            this.clientInfo.push(communicationRecordItems[key]);
-        }
-        //console.log('this.clientInfo=====', this.clientInfo);
-        for (let key in this.clientInfo) {
-            //console.log('this.clientInfo=====', key + this.clientInfo[key]);
-            if (this.clientInfo[key].value == '') {
-                this.props.showToast(this.clientInfo[key].name + '不能为空');
+    checkInfo = (data) => {
+        for (let key in data) {
+            //console.log('this.clientInfo===data===', key + data[key]);
+            if (data[key].value == '') {
+                this.props.showToast(data[key].name + '不能为空');
                 return false;
             }
         }
