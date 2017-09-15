@@ -57,12 +57,29 @@ export default class HomeRowButton extends PureComponent {
     _renderRow = (movie, sectionId, rowId) => {
         let imageList = [];
         for (let i = 0; i < movie.imgs.length; i++) {
+            if(i>2){
+                break;
+            }
             if (movie.imgs[i].url) {
                 imageList.push(<Image key={'imgs'+i} source={{uri:movie.imgs[i].url}}
                                       style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',
                            marginRight:Pixel.getPixel(8)}}/>);
             }
         }
+        console.log(imageList.length,'=================>');
+        if(imageList.length<3)
+        {
+            for(let i=0;i<=4-imageList.length;i++)
+            {
+                imageList.push(<Image key={'imgs_null'+i} source={require('../../../images/carSourceImages/car_null_img.png')}
+                                      style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',
+                                          marginRight:Pixel.getPixel(8)}}/>);
+            }
+        }
+
+        console.log(imageList.length,'=================******************>');
+
+
         let left = 0;
         if (rowId == 0) {
             left = Pixel.getPixel(12);
@@ -92,7 +109,7 @@ export default class HomeRowButton extends PureComponent {
                     <View style={{flex:1,alignItems:'flex-end'}}>
                         <Text numberOfLines={1} allowFontScaling={false} style={{
                             fontSize: Pixel.getFontPixel(14),color:'#fa5741',fontWeight: 'bold'}}>
-                            {movie.dealer_price ? movie.dealer_price : ''}
+                            {movie.dealer_price ? this.carMoneyChange(movie.dealer_price) : ''}
                         </Text>
                     </View>
                 </View>
@@ -118,5 +135,29 @@ export default class HomeRowButton extends PureComponent {
             backgroundColor:'#fff'}} key={sectionId + rowId}>
             </View>
         )
+    }
+    carMoneyChange = (carMoney) => {
+
+        let newCarMoney = parseFloat(carMoney);
+        let carMoneyStr = newCarMoney.toFixed(2);
+        let moneyArray = carMoneyStr.split(".");
+
+        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
+
+        if (moneyArray.length > 1) {
+            if (moneyArray[1] > 0) {
+
+                return moneyArray[0] + '.' + moneyArray[1];
+
+            } else {
+
+                return moneyArray[0];
+            }
+
+        } else {
+            return carMoneyStr;
+        }
+
+
     }
 }

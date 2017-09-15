@@ -361,7 +361,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                                 <TextInput style={styles.textInput}
                                            placeholder='请输入'
-                                           maxLength={7}
+                                           maxLength={15}
                                            underlineColorAndroid='transparent'
                                            onFocus={()=>{
                                                this.setState({
@@ -451,10 +451,9 @@ export default class CarInitialTaskScene extends BaseComponent{
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                                 <TextInput style={styles.textInput}
                                            placeholder='请输入'
-                                           maxLength={11}
+                                           maxLength={15}
                                            underlineColorAndroid='transparent'
                                            onChangeText={(text)=>{this.carData.selfName = text}}/>
-
                             </View>)
                     }
                 },
@@ -709,7 +708,7 @@ export default class CarInitialTaskScene extends BaseComponent{
 
             request(AppUrls.VIN_CHECK, 'post',{vin:text}).then(
                 (response) => {
-                    if (response.mycode === 1) {
+                    if (response.mycode === 1 && response.mjson.valid) {
                         this.titleData1[0][0].subTitle='';
                         this.titleData1[0][1].value = '请选择';
                         this.carData.vin = text;
@@ -761,8 +760,8 @@ export default class CarInitialTaskScene extends BaseComponent{
                     this.upTitleData();
                 }
             );
-
-
+        }else {
+            this.carData.vin = '';
         }
     };
 

@@ -205,12 +205,17 @@ export default class MainPage extends BaseComponent {
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
 
-                    }else if(openSelectBranch == 'checkRecommend'){
+                    }else if(openSelectBranch == storageKeyNames.NEED_CHECK_RECOMMEND){
 
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
 
-                    }else{
+                    }else if(openSelectBranch == storageKeyNames.NEED_CHECK_NEW_CAR){
+
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'true');
+
+                    } else {
                         if(ref==='financePage'){
                              StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
                        if(datas.code==1){

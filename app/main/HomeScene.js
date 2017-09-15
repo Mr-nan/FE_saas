@@ -100,10 +100,8 @@ export default class HomeScene extends BaseComponet {
                         width: Pixel.getPixel(25),
                         height: Pixel.getPixel(25),
                         position: 'absolute',
-                        marginTop: Pixel.getTitlePixel(26)
-                        ,
+                        marginTop: Pixel.getTitlePixel(26),
                         marginLeft: width - Pixel.getPixel(35),
-
                     }}>
                         <Image style={{flex:1,resizeMode:'stretch'}}
                                source={require('../../images/workbench/ysjxx.png')}/>
@@ -115,9 +113,9 @@ export default class HomeScene extends BaseComponet {
                 <HomeRowButton onPress={(id)=>{
                     this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});
                 }} list={this.carData}/>
-                <HomeAdvertisementButton/>
-
-
+                <HomeAdvertisementButton click={()=>{
+                    this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);
+                }}/>
                 <View style={{
                     flexDirection: 'row',
                     width: width,
@@ -134,7 +132,7 @@ export default class HomeScene extends BaseComponet {
 
                     </View>
                     <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
-                        this.props.jumpScene('carpage','checkRecommend');
+                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_RECOMMEND);
                     }}>
                         <View style={{
                             flexDirection: 'row',
@@ -149,7 +147,6 @@ export default class HomeScene extends BaseComponet {
                                 height: Pixel.getPixel(10),
                                 marginLeft: Pixel.getPixel(2),
                             }}/>
-
 
                         </View>
                     </TouchableOpacity>

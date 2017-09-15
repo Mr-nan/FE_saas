@@ -120,7 +120,6 @@ export default class CarMySourceScene extends BaceComponent {
 
     loadHeadData=(action)=>{
 
-        console.log('===========刷新head');
         this.setState({renderPlaceholderOnly:'loading'});
         request(AppUrls.CAR_USER_CAR, 'post', {
             car_status: '1',
@@ -167,7 +166,10 @@ export default class CarMySourceScene extends BaceComponent {
             this.carAction(2,groupStr,carData.id);
 
         } else if (typeStr == '下架') {
-
+            if(this.carData.in_valid_order==1){
+                this.props.showToast('该车辆在有效订单中,不可操作下架');
+                return;
+            }
             this.refs.accountmodal.changeShowType(true,
                 '' +
                 '是否需要下架该车', '确定', '取消', () => {
@@ -188,6 +190,10 @@ export default class CarMySourceScene extends BaceComponent {
             // };
             // this.toNextPage(navigatorParams);
 
+            if(this.carData.in_valid_order==1){
+                this.props.showToast('该车辆在有效订单中,不可操作编辑');
+                return;
+            }
             let navigatorParams = {
 
                 name: "CarPublishFirstScene",
@@ -204,8 +210,16 @@ export default class CarMySourceScene extends BaceComponent {
             this.refs.showTitleAlert.setModelVisibleAndSubTitle(true,carData.audit_message);
 
         }else  if(typeStr == '管理'){
+
             this.setState({isShowManageView:true})
+
         }else if(typeStr=='删除') {
+
+            if(this.carData.in_valid_order==1){
+                this.props.showToast('该车辆在有效订单中,不可操作删除');
+                return;
+            }
+
             this.refs.accountmodal.changeShowType(true,
                 '' +
                 '是否需要删除该车', '确定', '取消', () => {
@@ -227,6 +241,11 @@ export default class CarMySourceScene extends BaceComponent {
             })
         }else if(type =='下架'){
 
+            if(this.carData.in_valid_order==1){
+                this.props.showToast('该车辆在有效订单中,不可操作下架');
+                return;
+            }
+
             this.refs.accountmodal.changeShowType(true,
                 '' +
                 '是否需要下架该车', '确定', '取消', () => {
@@ -234,6 +253,11 @@ export default class CarMySourceScene extends BaceComponent {
                 });
 
         }else if(type=='编辑'){
+
+            if(this.carData.in_valid_order==1){
+                this.props.showToast('该车辆在有效订单中,不可操作编辑');
+                return;
+            }
 
             let navigatorParams = {
 
@@ -251,8 +275,19 @@ export default class CarMySourceScene extends BaceComponent {
             this.carRefreshTime(this.carData.id);
 
         }else if(type =='已售'){
+
+            if(this.carData.in_valid_order==1){
+                this.props.showToast('该车辆在有效订单中,不可操作已售');
+                return;
+            }
             this.pushCarDealScene(this.carData.id);
+
         }else if(type == '删除'){
+
+            if(this.carData.in_valid_order==1){
+                this.props.showToast('该车辆在有效订单中,不可操作删除');
+                return;
+            }
             this.refs.accountmodal.changeShowType(true,
                 '' +
                 '是否需要删除该车', '确定', '取消', () => {

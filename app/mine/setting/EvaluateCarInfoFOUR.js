@@ -15,12 +15,12 @@ import {
 	TouchableWithoutFeedback,
 	NativeModules,
 	ScrollView,
-	TextInput
+	TextInput,
 } from "react-native";
 import BaseComponent from "../../component/BaseComponent";
 import PixelUtil from "../../utils/PixelUtil";
 import * as FontAndColor from "../../constant/fontAndColor";
-import NavigationBar from "../../component/NavigationBar";
+import AllNavigationView from  '../../component/AllNavigationView';
 import MyButton from "../../component/MyButton";
 import * as AppUrls from "../../constant/appUrls";
 import  {request}   from '../../utils/RequestUtil';
@@ -32,6 +32,8 @@ const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 var onePT = 1 / PixelRatio.get(); //一个像素
 var Platform = require('Platform');
+const IS_ANDROID = Platform.OS === 'android';
+
 export default class EvaluateCarInfo extends BaseComponent {
 	constructor(props) {
 		super(props);
@@ -50,52 +52,40 @@ export default class EvaluateCarInfo extends BaseComponent {
 
 		return (
 			<View style={styles.container}>
-				<NavigationBar
-					leftImageShow={true}
-					leftTextShow={false}
-					centerText={"评估车辆信息"}
-					rightText={""}
-					leftImageCallBack={this.backPage}/>
+				<ScrollView keyboardDismissMode={IS_ANDROID?'none':'on-drag'}>
+					<View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
 
-				<View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
-
-					<Text allowFontScaling={false} style={styles.firstTextStyle}>{this.props.carData.carName}</Text>
-					<Text allowFontScaling={false} style={styles.secondTextStyle}>{this.props.carData.vin}</Text>
-					<Image
-						source={require('../../../images/mainImage/progressFOUR.png')}
-						style={styles.progressImageStyle}
-
-					/>
-					<Text allowFontScaling={false} style={styles.secondTextStyle}></Text>
-					<View style={{height: Pixel.getPixel(1),width: Width -Pixel.getPixel(30),
-					              marginBottom:Pixel.getPixel(0),backgroundColor: FontAndColor.COLORA4}}/>
-
-				</View>
-
-				<View style={{height: Pixel.getPixel(120),width: Width,
-					         marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
-					<Text allowFontScaling={false} style={styles.beizhuTextStyle}>备注</Text>
-					<TextInput
-						multiline={true}
-						maxLength={8}
-						ref="inputText"
-						underlineColorAndroid={"#00000000"}
-						placeholder="请输入备注信息"
-						placeholderTextColor={FontAndColor.COLORA1}
-						style={styles.textInputStyle}
-						onChangeText={(text) => {
-                            this.remark = text;
-                        }}/>
-				</View>
-
-
+						<Text allowFontScaling={false} style={styles.firstTextStyle}>{this.props.carData.carName}</Text>
+						<Text allowFontScaling={false} style={styles.secondTextStyle}>{this.props.carData.vin}</Text>
+						<Image
+							source={require('../../../images/mainImage/progressFOUR.png')}
+							style={styles.progressImageStyle}
+						/>
+						<Text allowFontScaling={false} style={styles.secondTextStyle}></Text>
+						<View style={{height: Pixel.getPixel(1),width: Width -Pixel.getPixel(30),
+                            marginBottom:Pixel.getPixel(0),backgroundColor: FontAndColor.COLORA4}}/>
+					</View>
+					<View style={{height: Pixel.getPixel(120),width: Width,
+                        marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
+						<Text allowFontScaling={false} style={styles.beizhuTextStyle}>备注</Text>
+						<TextInput
+							multiline={true}
+							ref="inputText"
+							underlineColorAndroid={"#00000000"}
+							placeholder="请输入备注信息"
+							placeholderTextColor={FontAndColor.COLORA1}
+							style={styles.textInputStyle}
+							onChangeText={(text) => {
+                                this.remark = text;
+                            }}/>
+					</View>
+				</ScrollView>
 				<MyButton buttonType={MyButton.TEXTBUTTON}
-				          content={'提交'}
-				          parentStyle={styles.loginBtnStyle}
-				          childStyle={styles.loginButtonTextStyle}
-				          mOnPress={this.loginOut}/>
-
-
+						  content={'提交'}
+						  parentStyle={styles.loginBtnStyle}
+						  childStyle={styles.loginButtonTextStyle}
+						  mOnPress={this.loginOut}/>
+				<AllNavigationView title="评估车辆信息" backIconClick={this.backPage}/>
 			</View>
 		);
 	}
@@ -165,6 +155,7 @@ const styles = StyleSheet.create({
 			flex: 1,
 			alignItems: 'center',
 			backgroundColor: FontAndColor.COLORA3,
+			paddingTop:Pixel.getTitlePixel(64),
 		},
 		itemStyle: {
 			flexDirection: 'column',

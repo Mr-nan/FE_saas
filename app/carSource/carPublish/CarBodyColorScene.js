@@ -180,12 +180,12 @@ export default class CarBodyColorScene extends  BaseComponent{
         this.viewShell = this.props.carBodyColorData;
         this.viewShell.push(
             {
-                name: ' ',
-                value: '',
+                name:'',
+                value:'',
             },
             {
-                name: ' ',
-                value: ''
+                name:'',
+                value:''
             });
 
         this.viewShell.map((data,index)=>{
@@ -194,13 +194,8 @@ export default class CarBodyColorScene extends  BaseComponent{
             {
                 data.selected = true;
 
-            }else if(data.name ==' ')
-            {
-                data.selected = '';
-
             }else {
                 data.selected = false;
-
             }
             if(data.name == '多彩色'){
                 data.fill = false;
@@ -242,7 +237,17 @@ export default class CarBodyColorScene extends  BaseComponent{
     }
 
     _renderShell = (data, i) => {
-        if (data.selected === false) {
+
+        if(!data.name){
+            return (
+                <View key={data.index} style={styles.shellContainer}>
+                    <View style={[styles.emptyContainer]}>
+
+                    </View>
+                </View>
+            );
+        }else if (data.selected === false)
+        {
             if (data.fill === true) {
                 //颜色
                 return (
@@ -276,7 +281,8 @@ export default class CarBodyColorScene extends  BaseComponent{
 
                 );
             }
-        } else if (data.selected === true) {
+        } else if (data.selected === true)
+        {
             return (
                 <TouchableOpacity
                     key={data.index}
@@ -292,15 +298,8 @@ export default class CarBodyColorScene extends  BaseComponent{
                     </View>
                 </TouchableOpacity>
             );
-        } else {
-            return (
-                <View key={data.index} style={styles.shellContainer}>
-                    <View style={[styles.emptyContainer]}>
-
-                    </View>
-                </View>
-            );
         }
+
     };
     _shellPress = (i) => {
         this.props.checkedCarBodyColorClick({

@@ -160,12 +160,12 @@ export  default  class carSourceListScene extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) {
+
         StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
             if(data.code==1){
                if(data.result=='true'){
 
                     this.presCarTypeScene();
-
                }
             }
         });
@@ -184,8 +184,28 @@ export  default  class carSourceListScene extends BaseComponent {
             }
         });
 
+        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
+
+            if(data.code == 1){
+                if(data.result == 'true'){
+                    this.setState({
+                        checkedCarGenre:{
+                            title:'新车',
+                            value:'2'
+                        }
+                    });
+                    APIParameter.v_type = 2;
+                    APIParameter.type = 0;
+                    APIParameter.prov_id = 0;
+                    isCheckRecommend = false
+                    this.setHeadViewType();
+                }
+            }
+        });
+
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
 
     }
 
@@ -208,15 +228,32 @@ export  default  class carSourceListScene extends BaseComponent {
                     isCheckRecommend = false
                     APIParameter.type = 0;
                     APIParameter.prov_id = 0;
-                    this.loadData();
-                    return;
+
+                }
+            }
+        });
+
+        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
+
+            if(data.code == 1){
+                if(data.result == 'true'){
+                    this.setState({
+                        checkedCarGenre:{
+                            title:'新车',
+                            value:'2'
+                        }
+                    });
+                    APIParameter.v_type = 2;
+                    APIParameter.type = 0;
+                    APIParameter.prov_id = 0;
+                    isCheckRecommend = false
                 }
             }
         });
 
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
-
+        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
             if(data.code == 1 && data.result != '')
@@ -230,9 +267,6 @@ export  default  class carSourceListScene extends BaseComponent {
                 this.loadData();
             }
         });
-
-
-
 
     };
 
@@ -464,6 +498,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     screeningCompleteClick=(screeningObject)=>{
 
+        console.log(screeningObject);
         this.setState({
             checkedCarType: screeningObject.checkedCarType,
             checkedCarAgeType:screeningObject.checkedCarAgeType,

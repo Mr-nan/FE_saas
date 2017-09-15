@@ -104,6 +104,7 @@ export  default class AccountScene extends BaseComponent {
         };
         request(Urls.USER_ACCOUNT_INDEX, 'Post', maps)
             .then((response) => {
+
                 if(response.mjson.data.info.status!='3'){
                     this.props.callBack();
                     this.backPage();
@@ -129,7 +130,6 @@ export  default class AccountScene extends BaseComponent {
                         });
                     }
                 }
-
                 },
                 (error) => {
                     this.props.showToast('用户信息查询失败');
@@ -255,10 +255,27 @@ export  default class AccountScene extends BaseComponent {
                               this.getWebUrl(Urls.USER_BANK_EDITPHONE,maps,'修改手机号',
                               webBackUrl.CHANGEPHONE);
                           }}
-                          accountSetting={()=>{this.toNextPage({name:'AccountSettingScene',
-                          component:AccountSettingScene,params:{
-                                  protocolType:this.isOpenContract,
-                              }})}}
+                          accountSetting={()=>{
+
+                              StorageUtil.mGetItem(StorageKeyNames.USER_INFO,((data)=>{
+                                  console.log(data);
+                                  if(data.code==1 && data.result)
+                                  {     let userInfo = JSON.parse(data.result);
+                                      if(userInfo.user_level!=2){
+                                          this.props.showToast('您的账户未授信');
+                                      }else {
+                                          this.toNextPage({
+                                              name:'AccountSettingScene',
+                                              component:AccountSettingScene,params:{
+                                                  protocolType:this.isOpenContract,
+                                              }})
+                                      }
+                                  }
+                              }));
+
+
+                          }
+                          }
                           moreFlow={()=>{this.toNextPage({name:'AccountFlowScene',
                           component:AccountFlowScene,params:{}})}}
                           frozen={()=>{

@@ -838,13 +838,13 @@ export default class CarPublishFirstScene extends BaseComponent{
     //车架号改变
     _onVinChange = (text) => {
 
-
         if (text.length === 17) {
             this._showLoading();
             this.vinInput.blur();
             Net.request(AppUrls.VIN_CHECK, 'post',{vin:text}).then(
                 (response) => {
-                    if (response.mycode === 1) {
+                    if (response.mycode === 1 && response.mjson.valid)
+                    {
                         this.titleData1[0][1].subTitle='';
                         this.titleData2[0][1].subTitle='';
                         this.titleData1[0][2].value = '请选择';
@@ -946,6 +946,8 @@ export default class CarPublishFirstScene extends BaseComponent{
                     this.upTitleData();
                 }
             );
+        }else {
+            this.carData['vin'] = '';
         }
     };
 

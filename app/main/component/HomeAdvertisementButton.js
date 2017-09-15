@@ -29,13 +29,12 @@ export default class HomeAdvertisementButton extends PureComponent {
 
     render() {
         return (
-            <View style={{width:width,backgroundColor:fontAndColor.COLORA3}}>
+            <TouchableOpacity style={{width:width,backgroundColor:fontAndColor.COLORA3}} activeOpacity={1} onPress={this.props.click}>
                 <Image source={require('../../../images/mainImage/homeAdvertisement.png')}
                     style={{width:width,backgroundColor:'#fff',height:Pixel.getPixel(120),
                     marginBottom:Pixel.getPixel(10),resizeMode: 'stretch'}}>
-
                 </Image>
-            </View>
+            </TouchableOpacity>
 
         );
     }
