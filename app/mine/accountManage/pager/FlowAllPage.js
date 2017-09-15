@@ -176,22 +176,22 @@ export  default class FlowAllPage extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         let viewColor = '#ffbd2f';
-        if ('0' == movie.operate_type) {
+        if ('0' == movie.t_operate_type) {
             //转账
             viewColor = '#05c5c2';
-        } else if ('3' == movie.operate_type) {
+        } else if ('3' == movie.t_operate_type) {
             //充值
             viewColor = '#3ac87e';
-        } else if ('4' == movie.operate_type) {
+        } else if ('4' == movie.t_operate_type) {
             //提现
             viewColor = '#90a1b5';
-        } else if ('100' == movie.operate_type) {
+        } else if ('100' == movie.t_operate_type) {
             //还款
             viewColor = '#ffbd2f';
-        } else if ('101' == movie.operate_type) {
+        } else if ('101' == movie.t_operate_type) {
             //放款
             viewColor = '#2f9bfa';
-        } else if ('104' == movie.operate_type) {
+        } else if ('104' == movie.t_operate_type) {
             //交易
             viewColor = '#fa5741';
         }
