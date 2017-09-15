@@ -106,7 +106,7 @@ export class ShareListView extends BaseComponent {
             </View>);
         } else {
             return (<View style={styles.container}>
-                <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getPixel(15)}}
+                <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(80)}}
                           dataSource={this.state.dataSource}
                           removeClippedSubviews={false}
                           renderRow={this._renderRow}

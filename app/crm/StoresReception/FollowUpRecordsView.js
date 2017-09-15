@@ -65,12 +65,13 @@ export class FollowUpRecordsView extends BaseComponent {
         request(url, 'post', maps).then((response) => {
             this.props.showModal(false);
             this.followUpRecordsList = response.mjson.data.maps;
+            //console.log('followUpRecordsList===============', this.followUpRecordsList);
             this.loadDetailData();
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 dataSource: ds.cloneWithRows(this.followUpRecordsList.reverse()),
                 isRefreshing: false,
-                renderPlaceholderOnly: 'success'
+                renderPlaceholderOnly: this.followUpRecordsList && this.followUpRecordsList.length > 0 ? 'success' : 'null'
             });
         }, (error) => {
             //console.log('error===============', error);
@@ -118,6 +119,32 @@ export class FollowUpRecordsView extends BaseComponent {
             // 加载中....
             return ( <View style={styles.container}>
                 {this.loadView()}
+                <TouchableOpacity
+                    style={{bottom: 0}}
+                    onPress={() => {
+                        this.toNextPage({
+                            name: 'FollowUpTaskScene',
+                            component: FollowUpTaskScene,
+                            params: {
+                                rowData: this.props.rowData,
+                                callBack: this.refreshData
+                            }
+                        });
+                    }}>
+                    <View style={{
+                        backgroundColor: fontAndColor.COLORB0,
+                        height: Pixel.getPixel(44),
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Text
+                            allowFontScaling={false}
+                            style={{
+                                fontSize: Pixel.getFontPixel(17),
+                                color: '#ffffff'
+                            }}>跟进任务</Text>
+                    </View>
+                </TouchableOpacity>
             </View>);
         } else {
             return (<View style={styles.container}>

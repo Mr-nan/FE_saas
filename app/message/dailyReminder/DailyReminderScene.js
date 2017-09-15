@@ -86,12 +86,12 @@ export default class DailyReminderScene extends BaceComponent {
     }
 
     /**
-     *
+     *   暂时将统计tab屏蔽
      **/
     render() {
         return (
             <View style={styles.rootContainer}>
-                <ScrollableTabView
+{/*                <ScrollableTabView
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page ? this.props.page : 0}
                     locked={true}
@@ -103,17 +103,14 @@ export default class DailyReminderScene extends BaceComponent {
                     <ShareListView navigator={this.props.navigator} ref="shareListView" tabLabel="ios-paper1" showModal={this.props.showModal}/>
                     <StatisticalListView navigator={this.props.navigator} ref="statisticalListView"
                                          tabLabel="ios-paper2" showModal={this.props.showModal}/>
-                </ScrollableTabView>
-                {
-                      (
-                        <DailyReminderSelectView
-                            ref='drsv'
-                            checkedSource={this.timeFrame}
-                            checkedTypeString={this.shareCurrentFrame.name}
-                            checkTimeFrameClick={this.checkTimeFrameClick}
-                            hideClick={this.hideCheckedView}
-                        />)
-                }
+                </ScrollableTabView>*/}
+                <ShareListView navigator={this.props.navigator} ref="shareListView" tabLabel="ios-paper1" showModal={this.props.showModal}/>
+                <DailyReminderSelectView
+                    ref='drsv'
+                    checkedSource={this.timeFrame}
+                    checkedTypeString={this.shareCurrentFrame.name}
+                    checkTimeFrameClick={this.checkTimeFrameClick}
+                    hideClick={this.hideCheckedView}/>
                 <NavigatorView title='每日提醒' backIconClick={this.backPage}
                                renderRihtFootView={this.renderRightFootView}/>
             </View>)
@@ -124,7 +121,6 @@ export default class DailyReminderScene extends BaceComponent {
      *
      **/
     checkTimeFrameClick = (data, index) => {
-        //console.log('this.currentTab=====', this.currentTab);
         if (this.currentTab == 0) {
             this.shareCurrentFrame = data;
             this.refs.drsv.changeClick(false, this.shareCurrentFrame.name);
