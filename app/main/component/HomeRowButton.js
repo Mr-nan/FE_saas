@@ -66,7 +66,6 @@ export default class HomeRowButton extends PureComponent {
                            marginRight:Pixel.getPixel(8)}}/>);
             }
         }
-        console.log(imageList.length,'=================>');
         if(imageList.length<3)
         {
             for(let i=0;i<=4-imageList.length;i++)
@@ -76,9 +75,6 @@ export default class HomeRowButton extends PureComponent {
                                           marginRight:Pixel.getPixel(8)}}/>);
             }
         }
-
-        console.log(imageList.length,'=================******************>');
-
 
         let left = 0;
         if (rowId == 0) {
