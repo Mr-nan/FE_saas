@@ -63,6 +63,18 @@ export default class HomeRowButton extends PureComponent {
                            marginRight:Pixel.getPixel(8)}}/>);
             }
         }
+        if(imageList.length<2){
+            imageList.push(<Image key={'imgs'+2} source={require('../../../images/carSourceImages/car_null_img.png')}
+                                  style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',
+                                      marginRight:Pixel.getPixel(8)}}/>);
+            imageList.push(<Image key={'imgs'+3} source={require('../../../images/carSourceImages/car_null_img.png')}
+                                  style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',
+                                      marginRight:Pixel.getPixel(8)}}/>);
+        }else if(imageList.length<3){
+            imageList.push(<Image key={'imgs'+3} source={require('../../../images/carSourceImages/car_null_img.png')}
+                                  style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',
+                                      marginRight:Pixel.getPixel(8)}}/>);
+        }
         let left = 0;
         if (rowId == 0) {
             left = Pixel.getPixel(12);
