@@ -220,7 +220,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                 <View style={styles.container}>
                     <NavigationView
                         backIconClick={this.backPage}
-                        title="门店接待管理"
+                        title="门店接待"
                         renderRihtFootView={this._navigatorRightView}/>
                     <Image style={{
                         marginTop: Pixel.getTitlePixel(64),
@@ -265,7 +265,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                 <View style={styles.container}>
                     <NavigationView
                         backIconClick={this.backPage}
-                        title="门店接待管理"
+                        title="门店接待"
                         renderRihtFootView={this._navigatorRightView}/>
                     {/*<ClientScreeningHeadView ref="headView"/>*/}
                     <Image style={{
