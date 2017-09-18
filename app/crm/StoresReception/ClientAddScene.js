@@ -246,10 +246,10 @@ export default class ClientAddScene extends BaseComponent {
             if (this.clientInfo[key].name == '客户到店') {
                 continue;
             }
-            if (this.clientInfo[key].name == '电话' && this.clientInfo[key].value.length !== 11) {
+/*            if (this.clientInfo[key].name == '电话' && this.clientInfo[key].value.length !== 11) {
                 this.props.showToast(this.clientInfo[key].name + '输入不正确');
                 return false;
-            }
+            }*/
             if (this.clientInfo[key].value == '') {
                 this.props.showToast(this.clientInfo[key].name + '不能为空');
                 return false;

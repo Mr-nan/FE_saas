@@ -222,12 +222,12 @@ export default class KeepCustomerDetailScene extends BaseComponent {
         for (let key in buyersInfoItem) {
             this.clientInfo.push(buyersInfoItem[key]);
         }
-        console.log('this.clientInfo=====', this.clientInfo);
+        //console.log('this.clientInfo=====', this.clientInfo);
         for (let key in this.clientInfo) {
-            if (this.clientInfo[key].name == '手机号码' && this.clientInfo[key].value.length !== 11) {
+/*            if (this.clientInfo[key].name == '手机号码' && this.clientInfo[key].value.length !== 11) {
                 this.props.showToast(this.clientInfo[key].name + '输入不正确');
                 return false;
-            }
+            }*/
             if ((this.clientInfo[key].name == '交强险到期' || this.clientInfo[key].name == '商业险到期' || this.clientInfo[key].name == '保养到期' ||
                 this.clientInfo[key].name == '质保到期' || this.clientInfo[key].name == '车牌号码' || this.clientInfo[key].name == '客户姓名') &&
                 this.clientInfo[key].value == '') {
