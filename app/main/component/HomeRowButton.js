@@ -62,8 +62,7 @@ export default class HomeRowButton extends PureComponent {
             }
             if (movie.imgs[i].url) {
                 imageList.push(<Image key={'imgs'+i} source={{uri:movie.imgs[i].url}}
-                                      style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',
-                           marginRight:Pixel.getPixel(8)}}/>);
+                                      style={{height:Pixel.getPixel(57),resizeMode: 'stretch',width:(width-width/8-width/8-Pixel.getPixel(34))/3}}/>);
             }
         }
         if(imageList.length<3)
@@ -71,8 +70,7 @@ export default class HomeRowButton extends PureComponent {
             for(let i=0;i<=4-imageList.length;i++)
             {
                 imageList.push(<Image key={'imgs_null'+i} source={require('../../../images/carSourceImages/car_null_img.png')}
-                                      style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',
-                                          marginRight:Pixel.getPixel(8)}}/>);
+                                      style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',}}/>);
             }
         }
 
@@ -95,22 +93,21 @@ export default class HomeRowButton extends PureComponent {
             paddingLeft:Pixel.getPixel(12),paddingRight: Pixel.getPixel(12)}}>
                 <Text numberOfLines={1} allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14)}}>
                     {DIDIAN + movie.model_name}</Text>
-                <View style={{marginTop:Pixel.getPixel(7),flexDirection:'row',alignItems:'center'}}>
-                    <View style={{flex:2}}>
+                <View style={{marginTop:Pixel.getPixel(7),flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                    <View>
                         <Text numberOfLines={1} allowFontScaling={false} style={{
                             fontSize: Pixel.getFontPixel(12),color:'#9b9b9b'}}>
                             {this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}
                         </Text>
                     </View>
-                    <View style={{flex:1,alignItems:'flex-end'}}>
+                    <View style={{alignItems:'flex-end'}}>
                         <Text numberOfLines={1} allowFontScaling={false} style={{
                             fontSize: Pixel.getFontPixel(14),color:'#fa5741',fontWeight: 'bold'}}>
-                            {movie.dealer_price ? this.carMoneyChange(movie.dealer_price) : ''}
+                            {movie.dealer_price ? this.carMoneyChange(movie.dealer_price)+'万' : ''}
                         </Text>
                     </View>
                 </View>
-                <View style={{marginTop:Pixel.getPixel(10),
-                flexDirection:'row',alignItems:'center'}}>
+                <View style={{marginTop:Pixel.getPixel(10), flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                     {imageList}
                 </View>
             </TouchableOpacity>
