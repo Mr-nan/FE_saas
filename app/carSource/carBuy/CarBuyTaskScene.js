@@ -1008,7 +1008,7 @@ export default class CarBuyTaskScene extends BaseComponent{
 
             request(AppUrls.VIN_CHECK, 'post',{vin:text}).then(
                 (response) => {
-                    if (response.mycode === 1 && response.mjson.valid) {
+                    if (response.mycode === 1 && response.mjson.data.valid) {
                         this.titleData1[0][1].value = '请选择';
                         this.titleData1[0][0].subTitle='';
                         this.carData.vin = text;

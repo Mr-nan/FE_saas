@@ -843,7 +843,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.vinInput.blur();
             Net.request(AppUrls.VIN_CHECK, 'post',{vin:text}).then(
                 (response) => {
-                    if (response.mycode === 1 && response.mjson.valid)
+                    if (response.mycode === 1 &&  response.mjson.data.valid)
                     {
                         this.titleData1[0][1].subTitle='';
                         this.titleData2[0][1].subTitle='';
