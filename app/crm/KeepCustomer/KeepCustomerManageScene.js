@@ -136,7 +136,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
      *
      **/
     toEnd = () => {
-        console.log('this.pageNum=====', this.pageNum);
+        //console.log('this.pageNum=====', this.pageNum);
         if (this.pageNum < this.allPage && !this.state.isRefreshing) {
             this.loadMoreData();
         }
@@ -214,6 +214,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
                             dataSource: ds.cloneWithRows(this.keepCustomerList)
                         });
                     } else {
+                        this.allPage = this.pageNum;
                         this.setState({
                             isRefreshing: false
                         });

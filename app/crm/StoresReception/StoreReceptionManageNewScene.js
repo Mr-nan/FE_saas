@@ -195,6 +195,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                             dataSource: ds.cloneWithRows(this.potentialClientList)
                         });
                     } else {
+                        this.allPage = this.pageNum;
                         this.setState({
                             isRefreshing: false
                         });
