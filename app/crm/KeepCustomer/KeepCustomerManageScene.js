@@ -103,7 +103,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
         } else if (this.timeSelect === '本月') {
             return 3;
         } else {
-            return '';
+            return 4;
         }
     };
 
