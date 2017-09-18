@@ -459,7 +459,7 @@ export default class MessageListScene extends BaseComponent {
                                     marginLeft: Pixel.getPixel(14),
                                     color: fontAndColor.COLORA1
                                 }}
-                                allowFontScaling={false}>车辆分享和统计数据</Text>
+                                allowFontScaling={false}>车辆分享数据</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
