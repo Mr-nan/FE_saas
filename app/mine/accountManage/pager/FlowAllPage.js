@@ -140,6 +140,7 @@ export  default class FlowAllPage extends BaseComponent {
             time: time,
             renderPlaceholderOnly: 'loading'
         });
+        this.dataList = [];
         this.getData();
     }
 
