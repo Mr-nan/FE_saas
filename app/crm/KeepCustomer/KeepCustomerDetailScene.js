@@ -8,7 +8,10 @@ import {
     View,
     Dimensions,
     TouchableOpacity,
-    ListView
+    ListView,
+    Platform,
+    ScrollView,
+    KeyboardAvoidingView
 } from 'react-native';
 
 const {width, height} = Dimensions.get('window');
@@ -105,12 +108,33 @@ export default class KeepCustomerDetailScene extends BaseComponent {
                         backIconClick={this.backPage}
                         title="保有客户管理"
                         renderRihtFootView={this._navigatorRightView}/>
-                    <ListView
-                        removeClippedSubviews={false}
-                        style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
-                        dataSource={this.state.dataSource}
-                        renderRow={this._renderRow}
-                        renderSeparator={this._renderSeperator}/>
+                    {/*<ListView
+                     removeClippedSubviews={false}
+                     style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
+                     dataSource={this.state.dataSource}
+                     renderRow={this._renderRow}
+                     renderSeparator={this._renderSeperator}/>*/}
+                    {Platform.OS === 'android' ?
+                        <ScrollView
+                            style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
+                            ref={(ref) => {
+                                this.scrollView = ref
+                            }} keyboardDismissMode='none'>
+
+                            {this._renderRow()}
+
+                        </ScrollView> :
+                        <KeyboardAvoidingView behavior={'position'} style={{marginTop: Pixel.getTitlePixel(75)}}>
+                            <ScrollView
+                                style={{backgroundColor: fontAndColor.COLORA3}}
+                                ref={(ref) => {
+                                    this.scrollView = ref
+                                }} keyboardDismissMode='on-drag'>
+
+                                {this._renderRow()}
+
+                            </ScrollView>
+                        </KeyboardAvoidingView>}
                 </View>
             );
         }
@@ -129,33 +153,25 @@ export default class KeepCustomerDetailScene extends BaseComponent {
 
     /**
      *
-     * @param rowData
-     * @param selectionID
-     * @param rowID
-     * @returns {XML}
-     * @private
      **/
-    _renderRow = (rowData, selectionID, rowID) => {
-        if (rowData === '0') {
-            return (
+    _renderRow = () => {
+        return (
+            <View style={styles.container}>
                 <DealAmountItem ref={(ref) => {
                     this.dealAmountItem = ref
                 }} data={this.carInfo}/>
-            )
-        } else if (rowData === '1') {
-            return (
+                <View style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
                 <CarInfoItem ref={(ref) => {
                     this.carInfoItem = ref
                 }} data={this.carInfo}/>
-            )
-        } else if (rowData === '2') {
-            return (
+                <View style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
                 <BuyersInfoItem ref={(ref) => {
                     this.buyersInfoItem = ref
                 }} data={this.buyerInfo} navigator={this.props.navigator}/>
-            )
-        }
+            </View>
+        )
     };
+
 
     /**
      *
