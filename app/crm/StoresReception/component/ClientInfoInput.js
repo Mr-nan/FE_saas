@@ -80,14 +80,19 @@ export default class ClientInfoInput extends PureComponent {
                             paddingTop: 0,
                             paddingBottom: 0,
                         }}
-                                   //defaultValue={this.props.defValue ? this.props.defValue : ''}
-                                   keyboardType={this.props.items.name == '电话' || this.props.items.name == '进店人数' ? 'numeric' : 'default'}
+                            //defaultValue={this.props.defValue ? this.props.defValue : ''}
+                                   keyboardType={this.props.items.name == '电话' ||
+                                   this.props.items.name == '进店人数' ||
+                                   this.props.items.name == '手机号码' ||
+                                   this.props.items.name == '年龄'
+                                       ? 'numeric' : 'default'}
                                    returnKeyType={"search"}
                                    secureTextEntry={pwd}
                                    placeholder={'请输入' + this.props.items.name}
                                    underlineColorAndroid={"#00000000"}
                                    value={this.state.value}
-                                   maxLength={this.props.items.name == '电话' ? 11 : 32}
+                                   maxLength={this.props.items.name == '电话' || this.props.items.name == '手机号码' ? 11 : 32}
+                                   onBlur={this.uniqueCheck}
                                    onChangeText={this.goSearch}/>
                     </View>
                 </View>
@@ -103,22 +108,29 @@ export default class ClientInfoInput extends PureComponent {
      **/
     goSearch = (text) => {
         this.props.items.value = text;
-        //console.log('this.props.items.value=====', this.props.items.value);
-        this.setState({
-            value: text
-        });
-        if (text.length == 11 && this.props.items.name == '电话') {
-            this.uniqueCheck(text);
+        if ((this.props.items.name == '电话' || this.props.items.name == '进店人数' ||
+            this.props.items.name == '手机号码' || this.props.items.name == '年龄') &&
+            this.props.items.value == '.') {
+
+        } else {
+            this.setState({
+                value: text
+            });
         }
+        /*        if (text.length == 11 && this.props.items.name == '电话') {
+         this.uniqueCheck(text);
+         }*/
     }
 
     /**
      *   检查用户手机号是否存在
      **/
-    uniqueCheck = (text) => {
-/*        this.setState({
-            value: ''
-        });*/
-        this.props.callBack(text);
+    uniqueCheck = () => {
+        /*        this.setState({
+         value: ''
+         });*/
+        if (this.props.items.name == '电话') {
+            this.props.callBack(this.state.value);
+        }
     };
 }

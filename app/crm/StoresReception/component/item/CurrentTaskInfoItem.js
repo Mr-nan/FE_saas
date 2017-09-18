@@ -68,7 +68,7 @@ export default class CurrentTaskInfoItem extends BaseComponent {
     customerStatusMapping = (status, come) => {
         let createTime = this.currentTask.createTime ? this.currentTask.createTime : '暂无记录';
         let customerFlowMessage = this.currentTask.customerFlowMessage ? this.currentTask.customerFlowMessage : '暂无记录';
-        let pushTime = this.currentTask.pushTime ? this.currentTask.pushTime : '暂无记录';
+        let pushTime = this.currentTask.pushTime ? this.currentTask.pushTime.substring(0, 10) : '暂无记录';
         if (status == 1) {
             this.childItems[0].value = '初次';
             this.childItems[1].value = '暂无记录';
