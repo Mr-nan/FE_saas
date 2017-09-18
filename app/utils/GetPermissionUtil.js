@@ -116,7 +116,7 @@ const GetPermissionUtil = React.createClass({
             componentName = 'carpublishfirstscene';
         } else if (id == 31 || id == 32 || id == 33 || id == 34 || id == 35) {
             image = require('../../images/workbench/zb.png');
-            names = '整备';
+            names = '二手车整备';
             component = CarTrimScene;
             componentName = 'CarTrimScene';
         } else if (id == 29) {
