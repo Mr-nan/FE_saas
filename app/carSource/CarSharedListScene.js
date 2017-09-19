@@ -323,7 +323,9 @@ export default class CarSharedListScene extends BaceComponent{
                    carShareItemTitle.push(carContent);
                    this.sharedSucceedAction();
                }
+
                NativeModules.ShareNative.share({image:carShareItemArray,title:carShareItemTitle}).then((suc)=>{
+                   this.props.showToast('分享成功');
                    }, (fail)=>{
                        this.props.showToast('分享已取消');
                    }

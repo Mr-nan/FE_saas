@@ -47,7 +47,7 @@ export default class CarTrimScene extends BaseComponent {
             return (
                 <View style={{flex: 1, backgroundColor: 'white'}}>
                     {this.loadView()}
-                    <AllNavigationView title='名车行' backIconClick={this.backPage}/>
+                    <AllNavigationView title='车辆整备' backIconClick={this.backPage}/>
                 </View>);
         }
         return(
@@ -180,6 +180,7 @@ export default class CarTrimScene extends BaseComponent {
 
     initFinish=()=>{
         getRole.getRoleList((data)=>{
+
             this.roleList = data;
             this.setState({
                 renderPlaceholderOnly:'success'
