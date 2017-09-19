@@ -608,12 +608,18 @@ export default class CarMySourceScene extends BaceComponent {
 
                         carContent += " | " + carData.carIconsContentData[0] + '出厂';
                     }
+                    let fenxiangUrl = '';
+                    if (AppUrls.BASEURL == 'http://api-gateway.test.dycd.com/') {
+                        fenxiangUrl = AppUrls.FENXIANGTEST;
+                    } else {
+                        fenxiangUrl = AppUrls.FENXIANGOPEN;
+                    }
                     let carImage = typeof carData.imgs[0].url == 'undefined' ? resolveAssetSource(imageResource).uri : carData.imgs[0].url;
                     weChat.shareToTimeline({
                         type: 'news',
                         title: carData.model_name,
                         description: carContent,
-                        webpageUrl: 'http://finance.test.dycd.com/platform/car_detail.html?id=' + carData.id,
+                        webpageUrl: fenxiangUrl + '?id=' + carData.id,
                         thumbImage: carImage,
 
                     }).then((resp)=>{
