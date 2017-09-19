@@ -1138,7 +1138,7 @@ export const STORE_RECEPTION_MANAGE = PRE + "ceshi.do?mobile=15102373842";
 /**
  *  软文中心web页
  */
-export const SOFT_ARTICLES_CENTER = "http://saas-static.test.dycd.com/inc/carmarket/articleList.html";
+export const SOFT_ARTICLES_CENTER = "http://saas-static.dycd.com/inc/carmarket/articleList.html";
 /**
  *  添加潜在客户
  */
