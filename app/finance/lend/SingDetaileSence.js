@@ -162,19 +162,32 @@ export  default  class SingDetaileSence extends BaseComponent {
     titleNameBlob = (jsonData, carData) => {
 
         let dataSource = {};
-        dataSource['section1'] = [
-            {title: '申请日期', key: jsonData.createtimestr},
-            {title: '借款金额', key: jsonData.payment_loanmny_str},
-            {title: '借款期限', key: jsonData.loanperiodstr},
-            {title: '借款单号', key: jsonData.loan_code},
-            {title: '综合费率', key: jsonData.payment_rate_str},
-            {title: '还款方式', key: jsonData.repayment_type},
-            {title: '状态', key: jsonData.status_str},
-            {title: '放款日期', key: jsonData.loan_time},
-            {title: '评估总额', key: jsonData.reassessed},
-            {title: '债权人', key: jsonData.credito},
-
-        ]
+        if (jsonData.microchinese_single_status && jsonData.microchinese_single_status == '1') {
+            dataSource['section1'] = [
+                {title: '申请日期', key: jsonData.createtimestr},
+                {title: '借款金额', key: jsonData.payment_loanmny_str},
+                {title: '借款期限', key: jsonData.loanperiodstr},
+                {title: '借款单号', key: jsonData.loan_code},
+                {title: '综合费率', key: jsonData.payment_rate_str},
+                {title: '还款方式', key: jsonData.repayment_type},
+                {title: '状态', key: jsonData.status_str},
+                {title: '放款日期', key: jsonData.loan_time},
+                {title: '评估总额', key: jsonData.reassessed},
+            ]
+        } else {
+            dataSource['section1'] = [
+                {title: '申请日期', key: jsonData.createtimestr},
+                {title: '借款金额', key: jsonData.payment_loanmny_str},
+                {title: '借款期限', key: jsonData.loanperiodstr},
+                {title: '借款单号', key: jsonData.loan_code},
+                {title: '综合费率', key: jsonData.payment_rate_str},
+                {title: '还款方式', key: jsonData.repayment_type},
+                {title: '状态', key: jsonData.status_str},
+                {title: '放款日期', key: jsonData.loan_time},
+                {title: '评估总额', key: jsonData.reassessed},
+                {title: '债权人', key: jsonData.credito},
+            ]
+        }
         if (carData.length > 0) {
 
             let tempCarDate = [];

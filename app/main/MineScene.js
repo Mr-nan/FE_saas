@@ -565,7 +565,7 @@ export default class MineScene extends BaseComponent {
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
                     <Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
-                    {rowData.id == 36 ? <Text allowFontScaling={false} style={{ marginRight: Pixel.getPixel(15),
+                    {rowData.id == 15 ? <Text allowFontScaling={false} style={{ marginRight: Pixel.getPixel(15),
                         backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
                             Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>{showName}</Text> :
                         <View/>}
