@@ -35,7 +35,11 @@ const request = (url, method, params, backToLogin) => {
             } else {
                 device_code = 'dycd_platform_ios';
             }
-            fetch(url + '?token=' + token + '&device_code=' + device_code + body, {
+
+            console.log(url + '?token=' + token + '&device_code=' + device_code+
+                '&version='+StorageKeyNames.VERSON_CODE+'&'+body);
+
+            fetch(url + '?token=' + token + '&device_code=' + device_code + '&' + body, {
                 method,
                 body
             })
