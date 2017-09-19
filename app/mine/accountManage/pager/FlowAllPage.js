@@ -229,7 +229,7 @@ export  default class FlowAllPage extends BaseComponent {
                     </View>
                     <View
                         style={{flex:1,flexDirection:'column',height:Pixel.getPixel(37),justifyContent:'center'}}>
-                        {('3' == movie.operate_type || '4' == movie.operate_type || '0' == movie.operate_type ) ?
+                        {('3' == movie.t_operate_type || '4' == movie.t_operate_type || '0' == movie.t_operate_type ) ?
                             <View style={{height:Pixel.getPixel(10)}}></View>
                             : <Text allowFontScaling={false}
                                     style={[styles.rightText,{color:'#9e9e9e'}]}>{movie.fee_type_name}</Text>}
