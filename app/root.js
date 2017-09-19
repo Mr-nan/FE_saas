@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import MyNavigator  from './component/MyNavigator';
+import * as fontAndColor from './constant/fontAndColor';
 
 import ShowToast from "./component/toast/ShowToast";
 import * as weChat from 'react-native-wechat';
@@ -20,7 +21,7 @@ export default class root extends Component {
 
     render() {
         return (
-            <View style={{flex:1}}>
+            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3}}>
                 <MyNavigator showToast={(content)=>{
                     this.showToast(content)
                 }} showModal={(value)=>{this.showModal(value)}}/>
