@@ -66,10 +66,10 @@ export  default class BindCardScene extends BaseComponent {
 
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.props.showModal(false);
                             if (clickType == 1) {
                                 this.bindCard(datas.company_base_id, response.mjson.data.account.account_open_type)
                             } else {
+                                this.props.showModal(false);
                                 if (response.mjson.data.account.account_open_type == '1') {
                                     this.toNextPage({
                                         name: 'OpenEnterpriseAccountScene',
