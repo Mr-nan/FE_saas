@@ -114,11 +114,11 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     itemBtn:{
-        width:Pixel.getPixel(50),
+        width:Pixel.getPixel(60),
         height:Pixel.getPixel(55),
         alignItems:'center',
         borderBottomWidth:Pixel.getPixel(1.5),
-        borderBottomColor:'transparent'
+        borderBottomColor:'transparent',
     },
     itemBtnImg:{
         width:Pixel.getPixel(30),

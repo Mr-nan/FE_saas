@@ -78,33 +78,35 @@ export default class CarShareCell extends Component {
         const  carType = carCellData.status;
         const review_status = carCellData.review_status;
         return(
-            <TouchableOpacity onPress={()=>{this.cellClick(carCellData)}}>
+            <TouchableOpacity onPress={()=>{cellSelectBtnclick(!carCellData.select,index)}}>
                 <View style={[styles.container,styles.lineBottom]} >
                     <View style={styles.cellHeadView}>
                         <Text allowFontScaling={false} style={styles.mainText}>{carCellData.serial_num}</Text>
                         <Text allowFontScaling={false} style={{color:fontAndColor.COLORA1,
                             fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT)}}>{this.dateReversal(carCellData.public_time+'000',true)}上架</Text>
                     </View>
-                    <View style={styles.cellContentView}>
-                        <View style={styles.imageView} >
-                            <Image style={styles.image}
-                                   source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../../images/carSourceImages/car_null_img.png')}>
-                                {
-                                    (carCellData.long_aging==1 && this.props.type ==1) &&<Image style={{left:0, right:0, top:0, bottom:0,position: 'absolute'}} source={require('../../../images/carSourceImages/carLong.png')}/>
-                                }
-                            </Image>
-                        </View>
-                        <View style={[styles.textContainer]}>
-                            <View style={{backgroundColor:'white'}}>
-                                <Text allowFontScaling={false} numberOfLines={1}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
-                                <Text allowFontScaling={false}  style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000',false)+'初登 | '+carCellData.mileage+'万公里'}</Text>
-                                <Text allowFontScaling={false}  style={styles.subTitleText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>
+                    <TouchableOpacity onPress={()=>{this.cellClick(carCellData)}}>
+                        <View style={styles.cellContentView}>
+                            <View style={styles.imageView} >
+                                <Image style={styles.image}
+                                       source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../../images/carSourceImages/car_null_img.png')}>
+                                    {
+                                        (carCellData.long_aging==1 && this.props.type ==1) &&<Image style={{left:0, right:0, top:0, bottom:0,position: 'absolute'}} source={require('../../../images/carSourceImages/carLong.png')}/>
+                                    }
+                                </Image>
                             </View>
-                            <View/>
-                            {/*<Text allowFontScaling={false}  style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>*/}
+                            <View style={[styles.textContainer]}>
+                                <View style={{backgroundColor:'white'}}>
+                                    <Text allowFontScaling={false} numberOfLines={1}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
+                                    <Text allowFontScaling={false}  style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000',false)+'初登 | '+carCellData.mileage+'万公里'}</Text>
+                                    <Text allowFontScaling={false}  style={styles.subTitleText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>
+                                </View>
+                                <View/>
+                                {/*<Text allowFontScaling={false}  style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>*/}
+                            </View>
+                            <Image style={styles.tailImage} source={this.getImage(carType,review_status)}/>
                         </View>
-                        <Image style={styles.tailImage} source={this.getImage(carType,review_status)}/>
-                    </View>
+                    </TouchableOpacity>
                     <View style={styles.cellFootView}>
                         <View style={{justifyContent:'center'}}>
                             {
@@ -135,9 +137,7 @@ export default class CarShareCell extends Component {
                                 )
                             }
                         </View>
-                        <TouchableOpacity onPress={()=>{cellSelectBtnclick(!carCellData.select,index)}}>
                             <Image source={carCellData.select?require('../../../images/carSourceImages/carSelectImgHigh.png') : require('../../../images/carSourceImages/carSelectImg.png')}/>
-                        </TouchableOpacity>
                     </View>
                 </View>
             </TouchableOpacity>
