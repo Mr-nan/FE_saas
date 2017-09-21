@@ -123,7 +123,8 @@ export  default class AccountScene extends BaseComponent {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             renderPlaceholderOnly: 'success',
-                            source: ds.cloneWithRows(response.mjson.data.payLogs),
+                            // source: ds.cloneWithRows(response.mjson.data.payLogs),
+                            source: ds.cloneWithRows([1]),
                             info: response.mjson.data.info,
                             enter_id:id,
                             isRefreshing:false

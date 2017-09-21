@@ -61,7 +61,7 @@ export  default class AccountFlowScene extends BaseComponent {
                             index = obj.i;
                         }
                     }
-                    renderTabBar={() => <RepaymenyTabBar tabName={['全部','充值', "转账",'提现','还款','交易']}/>}
+                    renderTabBar={() => <RepaymenyTabBar tabName={['全部','充值', "转账",'提现','放/还款','交易']}/>}
                 >
                     {/*/!*全部*!/*/}
                     {/*<FlowAllPage ref="flowallpage" tabLabel="ios-paper0" transfer_type="all"/>*/}
