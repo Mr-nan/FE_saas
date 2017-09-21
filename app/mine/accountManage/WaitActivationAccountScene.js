@@ -107,6 +107,14 @@ export  default class WaitActivationAccountScene extends BaseComponent {
                             </Text>
                         </View>
                     </View>
+
+
+                    <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:18}}>
+                        1.请用您名下绑定第一车贷账户的银行卡去做小额认证，并且按照短信金额进行打款。{'\n'}
+                        2.银行反馈认证结果可能会有延迟，请耐心等待。{'\n'}
+                        3.工商银行不支持快捷支付方式小额打款认证给恒，请绑定工商银行卡的商户选择其他方式进行认证。
+                    </Text>
                 </View>
 
                 <NavigationView

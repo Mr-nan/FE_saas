@@ -66,10 +66,10 @@ export  default class BindCardScene extends BaseComponent {
 
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.props.showModal(false);
                             if (clickType == 1) {
                                 this.bindCard(datas.company_base_id, response.mjson.data.account.account_open_type)
                             } else {
+                                this.props.showModal(false);
                                 if (response.mjson.data.account.account_open_type == '1') {
                                     this.toNextPage({
                                         name: 'OpenEnterpriseAccountScene',
@@ -144,12 +144,14 @@ export  default class BindCardScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+
                 <ListView
                     removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
+                    renderFooter={this._renderFooter}
                 />
                 <NavigationView
                     title="绑定银行卡"
@@ -158,7 +160,23 @@ export  default class BindCardScene extends BaseComponent {
             </View>
         );
     }
+	_renderFooter() {
 
+		return (
+            <View >
+                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:18}}>
+                    1.绑定银行卡时请注意，如果提醒绑定信息错误，超过三次，银行将对银行卡进行锁定，请谨慎操作。{"\n"}
+                    2.请输入您名下正确的卡号及银行预留信息，否则可能造成绑卡失败。{"\n"}
+                    3.银行反馈绑卡结果可能会有延迟，请耐心等待。
+
+                </Text>
+            </View>
+
+
+
+		)
+	}
     _renderRow = (movie, sectionId, rowId) => {
         return (
             <TouchableOpacity onPress={()=>{

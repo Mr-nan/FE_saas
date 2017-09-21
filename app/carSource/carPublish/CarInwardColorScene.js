@@ -119,10 +119,6 @@ export default class CarInwardColorScene extends  BaseComponent{
             {
                 data.selected = true;
 
-            }else if(data.name ==' ')
-            {
-                data.selected = '';
-
             }else {
                 data.selected = false;
 
@@ -168,7 +164,16 @@ export default class CarInwardColorScene extends  BaseComponent{
     }
 
     _renderShell = (data, i) => {
-        if (data.selected === false) {
+        if(!data.name){
+            return (
+                <View key={data.index} style={styles.shellContainer}>
+                    <View style={[styles.emptyContainer]}>
+
+                    </View>
+                </View>
+            );
+        }else if (data.selected === false)
+        {
             if (data.fill === true) {
                 //颜色
                 return (
@@ -217,14 +222,6 @@ export default class CarInwardColorScene extends  BaseComponent{
                         <Text allowFontScaling={false}  style={styles.textLabel}>{data.name}</Text>
                     </View>
                 </TouchableOpacity>
-            );
-        } else {
-            return (
-                <View key={data.index} style={styles.shellContainer}>
-                    <View style={[styles.emptyContainer]}>
-
-                    </View>
-                </View>
             );
         }
     };

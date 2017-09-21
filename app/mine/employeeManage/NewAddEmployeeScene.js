@@ -42,7 +42,7 @@ export  default class BankCardScene extends BaseComponent {
         childItems.push({name: '姓名', value: ''});
         childItems.push({name: '性别', value: ''});
         childItems.push({name: '所属公司', value: []});
-        childItems.push({name: '角色', value: ''});
+        childItems.push({name: '角色', value: []});
         childItems.push({name: '账号', value: ''});
         childItems.push({name: '密码', value: ''});
         childItems.push({name: '确认密码', value: ''});
@@ -86,16 +86,24 @@ export  default class BankCardScene extends BaseComponent {
                     this.toNextPage({name:'SelectCompanyScene',component:SelectCompanyScene,params:{
                         comps:comps,
                     title:'选择公司',callBack:(selected)=>{
+                        let names = '';
+                        for(let i =0;i<selected.length;i++){
+                            names = selected[i].enterprise_name+' '+names;
+                        }
                         childItems[i].value = selected;
-                        this.refs.company.setValue(selected[0].enterprise_name);
+                        this.refs.company.setValue(names);
                     }}})
                 }}/>);
             } else if (i == 3) {
                 items.push(<SelectEmployeeInput ref='juese' key={i+'bo'} items={childItems[i]} toSelect={()=>{
                     this.toNextPage({name:'SelectGenderScene',component:SelectGenderScene,params:{
-                    title:'选择角色',callBack:(name,index)=>{
-                        childItems[i].value = name+','+index;
-                        this.refs.juese.setValue(name);
+                    title:'选择角色',callBack:(selected)=>{
+                        let names = '';
+                        for(let i =0;i<selected.length;i++){
+                            names = selected[i].role_name+' '+names;
+                        }
+                        childItems[i].value = selected;
+                        this.refs.juese.setValue(names);
                     }}})
                 }}/>);
             } else {
@@ -146,12 +154,17 @@ export  default class BankCardScene extends BaseComponent {
             company_ids = childItems[2].value[i].enterprise_uid + ',' + company_ids;
         }
         let news = company_ids.substring(0, company_ids.length - 1);
+        let role_ids = '';
+        for (let i = 0; i < childItems[3].value.length; i++) {
+            role_ids = childItems[3].value[i].role_id + ',' + role_ids;
+        }
+        let new_role_id = role_ids.substring(0, role_ids.length - 1);
         let maps = {
             account: childItems[4].value,
             company_ids: news,
             password: md5.hex_md5(childItems[5].value),
             repassword: md5.hex_md5(childItems[6].value),
-            role_id: childItems[3].value.split(',')[1],
+            role_id: new_role_id,
             sex: childItems[1].value.split(',')[1],
             username: childItems[0].value
         };
@@ -178,7 +191,8 @@ export  default class BankCardScene extends BaseComponent {
                 this.checkEmpty();
             }} style={{width:Pixel.getPixel(53),height:Pixel.getPixel(27),backgroundColor: '#fff',
             justifyContent:'center',alignItems: 'center'}}>
-                <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORB0}}>完成</Text>
+                <Text allowFontScaling={false}
+                      style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORB0}}>完成</Text>
             </TouchableOpacity>
         );
     }

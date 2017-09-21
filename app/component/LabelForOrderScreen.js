@@ -35,12 +35,12 @@ export default class LabelForOrderScreen extends PureComponent {
         };
         //console.log('this.props.item.title.length = ',this.props.item.title.length);
     }
+    componentWillReceiveProps(nextProps) {
+        this.state = {
+            enable: nextProps.item.isSelected
+        };
+    }
 
-    /*    componentWillReceiveProps(nextProps) {
-     this.state = {
-     enable: nextProps.enables,
-     };
-     }*/
 
     setPressDown = () => {
         let en = this.state.enable;

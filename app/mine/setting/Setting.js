@@ -19,11 +19,10 @@ import NavigationBar from "../../component/NavigationBar";
 import MyButton from "../../component/MyButton";
 import AccountSecurity from "./AccountSecurity";
 import AbountPlatform from "./AbountPlatform";
-import OBDDevice from "../../finance/lend/OBDDevice";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import LoginAndRegister from "../../login/LoginAndRegister";
-import AmountConfirm from '../../finance/lend/AmountConfirm';
+import YJZButton from '../../mine/setting/YJZButton';
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
@@ -106,15 +105,9 @@ export default class Setting extends BaseComponent {
                     </View>
                 </TouchableOpacity>
 
-                <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
-                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="OBD设备" parentStyle={styles.buttonStyle}*/}
-                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
-                    {/*this.toNextPage({*/}
-                        {/*name: 'OBDDevice AmountConfirm',*/}
-                        {/*component: AmountConfirm,*/}
-                        {/*params: {},*/}
-                    {/*})*/}
-                {/*}}/>*/}
+                <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}} />
+
+
                 <View style={{flex: 1}}/>
 
                 <MyButton buttonType={MyButton.TEXTBUTTON}
@@ -191,4 +184,10 @@ const styles = StyleSheet.create({
         color: FontAndColor.COLORA3,
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
     },
+	imageStyle:{
+        marginTop:Pixel.getPixel(20),
+        width:Pixel.getPixel(327),
+        height:Pixel.getPixel(415),
+    }
+
 });
