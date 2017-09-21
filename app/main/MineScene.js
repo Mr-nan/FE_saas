@@ -28,7 +28,7 @@ import BindCardScene from '../mine/accountManage/BindCardScene'
 
 import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
-import CouponAllScene from '../mine/couponManage/CouponAllScene'
+import EvaluateCarInfo from '../mine/setting/EvaluateCarInfo'
 import Setting from './../mine/setting/Setting'
 import  CarCollectSourceScene from '../carSource/CarCollectSourceScene';
 import  BrowsingHistoryScene from '../carSource/BrowsingHistoryScene';
@@ -40,86 +40,20 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
-import CancelOrderReason from '../mine/myOrder/CancelOrderReasonScene';
+import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
+import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
+import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
 let firstType = '-1';
 let lastType = '-1';
 let haveOrder = 0;
-
+import GetPermissionUtil from '../utils/GetPermissionUtil';
+const GetPermission = new GetPermissionUtil();
 let componyname = '';
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
-let Car = [
-    {
-        "cars": [
-            {
-                "icon": require('../../images/mainImage/zhanghuguanli.png'),
-                "name": "账户管理"
-            },
-            {
-                "icon": require('../../images/mainImage/yuangongguanli.png'),
-                "name": "员工管理"
-            },
-        ],
-        "title": "section0"
-    },
-    {
-        "cars": [
-            // {
-            //     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
-            //     "name": "优惠券管理"
-            // },
-            {
-                "icon": require('../../images/mainImage/hetongguanli.png'),
-                "name": "合同管理"
-            },
-        ],
-        "title": "section1"
-    },
-    {
-        "cars": [
-            {
-                "icon": require('../../images/mainImage/myCarSource.png'),
-                "name": "我的车源"
-            },
-            {
-                "icon": require('../../images/mainImage/my_order.png'),
-                "name": "我的订单"
-            },
-            {
-                "icon": require('../../images/mainImage/shoucangjilu.png'),
-                "name": "收藏记录"
-            },
-            {
-                "icon": require('../../images/mainImage/liulanlishi.png'),
-                "name": "浏览历史"
-            },
-
-        ],
-        "title": "section2"
-    },
-    {
-        "cars": [
-            {
-                "icon": require('../../images/mainImage/shezhi.png'),
-                "name": "设置"
-            },
-        ],
-        "title": "section3"
-    },
-    {
-        "cars": [
-            {
-                "icon": require('../../images/mainImage/shezhi.png'),
-                "name": "blank"
-            },
-        ],
-        "title": "section3"
-    },
-]
-
-
+let Car = [];
 /*
  * 获取屏幕的宽和高
  **/
@@ -151,7 +85,6 @@ export default class MineScene extends BaseComponent {
     }
 
     componentDidMount() {
-        this.accountShow = false;
         try {
             BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         } catch (e) {
@@ -188,104 +121,63 @@ export default class MineScene extends BaseComponent {
             if (data.code == 1) {
                 let user_list = [];
                 let datas = JSON.parse(data.result);
-                if (datas.user_level == 2) {
-                    if (datas.enterprise_list[0].role_type == '1') {
-                        if (lastType == 'error') {
-                            Car[0].cars.splice(0, 1);
-                        }
-                        user_list.push(...Car);
-                    } else if (datas.enterprise_list[0].role_type == '6') {
-                        if (!this.accountShow) {
-                            Car[0].cars.splice(0, 1);
-                        }
-                        user_list.push(...Car);
-                    } else if (datas.enterprise_list[0].role_type == '2') {
-                        if (!this.accountShow) {
-                            Car[0].cars.splice(0, 2);
-                        } else {
-                            Car[0].cars.splice(1, 2);
-                        }
-                        user_list.push(Car[0], Car[1], Car[3], Car[4]);
-                    } else {
-                        Car[0].cars.splice(0, 2);
-                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
+                user_list.push(...Car);
+                GetPermission.getMineList((minList) => {
+                    for (let i = 0; i < minList.length; i++) {
+                        this.initData(minList[i].id, minList[i].name);
                     }
-                } else if (datas.user_level == 1) {
-                    if (datas.enterprise_list[0].role_type == '1') {
-                        if (lastType == 'error') {
-                            Car[0].cars.splice(0, 1);
+                    let jsonData = user_list;
+
+                    //    定义变量
+                    let dataBlob = {},
+                        sectionIDs = [],
+                        rowIDs = [];
+                    for (let i = 0; i < jsonData.length; i++) {
+                        //    1.拿到所有的sectionId
+                        sectionIDs.push(i);
+
+                        //    2.把组中的内容放入dataBlob内容中
+                        dataBlob[i] = jsonData[i].title;
+
+                        //    3.设置改组中每条数据的结构
+                        rowIDs[i] = [];
+
+                        //    4.取出改组中所有的数据
+                        let cars = jsonData[i].cars;
+
+                        //    5.便利cars,设置每组的列表数据
+                        for (let j = 0; j < cars.length; j++) {
+                            //    改组中的每条对应的rowId
+                            rowIDs[i].push(j);
+
+                            // 把每一行中的内容放入dataBlob对象中
+                            dataBlob[i + ':' + j] = cars[j];
                         }
-                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
-                    } else if (datas.enterprise_list[0].role_type == '6') {
-                        Car[0].cars.splice(0, 1);
-                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
-                    } else {
-                        if (!this.accountShow) {
-                            Car[0].cars.splice(0, 2);
-                        } else {
-                            Car[0].cars.splice(1, 2);
+                    }
+                    let getSectionData = (dataBlob, sectionID) => {
+                        return dataBlob[sectionID];
+                    };
+
+                    let getRowData = (dataBlob, sectionID, rowID) => {
+                        return dataBlob[sectionID + ":" + rowID];
+                    };
+                    let ds = new ListView.DataSource({
+                            getSectionData: getSectionData,
+                            getRowData: getRowData,
+                            rowHasChanged: (r1, r2) => r1 !== r2,
+                            sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
                         }
-                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
-
-                    }
-                } else {
-                    if (datas.audit_status == '2') {
-                        user_list.push(Car[2], Car[3], Car[4]);
-                    } else {
-                        user_list.push(Car[3], Car[4]);
-                    }
-
-                }
-                let jsonData = user_list;
-
-                //    定义变量
-                let dataBlob = {},
-                    sectionIDs = [],
-                    rowIDs = [];
-                for (let i = 0; i < jsonData.length; i++) {
-                    //    1.拿到所有的sectionId
-                    sectionIDs.push(i);
-
-                    //    2.把组中的内容放入dataBlob内容中
-                    dataBlob[i] = jsonData[i].title;
-
-                    //    3.设置改组中每条数据的结构
-                    rowIDs[i] = [];
-
-                    //    4.取出改组中所有的数据
-                    let cars = jsonData[i].cars;
-
-                    //    5.便利cars,设置每组的列表数据
-                    for (let j = 0; j < cars.length; j++) {
-                        //    改组中的每条对应的rowId
-                        rowIDs[i].push(j);
-
-                        // 把每一行中的内容放入dataBlob对象中
-                        dataBlob[i + ':' + j] = cars[j];
-                    }
-                }
-                let getSectionData = (dataBlob, sectionID) => {
-                    return dataBlob[sectionID];
-                };
-
-                let getRowData = (dataBlob, sectionID, rowID) => {
-                    return dataBlob[sectionID + ":" + rowID];
-                };
-                let ds = new ListView.DataSource({
-                        getSectionData: getSectionData,
-                        getRowData: getRowData,
-                        rowHasChanged: (r1, r2) => r1 !== r2,
-                        sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-                    }
-                );
-                this.setState({
-                    source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
-                    name: datas.real_name,
-                    phone: datas.phone,
-                    headUrl: datas.head_portrait_url,
-                    renderPlaceholderOnly: 'success',
-                    isRefreshing: false
+                    );
+                    this.setState({
+                        source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+                        name: datas.real_name,
+                        phone: datas.phone,
+                        headUrl: datas.head_portrait_url,
+                        renderPlaceholderOnly: 'success',
+                        isRefreshing: false
+                    });
                 });
+
             } else {
                 this.setState({
                     renderPlaceholderOnly: 'error',
@@ -295,66 +187,130 @@ export default class MineScene extends BaseComponent {
         });
     }
 
+    initData = (id, name) => {
+        if (id == 15) {
+            Car[0].cars.push({
+                "icon": require('../../images/mainImage/zhanghuguanli.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 16) {
+            Car[0].cars.push({
+                "icon": require('../../images/mainImage/yuangongguanli.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 17) {
+            Car[0].cars.push({
+                "icon": require('../../images/mainImage/switchcompony.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 20) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/my_order.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 18) {
+            Car[1].cars.push({
+                "icon": require('../../images/mainImage/youhuiquanguanli.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 19) {
+            Car[1].cars.push({
+                "icon": require('../../images/mainImage/hetongguanli.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 21) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/shoucangjilu.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 22) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/liulanlishi.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 24) {
+            Car[3].cars.push({
+                "icon": require('../../images/mainImage/shezhi.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 47) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/myCarSource.png'),
+                "name": name
+                , "id": id
+            },);
+        }
+    }
+
     getData = () => {
         Car = [
             {
                 "cars": [
-                    {
-                        "icon": require('../../images/mainImage/zhanghuguanli.png'),
-                        "name": "账户管理"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/yuangongguanli.png'),
-                        "name": "员工管理"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/switchcompony.png'),
-                        "name": "切换公司"
-                    },
+                    // {
+                    //     "icon": require('../../images/mainImage/zhanghuguanli.png'),
+                    //     "name": "账户管理"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/yuangongguanli.png'),
+                    //     "name": "员工管理"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/switchcompony.png'),
+                    //     "name": "切换公司"
+                    // },
                 ],
                 "title": "section0"
             },
             {
                 "cars": [
-                    {
-                        "icon": require('../../images/mainImage/youhuiquanguanli.png'),
-                        "name": "优惠券管理"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/hetongguanli.png'),
-                        "name": "合同管理"
-                    },
+                    // {
+                    //     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
+                    //     "name": "优惠券管理"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/hetongguanli.png'),
+                    //     "name": "合同管理"
+                    // },
                 ],
                 "title": "section1"
             },
             {
                 "cars": [
-                    {
-                        "icon": require('../../images/mainImage/myCarSource.png'),
-                        "name": "我的车源"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/my_order.png'),
-                        "name": "我的订单"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/shoucangjilu.png'),
-                        "name": "收藏记录"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/liulanlishi.png'),
-                        "name": "浏览历史"
-                    },
+                    // {
+                    //     "icon": require('../../images/mainImage/myCarSource.png'),
+                    //     "name": "我的车源"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/my_order.png'),
+                    //     "name": "我的订单"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/shoucangjilu.png'),
+                    //     "name": "收藏记录"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/liulanlishi.png'),
+                    //     "name": "浏览历史"
+                    // },
 
                 ],
                 "title": "section2"
             },
             {
                 "cars": [
-                    {
-                        "icon": require('../../images/mainImage/shezhi.png'),
-                        "name": "设置"
-                    },
+                    // {
+                    //     "icon": require('../../images/mainImage/shezhi.png'),
+                    //     "name": "设置"
+                    // },
                 ],
                 "title": "section3"
             },
@@ -368,7 +324,23 @@ export default class MineScene extends BaseComponent {
                 "title": "section3"
             },
         ]
+
+        // StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+        //     if (data.code == 1) {
+        //         let datas = JSON.parse(data.result);
+        //         if(datas.user_level=='0'){
+        //             this.noCompany();
+        //         }else{
         this.toCompany();
+        //         }
+        //     }
+        // });
+
+    }
+
+    noCompany = () => {
+        lastType = 'error';
+        this.changeData();
     }
 
     toCompany = () => {
@@ -382,36 +354,22 @@ export default class MineScene extends BaseComponent {
                     componyname = datas.name + '(' + datas.companyname + ')';
                 }
                 let maps = {
-                    enter_base_id: datas.company_base_id,
+                    enter_base_ids: datas.company_base_id,
+                    child_type: '1'
                 };
-                request(Urls.GETACCOUNTSTATUSBYUID, 'Post', maps)
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            if (response.mjson.data == '1') {
-                                this.accountShow = true;
+                            haveOrder = response.mjson.data.order.tradeing_count;
+                            if (response.mjson.data.account == null || response.mjson.data.account.length <= 0) {
+                                lastType = 'error';
                             } else {
-                                this.accountShow = false;
+                                lastType = response.mjson.data.account.status;
                             }
-                            let mapss = {
-                                enter_base_ids: datas.company_base_id,
-                                child_type: '1'
-                            };
-                            request(Urls.USER_ACCOUNT_INFO, 'Post', mapss)
-                                .then((responses) => {
-                                        haveOrder = responses.mjson.data.order.tradeing_count;
-                                        if (responses.mjson.data.account == null || responses.mjson.data.account.length <= 0) {
-                                            lastType = 'error';
-                                        } else {
-                                            lastType = responses.mjson.data.account.status;
-                                        }
-                                        // lastType = '3';、
-                                        this.changeData();
-                                    },
-                                    (error) => {
-                                        this.changeData();
-                                    });
+                            // lastType = '3';、
+                            this.changeData();
                         },
                         (error) => {
-                            this.setState({renderPlaceholderOnly: 'error'});
+                            this.changeData();
                         });
             }
         });
@@ -457,13 +415,13 @@ export default class MineScene extends BaseComponent {
                     renderSectionHeader={this._renderSectionHeader}
                     renderHeader={this._renderHeader}
                     refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={this.refreshingData}
-                                        tintColor={[fontAndClolr.COLORB0]}
-                                        colors={[fontAndClolr.COLORB0]}
-                                    />
-                                }
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshingData}
+                            tintColor={[fontAndClolr.COLORB0]}
+                            colors={[fontAndClolr.COLORB0]}
+                        />
+                    }
                 />
                 <AccountModal ref="accountmodal"/>
             </View>
@@ -491,7 +449,6 @@ export default class MineScene extends BaseComponent {
                             this.props.showModal(false);
                             haveOrder = response.mjson.data.order.tradeing_count;
                             lastType = response.mjson.data.account.status;
-
                             if (lastType == '0') {
                                 this.navigatorParams.name = 'AccountManageScene'
                                 this.navigatorParams.component = AccountManageScene
@@ -535,56 +492,52 @@ export default class MineScene extends BaseComponent {
     }
 
     _navigator(rowData) {
-        switch (rowData.name) {
-            case '账户管理':
+        switch (rowData.id) {
+            case 15:
                 this.toPage();
                 return
                 break;
-            case '切换公司':
+            case 17:
                 this.props.toSelect();
                 return;
                 break;
-            case '优惠券管理':
+            case 18:
                 this.navigatorParams.name = 'AdjustManageScene'
                 this.navigatorParams.component = AdjustManageScene
                 break;
             case '积分管理':
                 break;
-            case '合同管理':
+            case 19:
                 this.navigatorParams.name = 'ContractManageScene'
                 this.navigatorParams.component = ContractManageScene
                 this.navigatorParams.params = {
                     from: 'xs'
                 }
                 break;
-            case '员工管理':
+            case 16:
                 this.navigatorParams.name = 'EmployeeManageScene'
                 this.navigatorParams.component = EmployeeManageScene
                 break;
-            case '我的车源':
+            case 47:
                 this.navigatorParams.name = 'MycarScene'
                 this.navigatorParams.component = MycarScene
                 break;
-                break;
-            case '我的订单':
+            case 20:
                 this.navigatorParams.name = 'OrderTypeSelectScene'
                 this.navigatorParams.component = OrderTypeSelectScene
                 break;
-            case '收藏记录':
+            case 21:
                 this.navigatorParams.name = 'CarCollectSourceScene'
                 this.navigatorParams.component = CarCollectSourceScene
                 break;
-            case '浏览历史':
+            case 22:
                 this.navigatorParams.name = 'BrowsingHistoryScene'
                 this.navigatorParams.component = BrowsingHistoryScene
                 break;
-            case '设置':
+            case 24:
                 this.navigatorParams.name = 'Setting'
                 this.navigatorParams.component = Setting
-                // this.navigatorParams.name = 'CancelOrderReason'
-                // this.navigatorParams.component = CancelOrderReason
                 break;
-
         }
         this.props.callBack(this.navigatorParams);
     }
@@ -612,9 +565,9 @@ export default class MineScene extends BaseComponent {
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
                     <Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
-                    {rowData.name == '账户管理' ? <Text allowFontScaling={false} style={{ marginRight: Pixel.getPixel(15),
-                    backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
-                    Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>{showName}</Text> :
+                    {rowData.id == 15 ? <Text allowFontScaling={false} style={{ marginRight: Pixel.getPixel(15),
+                        backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
+                            Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>{showName}</Text> :
                         <View/>}
                     {rowData.name == '我的订单' && haveOrder != 0 ?
                         <View style={{
@@ -640,51 +593,55 @@ export default class MineScene extends BaseComponent {
         if (this.state.renderPlaceholderOnly == 'success') {
             if (firstType != lastType) {
                 if (lastType != '3') {
-                    if (this.accountShow) {
-                        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                            if (data.code == 1) {
-                                let datas = JSON.parse(data.result);
-                                console.log(datas);
-                                StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
-                                    if (datac.code == 1) {
-                                        let datasc = JSON.parse(datac.result);
-                                        let maps = {
-                                            enter_base_ids: datasc.company_base_id,
-                                            child_type: '1'
-                                        };
-                                        request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                                            .then((response) => {
-                                                    haveOrder = response.mjson.data.order.tradeing_count;
-                                                    lastType = response.mjson.data.account.status;
-                                                    if (lastType == '0') {
-                                                        this.refs.accountmodal.changeShowType(true,
-                                                            '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                                            '请尽快开通！', '去开户', '看看再说', () => {
-                                                                this.toPage();
-                                                            });
-                                                    } else if (lastType == '1') {
-                                                        this.refs.accountmodal.changeShowType(true,
-                                                            '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                                            , '去绑卡', '看看再说', () => {
-                                                                this.toPage();
-                                                            });
-                                                    } else if (lastType == '2') {
-                                                        this.refs.accountmodal.changeShowType(true,
-                                                            '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                                            , '去激活', '看看再说', () => {
-                                                                this.toPage();
-                                                            });
-                                                    }
-                                                    firstType = lastType;
-                                                },
-                                                (error) => {
+                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                        if (data.code == 1) {
+                            let datas = JSON.parse(data.result);
+                            GetPermission.getMineList((mineList) => {
+                                for (let i = 0; i < mineList.length; i++) {
+                                    if (mineList[i].id == 15) {
+                                        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
+                                            if (datac.code == 1) {
+                                                let datasc = JSON.parse(datac.result);
+                                                let maps = {
+                                                    enter_base_ids: datasc.company_base_id,
+                                                    child_type: '1'
+                                                };
+                                                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                                    .then((response) => {
+                                                            haveOrder = response.mjson.data.order.tradeing_count;
+                                                            lastType = response.mjson.data.account.status;
+                                                            if (lastType == '0') {
+                                                                this.refs.accountmodal.changeShowType(true,
+                                                                    '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                                                    '请尽快开通！', '去开户', '看看再说', () => {
+                                                                        this.toPage();
+                                                                    });
+                                                            } else if (lastType == '1') {
+                                                                this.refs.accountmodal.changeShowType(true,
+                                                                    '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                                                    , '去绑卡', '看看再说', () => {
+                                                                        this.toPage();
+                                                                    });
+                                                            } else if (lastType == '2') {
+                                                                this.refs.accountmodal.changeShowType(true,
+                                                                    '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                                                    , '去激活', '看看再说', () => {
+                                                                        this.toPage();
+                                                                    });
+                                                            }
+                                                            firstType = lastType;
+                                                        },
+                                                        (error) => {
 
-                                                });
+                                                        });
+                                            }
+                                        });
                                     }
-                                });
-                            }
-                        });
-                    }
+                                }
+                            });
+
+                        }
+                    });
                 }
             }
         }

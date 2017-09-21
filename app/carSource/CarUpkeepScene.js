@@ -199,8 +199,6 @@ export  default class CarUpkeepScene extends BaseComponent {
                         </TouchableOpacity>
                     )}
                 </View>
-
-
             </View>
         )
     }

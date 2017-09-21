@@ -50,7 +50,7 @@ export default class SuccessModal extends Component{
                     <View style={styles.contentContainer}>
                         <Image style={styles.imgLogo} source={imgLogo}/>
                         <Text allowFontScaling={false}  style={styles.fontMain}>发布成功</Text>
-                        <Text allowFontScaling={false}  style={styles.fontHint}>可进入首页-卖车模块查看已发车辆</Text>
+                        <Text allowFontScaling={false}  style={styles.fontHint}>可进入首页-"库存车辆”模块查看已发车辆</Text>
                         <View style={styles.fillSpace}/>
                         <TouchableOpacity
                             activeOpacity={0.2}

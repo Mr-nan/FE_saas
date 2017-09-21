@@ -39,7 +39,11 @@ const request = (url, method, params, backToLogin) => {
             console.log(url + '?token=' + token + '&device_code=' + device_code+
                 '&version='+StorageKeyNames.VERSON_CODE+'&'+body);
 
+<<<<<<< HEAD
             fetch(url + '?token=' + token + '&device_code=' + device_code + '&' + body, {
+=======
+            fetch(url + '?token=' + token + '&device_code=' + device_code+'&version='+StorageKeyNames.VERSON_CODE+'&'+body, {
+>>>>>>> 17a3700734f3dc71ef1e66e6f4540cce6735e9ff
                 method,
                 body
             })
@@ -58,7 +62,7 @@ const request = (url, method, params, backToLogin) => {
                             console.log(key + "===" + params[key]);
                         }
                         console.log("success----------" + JSON.stringify(responseData));
-                        if (responseData.code == 1) {
+                        if (responseData.code == 1 && responseData.code!=='0001') {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
                             if (responseData.code == 7040011 || responseData.code == 7040020) {
@@ -70,6 +74,9 @@ const request = (url, method, params, backToLogin) => {
                                     }])
                                 }
                             } else {
+                                if(responseData.msg.length>=40){
+                                    responseData.msg = '系统异常'
+                                }
                                 reject({mycode: responseData.code, mjson: responseData});
                             }
                         }
