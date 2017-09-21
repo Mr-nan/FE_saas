@@ -263,7 +263,7 @@ export  default class AccountScene extends BaseComponent {
                                   if(data.code==1 && data.result)
                                   {     let userInfo = JSON.parse(data.result);
                                       if(userInfo.user_level!=2){
-                                          this.props.showToast('您的账户未授信');
+                                          this.props.showToast('您的账户未授信，请先去授信');
                                       }else {
                                           this.toNextPage({
                                               name:'AccountSettingScene',
