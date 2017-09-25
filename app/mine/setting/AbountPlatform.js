@@ -115,7 +115,7 @@ export default class Setting extends BaseComponent {
                     color: FontAndColor.COLORA1,
                     marginTop: Pixel.getPixel(10),
                     marginBottom: Pixel.getFontPixel(20),
-                }}>Copyright第一车贷版权所有</Text>
+                }}>Copyright第1车贷版权所有</Text>
 
 
                 <SequencingView
