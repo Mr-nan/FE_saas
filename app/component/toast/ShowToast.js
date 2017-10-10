@@ -61,6 +61,7 @@ export default  class ShowToast extends PureComponent {
             this.setState({height: height});
         } else {
             this.setState({height: 0});
+
         }
 
         this.refs.toast.openLoading(value);

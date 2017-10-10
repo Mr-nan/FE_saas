@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     taostModal: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         flexDirection: 'column',
         overflow:'hidden'
     },
