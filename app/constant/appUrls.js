@@ -6,7 +6,7 @@
 /**
  * 测试地址
  */
-<<<<<<< HEAD
+
 // export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
@@ -19,20 +19,12 @@
 /**
  * 正式地址
  */
-// export const BASEURL = 'https://gatewayapi.dycd.com/';
-=======
-//export const BASEURL = 'http://api-gateway.test.dycd.com/';
-
-/**
- * 正式地址
- */
  export const BASEURL = 'https://gatewayapi.dycd.com/';
->>>>>>> 17a3700734f3dc71ef1e66e6f4540cce6735e9ff
 
 /**
  * 预发布地址
  */
-export const BASEURL = 'https://stgatewayapi.dycd.com/';
+// export const BASEURL = 'https://stgatewayapi.dycd.com/';
 
 /**
  * 版本号1
