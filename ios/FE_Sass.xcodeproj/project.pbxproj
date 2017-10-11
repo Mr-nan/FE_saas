@@ -61,6 +61,12 @@
 		7D5A48CF1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic in Resources */ = {isa = PBXBuildFile; fileRef = 7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */; };
 		7D5D8B681EE5565900892F2E /* (null) in Resources */ = {isa = PBXBuildFile; };
 		7D769E2E1E602A800039526C /* libc++abi.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2D1E602A800039526C /* libc++abi.tbd */; };
+		7D9B6C2B1F8DB56B0063B7C1 /* ZNShareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C251F8DB56B0063B7C1 /* ZNShareClass.m */; };
+		7D9B6C2C1F8DB56B0063B7C1 /* MBProgressHUD.h in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C261F8DB56B0063B7C1 /* MBProgressHUD.h */; };
+		7D9B6C2D1F8DB56B0063B7C1 /* ZNShareViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C271F8DB56B0063B7C1 /* ZNShareViewController.h */; };
+		7D9B6C2E1F8DB56B0063B7C1 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C281F8DB56B0063B7C1 /* MBProgressHUD.m */; };
+		7D9B6C2F1F8DB56B0063B7C1 /* ZNShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C291F8DB56B0063B7C1 /* ZNShareViewController.m */; };
+		7D9B6C301F8DB56B0063B7C1 /* ZNShareClass.h in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C2A1F8DB56B0063B7C1 /* ZNShareClass.h */; };
 		7DB2CBB21E779CB400DE146C /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB2CBB11E779CB400DE146C /* libbz2.1.0.tbd */; };
 		7DB2CBD11E779DDF00DE146C /* libSVehicleLicense.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB2CBB51E779DDF00DE146C /* libSVehicleLicense.a */; };
 		7DB2CBD21E779DDF00DE146C /* libvinTyper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB2CBB61E779DDF00DE146C /* libvinTyper.a */; };
@@ -399,12 +405,12 @@
 		7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
 		7D769E2B1E602A630039526C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		7D769E2D1E602A800039526C /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = "usr/lib/libc++abi.tbd"; sourceTree = SDKROOT; };
-		7D9B6C1E1F8DB2B10063B7C1 /* MBProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		7D9B6C1F1F8DB2B10063B7C1 /* MBProgressHUD.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		7D9B6C211F8DB2B10063B7C1 /* ZNShareClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZNShareClass.h; sourceTree = "<group>"; };
-		7D9B6C221F8DB2B10063B7C1 /* ZNShareClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZNShareClass.m; sourceTree = "<group>"; };
-		7D9B6C231F8DB2B10063B7C1 /* ZNShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZNShareViewController.h; sourceTree = "<group>"; };
-		7D9B6C241F8DB2B10063B7C1 /* ZNShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZNShareViewController.m; sourceTree = "<group>"; };
+		7D9B6C251F8DB56B0063B7C1 /* ZNShareClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ZNShareClass.m; path = FE_Sass/ZNShareClass.m; sourceTree = "<group>"; };
+		7D9B6C261F8DB56B0063B7C1 /* MBProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = FE_Sass/MBProgressHUD.h; sourceTree = "<group>"; };
+		7D9B6C271F8DB56B0063B7C1 /* ZNShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ZNShareViewController.h; path = FE_Sass/ZNShareViewController.h; sourceTree = "<group>"; };
+		7D9B6C281F8DB56B0063B7C1 /* MBProgressHUD.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = FE_Sass/MBProgressHUD.m; sourceTree = "<group>"; };
+		7D9B6C291F8DB56B0063B7C1 /* ZNShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ZNShareViewController.m; path = FE_Sass/ZNShareViewController.m; sourceTree = "<group>"; };
+		7D9B6C2A1F8DB56B0063B7C1 /* ZNShareClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ZNShareClass.h; path = FE_Sass/ZNShareClass.h; sourceTree = "<group>"; };
 		7DB2CBB11E779CB400DE146C /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
 		7DB2CBB51E779DDF00DE146C /* libSVehicleLicense.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSVehicleLicense.a; sourceTree = "<group>"; };
 		7DB2CBB61E779DDF00DE146C /* libvinTyper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libvinTyper.a; sourceTree = "<group>"; };
@@ -647,8 +653,6 @@
 		13B07FAE1A68108700A75B9A /* FE_Sass */ = {
 			isa = PBXGroup;
 			children = (
-				7D9B6C1D1F8DB2B10063B7C1 /* MBProgressHUD */,
-				7D9B6C201F8DB2B10063B7C1 /* ZNShare */,
 				1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */,
 				7DB2CBB31E779DDF00DE146C /* OCRSCancer */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -725,27 +729,6 @@
 				7AF474FC8B6C4EC78759A9DA /* libCodePush.a */,
 			);
 			name = "Recovered References";
-			sourceTree = "<group>";
-		};
-		7D9B6C1D1F8DB2B10063B7C1 /* MBProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				7D9B6C1E1F8DB2B10063B7C1 /* MBProgressHUD.h */,
-				7D9B6C1F1F8DB2B10063B7C1 /* MBProgressHUD.m */,
-			);
-			path = MBProgressHUD;
-			sourceTree = "<group>";
-		};
-		7D9B6C201F8DB2B10063B7C1 /* ZNShare */ = {
-			isa = PBXGroup;
-			children = (
-				7D9B6C211F8DB2B10063B7C1 /* ZNShareClass.h */,
-				7D9B6C221F8DB2B10063B7C1 /* ZNShareClass.m */,
-				7D9B6C231F8DB2B10063B7C1 /* ZNShareViewController.h */,
-				7D9B6C241F8DB2B10063B7C1 /* ZNShareViewController.m */,
-			);
-			name = ZNShare;
-			path = "../../../未命名文件夹/ZNShare";
 			sourceTree = "<group>";
 		};
 		7DB2CBB31E779DDF00DE146C /* OCRSCancer */ = {
@@ -844,6 +827,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				7D9B6C261F8DB56B0063B7C1 /* MBProgressHUD.h */,
+				7D9B6C281F8DB56B0063B7C1 /* MBProgressHUD.m */,
+				7D9B6C2A1F8DB56B0063B7C1 /* ZNShareClass.h */,
+				7D9B6C251F8DB56B0063B7C1 /* ZNShareClass.m */,
+				7D9B6C271F8DB56B0063B7C1 /* ZNShareViewController.h */,
+				7D9B6C291F8DB56B0063B7C1 /* ZNShareViewController.m */,
 				13B07FAE1A68108700A75B9A /* FE_Sass */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* FE_SassTests */,
@@ -1451,6 +1440,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D9B6C2B1F8DB56B0063B7C1 /* ZNShareClass.m in Sources */,
+				7D9B6C2C1F8DB56B0063B7C1 /* MBProgressHUD.h in Sources */,
+				7D9B6C2D1F8DB56B0063B7C1 /* ZNShareViewController.h in Sources */,
+				7D9B6C2E1F8DB56B0063B7C1 /* MBProgressHUD.m in Sources */,
+				7D9B6C2F1F8DB56B0063B7C1 /* ZNShareViewController.m in Sources */,
+				7D9B6C301F8DB56B0063B7C1 /* ZNShareClass.h in Sources */,
 				124A59191E9C8B90007C1C15 /* CameraController.m in Sources */,
 				7DB2CBDF1E779DDF00DE146C /* TopView.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
