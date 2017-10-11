@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     taostModal: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         flexDirection: 'column',
         overflow:'hidden'
     },
@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 5,
         borderRadius: 5,
-        marginBottom: 45,
     },
     thumbnail: {
         width: 26,
