@@ -12,6 +12,7 @@ import UmengPush from 'react-native-umeng-push';
 
 //获取DeviceToken
 UmengPush.getDeviceToken(deviceToken => {
+    console.log('deviceToken',deviceToken)
 });
 
 //接收到推送消息回调
