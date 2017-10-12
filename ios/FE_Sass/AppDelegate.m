@@ -15,6 +15,7 @@
 #import <AdSupport/AdSupport.h>
 #import "sys/utsname.h"
 #import "Growing.h"
+#import "RCTUmengPush.h"
 
 @implementation AppDelegate
 
@@ -23,6 +24,7 @@
  NSURL *jsCodeLocation;
  [Growing startWithAccountId:@"8c70ed29c1985918"];
  [Growing setRnNavigatorPageEnabled:YES];
+   [RCTUmengPush registerWithAppkey:@"59c07978717c197a4b000015" launchOptions:launchOptions];
 
    
 #ifdef DEBUG
@@ -90,6 +92,8 @@
   return [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
   
 }
+
+
 -(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
   if ([Growing handleUrl:url]) // 请务必确保该函数被调用
@@ -97,6 +101,19 @@
     return YES;
   }
   return NO;
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+  //获取deviceToken
+  NSLog(@"%@",deviceToken);
+  [RCTUmengPush application:application didRegisterDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+  //获取远程推送消息
+  [RCTUmengPush application:application didReceiveRemoteNotification:userInfo];
 }
 
 @end
