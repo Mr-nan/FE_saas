@@ -13,9 +13,24 @@ import {
 
 import MyNavigator  from './component/MyNavigator';
 import * as fontAndColor from './constant/fontAndColor';
-
+import UmengPush from 'react-native-umeng-push';
 import ShowToast from "./component/toast/ShowToast";
 import * as weChat from 'react-native-wechat';
+
+//获取DeviceToken
+UmengPush.getDeviceToken(deviceToken => {
+
+});
+
+//接收到推送消息回调
+UmengPush.didReceiveMessage(message => {
+
+});
+
+//点击推送消息打开应用回调
+UmengPush.didOpenMessage(message => {
+    console.log(message);
+});
 
 export default class root extends Component {
 
@@ -41,6 +56,7 @@ export default class root extends Component {
 
     }
 
+
     showToast = (content) => {
         this.refs.toast.changeType(ShowToast.TOAST, content);
     }
@@ -48,4 +64,8 @@ export default class root extends Component {
     showModal = (value) => {
         this.refs.toast.showModal(value);
     }
+
+
 }
+
+
