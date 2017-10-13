@@ -335,16 +335,18 @@ export default class RootScene extends BaseComponent {
     }
 
     render() {
-        return (
-            <Image style={{backgroundColor: '#00000000',alignItems:'flex-end',resizeMode:'contain',flex:1,width:width}}
-                   source={require('../../images/splash.png')}>
-                <TouchableOpacity onPress={()=>{this.onPress()}} activeOpacity={0.8} style={{width:Pixel.getPixel(30),height:Pixel.getPixel(30),borderRadius: 1000,justifyContent:'center',
-                alignItems: 'center',backgroundColor: 'rgba(0,0,0,0.2)',marginRight: Pixel.getPixel(15),
-                marginTop:Pixel.getTitlePixel(35)}}>
-                    <Text allowFontScaling={false} style={{color:'#fff',fontSize:Pixel.getFontPixel(12)}}>取消</Text>
-                </TouchableOpacity>
-            </Image>
-        );
+        // return (
+        //     <Image style={{backgroundColor: '#00000000',alignItems:'flex-end',resizeMode:'stretch',flex:1,width:width}}
+        //            source={require('../../images/splash.png')}>
+        //
+        //     </Image>
+        // );
+        // <TouchableOpacity onPress={()=>{this.onPress()}} activeOpacity={0.8} style={{width:Pixel.getPixel(30),height:Pixel.getPixel(30),borderRadius: 1000,justifyContent:'center',
+        //         alignItems: 'center',backgroundColor: 'rgba(0,0,0,0.2)',marginRight: Pixel.getPixel(15),
+        //         marginTop:Pixel.getTitlePixel(35)}}>
+        //     <Text allowFontScaling={false} style={{color:'#fff',fontSize:Pixel.getFontPixel(12)}}>取消</Text>
+        // </TouchableOpacity>
+        return (<View></View>)
     }
 
     /**
