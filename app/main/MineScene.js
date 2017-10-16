@@ -248,6 +248,12 @@ export default class MineScene extends BaseComponent {
                 "name": name
                 , "id": id
             },);
+        }else if (id == 57) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/myCarSource.png'),
+                "name": name
+                , "id": id
+            },);
         }
     }
 

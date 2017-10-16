@@ -184,6 +184,11 @@ const GetPermissionUtil = React.createClass({
             names = name;
             component = SysMessageListScene;
             componentName = 'sysmessagelistscene';
+        }else if (id == 57) {
+            image = require('../../images/workbench/wd.png');
+            names = name;
+            component = SysMessageListScene;
+            componentName = 'sysmessagelistscene';
         }
         return {name: names, id: id, image: image, component: component, componentName: componentName}
     }, removal(array){
