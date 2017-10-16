@@ -72,6 +72,15 @@ export const CAR_HOME_BRAND = BASEURL + V + 'home/brand';
  */
 export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
 
+/**
+ * 分享次数统计
+ */
+export const INVITE_SHARECOUNT = BASEURL + V + "invite/shareCount";// v1/index/captcha
+
+/**
+ * 注册邀请码分享接口
+ */
+export const INVITE_SHARE = BASEURL + V + "invite/share";// v1/index/captcha
 
 /**
  * 获取车型
