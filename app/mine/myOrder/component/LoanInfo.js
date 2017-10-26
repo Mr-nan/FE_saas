@@ -54,7 +54,9 @@ export default class LoanInfo extends BaseComponent {
                             component: DDDetailScene,
                             params: {
                                 financeNo: this.state.financeInfo.loan_code,
-                                orderNo: this.props.orderNo
+                                orderNo: this.props.orderNo,
+                                backRefresh: this.props.refresh
+
                             }
                         });
                     }}>

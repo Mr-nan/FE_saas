@@ -162,19 +162,32 @@ export  default  class SingDetaileSence extends BaseComponent {
     titleNameBlob = (jsonData, carData) => {
 
         let dataSource = {};
-        dataSource['section1'] = [
-            {title: '申请日期', key: jsonData.createtimestr},
-            {title: '借款金额', key: jsonData.payment_loanmny_str},
-            {title: '借款期限', key: jsonData.loanperiodstr},
-            {title: '借款单号', key: jsonData.loan_code},
-            {title: '综合费率', key: jsonData.payment_rate_str},
-            {title: '还款方式', key: jsonData.repayment_type},
-            {title: '状态', key: jsonData.status_str},
-            {title: '放款日期', key: jsonData.loan_time},
-            {title: '评估总额', key: jsonData.reassessed},
-            {title: '债权人', key: jsonData.credito},
-
-        ]
+        if (jsonData.microchinese_single_status && jsonData.microchinese_single_status == '1') {
+            dataSource['section1'] = [
+                {title: '申请日期', key: jsonData.createtimestr},
+                {title: '借款金额', key: jsonData.payment_loanmny_str},
+                {title: '借款期限', key: jsonData.loanperiodstr},
+                {title: '借款单号', key: jsonData.loan_code},
+                {title: '综合费率', key: jsonData.payment_rate_str},
+                {title: '还款方式', key: jsonData.repayment_type},
+                {title: '状态', key: jsonData.status_str},
+                {title: '放款日期', key: jsonData.loan_time},
+                {title: '评估总额', key: jsonData.reassessed},
+            ]
+        } else {
+            dataSource['section1'] = [
+                {title: '申请日期', key: jsonData.createtimestr},
+                {title: '借款金额', key: jsonData.payment_loanmny_str},
+                {title: '借款期限', key: jsonData.loanperiodstr},
+                {title: '借款单号', key: jsonData.loan_code},
+                {title: '综合费率', key: jsonData.payment_rate_str},
+                {title: '还款方式', key: jsonData.repayment_type},
+                {title: '状态', key: jsonData.status_str},
+                {title: '放款日期', key: jsonData.loan_time},
+                {title: '评估总额', key: jsonData.reassessed},
+                {title: '债权人', key: jsonData.credito},
+            ]
+        }
         if (carData.length > 0) {
 
             let tempCarDate = [];
@@ -205,9 +218,9 @@ export  default  class SingDetaileSence extends BaseComponent {
         if (stateCode !== '' && extendCode !== '') {
 
             let tempTitle = []
-            if(stateCode == '8'){
+            if (stateCode == '8') {
                 tempTitle = ['资金方签署中']
-            }else if (stateCode == '1') {
+            } else if (stateCode == '1') {
                 tempTitle = ['取消借款']
             } else if (stateCode == '2') {
                 tempTitle = ['签署合同', '取消借款']
@@ -295,7 +308,12 @@ export  default  class SingDetaileSence extends BaseComponent {
             this.toNextPage({
                 name: 'ContractInfoScene',
                 component: ContractInfoScene,
-                params: {loan_code: this.props.loanNumber, showButton: true}
+                params: {
+                    loan_code: this.props.loanNumber, showButton: true, callbackfresh: () => {
+                        this.initFinish();
+                        this.props.backRefresh();
+                    }
+                }
             });
         } else if (title === '查看合同') {
             this.toNextPage({
@@ -303,13 +321,13 @@ export  default  class SingDetaileSence extends BaseComponent {
                 component: ContractInfoScene,
                 params: {loan_code: this.props.loanNumber, showButton: false}
             });
-        } else if(title === '资金方签署中'){
+        } else if (title === '资金方签署中') {
             this.toNextPage({
                 name: 'ContractInfoScene',
                 component: ContractInfoScene,
                 params: {loan_code: this.props.loanNumber, showButton: false}
             });
-        }else if (title === "申请展期") {
+        } else if (title === "申请展期") {
             this.toNextPage({
                 name: 'CarOverdue', component: CarOverdue, params: {loan_code: controlCode.loan_code}
             });
@@ -318,10 +336,10 @@ export  default  class SingDetaileSence extends BaseComponent {
                 name: 'RecognizedGains', component: RecognizedGains, params: {
                     loan_code: controlCode.loan_code,
                     loan_number: '',
-                    isShow:true,
-                    callBack:()=>{
+                    isShow: true,
+                    callBack: () => {
                         this.setState({
-                            renderPlaceholderOnly:'loading'
+                            renderPlaceholderOnly: 'loading'
                         });
                         this.getLendinfo();
                     }

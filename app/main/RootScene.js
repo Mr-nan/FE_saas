@@ -26,7 +26,10 @@ import * as Urls from '../constant/appUrls';
 import  UpLoadScene from './UpLoadScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
-const versionCode = 21.0;
+import codePush from 'react-native-code-push'
+import SQLiteUtil from "../utils/SQLiteUtil";
+const SQLite = new SQLiteUtil();
+const versionCode = 24.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
@@ -42,13 +45,16 @@ export default class RootScene extends BaseComponent {
 
 
         StorageUtil.mSetItem(KeyNames.NEED_TOAST_ERROR, '');
-        // //如果获取模拟器错误日志，需将下面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
+        // // //如果获取模拟器错误日志，需将下面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
+        //如果获取模拟器错误日志，需将下面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
+
+
         ErrorUtils.setGlobalHandler((e) => {　//发生异常的处理方法,当然如果是打包好的话可能你找都找不到是哪段代码出问题了
-            this.props.showToast('' + JSON.stringify(e));
+            this.props.showToast('' + e);
             StorageUtil.mGetItem(KeyNames.PHONE, (data) => {
                 let maps = {
                     phone: data.result,
-                    message: '' + JSON.stringify(e)
+                    message: '' + e
                 };
                 request(Urls.ADDACCOUNTMESSAGEINFO, 'Post', maps)
                     .then((response) => {
@@ -105,7 +111,13 @@ export default class RootScene extends BaseComponent {
 
     }
 
+    /**
+     *   初始化
+     **/
     initFinish = () => {
+        SQLite.createTable();
+        let d = this.dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss');
+        StorageUtil.mSetItem(KeyNames.INTO_TIME, d);
         let maps = {
             type: '6',
             api: 'api/v1/App/Update'
@@ -135,12 +147,14 @@ export default class RootScene extends BaseComponent {
         StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
             if (res.result == null) {
                 that.navigatorParams.component = WelcomScene;
+                that.navigatorParams.name = 'WelcomScene';
                 that.toNextPage(that.navigatorParams);
             } else {
                 StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                     if (res.result !== StorageUtil.ERRORCODE) {
                         if (res.result == null) {
                             that.navigatorParams.component = LoginAndRegister;
+                            that.navigatorParams.name = 'LoginAndRegister';
                             that.toNextPage(that.navigatorParams);
                         } else {
                             if (res.result == "true") {
@@ -150,18 +164,22 @@ export default class RootScene extends BaseComponent {
                                     if (datas.user_level == 2) {
                                         if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                             that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
                                             that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);
                                         }
                                     } else {
                                         if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                             that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
                                             that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);
                                         }
@@ -169,6 +187,7 @@ export default class RootScene extends BaseComponent {
                                 });
                             } else {
                                 that.navigatorParams.component = LoginAndRegister;
+                                that.navigatorParams.name = 'LoginAndRegister';
                                 that.toNextPage(that.navigatorParams);
                             }
                         }
@@ -241,12 +260,14 @@ export default class RootScene extends BaseComponent {
         StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
             if (res.result == null) {
                 that.navigatorParams.component = WelcomScene;
+                that.navigatorParams.name = 'WelcomScene';
                 that.toNextPage(that.navigatorParams);
             } else {
                 StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                     if (res.result !== StorageUtil.ERRORCODE) {
                         if (res.result == null) {
                             that.navigatorParams.component = LoginAndRegister;
+                            that.navigatorParams.name = 'LoginAndRegister';
                             that.toNextPage(that.navigatorParams);
                         } else {
                             if (res.result == "true") {
@@ -256,18 +277,22 @@ export default class RootScene extends BaseComponent {
                                     if (datas.user_level == 2) {
                                         if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                             that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
                                             that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);
                                         }
                                     } else {
                                         if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                             that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
                                             that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);
                                         }
@@ -275,6 +300,7 @@ export default class RootScene extends BaseComponent {
                                 });
                             } else {
                                 that.navigatorParams.component = LoginAndRegister;
+                                that.navigatorParams.name = 'LoginAndRegister';
                                 that.toNextPage(that.navigatorParams);
                             }
                         }
@@ -309,16 +335,37 @@ export default class RootScene extends BaseComponent {
     }
 
     render() {
-        return (
-            <Image style={{backgroundColor: '#00000000',alignItems:'flex-end',resizeMode:'contain',flex:1,width:width}}
-                   source={require('../../images/splash.png')}>
-                <TouchableOpacity onPress={()=>{this.onPress()}} activeOpacity={0.8} style={{width:Pixel.getPixel(30),height:Pixel.getPixel(30),borderRadius: 1000,justifyContent:'center',
-                alignItems: 'center',backgroundColor: 'rgba(0,0,0,0.2)',marginRight: Pixel.getPixel(15),
-                marginTop:Pixel.getTitlePixel(35)}}>
-                    <Text allowFontScaling={false} style={{color:'#fff',fontSize:Pixel.getFontPixel(12)}}>取消</Text>
-                </TouchableOpacity>
-            </Image>
-        );
+        // return (
+        //     <Image style={{backgroundColor: '#00000000',alignItems:'flex-end',resizeMode:'stretch',flex:1,width:width}}
+        //            source={require('../../images/splash.png')}>
+        //
+        //     </Image>
+        // );
+        // <TouchableOpacity onPress={()=>{this.onPress()}} activeOpacity={0.8} style={{width:Pixel.getPixel(30),height:Pixel.getPixel(30),borderRadius: 1000,justifyContent:'center',
+        //         alignItems: 'center',backgroundColor: 'rgba(0,0,0,0.2)',marginRight: Pixel.getPixel(15),
+        //         marginTop:Pixel.getTitlePixel(35)}}>
+        //     <Text allowFontScaling={false} style={{color:'#fff',fontSize:Pixel.getFontPixel(12)}}>取消</Text>
+        // </TouchableOpacity>
+        return (<View></View>)
+    }
+
+    /**
+     *   日期格式化
+     **/
+    dateFormat = (date, fmt) => {
+        let o = {
+            "M+": date.getMonth() + 1, //月份
+            "d+": date.getDate(), //日
+            "h+": date.getHours(), //小时
+            "m+": date.getMinutes(), //分
+            "s+": date.getSeconds(), //秒
+            "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+            "S": date.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (let k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
     }
 }
 

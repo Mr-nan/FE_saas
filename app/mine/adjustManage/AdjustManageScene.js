@@ -41,7 +41,7 @@ export default class AdjustManageScene extends BaseComponent {
         let maps = {
             page: page,
             rows: 10,
-            api : Urls.LOAN_SUBJECT,
+            api: Urls.LOAN_SUBJECT,
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
@@ -106,7 +106,7 @@ export default class AdjustManageScene extends BaseComponent {
                 {this.loadView()}
                 <NavigatorView title='优惠券' backIconClick={this.backPage}/>
             </View>);
-        }else {
+        } else {
             return (<View style={styles.container}>
                 <NavigatorView title='优惠券' backIconClick={this.backPage}/>
 
@@ -114,7 +114,7 @@ export default class AdjustManageScene extends BaseComponent {
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(74)}}
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
-                          enableEmptySections = {true}
+                          enableEmptySections={true}
                           removeClippedSubviews={false}
                           renderFooter={
                               this.renderListFooter
@@ -136,6 +136,7 @@ export default class AdjustManageScene extends BaseComponent {
 
     // 每一行中的数据
     _renderRow = (rowData, rowID, selectionID) => {
+        let name = rowData.companyname == '' ? rowData.name : rowData.companyname;
         return (
             <TouchableOpacity
                 onPress={()=>{
@@ -151,10 +152,9 @@ export default class AdjustManageScene extends BaseComponent {
                 },
             })}}>
                 <View style={styles.rowView} >
-                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.companyname}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{name}</Text>
                     <Text allowFontScaling={false}  style={styles.rowRightTitle} ></Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
-
                 </View>
             </TouchableOpacity>
         );
@@ -196,8 +196,8 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
 
     },
-    image:{
-        marginRight:Pixel.getPixel(15),
+    image: {
+        marginRight: Pixel.getPixel(15),
     }
 
 

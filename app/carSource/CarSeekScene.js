@@ -213,6 +213,7 @@ export default class CarSeekScene extends BaseComponent {
 
 
     checkedCarClick = (name)=>{
+
         this.props.checkedCarClick({
             brand_id:0,
             series_id:0,

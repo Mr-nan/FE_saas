@@ -17,7 +17,7 @@ import {
 
 import BaseComponent from '../component/BaseComponent';
 import AllNavigationView from '../component/AllNavigationView';
-import CarAddRegisterPersonScene   from './CarAddRegisterPersonScene';
+import CarAddRegisterPersonScene   from './carPublish/CarAddRegisterPersonScene';
 import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 

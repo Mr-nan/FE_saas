@@ -92,7 +92,7 @@ export  default class AccountSettingScene extends BaseComponent {
                         }
                     </View>
                     <View style={{justifyContent:'center',alignItems: 'center', flexDirection:'row'}}>
-                        <Text allowFontScaling={false}  style={[{color:'red',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)},this.props.protocolType == 1 && {color:fontAndColor.COLORA1}]}>{this.props.protocolType == 1 ? '已开启':'未开启'}</Text>
+                        <Text allowFontScaling={false}  style={[{color:'red',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)},this.state.protocolType == 1 && {color:fontAndColor.COLORA1}]}>{this.state.protocolType == 1 ? '已开启':'未开启'}</Text>
                         <Image style={{marginLeft:Pixel.getPixel(5)}} source={require('../../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </TouchableOpacity>

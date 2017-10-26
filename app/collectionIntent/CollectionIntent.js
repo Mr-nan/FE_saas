@@ -476,7 +476,7 @@ export default class CollectionIntent extends BaseComponent {
             return (
                 <View style={styles.container}>
                     <NavigationBar
-                        centerText={'收车意向'}
+                        centerText={'订阅车源'}
                         rightText={''}
                         leftImageCallBack={this.backPage}
 
@@ -488,7 +488,7 @@ export default class CollectionIntent extends BaseComponent {
             return (
                 <View style={styles.container}>
                     <NavigationBar
-                        centerText={'收车意向'}
+                        centerText={'订阅车源'}
                         rightText={''}
                         leftImageCallBack={this.backPage}
 
@@ -611,7 +611,7 @@ export default class CollectionIntent extends BaseComponent {
                                 )}
                             </View>
                         </View>
-                        <Text allowFontScaling={false}  style={styles.bottomText}>根据您提报的收车意向，我们会推荐相关车源，请关注首页意向车源。</Text>
+                        <Text allowFontScaling={false}  style={styles.bottomText}>根据您提报的订阅条件，我们会推荐相关车源，请关注首页已订阅车源。</Text>
                         <TouchableOpacity style={styles.btnStyle}
                                           onPress={() => this.loadData('')}>
                             <Text allowFontScaling={false}  style={{

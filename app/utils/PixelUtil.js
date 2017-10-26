@@ -13,33 +13,33 @@ const PixelUtil = React.createClass({
     getPixel(px){
 
         if (Platform.OS === 'android') {
-            return ((px / 375.0) * width);
+            return Math.round((px / 375.0) * width);
         } else {
-            return ((px / 375.0) * width);
+            return Math.round((px / 375.0) * width);
         }
     },
     getFontPixel(px){
         if (Platform.OS === 'android') {
-            return ((px / 375.0) * width);
+            return Math.round((px / 375.0) * width);
         } else {
-            return ((px / 375.0) * width) ;
+            return Math.round((px / 375.0) * width);
 
         }
     },
     getTitlePixel(px){
         if (Platform.OS === 'android') {
-            return (((px - 20) / 375.0) * width);
+            return Math.round(((px - 20) / 375.0) * width);
         } else {
-            return ((px / 375.0) * width);
+            return Math.round((px / 375.0) * width);
 
         }
     },
 
     getBottomPixel(px){
         if (Platform.OS === 'android') {
-            return (((px + 20) / 375.0) * width);
+            return Math.round(((px + 20) / 375.0) * width);
         } else {
-            return ((px / 375.0) * width);
+            return Math.round((px / 375.0) * width);
 
         }
     }

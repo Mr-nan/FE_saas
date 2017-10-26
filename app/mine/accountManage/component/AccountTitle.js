@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
-    InteractionManager
+    InteractionManager,
+    Clipboard,
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -39,7 +40,7 @@ export  default class AccountTitle extends PureComponent {
         list.push(new listValue('修改交易密码', require('../../../../images/mainImage/changePwd.png'), this.props.changePwd));
         list.push(new listValue('重置交易密码', require('../../../../images/mainImage/resetPwd.png'), this.props.resetPwd));
         list.push(new listValue('修改银行预留手机号码', require('../../../../images/mainImage/changePhone.png'), this.props.changePhone));
-        //list.push(new listValue('账户设置',require('../../../../images/mainImage/accountSetting.png'),this.props.accountSetting));
+        list.push(new listValue('账户设置', require('../../../../images/mainImage/accountSetting.png'), this.props.accountSetting));
     }
 
     /**
@@ -82,31 +83,45 @@ export  default class AccountTitle extends PureComponent {
                 </View>
             </TouchableOpacity>);
         }
-        itemList.push(<View key={'end'} style={{width:width,height:Pixel.getPixel(30),backgroundColor:fontAndColor.COLORA3,
+/*        itemList.push(
+            <View key={'end'} style={{width:width,height:Pixel.getPixel(30),backgroundColor:fontAndColor.COLORA3,
         flexDirection: 'row'}}>
-            <View style={{flex:1,justifyContent:'center'}}>
-                <Text allowFontScaling={false} style={{color:fontAndColor.COLORA1,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
+                <View style={{flex:1,justifyContent:'center'}}>
+                    <Text allowFontScaling={false} style={{color:fontAndColor.COLORA1,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
             marginLeft:Pixel.getPixel(15)}}>最近流水</Text>
-            </View>
-            <TouchableOpacity onPress={()=>{
+                </View>
+                <TouchableOpacity onPress={()=>{
                     this.props.moreFlow();
             }} activeOpacity={0.9} style={{flex:1,flexDirection: 'row',justifyContent:'flex-end',alignItems:'center'}}>
 
-                <Text allowFontScaling={false}
-                      style={{color:fontAndColor.COLORA2,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24)}}>更多 </Text>
-                <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14),marginRight:Pixel.getPixel(15)}}
-                       source={require('../../../../images/mainImage/celljiantou.png')}/>
-            </TouchableOpacity>
-        </View>);
+                    <Text allowFontScaling={false}
+                          style={{color:fontAndColor.COLORA2,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24)}}>更多 </Text>
+                    <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14),marginRight:Pixel.getPixel(15)}}
+                           source={require('../../../../images/mainImage/celljiantou.png')}/>
+                </TouchableOpacity>
+            </View>
+        );*/
         return (
-            <View style={{width:width,height:Pixel.getPixel(540),backgroundColor:fontAndColor.COLORA3}}>
+            <View style={{width:width,height:Pixel.getPixel(584),backgroundColor:fontAndColor.COLORA3}}>
                 <View style={{width:width,height:Pixel.getPixel(211),backgroundColor:fontAndColor.COLORB0}}>
                     <View style={{width:width,height:Pixel.getPixel(35),backgroundColor:'rgba(105,105,105,0.1)',
-                justifyContent:'center'}}>
+                    flexDirection: 'row',alignItems:'center'}}>
                         <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(20),color: '#fff',
                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
                             账户号码：{this.props.info.bank_card_no}
                         </Text>
+                        <View style={{flex:1}}></View>
+                        <TouchableOpacity
+                            onPress={()=>{  Clipboard.setString(this.props.info.bank_card_no);this.props.copy('复制成功');}}
+                            activeOpacity={0.9}
+                            style={{borderColor:'white',borderWidth:1,
+                                          marginRight:Pixel.getPixel(10),alignItems:'center',justifyContent:'center',
+                                          padding:Pixel.getPixel(5)}}>
+
+                            <Text allowFontScaling={false}
+                                  style={{color:fontAndColor.COLORA3,fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>复制</Text>
+                        </TouchableOpacity>
+
                     </View>
                     <View style={{width:width,height:Pixel.getPixel(175)}}>
                         <View
@@ -140,7 +155,7 @@ export  default class AccountTitle extends PureComponent {
                         </View>
                     </View>
                 </View>
-                <View style={{width:width,height:Pixel.getPixel(330),backgroundColor:fontAndColor.COLORA3}}>
+                <View style={{width:width,height:Pixel.getPixel(374),backgroundColor:fontAndColor.COLORA3}}>
                     {itemList}
                 </View>
             </View>
