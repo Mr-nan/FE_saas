@@ -68,7 +68,6 @@
 		7D9B6C2F1F8DB56B0063B7C1 /* ZNShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C291F8DB56B0063B7C1 /* ZNShareViewController.m */; };
 		7D9B6C301F8DB56B0063B7C1 /* ZNShareClass.h in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C2A1F8DB56B0063B7C1 /* ZNShareClass.h */; };
 		7DB2CBB21E779CB400DE146C /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB2CBB11E779CB400DE146C /* libbz2.1.0.tbd */; };
-		7DB2CBD11E779DDF00DE146C /* libSVehicleLicense.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB2CBB51E779DDF00DE146C /* libSVehicleLicense.a */; };
 		7DB2CBD21E779DDF00DE146C /* libvinTyper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB2CBB61E779DDF00DE146C /* libvinTyper.a */; };
 		7DB2CBD31E779DDF00DE146C /* back_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DB2CBB81E779DDF00DE146C /* back_btn@2x.png */; };
 		7DB2CBD41E779DDF00DE146C /* back_btn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DB2CBB91E779DDF00DE146C /* back_btn@3x.png */; };
@@ -412,7 +411,6 @@
 		7D9B6C291F8DB56B0063B7C1 /* ZNShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ZNShareViewController.m; path = FE_Sass/ZNShareViewController.m; sourceTree = "<group>"; };
 		7D9B6C2A1F8DB56B0063B7C1 /* ZNShareClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ZNShareClass.h; path = FE_Sass/ZNShareClass.h; sourceTree = "<group>"; };
 		7DB2CBB11E779CB400DE146C /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
-		7DB2CBB51E779DDF00DE146C /* libSVehicleLicense.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSVehicleLicense.a; sourceTree = "<group>"; };
 		7DB2CBB61E779DDF00DE146C /* libvinTyper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libvinTyper.a; sourceTree = "<group>"; };
 		7DB2CBB81E779DDF00DE146C /* back_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_btn@2x.png"; sourceTree = "<group>"; };
 		7DB2CBB91E779DDF00DE146C /* back_btn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_btn@3x.png"; sourceTree = "<group>"; };
@@ -426,7 +424,6 @@
 		7DB2CBC11E779DDF00DE146C /* scan_line@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scan_line@3x.png"; sourceTree = "<group>"; };
 		7DB2CBC21E779DDF00DE146C /* take_pic_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "take_pic_btn@2x.png"; sourceTree = "<group>"; };
 		7DB2CBC31E779DDF00DE146C /* take_pic_btn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "take_pic_btn@3x.png"; sourceTree = "<group>"; };
-		7DB2CBC41E779DDF00DE146C /* SVehicleLicense.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVehicleLicense.h; sourceTree = "<group>"; };
 		7DB2CBC51E779DDF00DE146C /* TopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopView.h; sourceTree = "<group>"; };
 		7DB2CBC61E779DDF00DE146C /* TopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopView.m; sourceTree = "<group>"; };
 		7DB2CBC71E779DDF00DE146C /* VinCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VinCameraViewController.h; sourceTree = "<group>"; };
@@ -475,7 +472,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DB2CBD11E779DDF00DE146C /* libSVehicleLicense.a in Frameworks */,
 				EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */,
 				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
 				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
@@ -735,10 +731,8 @@
 			isa = PBXGroup;
 			children = (
 				7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */,
-				7DB2CBB51E779DDF00DE146C /* libSVehicleLicense.a */,
 				7DB2CBB61E779DDF00DE146C /* libvinTyper.a */,
 				7DB2CBB71E779DDF00DE146C /* Resources */,
-				7DB2CBC41E779DDF00DE146C /* SVehicleLicense.h */,
 				7DB2CBC51E779DDF00DE146C /* TopView.h */,
 				7DB2CBC61E779DDF00DE146C /* TopView.m */,
 				7DB2CBC71E779DDF00DE146C /* VinCameraViewController.h */,
