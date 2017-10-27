@@ -29,7 +29,7 @@ var Pixel = new PixelUtil();
 import codePush from 'react-native-code-push'
 import SQLiteUtil from "../utils/SQLiteUtil";
 const SQLite = new SQLiteUtil();
-const versionCode = 24.0;
+const versionCode = 25.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
