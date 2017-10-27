@@ -475,6 +475,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DB2CBD11E779DDF00DE146C /* libSVehicleLicense.a in Frameworks */,
 				EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */,
 				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
 				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
@@ -493,7 +494,6 @@
 				6EFC1612A1C141A990AA381C /* libsqlite3.0.tbd in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
-				7DB2CBD11E779DDF00DE146C /* libSVehicleLicense.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,

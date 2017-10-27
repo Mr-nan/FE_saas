@@ -152,7 +152,7 @@ export  default class BankCardScene extends BaseComponent {
                                                 items={childItems[i]} toSelect={()=>{
                     this.toNextPage({name:'SelectTypeScene',component:SelectTypeScene,params:{regShowData:['男','女'],
                     title:'选择性别',callBack:(name,index)=>{
-                        childItems[i].value = name+','+index;
+                        childItems[i].value =index;
                         this.refs.selectsex.setValue(name);
                     }}})
                 }}/>);

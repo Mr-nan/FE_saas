@@ -210,12 +210,23 @@ export default class CarBodyColorScene extends  BaseComponent{
 
         });
 
+        let array = this.chunk(this.props.carBodyColorData,3);
+        console.log(array);
+
 
 
         this.state = {
             carShell: this.viewShell,
         }
     }
+
+    chunk =(arr, n) =>{
+        let length = arr.length;
+        console.log(length);
+        console.log(length / 6,length%6);
+        return Array.from(Array(Math.ceil(arr.length / n)), (_, i) => arr.slice(i * n, (i * n) + n));
+    }
+
 
     render(){
         return(
