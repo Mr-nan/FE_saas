@@ -19,6 +19,7 @@ import SysMessageListScene from "../message/sysMessage/SysMessageListScene";
 import  StorageUtil from './StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import SoftArticlesCenterScene from "../main/SoftArticlesCenterScene";
+import YaoQingDeHaoLi from "../mine/setting/YaoQingDeHaoLi";
 const GetPermissionUtil = React.createClass({
 
     render(){
@@ -184,6 +185,11 @@ const GetPermissionUtil = React.createClass({
             names = name;
             component = SysMessageListScene;
             componentName = 'sysmessagelistscene';
+        }else if (id == 57) {
+            image = require('../../images/mainImage/my_yqdhl.png');
+            names = name;
+            component = YaoQingDeHaoLi;
+            componentName = 'yaoqingdehaoli';
         }
         return {name: names, id: id, image: image, component: component, componentName: componentName}
     }, removal(array){
