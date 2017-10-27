@@ -61,6 +61,7 @@
 		7D5A48CF1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic in Resources */ = {isa = PBXBuildFile; fileRef = 7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */; };
 		7D5D8B681EE5565900892F2E /* (null) in Resources */ = {isa = PBXBuildFile; };
 		7D769E2E1E602A800039526C /* libc++abi.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2D1E602A800039526C /* libc++abi.tbd */; };
+		7D83AE981FA2C77C001A24F7 /* SVehicleLicense.h in Sources */ = {isa = PBXBuildFile; fileRef = 7D83AE751FA2C6D6001A24F7 /* SVehicleLicense.h */; };
 		7D9B6C2B1F8DB56B0063B7C1 /* ZNShareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C251F8DB56B0063B7C1 /* ZNShareClass.m */; };
 		7D9B6C2C1F8DB56B0063B7C1 /* MBProgressHUD.h in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C261F8DB56B0063B7C1 /* MBProgressHUD.h */; };
 		7D9B6C2D1F8DB56B0063B7C1 /* ZNShareViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C271F8DB56B0063B7C1 /* ZNShareViewController.h */; };
@@ -171,20 +172,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
-		};
-		15649C041F94B56200641E31 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A08B9B7AF08C41A082FB247D /* RCTWeChat.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 10D6D7A41F160C250066F0F3;
-			remoteInfo = RCTWeChatTests;
-		};
-		15649C111F94B56200641E31 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 641194871EC9FD4A00D4FC03;
-			remoteInfo = "RNSpinkit-tvOS";
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -418,6 +405,8 @@
 		7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
 		7D769E2B1E602A630039526C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		7D769E2D1E602A800039526C /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = "usr/lib/libc++abi.tbd"; sourceTree = SDKROOT; };
+		7D83AE751FA2C6D6001A24F7 /* SVehicleLicense.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVehicleLicense.h; sourceTree = "<group>"; };
+		7D83AE971FA2C6D6001A24F7 /* libSVehicleLicense.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSVehicleLicense.a; sourceTree = "<group>"; };
 		7D9B6C251F8DB56B0063B7C1 /* ZNShareClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ZNShareClass.m; path = FE_Sass/ZNShareClass.m; sourceTree = "<group>"; };
 		7D9B6C261F8DB56B0063B7C1 /* MBProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = FE_Sass/MBProgressHUD.h; sourceTree = "<group>"; };
 		7D9B6C271F8DB56B0063B7C1 /* ZNShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ZNShareViewController.h; path = FE_Sass/ZNShareViewController.h; sourceTree = "<group>"; };
@@ -722,7 +711,6 @@
 			isa = PBXGroup;
 			children = (
 				7D769F0F1E6572180039526C /* libRNSpinkit.a */,
-				15649C121F94B56200641E31 /* libRNSpinkit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -745,6 +733,8 @@
 		7DB2CBB31E779DDF00DE146C /* OCRSCancer */ = {
 			isa = PBXGroup;
 			children = (
+				7D83AE971FA2C6D6001A24F7 /* libSVehicleLicense.a */,
+				7D83AE751FA2C6D6001A24F7 /* SVehicleLicense.h */,
 				7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */,
 				7DB2CBB61E779DDF00DE146C /* libvinTyper.a */,
 				7DB2CBB71E779DDF00DE146C /* Resources */,
@@ -900,7 +890,6 @@
 			isa = PBXGroup;
 			children = (
 				E3B816F81E613DD400279287 /* libRCTWeChat.a */,
-				15649C051F94B56200641E31 /* RCTWeChatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1182,20 +1171,6 @@
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		15649C051F94B56200641E31 /* RCTWeChatTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = RCTWeChatTests.xctest;
-			remoteRef = 15649C041F94B56200641E31 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		15649C121F94B56200641E31 /* libRNSpinkit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNSpinkit.a;
-			remoteRef = 15649C111F94B56200641E31 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1464,6 +1439,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D83AE981FA2C77C001A24F7 /* SVehicleLicense.h in Sources */,
 				7D9B6C2B1F8DB56B0063B7C1 /* ZNShareClass.m in Sources */,
 				7D9B6C2C1F8DB56B0063B7C1 /* MBProgressHUD.h in Sources */,
 				7D9B6C2D1F8DB56B0063B7C1 /* ZNShareViewController.h in Sources */,
