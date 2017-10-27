@@ -62,6 +62,7 @@
 		7D5D8B681EE5565900892F2E /* (null) in Resources */ = {isa = PBXBuildFile; };
 		7D769E2E1E602A800039526C /* libc++abi.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2D1E602A800039526C /* libc++abi.tbd */; };
 		7D83AE981FA2C77C001A24F7 /* SVehicleLicense.h in Sources */ = {isa = PBXBuildFile; fileRef = 7D83AE751FA2C6D6001A24F7 /* SVehicleLicense.h */; };
+		7D83AEBF1FA2CC3B001A24F7 /* libSVehicleLicense.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D83AE971FA2C6D6001A24F7 /* libSVehicleLicense.a */; };
 		7D9B6C2B1F8DB56B0063B7C1 /* ZNShareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C251F8DB56B0063B7C1 /* ZNShareClass.m */; };
 		7D9B6C2C1F8DB56B0063B7C1 /* MBProgressHUD.h in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C261F8DB56B0063B7C1 /* MBProgressHUD.h */; };
 		7D9B6C2D1F8DB56B0063B7C1 /* ZNShareViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B6C271F8DB56B0063B7C1 /* ZNShareViewController.h */; };
@@ -475,6 +476,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D83AEBF1FA2CC3B001A24F7 /* libSVehicleLicense.a in Frameworks */,
 				EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */,
 				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
 				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
