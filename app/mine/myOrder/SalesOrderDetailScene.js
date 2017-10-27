@@ -100,8 +100,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
 
         } finally {
             //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.initFinish();
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
             //});
         }
     }
