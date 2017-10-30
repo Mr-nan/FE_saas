@@ -39,6 +39,7 @@ import PixelUtil            from '../utils/PixelUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import StorageUtil from '../utils/StorageUtil';
 import * as CarDeployData from './carData/CarDeployData';
+import ZNSwitchoverButton from './znComponent/ZNSwitchoverButton';
 
 
 let Pixel = new PixelUtil();
@@ -968,6 +969,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
             <View style={styles.contaier}>
                 <CarListNavigatorView searchClick={this.presCarTypeScene}  ScreeningClick={this.ScreeningClick} loactionClick={this.loactionClick}/>
+                <View style={{flex:1,justifyContent:'center', alignItems:'center'}}><ZNSwitchoverButton/></View>
                 <CarSourceSelectHeadView ref="HeadView" onPres={this.headViewOnPres}
                                          checkRecommendClick={this.checkRecommendClick}
                                          isCheckRecommend = {isCheckRecommend}/>
