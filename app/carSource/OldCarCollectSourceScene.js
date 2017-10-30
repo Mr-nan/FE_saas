@@ -166,7 +166,7 @@ export default class OldCarCollectSourceScene extends BaceComponent {
                               }else if(rowData.status==4){
                                     this.props.showToast('该车辆已成交，不可查看');
                               }else{
-                                  this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}});
+                                  this.props.toNextPage(id);
                               }
                           }}
                           callBack={(id)=>{

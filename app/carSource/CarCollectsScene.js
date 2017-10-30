@@ -22,6 +22,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../finance/repayment/component/RepaymenyTabBar';
 import NewCarCollectSourceScene from './NewCarCollectSourceScene'
 import OldCarCollectSourceScene from './OldCarCollectSourceScene'
+import CarInfoScene from '../../app/carSource/CarInfoScene'
 let index = 0;
 export  default class CarCollectsScene extends BaseComponent {
 
@@ -56,10 +57,13 @@ export  default class CarCollectsScene extends BaseComponent {
                     renderTabBar={() => <RepaymenyTabBar tabName={['新车','二手车']}/>}
                 >
                     {/*新车*/}
-                    <NewCarCollectSourceScene ref="new" tabLabel="ios-paper0" showToast={(str)=>{this.props.showToast(str)}} transfer_type="all"/>
+                    <NewCarCollectSourceScene ref="new" tabLabel="ios-paper0" showToast={(str)=>{this.props.showToast(str)}}
+                                              toNextPage = {(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}} transfer_type="all"/>
 
                     {/*二手车*/}
-                    <OldCarCollectSourceScene ref="old" tabLabel="ios-paper1" transfer_type="3"/>
+                    <OldCarCollectSourceScene ref="old" tabLabel="ios-paper1"
+                                              showToast={(str)=>{this.props.showToast(str)}}
+                                              toNextPage = {(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}} transfer_type="3"/>
 
                 </ScrollableTabView>
                 <NavigationView
