@@ -23,6 +23,9 @@ import RepaymenyTabBar from '../finance/repayment/component/RepaymenyTabBar';
 import NewBrowsingHistoryScene from './NewBrowsingHistoryScene';
 import OldBrowsingHistoryScene from './OldBrowsingHistoryScene';
 import CarInfoScene from '../../app/carSource/CarInfoScene';
+import  AllLoading from '../component/AllLoading';
+import {request} from '../utils/RequestUtil';
+import * as Urls from '../constant/appUrls';
 let index = 0;
 export  default class BrowsingHistorysScene extends BaseComponent {
 
@@ -67,14 +70,40 @@ export  default class BrowsingHistorysScene extends BaseComponent {
                                              toNextPage = {(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}}transfer_type="3"/>
 
                 </ScrollableTabView>
-                <NavigationView
-                    title="浏览历史"
-                    backIconClick={this.backPage}
-                />
+                <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
+                        this.deleteAllCliiection();
+                }}/>
+                <NavigationView title='浏览历史' backIconClick={this.backPage}
+                               renderRihtFootView={this._navigatorRightView}/>
             </View>
         );
     }
 
+    deleteAllCliiection = () => {
+        if(index == 0){
+            this.refs.new.deleteAllCliiection();
+        }else if(index ==1){
+            this.refs.old.deleteAllCliiection();
+        }
+    }
+
+    _navigatorRightView = () => {
+        return (
+            <TouchableOpacity  activeOpacity={0.8} onPress={()=>{
+            this.refs.allloading.changeShowType(true,'确认清空吗？');
+        }}>
+                <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
+                    <Text allowFontScaling={false}
+                          style={{
+                    color: 'white',
+                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                    textAlign: 'center',
+                    backgroundColor: 'transparent',
+                }}>清空历史</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
 
     _renderPlaceholderView() {
         return (
