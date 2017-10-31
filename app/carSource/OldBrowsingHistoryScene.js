@@ -169,13 +169,14 @@ export default class OldBrowsingHistoryScene extends BaceComponent {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.rootContainer}>
+                <View style={{height:Pixel.getPixel(1) ,backgroundColor:fontAndColor.COLORA3}}></View>
                 {this.loadView()}
             </View>);
         }
         return (
             <View style={styles.rootContainer}>
-                {this._navigatorRightView()}
-                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                <View style={{height:Pixel.getPixel(1) ,backgroundColor:fontAndColor.COLORA3}}></View>
+                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(30)}}
                           dataSource={this.state.carData}
                           showsVerticalScrollIndicator={false}
                           removeClippedSubviews={false}
@@ -208,29 +209,8 @@ export default class OldBrowsingHistoryScene extends BaceComponent {
                                     />
                                 }
                 />
-                <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
-                        this.deleteAllCliiection();
-                }}/>
             </View>)
 
-    }
-
-    _navigatorRightView = () => {
-        return (
-            <TouchableOpacity  activeOpacity={0.8} onPress={()=>{
-            this.refs.allloading.changeShowType(true,'确认清空吗？');
-        }}>
-                <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:fontAndColor.COLORB0,borderRadius:3}}>
-                    <Text allowFontScaling={false}
-                          style={{
-                    color: fontAndColor.COLORB0,
-                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                    textAlign: 'center',
-                    backgroundColor: 'transparent',
-                }}>清空历史</Text>
-                </View>
-            </TouchableOpacity>
-        );
     }
 
 }

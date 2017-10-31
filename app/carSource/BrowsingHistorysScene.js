@@ -92,7 +92,7 @@ export  default class BrowsingHistorysScene extends BaseComponent {
             <TouchableOpacity  activeOpacity={0.8} onPress={()=>{
             this.refs.allloading.changeShowType(true,'确认清空吗？');
         }}>
-                <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
+                <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent'}}>
                     <Text allowFontScaling={false}
                           style={{
                     color: 'white',
