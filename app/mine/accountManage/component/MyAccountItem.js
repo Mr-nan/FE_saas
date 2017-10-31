@@ -107,8 +107,8 @@ export default class MyAccountItem extends BaseComponent {
      *   type 0恒丰 1浙商
      **/
     jumpDetailPage = (type) => {
-        this.props.showModal(true);
         if (type == '0') {
+            this.props.showModal(true);
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code == 1) {
                     let datas = JSON.parse(data.result);
@@ -131,6 +131,7 @@ export default class MyAccountItem extends BaseComponent {
                 }
             });
         } else {
+            //this.props.showModal(false);
             this.pageDispense(type, 0);
             this.toNextPage(this.navigatorParams);
         }

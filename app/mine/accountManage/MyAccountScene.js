@@ -187,6 +187,7 @@ export default class MyAccountScene extends BaseComponent {
             info = this.hengFengInfo;
         } else {
             // TODO info = 浙商账户数据
+            info = this.hengFengInfo;
         }
         return (
             <MyAccountItem navigator={this.props.navigator}

@@ -229,54 +229,9 @@ export  default class ZheShangAccountScene extends BaseComponent {
                           component:BankCardScene,params:{callBack:()=>{this.props.callBack()}}})}}
                           flow={()=>{this.toNextPage({name:'AccountFlowScene',
                           component:AccountFlowScene,params:{}})}}
-                          changePwd={()=>{
-                              let maps={
-                                  user_type:this.state.info.account_open_type,
-                                  reback_url:webBackUrl.CHANGEPWD,
-                                  enter_base_id:this.state.enter_id
-                              }
-                              this.getWebUrl(Urls.USER_ACCOUNT_EDITPAYPWD,maps,'修改交易密码',
-                              webBackUrl.CHANGEPWD);
-                          }}
-                          resetPwd={()=>{
-                              let maps={
-                                  user_type:this.state.info.account_open_type,
-                                  reback_url:webBackUrl.RESETPWD,
-                                  enter_base_id:this.state.enter_id
-                              }
-                              this.getWebUrl(Urls.USER_ACCOUNT_RESETPAYPWD,maps,'重置交易密码',
-                              webBackUrl.RESETPWD);
-                          }}
                           changePhone={()=>{
-                              let maps={
-                                  user_type:this.state.info.account_open_type,
-                                  reback_url:webBackUrl.CHANGEPHONE,
-                                  enter_base_id:this.state.enter_id
-                              }
-                              this.getWebUrl(Urls.USER_BANK_EDITPHONE,maps,'修改手机号',
-                              webBackUrl.CHANGEPHONE);
+
                           }}
-                          accountSetting={()=>{
-
-                              StorageUtil.mGetItem(StorageKeyNames.USER_INFO,((data)=>{
-                                  console.log(data);
-                                  if(data.code==1 && data.result)
-                                  {     let userInfo = JSON.parse(data.result);
-                                      if(userInfo.user_level!=2){
-                                          this.props.showToast('您的账户未授信，请先去授信');
-                                      }else {
-                                          this.toNextPage({
-                                              name:'AccountSettingScene',
-                                              component:AccountSettingScene,params:{
-                                                  protocolType:this.isOpenContract,
-                                              }})
-                                      }
-                                  }
-                              }));
-
-
-                          }
-                          }
                           moreFlow={()=>{this.toNextPage({name:'AccountFlowScene',
                           component:AccountFlowScene,params:{}})}}
                           frozen={()=>{
@@ -285,40 +240,9 @@ export  default class ZheShangAccountScene extends BaseComponent {
                           copy={(number)=>{
                               this.props.showToast(number);
                           }}
-                          transfer={()=>{this.toNextPage({name:'TransferScene',
-                          component:TransferScene,params:{money:this.state.info.balance,callBack:()=>{
-                              this.allRefresh()}}})}}
-
-
             />
         )
-    }
-
-    getWebUrl = (url, maps, title,backUrl) => {
-        this.props.showModal(true);
-        request(url, 'Post', maps)
-            .then((response) => {
-                    this.props.showModal(false);
-                    this.toNextPage({
-                        name: 'AccountWebScene', component: AccountWebScene, params: {
-                            title: title,
-                            webUrl: response.mjson.data.auth_url +
-                            '?authTokenId=' + response.mjson.data.auth_token,
-                            callBack:()=>{
-                                    this.allRefresh()
-                            },backUrl:backUrl
-                        }
-                    });
-                },
-                (error) => {
-                    this.props.showModal(false);
-                    if (error.mycode == -300 || error.mycode == -500) {
-                        this.props.showToast('网络连接失败');
-                    } else {
-                        this.props.showToast(error.mjson.msg);
-                    }
-                });
-    }
+    };
 
     _renderSeparator(sectionId, rowId) {
         return (
