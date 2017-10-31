@@ -25,6 +25,7 @@ import StorageUtil from "../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../constant/storageKeyNames";
 import {request} from "../../../utils/RequestUtil";
 import * as Urls from '../../../constant/appUrls';
+import ZheShangAccountScene from "../zheshangAccount/ZheShangAccountScene";
 const Pixel = new PixelUtil();
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
@@ -93,6 +94,11 @@ export default class MyAccountItem extends BaseComponent {
             }
         } else {
             //TODO 浙商页面跳转分发
+            this.navigatorParams.name = 'ZheShangAccountScene';
+            this.navigatorParams.component = ZheShangAccountScene;
+            this.navigatorParams.params = {
+
+            };
         }
     };
 
@@ -125,7 +131,8 @@ export default class MyAccountItem extends BaseComponent {
                 }
             });
         } else {
-
+            this.pageDispense(type, 0);
+            this.toNextPage(this.navigatorParams);
         }
     };
 
