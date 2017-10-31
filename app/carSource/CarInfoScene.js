@@ -659,6 +659,7 @@ export default class CarInfoScene extends BaseComponent {
 
         }, (error) => {
             if (error.mjson.code == '6350133') {
+                this.props.showModal(false);
                 this.expModal.changeShowType(true, '提示', '车辆已售出请查看其它车源', '确定');
             } else {
                 this.props.showModal(false);
