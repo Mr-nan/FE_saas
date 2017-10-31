@@ -43,6 +43,7 @@ import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
 import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
 import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
 import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
+import MyAccountScene from "../mine/accountManage/MyAccountScene";
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
@@ -436,66 +437,23 @@ export default class MineScene extends BaseComponent {
     }
 
     toPage = () => {
-        this.props.showModal(true);
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    enter_base_ids: datas.company_base_id,
-                    child_type: '1'
-                };
-                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                    .then((response) => {
-                            this.props.showModal(false);
-                            haveOrder = response.mjson.data.order.tradeing_count;
-                            lastType = response.mjson.data.account.status;
-                            if (lastType == '0') {
-                                this.navigatorParams.name = 'AccountManageScene'
-                                this.navigatorParams.component = AccountManageScene
-                                this.navigatorParams.params = {
-                                    callBack: () => {
-                                        this.allRefresh();
-                                    }
-                                }
-                            } else if (lastType == '1') {
-                                this.navigatorParams.name = 'BindCardScene'
-                                this.navigatorParams.component = BindCardScene
-                                this.navigatorParams.params = {
-                                    callBack: () => {
-                                        this.allRefresh();
-                                    }
-                                }
-                            } else if (lastType == '2') {
-                                this.navigatorParams.name = 'WaitActivationAccountScene'
-                                this.navigatorParams.component = WaitActivationAccountScene
-                            } else {
-                                this.navigatorParams.name = 'AccountScene'
-                                this.navigatorParams.component = AccountScene
-                                this.navigatorParams.params = {
-                                    callBack: () => {
-                                        this.allRefresh();
-                                    }
-                                }
-                            }
-                            this.refs.accountmodal.changeShowType(false);
-                            firstType = lastType;
-                            this.props.callBack(this.navigatorParams);
-
-                        },
-                        (error) => {
-                            this.props.showToast('用户信息查询失败');
-                        });
-            } else {
-                this.props.showToast('用户信息查询失败');
-            }
-        });
-    }
+        this.navigatorParams.name = 'MyAccountScene';
+        this.navigatorParams.component = MyAccountScene;
+        this.navigatorParams.params = {
+            /*callBack: () => {
+                this.allRefresh();
+            }*/
+        };
+        this.refs.accountmodal.changeShowType(false);
+        firstType = lastType;
+        this.props.callBack(this.navigatorParams);
+    };
 
     _navigator(rowData) {
         switch (rowData.id) {
             case 15:
                 this.toPage();
-                return
+                return;
                 break;
             case 17:
                 this.props.toSelect();
@@ -545,13 +503,13 @@ export default class MineScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData) => {
         let showName = '';
-        if (lastType == '0') {
-            showName = '未开户';
-        } else if (lastType == '1') {
-            showName = '未绑卡';
-        } else if (lastType == '2') {
-            showName = '未激活';
-        }
+        /*        if (lastType == '0') {
+         showName = '未开户';
+         } else if (lastType == '1') {
+         showName = '未绑卡';
+         } else if (lastType == '2') {
+         showName = '未激活';
+         }*/
         if (rowData.name == 'blank') {
             return (
                 <View style={{width: width, height: Pixel.getPixel(2), backgroundColor: fontAndClolr.COLORA3}}></View>
@@ -565,9 +523,12 @@ export default class MineScene extends BaseComponent {
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
                     <Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
-                    {rowData.id == 15 ? <Text allowFontScaling={false} style={{ marginRight: Pixel.getPixel(15),
-                        backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
-                            Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>{showName}</Text> :
+                    {rowData.id == 15 ? <Text allowFontScaling={false} style={{
+                        marginRight: Pixel.getPixel(15),
+                        backgroundColor: '#00000000',
+                        color: fontAndClolr.COLORB2,
+                        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)
+                    }}>{showName}</Text> :
                         <View/>}
                     {rowData.name == '我的订单' && haveOrder != 0 ?
                         <View style={{
