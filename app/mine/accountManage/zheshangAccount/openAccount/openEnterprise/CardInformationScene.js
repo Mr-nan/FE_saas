@@ -18,7 +18,6 @@ import PixelUtil from "../../../../../utils/PixelUtil";
 import MyButton from "../../../../../component/MyButton";
 import {request} from "../../../../../utils/RequestUtil";
 import * as AppUrls from "../../../../../constant/appUrls";
-import md5 from "react-native-md5";
 import StorageUtil from "../../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../../constant/storageKeyNames";
 import TextInputItem from '../../component/TextInputItem'

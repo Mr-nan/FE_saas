@@ -18,7 +18,6 @@ import PixelUtil from "../../../../utils/PixelUtil";
 import MyButton from "../../../../component/MyButton";
 import {request} from "../../../../utils/RequestUtil";
 import * as AppUrls from "../../../../constant/appUrls";
-import md5 from "react-native-md5";
 import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import TextInputItem from '../component/TextInputItem'
@@ -54,7 +53,7 @@ export default class NameAndIdScene extends BaseComponent {
                         leftImageShow={false}
                         leftTextShow={true}
                         leftText={""}
-                        centerText={'修改银行预留手机号'}
+                        centerText={'更换银行卡'}
                         rightText={""}
                         centerTextStyle={{paddingHorizontal:0, backgroundColor:'red'}}
                     />
@@ -66,7 +65,7 @@ export default class NameAndIdScene extends BaseComponent {
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
-                    centerText={"修改银行预留手机号"}
+                    centerText={"更换银行卡"}
                     rightText={""}
                     leftImageCallBack={this.backPage}
                     centerTextStyle={{paddingLeft:0,paddingRight:0}}
@@ -80,13 +79,13 @@ export default class NameAndIdScene extends BaseComponent {
                         editable={false}
                     />
                     <TextInputItem
-                        title={'真实姓名'}
-                        value={'张无忌'}
+                        title={'原银行卡'}
+                        value={'发生防守打法三个傻瓜'}
                         editable={false}
                     />
                     <TextInputItem
-                        title={'证件号码'}
-                        value={'1234567890987654321'}
+                        title={'账户余额'}
+                        value={'12345678909'}
                         textPlaceholder={'请输入短信验证码'}
                         keyboardType={'number-pad'}
                         editable={false}
@@ -95,13 +94,26 @@ export default class NameAndIdScene extends BaseComponent {
 
                 </View>
                 <View style = {{width:width, marginTop:15, }}>
-
                     <TextInputItem
-                        title={'新手机号'}
-                        textPlaceholder={'请输入您的手机号'}
+                        title={'新银行卡'}
+                        textPlaceholder={'请输入您的新银行卡卡号'}
                         keyboardType={'number-pad'}
-                        rightButton={true}
+
                         maxLength={11}
+                    />
+                    <TextInputItem
+                        titleStyle={{letterSpacing:8}}
+                        inputTextStyle={{paddingLeft:8}}
+                        title={'开户行'}
+                        textPlaceholder={'请输入开户行支行信息'}
+                    />
+                    <TextInputItem
+                        titleStyle={{letterSpacing:8}}
+                        inputTextStyle={{paddingLeft:8}}
+                        title={'手机号'}
+                        value={'1234567890'}
+                        editable={false}
+                        rightButton={true}
                     />
                     <TextInputItem
                         titleStyle={{letterSpacing:8}}

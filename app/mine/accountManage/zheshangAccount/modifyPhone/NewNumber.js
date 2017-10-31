@@ -74,28 +74,6 @@ export default class NameAndIdScene extends BaseComponent {
                 <View style = {{width:width, marginTop:15, }}>
 
                     <TextInputItem
-                        title={'资金账号'}
-                        value={'1234567890987654321'}
-                        keyboardType={'number-pad'}
-                        editable={false}
-                    />
-                    <TextInputItem
-                        title={'企业名称'}
-                        value={'发生防守打法三个傻瓜'}
-                        editable={false}
-                    />
-                    <TextInputItem
-                        title={'企业组织机构代码'}
-                        value={'12345678909'}
-                        textPlaceholder={'请输入短信验证码'}
-                        keyboardType={'number-pad'}
-                        editable={false}
-                        separator={false}
-                    />
-
-                </View>
-                <View style = {{width:width, marginTop:15, }}>
-                    <TextInputItem
                         title={'新手机号'}
                         textPlaceholder={'请输入您的手机号'}
                         keyboardType={'number-pad'}
@@ -111,7 +89,7 @@ export default class NameAndIdScene extends BaseComponent {
                     />
                 </View>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'下一步'}
+                          content={'确认'}
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
                           mOnPress={this.setPwd}/>

@@ -14,10 +14,12 @@ import SendMmsCountDown from "../../../../login/component/SendMmsCountDown";
 import PixelUtil from "../../../../utils/PixelUtil";
 import MyButton from "../../../../component/MyButton";
 
-var Pixel = new PixelUtil();
-var Dimensions = require('Dimensions');
-var {width, height} = Dimensions.get('window');
+let Pixel = new PixelUtil();
+let Dimensions = require('Dimensions');
+let {width, height} = Dimensions.get('window');
 let onePT = 1 / PixelRatio.get(); //一个像素
+import SText from './SaasText'
+
 
 
 export default class TextInputItem extends Component{
@@ -82,11 +84,9 @@ export default class TextInputItem extends Component{
 
             <View style = {{backgroundColor:'white'}}>
                 <View style = {[styles.container, this.props.separator?{borderBottomColor: FontAndColor.COLORA4}:{borderBottomColor:'white'}]}>
-                    <Text
-                        allowFontScaling = {false}
+                    <SText
                         style={[styles.title, this.props.titleStyle]}
-
-                    >{this.props.title}</Text>
+                    >{this.props.title}</SText>
                     <TextInput
                         ref="inputText"
                         underlineColorAndroid={"#00000000"}
@@ -109,10 +109,9 @@ export default class TextInputItem extends Component{
                     }
                     {
                         this.props.annotation?
-                            <Text
-                                allowFontScaling = {false}
+                            <SText
                                 style={styles.annotation}
-                            >{this.props.annotation}</Text> : null
+                            >{this.props.annotation}</SText> : null
                     }
 
                 </View>
@@ -128,7 +127,7 @@ export default class TextInputItem extends Component{
 const styles = StyleSheet.create({
 
     title:{
-        fontSize:16,
+        fontSize:15,
         color:FontAndColor.COLORA0
     },
     container: {

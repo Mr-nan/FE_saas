@@ -11,17 +11,16 @@ import {
     InteractionManager,
     TouchableWithoutFeedback
 } from "react-native";
-import BaseComponent from "../../../../../component/BaseComponent";
-import NavigationBar from "../../../../../component/NavigationBar";
-import * as FontAndColor from "../../../../../constant/fontAndColor";
-import PixelUtil from "../../../../../utils/PixelUtil";
-import MyButton from "../../../../../component/MyButton";
-import {request} from "../../../../../utils/RequestUtil";
-import * as AppUrls from "../../../../../constant/appUrls";
-import md5 from "react-native-md5";
-import StorageUtil from "../../../../../utils/StorageUtil";
-import * as StorageKeyNames from "../../../../../constant/storageKeyNames";
-import TextInputItem from '../../component/TextInputItem'
+import BaseComponent from "../../../../component/BaseComponent";
+import NavigationBar from "../../../../component/NavigationBar";
+import * as FontAndColor from "../../../../constant/fontAndColor";
+import PixelUtil from "../../../../utils/PixelUtil";
+import MyButton from "../../../../component/MyButton";
+import {request} from "../../../../utils/RequestUtil";
+import * as AppUrls from "../../../../constant/appUrls";
+import StorageUtil from "../../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../../constant/storageKeyNames";
+import TextInputItem from '../component/TextInputItem'
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -54,8 +53,9 @@ export default class NameAndIdScene extends BaseComponent {
                         leftImageShow={false}
                         leftTextShow={true}
                         leftText={""}
-                        centerText={'个人开户'}
+                        centerText={'修改银行预留手机号'}
                         rightText={""}
+                        centerTextStyle={{paddingHorizontal:0, backgroundColor:'red'}}
                     />
                 </View>
             </TouchableWithoutFeedback>);
@@ -65,31 +65,50 @@ export default class NameAndIdScene extends BaseComponent {
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
-                    centerText={"个人开户"}
+                    centerText={"修改银行预留手机号"}
                     rightText={""}
                     leftImageCallBack={this.backPage}
+                    centerTextStyle={{paddingLeft:0,paddingRight:0}}
                 />
                 <View style = {{width:width, marginTop:15, }}>
 
                     <TextInputItem
-                        title={'银行卡号'}
-                        textPlaceholder={'请输入您的银行卡号'}
+                        title={'资金账号'}
+                        value={'1234567890987654321'}
                         keyboardType={'number-pad'}
+                        editable={false}
                     />
                     <TextInputItem
-                        title={'开户行'}
-                        textPlaceholder={'请输入开户行支行信息'}
+                        title={'企业名称'}
+                        value={'发生防守打法三个傻瓜'}
+                        editable={false}
                     />
                     <TextInputItem
-                        title={'手机号码'}
+                        title={'企业组织机构代码'}
+                        value={'12345678909'}
+                        textPlaceholder={'请输入短信验证码'}
+                        keyboardType={'number-pad'}
+                        editable={false}
+                        separator={false}
+                    />
+
+                </View>
+                <View style = {{width:width, marginTop:15, }}>
+                    <TextInputItem
+                        title={'旧手机号'}
+                        textPlaceholder={'请输入您的手机号'}
+                        keyboardType={'number-pad'}
                         rightButton={true}
                         maxLength={11}
-                        keyboardType={'number-pad'}
+                        editable={false}
+                        value={'1800000000'}
                     />
                     <TextInputItem
-                        title={'短信验证'}
+                        titleStyle={{letterSpacing:8}}
+                        inputTextStyle={{paddingLeft:8}}
+                        title={'验证码'}
+                        textPlaceholder={'请输入短信验证码'}
                         separator={false}
-                        keyboardType={'number-pad'}
                     />
                 </View>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
