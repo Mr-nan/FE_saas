@@ -38,6 +38,13 @@ export default class NewBrowsingHistoryScene extends BaceComponent {
         allSouce = [];
     }
 
+    componentDidMount() {
+        //InteractionManager.runAfterInteractions(() => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.initFinish();
+        // });
+    }
+
     getData = () => {
         let maps = {};
         request(Urls.USER_HISTORY, 'Post', maps)
@@ -179,7 +186,7 @@ export default class NewBrowsingHistoryScene extends BaceComponent {
                               }else if(rowData.status==4){
                                     this.props.showToast('该车辆已成交，不可查看');
                               }else{
-                                  this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}});
+                                    this.props.toNextPage(id);
                               }
                           }}
                           callBack={(id)=>{

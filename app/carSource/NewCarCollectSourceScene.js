@@ -40,6 +40,13 @@ export default class NewCarCollectSourceScene extends BaceComponent {
         allSouce = [];
     }
 
+    componentDidMount() {
+        //InteractionManager.runAfterInteractions(() => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.initFinish();
+        // });
+    }
+
     getData = () => {
         let maps = {
             page: page,
