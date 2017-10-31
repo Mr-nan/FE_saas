@@ -2,7 +2,7 @@
  * Created by hanmeng on 2017/10/30.
  *  恒丰银行、浙商银行统一账户管理页面
  *  页面接口调用规则:
- *
+ *  恒丰数据 -> 白名单 -> 浙商数据(如在白名单)
  */
 import React, {Component, PropTypes} from 'react'
 import {
@@ -22,15 +22,11 @@ import BaseComponent from "../../component/BaseComponent";
 import * as fontAndColor from '../../constant/fontAndColor';
 import NavigatorView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil'
-import * as AppUrls from "../../constant/appUrls";
 import {request} from "../../utils/RequestUtil";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import MyAccountItem from "./component/MyAccountItem";
 import AccountManageScene from "./AccountManageScene";
-import BindCardScene from "./BindCardScene";
-import WaitActivationAccountScene from "./WaitActivationAccountScene";
-import AccountScene from "./AccountScene";
 import * as Urls from '../../constant/appUrls';
 
 var Pixel = new PixelUtil();
@@ -89,9 +85,8 @@ export default class MyAccountScene extends BaseComponent {
      **/
     allRefresh = () => {
         this.props.showModal(true);
-        this.setState({isRefreshing: true});
         this.loadData();
-    }
+    };
 
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -106,10 +101,12 @@ export default class MyAccountScene extends BaseComponent {
                         this.props.showModal(false);
                         this.lastType = response.mjson.data.account.status;
                         this.hengFengInfo = response.mjson.data.account;
+                        this.props.callBack(this.lastType);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             dataSource: ds.cloneWithRows(['0', '1']),
                             renderPlaceholderOnly: 'success',
+                            isRefreshing: false,
                             backColor: fontAndColor.COLORB0
                         });
                     }, (error) => {
@@ -188,8 +185,9 @@ export default class MyAccountScene extends BaseComponent {
         let info = {};
         if (rowData == '0') {
             info = this.hengFengInfo;
+        } else {
+            // TODO info = 浙商账户数据
         }
-
         return (
             <MyAccountItem navigator={this.props.navigator}
                            showModal={this.props.showModal}

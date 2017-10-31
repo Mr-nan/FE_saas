@@ -1,9 +1,6 @@
 /**
  * Created by hanmeng on 2017/10/30.
  */
-/**
- * Created by hanmeng on 2017/8/12.
- */
 import React, {Component, PropTypes} from 'react'
 
 import {
@@ -35,7 +32,7 @@ const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
 export default class MyAccountItem extends BaseComponent {
 
     /**
-     *
+     *  constructor
      **/
     constructor(props) {
         super(props);
@@ -57,7 +54,7 @@ export default class MyAccountItem extends BaseComponent {
     pageDispense = (type, state) => {
         if (type == '0') {
             switch (state) {
-                case '0':
+                case 0:
                     this.navigatorParams.name = 'AccountManageScene';
                     this.navigatorParams.component = AccountManageScene;
                     this.navigatorParams.params = {
@@ -66,7 +63,7 @@ export default class MyAccountItem extends BaseComponent {
                         }
                     };
                     break;
-                case '1':
+                case 1:
                     this.navigatorParams.name = 'BindCardScene';
                     this.navigatorParams.component = BindCardScene;
                     this.navigatorParams.params = {
@@ -75,7 +72,7 @@ export default class MyAccountItem extends BaseComponent {
                         }
                     };
                     break;
-                case '2':
+                case 2:
                     this.navigatorParams.name = 'WaitActivationAccountScene';
                     this.navigatorParams.component = WaitActivationAccountScene;
                     this.navigatorParams.params = {
@@ -133,16 +130,24 @@ export default class MyAccountItem extends BaseComponent {
     };
 
     /**
-     *
+     *  render
      **/
     render() {
-        let back = '';
-        let bank = '';
-        let bankName = '';
+        let back = ''; //背景图
+        let bank = ''; //银行图标
+        let bankName = ''; //账户类型名称
+        let accountState = ''; //账户状态
         if (this.props.type == '0') {
             back = require('../../../../images/account/hengfengback.png');
             bank = require('../../../../images/account/hengfengbank.png');
             bankName = '恒丰银行';
+            if (this.state.data.status === 0) {
+                accountState = '未开户';
+            } else if (this.state.data.status === 1) {
+                accountState = '未绑卡';
+            } else if (this.state.data.status === 2) {
+                accountState = '未激活';
+            }
         } else {
             back = require('../../../../images/account/zheshangback.png');
             bank = require('../../../../images/account/zheshangbank.png');
@@ -165,7 +170,7 @@ export default class MyAccountItem extends BaseComponent {
                         }}>
                             <Image source={bank}/>
                             <View style={{
-                                width: Pixel.getPixel(100),
+                                width: Pixel.getPixel(120),
                                 alignItems: 'flex-start',
                                 marginLeft: Pixel.getPixel(12),
                                 justifyContent: 'center',
@@ -183,25 +188,35 @@ export default class MyAccountItem extends BaseComponent {
                                     color: fontAndColor.COLORA1
                                 }}>{this.state.data.bind_bank_name}</Text>
                             </View>
-                            <View style={{
-                                flex: 1,
-                                alignItems: 'flex-end',
-                                marginRight: Pixel.getPixel(10),
-                                justifyContent: 'center',
-                                backgroundColor: '#ffffff'
-                            }}>
+                            {this.state.data.status === 0 || this.state.data.status === 1 || this.state.data.status === 2 ?
                                 <Text style={{
+                                    flex: 1,
+                                    backgroundColor: '#ffffff',
+                                    marginRight: Pixel.getPixel(10),
                                     textAlign: 'right',
                                     fontSize: Pixel.getPixel(15),
-                                    color: fontAndColor.COLORA0
-                                }}>{this.state.data.balance}</Text>
-                                <Text style={{
-                                    marginTop: Pixel.getPixel(3),
-                                    textAlign: 'right',
-                                    fontSize: Pixel.getPixel(12),
-                                    color: fontAndColor.COLORA1
-                                }}>账户总额</Text>
-                            </View>
+                                    color: fontAndColor.COLORB2
+                                }}>{accountState}</Text> :
+                                <View style={{
+                                    flex: 1,
+                                    alignItems: 'flex-end',
+                                    marginRight: Pixel.getPixel(10),
+                                    justifyContent: 'center',
+                                    backgroundColor: '#ffffff'
+                                }}>
+                                    <Text style={{
+                                        textAlign: 'right',
+                                        fontSize: Pixel.getPixel(15),
+                                        color: fontAndColor.COLORA0
+                                    }}>{this.state.data.balance}</Text>
+                                    <Text style={{
+                                        marginTop: Pixel.getPixel(3),
+                                        textAlign: 'right',
+                                        fontSize: Pixel.getPixel(12),
+                                        color: fontAndColor.COLORA1
+                                    }}>账户总额</Text>
+                                </View>
+                            }
                             <Image source={cellJianTou}/>
                         </View>
                     </TouchableOpacity>

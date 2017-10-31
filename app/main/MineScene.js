@@ -439,14 +439,19 @@ export default class MineScene extends BaseComponent {
     toPage = () => {
         this.navigatorParams.name = 'MyAccountScene';
         this.navigatorParams.component = MyAccountScene;
-        this.navigatorParams.params = {
-            /*callBack: () => {
-                this.allRefresh();
-            }*/
-        };
+        this.navigatorParams.params = {callBack: this.updateType};
         this.refs.accountmodal.changeShowType(false);
-        firstType = lastType;
+        //firstType = lastType;
         this.props.callBack(this.navigatorParams);
+    };
+
+    /**
+     *   更新 firstType lastType;
+     **/
+    updateType = (newLastType) => {
+        lastType = newLastType;
+        firstType = newLastType;
+        //console.log('firstType=======',firstType);
     };
 
     _navigator(rowData) {
