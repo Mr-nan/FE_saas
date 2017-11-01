@@ -30,8 +30,8 @@ import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 import EvaluateCarInfo from '../mine/setting/EvaluateCarInfo'
 import Setting from './../mine/setting/Setting'
-import  CarCollectSourceScene from '../carSource/CarCollectSourceScene';
-import  BrowsingHistoryScene from '../carSource/BrowsingHistoryScene';
+import  CarCollectsScene from '../carSource/CarCollectsScene';
+import  BrowsingHistorysScene from '../carSource/BrowsingHistorysScene';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
@@ -534,12 +534,12 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.component = OrderTypeSelectScene
                 break;
             case 21:
-                this.navigatorParams.name = 'CarCollectSourceScene'
-                this.navigatorParams.component = CarCollectSourceScene
+                this.navigatorParams.name = 'CarCollectsScene'
+                this.navigatorParams.component = CarCollectsScene
                 break;
             case 22:
-                this.navigatorParams.name = 'BrowsingHistoryScene'
-                this.navigatorParams.component = BrowsingHistoryScene
+                this.navigatorParams.name = 'BrowsingHistorysScene'
+                this.navigatorParams.component = BrowsingHistorysScene
                 break;
             case 24:
                 this.navigatorParams.name = 'Setting'
