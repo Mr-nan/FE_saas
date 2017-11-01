@@ -35,6 +35,7 @@ let Pixel = new PixelUtil();
     }
 
     click=(title)=>{
+
        this.userCarBtn.setSelect();
        this.newCarBtn.setSelect();
     }
@@ -67,7 +68,10 @@ class ZNButton extends  Component {
          )
      }
      click=()=>{
-        this.props.click(this.props.title);
+         if(!this.state.isSelect){
+             this.props.click(this.props.title);
+         }
+
      }
 }
 
@@ -75,14 +79,18 @@ const  styles = StyleSheet.create({
    contaier:{
        flexDirection:'row',
        borderWidth:Pixel.getPixel(1),
-       borderColor:fontAndColor.COLORB0,
+       borderColor:'white',
+       borderRadius:Pixel.getPixel(4),
+       overflow:'hidden',
+
    },
     textView:{
-        height:Pixel.getPixel(40),
-        width:Pixel.getPixel(100),
+        height:Pixel.getPixel(28),
+        width:Pixel.getPixel(64),
         backgroundColor:'white',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        overflow:'hidden',
 
     },
     text:{

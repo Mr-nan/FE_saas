@@ -25,29 +25,36 @@ var   Pixel = new PixelUtil();
 export class CarSourceSelectHeadView extends Component{
 
     // 构造
-      constructor(props) {
+    constructor(props) {
         super(props);
-        // 初始状态
+
+        this.butArray = [];
+
         this.state = {
             isCheckRecommend:this.props.isCheckRecommend,
         };
-      }
+    }
 
     checkSelect=(index)=>{
 
-        switch(index) {
-            case 1:
-                this.refs.but1._setImgHighlighted(false);
-                break;
-            case 2:
-                this.refs.but2._setImgHighlighted(false);
-                break;
-            case 3:
-                this.refs.but3._setImgHighlighted(false);
-                break;
-            default:
-                break;
-        }
+        // switch(index) {
+        //     case 1:
+        //         this.refs.but1._setImgHighlighted(false);
+        //         break;
+        //     case 2:
+        //         this.refs.but2._setImgHighlighted(false);
+        //         break;
+        //     case 3:
+        //         this.refs.but3._setImgHighlighted(false);
+        //         break;
+        //     default:
+        //         break;
+        // }
+        //
+        console.log('=============',this.butArray);
+        let tmpBut = this.butArray[index];
+        tmpBut._setImgHighlighted(false);
+
     };
 
 
@@ -67,13 +74,15 @@ export class CarSourceSelectHeadView extends Component{
 
     render(){
         return(
-
             <Image style={styles.container} source={require('../../../images/carSourceImages/bottomShaow.png')}>
+                {
+                    this.props.titleArray.map((data,index)=>{
+                        return(
+                            <SelectButton ref={(ref)=>{console.log('ref=====',ref); this.butArray.push(ref),console.log('array======',this.butArray)}}  title={data} index={index} key={index} btnClick={this.props.onPres}/>
 
-                    <SelectButton ref="but1" title="车型" index={1} btnClick={this.props.onPres}/>
-                    <SelectButton ref="but2" title="车龄" index={2} btnClick={this.props.onPres}/>
-                    <SelectButton ref="but3" title="里程" index={3} btnClick={this.props.onPres}/>
-
+                        )
+                    })
+                }
                 <View style={styles.lineView}>
                     <View style={styles.line}/>
                 </View>
@@ -190,7 +199,6 @@ var screenWidth = Dimensions.get('window').width;
 const  styles = StyleSheet.create({
 
     container:{
-
         height:Pixel.getPixel(40),
         width:screenWidth,
         flexDirection:'row',
@@ -199,7 +207,6 @@ const  styles = StyleSheet.create({
     },
 
     selectView:{
-
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between'
@@ -212,7 +219,6 @@ const  styles = StyleSheet.create({
     },
 
     line:{
-
         height:Pixel.getPixel(15),
         backgroundColor:fontAndColor.COLORA3,
     },
@@ -261,7 +267,7 @@ const  styles = StyleSheet.create({
 
     },
     selectView: {
-        top: Pixel.getTitlePixel(104),
+        top: Pixel.getTitlePixel(87),
         backgroundColor: 'rgba(0, 0, 0,0.3)',
         left: 0,
         right: 0,
@@ -270,7 +276,6 @@ const  styles = StyleSheet.create({
     },
 
     checkedCell: {
-
         backgroundColor: 'white',
         height: Pixel.getPixel(44),
         alignItems: 'center',

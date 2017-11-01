@@ -102,13 +102,13 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.carType = '有现车';
-        this.enterpriseList = [];
-        this.scanType = [
-            {model_name: '扫描前风挡'},
-            {model_name: '扫描行驶证'}
-        ];
-        this.modelData = [];
-        this.modelInfo = {};
+        // this.enterpriseList = [];
+        // this.scanType = [
+        //     {model_name: '扫描前风挡'},
+        //     {model_name: '扫描行驶证'}
+        // ];
+        // this.modelData = [];
+        // this.modelInfo = {};
         this.carData = {'v_type': 1};
         this.titleData1 = [
             [{
@@ -227,7 +227,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 }
             }, {
                 title: '网上零售价',
-                subTitle: '展示给个人消费者看',
+                // subTitle: '展示给个人消费者看',
                 isShowTag: true,
                 isShowTail: true,
                 tailView: () => {
@@ -794,15 +794,15 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     };
 
     // 取商户ID
-    _enterprisePress = (rowID) => {
-
-        this.carData['show_shop_id'] = this.enterpriseList[rowID].enterprise_uid;
-        this.carData['city_id'] = this.enterpriseList[rowID].city_id;
-        this.carData['prov_id'] = this.enterpriseList[rowID].prov_id;
-        this.carData['city_name'] = this.enterpriseList[rowID].city_name;
-        this.getLocalityCarData();
-
-    };
+    // _enterprisePress = (rowID) => {
+    //
+    //     this.carData['show_shop_id'] = this.enterpriseList[rowID].enterprise_uid;
+    //     this.carData['city_id'] = this.enterpriseList[rowID].city_id;
+    //     this.carData['prov_id'] = this.enterpriseList[rowID].prov_id;
+    //     this.carData['city_name'] = this.enterpriseList[rowID].city_name;
+    //     this.getLocalityCarData();
+    //
+    // };
 
     pushCarBrand = () => {
         let brandParams = {
