@@ -190,11 +190,12 @@ export default class MyAccountScene extends BaseComponent {
             info = this.hengFengInfo;
         }
         return (
-            <MyAccountItem navigator={this.props.navigator}
-                           showModal={this.props.showModal}
-                           type={rowData}     //账户类型
-                           data={info}        //账户数据
-                           callBack={this.allRefresh}/>
+            <MyAccountItem
+                navigator={this.props.navigator}
+                showModal={this.props.showModal}
+                type={rowData}     //账户类型
+                data={info}        //账户数据
+                callBack={this.allRefresh}/>
         );
     }
 
