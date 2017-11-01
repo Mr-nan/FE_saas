@@ -31,7 +31,7 @@ import NewCarScene      from '../publish/NewCarScene';
 import * as fontAndColor from '../constant/fontAndColor';
 import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
-import CarPublishFirstScene from './carPublish/CarPublishFirstScene';
+import CarPublishFirstScene from './carPublish/NewCarPublishFirstScene';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 import PixelUtil from '../utils/PixelUtil';
 import * as weChat from "react-native-wechat";
