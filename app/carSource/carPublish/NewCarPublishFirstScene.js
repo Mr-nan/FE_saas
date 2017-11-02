@@ -20,12 +20,9 @@ import {
 
 }   from 'react-native';
 
-import DateTimePicker from 'react-native-modal-datetime-picker';
 import BaseComponent from '../../component/BaseComponent';
 import AllNavigationView from '../../component/AllNavigationView';
 import {CellView, CellSelectView} from '../znComponent/CarPublishCell';
-import EnterpriseInfo from '../../publish/component/EnterpriseInfo';
-
 import CarPublishSecondScene from './NewCarPublishSecondScene';
 import *as fontAndColor from '../../constant/fontAndColor';
 import CarBrandSelectScene   from '../CarBrandSelectScene';
@@ -46,7 +43,6 @@ import CityListScene from  '../CityListScene';
 const Pixel = new PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 const sceneHeight = Dimensions.get('window').height;
-const scanImg = require('../../../images/financeImages/scan.png');
 const IS_ANDROID = Platform.OS === 'android';
 
 export default class NewCarPublishFirstScene extends BaseComponent {
@@ -102,13 +98,6 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.carType = '有现车';
-        // this.enterpriseList = [];
-        // this.scanType = [
-        //     {model_name: '扫描前风挡'},
-        //     {model_name: '扫描行驶证'}
-        // ];
-        // this.modelData = [];
-        // this.modelInfo = {};
         this.carData = {'v_type': 1};
         this.titleData1 = [
             [{
@@ -116,26 +105,22 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 isShowTag: true,
                 value: '请选择',
                 isShowTail: true,
-            },
-                {
-                    title: '车规',
-                    isShowTag: true,
-                    value: '请选择',
-                    isShowTail: true,
-                },
-                {
-                    title: '车身颜色',
-                    isShowTag: true,
-                    value: '请选择',
-                    isShowTail: true,
-                },
-                {
-                    title: '内饰颜色',
-                    isShowTag: false,
-                    value: '请选择',
-                    isShowTail: true,
-                },
-            ],
+            }, {
+                title: '车规',
+                isShowTag: true,
+                value: '请选择',
+                isShowTail: true,
+            }, {
+                title: '车身颜色',
+                isShowTag: true,
+                value: '请选择',
+                isShowTail: true,
+            }, {
+                title: '内饰颜色',
+                isShowTag: false,
+                value: '请选择',
+                isShowTail: true,
+            }],
 
             [{
                 title: '车辆所在地',
@@ -148,52 +133,72 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 isShowTail: true,
                 selectDict: {current: this.carType, data: [{title: '有现车', value: 1}, {title: '无现车', value: 2}]},
             }, {
-                title: '在售车辆数',
-                isShowTag: true,
-                isShowTail: true,
-                tailView: () => {
-                    return (
-                        <TextInput
-                            ref={(ref)=>{this.transferInput = ref}}
-                            style={styles.textInput}
-                            underlineColorAndroid='transparent'
-                            placeholder='请输入'
-                            maxLength={2}
-                            defaultValue={this.carData.transfer_times}
-                            onEndEditing={()=>{this.saveCarData();}}
-                            keyboardType={'number-pad'}
-                            onFocus={()=>{
-                                    this.setCurrentPy(this.transferInput);
-                                }}
-                            onChangeText={(text)=>{this.carData['transfer_times'] = text}}
-                        />
-                    )
-                }
-            }],
-
-            [{
-                title: '指导价',
+                title: '在售车辆数',//xxxxxxxxxx
+                // subTitle: '仅供内部销售人员查看',
                 isShowTag: false,
                 isShowTail: true,
                 tailView: () => {
                     return (
-                        <TextInput
-                            ref={(ref)=>{this.transferInput = ref}}
-                            style={styles.textInput}
-                            underlineColorAndroid='transparent'
-                            placeholder='请输入'
-                            maxLength={2}
-                            defaultValue={this.carData.transfer_times}
-                            onEndEditing={()=>{this.saveCarData();}}
-                            keyboardType={'number-pad'}
-                            onFocus={()=>{
-                                    this.setCurrentPy(this.transferInput);
-                                }}
-                            onChangeText={(text)=>{this.carData['transfer_times'] = text}}
-                        />
-                    )
+                        <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入 '
+                                       keyboardType={'numeric'}
+                                       maxLength={7}
+                                       underlineColorAndroid='transparent'
+                                       ref={(ref)=>{this.saleCountInput = ref}}
+                                       onFocus={()=>{
+                                           this.setCurrentPy(this.saleCountInput);
+                                       }}
+                                       defaultValue={this.carData.sale_count?this.carMoneyChange(this.carData.sale_count):''}
+                                       onEndEditing={()=>{this.saveCarData();}}
+                                       onChangeText={(text)=>{
+                                               if(text.length>4&&text.indexOf('.')==-1){
+                                               text = text.substring(0,4);
+                                            }
+                                           let moneyStr = this.chkPrice(text);
+                                           this.carData['sale_count']= moneyStr;
+                                           this.saleCountInput.setNativeProps({
+                                               text: moneyStr,
+                                           });
+                                       }}/>
+                            <Text allowFontScaling={false} style={styles.textInputTitle}>辆</Text>
+                        </View>)
                 }
-            },  {
+            }],
+
+            [{
+                title: '指导价',//xxxxxxxxxxxxxx
+                // subTitle: '仅供内部销售人员查看',
+                isShowTag: false,
+                isShowTail: true,
+                tailView: () => {
+                    return (
+                        <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入 '
+                                       keyboardType={'numeric'}
+                                       maxLength={7}
+                                       underlineColorAndroid='transparent'
+                                       ref={(ref)=>{this.suggestionPriceInput = ref}}
+                                       onFocus={()=>{
+                                           this.setCurrentPy(this.suggestionPriceInput);
+                                       }}
+                                       defaultValue={this.carData.suggestion_price?this.carMoneyChange(this.carData.suggestion_price):''}
+                                       onEndEditing={()=>{this.saveCarData();}}
+                                       onChangeText={(text)=>{
+                                               if(text.length>4&&text.indexOf('.')==-1){
+                                               text = text.substring(0,4);
+                                            }
+                                           let moneyStr = this.chkPrice(text);
+                                           this.carData['suggestion_price']= moneyStr;
+                                           this.suggestionPriceInput.setNativeProps({
+                                               text: moneyStr,
+                                           });
+                                       }}/>
+                            <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
+                        </View>)
+                }
+            }, {
                 title: '分销批发价',
                 // subTitle: '展示给其他车商看',
                 isShowTag: true,
@@ -203,7 +208,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        ref={(ref)=>{this.dealerPriceInput = ref}}
-                                       placeholder='请输入'
+                                       placeholder='请输入 '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        onFocus={()=>{
@@ -222,7 +227,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                            <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                            <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
                         </View>)
                 }
             }, {
@@ -235,7 +240,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        ref={(ref)=>{this.online_retail_price = ref}}
-                                       placeholder='请输入'
+                                       placeholder='请输入 '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        onFocus={()=>{
@@ -255,18 +260,14 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                            <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                            <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
                         </View>)
                 }
             }],
 
             [{
-                title: '标准配置',
-                isShowTag: false,
-                value: '查看',
-                isShowTail: true,
-            }, {
                 title: '配置改装说明',
+                subTitle: '点击查看标配',
                 isShowTag: false,
                 value: '请填写',
                 isShowTail: false,
@@ -274,9 +275,10 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                     return (
                         <TextInput
                             style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
-                            placeholder='请填写'
+                            placeholder='请输入 '
                             maxLength={50}
                             underlineColorAndroid='transparent'
+                            defaultValue={this.carData.modification_instructions?this.carMoneyChange(this.carData.modification_instructions):''}
                             onChangeText={(text)=>{this.carData['modification_instructions']=text}}
                             onEndEditing={()=>{this.saveCarData();}}
                             ref={(input) => {this.instructionsInput = input}}
@@ -288,11 +290,35 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                         />
                     )
                 }
+            }, {
+                title: '手续说明',
+                isShowTag: false,
+                value: '请填写',
+                isShowTail: false,
+                tailView: () => {
+                    return (
+                        <TextInput
+                            style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
+                            placeholder='请输入 '
+                            maxLength={50}
+                            underlineColorAndroid='transparent'
+                            defaultValue={this.carData.procedure_description?this.carMoneyChange(this.carData.procedure_description):''}
+                            onChangeText={(text)=>{this.carData['procedure_description']=text}}
+                            onEndEditing={()=>{this.saveCarData();}}
+                            ref={(input) => {this.procedureInput = input}}
+                            onFocus={()=>{
+                                      this.setCurrentPy('iprocedureInput');
+                                  }}
+                            placeholderTextColor={fontAndColor.COLORA4}
+                            placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                        />
+                    )
+                }
             }],
 
-            [ {
+            [{
                 title: '圈子内的分销批发价',
-                subTitle: '展示给其他圈友看',
+                // subTitle: '展示给其他圈友看',
                 isShowTag: false,
                 isShowTail: false,
                 tailView: () => {
@@ -300,7 +326,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        ref={(ref)=>{this.dealer_price_circle = ref}}
-                                       placeholder='请输入'
+                                       placeholder='请输入 '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        onFocus={()=>{
@@ -319,19 +345,19 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                            <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                            <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
                         </View>)
                 }
             }, {
                 title: '销售底价',
-                subTitle: '仅供内部销售人员查看',
+                // subTitle: '仅供内部销售人员查看',
                 isShowTag: false,
                 isShowTail: true,
                 tailView: () => {
                     return (
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
-                                       placeholder='请输入'
+                                       placeholder='请输入 '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        underlineColorAndroid='transparent'
@@ -351,19 +377,19 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                            <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                            <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
                         </View>)
                 }
             }, {
                 title: '到店零售价',
-                subTitle: '销售人员 对到店个人消费者报价',
+                // subTitle: '销售人员 对到店个人消费者报价',
                 isShowTag: false,
                 isShowTail: true,
                 tailView: () => {
                     return (
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
-                                       placeholder='请输入'
+                                       placeholder='请输入 '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        underlineColorAndroid='transparent'
@@ -383,7 +409,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                            <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                            <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
                         </View>)
                 }
             }]
@@ -398,7 +424,6 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     }
 
     setCurrentPy = (ref) => {
-
         console.log(ref);
     }
 
@@ -426,14 +451,6 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                             </KeyboardAvoidingView>
                         )
                 }
-                <DateTimePicker
-                    titleIOS="请选择日期"
-                    confirmTextIOS='确定'
-                    cancelTextIOS='取消'
-                    isVisible={this.state.isDateTimePickerVisible}
-                    onConfirm={this._handleDatePicked}
-                    onCancel={this._hideDateTimePicker}
-                />
                 <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
             </View>
         )
@@ -606,12 +623,6 @@ export default class NewCarPublishFirstScene extends BaseComponent {
 
         this.titleData1[1][0].value = this.carData.city_name ? this.carData.city_name : '请选择';
 
-        if (this.carData.modification_instructions) {
-            this.instructionsInput.setNativeProps({
-                text: this.carData.modification_instructions
-            });
-        }
-
         this.setState({
             titleData: this.titleData1,
         });
@@ -630,9 +641,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
             this.pushCarInwardColorScene();
         } else if (title == '车辆所在地') {
             this.pushCityListScene();
-        } else if (title == '初登日期') {
-            this._labelPress('register');
-        } else if (title == '标准配置') {
+        } else if (title == '配置改装说明') {
             this.pushCarAutoConfigScene();
         }
     }
@@ -684,23 +693,11 @@ export default class NewCarPublishFirstScene extends BaseComponent {
 
         console.log(this.carData);
 
-        // if (!this.carData.vin || this.carData.vin == '') {
-        //     this.props.showToast('请输入正确的车架号');
-        //     return;
-        // }
-
         if (!this.carData.model_name) {
             this.props.showToast('选择车型');
             return;
         }
-        // if (!this.carData.displacement || this.carData.displacement == '') {
-        //     this.props.showToast('输入排量');
-        //     return;
-        // }
-        // if (!this.carData.emission_standards) {
-        //     this.props.showToast('选择排放标准');
-        //     return;
-        // }
+
         if (!this.carData.car_color) {
             this.props.showToast('选择车身颜色');
             return;
@@ -709,26 +706,6 @@ export default class NewCarPublishFirstScene extends BaseComponent {
             this.props.showToast('选择内饰颜色');
             return;
         }
-        // if (!this.carData.manufacture) {
-        //     this.props.showToast('选择出厂日期');
-        //     return;
-        // }
-
-        // if (this.carData.v_type == 1) {
-        //
-        //     if (!this.carData.init_reg) {
-        //         this.props.showToast('选择初登日期');
-        //         return;
-        //     }
-        //
-        //     let manufactureData = new Date(this.carData.manufacture);
-        //     let initReg = new Date(this.carData.init_reg);
-        //     if (manufactureData.getTime() > initReg.getTime()) {
-        //         this.props.showToast('初登日期不得早于出厂日期');
-        //         return;
-        //     }
-        //
-        // }
 
         if (this.carData.v_type !== 1) {
             this.carData.init_reg = '';
@@ -747,30 +724,30 @@ export default class NewCarPublishFirstScene extends BaseComponent {
 
     }
 
-    _handleDatePicked = (date) => {
-        let d = this.dateFormat(date, 'yyyy-MM-dd');
-        if (this.type === 'factory') {
+    // _handleDatePicked = (date) => {
+    //     let d = this.dateFormat(date, 'yyyy-MM-dd');
+    //     if (this.type === 'factory') {
+    //
+    //         this.titleData1[1][0].value = d;
+    //         this.carData['manufacture'] = d;
+    //
+    //     } else {
+    //         this.titleData1[1][1].value = d;
+    //         this.carData['init_reg'] = d;
+    //     }
+    //
+    //     this.upTitleData();
+    //     this._hideDateTimePicker();
+    // };
 
-            this.titleData1[1][0].value = d;
-            this.carData['manufacture'] = d;
+    // _hideDateTimePicker = () => {
+    //     this.setState({isDateTimePickerVisible: false});
+    // };
 
-        } else {
-            this.titleData1[1][1].value = d;
-            this.carData['init_reg'] = d;
-        }
-
-        this.upTitleData();
-        this._hideDateTimePicker();
-    };
-
-    _hideDateTimePicker = () => {
-        this.setState({isDateTimePickerVisible: false});
-    };
-
-    _labelPress = (type) => {
-        this.type = type;
-        this.setState({isDateTimePickerVisible: true});
-    };
+    // _labelPress = (type) => {
+    //     this.type = type;
+    //     this.setState({isDateTimePickerVisible: true});
+    // };
 
     upTitleData = () => {
 
