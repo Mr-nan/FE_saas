@@ -464,7 +464,9 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                                     onPress={()=>{this.cellClick(rowData.title)}}
                                                     activeOpacity={1}>
                                                     <CellSelectView
-                                                        itemStyle={{flexDirection:'row',alignItems:'center',paddingLeft:Pixel.getPixel(15),height:Pixel.getPixel(55),justifyContent:'flex-start'}}
+                                                        itemStyle={{flexDirection:'row',alignItems:'center',paddingLeft:Pixel.getPixel(15),
+                                                        height:Pixel.getPixel(55),justifyContent:'flex-start', paddingHorizontal:Pixel.getPixel(5)}}
+                                                        middleStyle={{flex:1}}
                                                         currentTitle={rowData.selectDict.current}
                                                         cellData={rowData}
                                                         cellSelectAction={this.cellSelectAction}
@@ -477,7 +479,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                                         ()=>{this.cellClick(rowData.title)}
                                                     }
                                                     activeOpacity={1}>
-                                                    <CellView cellData={rowData} subTitleSytle={{color:fontAndColor.COLORB4,}}/>
+                                                    <CellView cellData={rowData}
+                                                              subTitleSytle={{color:fontAndColor.COLORB4,}}/>
                                                 </TouchableOpacity>))
                                     })
                                 }

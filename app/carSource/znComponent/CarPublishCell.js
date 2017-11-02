@@ -82,7 +82,7 @@ export class CellSelectView extends Component{
                     }
                     <Text allowFontScaling={false}  style={styles.cellTitle}>{cellData.title}</Text>
                 </View>
-                <View style={{width:Pixel.getPixel(10),height:Pixel.getPixel(10)}}></View>
+                <View style={[{width:Pixel.getPixel(10),height:Pixel.getPixel(10)},this.props.middleStyle]}></View>
                 <View style={{flexDirection:'row',height:Pixel.getPixel(40),alignItems:'center',backgroundColor:'white'}}>
                     {
                         cellData.selectDict.data.map((data,index)=>{
