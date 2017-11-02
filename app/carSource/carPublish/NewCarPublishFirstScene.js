@@ -90,7 +90,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
-        this.carType = '有现车';
+        this.xianChe = '有现车';
         this.carData = {'xianche': 1};//是否有现车   xxxxxxx
         this.titleData1 = [
             [{
@@ -124,7 +124,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 title: '是否有现车',
                 isShowTag: true,
                 isShowTail: true,
-                selectDict: {current: this.carType, data: [{title: '有现车', value: 1}, {title: '无现车', value: 2}]},
+                selectDict: {current: this.xianChe, data: [{title: '有现车', value: 1}, {title: '无现车', value: 2}]},
             }, {
                 title: '在售车辆数',//xxxxxxxxxx
                 // subTitle: '仅供内部销售人员查看',
@@ -134,7 +134,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                     return (
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
-                                       placeholder='请输入 '
+                                       placeholder='请输入  '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        underlineColorAndroid='transparent'
@@ -168,7 +168,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                     return (
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
-                                       placeholder='请输入 '
+                                       placeholder='请输入  '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        underlineColorAndroid='transparent'
@@ -201,7 +201,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        ref={(ref)=>{this.dealerPriceInput = ref}}
-                                       placeholder='请输入 '
+                                       placeholder='请输入  '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        onFocus={()=>{
@@ -233,7 +233,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        ref={(ref)=>{this.online_retail_price = ref}}
-                                       placeholder='请输入 '
+                                       placeholder='请输入  '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        onFocus={()=>{
@@ -262,49 +262,49 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 title: '配置改装说明',
                 subTitle: '点击查看标配',
                 isShowTag: false,
-                value: '请填写',
                 isShowTail: false,
                 tailView: () => {
                     return (
-                        <TextInput
-                            style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
-                            placeholder='请输入 '
-                            maxLength={50}
-                            underlineColorAndroid='transparent'
-                            defaultValue={this.carData.modification_instructions?this.carData.modification_instructions:''}
-                            onChangeText={(text)=>{this.carData['modification_instructions']=text}}
-                            onEndEditing={()=>{this.saveCarData();}}
-                            ref={(input) => {this.instructionsInput = input}}
-                            onFocus={()=>{
+                        <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput
+                                style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
+                                placeholder='请填写加装或改装的配置 '
+                                maxLength={50}
+                                underlineColorAndroid='transparent'
+                                defaultValue={this.carData.modification_instructions?this.carData.modification_instructions:''}
+                                onChangeText={(text)=>{this.carData['modification_instructions']=text}}
+                                onEndEditing={()=>{this.saveCarData();}}
+                                ref={(input) => {this.instructionsInput = input}}
+                                onFocus={()=>{
                                       this.setCurrentPy('instructionsInput');
                                   }}
-                            placeholderTextColor={fontAndColor.COLORA4}
-                            placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                        />
+                                placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                            />
+                        </View>
                     )
                 }
             }, {
-                title: '手续说明',
+                title: '手续说明',//xxxxxxxx
                 isShowTag: false,
-                value: '请填写',
                 isShowTail: false,
                 tailView: () => {
                     return (
-                        <TextInput
-                            style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
-                            placeholder='请输入 '
-                            maxLength={50}
-                            underlineColorAndroid='transparent'
-                            defaultValue={this.carData.procedure_description?this.carData.procedure_description:''}
-                            onChangeText={(text)=>{this.carData['procedure_description']=text}}
-                            onEndEditing={()=>{this.saveCarData();}}
-                            ref={(input) => {this.procedureInput = input}}
-                            onFocus={()=>{
+                        <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput
+                                style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
+                                placeholder='合格证齐全，可开发票 '
+                                maxLength={50}
+                                underlineColorAndroid='transparent'
+                                defaultValue={this.carData.procedure_description?this.carData.procedure_description:''}
+                                onChangeText={(text)=>{this.carData['procedure_description']=text}}
+                                onEndEditing={()=>{this.saveCarData();}}
+                                ref={(input) => {this.procedureInput = input}}
+                                onFocus={()=>{
                                       this.setCurrentPy('iprocedureInput');
                                   }}
-                            placeholderTextColor={fontAndColor.COLORA4}
-                            placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                        />
+                                placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                            />
+                        </View>
                     )
                 }
             }],
@@ -319,7 +319,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        ref={(ref)=>{this.dealer_price_circle = ref}}
-                                       placeholder='请输入 '
+                                       placeholder='请输入  '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        onFocus={()=>{
@@ -350,7 +350,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                     return (
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
-                                       placeholder='请输入 '
+                                       placeholder='请输入  '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        underlineColorAndroid='transparent'
@@ -382,7 +382,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                     return (
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
-                                       placeholder='请输入 '
+                                       placeholder='请输入  '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        underlineColorAndroid='transparent'
@@ -464,6 +464,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                                     onPress={()=>{this.cellClick(rowData.title)}}
                                                     activeOpacity={1}>
                                                     <CellSelectView
+                                                        itemStyle={{flexDirection:'row',alignItems:'center',paddingLeft:Pixel.getPixel(15),height:Pixel.getPixel(55),justifyContent:'flex-start'}}
                                                         currentTitle={rowData.selectDict.current}
                                                         cellData={rowData}
                                                         cellSelectAction={this.cellSelectAction}
@@ -476,7 +477,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                                         ()=>{this.cellClick(rowData.title)}
                                                     }
                                                     activeOpacity={1}>
-                                                    <CellView cellData={rowData}/>
+                                                    <CellView cellData={rowData} subTitleSytle={{color:fontAndColor.COLORB4,}}/>
                                                 </TouchableOpacity>))
                                     })
                                 }
@@ -588,8 +589,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     }
 
     setCarData = () => {
-        this.carType = this.titleData1[1][1].selectDict.current;//是否有现车
-        this.refs.cellSelectView.setCurrentChecked(this.carType);
+        this.xianChe = this.titleData1[1][1].selectDict.current;//是否有现车
+        this.refs.cellSelectView.setCurrentChecked(this.xianChe);
 
         this.titleData1[0][0].value = this.carData.model_name ? this.carData.model_name : '请选择';
         this.titleData1[0][1].value = this.carData.model_name ? this.carData.model_name : '请选择';//??????
@@ -660,7 +661,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
 
         this.carData['xianche'] = selectDict.value;
         this.carData['xianche_str'] = selectDict.title;
-        this.carType = selectDict.title;
+        this.xianChe = selectDict.title;
         this.upTitleData();
     }
 
@@ -703,7 +704,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
             return;
         }
 
-        if (!this.carType) {
+        if (!this.xianChe) {
             this.props.showToast('填写是否有现车');
             return;
         }

@@ -33,7 +33,7 @@ export class CellView extends Component {
                     <View >
                     <Text allowFontScaling={false}  style={styles.cellTitle}>{cellData.title}</Text>
                         {
-                           cellData.subTitle? (<Text allowFontScaling={false}  style={styles.cellSubTitle}>{cellData.subTitle}</Text>):(null)
+                           cellData.subTitle? (<Text allowFontScaling={false}  style={[styles.cellSubTitle,this.props.subTitleSytle]}>{cellData.subTitle}</Text>):(null)
                         }
                     </View>
                 </View>
@@ -75,14 +75,15 @@ export class CellSelectView extends Component{
         const {cellData} =this.props;
 
         return(
-            <View style={styles.cellType2}>
+            <View style={[styles.cellType2,this.props.itemStyle]}>
                 <View style={{flexDirection:'row'}}>
                     {
                         cellData.isShowTag && <Text allowFontScaling={false}  style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}>*</Text>
                     }
                     <Text allowFontScaling={false}  style={styles.cellTitle}>{cellData.title}</Text>
                 </View>
-                <View style={{flexDirection:'row',width:Pixel.getPixel(290),height:Pixel.getPixel(40),alignItems:'center',marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
+                <View style={{width:Pixel.getPixel(10),height:Pixel.getPixel(10)}}></View>
+                <View style={{flexDirection:'row',height:Pixel.getPixel(40),alignItems:'center',backgroundColor:'white'}}>
                     {
                         cellData.selectDict.data.map((data,index)=>{
                             return (
