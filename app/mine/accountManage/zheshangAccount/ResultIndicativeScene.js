@@ -44,8 +44,6 @@ let status;
 //    3：提交资料 （开通企业账户ONLY）
 
 
-
-
 export default class ResultIndicativeScene extends BaseComponent{
 
     constructor(props){

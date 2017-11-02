@@ -1,3 +1,6 @@
+/**
+ * Created by dingyonggang on 2017/10/27.
+ */
 import React, {Component} from "react";
 import {
     View,
@@ -242,8 +245,6 @@ class LogItem extends Component {
             type = '提现'
             typeIntroduce = '转账出金-转出'
         }
-
-
         return (
             <View style={{flexDirection: 'row', alignItems: 'center', marginHorizontal: 15, paddingVertical: 20}}>
                 <View style={{

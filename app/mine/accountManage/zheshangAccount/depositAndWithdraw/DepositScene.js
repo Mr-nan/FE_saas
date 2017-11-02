@@ -1,3 +1,6 @@
+/**
+ * Created by dingyonggang on 2017/10/27.
+ */
 import React, {Component} from "react";
 import {
     View,
@@ -19,12 +22,16 @@ import {request} from "../../../../utils/RequestUtil";
 import * as AppUrls from "../../../../constant/appUrls";
 import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
+import SendMmsCountDown from "../../../../login/component/SendMmsCountDown";
 import SText from '../component/SaasText'
+import SmsFillScene from './SmsFillScene'
+
+
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
 let Platform = require('Platform');
-
+const IS_ANDROID = Platform.OS === 'android';
 let deposit_data = [
     {
         image: require('../../../../../images/account/counter.png'),
@@ -46,13 +53,19 @@ export default class DepositScene extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: true,
             deposit_style: 0,   //0:快捷充值 1：其他充值
+            sms_pad:false
         }
+        this.initValue = ['', '', '', '', '', '', ''];
     }
 
     initFinish() {
         this.setState({
             renderPlaceholderOnly: false,
         })
+    }
+
+    callBackSms = () => {
+        this.refs.sendMms.StartCountDown();
     }
 
     render() {
@@ -99,8 +112,8 @@ export default class DepositScene extends BaseComponent {
                         <Image source={require('../../../../../images/account/zheshang_bank.png')}
                                style={{width: 55, height: 55, marginHorizontal: 15}}/>
                         <View>
-                            <SText  style={{fontSize: 17, marginBottom: 10}}>浙商银行账户 王锋</SText>
-                            <SText  style={{color: FontAndColor.COLORA1}}>充值限额 100万/笔
+                            <SText style={{fontSize: 17, marginBottom: 10}}>浙商银行账户 王锋</SText>
+                            <SText style={{color: FontAndColor.COLORA1}}>充值限额 100万/笔
                                 ,1000万/日</SText>
                         </View>
                     </View>
@@ -119,8 +132,8 @@ export default class DepositScene extends BaseComponent {
                                 activeOpacity={.8}
 
                             >
-                                <SText 
-                                      style={this.state.deposit_style === 0 ? styles.deposit_title_selected : styles.deposit_title_deselected}>快捷充值</SText>
+                                <SText
+                                    style={this.state.deposit_style === 0 ? styles.deposit_title_selected : styles.deposit_title_deselected}>快捷充值</SText>
                             </TouchableOpacity>
 
                             <View style={{
@@ -138,8 +151,8 @@ export default class DepositScene extends BaseComponent {
                                 }}
                                 activeOpacity={.8}
                             >
-                                <SText 
-                                      style={this.state.deposit_style === 1 ? styles.deposit_title_selected : styles.deposit_title_deselected}>其他充值</SText>
+                                <SText
+                                    style={this.state.deposit_style === 1 ? styles.deposit_title_selected : styles.deposit_title_deselected}>其他充值</SText>
                             </TouchableOpacity>
                         </View>
 
@@ -150,7 +163,7 @@ export default class DepositScene extends BaseComponent {
                                         borderBottomWidth: StyleSheet.hairlineWidth,
                                         borderBottomColor: FontAndColor.COLORA4
                                     }}>
-                                        <SText  style={{marginVertical: 15, fontSize: 15}}>充值金额（元）</SText>
+                                        <SText style={{marginVertical: 15, fontSize: 15}}>充值金额（元）</SText>
                                         <View style={{flexDirection: 'row',}}>
                                             <SText style={{marginRight: 5, marginTop: 5, fontSize: 14}}>￥</SText>
                                             <TextInput
@@ -162,14 +175,14 @@ export default class DepositScene extends BaseComponent {
                                     </View>
                                     <View style={{paddingVertical: 10}}>
                                         <View style={{flexDirection: 'row', marginBottom: 5}}>
-                                            <SText 
-                                                  style={{color: FontAndColor.COLORA1}}>浙商银行现金余额:</SText>
-                                            <SText >1234567.3元</SText>
+                                            <SText
+                                                style={{color: FontAndColor.COLORA1}}>浙商银行现金余额:</SText>
+                                            <SText>1234567.3元</SText>
                                         </View>
                                         <View style={{flexDirection: 'row'}}>
-                                            <SText 
-                                                  style={{color: FontAndColor.COLORA1}}>可用余额:</SText>
-                                            <SText >34524.6元</SText>
+                                            <SText
+                                                style={{color: FontAndColor.COLORA1}}>可用余额:</SText>
+                                            <SText>34524.6元</SText>
                                         </View>
 
                                     </View>
@@ -188,16 +201,19 @@ export default class DepositScene extends BaseComponent {
                                         }
 
                                     </View>
-                                    <SText  style={{color: FontAndColor.COLORA1,}}>您也可以使用您的银行卡，通过线下转账（柜台，网银，手机银行）的方式将资金充值到您的浙商银行账户下。</SText>
+                                    <SText style={{color: FontAndColor.COLORA1,}}>您也可以使用您的银行卡，通过线下转账（柜台，网银，手机银行）的方式将资金充值到您的浙商银行账户下。</SText>
                                     <View style={{
                                         borderBottomColor: FontAndColor.COLORA4,
                                         borderBottomWidth: StyleSheet.hairlineWidth,
                                         marginVertical: 15
                                     }}/>
-                                    <SText  style={{fontWeight: 'bold', marginBottom: 5}}>转账时填写的信息如下：</SText>
-                                    <SText  style={{fontWeight: 'bold', marginBottom: 5}}>收款人姓名：王淑梅</SText>
-                                    <SText  style={{fontWeight: 'bold', marginBottom: 5}}>收款人账号：2282202829020282929222</SText>
-                                    <SText  style={{fontWeight: 'bold', marginBottom: 25}}>收款银行：浙商银行</SText>
+                                    <SText style={{fontWeight: 'bold', marginBottom: 5}}>转账时填写的信息如下：</SText>
+                                    <SText style={{fontWeight: 'bold', marginBottom: 5}}>收款人姓名：王淑梅</SText>
+                                    <SText style={{
+                                        fontWeight: 'bold',
+                                        marginBottom: 5
+                                    }}>收款人账号：2282202829020282929222</SText>
+                                    <SText style={{fontWeight: 'bold', marginBottom: 25}}>收款银行：浙商银行</SText>
 
                                 </View>
 
@@ -215,7 +231,9 @@ export default class DepositScene extends BaseComponent {
                             parentStyle={styles.next_button_parent}
                             childStyle={{fontSize: 18, color: 'white'}}
                             mOnPress={() => {
-
+                                this.setState({
+                                    sms_pad:true
+                                })
                             }}
 
                         />
@@ -233,7 +251,7 @@ export default class DepositScene extends BaseComponent {
                                     flex: 1,
                                     marginRight: 15
                                 }}/>
-                                <SText  style={{color: FontAndColor.COLORA1}}>温馨提示</SText>
+                                <SText style={{color: FontAndColor.COLORA1}}>温馨提示</SText>
                                 <View style={{
                                     height: 1,
                                     backgroundColor: FontAndColor.COLORA4,
@@ -243,9 +261,9 @@ export default class DepositScene extends BaseComponent {
                             </View>
                             <SText style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>1
                                 浙商银行及其它银行1000万以内的提现，实时到账，五分钟。</SText>
-                            <SText  style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
+                            <SText style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
                                 企业用户及其它个人用户提现大于1000万以上的，工作日走大小额，资金0.5-2小时即可到达。</SText>
-                            <SText  style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
+                            <SText style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
                                 企业用户及其它个人用户提现大于1000万以上的。</SText>
 
                         </View>
@@ -254,6 +272,24 @@ export default class DepositScene extends BaseComponent {
                     }
 
                 </ScrollView>
+
+
+                {this.state.sms_pad?
+                   <SmsFillScene
+                        orderId = {'12345698765432'}
+                        money = {134241}
+                        type = {1}
+                        closeCallBack = {()=>{
+                            this.setState({
+                                sms_pad:false
+                            })
+                        }}
+
+                   />
+                    :null
+                }
+
+
             </View>
 
         )
@@ -266,7 +302,7 @@ class DepositItem extends Component {
         return (
             <View style={{alignItems: 'center', flex: 1}}>
                 <Image style={{width: 60, height: 60, marginBottom: 10}} source={this.props.image}/>
-                <SText  style={{fontSize: 16}}>{this.props.title}</SText>
+                <SText style={{fontSize: 16}}>{this.props.title}</SText>
             </View>
         )
     }
@@ -308,5 +344,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginLeft: 15,
         borderRadius: 3,
-    }
+    },
+
+
 })

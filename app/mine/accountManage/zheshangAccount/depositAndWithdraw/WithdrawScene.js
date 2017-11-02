@@ -1,3 +1,7 @@
+/**
+ * Created by dingyonggang on 2017/10/27.
+ */
+
 import React, {Component} from "react";
 import {
     View,
@@ -20,6 +24,7 @@ import * as AppUrls from "../../../../constant/appUrls";
 import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import SText from '../component/SaasText'
+import SmsFillScene from './SmsFillScene'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -31,6 +36,7 @@ export default class DepositScene extends BaseComponent {
         super(props)
         this.state = {
             renderPlaceholderOnly: true,
+            sms_pad:false,
         }
     }
 
@@ -142,7 +148,9 @@ export default class DepositScene extends BaseComponent {
                         parentStyle={styles.next_button_parent}
                         childStyle={{fontSize: 18, color: 'white'}}
                         mOnPress={() => {
-
+                            this.setState({
+                                sms_pad:true
+                            })
                         }}
 
                     />
@@ -164,6 +172,22 @@ export default class DepositScene extends BaseComponent {
                     </View>
 
                 </ScrollView>
+
+
+                {this.state.sms_pad?
+                    <SmsFillScene
+                        orderId = {'12345698765432'}
+                        money = {134241}
+                        type = {1}
+                        closeCallBack = {()=>{
+                            this.setState({
+                                sms_pad:false
+                            })
+                        }}
+
+                    />
+                    :null
+                }
             </View>
 
         )
