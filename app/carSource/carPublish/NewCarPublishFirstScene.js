@@ -17,16 +17,14 @@ import {
     NativeModules,
     DeviceEventEmitter,
     KeyboardAvoidingView,
-
-}   from 'react-native';
+}from 'react-native';
 
 import BaseComponent from '../../component/BaseComponent';
 import AllNavigationView from '../../component/AllNavigationView';
 import {CellView, CellSelectView} from '../znComponent/CarPublishCell';
-import CarPublishSecondScene from './NewCarPublishSecondScene';
+import NewCarUpImageScene from './NewCarUpImageScene';
 import *as fontAndColor from '../../constant/fontAndColor';
 import CarBrandSelectScene   from '../CarBrandSelectScene';
-import CarDischargeScene from  './CarDischargeScene';
 import CarBodyColorScene from './CarBodyColorScene';
 import CarInwardColorScene from './CarInwardColorScene';
 import AutoConfig      from '../../publish/AutoConfig';
@@ -66,14 +64,10 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 renderPlaceholderOnly: 'error'
             });
         }, (fetchObject) => {
-
             this.carConfigurationData = fetchObject;
             if (this.props.carID !== undefined) {
-
                 this.loadCarData();
-
             } else {
-
                 if (this.props.carData) {
                     this.carData = this.props.carData;
                 }
@@ -85,7 +79,6 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                         this.carData['provice_id'] = enters.prov_id;
                         this.carData['city_name'] = enters.city_name;
                         this.getLocalityCarData();
-
                     } else {
                         this._showHint('无法找到所属商户');
                     }
@@ -98,7 +91,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.carType = '有现车';
-        this.carData = {'v_type': 1};
+        this.carData = {'xianche': 1};//是否有现车   xxxxxxx
         this.titleData1 = [
             [{
                 title: '车型',
@@ -505,14 +498,11 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     loadCarData = () => {
 
         this.props.showModal(true);
-
         Net.request(AppUrls.CAR_DETAIL, 'post', {
             id: this.props.carID,
             imgType: 0,
         }).then((response) => {
-
             this.props.showModal(false);
-
             if (response.mycode == 1) {
                 this.carData = response.mjson.data;
                 this.carData.manufacture = response.mjson.data.manufacture != '' ? this.dateReversal(response.mjson.data.manufacture + '000') : '';
@@ -520,8 +510,6 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 this.carData.emission_standards = response.mjson.data.emission_standards;
                 this.setCarData();
             }
-
-
         }, (error) => {
             this.props.showToast(error.msg);
         });
@@ -530,8 +518,6 @@ export default class NewCarPublishFirstScene extends BaseComponent {
 
     // 获取本地数据
     getLocalityCarData = () => {
-
-
         if (this.props.carData) {
             this.setCarData();
             return;
@@ -556,23 +542,16 @@ export default class NewCarPublishFirstScene extends BaseComponent {
      * 校验车辆金额
      **/
     carMoneyChange = (carMoney) => {
-
         let newCarMoney = parseFloat(carMoney);
         let carMoneyStr = newCarMoney.toFixed(2);
         let moneyArray = carMoneyStr.split(".");
-
         // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
-
         if (moneyArray.length > 1) {
             if (moneyArray[1] > 0) {
-
                 return moneyArray[0] + '.' + moneyArray[1];
-
             } else {
-
                 return moneyArray[0];
             }
-
         } else {
             return carMoneyStr;
         }
@@ -609,10 +588,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     }
 
     setCarData = () => {
-        if (this.carData.v_type !== 1) {
-            this.carType = this.titleData1[1][1].selectDict.current;//是否有现车
-            this.refs.cellSelectView.setCurrentChecked(this.carType);
-        }
+        this.carType = this.titleData1[1][1].selectDict.current;//是否有现车
+        this.refs.cellSelectView.setCurrentChecked(this.carType);
 
         this.titleData1[0][0].value = this.carData.model_name ? this.carData.model_name : '请选择';
         this.titleData1[0][1].value = this.carData.model_name ? this.carData.model_name : '请选择';//??????
@@ -681,8 +658,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
 
     cellSelectAction = (selectDict) => {
 
-        this.carData['v_type'] = selectDict.value;
-        this.carData['v_type_str'] = selectDict.title;
+        this.carData['xianche'] = selectDict.value;
+        this.carData['xianche_str'] = selectDict.title;
         this.carType = selectDict.title;
         this.upTitleData();
     }
@@ -737,8 +714,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
         // }
 
         let navigatorParams = {
-            name: "CarPublishSecondScene",
-            component: CarPublishSecondScene,
+            name: "NewCarUpImageScene",
+            component: NewCarUpImageScene,
             params: {
                 carData: this.carData,
                 carConfigurationData: this.carConfigurationData,
