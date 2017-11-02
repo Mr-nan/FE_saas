@@ -1,13 +1,13 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
 
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -1217,4 +1217,7 @@ export const UPDATE_CAR_WELFARE = BASEURL + "cheshang/tenure_customer/updateCarW
  *  搜索保有客户数据
  */
 export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySearch";
-
+/**
+ *   商户是否在(浙商)白名单中查询
+ */
+export const IS_IN_WHITE_LIST = BASEURL + "v1/account.cz_bank/isInWhiteList";

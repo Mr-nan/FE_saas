@@ -98,42 +98,72 @@ export default class MyAccountScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                        this.props.showModal(false);
+                        //this.props.showModal(false);
                         this.lastType = response.mjson.data.account.status;
                         this.hengFengInfo = response.mjson.data.account;
-                        this.props.callBack(this.lastType);
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        this.setState({
-                            dataSource: ds.cloneWithRows(['0', '1']),
-                            renderPlaceholderOnly: 'success',
-                            isRefreshing: false,
-                            backColor: fontAndColor.COLORB0
-                        });
+                        this.props.callBack(this.lastType);   //最新的账户状态回传给"我的"页面
+                        /*                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                         this.setState({
+                         dataSource: ds.cloneWithRows(['0', '1']),
+                         renderPlaceholderOnly: 'success',
+                         isRefreshing: false,
+                         backColor: fontAndColor.COLORB0
+                         });*/
+                        this.getIsInWhiteList(datas.company_base_id);
                     }, (error) => {
                         this.props.showModal(false);
                         this.props.showToast('用户信息查询失败');
+                        this.setState({
+                            renderPlaceholderOnly: 'error',
+                            isRefreshing: false
+                        });
                     });
             } else {
                 this.props.showModal(false);
                 this.props.showToast('用户信息查询失败');
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
+                });
             }
         });
 
     };
 
     /**
-     *  获取恒丰账户数据
+     *  查询是否在(浙商)白名单
      * @returns {XML}
      **/
-    getHengFengAccount = () => {
-
+    getIsInWhiteList = (companyBaseId) => {
+        let maps = {
+            enter_base_id: companyBaseId
+        };
+        request(Urls.IS_IN_WHITE_LIST, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                //this.lastType = response.mjson.data.account.status;
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(response.mjson.data.account.status === 0 ? ['0', '1'] : ['0']),
+                    renderPlaceholderOnly: 'success',
+                    isRefreshing: false,
+                    backColor: fontAndColor.COLORB0
+                });
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
+                });
+            });
     };
 
     /**
      *  获取浙商账户数据
      * @returns {XML}
      **/
-    getZheShangAccount = () => {
+    getZheShangAccountInfo = () => {
 
     };
 
