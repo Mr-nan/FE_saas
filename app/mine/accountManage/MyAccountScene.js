@@ -43,6 +43,7 @@ export default class MyAccountScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.hengFengInfo = {};
+        this.zheShangInfo = {};
         this.lastType = '-1';
         this.state = {
             dataSource: [],
@@ -140,15 +141,19 @@ export default class MyAccountScene extends BaseComponent {
         };
         request(Urls.IS_IN_WHITE_LIST, 'Post', maps)
             .then((response) => {
-                this.props.showModal(false);
-                //this.lastType = response.mjson.data.account.status;
-                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                this.setState({
-                    dataSource: ds.cloneWithRows(response.mjson.data.status === 0 ? ['0'] : ['0', '1']),
-                    renderPlaceholderOnly: 'success',
-                    isRefreshing: false,
-                    backColor: fontAndColor.COLORB0
-                });
+                let isWhiteList = response.mjson.data.status;
+                if (isWhiteList === 0) {
+                    this.props.showModal(false);
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        dataSource: ds.cloneWithRows(['0']),
+                        renderPlaceholderOnly: 'success',
+                        isRefreshing: false,
+                        backColor: fontAndColor.COLORB0
+                    });
+                } else {
+                    this.getZheShangAccountInfo(companyBaseId, isWhiteList);
+                }
             }, (error) => {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
@@ -163,8 +168,32 @@ export default class MyAccountScene extends BaseComponent {
      *  获取浙商账户数据
      * @returns {XML}
      **/
-    getZheShangAccountInfo = () => {
-
+    getZheShangAccountInfo = (companyBaseId, isWhiteList) => {
+        let maps = {
+            enter_base_ids: companyBaseId,
+            child_type: '1',
+            bank_id: 316
+        };
+        request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                //let zheShangStatus = response.mjson.data.account.status;
+                this.zheShangInfo = response.mjson.data.account;
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(['0', '1']),
+                    renderPlaceholderOnly: 'success',
+                    isRefreshing: false,
+                    backColor: fontAndColor.COLORB0
+                });
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
+                });
+            });
     };
 
     render() {
@@ -216,8 +245,7 @@ export default class MyAccountScene extends BaseComponent {
         if (rowData == '0') {
             info = this.hengFengInfo;
         } else {
-            // TODO info = 浙商账户数据
-            info = this.hengFengInfo;
+            info = this.zheShangInfo;
         }
         return (
             <MyAccountItem

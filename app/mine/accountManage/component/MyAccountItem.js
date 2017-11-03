@@ -94,7 +94,6 @@ export default class MyAccountItem extends BaseComponent {
                     break;
             }
         } else {
-            //TODO 浙商页面跳转分发
             switch (state) {
                 case 0://未开户
                     this.navigatorParams.name = 'ZSAccountTypeSelectScene';
@@ -103,14 +102,15 @@ export default class MyAccountItem extends BaseComponent {
 
                     };
                     break;
-                case 1://已开户
+                case 2: // 未激活
+
+                    break;
+                default:  //已开户
                     this.navigatorParams.name = 'ZheShangAccountScene';
                     this.navigatorParams.component = ZheShangAccountScene;
                     this.navigatorParams.params = {
 
                     };
-                    break;
-                default:
                     break;
             }
         }
@@ -163,17 +163,17 @@ export default class MyAccountItem extends BaseComponent {
             back = require('../../../../images/account/hengfengback.png');
             bank = require('../../../../images/account/hengfengbank.png');
             bankName = '恒丰银行';
-            if (this.state.data.status === 0) {
-                accountState = '未开户';
-            } else if (this.state.data.status === 1) {
-                accountState = '未绑卡';
-            } else if (this.state.data.status === 2) {
-                accountState = '未激活';
-            }
         } else {
             back = require('../../../../images/account/zheshangback.png');
             bank = require('../../../../images/account/zheshangbank.png');
             bankName = '浙商银行';
+        }
+        if (this.state.data.status === 0) {
+            accountState = '未开户';
+        } else if (this.state.data.status === 1) {
+            accountState = '未绑卡';
+        } else if (this.state.data.status === 2) {
+            accountState = '未激活';
         }
         return (
             <View style={{alignItems: 'center'}}>
