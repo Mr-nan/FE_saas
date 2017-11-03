@@ -26,18 +26,33 @@ let Pixel = new PixelUtil();
      }
 
     render(){
+        this.buttonArray = [];
         return(
-            <View style={styles.contaier}>
-                <ZNButton ref={(ref)=>{this.userCarBtn = ref}} title="二手车" isSelect={true} click={this.click}/>
-                <ZNButton ref={(ref)=>{this.newCarBtn = ref}} title="新车"  isSelect={false} click={this.click}/>
+            <View style={styles.contaier} >
+                {
+                    this.props.titleArray.map((data,index)=>{
+
+                        return(
+                            <ZNButton ref={(ref)=>{ ref && this.buttonArray.push(ref)}}
+                                      title={data}
+                                      isSelect={index==this.props.defaultIndex?true:false}
+                                      key={index} click={this.click}
+                                      index={index}/>
+                        )
+                    })
+                }
             </View>
         )
     }
 
-    click=(title)=>{
+    click=(title,index)=>{
 
-       this.userCarBtn.setSelect();
-       this.newCarBtn.setSelect();
+        this.props.switchoverAction(title,index);
+
+        for(let tmpBtn of this.buttonArray){
+
+         tmpBtn && tmpBtn.setSelect();
+      }
     }
 
 }
@@ -69,7 +84,7 @@ class ZNButton extends  Component {
      }
      click=()=>{
          if(!this.state.isSelect){
-             this.props.click(this.props.title);
+             this.props.click(this.props.title,this.props.index);
          }
 
      }
@@ -86,11 +101,11 @@ const  styles = StyleSheet.create({
    },
     textView:{
         height:Pixel.getPixel(28),
-        width:Pixel.getPixel(64),
         backgroundColor:'white',
         justifyContent:'center',
         alignItems:'center',
         overflow:'hidden',
+        paddingHorizontal:Pixel.getPixel(28),
 
     },
     text:{

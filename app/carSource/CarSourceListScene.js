@@ -23,6 +23,7 @@ import CarInfoScene         from './CarInfoScene';
 import PixelUtil            from '../utils/PixelUtil';
 import ZNSwitchoverButton from './znComponent/ZNSwitchoverButton';
 import CarUserListScene from './CarUserListScene';
+import CarNewListScene from './CarNewListScene';
 
 
 
@@ -50,9 +51,11 @@ export  default  class carSourceListScene extends BaseComponent {
         super(props);
         // 初始状态
 
+        this.state={
+            switchoverType:0
+        }
 
     }
-
 
     // 选择城市列表
     loactionClick = () => {
@@ -82,6 +85,12 @@ export  default  class carSourceListScene extends BaseComponent {
         this.props.callBack(navigatorParams);
     };
 
+    switchoverAction=(title,index)=>{
+        this.setState({
+            switchoverType:index
+        });
+    }
+
 
     renderPlaceholderView = () => {
         return (
@@ -95,8 +104,12 @@ export  default  class carSourceListScene extends BaseComponent {
 
         return (
             <View style={styles.contaier}>
-                <CarListNavigatorView  loactionClick={this.loactionClick} />
-                <CarUserListScene showModal={this.props.showModal} callBack={this.props.callBack}/>
+                <CarListNavigatorView  loactionClick={this.loactionClick} switchoverType={this.state.switchoverType} switchoverAction={this.switchoverAction}/>
+                {
+                    this.state.switchoverType==0?(
+                        <CarUserListScene showModal={this.props.showModal} callBack={this.props.callBack}/>):(<CarNewListScene showModal={this.props.showModal} callBack={this.props.callBack}/>)
+                }
+
             </View>
 
         )
@@ -129,7 +142,7 @@ class CarListNavigatorView extends Component {
                             {/*<Text allowFontScaling={false}  style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>筛选</Text>*/}
                         {/*</View>*/}
                     {/*</TouchableOpacity>*/}
-                    <ZNSwitchoverButton/>
+                    <ZNSwitchoverButton switchoverAction={this.props.switchoverAction} titleArray={['二手车','新车  ']} defaultIndex={this.props.switchoverType}/>
                 </View>
             </View>
 

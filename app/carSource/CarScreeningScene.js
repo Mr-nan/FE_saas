@@ -20,6 +20,7 @@ import ProvinceListScene from './ProvinceListScene';
 import CarDischargeScene from './carPublish/CarDischargeScene';
 import CarBodyColorScene from './carPublish/CarBodyColorScene';
 import PixelUtil from '../utils/PixelUtil';
+import CarSpecificationScene from "./CarSpecificationScene";
 const Pixel = new PixelUtil();
 
 
@@ -33,23 +34,65 @@ export default class CarInfoScene extends BaseComponent {
         return (
             <View style={styles.rootContainer}>
                 <ScrollView>
-                    <SelectView     ref="cityView"          title="地区"          content={screeningObject.checkedCity.title!=''?screeningObject.checkedCity.title:'请选择'} selectCilck={this.pushCitySceneAction}/>
-                    <SelectView     ref="carView"           title="品牌车系"       content={(screeningObject.checkedCarType.title!='')?screeningObject.checkedCarType.title:'请选择'} selectCilck={this.pushCarBrandSceneAction}/>
+                    <SelectView
+                        ref="cityView"
+                        title="地区"
+                        content={screeningObject.checkedCity.title!=''?screeningObject.checkedCity.title:'请选择'}
+                        selectCilck={this.pushCitySceneAction}/>
+                    <SelectView
+                        ref="carView"
+                        title="品牌车系"
+                        content={(screeningObject.checkedCarType.title!='')?screeningObject.checkedCarType.title:'请选择'}
+                        selectCilck={this.pushCarBrandSceneAction}/>
                     {
-                        this.props.type==1 && (<SelectView     ref="carDischargeView"  title="排放标准"       content={screeningObject.checkedCarDischarge.title!=''?screeningObject.checkedCarDischarge.title:'请选择'} selectCilck={this.pushCarDischargeSceneAction}/>
+                        this.props.type==1 && (
+                            <SelectView
+                                ref="carDischargeView"
+                                title="排放标准"
+                                content={screeningObject.checkedCarDischarge.title!=''?screeningObject.checkedCarDischarge.title:'请选择'}
+                                selectCilck={this.pushCarDischargeSceneAction}/>
                         )
                     }
-                    <SelectView     ref="carColorView"      title="车身颜色"       content={screeningObject.checkedCarColor.title!=''?screeningObject.checkedCarColor.title:'请选择'} selectCilck={this.pushCarColorSceneAction}/>
+                    <SelectView
+                        ref="carColorView"
+                        title="车身颜色"
+                        content={screeningObject.checkedCarColor.title!=''?screeningObject.checkedCarColor.title:'请选择'}
+                        selectCilck={this.pushCarColorSceneAction}/>
                     {
                         this.props.type==1 && (
                             <View>
-                                <CheckedView    title="车龄"  contentView={this.carAgeView} dataArray={screeningObject.carAgeSource}    checkedClick={this.carAgeClick} currentChecked={screeningObject.checkedCarAgeType.title}/>
-                                <CheckedView    title="里程" dataArray={screeningObject.carKMSource}     checkedClick={this.carKMClick} currentChecked={screeningObject.checkedCarKMType.title}/>
-                                <CheckedView    title="使用性质" dataArray={screeningObject.carNatureSource}   checkedClick={this.carNatureClick}    currentChecked={screeningObject.checkedCarNature.title}/>
+                                <CheckedView
+                                    title="车龄"
+                                    contentView={this.carAgeView}
+                                    dataArray={screeningObject.carAgeSource}
+                                    checkedClick={this.carAgeClick}
+                                    currentChecked={screeningObject.checkedCarAgeType.title}/>
+                                <CheckedView
+                                    title="里程"
+                                    dataArray={screeningObject.carKMSource}
+                                    checkedClick={this.carKMClick}
+                                    currentChecked={screeningObject.checkedCarKMType.title}/>
+                                <CheckedView
+                                    title="使用性质"
+                                    dataArray={screeningObject.carNatureSource}
+                                    checkedClick={this.carNatureClick}
+                                    currentChecked={screeningObject.checkedCarNature.title}/>
                             </View>)
                     }
-                    <CheckedView    title="价格"  contentView={this.carPriceView} dataArray={screeningObject.carPriceSource}    checkedClick={this.carPriceClick} currentChecked={screeningObject.checkedCarPrice.title}/>
-
+                    <CheckedView
+                        title="价格"
+                        contentView={this.carPriceView}
+                        dataArray={screeningObject.carPriceSource}
+                        checkedClick={this.carPriceClick}
+                        currentChecked={screeningObject.checkedCarPrice.title}/>
+                    {
+                        this.props.type!=1 && (
+                            <SelectView
+                            ref="carSpecificationView"
+                            title="车规"
+                            content={screeningObject.checkedCarSpecification.title!=''?screeningObject.checkedCarSpecification.title:'请选择'}
+                            selectCilck={this.pushCarSpecificationAction}/>)
+                    }
 
                     {/*<CheckedView    title="类型" dataArray={screeningObject.carTypeSource}   checkedClick={this.carTypeClick}    currentChecked={screeningObject.checkedCarGenre.title}/>*/}
                 </ScrollView>
@@ -223,9 +266,6 @@ export default class CarInfoScene extends BaseComponent {
             this.props.screeningObject.checkedCarPrice.title = this.carStartPrice +'到'+this.carStopPrice+'万';
             this.props.screeningObject.checkedCarPrice.value = this.carStartPrice +'|'+this.carStopPrice;
         }
-
-
-
         this.props.screeningCompleteClick(this.props.screeningObject);
         this.backPage();
     }
@@ -303,6 +343,22 @@ export default class CarInfoScene extends BaseComponent {
         }
         this.toNextPage(navigatorParams);
     }
+
+    /**
+     * 选择车规
+     */
+    pushCarSpecificationAction=()=>{
+        let navigatorParams = {
+            name: "CarSpecificationScene",
+            component: CarSpecificationScene,
+            params: {
+                checkedSpecification:this.checkedSpecification,
+                currentTitle:this.props.screeningObject.checkedCarSpecification.title,
+            }
+        }
+        this.toNextPage(navigatorParams);
+    }
+
     cityUnlimitedAction=()=>{
 
         this.refs.cityView.setContent('全国');
@@ -310,6 +366,7 @@ export default class CarInfoScene extends BaseComponent {
         this.props.screeningObject.checkedCity.city_id='';
         this.props.screeningObject.checkedCity.provice_id =0;
     }
+
 
     carUnlimitedAction=()=>{
         this.refs.carView.setContent('不限');
@@ -334,6 +391,14 @@ export default class CarInfoScene extends BaseComponent {
         this.props.screeningObject.checkedCarColor.value = carBodyColorSceneObject.title+'|'+carBodyColorSceneObject.value;
 
     }
+
+    checkedSpecification=(specificationData)=>{
+        this.refs.carSpecificationView.setContent(specificationData.subTitle?specificationData.subTitle:specificationData.title);
+        this.props.screeningObject.checkedCarSpecification.title = specificationData.subTitle?specificationData.subTitle:specificationData.title;
+        this.props.screeningObject.checkedCarSpecification.value = '';
+
+    }
+
 
     checkedCityClick=(cityType)=>{
 
