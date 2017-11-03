@@ -31,7 +31,7 @@ let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
 let Platform = require('Platform');
 
-export default class DepositScene extends BaseComponent {
+export default class WithdrawScene extends BaseComponent {
     constructor(props) {
         super(props)
         this.state = {

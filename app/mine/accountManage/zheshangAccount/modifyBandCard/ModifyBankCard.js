@@ -27,7 +27,7 @@ var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 var Platform = require('Platform');
 
-export default class NameAndIdScene extends BaseComponent {
+export default class ModifyBankCard extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {

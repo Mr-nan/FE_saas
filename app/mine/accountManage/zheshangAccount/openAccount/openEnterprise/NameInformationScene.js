@@ -23,12 +23,12 @@ import StorageUtil from "../../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../../constant/storageKeyNames";
 import TextInputItem from '../../component/TextInputItem'
 
-var Dimensions = require('Dimensions');
-var {width, height} = Dimensions.get('window');
-var Pixel = new PixelUtil();
-var Platform = require('Platform');
+let Dimensions = require('Dimensions');
+let {width, height} = Dimensions.get('window');
+let Pixel = new PixelUtil();
+let Platform = require('Platform');
 
-export default class NameAndIdScene extends BaseComponent {
+export default class NameInformationScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {

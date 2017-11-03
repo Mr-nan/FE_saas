@@ -11,6 +11,7 @@ import {
 import Root from './app/root';
 
 
-AppRegistry.registerComponent('FE_Sass', () => component);
+
+AppRegistry.registerComponent('FE_Sass', () => Root);
 
 
