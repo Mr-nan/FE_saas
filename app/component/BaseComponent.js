@@ -216,4 +216,29 @@ export default class BaseComponent extends Component {
         }
         return view;
     }
+
+
+    loadingView2 = () => {
+        let view;
+        if (this.state.loading == true) {
+            view = <TouchableWithoutFeedback onPress={() => {
+            }}>
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'absolute',
+                        width: width,
+                        height: height,
+                    }}>
+                    <Image style={{width: 90, height: 90}}
+                           source={require('../../images/setDataLoading.gif')}/>
+                </View>
+            </TouchableWithoutFeedback>
+        } else {
+            view = null;
+        }
+        return view;
+    }
 }
