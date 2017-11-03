@@ -20,6 +20,8 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigationView from '../../../component/AllNavigationView';
+import NameAndIdScene from "./openAccount/openIndividual/NameAndIdScene";
+import NameInformationScene from "./openAccount/openEnterprise/NameInformationScene";
 export  default class ZSAccountTypeSelectScene extends BaseComponent {
 
     constructor(props) {
@@ -66,7 +68,7 @@ export  default class ZSAccountTypeSelectScene extends BaseComponent {
                 <TouchableOpacity
                     onPress={() => {
                         this.toNextPage({ // TODO 替换成浙商页面
-                            name: 'OpenIndividualAccountScene', component: OpenIndividualAccountScene, params: {
+                            name: 'NameAndIdScene', component: NameAndIdScene, params: {
                                 callBack: () => {
                                     this.props.callBack();
                                 }, title: '开通个人账户', buttonText: '确认开通'
@@ -105,8 +107,8 @@ export  default class ZSAccountTypeSelectScene extends BaseComponent {
                 <TouchableOpacity
                     onPress={() => {
                         this.toNextPage({  // TODO 替换成浙商页面
-                            name: 'OpenEnterpriseAccountScene',
-                            component: OpenEnterpriseAccountScene, params: {
+                            name: 'NameInformationScene',
+                            component: NameInformationScene, params: {
                                 callBack: () => {
                                     this.props.callBack();
                                 }, title: '开通企业账户', buttonText: '确认开通'

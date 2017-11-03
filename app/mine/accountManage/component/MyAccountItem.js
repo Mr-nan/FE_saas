@@ -103,7 +103,13 @@ export default class MyAccountItem extends BaseComponent {
                     };
                     break;
                 case 2: // 未激活
-
+                    this.navigatorParams.name = 'WaitActivationAccountScene';
+                    this.navigatorParams.component = WaitActivationAccountScene;
+                    this.navigatorParams.params = {
+                        callBack: () => {
+                            this.props.callBack();
+                        }
+                    };
                     break;
                 default:  //已开户
                     this.navigatorParams.name = 'ZheShangAccountScene';
@@ -160,7 +166,7 @@ export default class MyAccountItem extends BaseComponent {
                     request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                         .then((response) => {
                             this.props.showModal(false);
-                            this.pageDispense(type, response.mjson.data.account.status);
+                            this.pageDispense(type, 1);
                             this.toNextPage(this.navigatorParams);
                         }, (error) => {
                             this.props.showModal(false);

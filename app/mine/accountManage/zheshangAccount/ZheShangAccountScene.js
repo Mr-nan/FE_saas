@@ -35,6 +35,11 @@ import * as StorageKeyNames from "../../../constant/storageKeyNames";
 import * as webBackUrl from "../../../constant/webBackUrl";
 import AccountWebScene from '../AccountWebScene';
 import ZheShangAccountTitle from "./component/ZheShangAccountTitle";
+import ModifyBankCard from "./modifyBandCard/ModifyBankCard";
+import Log from "./accountLog/Log";
+import InformationFillScene from "./modifyPhone/InformationFillScene";
+import DepositScene from "./depositAndWithdraw/DepositScene";
+import WithdrawScene from "./depositAndWithdraw/WithdrawScene";
 export  default class ZheShangAccountScene extends BaseComponent {
 
     constructor(props) {
@@ -44,8 +49,8 @@ export  default class ZheShangAccountScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             source: [],
             info: {},
-            enter_id:'',
-            isRefreshing:false
+            enter_id: '',
+            isRefreshing: false
         };
     }
 
@@ -69,74 +74,76 @@ export  default class ZheShangAccountScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
-                this.isOpenContract = datas.is_open_electron_repayment_contract;
+                //this.isOpenContract = datas.is_open_electron_repayment_contract;
                 let maps = {
                     enter_base_ids: datas.company_base_id,
-                    child_type: '1'
+                    child_type: '1',
+                    bank_id: 316
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                           this.getAccountData(datas.company_base_id,
-                               response.mjson.data.account.account_open_type)
+                            this.getAccountData(datas.company_base_id,
+                                response.mjson.data.account.account_open_type)
                         },
                         (error) => {
                             this.props.showToast('用户信息查询失败');
                             this.setState({
                                 renderPlaceholderOnly: 'error',
-                                isRefreshing:false
+                                isRefreshing: false
                             });
                         });
             } else {
                 this.props.showToast('用户信息查询失败');
                 this.setState({
                     renderPlaceholderOnly: 'error',
-                    isRefreshing:false
+                    isRefreshing: false
                 });
             }
         })
     }
 
-    getAccountData=(id,type)=>{
+    getAccountData = (id, type) => {
         let maps = {
-            enter_base_id:id,
+            enter_base_id: id,
             user_type: type,
-            transfer_type:'0,3,4,104'
+            transfer_type: '0,3,4,104',
+            bank_id: 316
         };
         request(Urls.USER_ACCOUNT_INDEX, 'Post', maps)
             .then((response) => {
-
-                if(response.mjson.data.info.status!='3'){
-                    this.props.callBack();
-                    this.backPage();
-                }else{
-                    if (response.mjson.data.payLogs == null || response.mjson.data.payLogs.length <= 0) {
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        this.setState({
-                            renderPlaceholderOnly: 'success',
-                            source: ds.cloneWithRows([1]),
-                            info: response.mjson.data.info,
-                            enter_id:id,
-                            isRefreshing:false
-
-                        });
+                    //TODO test
+                    if (response.mjson.data.info.status == '6') {
+                        this.props.callBack();
+                        this.backPage();
                     } else {
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        this.setState({
-                            renderPlaceholderOnly: 'success',
-                            // source: ds.cloneWithRows(response.mjson.data.payLogs),
-                            source: ds.cloneWithRows([1]),
-                            info: response.mjson.data.info,
-                            enter_id:id,
-                            isRefreshing:false
-                        });
+                        if (response.mjson.data.payLogs == null || response.mjson.data.payLogs.length <= 0) {
+                            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                            this.setState({
+                                renderPlaceholderOnly: 'success',
+                                source: ds.cloneWithRows([1]),
+                                info: response.mjson.data.info,
+                                enter_id: id,
+                                isRefreshing: false
+
+                            });
+                        } else {
+                            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                            this.setState({
+                                renderPlaceholderOnly: 'success',
+                                // source: ds.cloneWithRows(response.mjson.data.payLogs),
+                                source: ds.cloneWithRows([1]),
+                                info: response.mjson.data.info,
+                                enter_id: id,
+                                isRefreshing: false
+                            });
+                        }
                     }
-                }
                 },
                 (error) => {
                     this.props.showToast('用户信息查询失败');
                     this.setState({
                         renderPlaceholderOnly: 'error',
-                        isRefreshing:false
+                        isRefreshing: false
                     });
                 });
     }
@@ -150,39 +157,59 @@ export  default class ZheShangAccountScene extends BaseComponent {
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
                     removeClippedSubviews={false}
-                    style={{marginTop: Pixel.getTitlePixel(64),marginBottom:Pixel.getPixel(45)}}
+                    style={{marginTop: Pixel.getTitlePixel(64), marginBottom: Pixel.getPixel(45)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderHeader={this._renderHeader}
                     renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                     refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={this.refreshingData}
-                                        tintColor={[fontAndColor.COLORB0]}
-                                        colors={[fontAndColor.COLORB0]}
-                                    />
-                                }
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshingData}
+                            tintColor={[fontAndColor.COLORB0]}
+                            colors={[fontAndColor.COLORB0]}
+                        />
+                    }
                 />
-                <View style={{width:width,height:Pixel.getPixel(44),backgroundColor: fontAndColor.COLORA3,
-                flexDirection:'row',position: 'absolute',bottom: 0}}>
-                    <TouchableOpacity onPress={()=>{
-                        this.toNextPage({name:'WithdrawalsScene',
-                        component:WithdrawalsScene,params:{callBack:()=>{
-                            this.allRefresh()
-                        } ,money:this.state.info.balance}})
+                <View style={{
+                    width: width, height: Pixel.getPixel(44), backgroundColor: fontAndColor.COLORA3,
+                    flexDirection: 'row', position: 'absolute', bottom: 0
+                }}>
+                    <TouchableOpacity onPress={() => {
+                        this.toNextPage({
+                            name: 'WithdrawScene',
+                            component: WithdrawScene, params: {
+                                callBack: () => {
+                                    this.allRefresh()
+                                }, money: this.state.info.balance
+                            }
+                        })
                     }} activeOpacity={0.8}
-                                      style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
-                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>提现</Text>
+                                      style={{
+                                          flex: 1,
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                          backgroundColor: '#fff'
+                                      }}>
+                        <Text allowFontScaling={false}
+                              style={{color: fontAndColor.COLORB0, fontSize: Pixel.getFontPixel(15)}}>提现</Text>
                     </TouchableOpacity>
-                    <View style={{width:1,justifyContent:'center',
-                    alignItems: 'center',height:Pixel.getPixel(44)}}></View>
-                    <TouchableOpacity onPress={()=>{
-                        this.toNextPage({name:'RechargeScene',component:RechargeScene,params:{}})
+                    <View style={{
+                        width: 1, justifyContent: 'center',
+                        alignItems: 'center', height: Pixel.getPixel(44)
+                    }}></View>
+                    <TouchableOpacity onPress={() => {
+                        this.toNextPage({name: 'DepositScene', component: DepositScene, params: {}})
                     }} activeOpacity={0.8}
-                                      style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
-                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>充值</Text>
+                                      style={{
+                                          flex: 1,
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                          backgroundColor: '#fff'
+                                      }}>
+                        <Text allowFontScaling={false}
+                              style={{color: fontAndColor.COLORB0, fontSize: Pixel.getFontPixel(15)}}>充值</Text>
                     </TouchableOpacity>
                 </View>
                 <NavigationView
@@ -203,18 +230,21 @@ export  default class ZheShangAccountScene extends BaseComponent {
             return (<View></View>);
         } else {
             return (
-                <View style={{width:width,height:Pixel.getPixel(72),backgroundColor: '#fff',flexDirection: 'row',
-            paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)}}>
-                    <View style={{flex:1,justifyContent:'center'}}>
-                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(14)}}>
+                <View style={{
+                    width: width, height: Pixel.getPixel(72), backgroundColor: '#fff', flexDirection: 'row',
+                    paddingRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(15)
+                }}>
+                    <View style={{flex: 1, justifyContent: 'center'}}>
+                        <Text allowFontScaling={false} style={{color: '#000', fontSize: Pixel.getPixel(14)}}>
                             {movie.operate_name}
                         </Text>
-                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(12)}}>
+                        <Text allowFontScaling={false}
+                              style={{color: fontAndColor.COLORA1, fontSize: Pixel.getPixel(12)}}>
                             {movie.create_time}
                         </Text>
                     </View>
-                    <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(20)}}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                        <Text allowFontScaling={false} style={{color: '#000', fontSize: Pixel.getPixel(20)}}>
                             {movie.amount}
                         </Text>
                     </View>
@@ -225,21 +255,41 @@ export  default class ZheShangAccountScene extends BaseComponent {
     _renderHeader = () => {
         return (
             <ZheShangAccountTitle info={this.state.info}
-                          bankCard={()=>{this.toNextPage({name:'BankCardScene',
-                          component:BankCardScene,params:{callBack:()=>{this.props.callBack()}}})}}
-                          flow={()=>{this.toNextPage({name:'AccountFlowScene',
-                          component:AccountFlowScene,params:{}})}}
-                          changePhone={()=>{
-
-                          }}
-                          moreFlow={()=>{this.toNextPage({name:'AccountFlowScene',
-                          component:AccountFlowScene,params:{}})}}
-                          frozen={()=>{
-                              {/*this.toNextPage({name:'FrozenScene',component:FrozenScene,params:{}})*/}
-                          }}
-                          copy={(number)=>{
-                              this.props.showToast(number);
-                          }}
+                                  bankCard={() => {  //更换银行卡
+                                      this.toNextPage({
+                                          name: 'ModifyBankCard',
+                                          component: ModifyBankCard, params: {
+                                              callBack: () => {
+                                                  //this.props.callBack()
+                                              }
+                                          }
+                                      })
+                                  }}
+                                  flow={() => {  //流水
+                                      this.toNextPage({
+                                          name: 'Log',
+                                          component: Log, params: {}
+                                      })
+                                  }}
+                                  changePhone={() => { //修改银行预留手机号码
+                                      this.toNextPage({
+                                          name: 'InformationFillScene',
+                                          component: InformationFillScene, params: {}
+                                      })
+                                  }}
+                                  moreFlow={() => {
+                                      /*this.toNextPage({
+                                          name: 'AccountFlowScene',
+                                          component: AccountFlowScene, params: {}
+                                      })*/
+                                  }}
+                                  frozen={() => {
+                                      {/*this.toNextPage({name:'FrozenScene',component:FrozenScene,params:{}})*/
+                                      }
+                                  }}
+                                  copy={(number) => {
+                                      this.props.showToast(number);
+                                  }}
             />
         )
     };
@@ -254,7 +304,7 @@ export  default class ZheShangAccountScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
+            <View style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
                     title="账户管理"
