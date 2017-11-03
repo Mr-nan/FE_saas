@@ -27,9 +27,6 @@ export class CarSourceSelectHeadView extends Component{
     // 构造
     constructor(props) {
         super(props);
-
-        this.butArray = [];
-
         this.state = {
             isCheckRecommend:this.props.isCheckRecommend,
         };
@@ -51,7 +48,7 @@ export class CarSourceSelectHeadView extends Component{
         //         break;
         // }
         //
-        console.log('=============',this.butArray);
+
         let tmpBut = this.butArray[index];
         tmpBut._setImgHighlighted(false);
 
@@ -73,28 +70,33 @@ export class CarSourceSelectHeadView extends Component{
     }
 
     render(){
+        this.butArray = [];
         return(
             <Image style={styles.container} source={require('../../../images/carSourceImages/bottomShaow.png')}>
+                <View style={{  flexDirection:'row', justifyContent:'space-between',width:screenWidth-Pixel.getPixel(100)}}>
                 {
                     this.props.titleArray.map((data,index)=>{
                         return(
-                            <SelectButton ref={(ref)=>{console.log('ref=====',ref); this.butArray.push(ref),console.log('array======',this.butArray)}}  title={data} index={index} key={index} btnClick={this.props.onPres}/>
-
+                            <SelectButton ref={(ref)=>{ ref && this.butArray.push(ref)}}  title={data} index={index} key={index} btnClick={this.props.onPres}/>
                         )
                     })
                 }
-                <View style={styles.lineView}>
-                    <View style={styles.line}/>
+                </View>
+                <View style={{  flexDirection:'row', justifyContent:'space-between',width:Pixel.getPixel(100)}}>
+                    <View style={styles.lineView}>
+                        <View style={styles.line}/>
+                    </View>
+
+                    <TouchableOpacity style={styles.unitsView} onPress={()=>{
+
+                        this.setCheckRecommend(!this.state.isCheckRecommend);
+
+                    }}>
+                        <Image style={{marginLeft:10}} source={this.state.isCheckRecommend ? (require('../../../images/carSourceImages/checkIcone.png')):(require('../../../images/carSourceImages/checkIcone_nil.png'))}/>
+                        <Text allowFontScaling={false}  style={styles.unitsText}>已订阅</Text>
+                    </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.unitsView} onPress={()=>{
-
-                    this.setCheckRecommend(!this.state.isCheckRecommend);
-
-                }}>
-                    <Image style={{marginLeft:10}} source={this.state.isCheckRecommend ? (require('../../../images/carSourceImages/checkIcone.png')):(require('../../../images/carSourceImages/checkIcone_nil.png'))}/>
-                    <Text allowFontScaling={false}  style={styles.unitsText}>已订阅</Text>
-                </TouchableOpacity>
             </Image>
         )
     }
@@ -194,6 +196,7 @@ export class CarSourceSelectView extends Component{
 }
 
 
+
 var screenWidth = Dimensions.get('window').width;
 
 const  styles = StyleSheet.create({
@@ -202,7 +205,8 @@ const  styles = StyleSheet.create({
         height:Pixel.getPixel(40),
         width:screenWidth,
         flexDirection:'row',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        alignItems:'center',
 
     },
 
@@ -231,7 +235,7 @@ const  styles = StyleSheet.create({
 
     selectBtn:{
 
-        width:Pixel.getPixel(80),
+        width:Pixel.getPixel(65),
         height:Pixel.getPixel(40),
         alignItems:'center',
         justifyContent:'center',
@@ -258,6 +262,8 @@ const  styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         flexDirection:'row',
+        backgroundColor:'white',
+
     },
 
     unitsText:{
@@ -268,7 +274,7 @@ const  styles = StyleSheet.create({
     },
     selectView: {
         top: Pixel.getTitlePixel(87),
-        backgroundColor: 'rgba(0, 0, 0,0.3)',
+        backgroundColor:'rgba(0, 0, 0,0.3)',
         left: 0,
         right: 0,
         position: 'absolute',

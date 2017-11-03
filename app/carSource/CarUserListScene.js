@@ -659,7 +659,7 @@ export  default  class CarUserListScene extends BaseComponent {
 
         let {checkedCarAgeType, checkedCarKMType} = this.state;
 
-        if (currentCheckedIndex == 2) {
+        if (currentCheckedIndex == 1) {
             checkedCarAgeType = {
                 title: checkedSource[index].name,
                 value: checkedSource[index].value,
@@ -667,7 +667,7 @@ export  default  class CarUserListScene extends BaseComponent {
             APIParameter.coty = checkedCarAgeType.value;
 
         }
-        if (currentCheckedIndex == 3) {
+        if (currentCheckedIndex == 2) {
             checkedCarKMType = {
                 title: checkedSource[index].name,
                 value: checkedSource[index].value,
@@ -1045,7 +1045,7 @@ export  default  class CarUserListScene extends BaseComponent {
                             checkCarAgeAnKMClick={this.checkCarAgeAnKMClick}
                             currentCheckedIndex={currentCheckedIndex}
                             hideClick={this.hideCheckedView}
-                            checkedTypeString={currentCheckedIndex == 2 ? this.state.checkedCarAgeType.title:this.state.checkedCarKMType.title}/>)
+                            checkedTypeString={currentCheckedIndex == 1 ? this.state.checkedCarAgeType.title:this.state.checkedCarKMType.title}/>)
                 }
 
             </View>
