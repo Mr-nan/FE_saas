@@ -163,7 +163,9 @@ export default class MyAccountItem extends BaseComponent {
         }
         return (
             <View style={{alignItems: 'center'}}>
-                <Image source={back}>
+                <Image
+                    style={{width: Pixel.getPixel(345), height: Pixel.getPixel(238)}}
+                    source={back}>
                     <TouchableOpacity
                         onPress={() => {
                             this.jumpDetailPage(this.props.type);
@@ -194,7 +196,7 @@ export default class MyAccountItem extends BaseComponent {
                                     textAlign: 'left',
                                     fontSize: Pixel.getPixel(12),
                                     color: fontAndColor.COLORA1
-                                }}>{this.state.data.bind_bank_name}</Text>
+                                }}>{this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********'}</Text>
                             </View>
                             {this.state.data.status === 0 || this.state.data.status === 1 || this.state.data.status === 2 ?
                                 <Text style={{
@@ -244,16 +246,19 @@ export default class MyAccountItem extends BaseComponent {
                         backgroundColor: 'transparent'
                     }}>
                         <Text style={{
+                            includeFontPadding: false,
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(12),
                             color: fontAndColor.COLORA1
                         }}>资金账号</Text>
                         <Text style={{
+                            includeFontPadding: false,
                             marginTop: Pixel.getPixel(3),
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(20),
                             color: fontAndColor.COLORA0
-                        }}>{this.state.data.bank_card_no}</Text>
+                        }}>{this.state.data.bank_card_no ? this.state.data.bank_card_no :
+                        '***** ***** ***** ***** *****'}</Text>
                     </View>
                     <View style={{
                         marginTop: Pixel.getPixel(25),
@@ -264,11 +269,13 @@ export default class MyAccountItem extends BaseComponent {
                         backgroundColor: 'transparent'
                     }}>
                         <Text style={{
+                            includeFontPadding: false,
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(12),
                             color: fontAndColor.COLORA1
                         }}>开通时间</Text>
                         <Text style={{
+                            includeFontPadding: false,
                             marginTop: Pixel.getPixel(3),
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(15),
