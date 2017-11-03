@@ -146,8 +146,31 @@ export default class MyAccountItem extends BaseComponent {
             });
         } else {
             //this.props.showModal(false);
-            this.pageDispense(type, 0);
-            this.toNextPage(this.navigatorParams);
+            //this.pageDispense(type, 0);
+            //this.toNextPage(this.navigatorParams);
+            this.props.showModal(true);
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                if (data.code == 1) {
+                    let datas = JSON.parse(data.result);
+                    let maps = {
+                        enter_base_ids: datas.company_base_id,
+                        child_type: '1',
+                        bank_id: 316
+                    };
+                    request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                        .then((response) => {
+                            this.props.showModal(false);
+                            this.pageDispense(type, response.mjson.data.account.status);
+                            this.toNextPage(this.navigatorParams);
+                        }, (error) => {
+                            this.props.showModal(false);
+                            this.props.showToast('用户信息查询失败');
+                        });
+                } else {
+                    this.props.showModal(false);
+                    this.props.showToast('用户信息查询失败');
+                }
+            });
         }
     };
 
