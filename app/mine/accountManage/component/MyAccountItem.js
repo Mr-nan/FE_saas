@@ -26,6 +26,7 @@ import * as StorageKeyNames from "../../../constant/storageKeyNames";
 import {request} from "../../../utils/RequestUtil";
 import * as Urls from '../../../constant/appUrls';
 import ZheShangAccountScene from "../zheshangAccount/ZheShangAccountScene";
+import ZSAccountTypeSelectScene from "../zheshangAccount/ZSAccountTypeSelectScene";
 const Pixel = new PixelUtil();
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
@@ -94,11 +95,24 @@ export default class MyAccountItem extends BaseComponent {
             }
         } else {
             //TODO 浙商页面跳转分发
-            this.navigatorParams.name = 'ZheShangAccountScene';
-            this.navigatorParams.component = ZheShangAccountScene;
-            this.navigatorParams.params = {
+            switch (state) {
+                case 0://未开户
+                    this.navigatorParams.name = 'ZSAccountTypeSelectScene';
+                    this.navigatorParams.component = ZSAccountTypeSelectScene;
+                    this.navigatorParams.params = {
 
-            };
+                    };
+                    break;
+                case 1://已开户
+                    this.navigatorParams.name = 'ZheShangAccountScene';
+                    this.navigatorParams.component = ZheShangAccountScene;
+                    this.navigatorParams.params = {
+
+                    };
+                    break;
+                default:
+                    break;
+            }
         }
     };
 
