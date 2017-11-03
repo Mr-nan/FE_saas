@@ -144,7 +144,7 @@ export default class MyAccountScene extends BaseComponent {
                 //this.lastType = response.mjson.data.account.status;
                 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                 this.setState({
-                    dataSource: ds.cloneWithRows(response.mjson.data.account.status === 0 ? ['0', '1'] : ['0']),
+                    dataSource: ds.cloneWithRows(response.mjson.data.status === 0 ? ['0'] : ['0', '1']),
                     renderPlaceholderOnly: 'success',
                     isRefreshing: false,
                     backColor: fontAndColor.COLORB0

@@ -17,7 +17,7 @@ const {width, height} = Dimensions.get('window');
 import * as fontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import BaseComponent from "../../../component/BaseComponent";
-import AccountManageScene from "../AccountManageScene";
+import AccountManageScene from "../AccountTypeSelectScene";
 import BindCardScene from "../BindCardScene";
 import WaitActivationAccountScene from "../WaitActivationAccountScene";
 import AccountScene from "../AccountScene";
