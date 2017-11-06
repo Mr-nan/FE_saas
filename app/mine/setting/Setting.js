@@ -23,12 +23,16 @@ import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import LoginAndRegister from "../../login/LoginAndRegister";
 import YJZButton from '../../mine/setting/YJZButton';
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 var onePT = 1 / PixelRatio.get(); //一个像素
 var Platform = require('Platform');
+const IS_ANDROID = Platform.OS === 'android';
+
 export default class Setting extends BaseComponent {
     constructor(props) {
         super(props);
@@ -121,13 +125,16 @@ export default class Setting extends BaseComponent {
     }
 
     loginOut = () => {
-        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
-        if (Platform.OS === 'android') {
-            NativeModules.GrowingIOModule.setCS1("user_id", null);
-        }else {
-           // NativeModules.growingSetCS1("user_id", null);
-        }
-        this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
+
+        this.checkPushData();
+        // StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+        // if (Platform.OS === 'android') {
+        //     NativeModules.GrowingIOModule.setCS1("user_id", null);
+        // }else {
+        //     // NativeModules.growingSetCS1("user_id", null);
+        // }
+        // this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
+
     }
 
     exitPage = (mProps) => {
@@ -137,6 +144,18 @@ export default class Setting extends BaseComponent {
                 ...mProps
             }])
         }
+    }
+
+    // 清空推送deviceToken
+    checkPushData =()=>{
+        request(Urls.PUSH_CLEAR, 'Post', {
+            deviceToken:global.pushDeviceToken,
+            deviceType:IS_ANDROID?2:1
+        }).then((response) => {
+
+                },
+                (error) => {
+                });
     }
 }
 const styles = StyleSheet.create({

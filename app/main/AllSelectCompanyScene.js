@@ -11,7 +11,9 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
-    InteractionManager
+    InteractionManager,
+    Platform
+
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -26,6 +28,9 @@ import BaseComponent from '../component/BaseComponent';
 import MainPage from './MainPage';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
+const IS_ANDROID = Platform.OS === 'android';
+
+
 export  default class AllSelectCompanyScene extends BaseComponent {
 
     constructor(props) {
@@ -38,7 +43,8 @@ export  default class AllSelectCompanyScene extends BaseComponent {
     }
 
     initFinish = () => {
-        this.getData()
+        this.getData();
+        this.setPushData();
     }
 
     allRefresh = () => {
@@ -69,6 +75,19 @@ export  default class AllSelectCompanyScene extends BaseComponent {
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error'});
+                });
+    }
+
+    // 上传推送deviceToken
+    setPushData =()=>{
+        request(Urls.PUSH_BINDING, 'Post', {
+            deviceToken:global.pushDeviceToken,
+            deviceType:IS_ANDROID?2:1
+        })
+            .then((response) => {
+
+                },
+                (error) => {
                 });
     }
 

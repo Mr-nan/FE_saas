@@ -19,7 +19,7 @@ import * as weChat from 'react-native-wechat';
 
 //获取DeviceToken
 UmengPush.getDeviceToken(deviceToken => {
-
+    global.pushDeviceToken = deviceToken;
 });
 
 //接收到推送消息回调

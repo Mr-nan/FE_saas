@@ -972,6 +972,20 @@ export const LOGIN = BASEURL + V + "auth/login";// auth/login
  */
 export const REGISTER = BASEURL + V + "auth/register";//  auth/register
 
+
+/***
+ * 绑定deviceToken-推送
+ */
+
+export const PUSH_BINDING = BASEURL + V + "/push.umeng/bindingUser";
+
+/***
+ * 清除deviceToken-推送
+ */
+
+export const PUSH_CLEAR = BASEURL + V + " v1/push.umeng/clearUser";
+
+
 /**
  * 设置密码
  *
