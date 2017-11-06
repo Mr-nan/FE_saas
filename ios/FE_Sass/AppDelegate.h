@@ -8,9 +8,11 @@
  */
 
 #import <UIKit/UIKit.h>
-
+#import <BaiduMapAPI_Map/BMKMapView.h>//只引入所需的单个头文件
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
-
+{
+  BMKMapManager* _mapManager;
+}
 @property (nonatomic, strong) UIWindow *window;
 
 @end

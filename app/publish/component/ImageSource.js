@@ -50,7 +50,7 @@ export default class ImageSource extends Component{
                             activeOpacity={0.6}
                             onPress={()=>{this.props.cameraClick(this.name);this._cancelClick()}}>
                             <View style={styles.btnContainer}>
-                                <Text allowFontScaling={false}  style={styles.fontMain}>拍摄</Text>
+                                <Text allowFontScaling={false}  style={styles.fontMain}>拍摄123</Text>
                             </View>
                         </TouchableOpacity>
                         <View style={styles.splitLine}/>
