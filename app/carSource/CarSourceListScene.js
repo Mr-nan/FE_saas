@@ -157,7 +157,6 @@ class CarListNavigatorView extends Component {
 
 
     setBtnType =(type)=>{
-        console.log('======CarListNavigatorView=====setBtnType');
         this.refs.ZNSwitchoverButton && this.refs.ZNSwitchoverButton.setBtnType(type);
     }
 

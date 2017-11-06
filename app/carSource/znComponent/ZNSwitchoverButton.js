@@ -131,7 +131,7 @@ const  styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         overflow:'hidden',
-        paddingHorizontal:Pixel.getPixel(28),
+        paddingHorizontal:Pixel.getPixel(15),
 
     },
     text:{
