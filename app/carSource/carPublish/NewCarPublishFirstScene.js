@@ -92,7 +92,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.xianChe = '有现车';
-        this.carData = {'xianche': 1};//是否有现车   xxxxxxx
+        this.carData = {'xianche': this.carData};
         this.titleData1 = [
             [{
                 title: '车型',
@@ -125,11 +125,14 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 title: '是否有现车',
                 isShowTag: true,
                 isShowTail: true,
-                selectDict: {current: this.xianChe, data: [{title: '有现车', value: 1}, {title: '无现车', value: 2}]},
+                selectDict: {
+                    current: this.xianChe,
+                    data: [{title: '有现车', value: 1}, {title: '无现车', value: 2}]
+                },
             }, {
                 title: '在售车辆数',//xxxxxxxxxx
                 // subTitle: '仅供内部销售人员查看',
-                isShowTag: false,
+                isShowTag: true,
                 isShowTail: true,
                 tailView: () => {
                     return (
@@ -593,8 +596,13 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     }
 
     setCarData = () => {
-        this.xianChe = this.titleData1[1][1].selectDict.current;//是否有现车
-        this.refs.cellSelectView.setCurrentChecked(this.xianChe);
+        // this.xianChe = this.titleData1[1][1].selectDict.current;//是否有现车
+        // alert(this.titleData1[1][1].selectDict.current)
+        this.refs.cellSelectView.setCurrentChecked(this.carData.xianche ? this.carData.xianche : this.xianChe);
+        if (!this.carData.xianche) {
+            this.carData['xianche'] = this.xianChe;
+        }
+
 
         this.titleData1[0][0].value = this.carData.model_name ? this.carData.model_name : '请选择';
         this.titleData1[0][1].value = this.carData.car_gui ? this.carData.car_gui : '请选择';//??????
@@ -628,22 +636,23 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     }
 
 
-    pushCarSpecificationAction=()=>{
+    pushCarSpecificationAction = () => {
         let navigatorParams = {
             name: "CarSpecificationScene",
             component: CarSpecificationScene,
             params: {
-                checkedSpecification:this.checkedSpecification,
-                currentTitle:'',
+                checkedSpecification: this.checkedSpecification,
+                currentTitle: '',
             }
         }
         this.toNextPage(navigatorParams);
     }
 
-    checkedSpecification=(specificationData)=>{
+    checkedSpecification = (specificationData) => {
 
-        this.titleData1[0][1].value = specificationData.subTitle?specificationData.subTitle:specificationData.title;;
-        this.carData['car_gui'] = specificationData.subTitle?specificationData.subTitle:specificationData.title;
+        this.titleData1[0][1].value = specificationData.subTitle ? specificationData.subTitle : specificationData.title;
+        ;
+        this.carData['car_gui'] = specificationData.subTitle ? specificationData.subTitle : specificationData.title;
 
         this.upTitleData();
     }
@@ -684,8 +693,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
 
     cellSelectAction = (selectDict) => {
 
-        this.carData['xianche'] = selectDict.value;
-        this.carData['xianche_str'] = selectDict.title;
+        // this.carData['xianche'] = selectDict.value;
+        this.carData['xianche'] = selectDict.title;
         this.xianChe = selectDict.title;
         this.upTitleData();
     }
@@ -729,7 +738,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
             return;
         }
 
-        if (!this.xianChe) {
+        alert(this.carData.xianche)
+        if (!this.carData.xianche) {
             this.props.showToast('填写是否有现车');
             return;
         }
