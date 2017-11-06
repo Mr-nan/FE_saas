@@ -9,6 +9,7 @@ import {
     View,
     TouchableOpacity,
     Text,
+    DeviceEventEmitter
 } from 'react-native';
 
 import * as fontAndColor    from '../../constant/fontAndColor';
@@ -22,8 +23,8 @@ let Pixel = new PixelUtil();
      constructor(props) {
          super(props);
          this.state = {};
-
      }
+
 
     render(){
         this.buttonArray = [];
@@ -31,7 +32,6 @@ let Pixel = new PixelUtil();
             <View style={styles.contaier} >
                 {
                     this.props.titleArray.map((data,index)=>{
-
                         return(
                             <ZNButton ref={(ref)=>{ ref && this.buttonArray.push(ref)}}
                                       title={data}
@@ -55,6 +55,23 @@ let Pixel = new PixelUtil();
       }
     }
 
+    setBtnType=(btnIndex)=>{
+        console.log('======ZNSwitchoverButton=====setBtnType');
+       console.log('==========**&&&&&&',this.buttonArray);
+        for (let i=0;i<this.buttonArray.length;i++)
+        {
+            let tmpBtn = this.buttonArray[i];
+            if(btnIndex==i && tmpBtn)
+            {
+                tmpBtn.setType(true);
+
+            }else if(tmpBtn && btnIndex!=i){
+
+                tmpBtn.setType(false);
+            }
+        }
+    }
+
 }
 
 class ZNButton extends  Component {
@@ -72,6 +89,15 @@ class ZNButton extends  Component {
            this.setState({
                isSelect:!this.state.isSelect,
            })
+       }
+
+       setType=(type)=>{
+           if(type!=this.state.isSelect)
+           {
+               this.setState({
+                   isSelect:type,
+               })
+           }
        }
 
      render(){

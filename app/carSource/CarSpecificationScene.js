@@ -90,7 +90,7 @@ export class CarSpecificationView extends Component{
 
     render(){
         return(
-            <View style={{flex:1}}>
+            <View style={{flex:1,backgroundColor:'white'}}>
                 <ListView
                     ref="listView"
                     dataSource={this.state.dataSource}

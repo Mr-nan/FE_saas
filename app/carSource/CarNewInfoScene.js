@@ -1,7 +1,7 @@
 /**
  * Created by zhengnan on 2017/11/3.
  */
-import React, {Component} from 'react';
+import React, {Component,PropTypes} from 'react';
 import {
     StyleSheet,
     View,
@@ -66,6 +66,7 @@ export default class CarInfoScene extends BaseComponent {
             carData: {imgs: []},
             currentImageIndex: 1,
             switchoverCarInfo: 0,
+            carConfigurationBriefData:[],
         };
     }
 
@@ -74,7 +75,6 @@ export default class CarInfoScene extends BaseComponent {
         this.isUserBoss = false;
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-            console.log(data);
             if (data.code == 1 && data.result != '') {
                 let enters = JSON.parse(data.result);
                 for (let item of enters.enterprise_list[0].role_type){
@@ -141,6 +141,7 @@ export default class CarInfoScene extends BaseComponent {
 
             let carData = response.mjson.data;
             this.loadCarResidualsData(carData);
+            this.loadCarConfigurationData(carData);
             if (carData.imgs.length <= 0) {
 
                 carData.imgs = [{require: require('../../images/carSourceImages/car_info_null.png')}];
@@ -201,13 +202,40 @@ export default class CarInfoScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             if (response.mycode == 1) {
                 this.setState({
                     residualsData: response.mjson.data,
                 })
             }
         }, (error) => {
+        });
+    }
+
+
+
+    loadCarConfigurationData=(carData)=>{
+        request(AppUrls.CAR_CONFIGURATION,'post',{
+            model_id:carData.model_id,
+        }).then((response) => {
+            if(response.mycode==1){
+
+                carConfigurationData = response.mjson.data;
+                let array = carConfigurationData[0].data;
+                let newArray = [];
+                for(let i=0;i<5;i++)
+                {
+                    newArray.push(array[i]);
+                }
+                let newData = [{title:carConfigurationData[0].title,data:newArray}];
+                this.setState({
+                    carConfigurationBriefData:newData
+                });
+
+
+
+            }
+        }, (error) => {
+
         });
     }
 
@@ -284,10 +312,7 @@ export default class CarInfoScene extends BaseComponent {
                     </View>
                     <View style={styles.carIconsContainer}>
                         <View style={styles.carIconsView}>
-                           <View style={{flexDirection:'row', alignItems:'center',height:Pixel.getPixel(44),}}>
-                               <View style={{backgroundColor:fontAndColor.COLORB0,width:Pixel.getPixel(3),height:Pixel.getPixel(25)}}/>
-                               <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getTitlePixel(fontAndColor.BUTTONFONT30),marginLeft:Pixel.getPixel(5)}}>车辆详情</Text>
-                           </View>
+                           <TitleView title={'车辆信息'}/>
                             {
                                 carData.infoData.map((data,index)=>{
                                     return(
@@ -302,19 +327,15 @@ export default class CarInfoScene extends BaseComponent {
                                 })
                             }
                         </View>
-                        <View style={{marginTop: Pixel.getPixel(10), marginBottom: Pixel.getPixel(10)}}>
-                            <TouchableOpacity style={styles.carInfoBtn} onPress={this.pushCarConfigScene}>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <Image source={require('../../images/carSourceImages/carConfigImg.png')}/>
-                                    <Text allowFontScaling={false}  style={{
-                                        color: fontAndColor.COLORA0,
-                                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                        marginLeft: Pixel.getPixel(10)
-                                    }}>车辆配置信息</Text>
-                                </View>
-                                <Image source={require('../../images/mainImage/celljiantou.png')}/>
-                            </TouchableOpacity>
+                        <View style={{marginTop: Pixel.getPixel(10),paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white'}}>
+                            <TitleView title={'配置信息'} footTitle={'更多'} clickAction={this.pushCarConfigScene}/>
                         </View>
+                        {
+                            this.state.carConfigurationBriefData.length>0 && (
+                                <CarConfigurationView carConfigurationData={this.state.carConfigurationBriefData}
+                                                      modelID ={carData.modelID}/>
+                            )
+                        }
                     </View>
                 </ScrollView>
                 <View style={styles.footView}>
@@ -518,7 +539,6 @@ export default class CarInfoScene extends BaseComponent {
         this.refs.sharedView.isVisible(true);
     }
 
-
     // 浏览图片
     showPhotoView = () => {
 
@@ -551,7 +571,6 @@ export default class CarInfoScene extends BaseComponent {
         this.toNextPage(navigationParams);
     }
 
-
     // 车辆配置信息
     pushCarConfigScene = () => {
         let navigationParams = {
@@ -569,9 +588,7 @@ export default class CarInfoScene extends BaseComponent {
 
     renderCarConfigDataAction = (data) => {
         carConfigurationData = data;
-        console.log(data);
     }
-
 
     // 添加收藏
     addStoreAction = (isStoreClick) => {
@@ -628,7 +645,6 @@ export default class CarInfoScene extends BaseComponent {
 
     }
 
-
     setNavitgationBackgroundColor = (event) => {
 
         if (event.nativeEvent.contentOffset.y > 20) {
@@ -682,21 +698,23 @@ export default class CarInfoScene extends BaseComponent {
 
 }
 
-class CarIconView extends Component {
+class TitleView extends Component{
 
-    render() {
-        const {imageData, imageHighData, title, content} = this.props;
-        const bool = (content && content !== '/' && content !== '次' && content !== '万公里') ? true : false;
-        return (
-            <View style={styles.carIconItem}>
-                <Image source={bool ? imageHighData : imageData}/>
-                <Text allowFontScaling={false}
-                      style={[styles.carIconItemContentText, bool && {color: fontAndColor.COLORA0}]}>{bool ? content : '暂无'}</Text>
-                <Text allowFontScaling={false}  style={styles.carIconItemTitleText}>{title}</Text>
-            </View>
+    render(){
+        return(
+            <TouchableOpacity style={{flexDirection:'row', alignItems:'center',height:Pixel.getPixel(44),justifyContent:'space-between',backgroundColor:'white'}}
+                              onPress={()=>{this.props.clickAction && this.props.clickAction()}}
+                              activeOpacity={1}>
+                <View style={{flexDirection:'row', alignItems:'center'}}>
+                    <View style={{backgroundColor:fontAndColor.COLORB0,width:Pixel.getPixel(3),height:Pixel.getPixel(20)}}/>
+                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getTitlePixel(fontAndColor.BUTTONFONT30),marginLeft:Pixel.getPixel(5)}}>{this.props.title}</Text>
+                </View>
+                <View>
+                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getTitlePixel(fontAndColor.LITTLEFONT28)}}>{this.props.footTitle}</Text>
+                </View>
+            </TouchableOpacity>
         )
     }
-
 }
 
 class SharedView extends Component {

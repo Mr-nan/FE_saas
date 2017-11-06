@@ -27,7 +27,6 @@ import BaseComponent        from '../component/BaseComponent';
 import {CarSourceSelectHeadView, CarSourceSelectView}         from './znComponent/CarSourceSelectHeadView';
 import ListFooter           from './znComponent/LoadMoreFooter';
 import CarCell              from './znComponent/CarCell';
-import CarInfoScene         from './CarInfoScene';
 import CarBrandSelectScene  from './CarBrandSelectScene';
 import CarScreeningScene    from  './CarScreeningScene';
 import {SequencingButton, SequencingView} from './znComponent/CarSequencingView';
@@ -181,28 +180,28 @@ export  default  class CarUserListScene extends BaseComponent {
             }
         });
 
-        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
-
-            if(data.code == 1){
-                if(data.result == 'true'){
-                    this.setState({
-                        checkedCarGenre:{
-                            title:'新车',
-                            value:'2'
-                        }
-                    });
-                    APIParameter.v_type = 2;
-                    APIParameter.type = 0;
-                    APIParameter.prov_id = 0;
-                    isCheckRecommend = false
-                    this.setHeadViewType();
-                }
-            }
-        });
+        // StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
+        //
+        //     if(data.code == 1){
+        //         if(data.result == 'true'){
+        //             this.setState({
+        //                 checkedCarGenre:{
+        //                     title:'新车',
+        //                     value:'2'
+        //                 }
+        //             });
+        //             APIParameter.v_type = 2;
+        //             APIParameter.type = 0;
+        //             APIParameter.prov_id = 0;
+        //             isCheckRecommend = false
+        //             this.setHeadViewType();
+        //         }
+        //     }
+        // });
 
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
-        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
+        // StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
 
     }
 
@@ -218,17 +217,17 @@ export  default  class CarUserListScene extends BaseComponent {
             }
         });
 
-        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_RECOMMEND,(data)=>{
-
-            if(data.code == 1){
-                if(data.result == 'true'){
-                    isCheckRecommend = false
-                    APIParameter.type = 0;
-                    APIParameter.prov_id = 0;
-
-                }
-            }
-        });
+        // StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_RECOMMEND,(data)=>{
+        //
+        //     if(data.code == 1){
+        //         if(data.result == 'true'){
+        //             isCheckRecommend = false
+        //             APIParameter.type = 0;
+        //             APIParameter.prov_id = 0;
+        //
+        //         }
+        //     }
+        // });
 
         StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
 
@@ -250,7 +249,7 @@ export  default  class CarUserListScene extends BaseComponent {
 
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
-        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
+        // StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
             if(data.code == 1 && data.result != '')
@@ -1041,7 +1040,7 @@ export  default  class CarUserListScene extends BaseComponent {
                 }
                 {
                     !this.state.isHideCarSpecification && (
-                        <View style={{ top: Pixel.getTitlePixel(87), backgroundColor:'rgba(0, 0, 0,0.3)', left: 0, right: 0, position: 'absolute', bottom: 0,}}>
+                        <View style={{top: Pixel.getTitlePixel(87), backgroundColor:'rgba(0, 0, 0,0.3)', left: 0, right: 0, position: 'absolute', bottom: 0,}}>
                             <CarSpecificationView checkedSpecification={(specificationData)=>{
                                 this.refs.HeadView.checkSelect(currentCheckedIndex);
                                 this.setState({

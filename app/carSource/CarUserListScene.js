@@ -185,28 +185,28 @@ export  default  class CarUserListScene extends BaseComponent {
             }
         });
 
-        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
-
-            if(data.code == 1){
-                if(data.result == 'true'){
-                    this.setState({
-                        checkedCarGenre:{
-                            title:'新车',
-                            value:'2'
-                        }
-                    });
-                    APIParameter.v_type = 2;
-                    APIParameter.type = 0;
-                    APIParameter.prov_id = 0;
-                    isCheckRecommend = false
-                    this.setHeadViewType();
-                }
-            }
-        });
+        // StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
+        //
+        //     if(data.code == 1){
+        //         if(data.result == 'true'){
+        //             this.setState({
+        //                 checkedCarGenre:{
+        //                     title:'新车',
+        //                     value:'2'
+        //                 }
+        //             });
+        //             APIParameter.v_type = 2;
+        //             APIParameter.type = 0;
+        //             APIParameter.prov_id = 0;
+        //             isCheckRecommend = false
+        //             this.setHeadViewType();
+        //         }
+        //     }
+        // });
 
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
-        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
+        // StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
 
     }
 
@@ -234,27 +234,27 @@ export  default  class CarUserListScene extends BaseComponent {
             }
         });
 
-        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
-
-            if(data.code == 1){
-                if(data.result == 'true'){
-                    this.setState({
-                        checkedCarGenre:{
-                            title:'新车',
-                            value:'2'
-                        }
-                    });
-                    APIParameter.v_type = 2;
-                    APIParameter.type = 0;
-                    APIParameter.prov_id = 0;
-                    isCheckRecommend = false
-                }
-            }
-        });
+        // StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
+        //
+        //     if(data.code == 1){
+        //         if(data.result == 'true'){
+        //             this.setState({
+        //                 checkedCarGenre:{
+        //                     title:'新车',
+        //                     value:'2'
+        //                 }
+        //             });
+        //             APIParameter.v_type = 2;
+        //             APIParameter.type = 0;
+        //             APIParameter.prov_id = 0;
+        //             isCheckRecommend = false
+        //         }
+        //     }
+        // });
 
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
-        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
+        // StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
             if(data.code == 1 && data.result != '')

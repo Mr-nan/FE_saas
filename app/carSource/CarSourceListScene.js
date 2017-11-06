@@ -13,6 +13,7 @@ import {
     Dimensions,
     BackAndroid,
     NativeModules,
+    DeviceEventEmitter
 
 } from 'react-native';
 
@@ -24,6 +25,9 @@ import PixelUtil            from '../utils/PixelUtil';
 import ZNSwitchoverButton from './znComponent/ZNSwitchoverButton';
 import CarUserListScene from './CarUserListScene';
 import CarNewListScene from './CarNewListScene';
+import * as storageKeyNames from '../constant/storageKeyNames';
+import StorageUtil from '../utils/StorageUtil';
+
 
 
 
@@ -42,6 +46,50 @@ export  default  class carSourceListScene extends BaseComponent {
         return true;
     }
 
+    componentWillReceiveProps(nextProps) {
+
+        console.log('===================componentWillReceiveProps');
+
+        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
+
+            if(data.code == 1){
+                if(data.result == 'true'){
+                    console.log('************************componentWillReceiveProps');
+                    this.setState({
+                        switchoverType:1
+                    })
+                    this.refs.CarListNavigatorView && this.refs.CarListNavigatorView.setBtnType(1);
+
+                }
+            }
+        });
+
+        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
+
+    }
+
+    componentWillMount() {
+
+        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
+            console.log('================componentWillMount');
+
+            if(data.code == 1){
+                if(data.result == 'true'){
+
+                    console.log('***************=componentWillMount');
+
+                    this.setState({
+                        switchoverType:1
+                    })
+
+                    this.refs.CarListNavigatorView && this.refs.CarListNavigatorView.setBtnType(1);
+                }
+            }
+        });
+
+        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
+    }
+
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
     }
@@ -50,26 +98,13 @@ export  default  class carSourceListScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
-
+        console.log('================constructor');
         this.state={
             switchoverType:0
         }
 
     }
 
-    // 选择城市列表
-    loactionClick = () => {
-
-        let navigatorParams = {
-            name: "CityListScene",
-            component: CityListScene,
-            params: {
-                checkedCarType: this.state.checkedCarType,
-                checkedCarClick: this.checkedCarClick,
-            }
-        }
-        this.props.callBack(navigatorParams);
-    }
 
     carCellOnPres = (carID, modelID,sectionID, rowID) => {
 
@@ -104,7 +139,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
         return (
             <View style={styles.contaier}>
-                <CarListNavigatorView  loactionClick={this.loactionClick} switchoverType={this.state.switchoverType} switchoverAction={this.switchoverAction}/>
+                <CarListNavigatorView ref="CarListNavigatorView"  loactionClick={this.loactionClick} switchoverType={this.state.switchoverType} switchoverAction={this.switchoverAction}/>
                 {
                     this.state.switchoverType==0?(
                         <CarUserListScene showModal={this.props.showModal} callBack={this.props.callBack}/>):(<CarNewListScene showModal={this.props.showModal} callBack={this.props.callBack}/>)
@@ -119,6 +154,12 @@ export  default  class carSourceListScene extends BaseComponent {
 
 
 class CarListNavigatorView extends Component {
+
+
+    setBtnType =(type)=>{
+        console.log('======CarListNavigatorView=====setBtnType');
+        this.refs.ZNSwitchoverButton && this.refs.ZNSwitchoverButton.setBtnType(type);
+    }
 
     render() {
         return (
@@ -142,7 +183,7 @@ class CarListNavigatorView extends Component {
                             {/*<Text allowFontScaling={false}  style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>筛选</Text>*/}
                         {/*</View>*/}
                     {/*</TouchableOpacity>*/}
-                    <ZNSwitchoverButton switchoverAction={this.props.switchoverAction} titleArray={['二手车','新车  ']} defaultIndex={this.props.switchoverType}/>
+                    <ZNSwitchoverButton ref="ZNSwitchoverButton" switchoverAction={this.props.switchoverAction} titleArray={['二手车','新车  ']} defaultIndex={this.props.switchoverType}/>
                 </View>
             </View>
 

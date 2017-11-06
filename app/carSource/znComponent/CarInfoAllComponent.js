@@ -166,9 +166,9 @@ export class CarConfigurationView extends BaseComponent{
                 removeClippedSubviews={false}
                 dataSource={this.state.dataSource}
                 renderHeader={()=>{return(
-                    <View style={{paddingHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(10),backgroundColor:'white'}}>
-                        <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.carConfiguraInfo}</Text>
-                    </View>
+                    this.props.carConfiguraInfo?(<View style={{paddingHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(10),backgroundColor:'white'}}>
+                            <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.carConfiguraInfo}</Text>
+                        </View>):(null)
                 )}}
                 renderRow={(rowData, sectionID, rowID)=>{
                 return(<View  style={styles.carConfigurationViewItem}>
