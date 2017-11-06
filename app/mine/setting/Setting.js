@@ -118,7 +118,7 @@ export default class Setting extends BaseComponent {
                           content={'退出登录'}
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
-                          mOnPress={this.loginOut}/>
+                          mOnPress={this.checkPushData}/>
 
             </View>
         );
@@ -126,14 +126,13 @@ export default class Setting extends BaseComponent {
 
     loginOut = () => {
 
-        this.checkPushData();
-        // StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
-        // if (Platform.OS === 'android') {
-        //     NativeModules.GrowingIOModule.setCS1("user_id", null);
-        // }else {
-        //     // NativeModules.growingSetCS1("user_id", null);
-        // }
-        // this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
+        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+        if (Platform.OS === 'android') {
+            NativeModules.GrowingIOModule.setCS1("user_id", null);
+        }else {
+            // NativeModules.growingSetCS1("user_id", null);
+        }
+        this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
 
     }
 
@@ -148,14 +147,20 @@ export default class Setting extends BaseComponent {
 
     // 清空推送deviceToken
     checkPushData =()=>{
+        this.props.showModal(true);
         request(Urls.PUSH_CLEAR, 'Post', {
             deviceToken:global.pushDeviceToken,
             deviceType:IS_ANDROID?2:1
         }).then((response) => {
 
-                },
-                (error) => {
-                });
+                this.props.showModal(false);
+                this.loginOut();
+            },
+            (error) => {
+
+                this.props.showToast(error.mjson.msg);
+
+            });
     }
 }
 const styles = StyleSheet.create({
