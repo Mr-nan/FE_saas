@@ -34,6 +34,7 @@ import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as Net from '../../utils/RequestUtil';
 import * as AppUrls from '../../constant/appUrls';
 import PixelUtil from '../../utils/PixelUtil';
+import CarSpecificationScene from '../CarSpecificationScene'
 
 import * as CarDeployData from '../carData/CarDeployData';
 import CityListScene from  '../CityListScene';
@@ -596,7 +597,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
         this.refs.cellSelectView.setCurrentChecked(this.xianChe);
 
         this.titleData1[0][0].value = this.carData.model_name ? this.carData.model_name : '请选择';
-        this.titleData1[0][1].value = this.carData.model_name ? this.carData.model_name : '请选择';//??????
+        this.titleData1[0][1].value = this.carData.car_gui ? this.carData.car_gui : '请选择';//??????
 
         this.titleData1[0][2].value = this.carData.car_color ? this.carData.car_color.split("|")[0] : '请选择';
         this.titleData1[0][3].value = this.carData.trim_color ? this.carData.trim_color.split("|")[0] : '请选择';
@@ -614,7 +615,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
         if (title == '车型') {
             this.pushCarBrand();
         } else if (title == '车规') {
-            // this.pushCarDischarge();
+            this.pushCarSpecificationAction();
         } else if (title == '车身颜色') {
             this.pushCarBodyColorScene();
         } else if (title == '内饰颜色') {
@@ -624,6 +625,27 @@ export default class NewCarPublishFirstScene extends BaseComponent {
         } else if (title == '配置改装说明') {
             this.pushCarAutoConfigScene();
         }
+    }
+
+
+    pushCarSpecificationAction=()=>{
+        let navigatorParams = {
+            name: "CarSpecificationScene",
+            component: CarSpecificationScene,
+            params: {
+                checkedSpecification:this.checkedSpecification,
+                currentTitle:'',
+            }
+        }
+        this.toNextPage(navigatorParams);
+    }
+
+    checkedSpecification=(specificationData)=>{
+
+        this.titleData1[0][1].value = specificationData.subTitle?specificationData.subTitle:specificationData.title;;
+        this.carData['car_gui'] = specificationData.subTitle?specificationData.subTitle:specificationData.title;
+
+        this.upTitleData();
     }
 
     /**
