@@ -50,7 +50,8 @@ export default class OldCarCollectSourceScene extends BaceComponent {
     getData = () => {
         let maps = {
             page: page,
-            rows: 10
+            rows: 10,
+            type:'1'
         };
         request(Urls.FAVORITES, 'Post', maps)
             .then((response) => {
@@ -98,7 +99,8 @@ export default class OldCarCollectSourceScene extends BaceComponent {
 
         let maps = {
             page: page,
-            rows: 10
+            rows: 10,
+            type:'1'
         };
         request(Urls.FAVORITES, 'Post', maps)
             .then((response) => {

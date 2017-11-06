@@ -46,7 +46,11 @@ export default class OldBrowsingHistoryScene extends BaceComponent {
     }
 
     getData = () => {
-        let maps = {};
+        let maps = {
+            page: page,
+            rows: 10,
+            type:'1'
+        };
         request(Urls.USER_HISTORY, 'Post', maps)
             .then((response) => {
                     allPage=response.mjson.data.pageCount;
@@ -92,7 +96,8 @@ export default class OldBrowsingHistoryScene extends BaceComponent {
 
         let maps = {
             page: page,
-            rows: 10
+            rows: 10,
+            type:'1'
         };
         request(Urls.USER_HISTORY, 'Post', maps)
             .then((response) => {
