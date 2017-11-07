@@ -1221,3 +1221,7 @@ export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySear
  *   商户是否在(浙商)白名单中查询
  */
 export const IS_IN_WHITE_LIST = BASEURL + "v1/account.cz_bank/isInWhiteList";
+/**
+ *  查询是否开启浙商银行可见
+ */
+export const ZS_BANK_IS_SHOW = BASEURL + "v1/account.cz_bank/zsBankIsShow";

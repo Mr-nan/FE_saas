@@ -2,7 +2,7 @@
  * Created by hanmeng on 2017/10/30.
  *  恒丰银行、浙商银行统一账户管理页面
  *  页面接口调用规则:
- *  恒丰数据 -> 白名单 -> 浙商数据(如在白名单)
+ *  恒丰数据 -> 浙商开关接口 -> 白名单 -> 浙商数据(如在白名单)
  */
 import React, {Component, PropTypes} from 'react'
 import {
@@ -103,14 +103,8 @@ export default class MyAccountScene extends BaseComponent {
                         this.lastType = response.mjson.data.account.status;
                         this.hengFengInfo = response.mjson.data.account;
                         this.props.callBack(this.lastType);   //最新的账户状态回传给"我的"页面
-                        /*                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                         this.setState({
-                         dataSource: ds.cloneWithRows(['0', '1']),
-                         renderPlaceholderOnly: 'success',
-                         isRefreshing: false,
-                         backColor: fontAndColor.COLORB0
-                         });*/
-                        this.getIsInWhiteList(datas.company_base_id);
+                        //this.getIsInWhiteList(datas.company_base_id);
+                        this.getZsBankIsShow(datas.company_base_id);
                     }, (error) => {
                         this.props.showModal(false);
                         this.props.showToast('用户信息查询失败');
@@ -129,6 +123,34 @@ export default class MyAccountScene extends BaseComponent {
             }
         });
 
+    };
+
+    /**
+     *  浙商开关接口
+     * @param companyBaseId
+     **/
+    getZsBankIsShow = (companyBaseId) => {
+        request(Urls.ZS_BANK_IS_SHOW, 'Post', {})
+            .then((response) => {
+                if (response.mjson.data.status === 1) {
+                    this.getIsInWhiteList(companyBaseId);
+                } else {
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        dataSource: ds.cloneWithRows(['0']),
+                        renderPlaceholderOnly: 'success',
+                        isRefreshing: false,
+                        backColor: fontAndColor.COLORB0
+                    });
+                }
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
+                });
+            });
     };
 
     /**
