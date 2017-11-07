@@ -281,7 +281,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                 onEndEditing={()=>{this.saveCarData();}}
                                 ref={(input) => {this.instructionsInput = input}}
                                 onFocus={()=>{
-                                      this.setCurrentPy('instructionsInput');
+                                      this.setCurrentPy(this.instructionsInput);
                                   }}
                                 placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                             />
@@ -305,7 +305,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                 onEndEditing={()=>{this.saveCarData();}}
                                 ref={(input) => {this.procedureInput = input}}
                                 onFocus={()=>{
-                                      this.setCurrentPy('iprocedureInput');
+                                      this.setCurrentPy(this.procedureInput);
                                   }}
                                 placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                             />
@@ -422,7 +422,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     }
 
     setCurrentPy = (ref) => {
-        console.log(ref);
+        // console.log(ref);
     }
 
     componentWillUnmount() {
