@@ -31,7 +31,7 @@ export class CellView extends Component {
                         cellData.isShowTag ? <Text allowFontScaling={false}
                                                    style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}>*</Text>
                             : <Text allowFontScaling={false}
-                                    style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}> </Text>
+                                    style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}></Text>
                     }
                     <View >
                         <Text allowFontScaling={false} style={styles.cellTitle}>{cellData.title}</Text>
