@@ -1,4 +1,4 @@
-import React, {Component,PureComponent} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {
     StyleSheet,
     Text,
@@ -20,20 +20,22 @@ export default class ChildTabView extends PureComponent {
 
     render() {
         let that = this;
-        return (<TouchableOpacity  onPress={()=>{
+        return (<TouchableOpacity onPress={()=>{
             this.props.goToPages(this.props.i)
         }} style={styles.tab}>
             <View
                 style={[{flex: 1, height: Pixel.getPixel(38), justifyContent: 'center', alignItems: 'center'}]}>
-                <Text allowFontScaling={false}  ref="ttt"
-                    style={[this.props.activeTab === this.props.i ? {color: fontAndColor.COLORB0} : {color: fontAndColor.COLORA0},
+                <Text allowFontScaling={false} ref="ttt"
+                      style={[this.props.activeTab === this.props.i ? {color: fontAndColor.COLORB0} : {color: fontAndColor.COLORA0},
                         {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>
                     {that.state.tabName[this.props.i]}
                 </Text>
             </View>
-            <View style={[{height: Pixel.getPixel(2)},
-                this.props.activeTab === this.props.i ? {backgroundColor: fontAndColor.COLORB0} : {backgroundColor: '#ffffff'}]}>
-            </View>
+            { this.props.activeTab === this.props.i ?
+                <View style={{height: Pixel.getPixel(2),backgroundColor: fontAndColor.COLORB0}}/>
+                :
+                <View style={{height: Pixel.getPixel(1),backgroundColor: fontAndColor.COLORA3}}/>
+            }
         </TouchableOpacity>);
     }
 }
