@@ -48,6 +48,12 @@ export default class MyAccountItem extends BaseComponent {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            data: nextProps.data
+        });
+    }
+
     /**
      *   跳转页面分发
      *   type 0恒丰 1浙商
