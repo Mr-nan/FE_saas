@@ -108,6 +108,11 @@ export default class MineScene extends BaseComponent {
 		lastType = '-1';
 		haveOrder = 0;
 		componyname = '';
+		this.renzhengData = {
+			RenZhengVisiable: true,//是否显示认证条目 true 显示
+			enterpriseRenZheng: true,//企业是否认证 true已经认证
+			personRenZheng: false,//个人是否认证    false 未认证
+		};
 		this.state = {
 			renderPlaceholderOnly: 'blank',
 			isRefreshing: false
@@ -369,6 +374,7 @@ export default class MineScene extends BaseComponent {
 							}
 							// lastType = '3';、
 							this.changeData();
+
 						},
 						(error) => {
 							this.changeData();
@@ -661,7 +667,7 @@ export default class MineScene extends BaseComponent {
 
 	_renderHeader = () => {
 		return (
-			<View style={{width:width,height :Pixel.getPixel(230)}}>
+			<View style={{width:width}}>
 				<View style={styles.headerViewStyle}>
 					<TouchableOpacity style={[styles.headerImageStyle]}>
 						<Image
@@ -680,43 +686,70 @@ export default class MineScene extends BaseComponent {
 					</Text>
 
 				</View>
-				<View
-					style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+				{this.renzhengData.RenZhengVisiable != true ? null : <View
+						style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
 
-					<TouchableOpacity onPress={() => {
-                                this._qiyerenzheng();
-                            }} activeOpacity={0.8} style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}} >
-						<Image
-							source={this.state.headUrl == '' ? require('../../images/login/qiyeyirenzheng.png') : this.state.headUrl}
-							style={{
+						<TouchableOpacity onPress={() => {
+							if(this.renzhengData.enterpriseRenZheng){
+
+							}else {
+								this._qiyerenzheng();
+							}
+                            }} activeOpacity={0.8}
+						                  style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+							<Image
+								source={this.renzhengData.enterpriseRenZheng  ? require('../../images/login/qiyeyirenzheng.png') : require('../../images/login/qiyeweirenzheng.png')}
+								style={{
                             width: Pixel.getPixel(27),
                             height: Pixel.getPixel(20),
                             resizeMode: 'stretch',
                             marginLeft:Pixel.getPixel(37)
                         }}
-						/>
-						<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
-							<Text allowFontScaling={false} style={{color:'gray'}}>(未认证)</Text>
-						</Text>
-					</TouchableOpacity>
-					<Image source={require('../../images/login/xuxian.png')} style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
+							/>
+							<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
 
-					<TouchableOpacity onPress={() => {
+								<Text allowFontScaling={false}
+								      style={this.renzhengData.enterpriseRenZheng  ? {color:'black'} : {color:'gray'}}>
+									{this.renzhengData.enterpriseRenZheng ? '(已认证)' : '(未认证)' }
+
+								</Text>
+							</Text>
+
+						</TouchableOpacity>
+
+						<Image source={require('../../images/login/xuxian.png')}
+						       style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
+
+						<TouchableOpacity onPress={() => {
+							if(this.renzhengData.personRenZheng){
+
+							}else {
                                 this._gerenrenzheng();
-                            }} activeOpacity={0.8} style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}} >
-						<Image
-							source={this.state.headUrl == '' ? require('../../images/login/gerenweirenzheng.png') : this.state.headUrl}
-							style={{
+							}
+                            }} activeOpacity={0.8}
+						                  style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+							<Image
+								source={this.renzhengData.personRenZheng  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
+								style={{
                             width: Pixel.getPixel(27),
                             height: Pixel.getPixel(20),
                             resizeMode: 'stretch',
                             marginLeft:Pixel.getPixel(37)
                         }}
-						/>
-						<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业(未认证)</Text>
-					</TouchableOpacity>
+							/>
+							<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
 
-				</View>
+								<Text allowFontScaling={false}
+								      style={this.renzhengData.personRenZheng  ? {color:'black'} : {color:'gray'}}>
+									{this.renzhengData.personRenZheng ? '(已认证)' : '(未认证)' }
+
+								</Text>
+							</Text>
+						</TouchableOpacity>
+
+					</View>}
+
+
 			</View>
 		)
 	}
@@ -738,15 +771,16 @@ export default class MineScene extends BaseComponent {
 			});
 		}
 	}
-	_qiyerenzheng = () =>{
+	_qiyerenzheng = () => {
 		this.navigatorParams.name = 'EnterpriseCertificate'
 		this.navigatorParams.component = EnterpriseCertificate
 		this.props.callBack(this.navigatorParams);
 	};
-	_gerenrenzheng = () =>{
+	_gerenrenzheng = () => {
 		this.navigatorParams.name = 'PersonCertificate'
 		this.navigatorParams.component = PersonCertificate
-		this.props.callBack(this.navigatorParams);	};
+		this.props.callBack(this.navigatorParams);
+	};
 
 	_labelPress = () => {
 		this.imageSource.openModal();
