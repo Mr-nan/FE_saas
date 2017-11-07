@@ -76,6 +76,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                     if (data.code == 1 && data.result != '') {
                         let enters = JSON.parse(data.result);
                         this.carData['show_shop_id'] = enters.company_base_id;
+                        this.carData['new_show_shop_id'] = enters.company_base_id + "new";
                         this.carData['city_id'] = enters.city_id;
                         this.carData['provice_id'] = enters.prov_id;
                         this.carData['city_name'] = enters.city_name;
@@ -532,7 +533,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
         }
 
         if (this.carData.show_shop_id) {
-            StorageUtil.mGetItem(String(this.carData.show_shop_id), (data) => {
+            StorageUtil.mGetItem(String(this.carData.new_show_shop_id), (data) => {
                 if (data.code == 1) {
                     if (data.result) {
                         this.carData = JSON.parse(data.result);
@@ -590,7 +591,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     saveCarData = () => {
 
         if (this.carData.show_shop_id && !this.carData.id) {
-            StorageUtil.mSetItem(String(this.carData.show_shop_id), JSON.stringify(this.carData));
+            StorageUtil.mSetItem(String(this.carData.new_show_shop_id), JSON.stringify(this.carData));
         }
 
     }
@@ -738,12 +739,12 @@ export default class NewCarPublishFirstScene extends BaseComponent {
             return;
         }
 
-        alert(this.carData.xianche)
         if (!this.carData.xianche) {
             this.props.showToast('填写是否有现车');
             return;
         }
 
+        this.carData.v_type = '2'
         // if (this.carData.v_type !== 1) {
         //     this.carData.init_reg = '';
         //     this.titleData1[1][1].value = '请选择';
