@@ -9,7 +9,8 @@ import {
     TouchableOpacity,
     TextInput,
     InteractionManager,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Keyboard,
 } from "react-native";
 import BaseComponent from "../../../../../component/BaseComponent";
 import NavigationBar from "../../../../../component/NavigationBar";
@@ -22,15 +23,22 @@ import md5 from "react-native-md5";
 import StorageUtil from "../../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../../constant/storageKeyNames";
 import TextInputItem from '../../component/TextInputItem'
+import CardPhoneSmsScene from './CardPhoneSmsScene'
 
-var Dimensions = require('Dimensions');
-var {width, height} = Dimensions.get('window');
-var Pixel = new PixelUtil();
-var Platform = require('Platform');
+let Dimensions = require('Dimensions');
+let {width, height} = Dimensions.get('window');
+let Pixel = new PixelUtil();
+let Platform = require('Platform');
+
+let type = -1;
+//  1：企业
+//  2：个人
 
 export default class NameAndIdScene extends BaseComponent {
     constructor(props) {
         super(props);
+        type = this.props.type;
+        type = 1;
         this.state = {
             renderPlaceholderOnly: true,
         }
@@ -54,45 +62,123 @@ export default class NameAndIdScene extends BaseComponent {
                         leftImageShow={false}
                         leftTextShow={true}
                         leftText={""}
-                        centerText={'个人开户'}
+                        centerText={type===1?'企业开户':'个人开户'}
                         rightText={""}
                     />
                 </View>
             </TouchableWithoutFeedback>);
         }
         return (
-            <View style={styles.container}>
-                <NavigationBar
-                    leftImageShow={true}
-                    leftTextShow={false}
-                    centerText={"个人开户"}
-                    rightText={""}
-                    leftImageCallBack={this.backPage}
-                />
-                <View style = {{width:width, marginTop:15, }}>
+            <TouchableWithoutFeedback
+                onPress = {()=>{
+                    this.dismissKeyboard();
+                }}
+            >
+                <View
 
-                    <TextInputItem
-                        title={'真实姓名'}
-                        annotation={'建设银行'}
+                    style={styles.container}>
+                    <NavigationBar
+                        leftImageShow={true}
+                        leftTextShow={false}
+                        centerText={type===1?'企业开户':'个人开户'}
+                        rightText={""}
+                        leftImageCallBack={this.backPage}
                     />
+                    <View style = {{width:width, marginTop:15, }}>
 
-                    <TextInputItem
-                        title={'证件号码'}
-                        textPlaceholder={'请输入身份证号码'}
-                        rightButton={true}
-                        separator={false}
-                    />
+                        <TextInputItem
+                            ref='name'
+                            title={type === 1?'企业名称':'真实姓名'}
+                            value={'小李子'}
+                        />
+
+                        <TextInputItem
+                            ref = 'id'
+                            title={type === 1?'组织机构':'证件号码'}
+                            textPlaceholder={type===1?'请输入企业组织机构代码':'请输入身份证号码'}
+                            separator={false}
+                            value={'111111111111111111'}
+                        />
+                    </View>
+                    <MyButton buttonType={MyButton.TEXTBUTTON}
+                              content={'下一步'}
+                              parentStyle={styles.buttonStyle}
+                              childStyle={styles.buttonTextStyle}
+                              mOnPress={this.next}/>
                 </View>
-                <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'下一步'}
-                          parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle}
-                          mOnPress={()=>{
+            </TouchableWithoutFeedback>
 
-                          }}/>
-            </View>
         );
     }
+
+    next=()=>{
+
+        let name =  this.refs.name.getInputTextValue();
+        let id = this.refs.id.getInputTextValue();
+
+
+        if (name === '' || name === null){
+            this.props.showToast(type === 1?'请输入企业名称':'请输入真实姓名'); return;
+        }
+        if(id === '' || id === null){
+            this.props.showToast(type === 1?'请输入企业组织机构代码':'请输入身份证号码'); return;
+        }
+        if(id.length!==18&&type === 1){
+            this.props.showToast('身份证号格式有误'); return;
+        }
+
+        this.generateAccount(name, id);
+
+
+    }
+
+
+    // 用姓名和身份证号，生成资金账号，下一步开户的时候会用到  产品原型和UI里都没有体现
+    generateAccount = (name, id)=>{
+
+        // this.toNextPage({
+        //     component:CardPhoneSmsScene,
+        //     name:'CardPhoneSmsScene',}
+        //    )
+
+
+        this.props.showModal(true)
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data)=>{
+
+            if (data.code === 1){
+
+                let result = JSON.parse(data.result)
+
+                let params = {
+                    user_type:type,
+                    cert_no:id,
+                    cert_type:1,
+                    enter_base_id:result.company_base_id,
+                    cust_name:name,
+
+                }
+
+                request(AppUrls.ZS_GENERATE_E_ACCOUNT, 'POST', params).then((response)=>{
+                    this.props.showModal(false)
+
+                        console.log(response)
+                        this.toNextPage({
+                            component:CardPhoneSmsScene,
+                            name:'CardPhoneSmsScene',
+                            params:{account:response.mjson.data}
+                        })
+                }, (error)=>{
+
+                       this.props.showModal(false)
+                       this.props.showToast(error.msg)
+                })
+
+            }
+        })
+
+
+    }
+
 
 
 }

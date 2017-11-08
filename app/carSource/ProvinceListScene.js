@@ -49,6 +49,7 @@ let selectData={
         super(props);
         // 初始状态
 
+
           this.titleArray = [];
 
           let  getSectionData = (dataBlob,sectionID)=>{
@@ -120,7 +121,7 @@ let selectData={
                     }}}/>
                 <ZNListIndexView indexTitleArray={this.titleArray} indexClick={this._indexAndScrollClick}/>
                 {
-                    this.state.isShowCityList && (<CityList ref="cityList" checkedCityClick={this._checkedCityClick} isSelectProvince = {this.props.isSelectProvince} showLoadModel={this.loadModel}/>)
+                    this.state.isShowCityList && (<CityList  isZs = {this.props.isZs} ref="cityList" checkedCityClick={this._checkedCityClick} isSelectProvince = {this.props.isSelectProvince} showLoadModel={this.loadModel}/>)
                 }
                 <AllNavigationView title="城市筛选" backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
         </View>)
@@ -234,7 +235,8 @@ class CityList extends  Component{
       loadData=()=>{
 
         this.props.showLoadModel(true);
-        request(appUrls.GET_PROVINCE,'post',{'prov_id':selectData.provice_id})
+
+        request(this.props.isZs?appUrls.ZS_GET_CITY:appUrls.GET_PROVINCE,'post',this.props.isZs?{province_name:selectData.city_name}:{'prov_id':selectData.provice_id})
             .then((response) => {
 
                 this.props.showLoadModel(false);

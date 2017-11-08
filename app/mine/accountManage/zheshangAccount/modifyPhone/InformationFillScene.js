@@ -55,7 +55,7 @@ export default class InformationFillScene extends BaseComponent {
                         leftText={""}
                         centerText={'修改银行预留手机号'}
                         rightText={""}
-                        centerTextStyle={{paddingHorizontal:0, backgroundColor:'red'}}
+                        centerTextStyle={{paddingHorizontal:0}}
                     />
                 </View>
             </TouchableWithoutFeedback>);

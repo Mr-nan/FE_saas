@@ -22,6 +22,7 @@ import md5 from "react-native-md5";
 import StorageUtil from "../../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../../constant/storageKeyNames";
 import TextInputItem from '../../component/TextInputItem'
+import CardInformationScene from './CardInformationScene'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -72,26 +73,88 @@ export default class NameInformationScene extends BaseComponent {
                 <View style = {{width:width, marginTop:15, }}>
 
                     <TextInputItem
+                        ref = {'name'}
                         title={'企业名称'}
+                        value={'第一车贷'}
                     />
 
                     <TextInputItem
+                        ref = {'id'}
                         title={'组织机构'}
                         textPlaceholder={'请输入企业组织机构代码'}
                         separator={false}
+                        value={'10000320'}
                     />
                 </View>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'下一步'}
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
-                          mOnPress={()=>{
-
-                          }}/>
+                          mOnPress={this.next}/>
             </View>
         );
     }
 
+
+
+    next=()=>{
+
+        let name =  this.refs.name.getInputTextValue();
+        let id = this.refs.id.getInputTextValue();
+
+
+        if (name === '' || name === null){
+            this.props.showToast('请输入企业名称'); return;
+        }
+        if(id === '' || id === null){
+            this.props.showToast('请输入企业组织机构代码'); return;
+        }
+        this.generateAccount(name, id);
+
+
+    }
+
+
+    // 生成资金账号，下一步开户的时候会用到  产品原型和UI里都没有体现
+    generateAccount = (name, id)=>{
+
+        this.props.showModal(true)
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data)=>{
+
+            if (data.code === 1){
+
+                let result = JSON.parse(data.result)
+
+                let params = {
+                    user_type:1,
+                    cert_no:id,
+                    cert_type:1,
+                    enter_base_id:result.company_base_id,
+                    cust_name:name,
+
+                }
+
+                request(AppUrls.ZS_GENERATE_E_ACCOUNT, 'POST', params).then((response)=>{
+                    this.props.showModal(false)
+                    console.log(response)
+                    this.toNextPage({
+                        component:CardInformationScene,
+                        name:'CardInformationScene',
+                        params:{account:response.mjson.data}
+                    })
+                }, (error)=>{
+
+                    this.props.showModal(false)
+                    this.props.showToast(error.msg)
+
+
+                })
+
+            }
+        })
+
+
+    }
 
 }
 

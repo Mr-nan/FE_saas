@@ -55,7 +55,7 @@ export default class ModifyBankCard extends BaseComponent {
                         leftText={""}
                         centerText={'更换银行卡'}
                         rightText={""}
-                        centerTextStyle={{paddingHorizontal:0, backgroundColor:'red'}}
+                        centerTextStyle={{paddingHorizontal:0}}
                     />
                 </View>
             </TouchableWithoutFeedback>);

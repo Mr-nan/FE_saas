@@ -35,6 +35,8 @@ export default class TextInputItem extends Component{
     }
 
     static defaultProps = {
+        rightIcon:false,
+        loading:false,
         editable:true,
         value:null,
         title:'标题',
@@ -46,9 +48,13 @@ export default class TextInputItem extends Component{
         keyboardType: 'default',
         secureTextEntry: false,//设置是否为密码安全输入框	bool，默认为false
         separator:true,
+        onChangeText:null
     };
 
     static propTypes = {
+        rightIcon:PropTypes.bool,
+        loading:PropTypes.bool,
+        onChangeText:PropTypes.func,
         editable:PropTypes.bool,
         value:PropTypes.string,
         title:PropTypes.string,
@@ -104,8 +110,27 @@ export default class TextInputItem extends Component{
                             this.setState({
                                 value: text
                             });
+
+                            if(this.props.onChangeText){
+                                this.props.onChangeText(text)
+                            }
+
                         }}
                     />
+
+                    {
+                        this.props.loading?
+
+                            <ActivityIndicator size='small'/>
+
+                            :null
+                    }
+
+                    {
+                        this.props.rightIcon?
+                            <Image source = {require('../../../../../images/mainImage/celljiantou.png')}/>
+                            :null
+                    }
                     {
                         this.props.rightButton ?
                             <SendMmsCountDown ref="sendMms" callBackSms={this.props.callBackSms}/> : null

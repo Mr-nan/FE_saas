@@ -69,9 +69,12 @@ export default class Log extends BaseComponent {
 
 
         return (
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor:'white'}}>
                 <NavigationBar
                     leftImageShow={true}
+                    leftImageCallBack={()=>{
+                        this.backPage()
+                    }}
                     leftTextShow={false}
                     centerText={'账户流水'}
                     rightImageShow={true}
@@ -95,10 +98,8 @@ export default class Log extends BaseComponent {
                     initialListSize={10}
                     removeClippedSubviews={false}
                     renderFooter={this._renderFooter}
-                >
 
-
-                </ListView>
+                />
                 {
                     this.state.isShowSheet ?
                         <View

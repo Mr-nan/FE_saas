@@ -166,7 +166,7 @@ export default class MyAccountItem extends BaseComponent {
                     request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                         .then((response) => {
                             this.props.showModal(false);
-                            this.pageDispense(type, 1);
+                            this.pageDispense(type, 0);
                             this.toNextPage(this.navigatorParams);
                         }, (error) => {
                             this.props.showModal(false);

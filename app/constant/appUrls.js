@@ -1221,3 +1221,35 @@ export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySear
  *   商户是否在(浙商)白名单中查询
  */
 export const IS_IN_WHITE_LIST = BASEURL + "v1/account.cz_bank/isInWhiteList";
+
+/**
+ *    from @dignyonggang
+ *
+ *   生成资金账户
+ */
+export const ZS_GENERATE_E_ACCOUNT = BASEURL + "v1/account.cz_bank/accountBuild";
+
+/**
+ *    from @dignyonggang
+ *
+ *   发送短信验证码
+ */
+export const ZS_SEND_SMS_CODE = BASEURL + "v1/account.cz_bank/sendSmsCode";
+/**
+ *    from @dignyonggang
+ *
+ *   发送短信验证码
+ */
+export const ZS_OPEN_ACCOUNT = BASEURL + "v1/account.cz_bank/customerAccountOpen";
+/**
+ *    from @dignyonggang
+ *
+ *   根据银行卡号查询联行号
+ */
+export const ZS_PARSE_BANK = BASEURL + "v1/account.cz_bank/getBankNoByBankCard";
+/**
+ *    from @dignyonggang
+ *
+ *   查询城市
+ */
+export const ZS_GET_CITY = BASEURL + "v1/bankRoute.query/findCity";

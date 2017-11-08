@@ -22,19 +22,37 @@ import md5 from "react-native-md5";
 import StorageUtil from "../../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../../constant/storageKeyNames";
 import TextInputItem from '../../component/TextInputItem'
+import ResultIndicativeScene from '../../ResultIndicativeScene'
+import ChooseBankNameScene from './ChooseBankNameScene'
 
-var Dimensions = require('Dimensions');
-var {width, height} = Dimensions.get('window');
-var Pixel = new PixelUtil();
-var Platform = require('Platform');
+let Dimensions = require('Dimensions');
+let {width, height} = Dimensions.get('window');
+let Pixel = new PixelUtil();
+let Platform = require('Platform');
 
-export default class NameAndIdScene extends BaseComponent {
+let bank_no = ''
+let bank_name = ''
+let mobile_no = ''
+let sms_code = ''
+
+let type = -1;
+//  1：企业
+//  2：个人
+
+
+export default class CardPhoneSmsScene extends BaseComponent {
     constructor(props) {
         super(props);
+
+        //type = props.account.type;
+        type = 1;
         this.state = {
             renderPlaceholderOnly: true,
+            loading_bank:false,
+            bankName:''
         }
     }
+
 
     initFinish = () => {
         InteractionManager.runAfterInteractions(() => {
@@ -54,51 +72,263 @@ export default class NameAndIdScene extends BaseComponent {
                         leftImageShow={false}
                         leftTextShow={true}
                         leftText={""}
-                        centerText={'个人开户'}
+                        centerText={type===1?'企业开户':'个人开户'}
                         rightText={""}
                     />
                 </View>
             </TouchableWithoutFeedback>);
         }
         return (
-            <View style={styles.container}>
-                <NavigationBar
-                    leftImageShow={true}
-                    leftTextShow={false}
-                    centerText={"个人开户"}
-                    rightText={""}
-                    leftImageCallBack={this.backPage}
-                />
-                <View style = {{width:width, marginTop:15, }}>
 
-                    <TextInputItem
-                        title={'银行卡号'}
-                        textPlaceholder={'请输入您的银行卡号'}
-                        keyboardType={'number-pad'}
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    this.dismissKeyboard()
+                }}
+            >
+
+                <View style={styles.container}>
+                    <NavigationBar
+                        leftImageShow={true}
+                        leftTextShow={false}
+                        centerText={type===1?'企业开户':'个人开户'}
+                        rightText={""}
+                        leftImageCallBack={this.backPage}
                     />
-                    <TextInputItem
-                        title={'开户行'}
-                        textPlaceholder={'请输入开户行支行信息'}
-                    />
-                    <TextInputItem
-                        title={'手机号码'}
-                        rightButton={true}
-                        maxLength={11}
-                        keyboardType={'number-pad'}
-                    />
-                    <TextInputItem
-                        title={'短信验证'}
-                        separator={false}
-                        keyboardType={'number-pad'}
-                    />
+                    <View style={{width: width, marginTop: 15,}}>
+
+                        <TextInputItem
+                            ref={'bank_no'}
+                            title={'银行卡'}
+                            textPlaceholder={type === 1?'请输入企业银行卡号':'请输入您的银行卡号'}
+                            keyboardType={'number-pad'}
+                            value={'6223093310090136493'}
+                            onChangeText={this.bank}
+                            loading={this.state.loading_bank}
+                        />
+                        <TouchableOpacity
+                            onPress = {()=>{
+                                this.toNextPage({
+                                    component:ChooseBankNameScene,
+                                    name:'ChooseBankNameScene',
+                                    params:{
+                                        callBack:this.bankComeBack,
+                                        bank_no:this.refs.bank_no.getInputTextValue()},
+                                })
+
+                            }}
+                        >
+                            <TextInputItem
+                                ref={'bank_name'}
+                                title={'开户行'}
+                                textPlaceholder={'请输入开户行支行信息'}
+                                rightIcon={true}
+                                editable={false}
+                            />
+                        </TouchableOpacity>
+
+                        <TextInputItem
+                            ref={'mobile_no'}
+                            title={'手机号'}
+                            textPlaceholder={type===1?'请输入经办人手机号':'请输入手机号'}
+                            rightButton={true}
+                            callBackSms={this.smscode}
+                            maxLength={11}
+                            keyboardType={'number-pad'}
+                            value={'15701239874'}
+                        />
+                        <TextInputItem
+                            ref={'sms_code'}
+                            title={'验证码'}
+                            separator={false}
+                            keyboardType={'number-pad'}
+                        />
+                    </View>
+                    <MyButton buttonType={MyButton.TEXTBUTTON}
+                              content={'下一步'}
+                              parentStyle={styles.buttonStyle}
+                              childStyle={styles.buttonTextStyle}
+                              mOnPress={this.next}/>
                 </View>
-                <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'下一步'}
-                          parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle}
-                          mOnPress={this.setPwd}/>
-            </View>
+            </TouchableWithoutFeedback>
         );
+    }
+
+
+    bankComeBack = (bank)=>{
+       this.refs.bank_name.setInputTextValue(bank.bankname)
+    }
+
+    // 通过银行卡号调后台接口，解索发卡行
+    bank = (text)=>{
+        if(text.length<15) {return}
+
+       let params = {
+           bankCardNo:text,
+           page:1,
+           rows:20,
+       }
+
+
+       this.setState({
+           loading_bank:true,
+       })
+       request(AppUrls.ZS_PARSE_BANK, 'POST', params).then((response)=>{
+
+
+
+           this.setState({
+               loading_bank:false,
+           })
+       }, (error)=>{
+           this.setState({
+               loading_bank:false,
+           })
+       })
+
+
+    }
+
+
+    // 开户
+    next = () => {
+
+        if(!this.verify(true)) {return};
+
+
+        this.props.showModal(true)
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1) {
+                let result = JSON.parse(data.result)
+
+                let params = {
+                    enter_base_id: result.company_base_id,
+                    from_bank_id: 123456789,
+                    mobile_no: mobile_no,
+                    sub_acct_no: this.props.account.sub_acc_no,
+                    type: 0,
+                    acct_name:this.props.account.sub_acc_name,
+                    acct_no:bank_no,
+                    acct_type:type,
+                    big_bank_no:'12345',
+                    cert_no:this.props.account.cert_no,
+                    cert_type:1,
+                    sms_code:'123456',
+                    sms_no:'52344234',
+                    sub_acct_name:this.props.account.sub_acc_name,
+                    user_type:type,
+                    cust_name:this.props.account.sub_acc_name,
+                    bank_name:'招商银行'
+                }
+
+                request(AppUrls.ZS_GENERATE_E_ACCOUNT, 'POST', params).then((response)=>{
+
+                    this.props.showModal(false)
+
+                    this.toNextPage({
+                        component:ResultIndicativeScene,
+                        name:'ResultIndicativeScene',
+                        params:{
+                            type:type === 1?1:0,
+                            status:1,
+                            account:params
+                        }
+                    })
+                    console.log(response);
+
+                }, (error)=>{
+
+                    if(error.mycode==='100001'){  // 存疑
+
+                        this.toNextPage({
+                            component:ResultIndicativeScene,
+                            name:'ResultIndicativeScene',
+                            params:{
+                                type:type === 1?1:0,
+                                status:0,
+                                account:params
+                            }
+                        })
+
+                    }else {
+                        this.props.showModal(false)
+                        this.props.showToast(error.msg)
+                    }
+                })
+
+
+
+            }
+        })
+
+
+    }
+
+    //获取短信验证码
+    smscode = () => {
+
+        if(!this.verify(false)) { return};
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1) {
+
+                let result = JSON.parse(data.result)
+                let params = {
+                    enter_base_id: result.company_base_id,
+                    from_bank_id: 123456789,
+                    mobile_no: mobile_no,
+                    sub_acct_no: this.props.account.sub_acc_no,
+                    type: 0
+                }
+
+                request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {
+                        this.refs.mobile_no.StartCountDown();
+                        console.log(response);
+
+                }, (error) => {
+                    this.props.showModal(false)
+                    this.props.showToast(error.msg)
+                })
+
+            } else {
+                this.props.showToast('获取信息失败')
+            }
+        })
+
+    }
+
+    verify = (with_sms_code) => {
+
+        bank_no = this.refs.bank_no.getInputTextValue();
+        bank_name = this.refs.bank_name.getInputTextValue();
+        mobile_no = this.refs.mobile_no.getInputTextValue();
+        sms_code = this.refs.sms_code.getInputTextValue();
+
+        if (bank_no === '' || bank_no === null) {
+            this.props.showToast('请输入银行卡号');
+            return false
+        }
+        if (bank_name === '' || bank_name === null) {
+            this.props.showToast('请输入开户行名称');
+            return false
+        }
+        if (mobile_no === '' || mobile_no === null) {
+            this.props.showToast('请输入手机号码');
+            return false
+        }
+        if (mobile_no.length !== 11) {
+            this.props.showToast('手机号格式有误');
+            return false
+        }
+
+        if (with_sms_code) {
+            if (sms_code === '' || sms_code === null) {
+                this.props.showToast('请输入验证码');
+                return false
+            }
+        }
+
+        return true
     }
 
 
