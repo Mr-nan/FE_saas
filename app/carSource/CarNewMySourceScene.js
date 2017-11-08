@@ -18,18 +18,18 @@ import {
     InteractionManager,
     Image,
     NativeModules,
+    TextInput,
+    Modal,
+    KeyboardAvoidingView
 } from 'react-native';
 
 import BaceComponent from '../component/BaseComponent';
 import ListFooter           from './znComponent/LoadMoreFooter';
 import SGListView           from 'react-native-sglistview';
-import CarInfoScene         from './CarInfoScene';
 import AccountModal from '../component/AccountModal'
-import EditCarScene         from '../publish/EditCarScene'
-import MyCarCell     from './znComponent/MyCarCell';
+import MyNewCarCell     from './znComponent/MyNewCarCell';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../finance/repayment/component/RepaymenyTabBar';
-import NewCarScene      from '../publish/NewCarScene';
 import * as fontAndColor from '../constant/fontAndColor';
 import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
@@ -44,6 +44,8 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import CarNewInfoScene from "./CarNewInfoScene";
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
+var ScreenHeight = Dimensions.get('window').height
+;
 var shareClass = NativeModules.ZNShareClass;
 let Platform = require('Platform');
 const IS_ANDROID = Platform.OS === 'android';
@@ -77,7 +79,7 @@ export default class CarMySourceScene extends BaceComponent {
                     initialPage={this.props.page?this.props.page:0}
                     locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售车源("+this.state.shelves_count+")", "已售车源("+this.state.sold_count+')', "未上架车源("+this.state.no_shelves_count+')']}/>}>
-                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1" />
+                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"  carPriceEditClick={this.carPriceEditClick}/>
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
                     <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
                 </ScrollableTabView>
@@ -92,6 +94,9 @@ export default class CarMySourceScene extends BaceComponent {
                     this.state.isShowCarSharedView && <CarSharedView offClick={()=>{this.setState({isShowCarSharedView:false})}} carSharedBtnClick={this.carSharedBtnClick} isShowMore={this.carData.img!=''?true:false}/>
                 }
                 <AccountModal ref="accountmodal"/>
+                {
+                   this.state.isShowEditcarPrice && <EditCarPriceView  hiddeClick={()=>{this.setState({isShowEditcarPrice:false})}} carData={this.editCarData}/>
+                }
             </View>)
 
     }
@@ -107,6 +112,8 @@ export default class CarMySourceScene extends BaceComponent {
             shelves_count:0,
             sold_count:0,
             no_shelves_count:0,
+            isShowEditcarPrice:false,
+
         };
     }
 
@@ -152,6 +159,11 @@ export default class CarMySourceScene extends BaceComponent {
         };
         this.props.toNextPage(navigatorParams);
 
+    }
+
+    carPriceEditClick=(carData)=>{
+        this.editCarData = carData;
+        this.setState({isShowEditcarPrice:true})
     }
 
 
@@ -909,6 +921,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
                                 colors={[fontAndColor.COLORB0]}/>}
                     />
                 }
+
             </View>
         )
     }
@@ -916,12 +929,11 @@ class MyCarSourceUpperFrameView extends BaceComponent {
     renderRow =(rowData)=>{
 
         return(
-            <MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={1}/>
+            <MyNewCarCell carCellData={rowData} cellClick={this.props.carCellClick} carPriceEditClick={this.props.carPriceEditClick} footButtonClick={this.props.footButtonClick} type={1} />
         )
     }
 
     renderHeader =()=> {
-
         if(!this.state.isCarLong)
         {
             return null;
@@ -1107,7 +1119,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
                               pageSize={10}
                               renderFooter={this.renderListFooter}
                               onEndReached={this.toEnd}
-                              renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={2}/>}
+                              renderRow={(rowData) =><MyNewCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={2}/>}
                               refreshControl={
                                   <RefreshControl
                                       refreshing={this.state.isRefreshing}
@@ -1315,7 +1327,7 @@ class MyCarSourceAuditView extends BaceComponent {
                                 renderHeader={this.renderHeader}
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
-                                renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={3}/>}
+                                renderRow={(rowData) =><MyNewCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={3}/>}
                                 refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
@@ -1465,6 +1477,66 @@ class CarSharedView extends Component {
     }
 }
 
+class EditCarPriceView extends Component {
+
+    // 构造
+      constructor(props) {
+        super(props);
+        this.state={
+            modalOpen: true,
+        }
+      }
+
+
+    render(){
+
+        return(
+            <View style={styles.editCarPriceContainer}>
+                <Modal animationType={'fade'} visible={this.state.modalOpen} transparent={true}>
+                    <TouchableOpacity style={{flex:1, backgroundColor:'rgba(0, 0, 0,0.3)'}} onPress={this.props.hiddeClick} activeOpacity={1}/>
+                <KeyboardAvoidingView behavior={'position'}>
+                        <View>
+                            <View style={{backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(15)}}>
+                                <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(10),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4}}>
+                                    <Image style={{width:Pixel.getPixel(72),height:Pixel.getPixel(48),marginRight:Pixel.getPixel(5)}}
+                                           source={ this.props.carData.img?{uri:this.props.carData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../images/carSourceImages/car_null_img.png')}/>
+                                    <View style={{justifyContent:'flex-end'}}>
+                                        <Text>目前数量:10</Text>
+                                        <Text>目前价格:10万元</Text>
+                                    </View>
+                                </View>
+                                <View style={{height:Pixel.getPixel(44),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4,
+                                    alignItems:'center',justifyContent:'space-between',flexDirection:'row'
+                                }}>
+                                    <Text>修改在售车辆数</Text>
+                                    <TextInput defaultValue={10} style={styles.textInput}
+                                               keyboardType={'numeric'}
+                                               maxLength={7}
+                                               autoFocus={true}/>
+                                </View>
+                                <View style={{height:Pixel.getPixel(44), alignItems:'center',justifyContent:'space-between',
+                                    flexDirection:'row'
+                                }}>
+                                    <Text>修改销售价</Text>
+                                    <TextInput defaultValue={10} style={styles.textInput}
+                                               keyboardType={'number-pad'}
+                                               maxLength={7}/>
+                                </View>
+                            </View>
+                            <TouchableOpacity style={{backgroundColor:fontAndColor.COLORB0,height:Pixel.getPixel(44),justifyContent:'center',
+                                alignItems:'center',
+                            }} onPress={this.props.hiddeClick}>
+                                <Text style={{color:'white'}}>确认</Text>
+                            </TouchableOpacity>
+                        </View>
+                </KeyboardAvoidingView>
+
+                </Modal>
+            </View>
+        )
+    }
+}
+
 const styles = StyleSheet.create({
 
     rootContainer: {
@@ -1554,6 +1626,27 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: Pixel.getPixel(10),
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+    },
+    editCarPriceContainer:{
+        top:0,
+        left:0,
+        bottom:0,
+        right:0,
+        backgroundColor:'rgba(0, 0, 0,0.3)',
+        position: 'absolute',
+        justifyContent:'flex-end'
+    },
+    textInput: {
+        height: Pixel.getPixel(30),
+        borderColor: fontAndColor.COLORA0,
+        width: Pixel.getPixel(170),
+        textAlign: 'right',
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        paddingTop: 0,
+        paddingBottom: 0,
+        paddingLeft: 0,
+        paddingRight: 0,
+        backgroundColor: 'yellow'
     },
 
 })

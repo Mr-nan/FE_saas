@@ -98,21 +98,23 @@ export default class MyCarCell extends Component {
                         </View>
                         <View style={[styles.textContainer]}>
                             <View style={{backgroundColor:'white'}}>
-                                <Text allowFontScaling={false} numberOfLines={1}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
-                                <Text allowFontScaling={false}  style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000',false)+'初登 | '+carCellData.mileage+'万公里'}</Text>
-                                {
-                                    (carCellData.dealer_price>0 && carCellData.low_price>0) &&
-                                    (<Text allowFontScaling={false}  style={styles.subTitleText}>{(this.carMoneyChange(carCellData.dealer_price)) +'万 | 低价：' +(this.carMoneyChange(carCellData.low_price))}万</Text>)
-                                }
-                                {
-                                    (carCellData.dealer_price>0 &&carCellData.low_price<=0) &&
-                                    (<Text allowFontScaling={false}  style={styles.subTitleText}>{(this.carMoneyChange(carCellData.dealer_price))}万</Text>)
-                                }
-                                {
-                                    (carCellData.low_price>0 && carCellData.dealer_price<=0) &&
-                                    (<Text allowFontScaling={false}  style={styles.subTitleText}>{ '低价：' +(this.carMoneyChange(carCellData.low_price))}万</Text>)
-                                }
 
+                                   <View>
+                                            <Text allowFontScaling={false} numberOfLines={1}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
+                                            <Text allowFontScaling={false}  style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000',false)+'初登 | '+carCellData.mileage+'万公里'}</Text>
+                                            {
+                                                (carCellData.dealer_price>0 && carCellData.low_price>0) &&
+                                                (<Text allowFontScaling={false}  style={styles.subTitleText}>{(this.carMoneyChange(carCellData.dealer_price)) +'万 | 低价：' +(this.carMoneyChange(carCellData.low_price))}万</Text>)
+                                            }
+                                            {
+                                                (carCellData.dealer_price>0 &&carCellData.low_price<=0) &&
+                                                (<Text allowFontScaling={false}  style={styles.subTitleText}>{(this.carMoneyChange(carCellData.dealer_price))}万</Text>)
+                                            }
+                                            {
+                                                (carCellData.low_price>0 && carCellData.dealer_price<=0) &&
+                                                (<Text allowFontScaling={false}  style={styles.subTitleText}>{ '低价：' +(this.carMoneyChange(carCellData.low_price))}万</Text>)
+                                            }
+                                        </View>
                             </View>
                             <View/>
                             {/*<Text allowFontScaling={false}  style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>*/}
@@ -326,7 +328,8 @@ const styles = StyleSheet.create({
     textContainer:{
         flex:1,
         // backgroundColor:'#FF0067',
-        justifyContent:'space-around',
+        justifyContent:'space-around'
+
     },
 
     mainText:{
@@ -347,8 +350,7 @@ const styles = StyleSheet.create({
     },
     carPriceText:{
         color:fontAndColor.COLORB2,
-        fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-        fontWeight:'bold',
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
     }
 
 });
