@@ -30,14 +30,19 @@ import MyButton from "../../component/MyButton";
 import ProvinceListScene from "../../carSource/ProvinceListScene";
 import ImageSourceSample from "../../publish/component/ImageSourceSample";
 import * as ImageUpload from "../../utils/ImageUpload";
-
+import {request} from '../../utils/RequestUtil';
 const Pixel = new PixelUtil();
 const selectImg = require('../../../images/financeImages/celljiantou.png');
 const IS_ANDROID = Platform.OS === 'android';
-let idHandle:'';
+//以下为上传需要的参数
+let idHandle: '';
 let idcardfront: '';
 let idcardback: '';
 let businessid: '';
+let city_ID;
+let prov_ID;
+//以上为上传需要的参数
+
 const options = {
 	//弹出框选项
 	title: '请选择',
@@ -55,9 +60,10 @@ const options = {
 	}
 };
 export default class EnterpriseCertificate extends BaseComponent {
-	componentWillUnmount(){
+	componentWillUnmount() {
 		this.timer && clearTimeout(this.timer);
 	}
+
 	constructor(props) {
 		super(props);
 		this.enterpriseData = {
@@ -120,9 +126,13 @@ export default class EnterpriseCertificate extends BaseComponent {
 	};
 
 	_checkedCityClick = (cityType) => {
+		console.log(cityType);
+		city_ID = cityType.city_id;
+		prov_ID = cityType.provice_id;
 		this.setState(
 			{
-				business_home: cityType.city_name
+				business_home: cityType.provice_name + ' '+cityType.city_name
+
 			}
 		);
 
@@ -138,9 +148,10 @@ export default class EnterpriseCertificate extends BaseComponent {
 		this.backPage();
 	};
 	/*
-	 * 更换银行卡点击
+	 * 完成点击
 	 * */
-	_onChangeBankPress = () => {
+	_onCompletePress = () => {
+
 
 		if (this.isEmpty(this.enterpriseData.zhuceren_name) === true) {
 			this._showHint('请填写注册人姓名');
@@ -178,6 +189,54 @@ export default class EnterpriseCertificate extends BaseComponent {
 		}
 
 
+		let maps = {
+// business_card_id	名片或工作证上传ID		【必填】
+// city_id	城市ID		【必填】
+// device_code		string	【必填】
+// idcard_back_id	身份证背面上传ID		【必填】
+// idcard_fort_id	身份证正面上传ID		【必填】
+// idcard_no	身份证号		【必填】
+// idcard_touch_id	身份证手持上传ID		【必填】
+// prov_id	省ID		【必填】
+// real_name	用户真实姓名		【必填】
+// token
+			business_card_id:businessid,
+			city_id : city_ID,
+			prov_id : prov_ID,
+			idcard_back_id : idcardback,
+			idcard_fort_id : idcardfront,
+			idcard_touch_id : idHandle,
+			// idcard_back_id : '2267196',
+			// idcard_fort_id : '2267197',
+			// idcard_touch_id : '2267198',
+			// business_card_id:'2267199',
+
+			idcard_no: this.enterpriseData.zhuceren_IDNo,
+			real_name:this.enterpriseData.zhuceren_name,
+
+		};
+		this.props.showModal(true);
+
+		request(AppUrls.PERSONCERTIFICATE, 'Post', maps)
+			.then((response) => {
+				if (response.mycode == "1") {
+
+					this.props.showToast("注册成功");
+					this.props.callBack();
+					this.backPage();
+				} else {
+					this.props.showToast(response.mjson.msg + "");
+				}
+			}, (error) => {
+				if (error.mycode == -300 || error.mycode == -500) {
+					this.props.showToast('系统异常');
+				} else {
+					this.props.showToast(error.mjson.msg);
+				}
+
+			});
+
+
 	};
 
 	render() {
@@ -208,10 +267,10 @@ export default class EnterpriseCertificate extends BaseComponent {
                                  }}/>
 
 				{/*上传图片转圈 view*/}
-				{this.loadingView()}
 			</View>
 		)
 	}
+
 	/*
 	 * 主界面
 	 * */
@@ -265,6 +324,7 @@ export default class EnterpriseCertificate extends BaseComponent {
                             }}
 						style={[styles.inputHintFont, styles.fillSpace]}
 						underlineColorAndroid='transparent'
+						maxLength={18}
 						onChangeText={this._shenfenzhengChange}
 						placeholder='请输入'
 						placeholderTextColor={fontAndColor.COLORA1}
@@ -442,8 +502,8 @@ export default class EnterpriseCertificate extends BaseComponent {
 
 				{/*更换银行卡view*/}
 				<View style={styles.fillSpace}>
-					<TouchableOpacity style={styles.btnOk} activeOpacity={0.6} onPress={this._onChangeBankPress}>
-						<Text allowFontScaling={false} style={styles.btnFont}>更换银行卡</Text>
+					<TouchableOpacity style={styles.btnOk} activeOpacity={0.6} onPress={this._onCompletePress}>
+						<Text allowFontScaling={false} style={styles.btnFont}>完成</Text>
 					</TouchableOpacity>
 				</View>
 			</ScrollView>
@@ -527,19 +587,16 @@ export default class EnterpriseCertificate extends BaseComponent {
 	 * 图片上传
 	 * */
 	uploadImage = (response, id) => {
+
 		let params = {
-			base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
+			file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
 		};
-		// this.props.showModal(true);
-		this.setState({
-			loading: true,
-		});
-		ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
+		this.props.showModal(true);
+
+		ImageUpload.request(AppUrls.INDEX_UPLOAD, 'Post', params)
 			.then((response) => {
-				// this.props.showModal(false);
-				this.setState({
-					loading: false,
-				});
+				this.props.showModal(false);
+
 				if (response.mycode == 1) {
 					let source = {uri: response.mjson.data.url};
 					if (id === 'enterpriseFront') {
@@ -560,7 +617,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 						} else {
 							this.props.showToast("id 为空 图片上传失败");
 						}
-					}else if (id === 'enterpriseHandle') {
+					} else if (id === 'enterpriseHandle') {
 						idHandle = response.mjson.data.file_id;
 						if (idHandle != "") {
 							this.setState({
@@ -569,7 +626,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 						} else {
 							this.props.showToast("id 为空 图片上传失败");
 						}
-					}else if (id === 'businessLicense') {
+					} else if (id === 'businessLicense') {
 						businessid = response.mjson.data.file_id;
 						if (businessid != "") {
 							this.setState({
@@ -583,10 +640,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 					this.props.showToast(response.mjson.msg + "!");
 				}
 			}, (error) => {
-				// this.props.showModal(false);
-				this.setState({
-					loading: false,
-				});
+				console.log(error);
 				this.props.showToast("图片上传失败");
 			});
 	}

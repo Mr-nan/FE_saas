@@ -218,6 +218,53 @@ export default class EnterpriseCertificate extends BaseComponent {
 			return;
 		}
 
+		let maps = {
+// business_card_id	名片或工作证上传ID		【必填】
+// city_id	城市ID		【必填】
+// device_code		string	【必填】
+// idcard_back_id	身份证背面上传ID		【必填】
+// idcard_fort_id	身份证正面上传ID		【必填】
+// idcard_no	身份证号		【必填】
+// idcard_touch_id	身份证手持上传ID		【必填】
+// prov_id	省ID		【必填】
+// real_name	用户真实姓名		【必填】
+// token
+			business_card_id:businessid,
+			city_id : city_ID,
+			prov_id : prov_ID,
+			idcard_back_id : idcardback,
+			idcard_fort_id : idcardfront,
+			idcard_touch_id : idHandle,
+			// idcard_back_id : '2267196',
+			// idcard_fort_id : '2267197',
+			// idcard_touch_id : '2267198',
+			// business_card_id:'2267199',
+
+			idcard_no: this.enterpriseData.zhuceren_IDNo,
+			real_name:this.enterpriseData.zhuceren_name,
+
+		};
+		this.props.showModal(true);
+
+		request(AppUrls.PERSONCERTIFICATE, 'Post', maps)
+			.then((response) => {
+				if (response.mycode == "1") {
+
+					this.props.showToast("注册成功");
+					this.props.callBack();
+					this.backPage();
+				} else {
+					this.props.showToast(response.mjson.msg + "");
+				}
+			}, (error) => {
+				if (error.mycode == -300 || error.mycode == -500) {
+					this.props.showToast('系统异常');
+				} else {
+					this.props.showToast(error.mjson.msg);
+				}
+
+			});
+
 
 	};
 

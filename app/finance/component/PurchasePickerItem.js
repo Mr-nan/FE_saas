@@ -205,7 +205,6 @@ export  default class PurchasePickerItem extends PureComponent {
                     this.props.showToast('上传失败')
                 }
             },(error)=>{
-                this.props.showModal(false);
                 // this.props.closeLoading();
                 this.props.showToast(JSON.stringify(error));
                 // console.log(JSON.stringify(error));

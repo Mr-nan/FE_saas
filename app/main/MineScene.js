@@ -774,11 +774,13 @@ export default class MineScene extends BaseComponent {
 	_qiyerenzheng = () => {
 		this.navigatorParams.name = 'EnterpriseCertificate'
 		this.navigatorParams.component = EnterpriseCertificate
+		this.navigatorParams.params.callBack = this.allRefresh
 		this.props.callBack(this.navigatorParams);
 	};
 	_gerenrenzheng = () => {
 		this.navigatorParams.name = 'PersonCertificate'
 		this.navigatorParams.component = PersonCertificate
+		this.navigatorParams.params.callBack = this.allRefresh
 		this.props.callBack(this.navigatorParams);
 	};
 
