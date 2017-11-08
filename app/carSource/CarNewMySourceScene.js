@@ -1490,50 +1490,93 @@ class EditCarPriceView extends Component {
 
     render(){
 
+        this.renderAndroid();
+    }
+
+    renderIOS=()=>{
         return(
             <View style={styles.editCarPriceContainer}>
-                <Modal animationType={'fade'} visible={this.state.modalOpen} transparent={true}>
-                    <TouchableOpacity style={{flex:1, backgroundColor:'rgba(0, 0, 0,0.3)'}} onPress={this.props.hiddeClick} activeOpacity={1}/>
+            <Modal animationType={'fade'} visible={this.state.modalOpen} transparent={true}>
+                <TouchableOpacity style={{flex:1, backgroundColor:'rgba(0, 0, 0,0.3)'}} onPress={this.props.hiddeClick} activeOpacity={1}/>
                 <KeyboardAvoidingView behavior={'position'}>
-                        <View>
-                            <View style={{backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(15)}}>
-                                <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(10),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4}}>
-                                    <Image style={{width:Pixel.getPixel(72),height:Pixel.getPixel(48),marginRight:Pixel.getPixel(5)}}
-                                           source={ this.props.carData.img?{uri:this.props.carData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../images/carSourceImages/car_null_img.png')}/>
-                                    <View style={{justifyContent:'flex-end'}}>
-                                        <Text>目前数量:10</Text>
-                                        <Text>目前价格:10万元</Text>
-                                    </View>
-                                </View>
-                                <View style={{height:Pixel.getPixel(44),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4,
-                                    alignItems:'center',justifyContent:'space-between',flexDirection:'row'
-                                }}>
-                                    <Text>修改在售车辆数</Text>
-                                    <TextInput defaultValue={10} style={styles.textInput}
-                                               keyboardType={'numeric'}
-                                               maxLength={7}
-                                               autoFocus={true}/>
-                                </View>
-                                <View style={{height:Pixel.getPixel(44), alignItems:'center',justifyContent:'space-between',
-                                    flexDirection:'row'
-                                }}>
-                                    <Text>修改销售价</Text>
-                                    <TextInput defaultValue={10} style={styles.textInput}
-                                               keyboardType={'number-pad'}
-                                               maxLength={7}/>
+                    <View>
+                        <View style={{backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(15)}}>
+                            <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(10),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4}}>
+                                <Image style={{width:Pixel.getPixel(72),height:Pixel.getPixel(48),marginRight:Pixel.getPixel(5)}}
+                                       source={ this.props.carData.img?{uri:this.props.carData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../images/carSourceImages/car_null_img.png')}/>
+                                <View style={{justifyContent:'flex-end'}}>
+                                    <Text>目前数量:10</Text>
+                                    <Text>目前价格:10万元</Text>
                                 </View>
                             </View>
-                            <TouchableOpacity style={{backgroundColor:fontAndColor.COLORB0,height:Pixel.getPixel(44),justifyContent:'center',
-                                alignItems:'center',
-                            }} onPress={this.props.hiddeClick}>
-                                <Text style={{color:'white'}}>确认</Text>
-                            </TouchableOpacity>
+                            <View style={{height:Pixel.getPixel(44),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4,
+                                alignItems:'center',justifyContent:'space-between',flexDirection:'row'
+                            }}>
+                                <Text>修改在售车辆数</Text>
+                                <TextInput defaultValue={10} style={styles.textInput}
+                                           keyboardType={'numeric'}
+                                           maxLength={7}
+                                           autoFocus={true}/>
+                            </View>
+                            <View style={{height:Pixel.getPixel(44), alignItems:'center',justifyContent:'space-between',
+                                flexDirection:'row'
+                            }}>
+                                <Text>修改销售价</Text>
+                                <TextInput defaultValue={10} style={styles.textInput}
+                                           keyboardType={'number-pad'}
+                                           maxLength={7}/>
+                            </View>
                         </View>
+                        <TouchableOpacity style={{backgroundColor:fontAndColor.COLORB0,height:Pixel.getPixel(44),justifyContent:'center',
+                            alignItems:'center',
+                        }} onPress={this.props.hiddeClick}>
+                            <Text style={{color:'white'}}>确认</Text>
+                        </TouchableOpacity>
+                    </View>
                 </KeyboardAvoidingView>
+            </Modal>
+        </View>)
+    }
 
-                </Modal>
-            </View>
-        )
+    renderAndroid=()=>{
+        return(
+            <View style={styles.editCarPriceContainer}>
+                <TouchableOpacity style={{flex:1, backgroundColor:'rgba(0, 0, 0,0.3)'}} onPress={this.props.hiddeClick} activeOpacity={1}/>
+                    <View>
+                        <View style={{backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(15)}}>
+                            <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(10),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4}}>
+                                <Image style={{width:Pixel.getPixel(72),height:Pixel.getPixel(48),marginRight:Pixel.getPixel(5)}}
+                                       source={ this.props.carData.img?{uri:this.props.carData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../images/carSourceImages/car_null_img.png')}/>
+                                <View style={{justifyContent:'flex-end'}}>
+                                    <Text>目前数量:10</Text>
+                                    <Text>目前价格:10万元</Text>
+                                </View>
+                            </View>
+                            <View style={{height:Pixel.getPixel(44),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4,
+                                alignItems:'center',justifyContent:'space-between',flexDirection:'row'
+                            }}>
+                                <Text>修改在售车辆数</Text>
+                                <TextInput defaultValue={10} style={styles.textInput}
+                                           keyboardType={'numeric'}
+                                           maxLength={7}
+                                           autoFocus={true}/>
+                            </View>
+                            <View style={{height:Pixel.getPixel(44), alignItems:'center',justifyContent:'space-between',
+                                flexDirection:'row'
+                            }}>
+                                <Text>修改销售价</Text>
+                                <TextInput defaultValue={10} style={styles.textInput}
+                                           keyboardType={'number-pad'}
+                                           maxLength={7}/>
+                            </View>
+                        </View>
+                        <TouchableOpacity style={{backgroundColor:fontAndColor.COLORB0,height:Pixel.getPixel(44),justifyContent:'center',
+                            alignItems:'center',
+                        }} onPress={this.props.hiddeClick}>
+                            <Text style={{color:'white'}}>确认</Text>
+                        </TouchableOpacity>
+                    </View>
+        </View>)
     }
 }
 
