@@ -1,7 +1,7 @@
 /**
  * Created by zhengnan on 2017/5/12.
  */
-import React,    {Component} from 'react';
+import React, {Component} from 'react';
 import {
     StyleSheet,
     View,
@@ -25,182 +25,88 @@ import CarMySourceScene from '../CarMySourceScene';
 import * as Net from '../../utils/RequestUtil';
 import * as AppUrls from '../../constant/appUrls';
 
-const Pixel = new  PixelUtil();
+const Pixel = new PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 const IS_ANDROID = Platform.OS === 'android';
 import SelectPhotoModal from '../../component/SelectPhotoModal';
-export default class NewCarUpImageScene extends BaseComponent{
+export default class NewCarUpImageScene extends BaseComponent {
 
-    initFinish=()=>{
+    initFinish = () => {
 
     }
     // 构造
-      constructor(props) {
+    constructor(props) {
         super(props);
 
-          // this.baseTitleData=[
-          //     {
-          //         name: 'left_anterior',
-          //         title:'左前45度',
-          //         subTitle:'至多1张',
-          //         number:1,
-          //         imgArray:[],
-          //         explain:'1',
-          //     },{
-          //         name: 'rear_right',
-          //         title:'右后45度',
-          //         subTitle:'至多1张',
-          //         imgArray:[],
-          //         explain:'1',
-          //
-          //     },{
-          //         name: 'dash_board',
-          //         title:'仪表盘',
-          //         subTitle:'至多1张',
-          //         imgArray:[],
-          //         explain:'1',
-          //
-          //     },{
-          //         name: 'front_trim',
-          //         title:'前内饰',
-          //         subTitle:'至多1张',
-          //         number:1,
-          //         imgArray:[],
-          //         explain:'1',
-          //
-          //     },{
-          //         name: 'rear_trim',
-          //         title:'后内饰',
-          //         subTitle:'至多1张',
-          //         number:1,
-          //         imgArray:[],
-          //         explain:'1',
-          //
-          //     },{
-          //         name: 'engine',
-          //         title:'发动机',
-          //         subTitle:'至多1张',
-          //         number:1,
-          //         imgArray:[],
-          //         explain:'1',
-          //
-          //     },{
-          //         name: 'vin_no',
-          //         title:'车架号',
-          //         subTitle:'至多1张',
-          //         number:1,
-          //         imgArray:[],
-          //         explain:'0',
-          //     }
-          // ];
-          //
-          // this.usedCarTitleData=[
-          //     {
-          //         name: 'registration_card',
-          //         title:'登记证',
-          //         subTitle:'至多5张',
-          //         number:5,
-          //         imgArray:[],
-          //         explain:'1',
-          //     },
-          // ];
-          //
-          // this.importCarTitleData = [
-          //     {
-          //         name: 'conformance_certificate',
-          //         title:'车辆一致性证书正反面',
-          //         subTitle:'至多5张',
-          //         number:5,
-          //         imgArray:[],
-          //         explain:'1',
-          //     }, {
-          //         name: 'customs_declaration',
-          //         title:'关单',
-          //         subTitle:'至多5张',
-          //         number:5,
-          //         imgArray:[],
-          //         explain:'1',
-          //     }, {
-          //         name: 'inspection_report',
-          //         title:'商检单',
-          //         subTitle:'至多5张',
-          //         number:5,
-          //         imgArray:[],
-          //         explain:'1',
-          //     },
-          // ];
+        this.titleData = [];
+        this.results = [];
+        this.carData = this.props.carData;
+        if (this.carData.v_type == 1) {
+
+            for (let carImageObject of this.props.carConfigurationData.used_car_pic) {
+                carImageObject['imgArray'] = [];
+                if (carImageObject.title == '权属声明/买卖协议') {
+
+                    if (this.carData.registrant_actual == 0) {
+                        this.titleData.push(carImageObject);
+                    }
+
+                } else {
+                    this.titleData.push(carImageObject);
+                }
+            }
+
+        } else if (this.carData.v_type == 2) {
+
+            for (let carImageObject of this.props.carConfigurationData.new_car_pic) {
+                carImageObject['imgArray'] = [];
+                this.titleData.push(carImageObject);
+            }
 
 
-          this.titleData = [];
-          this.results = [];
-          this.carData = this.props.carData;
-          if(this.carData.v_type==1){
+        } else if (this.carData.v_type == 3) {
 
-              for(let carImageObject of this.props.carConfigurationData.used_car_pic){
-                  carImageObject['imgArray'] = [];
-                  if(carImageObject.title == '权属声明/买卖协议'){
-
-                      if(this.carData.registrant_actual == 0)
-                      {
-                          this.titleData.push(carImageObject);
-                      }
-
-                  }else {
-                      this.titleData.push(carImageObject);
-                  }
-              }
-
-          }else if(this.carData.v_type==2){
-
-              for(let carImageObject of this.props.carConfigurationData.new_car_pic){
-                  carImageObject['imgArray'] = [];
-                  this.titleData.push(carImageObject);
-              }
+            for (let carImageObject of this.props.carConfigurationData.imported_car_pic) {
+                carImageObject['imgArray'] = [];
+                this.titleData.push(carImageObject);
+            }
+        }
 
 
-          } else if(this.carData.v_type==3){
+        if (this.carData.pictures) {
+            let imgas = JSON.parse(this.carData.pictures);
+            this.results.push(...imgas);
+            this.titleData.map((data, index) => {
+                imgas.map((imgData, subIndex) => {
+                    if (data.name == imgData.name) {
+                        data.imgArray.push(imgData);
+                    }
+                });
+            });
+        } else if (this.carData.imgs) {
+            this.results.push(...this.carData.imgs);
+            this.carData['pictures'] = JSON.stringify(this.results);
+            this.titleData.map((data, index) => {
+                this.carData.imgs.map((imgData, subIndex) => {
+                    if (data.name == imgData.name) {
+                        data.imgArray.push(imgData);
+                    }
+                });
+            });
+        }
 
-              for(let carImageObject of this.props.carConfigurationData.imported_car_pic){
-                  carImageObject['imgArray'] = [];
-                  this.titleData.push(carImageObject);
-              }
-          }
-
-
-          if(this.carData.pictures){
-              let imgas = JSON.parse(this.carData.pictures);
-              this.results.push(...imgas);
-              this.titleData.map((data,index)=>{
-                  imgas.map((imgData,subIndex)=>{
-                      if(data.name == imgData.name){
-                          data.imgArray.push(imgData);
-                      }
-                  });
-              });
-          }else if(this.carData.imgs){
-              this.results.push(...this.carData.imgs);
-              this.carData['pictures']=JSON.stringify(this.results);
-              this.titleData.map((data,index)=>{
-                  this.carData.imgs.map((imgData,subIndex)=>{
-                      if(data.name == imgData.name){
-                          data.imgArray.push(imgData);
-                      }
-                  });
-              });
-          }
-
-        const dataSource = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
+        const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource:dataSource.cloneWithRows(this.titleData),
+            dataSource: dataSource.cloneWithRows(this.titleData),
         };
-      }
+    }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <View style={styles.rootContainer}>
                 <SuccessModal okClick={this._goToSource} ref={(modal) => {this.successModal = modal}}/>
                 <ListView
@@ -214,33 +120,34 @@ export default class NewCarUpImageScene extends BaseComponent{
                 <SelectPhotoModal ref="selectphotomodal"/>
             </View>)
     }
+
     renderSeparator(sectionId, rowId) {
         return (
             <View style={styles.Separator} key={sectionId + rowId}/>
         )
     }
 
-    renderFooter =()=>{
-        return(
+    renderFooter = () => {
+        return (
             <View style={styles.footContainer}>
                 <TouchableOpacity onPress={this.footBtnClick}>
                     <View style={styles.footView}>
-                        <Text allowFontScaling={false}  style={styles.footText}>申请上架</Text>
+                        <Text allowFontScaling={false} style={styles.footText}>申请上架</Text>
                     </View>
                 </TouchableOpacity>
             </View>
         )
     }
 
-    renderRow =(data)=>{
-        return(
+    renderRow = (data) => {
+        return (
             <CarUpImageCell
                 results={this.results}
                 retureSaveAction={()=>{
                     this.carData['pictures']=JSON.stringify(this.results);
 
                     if(this.carData.show_shop_id && !this.carData.id){
-                        StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));
+                        StorageUtil.mSetItem(String(this.carData.new_show_shop_id),JSON.stringify(this.carData));
                     }
                 }}
                 showModal={(value)=>{this.props.showModal(value)}}
@@ -253,71 +160,67 @@ export default class NewCarUpImageScene extends BaseComponent{
 
     _goToSource = () => {
 
-       let sourceParams = {
+        let sourceParams = {
             name: 'CarMySourceScene',
             component: CarMySourceScene,
             params: {
-                page:2,
+                page: 2,
             }
         };
         this.toNextPage(sourceParams);
     };
 
-    footBtnClick=()=>{
+    footBtnClick = () => {
 
         this.props.showModal(true);
         let errorTitle = '';
-        for(let i=0;i<this.titleData.length;i++)
-        {
+        for (let i = 0; i < this.titleData.length; i++) {
             let item = this.titleData[i];
-            if(item.explain=='1')
-            {
+            if (item.explain == '1') {
                 let isNull = true;
-                for(let j=0;j<this.results.length;j++)
-                {
-                    if(this.results[j].name == item.name)
-                    {
+                for (let j = 0; j < this.results.length; j++) {
+                    if (this.results[j].name == item.name) {
                         isNull = false;
                     }
                 }
-                if(isNull)
-                {
+                if (isNull) {
                     errorTitle = item.title;
                     break;
                 }
             }
         }
-        if(errorTitle!='')
-        {
+        if (errorTitle != '') {
             this.props.showModal(false);
-            this.props.showToast('请上传'+errorTitle+'图片');
+            this.props.showToast('请上传' + errorTitle + '图片');
 
-        }else {
+        } else {
 
-           this.publishCar();
+            this.publishCar();
 
         }
     }
 
-    publishCar=()=>{
+    publishCar = () => {
 
-        Net.request(AppUrls.CAR_SAVE,'post',this.carData).then((response) => {
+        Net.request(AppUrls.CAR_SAVE, 'post', this.carData).then((response) => {
 
             this.props.showModal(false);
 
-            if(response.mycode == 1 || response.mycode == 600010){
-                if(this.carData.show_shop_id){
-                    StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
+            if (response.mycode == 1 || response.mycode == 600010) {
+                if (this.carData.show_shop_id) {
+                    StorageUtil.mRemoveItem(String(this.carData.new_show_shop_id));
                 }
-                if(IS_ANDROID === true){
+                if (IS_ANDROID === true) {
                     this.successModal.openModal();
-                }else {
+                } else {
                     this.timer = setTimeout(
-                        () => { this.successModal.openModal(); },
+                        () => {
+                            this.successModal.openModal();
+                        },
                         500
                     );
                 }
-            }else {
+            } else {
                 this.showToast('网络连接失败');
 
             }
@@ -326,34 +229,38 @@ export default class NewCarUpImageScene extends BaseComponent{
 
             this.props.showModal(false);
 
-            if(error.mycode === -300 || error.mycode === -500){
+            if (error.mycode === -300 || error.mycode === -500) {
                 this.showToast('网络连接失败');
 
-            }else if(error.mycode == 600010){
-                if(this.carData.show_shop_id){
-                    StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
+            } else if (error.mycode == 600010) {
+                if (this.carData.show_shop_id) {
+                    StorageUtil.mRemoveItem(String(this.carData.new_show_shop_id));
                 }
-                if(IS_ANDROID === true){
+                if (IS_ANDROID === true) {
                     this.successModal.openModal();
-                }else {
+                } else {
                     this.timer = setTimeout(
-                        () => { this.successModal.openModal();},
+                        () => {
+                            this.successModal.openModal();
+                        },
                         500
                     );
                 }
             }
-            else{
+            else {
                 this.showToast(error.mjson.msg);
             }
         });
     }
 
-    showToast=(errorMsg)=>{
-        if(IS_ANDROID === true){
+    showToast = (errorMsg) => {
+        if (IS_ANDROID === true) {
             this.props.showToast(errorMsg);
-        }else {
+        } else {
             this.timer = setTimeout(
-                () => { this.props.showToast(errorMsg)},
+                () => {
+                    this.props.showToast(errorMsg)
+                },
                 500
             );
         }
@@ -361,33 +268,33 @@ export default class NewCarUpImageScene extends BaseComponent{
 }
 
 const styles = StyleSheet.create({
-    rootContainer:{
-        flex:1,
-        backgroundColor:fontAndColor.COLORA3,
-        paddingTop:Pixel.getTitlePixel(64),
+    rootContainer: {
+        flex: 1,
+        backgroundColor: fontAndColor.COLORA3,
+        paddingTop: Pixel.getTitlePixel(64),
     },
     Separator: {
         backgroundColor: fontAndColor.COLORA3,
         height: Pixel.getPixel(10),
 
-    }, footContainer:{
-        justifyContent:'center',
-        alignItems:'center',
-        marginTop:Pixel.getPixel(20),
-        marginBottom:Pixel.getPixel(20),
+    }, footContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: Pixel.getPixel(20),
+        marginBottom: Pixel.getPixel(20),
 
     },
-    footView:{
-        backgroundColor:fontAndColor.COLORB0,
-        height:Pixel.getPixel(44),
-        justifyContent:'center',
-        alignItems:'center',
-        width:sceneWidth-Pixel.getPixel(30),
-        borderRadius:Pixel.getPixel(3),
+    footView: {
+        backgroundColor: fontAndColor.COLORB0,
+        height: Pixel.getPixel(44),
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: sceneWidth - Pixel.getPixel(30),
+        borderRadius: Pixel.getPixel(3),
     },
-    footText:{
-        textAlign:'center',
-        color:'white',
-        fontSize:fontAndColor.BUTTONFONT30
+    footText: {
+        textAlign: 'center',
+        color: 'white',
+        fontSize: fontAndColor.BUTTONFONT30
     },
 });

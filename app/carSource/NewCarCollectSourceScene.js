@@ -160,13 +160,13 @@ export default class NewCarCollectSourceScene extends BaceComponent {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.rootContainer}>
-                <View style={{height:Pixel.getPixel(1) ,backgroundColor:fontAndColor.COLORA3}}></View>
+                {/*<View style={{height:Pixel.getPixel(1) ,backgroundColor:fontAndColor.COLORA3}}></View>*/}
                 {this.loadView()}
             </View>);
         }
         return (
             <View style={styles.rootContainer}>
-                <View style={{height:Pixel.getPixel(1) ,backgroundColor:fontAndColor.COLORA3}}></View>
+                {/*<View style={{height:Pixel.getPixel(1) ,backgroundColor:fontAndColor.COLORA3}}></View>*/}
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(30)}}
                           dataSource={this.state.carData}
                           removeClippedSubviews={false}

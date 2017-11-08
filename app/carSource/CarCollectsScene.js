@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react';
 import {
     StyleSheet,
@@ -57,15 +56,25 @@ export  default class CarCollectsScene extends BaseComponent {
                     renderTabBar={() => <RepaymenyTabBar tabName={['新车','二手车']}/>}
                 >
                     {/*新车*/}
-                    <NewCarCollectSourceScene ref="new" tabLabel="ios-paper0" showToast={(str)=>{this.props.showToast(str)}}
-                                              toNextPage = {(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}} transfer_type="all"/>
+                    <NewCarCollectSourceScene ref="new" tabLabel="ios-paper0"
+                                              showToast={(str)=>{this.props.showToast(str)}}
+                                              toNextPage={(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}}
+                                              transfer_type="all"/>
 
                     {/*二手车*/}
                     <OldCarCollectSourceScene ref="old" tabLabel="ios-paper1"
                                               showToast={(str)=>{this.props.showToast(str)}}
-                                              toNextPage = {(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}} transfer_type="3"/>
+                                              toNextPage={(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}}
+                                              transfer_type="3"/>
 
                 </ScrollableTabView>
+                <View style={{position: 'absolute',marginTop:Pixel.getPixel(54),flexDirection:'row'}}>
+                    <View style={{flex:1}}></View>
+                    <View
+                        style={{backgroundColor:fontAndColor.COLORA3,height:Pixel.getPixel(20),width:Pixel.getPixel(1)}}/>
+                    <View style={{flex:1}}></View>
+                </View>
+
                 <NavigationView
                     title="我的收藏"
                     backIconClick={this.backPage}
