@@ -104,9 +104,7 @@ export default class MyAccountItem extends BaseComponent {
                 case 0://未开户
                     this.navigatorParams.name = 'ZSAccountTypeSelectScene';
                     this.navigatorParams.component = ZSAccountTypeSelectScene;
-                    this.navigatorParams.params = {
-
-                    };
+                    this.navigatorParams.params = {};
                     break;
                 case 2: // 未激活
                     this.navigatorParams.name = 'WaitActivationAccountScene';
@@ -120,9 +118,7 @@ export default class MyAccountItem extends BaseComponent {
                 default:  //已开户
                     this.navigatorParams.name = 'ZheShangAccountScene';
                     this.navigatorParams.component = ZheShangAccountScene;
-                    this.navigatorParams.params = {
-
-                    };
+                    this.navigatorParams.params = {};
                     break;
             }
         }
@@ -220,59 +216,81 @@ export default class MyAccountItem extends BaseComponent {
                     style={{width: Pixel.getPixel(345), height: Pixel.getPixel(238)}}
                     source={back}>
                     <TouchableOpacity
+                        style={{
+                            //backgroundColor: '#ffdaff',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginTop: Pixel.getPixel(30),
+                            height: Pixel.getPixel(72),
+                        }}
                         onPress={() => {
                             this.jumpDetailPage(this.props.type);
                         }}
                         activeOpacity={0.9}>
                         <View style={{
-                            flexDirection: 'row',
                             marginLeft: Pixel.getPixel(20),
                             marginRight: Pixel.getPixel(20),
-                            marginTop: Pixel.getPixel(45),
-                            alignItems: 'center'
+                            //backgroundColor: '#ffdaff',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                         }}>
                             <Image source={bank}/>
                             <View style={{
                                 width: Pixel.getPixel(120),
-                                alignItems: 'flex-start',
+                                //alignItems: 'center',
                                 marginLeft: Pixel.getPixel(12),
-                                justifyContent: 'center',
+                                //justifyContent: 'center',
                                 backgroundColor: '#ffffff'
                             }}>
-                                <Text style={{
-                                    textAlign: 'left',
-                                    fontSize: Pixel.getPixel(15),
-                                    color: fontAndColor.COLORA0
-                                }}>{bankName}</Text>
-                                <Text style={{
-                                    marginTop: Pixel.getPixel(3),
-                                    textAlign: 'left',
-                                    fontSize: Pixel.getPixel(12),
-                                    color: fontAndColor.COLORA1
-                                }}>{this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********'}</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        includeFontPadding: false,
+                                        textAlign: 'left',
+                                        fontSize: Pixel.getPixel(15),
+                                        color: fontAndColor.COLORA0
+                                    }}>{bankName}</Text>
+                                <Text allowFontScaling={false}
+                                      numberOfLines={2}
+                                      style={{
+                                          includeFontPadding: false,
+                                          marginTop: Pixel.getPixel(3),
+                                          textAlign: 'left',
+                                          fontSize: Pixel.getPixel(12),
+                                          color: fontAndColor.COLORA1
+                                      }}>{this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********'}</Text>
                             </View>
                             {!this.state.data.status || this.state.data.status === 0 || this.state.data.status === 1 || this.state.data.status === 2 ?
-                                <Text style={{
-                                    flex: 1,
-                                    backgroundColor: '#ffffff',
-                                    marginRight: Pixel.getPixel(10),
-                                    textAlign: 'right',
-                                    fontSize: Pixel.getPixel(15),
-                                    color: fontAndColor.COLORB2
-                                }}>{accountState}</Text> :
-                                <View style={{
-                                    flex: 1,
-                                    alignItems: 'flex-end',
-                                    marginRight: Pixel.getPixel(10),
-                                    justifyContent: 'center',
-                                    backgroundColor: '#ffffff'
-                                }}>
-                                    <Text style={{
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        flex: 1,
+                                        backgroundColor: '#ffffff',
+                                        marginRight: Pixel.getPixel(10),
+                                        textAlign: 'right',
+                                        fontSize: Pixel.getPixel(15),
+                                        color: fontAndColor.COLORB2
+                                    }}>{accountState}</Text> :
+                                <View
+                                    allowFontScaling={false}
+                                    style={{
+                                        flex: 1,
+                                        alignItems: 'flex-end',
+                                        marginRight: Pixel.getPixel(10),
+                                        justifyContent: 'center',
+                                        backgroundColor: '#ffffff'
+                                    }}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
                                         textAlign: 'right',
                                         fontSize: Pixel.getPixel(15),
                                         color: fontAndColor.COLORA0
                                     }}>{this.state.data.balance}</Text>
-                                    <Text style={{
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
                                         marginTop: Pixel.getPixel(3),
                                         textAlign: 'right',
                                         fontSize: Pixel.getPixel(12),
@@ -288,9 +306,10 @@ export default class MyAccountItem extends BaseComponent {
                         height: Pixel.getPixel(1),
                         marginLeft: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(20),
-                        marginTop: Pixel.getPixel(12)
+                        //marginTop: Pixel.getPixel(12)
                     }}/>
                     <View style={{
+                        height: Pixel.getPixel(46),
                         marginTop: Pixel.getPixel(18),
                         alignItems: 'flex-start',
                         marginLeft: Pixel.getPixel(20),
@@ -298,36 +317,45 @@ export default class MyAccountItem extends BaseComponent {
                         justifyContent: 'center',
                         backgroundColor: 'transparent'
                     }}>
-                        <Text style={{
+                        <Text
+                            allowFontScaling={false}
+                            style={{
                             includeFontPadding: false,
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(12),
                             color: fontAndColor.COLORA1
                         }}>资金账号</Text>
-                        <Text style={{
+                        <Text
+                            allowFontScaling={false}
+                            style={{
                             includeFontPadding: false,
                             marginTop: Pixel.getPixel(3),
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(20),
                             color: fontAndColor.COLORA0
                         }}>{this.state.data.bank_card_no ? this.state.data.bank_card_no :
-                        '***** ***** ***** ***** *****'}</Text>
+                            '***** ***** ***** ***** *****'}</Text>
                     </View>
                     <View style={{
-                        marginTop: Pixel.getPixel(25),
+                        height: Pixel.getPixel(38),
+                        marginTop: Pixel.getPixel(18),
                         alignItems: 'flex-start',
                         marginLeft: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(20),
                         justifyContent: 'center',
                         backgroundColor: 'transparent'
                     }}>
-                        <Text style={{
+                        <Text
+                            allowFontScaling={false}
+                            style={{
                             includeFontPadding: false,
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(12),
                             color: fontAndColor.COLORA1
                         }}>开通时间</Text>
-                        <Text style={{
+                        <Text
+                            allowFontScaling={false}
+                            style={{
                             includeFontPadding: false,
                             marginTop: Pixel.getPixel(3),
                             textAlign: 'left',
