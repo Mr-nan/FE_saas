@@ -9,20 +9,23 @@ import {
     InteractionManager,
     KeyboardAvoidingView,
     TouchableOpacity,
+	NativeModules,
+
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
-import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
 import LoginInputText from "./component/LoginInputText";
 import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
 import ImagePicker from "react-native-image-picker";
+import MyButton from "../component/MyButton";
+
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import md5 from "react-native-md5";
 import LoginAndRegister from "./LoginAndRegister";
 import * as ImageUpload from "../utils/ImageUpload";
-import ImageSource from "../publish/component/ImageSource";
+import ImageSourceSample from "../publish/component/ImageSourceSample";
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
@@ -67,12 +70,17 @@ export default class Register extends BaseComponent {
         }
         this.id;
         this.timer = null;
+        this.cityCode;
+        this.cityDetail;
     }
 
     initFinish = () => {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
+	        //获取图形验证码
             this.Verifycode();
+	        //拿到当前位置的定位
+            this.getCurrentLocation();
         });
     }
 
@@ -98,9 +106,12 @@ export default class Register extends BaseComponent {
                 dismissKeyboard();
             }}>
                 <View style={styles.container}>
-                    <ImageSource galleryClick={this._galleryClick}
-                                 cameraClick={this._cameraClick}
-                                 ref={(modal) => {
+                    <ImageSourceSample
+                        sampleText = {"手持身份证件示例"}
+                        sampleImage = {require('./../../images/login/holdSample.png')}
+                        galleryClick={this._galleryClick}
+                        cameraClick={this._cameraClick}
+                        ref={(modal) => {
                                      this.imageSource = modal
                                  }}/>
 
@@ -194,103 +205,107 @@ export default class Register extends BaseComponent {
                             </View>
                             <View style={styles.inputTextLine}/>
                         </KeyboardAvoidingView>
-                        <TouchableWithoutFeedback onPress={() => dismissKeyboard()}>
-                            <View style={styles.imageButtonsStyle}>
-                                <Text allowFontScaling={false} 
-                                    style={{
-                                        flex: 1,
-                                        color: FontAndColor.COLORA1,
-                                        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
-                                    }}>添加身份证照片</Text>
-                                <View>
-                                    <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                              content={this.state.idcard === null ?
-                                                  require('../../images/login/idcard.png') : this.state.idcard
-                                              }
-                                              parentStyle={[styles.buttonStyle]}
-                                              childStyle={styles.imageButtonStyle}
-                                              mOnPress={this.selectPhotoTapped.bind(this, 'idcard')}/>
-                                    {this.state.idcard ?
-                                        <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                                  content={require('../../images/login/clear.png')}
-                                                  parentStyle={{
-                                                      position: 'absolute',
-                                                      marginTop: Pixel.getPixel(2),
-                                                      marginLeft: Pixel.getPixel(2),
-                                                  }}
-                                                  childStyle={styles.imageClearButtonStyle}
-                                                  mOnPress={() => {
-                                                      this.setState({
-                                                          idcard: null
-                                                      });
-                                                  }}/>
-                                        : null}
-                                </View>
+                        {/*<TouchableWithoutFeedback onPress={() => dismissKeyboard()}>*/}
+                            {/*<View style={styles.imageButtonsStyle}>*/}
+                                {/*<Text allowFontScaling={false} */}
+                                    {/*style={{*/}
+                                        {/*flex: 1,*/}
+                                        {/*color: FontAndColor.COLORA1,*/}
+                                        {/*fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)*/}
+                                    {/*}}>添加身份证照片</Text>*/}
+                                {/*<View>*/}
+                                    {/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
+                                              {/*content={this.state.idcard === null ?*/}
+                                                  {/*require('../../images/login/idcard.png') : this.state.idcard*/}
+                                              {/*}*/}
+                                              {/*parentStyle={[styles.buttonStyle]}*/}
+                                              {/*childStyle={styles.imageButtonStyle}*/}
+                                              {/*mOnPress={this.selectPhotoTapped.bind(this, 'idcard')}/>*/}
+                                    {/*{this.state.idcard ?*/}
+                                        {/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
+                                                  {/*content={require('../../images/login/clear.png')}*/}
+                                                  {/*parentStyle={{*/}
+                                                      {/*position: 'absolute',*/}
+                                                      {/*marginTop: Pixel.getPixel(2),*/}
+                                                      {/*marginLeft: Pixel.getPixel(2),*/}
+                                                  {/*}}*/}
+                                                  {/*childStyle={styles.imageClearButtonStyle}*/}
+                                                  {/*mOnPress={() => {*/}
+                                                      {/*this.setState({*/}
+                                                          {/*idcard: null*/}
+                                                      {/*});*/}
+                                                  {/*}}/>*/}
+                                        {/*: null}*/}
+                                {/*</View>*/}
 
-                                <View>
-                                    <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                              content={this.state.idcardBack === null ?
-                                                  require('../../images/login/idcard_back.png') : this.state.idcardBack
-                                              }
-                                              parentStyle={styles.buttonStyle}
-                                              childStyle={styles.imageButtonStyle}
-                                              mOnPress={this.selectPhotoTapped.bind(this, 'idcardBack')}/>
-                                    {this.state.idcardBack ?
-                                        <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                                  content={require('../../images/login/clear.png')}
-                                                  parentStyle={{
-                                                      position: 'absolute',
-                                                      marginTop: Pixel.getPixel(2),
-                                                      marginLeft: Pixel.getPixel(2),
-                                                  }}
-                                                  childStyle={styles.imageClearButtonStyle}
-                                                  mOnPress={() => {
-                                                      this.setState({
-                                                          idcardBack: null
-                                                      });
-                                                  }}/>
-                                        : null}
+                                {/*<View>*/}
+                                    {/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
+                                              {/*content={this.state.idcardBack === null ?*/}
+                                                  {/*require('../../images/login/idcard_back.png') : this.state.idcardBack*/}
+                                              {/*}*/}
+                                              {/*parentStyle={styles.buttonStyle}*/}
+                                              {/*childStyle={styles.imageButtonStyle}*/}
+                                              {/*mOnPress={this.selectPhotoTapped.bind(this, 'idcardBack')}/>*/}
+                                    {/*{this.state.idcardBack ?*/}
+                                        {/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
+                                                  {/*content={require('../../images/login/clear.png')}*/}
+                                                  {/*parentStyle={{*/}
+                                                      {/*position: 'absolute',*/}
+                                                      {/*marginTop: Pixel.getPixel(2),*/}
+                                                      {/*marginLeft: Pixel.getPixel(2),*/}
+                                                  {/*}}*/}
+                                                  {/*childStyle={styles.imageClearButtonStyle}*/}
+                                                  {/*mOnPress={() => {*/}
+                                                      {/*this.setState({*/}
+                                                          {/*idcardBack: null*/}
+                                                      {/*});*/}
+                                                  {/*}}/>*/}
+                                        {/*: null}*/}
 
-                                </View>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <View style={styles.inputTextLine}/>
-                        <TouchableWithoutFeedback onPress={() => dismissKeyboard() }>
-                            <View style={styles.imageButtonsStyle}>
+                                {/*</View>*/}
+                            {/*</View>*/}
+                        {/*</TouchableWithoutFeedback>*/}
 
-                                <Text allowFontScaling={false}  style={{
-                                    flex: 1,
-                                    color: FontAndColor.COLORA1,
-                                    fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
-                                }}>添加营业执照</Text>
-                                <View>
-                                    <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                              content={this.state.businessLicense === null ?
-                                                  require('../../images/login/idcard.png') : this.state.businessLicense
-                                              }
-                                              parentStyle={styles.buttonStyle}
-                                              childStyle={styles.imageButtonStyle}
-                                              mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
-                                    {this.state.businessLicense ?
-                                        <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                                  content={require('../../images/login/clear.png')}
-                                                  parentStyle={{
-                                                      position: 'absolute',
-                                                      marginTop: Pixel.getPixel(2),
-                                                      marginLeft: Pixel.getPixel(2),
-                                                  }}
-                                                  childStyle={styles.imageClearButtonStyle}
-                                                  mOnPress={() => {
-                                                      this.setState({
-                                                          businessLicense: null
-                                                      });
-                                                  }}/>
-                                        : null}
 
-                                </View>
-                            </View>
-                        </TouchableWithoutFeedback>
+                        {/*<View style={styles.inputTextLine}/>*/}
+                        {/*<TouchableWithoutFeedback onPress={() => dismissKeyboard() }>*/}
+                            {/*<View style={styles.imageButtonsStyle}>*/}
+
+                                {/*<Text allowFontScaling={false}  style={{*/}
+                                    {/*flex: 1,*/}
+                                    {/*color: FontAndColor.COLORA1,*/}
+                                    {/*fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)*/}
+                                {/*}}>添加营业执照</Text>*/}
+                                {/*<View>*/}
+                                    {/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
+                                              {/*content={this.state.businessLicense === null ?*/}
+                                                  {/*require('../../images/login/idcard.png') : this.state.businessLicense*/}
+                                              {/*}*/}
+                                              {/*parentStyle={styles.buttonStyle}*/}
+                                              {/*childStyle={styles.imageButtonStyle}*/}
+                                              {/*mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>*/}
+                                    {/*{this.state.businessLicense ?*/}
+                                        {/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
+                                                  {/*content={require('../../images/login/clear.png')}*/}
+                                                  {/*parentStyle={{*/}
+                                                      {/*position: 'absolute',*/}
+                                                      {/*marginTop: Pixel.getPixel(2),*/}
+                                                      {/*marginLeft: Pixel.getPixel(2),*/}
+                                                  {/*}}*/}
+                                                  {/*childStyle={styles.imageClearButtonStyle}*/}
+                                                  {/*mOnPress={() => {*/}
+                                                      {/*this.setState({*/}
+                                                          {/*businessLicense: null*/}
+                                                      {/*});*/}
+                                                  {/*}}/>*/}
+                                        {/*: null}*/}
+
+                                {/*</View>*/}
+                            {/*</View>*/}
+                        {/*</TouchableWithoutFeedback>*/}
                         <View style={styles.imagebuttonok}>
+
+
                             {/*<ConfirmButton imageButton={(value)=>{*/}
                             {/*confirm = value;*/}
                             {/*}} textButton={()=>{*/}
@@ -320,6 +335,7 @@ export default class Register extends BaseComponent {
     }
 
     register = () => {
+
         let userName = this.refs.userName.getInputTextValue();
         let smsCode = this.refs.smsCode.getInputTextValue();
         let password = this.refs.password.getInputTextValue();
@@ -353,7 +369,8 @@ export default class Register extends BaseComponent {
          this.props.showToast("身份证反面不能为空");
          } else if (typeof(businessid) == "undefined" || businessid == "") {
          this.props.showToast("营业执照不能为空");
-         } */ else {
+         } */
+        else {
             let device_code = '';
             if (Platform.OS === 'android') {
                 device_code = 'dycd_platform_android';
@@ -403,14 +420,6 @@ export default class Register extends BaseComponent {
     }
 
 
-    _labelPress = () => {
-        this.imageSource.openModal();
-    };
-
-    _rePhoto = () => {
-        this.imageSource.openModal();
-    };
-
     exitPage = (mProps) => {
         const navigator = this.props.navigator;
         if (navigator) {
@@ -453,7 +462,21 @@ export default class Register extends BaseComponent {
                 }
             });
     }
+	//拿到当前位置的定位
+	getCurrentLocation = () =>{
 
+		NativeModules.Location.Location().then((vl) => {
+			console.log(vl.address);
+
+			this.cityCode = vl.cityCode;
+			this.cityDetail = vl.address;
+			console.log(this.cityDetail);
+
+		}, (error) => {
+			console.log("没有获取到定位");
+
+		});
+	}
     //获取短信验证码
     sendSms = () => {
         let userName = this.refs.userName.getInputTextValue();
@@ -510,100 +533,117 @@ export default class Register extends BaseComponent {
         }
     }
 
-    selectPhotoTapped(id) {
-        if (Platform.OS === 'android') {
-            this.id = id;
-            this._rePhoto();
-        } else {
-            ImagePicker.showImagePicker(options, (response) => {
-                if (response.didCancel) {
-                } else if (response.error) {
-                } else if (response.customButton) {
-                } else {
-                    this.uploadImage(response, id);
-                }
-            });
-        }
-    }
+    // 弹出modal  选择相册或者相机
+	// _labelPress = () => {
+	//
+	// 	this.imageSource.openModal('','12345',require('./../../images/login/holdSample.png'));
+	// };
+	//弹出modal  选择相册或者相机
+	// _rePhoto = () => {
+	//
+	// 	this.imageSource.openModal('','12345',require('./../../images/login/holdSample.png'));
+	// };
 
 
-    _cameraClick = () => {
-        ImagePicker.launchCamera(options, (response) => {
-            if (response.didCancel) {
-            } else if (response.error) {
-            } else if (response.customButton) {
-            } else {
-                this.uploadImage(response, this.id);
-            }
-        });
-    }
+    //点击加号框 事件
+	// selectPhotoTapped(id) {
+	 //    this.id = id;
+	 //    this._rePhoto();
+    //     // if (Platform.OS === 'android') {
+    //     //     this.id = id;
+    //     //     this._rePhoto();
+    //     // } else {
+    //     //     // ImagePicker.showImagePicker(options, (response) => {
+    //     //     //     if (response.didCancel) {
+    //     //     //     } else if (response.error) {
+    //     //     //     } else if (response.customButton) {
+    //     //     //     } else {
+    //     //     //         this.uploadImage(response, id);
+    //     //     //     }
+    //     //     // });
+	 //     //
+    //     // }
+    // }
 
-    _galleryClick = () => {
-        ImagePicker.launchImageLibrary(options, (response) => {
-            if (response.didCancel) {
-            } else if (response.error) {
-            } else if (response.customButton) {
-            } else {
-                this.uploadImage(response, this.id);
-            }
-        });
-    }
+    //相机点击事件
+    // _cameraClick = () => {
+    //     ImagePicker.launchCamera(options, (response) => {
+    //         if (response.didCancel) {
+    //         } else if (response.error) {
+    //         } else if (response.customButton) {
+    //         } else {
+    //             this.uploadImage(response, this.id);
+    //         }
+    //     });
+    // }
+    //相册点击事件
+    // _galleryClick = () => {
+    //     ImagePicker.launchImageLibrary(options, (response) => {
+    //         if (response.didCancel) {
+    //         } else if (response.error) {
+    //         } else if (response.customButton) {
+    //         } else {
+    //             this.uploadImage(response, this.id);
+    //         }
+    //     });
+    // }
 
-    uploadImage = (response, id) => {
-        let params = {
-            base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
-        };
-        // this.props.showModal(true);
-        this.setState({
-            loading: true,
-        });
-        ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
-            .then((response) => {
-                // this.props.showModal(false);
-                this.setState({
-                    loading: false,
-                });
-                if (response.mycode == 1) {
-                    let source = {uri: response.mjson.data.url};
-                    if (id === 'idcard') {
-                        idcardf = response.mjson.data.file_id;
-                        if (idcardf != "") {
-                            this.setState({
-                                idcard: source
-                            });
-                        } else {
-                            this.props.showToast("id 为空 图片上传失败");
-                        }
-                    } else if (id === 'idcardBack') {
-                        idcardback = response.mjson.data.file_id;
-                        if (idcardback != "") {
-                            this.setState({
-                                idcardBack: source
-                            });
-                        } else {
-                            this.props.showToast("id 为空 图片上传失败");
-                        }
-                    } else if (id === 'businessLicense') {
-                        businessid = response.mjson.data.file_id;
-                        if (businessid != "") {
-                            this.setState({
-                                businessLicense: source
-                            });
-                        } else {
-                            this.props.showToast("id 为空 图片上传失败");
-                        }
-                    }
-                } else {
-                    this.props.showToast(response.mjson.msg + "!");
-                }
-            }, (error) => {
-                // this.props.showModal(false);
-                this.setState({
-                    loading: false,
-                });
-                this.props.showToast("图片上传失败");
-            });
-    }
+    //上传图片
+    // uploadImage = (response, id) => {
+    //     let params = {
+    //         base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
+    //     };
+    //     // this.props.showModal(true);
+    //     this.setState({
+    //         loading: true,
+    //     });
+    //     ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
+    //         .then((response) => {
+    //             // this.props.showModal(false);
+    //             this.setState({
+    //                 loading: false,
+    //             });
+    //             if (response.mycode == 1) {
+    //                 let source = {uri: response.mjson.data.url};
+    //                 if (id === 'idcard') {
+    //                     idcardf = response.mjson.data.file_id;
+    //                     if (idcardf != "") {
+    //                         this.setState({
+    //                             idcard: source
+    //                         });
+    //                     } else {
+    //                         this.props.showToast("id 为空 图片上传失败");
+    //                     }
+    //                 } else if (id === 'idcardBack') {
+    //                     idcardback = response.mjson.data.file_id;
+    //                     if (idcardback != "") {
+    //                         this.setState({
+    //                             idcardBack: source
+    //                         });
+    //                     } else {
+    //                         this.props.showToast("id 为空 图片上传失败");
+    //                     }
+    //                 } else if (id === 'businessLicense') {
+    //                     businessid = response.mjson.data.file_id;
+    //                     if (businessid != "") {
+    //                         this.setState({
+    //                             businessLicense: source
+    //                         });
+    //                     } else {
+    //                         this.props.showToast("id 为空 图片上传失败");
+    //                     }
+    //                 }
+    //             } else {
+    //                 this.props.showToast(response.mjson.msg + "!");
+    //             }
+    //         }, (error) => {
+    //             // this.props.showModal(false);
+    //             this.setState({
+    //                 loading: false,
+    //             });
+    //             this.props.showToast("图片上传失败");
+    //         });
+    // }
 
 }
 

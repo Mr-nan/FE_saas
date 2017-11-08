@@ -1,6 +1,5 @@
 import  React, {Component, PropTypes} from  'react'
 import  {
-
     View,
     Text,
     ListView,
@@ -45,6 +44,8 @@ import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
 import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
 import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
 import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
+import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
+import PersonCertificate from "../mine/certificateManage/PersonCertificate";
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
@@ -61,20 +62,20 @@ let Car = [];
  **/
 const {width, height} = Dimensions.get('window');
 const options = {
-    //弹出框选项
-    title: '请选择',
-    cancelButtonTitle: '取消',
-    takePhotoButtonTitle: '拍照',
-    chooseFromLibraryButtonTitle: '选择相册',
-    allowsEditing: true,
-    noData: false,
-    quality: 1.0,
-    maxWidth: 480,
-    maxHeight: 800,
-    storageOptions: {
-        skipBackup: true,
-        path: 'images',
-    }
+	//弹出框选项
+	title: '请选择',
+	cancelButtonTitle: '取消',
+	takePhotoButtonTitle: '拍照',
+	chooseFromLibraryButtonTitle: '选择相册',
+	allowsEditing: true,
+	noData: false,
+	quality: 1.0,
+	maxWidth: 480,
+	maxHeight: 800,
+	storageOptions: {
+		skipBackup: true,
+		path: 'images',
+	}
 }
 import BaseComponent from '../component/BaseComponent';
 
@@ -108,6 +109,12 @@ export default class MineScene extends BaseComponent {
         lastType = '-1';
         haveOrder = 0;
         componyname = '';
+
+        this.renzhengData = {
+            RenZhengVisiable: true,//是否显示认证条目 true 显示
+            enterpriseRenZheng: true,//企业是否认证 true已经认证
+            personRenZheng: false,//个人是否认证    false 未认证
+        };
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -440,14 +447,14 @@ export default class MineScene extends BaseComponent {
                              ref={(modal) => {
                                  this.imageSource = modal
                              }}/>
-                <ListView
-                    removeClippedSubviews={false}
-                    contentContainerStyle={styles.listStyle}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                    renderSectionHeader={this._renderSectionHeader}
-                    renderHeader={this._renderHeader}
-                    refreshControl={
+				<ListView
+					removeClippedSubviews={false}
+					contentContainerStyle={styles.listStyle}
+					dataSource={this.state.source}
+					renderRow={this._renderRow}
+					renderSectionHeader={this._renderSectionHeader}
+					renderHeader={this._renderHeader}
+					refreshControl={
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
                             onRefresh={this.refreshingData}
@@ -622,174 +629,254 @@ export default class MineScene extends BaseComponent {
                     this._navigator(rowData)
                 }}>
 
-                    <Image source={rowData.icon} style={styles.rowLeftImage}/>
+					<Image source={rowData.icon} style={styles.rowLeftImage}/>
 
-                    <Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
-                    {rowData.id == 15 ? <Text allowFontScaling={false} style={{ marginRight: Pixel.getPixel(15),
+					<Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
+					{rowData.id == 15 ? <Text allowFontScaling={false} style={{ marginRight: Pixel.getPixel(15),
                         backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
                             Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>{showName}</Text> :
-                        <View/>}
-                    {rowData.name == '我的订单' && haveOrder != 0 ?
-                        <View style={{
+						<View/>}
+					{rowData.name == '我的订单' && haveOrder != 0 ?
+						<View style={{
                             marginRight: Pixel.getPixel(15),
                             width: Pixel.getPixel(10),
                             height: Pixel.getPixel(10),
                             backgroundColor: fontAndClolr.COLORB2,
                             borderRadius: 10
                         }}
-                        /> : <View/>}
+						/> : <View/>}
 
 
-                    <Image source={cellJianTou} style={styles.rowjiantouImage}/>
+					<Image source={cellJianTou} style={styles.rowjiantouImage}/>
 
 
-                </TouchableOpacity>
-            );
-        }
+				</TouchableOpacity>
+			);
+		}
 
-    }
+	}
 
-    componentDidUpdate() {
-        if (this.state.renderPlaceholderOnly == 'success') {
-            if (firstType != lastType) {
-                if (lastType != '3') {
-                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                        if (data.code == 1) {
-                            let datas = JSON.parse(data.result);
-                            GetPermission.getMineList((mineList) => {
-                                for (let i = 0; i < mineList.length; i++) {
-                                    if (mineList[i].id == 15) {
-                                        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
-                                            if (datac.code == 1) {
-                                                let datasc = JSON.parse(datac.result);
-                                                let maps = {
-                                                    enter_base_ids: datasc.company_base_id,
-                                                    child_type: '1'
-                                                };
-                                                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                                                    .then((response) => {
-                                                            haveOrder = response.mjson.data.order.tradeing_count;
-                                                            lastType = response.mjson.data.account.status;
-                                                            if (lastType == '0') {
-                                                                this.refs.accountmodal.changeShowType(true,
-                                                                    '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                                                    '请尽快开通！', '去开户', '看看再说', () => {
-                                                                        this.toPage();
-                                                                    });
-                                                            } else if (lastType == '1') {
-                                                                this.refs.accountmodal.changeShowType(true,
-                                                                    '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                                                    , '去绑卡', '看看再说', () => {
-                                                                        this.toPage();
-                                                                    });
-                                                            } else if (lastType == '2') {
-                                                                this.refs.accountmodal.changeShowType(true,
-                                                                    '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                                                    , '去激活', '看看再说', () => {
-                                                                        this.toPage();
-                                                                    });
-                                                            }
-                                                            firstType = lastType;
-                                                        },
-                                                        (error) => {
+	componentDidUpdate() {
+		if (this.state.renderPlaceholderOnly == 'success') {
+			if (firstType != lastType) {
+				if (lastType != '3') {
+					StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+						if (data.code == 1) {
+							let datas = JSON.parse(data.result);
+							GetPermission.getMineList((mineList) => {
+								for (let i = 0; i < mineList.length; i++) {
+									if (mineList[i].id == 15) {
+										StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
+											if (datac.code == 1) {
+												let datasc = JSON.parse(datac.result);
+												let maps = {
+													enter_base_ids: datasc.company_base_id,
+													child_type: '1'
+												};
+												request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+													.then((response) => {
+															haveOrder = response.mjson.data.order.tradeing_count;
+															lastType = response.mjson.data.account.status;
+															if (lastType == '0') {
+																this.refs.accountmodal.changeShowType(true,
+																	'您还未开通资金账户，为方便您使用金融产品及购物车，' +
+																	'请尽快开通！', '去开户', '看看再说', () => {
+																		this.toPage();
+																	});
+															} else if (lastType == '1') {
+																this.refs.accountmodal.changeShowType(true,
+																	'您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+																	, '去绑卡', '看看再说', () => {
+																		this.toPage();
+																	});
+															} else if (lastType == '2') {
+																this.refs.accountmodal.changeShowType(true,
+																	'您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+																	, '去激活', '看看再说', () => {
+																		this.toPage();
+																	});
+															}
+															firstType = lastType;
+														},
+														(error) => {
 
-                                                        });
-                                            }
-                                        });
-                                    }
-                                }
-                            });
+														});
+											}
+										});
+									}
+								}
+							});
 
-                        }
-                    });
-                }
-            }
-        }
-    }
+						}
+					});
+				}
+			}
+		}
+	}
 
-    // 每一组对应的数据
-    _renderSectionHeader(sectionData, sectionId) {
-        return (
-            <View style={styles.sectionView}>
-            </View>
-        );
-    }
 
-    _renderHeader = () => {
-        return (
-            <View style={styles.headerViewStyle}>
-                <TouchableOpacity style={[styles.headerImageStyle]}>
-                    <Image
-                        source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
-                        style={{
+	// 每一组对应的数据
+	_renderSectionHeader(sectionData, sectionId) {
+		return (
+			<View style={styles.sectionView}>
+			</View>
+		);
+	}
+
+	_renderHeader = () => {
+		return (
+			<View style={{width:width}}>
+				<View style={styles.headerViewStyle}>
+					<TouchableOpacity style={[styles.headerImageStyle]}>
+						<Image
+							source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
+							style={{
                             width: Pixel.getPixel(65),
                             height: Pixel.getPixel(65), resizeMode: 'stretch'
                         }}
-                    />
-                </TouchableOpacity>
-                <Text allowFontScaling={false} style={styles.headerNameStyle}>
-                    {this.state.name}
-                </Text>
-                <Text allowFontScaling={false} style={styles.headerPhoneStyle}>
-                    {componyname}
-                </Text>
-            </View>
-        )
-    }
+						/>
+					</TouchableOpacity>
+					<Text allowFontScaling={false} style={styles.headerNameStyle}>
+						{this.state.name}
+					</Text>
+					<Text allowFontScaling={false} style={styles.headerPhoneStyle}>
+						{componyname}
+					</Text>
 
-    selectPhotoTapped = () => {
-        if (Platform.OS == 'android') {
-            this._rePhoto();
-        } else {
-            ImagePicker.showImagePicker(options, (response) => {
-                if (response.didCancel) {
-                } else if (response.error) {
-                } else if (response.customButton) {
-                } else {
-                    let source = {uri: response.uri};
-                    this.setState({
-                        headUrl: source,
-                    });
-                }
-            });
-        }
-    }
+				</View>
+				{this.renzhengData.RenZhengVisiable != true ? null : <View
+						style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
 
-    _labelPress = () => {
-        this.imageSource.openModal();
-    };
+						<TouchableOpacity onPress={() => {
+							if(this.renzhengData.enterpriseRenZheng){
 
-    _rePhoto = () => {
-        this.imageSource.openModal();
-    };
+							}else {
+								this._qiyerenzheng();
+							}
+                            }} activeOpacity={0.8}
+						                  style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+							<Image
+								source={this.renzhengData.enterpriseRenZheng  ? require('../../images/login/qiyeyirenzheng.png') : require('../../images/login/qiyeweirenzheng.png')}
+								style={{
+                            width: Pixel.getPixel(27),
+                            height: Pixel.getPixel(20),
+                            resizeMode: 'stretch',
+                            marginLeft:Pixel.getPixel(37)
+                        }}
+							/>
+							<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
 
-    _cameraClick = () => {
-        ImagePicker.launchCamera(options, (response) => {
-            if (response.didCancel) {
-            } else if (response.error) {
-            } else if (response.customButton) {
-            } else {
-                let source = {uri: response.uri};
-                this.setState({
-                    headUrl: source,
-                });
-            }
-        });
-    }
+								<Text allowFontScaling={false}
+								      style={this.renzhengData.enterpriseRenZheng  ? {color:'black'} : {color:'gray'}}>
+									{this.renzhengData.enterpriseRenZheng ? '(已认证)' : '(未认证)' }
 
-    _galleryClick = () => {
-        ImagePicker.launchImageLibrary(options, (response) => {
-            if (response.didCancel) {
-            } else if (response.error) {
-            } else if (response.customButton) {
-            } else {
-                let source = {uri: response.uri};
-                this.setState({
-                    headUrl: source,
-                });
-            }
-        });
-    }
+								</Text>
+							</Text>
+
+						</TouchableOpacity>
+
+						<Image source={require('../../images/login/xuxian.png')}
+						       style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
+
+						<TouchableOpacity onPress={() => {
+							if(this.renzhengData.personRenZheng){
+
+							}else {
+                                this._gerenrenzheng();
+							}
+                            }} activeOpacity={0.8}
+						                  style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+							<Image
+								source={this.renzhengData.personRenZheng  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
+								style={{
+                            width: Pixel.getPixel(27),
+                            height: Pixel.getPixel(20),
+                            resizeMode: 'stretch',
+                            marginLeft:Pixel.getPixel(37)
+                        }}
+							/>
+							<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
+
+								<Text allowFontScaling={false}
+								      style={this.renzhengData.personRenZheng  ? {color:'black'} : {color:'gray'}}>
+									{this.renzhengData.personRenZheng ? '(已认证)' : '(未认证)' }
+
+								</Text>
+							</Text>
+						</TouchableOpacity>
+
+					</View>}
+
+
+			</View>
+		)
+	}
+
+	selectPhotoTapped = () => {
+		if (Platform.OS == 'android') {
+			this._rePhoto();
+		} else {
+			ImagePicker.showImagePicker(options, (response) => {
+				if (response.didCancel) {
+				} else if (response.error) {
+				} else if (response.customButton) {
+				} else {
+					let source = {uri: response.uri};
+					this.setState({
+						headUrl: source,
+					});
+				}
+			});
+		}
+	}
+	_qiyerenzheng = () => {
+		this.navigatorParams.name = 'EnterpriseCertificate'
+		this.navigatorParams.component = EnterpriseCertificate
+		this.navigatorParams.params.callBack = this.allRefresh
+		this.props.callBack(this.navigatorParams);
+	};
+	_gerenrenzheng = () => {
+		this.navigatorParams.name = 'PersonCertificate'
+		this.navigatorParams.component = PersonCertificate
+		this.navigatorParams.params.callBack = this.allRefresh
+		this.props.callBack(this.navigatorParams);
+	};
+
+	_labelPress = () => {
+		this.imageSource.openModal();
+	};
+
+	_rePhoto = () => {
+		this.imageSource.openModal();
+	};
+
+	_cameraClick = () => {
+		ImagePicker.launchCamera(options, (response) => {
+			if (response.didCancel) {
+			} else if (response.error) {
+			} else if (response.customButton) {
+			} else {
+				let source = {uri: response.uri};
+				this.setState({
+					headUrl: source,
+				});
+			}
+		});
+	}
+
+	_galleryClick = () => {
+		ImagePicker.launchImageLibrary(options, (response) => {
+			if (response.didCancel) {
+			} else if (response.error) {
+			} else if (response.customButton) {
+			} else {
+				let source = {uri: response.uri};
+				this.setState({
+					headUrl: source,
+				});
+			}
+		});
+	}
 
 }
 
@@ -797,76 +884,75 @@ export default class MineScene extends BaseComponent {
 const styles = StyleSheet.create({
 
 
-    headerViewStyle: {
+	headerViewStyle: {
 
-        height: Pixel.getPixel(210),
-        width: width,
-        backgroundColor: fontAndClolr.COLORB0,
-        alignItems: 'center',
+		height: Pixel.getPixel(190),
+		width: width,
+		backgroundColor: fontAndClolr.COLORB0,
+		alignItems: 'center',
 
-    },
-    headerImageStyle: {
+	},
+	headerImageStyle: {
 
-        width: Pixel.getPixel(65),
-        height: Pixel.getPixel(65),
-        marginTop: Pixel.getPixel(55),
-        justifyContent: 'center',
-        alignItems: 'center',
+		width: Pixel.getPixel(65),
+		height: Pixel.getPixel(65),
+		marginTop: Pixel.getPixel(45),
+		justifyContent: 'center',
+		alignItems: 'center',
 
-    },
-    headerNameStyle: {
+	},
+	headerNameStyle: {
 
-        color: 'white',
-        fontSize: Pixel.getFontPixel(15),
-        marginTop: Pixel.getPixel(15),
-        marginBottom: Pixel.getPixel(10),
-        fontWeight: 'bold'
-    },
-    headerPhoneStyle: {
-        color: 'white',
-        fontSize: Pixel.getFontPixel(12)
-    },
-    container: {
+		color: 'white',
+		fontSize: Pixel.getFontPixel(15),
+		marginTop: Pixel.getPixel(10),
+		marginBottom: Pixel.getPixel(10),
+		fontWeight: 'bold'
+	},
+	headerPhoneStyle: {
+		color: 'white',
+		fontSize: Pixel.getFontPixel(12),
+	},
+	container: {
 
-        flex: 1,
-        marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
-        backgroundColor: fontAndClolr.COLORA3,
-    },
-    listStyle: {},
-    sectionView: {
-        height: Pixel.getPixel(10),
-        backgroundColor: fontAndClolr.COLORA3,
-        justifyContent: "center"
-    },
-    sectionTitle: {
-        marginLeft: 16,
-    },
-    rowView: {
-        height: 44,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        borderBottomColor: fontAndClolr.COLORA4,
-        borderBottomWidth: 1
-    },
-    rowLeftImage: {
-        width: Pixel.getPixel(26),
-        height: Pixel.getPixel(26),
-        marginLeft: Pixel.getPixel(15),
-    },
-    rowjiantouImage: {
-        width: Pixel.getPixel(15),
-        height: Pixel.getPixel(15),
-        marginRight: Pixel.getPixel(15),
+		flex: 1,
+		marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
+		backgroundColor: fontAndClolr.COLORA3,
+	},
+	listStyle: {},
+	sectionView: {
+		height: Pixel.getPixel(10),
+		backgroundColor: fontAndClolr.COLORA3,
+		justifyContent: "center"
+	},
+	sectionTitle: {
+		marginLeft: 16,
+	},
+	rowView: {
+		height: 44,
+		flexDirection: 'row',
+		alignItems: 'center',
+		backgroundColor: 'white',
+		borderBottomColor: fontAndClolr.COLORA4,
+		borderBottomWidth: 1
+	},
+	rowLeftImage: {
+		width: Pixel.getPixel(26),
+		height: Pixel.getPixel(26),
+		marginLeft: Pixel.getPixel(15),
+	},
+	rowjiantouImage: {
+		width: Pixel.getPixel(15),
+		height: Pixel.getPixel(15),
+		marginRight: Pixel.getPixel(15),
 
-    },
-    rowTitle: {
-        flex: 1,
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
-        marginLeft: Pixel.getPixel(20),
-        color: '#000',
+	},
+	rowTitle: {
+		flex: 1,
+		fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
+		marginLeft: Pixel.getPixel(20),
+		color: '#000',
 
-    }
-
+	}
 
 });

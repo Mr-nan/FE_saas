@@ -10,6 +10,7 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 // export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
+
 /**
  * 测试地址2
  */
@@ -19,7 +20,7 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 /**
  * 正式地址
  */
- // export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -198,62 +199,62 @@ export const CAR_SASS_PUBLISH = BASEURL + 'cheshang/sass/publish';
 /**
  * 创建收车管理列表
  */
-export const CAR_SASS_SELECT_LIST= BASEURL + 'cheshang/sass/selectList';
+export const CAR_SASS_SELECT_LIST = BASEURL + 'cheshang/sass/selectList';
 
 /**
  * 收车任务详情
  */
-export const CAR_SASS_SELECT_MSG= BASEURL + 'cheshang/sass/selectMsg';
+export const CAR_SASS_SELECT_MSG = BASEURL + 'cheshang/sass/selectMsg';
 
 /**
  * 整备车辆任务列表
  */
-export const CAR_CHESHANG_TASKS= BASEURL + 'cheshang/sass/tasks';
+export const CAR_CHESHANG_TASKS = BASEURL + 'cheshang/sass/tasks';
 
 /**
  * 创建整备任务
  */
-export const CAR_CHESHANG_PUBLISHTASK= BASEURL + 'cheshang/sass/publishTask';
+export const CAR_CHESHANG_PUBLISHTASK = BASEURL + 'cheshang/sass/publishTask';
 
 /**
  * saas-发布车辆
  */
-export const CAR_CHESHANG_PUBLISHCAR= BASEURL + 'cheshang/sass/publishCar';
+export const CAR_CHESHANG_PUBLISHCAR = BASEURL + 'cheshang/sass/publishCar';
 
 /**
  * 查看整备任务
  */
-export const CAR_CHESHANG_TASKINFO= BASEURL + 'cheshang/sass/taskInfo';
+export const CAR_CHESHANG_TASKINFO = BASEURL + 'cheshang/sass/taskInfo';
 
 /**
  * 整备任务 - 评估师提交任务
  */
-export const CAR_CHESHANG_PGS_EDIT_TASK= BASEURL + 'cheshang/sass/pgsEditTask';
+export const CAR_CHESHANG_PGS_EDIT_TASK = BASEURL + 'cheshang/sass/pgsEditTask';
 
 /**
  * 整备任务 - 整备员提交任务
  */
-export const CAR_CHESHANG_ZBY_EDIT_TASK= BASEURL + 'cheshang/sass/zbyEditTask';
+export const CAR_CHESHANG_ZBY_EDIT_TASK = BASEURL + 'cheshang/sass/zbyEditTask';
 
 /**
  * 整备任务 - 经理提交任务
  */
-export const CAR_CHESHANG_MANAGER_EDIT_TASK= BASEURL + 'cheshang/sass/managerEditTask';
+export const CAR_CHESHANG_MANAGER_EDIT_TASK = BASEURL + 'cheshang/sass/managerEditTask';
 
 /**
  * 整备任务 - 运营专员交任务
  */
-export const CAR_CHESHANG_YYZY_EDIT_TASK= BASEURL + 'cheshang/sass/updateTaskByyyzy';
+export const CAR_CHESHANG_YYZY_EDIT_TASK = BASEURL + 'cheshang/sass/updateTaskByyyzy';
 
 /**
  * 获取销售员
  */
-export const CAR_CHESHANG_GET_ALLCHILD= BASEURL + 'cheshang/sass_php/subAccountGetAllChild';
+export const CAR_CHESHANG_GET_ALLCHILD = BASEURL + 'cheshang/sass_php/subAccountGetAllChild';
 
 /**
  * 分享成功回调
  */
-export const CAR_CHESHANG_SHARE_MOMENT_COUNT= BASEURL + 'cheshang/sass/shareMomentCount';
+export const CAR_CHESHANG_SHARE_MOMENT_COUNT = BASEURL + 'cheshang/sass/shareMomentCount';
 
 /**
  * 获取登记人信息
@@ -971,6 +972,19 @@ export const LOGIN = BASEURL + V + "auth/login";// auth/login
  user_name        用户姓名【必填】            string
  */
 export const REGISTER = BASEURL + V + "auth/register";//  auth/register
+
+
+/**
+ * 添加个人认证申请
+ */
+export const PERSONCERTIFICATE = BASEURL + V + "user.identity/applyAuthUserInfo";//添加个人认证申请
+
+
+/**
+ *
+ * 添加企业认证申请
+ */
+export const ENTERPRISECERTIFICATE = BASEURL + V + "user.identity/applyEnterpriseInfo";//添加企业认证申请
 
 /**
  * 设置密码
