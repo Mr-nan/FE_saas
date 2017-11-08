@@ -11,7 +11,8 @@ import  {
     NativeModules,
     BackAndroid,
     InteractionManager,
-    RefreshControl
+    RefreshControl,
+    Linking
 } from  'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
@@ -39,6 +40,7 @@ import ImageSource from '../publish/component/ImageSource';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
+import AuthenticationModal from '../component/AuthenticationModal';
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
 import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
 import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
@@ -110,7 +112,38 @@ export default class MineScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
         };
+
+         this.authenOptions = {
+            '1':[true,'请先完成认证后再进行操作','取消','','个人认证',()=>{}],
+            '2':[true,'请先完成认证后再进行操作','取消','','企业认证',()=>{}],
+            '3':[true,'认证未通过请重新认证，您可以重新认证或联系客服','取消','联系客服','个人认证',()=>{},this.callAciton],
+            '4':[true,'认证未通过请重新认证，您可以重新认证或联系客服','取消','联系客服','企业认证',()=>{},this.callAciton],
+            '5':[true,'您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。','取消','','个人认证已提交',()=>{}],
+            '6':[true,'您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。','取消','','企业认证已提交',()=>{}],
+            '7':[true,'需创建此账号的主账号通过个人认证后进行操作','取消','','',()=>{}],
+            '8':[true,'需创建此账号的主账号通过个人认证后进行操作','取消','','',()=>{}],
+        };
     }
+
+    //联系客服
+    callAciton = ()=>{
+        request(Urls.GET_CUSTOM_SERVICE, 'Post', {})
+            .then((response) => {
+                    if (response.mjson.code == 1) {
+                        if (Platform.OS === 'android') {
+                            NativeModules.VinScan.callPhone(response.mjson.data.phone);
+                        } else {
+                            Linking.openURL('tel:' + response.mjson.data.phone);
+                        }
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                },
+                (error) => {
+                    this.props.showToast(error.msg);
+                });
+    };
+
 
     initFinish = () => {
         this.getData();
@@ -424,6 +457,7 @@ export default class MineScene extends BaseComponent {
                     }
                 />
                 <AccountModal ref="accountmodal"/>
+                <AuthenticationModal ref="authenmodal"/>
             </View>
         )
     }
@@ -492,6 +526,31 @@ export default class MineScene extends BaseComponent {
     }
 
     _navigator(rowData) {
+        //先判断认证状态
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enterprise_id: datas.company_base_id,
+                    function_id: rowData.id,
+                    type:'app'
+                };
+                request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                    if(response.mjson.data.auth == 0){
+                        this._navigatorPage(rowData);
+                    }else{
+                        this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth+'']);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.msg);
+                });
+            } else {
+                this.props.showToast('获取企业信息失败');
+            }
+        });
+    }
+
+    _navigatorPage = (rowData)=>{
         switch (rowData.id) {
             case 15:
                 this.toPage();
@@ -539,8 +598,9 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.component = Setting
                 break;
         }
+
         this.props.callBack(this.navigatorParams);
-    }
+    };
 
     // 每一行中的数据
     _renderRow = (rowData) => {
@@ -646,7 +706,6 @@ export default class MineScene extends BaseComponent {
             }
         }
     }
-
 
     // 每一组对应的数据
     _renderSectionHeader(sectionData, sectionId) {

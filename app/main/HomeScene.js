@@ -15,6 +15,7 @@ import  {
     InteractionManager,
     RefreshControl,
     BackAndroid,
+    Linking,
     NativeModules
 } from  'react-native'
 
@@ -29,7 +30,6 @@ import  ViewPagers from './component/ViewPager'
  **/
 const {width, height} = Dimensions.get('window');
 import BaseComponet from '../component/BaseComponent';
-import * as Urls from '../constant/appUrls';
 import {request} from '../utils/RequestUtil';
 import CarInfoScene from '../carSource/CarInfoScene';
 import  StorageUtil from '../utils/StorageUtil';
@@ -40,6 +40,10 @@ import HomeJobItem from './component/HomeJobItem';
 import HomeRowButton from './component/HomeRowButton';
 import HomeAdvertisementButton from './component/HomeAdvertisementButton';
 import MessageListScene from "../message/MessageListScene";
+import * as Urls from '../constant/appUrls';
+import AuthenticationModal from '../component/AuthenticationModal';
+let Platform = require('Platform');
+
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
@@ -58,6 +62,62 @@ export default class HomeScene extends BaseComponet {
             headSource: [],
             pageData: []
         };
+        this.authenOptions = {
+            '1':[true,'请先完成认证后再进行操作','取消','','个人认证',()=>{}],
+            '2':[true,'请先完成认证后再进行操作','取消','','企业认证',()=>{}],
+            '3':[true,'认证未通过请重新认证，您可以重新认证或联系客服','取消','联系客服','个人认证',()=>{},this.callAciton],
+            '4':[true,'认证未通过请重新认证，您可以重新认证或联系客服','取消','联系客服','企业认证',()=>{},this.callAciton],
+            '5':[true,'您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。','取消','','个人认证已提交',()=>{}],
+            '6':[true,'您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。','取消','','企业认证已提交',()=>{}],
+            '7':[true,'需创建此账号的主账号通过个人认证后进行操作','取消','','',()=>{}],
+            '8':[true,'需创建此账号的主账号通过个人认证后进行操作','取消','','',()=>{}],
+        };
+
+    }
+
+    //联系客服
+    callAciton = ()=>{
+        request(Urls.GET_CUSTOM_SERVICE, 'Post', {})
+            .then((response) => {
+                    if (response.mjson.code == 1) {
+                        if (Platform.OS === 'android') {
+                            NativeModules.VinScan.callPhone(response.mjson.data.phone);
+                        } else {
+                            Linking.openURL('tel:' + response.mjson.data.phone);
+                        }
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                },
+                (error) => {
+                    this.props.showToast(error.msg);
+                });
+    };
+
+    //认证功能验证
+    _checkAuthen = (params)=>{
+        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enterprise_id: datas.company_base_id,
+                    function_id: params.id,
+                    type:'app'
+                };
+                request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                    this.orderListData = response.mjson.data.items;
+                    if(response.mjson.data.auth == 0){
+                        this.props.callBack(params);
+                    }else{
+                        this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth+'']);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.msg);
+                });
+            } else {
+                this.props.showToast('获取企业信息失败');
+            }
+        });
     }
 
     _renderHeader = () => {
@@ -109,7 +169,7 @@ export default class HomeScene extends BaseComponet {
                 </View>
 
                 <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}
-                             callBack={(params)=>{this.props.callBack(params)}}/>
+                             callBack={(params)=>{this._checkAuthen(params)}}/>
                 <HomeRowButton onPress={(id)=>{
                     this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});
                 }} list={this.carData}/>
@@ -357,7 +417,7 @@ export default class HomeScene extends BaseComponet {
                     }
                     onEndReached={this.toEnd}
                 />
-
+                <AuthenticationModal ref="authenmodal"/>
 
             </View>
         )

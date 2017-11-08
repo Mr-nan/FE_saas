@@ -22,6 +22,13 @@ import NavigationView from '../component/AllNavigationView';
 import GetPermissionUtil from '../utils/GetPermissionUtil';
 const GetPermission = new GetPermissionUtil();
 import WorkBenchItem from './component/WorkBenchItem';
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
+import {request} from '../utils/RequestUtil';
+import * as Urls from '../constant/appUrls';
+import AuthenticationModal from '../component/AuthenticationModal';
+let Platform = require('Platform');
+
 export default class NonCreditScene extends BaseComponent {
 
     constructor(props) {
@@ -31,7 +38,37 @@ export default class NonCreditScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             source: [],
         };
+
+        this.authenOptions = {
+            '1':[true,'请先完成认证后再进行操作','取消','','个人认证',()=>{}],
+            '2':[true,'请先完成认证后再进行操作','取消','','企业认证',()=>{}],
+            '3':[true,'认证未通过请重新认证，您可以重新认证或联系客服','取消','联系客服','个人认证',()=>{},this.callAciton],
+            '4':[true,'认证未通过请重新认证，您可以重新认证或联系客服','取消','联系客服','企业认证',()=>{},this.callAciton],
+            '5':[true,'您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。','取消','','个人认证已提交',()=>{}],
+            '6':[true,'您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。','取消','','企业认证已提交',()=>{}],
+            '7':[true,'需创建此账号的主账号通过个人认证后进行操作','取消','','',()=>{}],
+            '8':[true,'需创建此账号的主账号通过个人认证后进行操作','取消','','',()=>{}],
+        };
     }
+
+    //联系客服
+    callAciton = ()=>{
+        request(Urls.GET_CUSTOM_SERVICE, 'Post', {})
+            .then((response) => {
+                    if (response.mjson.code == 1) {
+                        if (Platform.OS === 'android') {
+                            NativeModules.VinScan.callPhone(response.mjson.data.phone);
+                        } else {
+                            Linking.openURL('tel:' + response.mjson.data.phone);
+                        }
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                },
+                (error) => {
+                    this.props.showToast(error.msg);
+                });
+    };
 
     handleBack = () => {
         NativeModules.VinScan.goBack();
@@ -74,14 +111,40 @@ export default class NonCreditScene extends BaseComponent {
                 <NavigationView
                     title="工作台"
                 />
+                <AuthenticationModal ref="authenmodal"/>
             </View>
         );
     }
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <WorkBenchItem items={movie} callBack={(params)=>{this.props.callBack(params);}}/>
+            <WorkBenchItem items={movie} callBack={(params)=>{this._checkAuthen(params)}}/>
         )
+    }
+
+    //认证功能验证
+    _checkAuthen = (params)=>{
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enterprise_id: datas.company_base_id,
+                    function_id: params.id,
+                    type:'app'
+                };
+                request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                    if(response.mjson.data.auth == 0){
+                        this.props.callBack(params);
+                    }else{
+                        this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth+'']);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.msg);
+                });
+            } else {
+                this.props.showToast('获取企业信息失败');
+            }
+        });
     }
 
     _renderSeparator(sectionId, rowId) {

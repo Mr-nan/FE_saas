@@ -1,13 +1,13 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
 
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -140,10 +140,10 @@ export const CAR_GET_RESIDUALS = BASEURL + V + 'che/residuals';
  */
 export const CAR_ORDER_SAVE = BASEURL + V + 'order/save';
 
-// /**
-//  * 获取客服电话号码
-//  */
-// export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
+/**
+ * 获取客服电话号码
+ */
+export const GET_CUSTOM_SERVICE = BASEURL + V + '/index/getCustomService';
 
 /**
  * 获取客服电话号码-商户号码
@@ -1218,3 +1218,7 @@ export const UPDATE_CAR_WELFARE = BASEURL + "cheshang/tenure_customer/updateCarW
  */
 export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySearch";
 
+/**
+ * 获取功能认证信息
+ */
+export const USER_IDENTITY_GET_INFO = BASEURL + V + "user.identity/getInfo";
