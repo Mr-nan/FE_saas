@@ -38,7 +38,6 @@ export default class NameAndIdScene extends BaseComponent {
     constructor(props) {
         super(props);
         type = this.props.type;
-        type = 1;
         this.state = {
             renderPlaceholderOnly: true,
         }

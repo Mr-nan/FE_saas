@@ -69,9 +69,10 @@ export  default class ZSAccountTypeSelectScene extends BaseComponent {
                     onPress={() => {
                         this.toNextPage({ // TODO 替换成浙商页面
                             name: 'NameAndIdScene', component: NameAndIdScene, params: {
+                                type :2,
                                 callBack: () => {
                                     this.props.callBack();
-                                }, title: '开通个人账户', buttonText: '确认开通'
+                                }
                             }
                         })
                     }}
@@ -107,11 +108,11 @@ export  default class ZSAccountTypeSelectScene extends BaseComponent {
                 <TouchableOpacity
                     onPress={() => {
                         this.toNextPage({  // TODO 替换成浙商页面
-                            name: 'NameInformationScene',
-                            component: NameInformationScene, params: {
+                            name: 'NameAndIdScene', component: NameAndIdScene, params: {
+                                type :1,
                                 callBack: () => {
                                     this.props.callBack();
-                                }, title: '开通企业账户', buttonText: '确认开通'
+                                }
                             }
                         })
                     }}
