@@ -1222,6 +1222,7 @@ export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySear
  */
 export const IS_IN_WHITE_LIST = BASEURL + "v1/account.cz_bank/isInWhiteList";
 
+
 /**
  *    from @dignyonggang
  *
@@ -1253,3 +1254,9 @@ export const ZS_PARSE_BANK = BASEURL + "v1/account.cz_bank/getBankNoByBankCard";
  *   查询城市
  */
 export const ZS_GET_CITY = BASEURL + "v1/bankRoute.query/findCity";
+
+/**
+ *  查询是否开启浙商银行可见
+ */
+export const ZS_BANK_IS_SHOW = BASEURL + "v1/account.cz_bank/zsBankIsShow";
+

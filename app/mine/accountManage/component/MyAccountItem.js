@@ -48,6 +48,12 @@ export default class MyAccountItem extends BaseComponent {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            data: nextProps.data
+        });
+    }
+
     /**
      *   跳转页面分发
      *   type 0恒丰 1浙商
@@ -166,7 +172,11 @@ export default class MyAccountItem extends BaseComponent {
                     request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                         .then((response) => {
                             this.props.showModal(false);
+
                             this.pageDispense(type, 0);
+
+                            //this.pageDispense(type, response.mjson.data.account.status);
+
                             this.toNextPage(this.navigatorParams);
                         }, (error) => {
                             this.props.showModal(false);
@@ -197,7 +207,7 @@ export default class MyAccountItem extends BaseComponent {
             bank = require('../../../../images/account/zheshangbank.png');
             bankName = '浙商银行';
         }
-        if (this.state.data.status === 0) {
+        if (this.state.data.status === 0 || !this.state.data.status) {
             accountState = '未开户';
         } else if (this.state.data.status === 1) {
             accountState = '未绑卡';
@@ -241,7 +251,7 @@ export default class MyAccountItem extends BaseComponent {
                                     color: fontAndColor.COLORA1
                                 }}>{this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********'}</Text>
                             </View>
-                            {this.state.data.status === 0 || this.state.data.status === 1 || this.state.data.status === 2 ?
+                            {!this.state.data.status || this.state.data.status === 0 || this.state.data.status === 1 || this.state.data.status === 2 ?
                                 <Text style={{
                                     flex: 1,
                                     backgroundColor: '#ffffff',
