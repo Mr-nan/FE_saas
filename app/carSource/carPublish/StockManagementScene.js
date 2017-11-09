@@ -74,7 +74,7 @@ export default class StockManagementScene extends BaseComponent {
                     tailView: () => {
                         return (
                             <View style={{flexDirection:'row', alignItems:'center'}}>
-                                <TextInput style={styles.textInput}
+                                <TextInput style={[styles.textInput,{width:Pixel.getPixel(150)}]}
                                            ref={(input) => {this.vinInput = input}}
                                            placeholder='请输入车架号'
                                            underlineColorAndroid='transparent'
@@ -108,7 +108,7 @@ export default class StockManagementScene extends BaseComponent {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                                 <TextInput
-                                    style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
+                                    style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(220),height:Pixel.getPixel(50)}]}
                                     placeholder='请输入 '
                                     maxLength={50}
                                     underlineColorAndroid='transparent'
@@ -163,13 +163,13 @@ export default class StockManagementScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                            <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
+                            <Text allowFontScaling={false} style={styles.textInputTitle}>万元 </Text>
                         </View>)
                 }
             }],
             [
                 {
-                    type:'2',
+                    type: '2',
                     name: 'left_anterior',
                     title: '车架号图',
                     subTitle: '',
@@ -180,7 +180,7 @@ export default class StockManagementScene extends BaseComponent {
             ],
             [
                 {
-                    type:'2',
+                    type: '2',
                     name: 'left_anterior',
                     title: '手续图',
                     subTitle: '中规车请上传合格证照片，非中规车请上传关单、商检单、一次性证书正反面',
@@ -712,14 +712,14 @@ const styles = StyleSheet.create({
     textInput: {
         height: Pixel.getPixel(30),
         borderColor: fontAndColor.COLORA0,
-        width: Pixel.getPixel(170),
+        width: Pixel.getPixel(100),
         textAlign: 'right',
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         paddingTop: 0,
         paddingBottom: 0,
         paddingLeft: 0,
         paddingRight: 0,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
     scanImage: {
         height: Pixel.getPixel(18),
