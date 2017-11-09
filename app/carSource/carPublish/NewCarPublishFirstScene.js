@@ -93,7 +93,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.is_cargo_str = '有现车';
-        this.carData = {'is_cargo_str': this.is_cargo_str};
+        this.carData = {'is_cargo_str': this.is_cargo_str,'is_cargo':'1'};
         this.titleData1 = [
             [{
                 title: '车型',
@@ -128,7 +128,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 isShowTail: true,
                 selectDict: {
                     current: this.is_cargo_str,
-                    data: [{title: '有现车', value: 1}, {title: '无现车', value: 2}]
+                    data: [{title: '有现车', value: 1}, {title: '无现车', value: 0}]
                 },
             }, {
                 title: '在售车辆数',//xxxxxxxxxx
@@ -597,9 +597,9 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     }
 
     setCarData = () => {
-        this.refs.cellSelectView.setCurrentChecked(this.carData.is_cargo_str ? this.carData.is_cargo_str : this.is_cargo);
+        this.refs.cellSelectView.setCurrentChecked(this.carData.is_cargo_str ? this.carData.is_cargo_str : this.is_cargo_str);
         if (!this.carData.is_cargo_str) {
-            this.carData['is_cargo_str'] = this.is_cargo;
+            this.carData['is_cargo_str'] = this.is_cargo_str;
             this.carData['is_cargo'] = "1";
         }
 
