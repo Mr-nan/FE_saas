@@ -42,9 +42,9 @@ import CarDealInfoScene from "./CarDealInfoScene";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import CarNewInfoScene from "./CarNewInfoScene";
+import CarNumberScene from "./CarNumberScene";
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
-var ScreenHeight = Dimensions.get('window').height
 ;
 var shareClass = NativeModules.ZNShareClass;
 let Platform = require('Platform');
@@ -78,7 +78,7 @@ export default class CarMySourceScene extends BaceComponent {
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page?this.props.page:0}
                     locked={true}
-                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售车源("+this.state.shelves_count+")", "已售车源("+this.state.sold_count+')', "未上架车源("+this.state.no_shelves_count+')']}/>}>
+                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架("+this.state.shelves_count+")", "已下架("+this.state.no_shelves_count+')', "审核中("+this.state.pre_count+')']}/>}>
                     <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"  carPriceEditClick={this.carPriceEditClick}/>
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
                     <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
@@ -88,7 +88,7 @@ export default class CarMySourceScene extends BaceComponent {
                 </TouchableOpacity>
                 <LendSuccessAlert ref="showTitleAlert" title={'退回原因'} subtitle={''} confimTitle="关闭"/>
                 {
-                    this.state.isShowManageView && <ManageView offClick={()=>{this.setState({isShowManageView:false})}} manageBtnClick={this.manageViewBtnClick}/>
+                    this.state.isShowManageView && <ManageView offClick={()=>{this.setState({isShowManageView:false})}} manageBtnClick={this.manageViewBtnClick} carData={this.carData}/>
                 }
                 {
                     this.state.isShowCarSharedView && <CarSharedView offClick={()=>{this.setState({isShowCarSharedView:false})}} carSharedBtnClick={this.carSharedBtnClick} isShowMore={this.carData.img!=''?true:false}/>
@@ -110,7 +110,7 @@ export default class CarMySourceScene extends BaceComponent {
             isShowCarSharedView:false,
             renderPlaceholderOnly:'blank',
             shelves_count:0,
-            sold_count:0,
+            pre_count:0,
             no_shelves_count:0,
             isShowEditcarPrice:false,
 
@@ -137,7 +137,7 @@ export default class CarMySourceScene extends BaceComponent {
             this.setState({
                 renderPlaceholderOnly: 'success',
                 shelves_count:data.shelves_count,
-                sold_count:data.sold_count,
+                pre_count:data.pre_count,
                 no_shelves_count:data.no_shelves_count,
             });
             action && action();
@@ -305,6 +305,17 @@ export default class CarMySourceScene extends BaceComponent {
                 '是否需要删除该车', '确定', '取消', () => {
                     this.carDelete(this.carData.id);
                 });
+        }else if(type == '库存管理'){
+            let navigatorParams = {
+
+                name: "CarNumberScene",
+                component: CarNumberScene,
+                params: {
+
+                    defaultType: 0,
+                }
+            };
+            this.props.toNextPage(navigatorParams);
         }
     }
 
@@ -418,16 +429,6 @@ export default class CarMySourceScene extends BaceComponent {
      */
     pushNewCarScene = () => {
 
-        // let navigatorParams = {
-        //
-        //     name: "NewCarScene",
-        //     component: NewCarScene,
-        //     params: {
-        //
-        //         fromNew: false,
-        //     }
-        // };
-        // this.toNextPage(navigatorParams);
         let navigatorParams = {
 
             name: "CarPublishFirstScene",
@@ -1046,7 +1047,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
         let url = AppUrls.CAR_USER_CAR;
         carDropFramePage += 1;
         request(url, 'post', {
-            car_status: '4',
+            car_status: '2',
             page: carDropFramePage,
             row: 10,
 
@@ -1182,7 +1183,7 @@ class MyCarSourceAuditView extends BaceComponent {
         carAuditPage = 1;
         request(url, 'post', {
 
-            car_status: '5',
+            car_status: '3',
             page: carAuditPage,
             row: 10,
 
@@ -1223,7 +1224,7 @@ class MyCarSourceAuditView extends BaceComponent {
         let url = AppUrls.CAR_USER_CAR;
         carAuditPage += 1;
         request(url, 'post', {
-            car_status: '5',
+            car_status: '3',
             page: carAuditPage,
             row: 10,
 
@@ -1364,42 +1365,48 @@ class ManageView extends  Component {
                             </View>
                             <Text allowFontScaling={false}  style={styles.sharedText}>编辑</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.sharedItemView} onPress={() => {
-                            this.btnClick('已售');
-                        }}>
-                            <View style={styles.sharedImageBack}>
-                                <Image source={require('../../images/carSourceImages/carYiShou.png')}/>
-                            </View>
-                            <Text allowFontScaling={false}  style={styles.sharedText}>已售</Text>
-                        </TouchableOpacity>
                         {/*<TouchableOpacity style={styles.sharedItemView} onPress={() => {*/}
-                        {/*this.btnClick('删除');*/}
+                            {/*this.btnClick('已售');*/}
                         {/*}}>*/}
-                        {/*<View style={styles.sharedImageBack}>*/}
-                        {/*<Image source={require('../../images/carSourceImages/carShanChu.png')}/>*/}
-                        {/*</View>*/}
-                        {/*<Text allowFontScaling={false}  style={styles.sharedText}>删除</Text>*/}
+                            {/*<View style={styles.sharedImageBack}>*/}
+                                {/*<Image source={require('../../images/carSourceImages/carYiShou.png')}/>*/}
+                            {/*</View>*/}
+                            {/*<Text allowFontScaling={false}  style={styles.sharedText}>已售</Text>*/}
                         {/*</TouchableOpacity>*/}
-                    </View>
-                    <View style={{width:ScreenWidth,height:Pixel.getPixel(1),backgroundColor:fontAndColor.COLORA3}}/>
-                    <View style={{flexDirection: 'row',paddingVertical:Pixel.getPixel(15)}}>
                         <TouchableOpacity style={styles.sharedItemView} onPress={() => {
-                            this.btnClick('刷新排名');
+                        this.btnClick('库存管理');
                         }}>
-                            <View style={styles.sharedImageBack}>
-                                <Image source={require('../../images/carSourceImages/carRefresh.png')}/>
-                            </View>
-                            <Text allowFontScaling={false}  style={styles.sharedText}>刷新排名</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.sharedItemView} onPress={() => {
-                            this.btnClick('分享');
-                        }}>
-                            <View style={styles.sharedImageBack}>
-                                <Image source={require('../../images/carSourceImages/carShared.png')}/>
-                            </View>
-                            <Text allowFontScaling={false}  style={styles.sharedText}>分享</Text>
+                        <View style={styles.sharedImageBack}>
+                        <Image source={require('../../images/carSourceImages/carNumberIcon.png')}/>
+                        </View>
+                        <Text allowFontScaling={false}  style={styles.sharedText}>库存管理</Text>
                         </TouchableOpacity>
                     </View>
+                    {
+                        this.props.carData.status ==2 && (
+                            <View style={{justifyContent:'center',alignItems:'center'}}>
+                                <View style={{width:ScreenWidth,height:Pixel.getPixel(1),backgroundColor:fontAndColor.COLORA3}}/>
+                                <View style={{flexDirection: 'row',paddingVertical:Pixel.getPixel(15)}}>
+                                    <TouchableOpacity style={styles.sharedItemView} onPress={() => {
+                                        this.btnClick('刷新排名');
+                                    }}>
+                                        <View style={styles.sharedImageBack}>
+                                            <Image source={require('../../images/carSourceImages/carRefresh.png')}/>
+                                        </View>
+                                        <Text allowFontScaling={false}  style={styles.sharedText}>刷新排名</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.sharedItemView} onPress={() => {
+                                        this.btnClick('分享');
+                                    }}>
+                                        <View style={styles.sharedImageBack}>
+                                            <Image source={require('../../images/carSourceImages/carShared.png')}/>
+                                        </View>
+                                        <Text allowFontScaling={false}  style={styles.sharedText}>分享</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>)
+                    }
+
                     <View  style={{justifyContent:'center',alignItems:'center',borderTopWidth:Pixel.getPixel(1),borderTopColor:fontAndColor.COLORA3,height:Pixel.getPixel(44),
                         width:ScreenWidth
                     }}>
@@ -1490,93 +1497,93 @@ class EditCarPriceView extends Component {
 
     render(){
 
-        this.renderAndroid();
+        return(
+            <View style={styles.editCarPriceContainer}>
+                <Modal animationType={'fade'} visible={this.state.modalOpen} transparent={true}>
+                    <TouchableOpacity style={{flex:1, backgroundColor:'rgba(0, 0, 0,0.3)'}} onPress={this.props.hiddeClick} activeOpacity={1}/>
+                    <KeyboardAvoidingView behavior={'position'}>
+                        <View>
+                            <View style={{backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(15)}}>
+                                <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(10),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4}}>
+                                    <Image style={{width:Pixel.getPixel(72),height:Pixel.getPixel(48),marginRight:Pixel.getPixel(5)}}
+                                           source={ this.props.carData.img?{uri:this.props.carData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../images/carSourceImages/car_null_img.png')}/>
+                                    <View style={{justifyContent:'flex-end'}}>
+                                        <Text>目前数量:10</Text>
+                                        <Text>目前价格:10万元</Text>
+                                    </View>
+                                </View>
+                                <View style={{height:Pixel.getPixel(44),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4,
+                                    alignItems:'center',justifyContent:'space-between',flexDirection:'row'
+                                }}>
+                                    <Text>修改在售车辆数</Text>
+                                    <TextInput defaultValue={10} style={styles.textInput}
+                                               keyboardType={'numeric'}
+                                               maxLength={7}
+                                               autoFocus={true}/>
+                                </View>
+                                <View style={{height:Pixel.getPixel(44), alignItems:'center',justifyContent:'space-between',
+                                    flexDirection:'row'
+                                }}>
+                                    <Text>修改销售价</Text>
+                                    <TextInput defaultValue={10} style={styles.textInput}
+                                               keyboardType={'number-pad'}
+                                               maxLength={7}/>
+                                </View>
+                            </View>
+                            <TouchableOpacity style={{backgroundColor:fontAndColor.COLORB0,height:Pixel.getPixel(44),justifyContent:'center',
+                                alignItems:'center',
+                            }} onPress={this.props.hiddeClick}>
+                                <Text style={{color:'white'}}>确认</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </KeyboardAvoidingView>
+                </Modal>
+            </View>)
     }
 
     renderIOS=()=>{
-        return(
-            <View style={styles.editCarPriceContainer}>
-            <Modal animationType={'fade'} visible={this.state.modalOpen} transparent={true}>
-                <TouchableOpacity style={{flex:1, backgroundColor:'rgba(0, 0, 0,0.3)'}} onPress={this.props.hiddeClick} activeOpacity={1}/>
-                <KeyboardAvoidingView behavior={'position'}>
-                    <View>
-                        <View style={{backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(15)}}>
-                            <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(10),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4}}>
-                                <Image style={{width:Pixel.getPixel(72),height:Pixel.getPixel(48),marginRight:Pixel.getPixel(5)}}
-                                       source={ this.props.carData.img?{uri:this.props.carData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../images/carSourceImages/car_null_img.png')}/>
-                                <View style={{justifyContent:'flex-end'}}>
-                                    <Text>目前数量:10</Text>
-                                    <Text>目前价格:10万元</Text>
-                                </View>
-                            </View>
-                            <View style={{height:Pixel.getPixel(44),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4,
-                                alignItems:'center',justifyContent:'space-between',flexDirection:'row'
-                            }}>
-                                <Text>修改在售车辆数</Text>
-                                <TextInput defaultValue={10} style={styles.textInput}
-                                           keyboardType={'numeric'}
-                                           maxLength={7}
-                                           autoFocus={true}/>
-                            </View>
-                            <View style={{height:Pixel.getPixel(44), alignItems:'center',justifyContent:'space-between',
-                                flexDirection:'row'
-                            }}>
-                                <Text>修改销售价</Text>
-                                <TextInput defaultValue={10} style={styles.textInput}
-                                           keyboardType={'number-pad'}
-                                           maxLength={7}/>
-                            </View>
-                        </View>
-                        <TouchableOpacity style={{backgroundColor:fontAndColor.COLORB0,height:Pixel.getPixel(44),justifyContent:'center',
-                            alignItems:'center',
-                        }} onPress={this.props.hiddeClick}>
-                            <Text style={{color:'white'}}>确认</Text>
-                        </TouchableOpacity>
-                    </View>
-                </KeyboardAvoidingView>
-            </Modal>
-        </View>)
+
     }
 
     renderAndroid=()=>{
         return(
             <View style={styles.editCarPriceContainer}>
                 <TouchableOpacity style={{flex:1, backgroundColor:'rgba(0, 0, 0,0.3)'}} onPress={this.props.hiddeClick} activeOpacity={1}/>
-                    <View>
-                        <View style={{backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(15)}}>
-                            <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(10),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4}}>
-                                <Image style={{width:Pixel.getPixel(72),height:Pixel.getPixel(48),marginRight:Pixel.getPixel(5)}}
-                                       source={ this.props.carData.img?{uri:this.props.carData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../images/carSourceImages/car_null_img.png')}/>
-                                <View style={{justifyContent:'flex-end'}}>
-                                    <Text>目前数量:10</Text>
-                                    <Text>目前价格:10万元</Text>
-                                </View>
-                            </View>
-                            <View style={{height:Pixel.getPixel(44),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4,
-                                alignItems:'center',justifyContent:'space-between',flexDirection:'row'
-                            }}>
-                                <Text>修改在售车辆数</Text>
-                                <TextInput defaultValue={10} style={styles.textInput}
-                                           keyboardType={'numeric'}
-                                           maxLength={7}
-                                           autoFocus={true}/>
-                            </View>
-                            <View style={{height:Pixel.getPixel(44), alignItems:'center',justifyContent:'space-between',
-                                flexDirection:'row'
-                            }}>
-                                <Text>修改销售价</Text>
-                                <TextInput defaultValue={10} style={styles.textInput}
-                                           keyboardType={'number-pad'}
-                                           maxLength={7}/>
+                <View>
+                    <View style={{backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(15)}}>
+                        <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(10),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4}}>
+                            <Image style={{width:Pixel.getPixel(72),height:Pixel.getPixel(48),marginRight:Pixel.getPixel(5)}}
+                                   source={ this.props.carData.img?{uri:this.props.carData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../images/carSourceImages/car_null_img.png')}/>
+                            <View style={{justifyContent:'flex-end'}}>
+                                <Text>目前数量:10</Text>
+                                <Text>目前价格:10万元</Text>
                             </View>
                         </View>
-                        <TouchableOpacity style={{backgroundColor:fontAndColor.COLORB0,height:Pixel.getPixel(44),justifyContent:'center',
-                            alignItems:'center',
-                        }} onPress={this.props.hiddeClick}>
-                            <Text style={{color:'white'}}>确认</Text>
-                        </TouchableOpacity>
+                        <View style={{height:Pixel.getPixel(44),borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA4,
+                            alignItems:'center',justifyContent:'space-between',flexDirection:'row'
+                        }}>
+                            <Text>修改在售车辆数</Text>
+                            <TextInput defaultValue={10} style={styles.textInput}
+                                       keyboardType={'numeric'}
+                                       maxLength={7}
+                                       autoFocus={true}/>
+                        </View>
+                        <View style={{height:Pixel.getPixel(44), alignItems:'center',justifyContent:'space-between',
+                            flexDirection:'row'
+                        }}>
+                            <Text>修改销售价</Text>
+                            <TextInput defaultValue={10} style={styles.textInput}
+                                       keyboardType={'number-pad'}
+                                       maxLength={7}/>
+                        </View>
                     </View>
-        </View>)
+                    <TouchableOpacity style={{backgroundColor:fontAndColor.COLORB0,height:Pixel.getPixel(44),justifyContent:'center',
+                        alignItems:'center',
+                    }} onPress={this.props.hiddeClick}>
+                        <Text style={{color:'white'}}>确认</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>)
     }
 }
 

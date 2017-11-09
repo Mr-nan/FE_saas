@@ -30,6 +30,7 @@ const provinceData = (require('./carData/carFilterData.json')).provinceSource;
 const SceneWidth = Dimensions.get('window').width;
 
 let selectData={
+
     city_name:'',
     provice_id:0,
     city_id:0,
