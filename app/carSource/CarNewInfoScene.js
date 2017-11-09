@@ -320,8 +320,8 @@ export default class CarInfoScene extends BaseComponent {
                                             width:ScreenWidth - Pixel.getPixel(30),flexDirection:'row',justifyContent:'space-between',
                                             alignItems:'center'
                                         }} key={index}>
-                                            <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getTitlePixel(fontAndColor.LITTLEFONT28)}}>{data.title}</Text>
-                                            <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getTitlePixel(fontAndColor.LITTLEFONT28)}}>{data.value}</Text>
+                                            <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{data.title}</Text>
+                                            <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{data.value}</Text>
                                         </View>
                                     )
                                 })
@@ -707,10 +707,10 @@ class TitleView extends Component{
                               activeOpacity={1}>
                 <View style={{flexDirection:'row', alignItems:'center'}}>
                     <View style={{backgroundColor:fontAndColor.COLORB0,width:Pixel.getPixel(3),height:Pixel.getPixel(20)}}/>
-                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getTitlePixel(fontAndColor.BUTTONFONT30),marginLeft:Pixel.getPixel(5)}}>{this.props.title}</Text>
+                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),marginLeft:Pixel.getPixel(5)}}>{this.props.title}</Text>
                 </View>
                 <View>
-                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getTitlePixel(fontAndColor.LITTLEFONT28)}}>{this.props.footTitle}</Text>
+                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{this.props.footTitle}</Text>
                 </View>
             </TouchableOpacity>
         )

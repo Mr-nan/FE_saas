@@ -99,7 +99,7 @@ export default class MyCarCell extends Component {
                             <View style={{backgroundColor:'white',marginVertical:Pixel.getPixel(10), flex:1,justifyContent:'space-between'}}>
                                 <View>
                                     <Text allowFontScaling={false}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
-                                    <TouchableOpacity style={[styles.cellSubContentView,this.props.carPriceEditClick && {backgroundColor:fontAndColor.COLORA3}]} activeOpacity={1}
+                                    <TouchableOpacity style={[styles.cellSubContentView,this.props.carPriceEditClick && {backgroundColor:fontAndColor.COLORA3,paddingHorizontal:Pixel.getPixel(10)}]} activeOpacity={1}
                                                       onPress={()=>{this.props.carPriceClick & this.props.carPriceEditClick(carCellData)}}>
                                         <View>
                                             <Text allowFontScaling={false} numberOfLines={1}  style={[styles.subTitleText]}>{'白色'+' | '+'10辆'}</Text>
@@ -108,7 +108,9 @@ export default class MyCarCell extends Component {
                                                 (<Text allowFontScaling={false}  style={[styles.carPriceText, {marginTop:Pixel.getPixel(5)}]}>{(this.carMoneyChange(carCellData.dealer_price))}万</Text>)
                                             }
                                         </View>
-                                        <Image style={{width:Pixel.getPixel(19),height:Pixel.getPixel(19)}} source={require('../../../images/carSourceImages/carPriceEdit.png')}/>
+                                        {
+                                            this.props.carPriceEditClick && (<Image style={{width:Pixel.getPixel(19),height:Pixel.getPixel(19)}} source={require('../../../images/carSourceImages/carPriceEdit.png')}/>)
+                                        }
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -177,7 +179,7 @@ export default class MyCarCell extends Component {
                                 {/*}*/}
 
                                 {
-                                    carType == 2 &&
+                                    (carType == 2 || carType==3 || carType == 4) &&
                                     <TouchableOpacity onPress={()=>{this.footButtonClick('管理',this.props.type,carCellData)}}>
                                         <View style={styles.cellFoot}>
                                             <Text allowFontScaling={false}  style={styles.cellFootText}>  管理  </Text>
@@ -194,7 +196,7 @@ export default class MyCarCell extends Component {
 
                                 }
                                 {
-                                    (carType == 1 || carType == 3) &&
+                                    (carType == 1) &&
                                     <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
                                         <View style={styles.cellFoot}>
                                             <Text allowFontScaling={false}  style={styles.cellFootText}>  编辑  </Text>
