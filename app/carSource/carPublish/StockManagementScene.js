@@ -84,7 +84,7 @@ export default class StockManagementScene extends BaseComponent {
                                            onFocus={()=>{
                                                 this.setCurrentPy('vinInput');
                                              }}
-                                           placeholderTextColor={fontAndColor.COLORA4}
+                                           placeholderTextColor={fontAndColor.COLORA1}
                                            keyboardType={'ascii-capable'}
                                            placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                 />
@@ -119,6 +119,7 @@ export default class StockManagementScene extends BaseComponent {
                                     onFocus={()=>{
                                       this.setCurrentPy(this.procedureInput);
                                   }}
+                                    placeholderTextColor={fontAndColor.COLORA1}
                                     placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                 />
                             </View>
@@ -149,6 +150,7 @@ export default class StockManagementScene extends BaseComponent {
                                            this.setCurrentPy(this.buying_price);
                                        }}
                                        underlineColorAndroid='transparent'
+                                       placeholderTextColor={fontAndColor.COLORA1}
                                        defaultValue={this.carData.buying_price?this.carMoneyChange(this.carData.buying_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
                                        onChangeText={(text)=>{
@@ -325,7 +327,7 @@ export default class StockManagementScene extends BaseComponent {
                 <View style={styles.footContainer}>
                     <TouchableOpacity onPress={this.footBtnClick}>
                         <View style={styles.footView}>
-                            <Text allowFontScaling={false} style={styles.footText}>下一步</Text>
+                            <Text allowFontScaling={false} style={styles.footText}>提交</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
