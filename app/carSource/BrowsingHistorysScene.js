@@ -23,6 +23,7 @@ import RepaymenyTabBar from '../finance/repayment/component/RepaymenyTabBar';
 import NewBrowsingHistoryScene from './NewBrowsingHistoryScene';
 import OldBrowsingHistoryScene from './OldBrowsingHistoryScene';
 import CarInfoScene from '../../app/carSource/CarInfoScene';
+import CarNewInfoScene from '../../app/carSource/CarNewInfoScene'
 import  AllLoading from '../component/AllLoading';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
@@ -63,7 +64,7 @@ export  default class BrowsingHistorysScene extends BaseComponent {
                     {/*新车*/}
                     <NewBrowsingHistoryScene ref="new" tabLabel="ios-paper0"
                                              showToast={(str)=>{this.props.showToast(str)}} showModal={(obj)=>this.props.showModal(obj)}
-                                             toNextPage = {(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}} transfer_type="all"/>
+                                             toNextPage = {(id)=>{this.toNextPage({name:'CarNewInfoScene',component:CarNewInfoScene,params:{carID:id}})}} transfer_type="all"/>
                     {/*二手车*/}
                     <OldBrowsingHistoryScene ref="old" tabLabel="ios-paper1"
                                              showToast={(str)=>{this.props.showToast(str)}} showModal={(obj)=>this.props.showModal(obj)}

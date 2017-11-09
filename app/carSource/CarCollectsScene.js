@@ -22,6 +22,7 @@ import RepaymenyTabBar from '../finance/repayment/component/RepaymenyTabBar';
 import NewCarCollectSourceScene from './NewCarCollectSourceScene'
 import OldCarCollectSourceScene from './OldCarCollectSourceScene'
 import CarInfoScene from '../../app/carSource/CarInfoScene'
+import CarNewInfoScene from '../../app/carSource/CarNewInfoScene'
 let index = 0;
 export  default class CarCollectsScene extends BaseComponent {
 
@@ -58,7 +59,7 @@ export  default class CarCollectsScene extends BaseComponent {
                     {/*新车*/}
                     <NewCarCollectSourceScene ref="new" tabLabel="ios-paper0"
                                               showToast={(str)=>{this.props.showToast(str)}}
-                                              toNextPage={(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}}
+                                              toNextPage={(id)=>{this.toNextPage({name:'CarNewInfoScene',component:CarNewInfoScene,params:{carID:id}})}}
                                               transfer_type="all"/>
 
                     {/*二手车*/}
