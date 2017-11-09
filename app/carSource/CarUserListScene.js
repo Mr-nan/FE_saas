@@ -74,11 +74,11 @@ const APIParameter = {
     car_color:0,
     model_name:'',
     prov_id:0,
-    v_type:0,
+    v_type:1,
     rows: 10,
     page: 1,
     start: 0,
-    type: 1,
+    type: 7,
     status: 1,
     no_cache:1,
 
@@ -185,28 +185,9 @@ export  default  class CarUserListScene extends BaseComponent {
             }
         });
 
-        // StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
-        //
-        //     if(data.code == 1){
-        //         if(data.result == 'true'){
-        //             this.setState({
-        //                 checkedCarGenre:{
-        //                     title:'新车',
-        //                     value:'2'
-        //                 }
-        //             });
-        //             APIParameter.v_type = 2;
-        //             APIParameter.type = 0;
-        //             APIParameter.prov_id = 0;
-        //             isCheckRecommend = false
-        //             this.setHeadViewType();
-        //         }
-        //     }
-        // });
 
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
-        // StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
 
     }
 
@@ -227,34 +208,16 @@ export  default  class CarUserListScene extends BaseComponent {
             if(data.code == 1){
                 if(data.result == 'true'){
                     isCheckRecommend = false
-                    APIParameter.type = 0;
+                    APIParameter.type = 4;
                     APIParameter.prov_id = 0;
 
                 }
             }
         });
 
-        // StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
-        //
-        //     if(data.code == 1){
-        //         if(data.result == 'true'){
-        //             this.setState({
-        //                 checkedCarGenre:{
-        //                     title:'新车',
-        //                     value:'2'
-        //                 }
-        //             });
-        //             APIParameter.v_type = 2;
-        //             APIParameter.type = 0;
-        //             APIParameter.prov_id = 0;
-        //             isCheckRecommend = false
-        //         }
-        //     }
-        // });
 
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
-        // StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
             if(data.code == 1 && data.result != '')
@@ -612,13 +575,13 @@ export  default  class CarUserListScene extends BaseComponent {
     checkRecommendClick = (isCheck) => {
 
         if (isCheck) {
-            APIParameter.type = 1;
+            APIParameter.type = 7;
             APIParameter.prov_id=this.prov_id;
             this.allDelectClick();
 
 
         } else {
-            APIParameter.type = 0;
+            APIParameter.type = 4;
             APIParameter.prov_id=0;
             this.filterData();
         }
@@ -766,7 +729,7 @@ export  default  class CarUserListScene extends BaseComponent {
                 value: '',
             },
         });
-        APIParameter.v_type = 0;
+        APIParameter.v_type = 1;
         this.setHeadViewType();
     };
 
@@ -883,7 +846,7 @@ export  default  class CarUserListScene extends BaseComponent {
         APIParameter.coty = 0;
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
-        APIParameter.v_type=0;
+        APIParameter.v_type=1;
         APIParameter.provice_id = 0;
         APIParameter.city_id=0;
         APIParameter.dealer_price = 0;
@@ -941,7 +904,7 @@ export  default  class CarUserListScene extends BaseComponent {
                 && APIParameter.city_id == 0
                 && APIParameter.order_type == 0
                 && APIParameter.coty == 0
-                && APIParameter.mileage == 0 && APIParameter.type == 0)
+                && APIParameter.mileage == 0 && APIParameter.type == 4)
             {
                 isCarFoot = false;
 

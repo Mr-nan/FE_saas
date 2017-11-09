@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
 
     flex: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
     },
     img: {
 

@@ -204,7 +204,7 @@ export  default  class CarUserListScene extends BaseComponent {
             if(data.code == 1){
                 if(data.result == 'true'){
                     isCheckRecommend = false
-                    APIParameter.type = 0;
+                    APIParameter.type = 4;
                     APIParameter.prov_id = 0;
 
                 }
@@ -598,13 +598,13 @@ export  default  class CarUserListScene extends BaseComponent {
     checkRecommendClick = (isCheck) => {
 
         if (isCheck) {
-            APIParameter.type = 1;
+            APIParameter.type = 5;
             APIParameter.prov_id=this.prov_id;
             this.allDelectClick();
 
 
         } else {
-            APIParameter.type = 0;
+            APIParameter.type = 4;
             APIParameter.prov_id=0;
             this.filterData();
         }
@@ -721,7 +721,7 @@ export  default  class CarUserListScene extends BaseComponent {
                 value: '',
             },
         });
-        APIParameter.v_type = 0;
+        APIParameter.v_type = 2;
         this.setHeadViewType();
     };
 
@@ -841,7 +841,7 @@ export  default  class CarUserListScene extends BaseComponent {
         APIParameter.coty = 0;
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
-        APIParameter.v_type=0;
+        APIParameter.v_type=2;
         APIParameter.provice_id = 0;
         APIParameter.city_id=0;
         APIParameter.dealer_price = 0;
@@ -899,7 +899,7 @@ export  default  class CarUserListScene extends BaseComponent {
                 && APIParameter.city_id == 0
                 && APIParameter.order_type == 0
                 && APIParameter.coty == 0
-                && APIParameter.mileage == 0 && APIParameter.type == 0)
+                && APIParameter.mileage == 0 && APIParameter.type == 4)
             {
                 isCarFoot = false;
             };

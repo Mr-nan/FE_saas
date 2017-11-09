@@ -72,7 +72,7 @@ export class CarSourceSelectHeadView extends Component{
     render(){
         this.butArray = [];
         return(
-            <Image style={styles.container} source={require('../../../images/carSourceImages/bottomShaow.png')}>
+            <View style={styles.container}>
                 <View style={{  flexDirection:'row', justifyContent:'space-between',width:screenWidth-Pixel.getPixel(100)}}>
                 {
                     this.props.titleArray.map((data,index)=>{
@@ -97,7 +97,7 @@ export class CarSourceSelectHeadView extends Component{
                     </TouchableOpacity>
                 </View>
 
-            </Image>
+            </View>
         )
     }
 
@@ -207,6 +207,9 @@ const  styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
+        borderBottomColor:fontAndColor.COLORA4,
+        borderBottomWidth:Pixel.getPixel(1),
+        backgroundColor:'white'
 
     },
 

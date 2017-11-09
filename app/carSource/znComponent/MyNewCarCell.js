@@ -100,9 +100,9 @@ export default class MyCarCell extends Component {
                                 <View>
                                     <Text allowFontScaling={false}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
                                     <TouchableOpacity style={[styles.cellSubContentView,this.props.carPriceEditClick && {backgroundColor:fontAndColor.COLORA3,paddingHorizontal:Pixel.getPixel(10)}]} activeOpacity={1}
-                                                      onPress={()=>{this.props.carPriceClick & this.props.carPriceEditClick(carCellData)}}>
+                                                      onPress={()=>{this.props.carPriceEditClick ? this.props.carPriceEditClick(carCellData) : this.cellClick(carCellData)}}>
                                         <View>
-                                            <Text allowFontScaling={false} numberOfLines={1}  style={[styles.subTitleText]}>{'白色'+' | '+'10辆'}</Text>
+                                            <Text allowFontScaling={false} numberOfLines={1}  style={[styles.subTitleText]}>{carCellData.car_color?(carCellData.car_color.split("|")[0]+'|'):''+carCellData.stock+'辆'}</Text>
                                             {
                                                 (carCellData.dealer_price>0) &&
                                                 (<Text allowFontScaling={false}  style={[styles.carPriceText, {marginTop:Pixel.getPixel(5)}]}>{(this.carMoneyChange(carCellData.dealer_price))}万</Text>)
@@ -186,15 +186,15 @@ export default class MyCarCell extends Component {
                                         </View>
                                     </TouchableOpacity>
                                 }
-                                {
-                                    (carType == 4 || carType == 3 ||  (carType==1&&carCellData.review_status==2))&&
-                                    <TouchableOpacity onPress={()=>{this.footButtonClick('删除',this.props.type,carCellData)}}>
-                                        <View style={styles.cellFoot}>
-                                            <Text allowFontScaling={false}  style={styles.cellFootText}>  删除  </Text>
-                                        </View>
-                                    </TouchableOpacity>
+                                {/*{*/}
+                                    {/*(carType == 4 || carType == 3 ||  (carType==1&&carCellData.review_status==2))&&*/}
+                                    {/*<TouchableOpacity onPress={()=>{this.footButtonClick('删除',this.props.type,carCellData)}}>*/}
+                                        {/*<View style={styles.cellFoot}>*/}
+                                            {/*<Text allowFontScaling={false}  style={styles.cellFootText}>  删除  </Text>*/}
+                                        {/*</View>*/}
+                                    {/*</TouchableOpacity>*/}
 
-                                }
+                                {/*}*/}
                                 {
                                     (carType == 1) &&
                                     <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>

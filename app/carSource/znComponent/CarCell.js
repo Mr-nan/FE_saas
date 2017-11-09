@@ -53,8 +53,8 @@ export default class CarCell extends Component {
                             {
                                this.props.isNewCar?
                                     (<View>
-                                        <Text allowFontScaling={false}  style={styles.subTitleText}>{'白色'+'|'+'10辆'}</Text>
-                                        <Text allowFontScaling={false}  style={styles.subTitleText}>{'安吉斯鸿汽车销售公司'}</Text>
+                                        <Text allowFontScaling={false}  style={styles.subTitleText}>{carCellData.car_color?(carCellData.car_color.split("|")[0]+'|'):''+carCellData.stock+'辆'}</Text>
+                                        <Text allowFontScaling={false}  style={styles.subTitleText}>{carCellData.enterprise_name}</Text>
                                     </View>):
                                    (<Text allowFontScaling={false}  style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>)
                             }

@@ -262,6 +262,7 @@ export default class CarInfoScene extends BaseComponent {
 
                 <ScrollView style={{marginBottom: Pixel.getPixel(44), backgroundColor: fontAndColor.COLORA3}}
                             scrollEventThrottle={200}
+                            automaticallyAdjustContentInsets={false}
                             onScroll={this.setNavitgationBackgroundColor}
                 >
                     <ImagePageView
@@ -295,19 +296,22 @@ export default class CarInfoScene extends BaseComponent {
                             {
                                 <View style={styles.titleFootView}>
                                     {
-                                        carData.dealer_price > 0 && (
+                                        carData.dealer_price > 0 ? (
                                             <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
                                                 <Text allowFontScaling={false}
                                                       style={styles.priceText}>{this.carMoneyChange(carData.dealer_price) + '万'}  </Text>
                                                 <Text style={styles.browseText}>{this.carMoneyChange(carData.dealer_price) + '万'}</Text>
                                             </View>
-                                        )
+                                        ):(<View/>)
                                     }
                                     <View style={styles.browseView}>
-                                        <Text allowFontScaling={false}  style={styles.browseText}>{10 + '辆在售'}</Text>
+                                        <Text allowFontScaling={false}  style={styles.browseText}>{carData.stock + '辆在售'}</Text>
                                     </View>
                                 </View>
                             }
+                            <View style={{borderTopWidth:Pixel.getPixel(1),borderTopColor:fontAndColor.COLORA3,marginTop:Pixel.getPixel(10),paddingTop:Pixel.getPixel(10)}}>
+                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{carData.enterprise_name}</Text>
+                            </View>
                         </View>
                     </View>
                     <View style={styles.carIconsContainer}>
