@@ -43,6 +43,8 @@ import MessageListScene from "../message/MessageListScene";
 import * as Urls from '../constant/appUrls';
 import AuthenticationModal from '../component/AuthenticationModal';
 let Platform = require('Platform');
+import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
+import PersonCertificate from "../mine/certificateManage/PersonCertificate";
 
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -63,12 +65,12 @@ export default class HomeScene extends BaseComponet {
             pageData: []
         };
         this.authenOptions = {
-            '1':[true,'请先完成认证后再进行操作','取消','','个人认证',()=>{}],
-            '2':[true,'请先完成认证后再进行操作','取消','','企业认证',()=>{}],
-            '3':[true,'认证未通过请重新认证，您可以重新认证或联系客服','取消','联系客服','个人认证',()=>{},this.callAciton],
-            '4':[true,'认证未通过请重新认证，您可以重新认证或联系客服','取消','联系客服','企业认证',()=>{},this.callAciton],
-            '5':[true,'您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。','取消','','个人认证已提交',()=>{}],
-            '6':[true,'您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。','取消','','企业认证已提交',()=>{}],
+            '1':[true,'请先完成认证后再进行操作','取消','','个人认证',this._gerenrenzheng],
+            '2':[true,'请先完成认证后再进行操作','取消','','企业认证',this._qiyerenzheng],
+            '3':[true,'认证未通过请重新认证，您可以重新认证或联系客服','取消','联系客服','个人认证',this._gerenrenzheng,this.callAciton],
+            '4':[true,'认证未通过请重新认证，您可以重新认证或联系客服','取消','联系客服','企业认证',this._qiyerenzheng,this.callAciton],
+            '5':[true,'您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。','取消','','个人认证已提交',this._gerenrenzheng],
+            '6':[true,'您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。','取消','','企业认证已提交',this._qiyerenzheng],
             '7':[true,'需创建此账号的主账号通过个人认证后进行操作','取消','','',()=>{}],
             '8':[true,'需创建此账号的主账号通过个人认证后进行操作','取消','','',()=>{}],
         };
@@ -92,6 +94,18 @@ export default class HomeScene extends BaseComponet {
                 (error) => {
                     this.props.showToast(error.msg);
                 });
+    };
+
+    //企业认证页面
+    _qiyerenzheng = () => {
+        this.props.callBack({name:'EnterpriseCertificate',
+            component:EnterpriseCertificate,params:{}});
+    };
+
+    //个人认证页面
+    _gerenrenzheng = () => {
+        this.props.callBack({name:'PersonCertificate',
+            component:PersonCertificate,params:{}});
     };
 
     //认证功能验证

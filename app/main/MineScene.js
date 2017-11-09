@@ -88,6 +88,7 @@ export default class MineScene extends BaseComponent {
 		return true;
 	}
 
+
 	componentDidMount() {
 		try {
 			BackAndroid.addEventListener('hardwareBackPress', this.handleBack);

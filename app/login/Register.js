@@ -10,7 +10,7 @@ import {
     KeyboardAvoidingView,
     TouchableOpacity,
 	NativeModules,
-
+    NativeAppEventEmitter
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import * as FontAndColor from "../constant/fontAndColor";
@@ -480,21 +480,37 @@ export default class Register extends BaseComponent {
                 }
             });
     }
+
+
 	//拿到当前位置的定位
 	getCurrentLocation = () =>{
+        if (Platform.OS === 'android') {
+            NativeModules.QrScan.lbsStart();
+            NativeAppEventEmitter
+                .addListener('onReceiveBDLocation', (loc)=>{
+                    console.log(loc);
+                    this.cityCode = loc.city_code;
+                    this.cityDetail = loc.addr;
+                });
+        } else {
+            NativeModules.Location.Location().then((vl) => {
+                console.log(vl.address);
 
-		NativeModules.Location.Location().then((vl) => {
-			console.log(vl.address);
+                this.cityCode = vl.cityCode;
+                this.cityDetail = vl.address;
+                console.log(this.cityDetail);
 
-			this.cityCode = vl.cityCode;
-			this.cityDetail = vl.address;
-			console.log(this.cityDetail);
+            }, (error) => {
+                console.log("没有获取到定位");
 
-		}, (error) => {
-			console.log("没有获取到定位");
-
-		});
+            });
+        }
 	}
+
+	componentWillUnmount = ()=>{
+        NativeAppEventEmitter.remove()
+    }
+
     //获取短信验证码
     sendSms = () => {
         let userName = this.refs.userName.getInputTextValue();
