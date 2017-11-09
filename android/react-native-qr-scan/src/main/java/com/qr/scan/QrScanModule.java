@@ -3,6 +3,7 @@ package com.qr.scan;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -127,6 +128,7 @@ public class QrScanModule extends ReactContextBaseJavaModule implements Activity
             map.putString("addr", location.getAddrStr());
             map.putString("country_code", location.getCountryCode());
             map.putString("city_code", location.getCityCode());
+            map.putString("street_number",location.getStreetNumber());
             sendEvent("onReceiveBDLocation",map);
             mLocationClient.stop();
         }
