@@ -112,8 +112,8 @@ export default class StockManagementScene extends BaseComponent {
                                     placeholder='请输入 '
                                     maxLength={50}
                                     underlineColorAndroid='transparent'
-                                    defaultValue={this.carData.engin_number?this.carData.engin_number:''}
-                                    onChangeText={(text)=>{this.carData['engin_number']=text}}
+                                    defaultValue={this.carData.engine_number?this.carData.engine_number:''}
+                                    onChangeText={(text)=>{this.carData['engine_number']=text}}
                                     onEndEditing={()=>{this.saveCarData();}}
                                     ref={(input) => {this.procedureInput = input}}
                                     onFocus={()=>{
@@ -142,24 +142,24 @@ export default class StockManagementScene extends BaseComponent {
                     return (
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
-                                       ref={(ref)=>{this.buying_price = ref}}
+                                       ref={(ref)=>{this.purchase_price = ref}}
                                        placeholder='请输入 '
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        onFocus={()=>{
-                                           this.setCurrentPy(this.buying_price);
+                                           this.setCurrentPy(this.purchase_price);
                                        }}
                                        underlineColorAndroid='transparent'
                                        placeholderTextColor={fontAndColor.COLORA1}
-                                       defaultValue={this.carData.buying_price?this.carMoneyChange(this.carData.buying_price):''}
+                                       defaultValue={this.carData.purchase_price?this.carMoneyChange(this.carData.purchase_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
                                        onChangeText={(text)=>{
                                             if(text.length>4&&text.indexOf('.')==-1){
                                                text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
-                                           this.carData['buying_price']= moneyStr;
-                                           this.buying_price.setNativeProps({
+                                           this.carData['purchase_price']= moneyStr;
+                                           this.purchase_price.setNativeProps({
                                                text: moneyStr,
                                            });
                                        }}/>
@@ -170,7 +170,7 @@ export default class StockManagementScene extends BaseComponent {
             [
                 {
                     type: '2',
-                    name: 'left_anterior',
+                    name: 'vin_no',
                     title: '车架号图',
                     subTitle: '',
                     number: 1,
@@ -184,7 +184,7 @@ export default class StockManagementScene extends BaseComponent {
                     name: 'left_anterior',
                     title: '手续图',
                     subTitle: '中规车请上传合格证照片，非中规车请上传关单、商检单、一次性证书正反面',
-                    number: 8,
+                    number: 5,
                     imgArray: [],
                     explain: '2',
                 }
@@ -336,26 +336,22 @@ export default class StockManagementScene extends BaseComponent {
     }
 
     /**
-     * 根据车架号获取车辆信息
+     * 创建、修改库存
      */
-    loadCarData = () => {
+    saveStockData = () => {
 
         this.props.showModal(true);
 
-        Net.request(AppUrls.CAR_DETAIL, 'post', {
-            id: this.props.carID,
-            imgType: 0,
-        }).then((response) => {
+        Net.request(AppUrls.CAR_STOCK_SAVE, 'post', this.carData).then((response) => {
 
             this.props.showModal(false);
 
-            if (response.mycode == 1) {
-                this.carData = response.mjson.data;
-                this.carData.manufacture = response.mjson.data.manufacture != '' ? this.dateReversal(response.mjson.data.manufacture + '000') : '';
-                this.carData.init_reg = response.mjson.data.init_reg != '' ? this.dateReversal(response.mjson.data.init_reg + '000') : '';
-                this.carData.emission_standards = response.mjson.data.emission_standards;
-                this.setCarData();
-            }
+            // if (response.mycode == 1) {
+            //     this.carData = response.mjson.data;
+            //     this.carData.manufacture = response.mjson.data.manufacture != '' ? this.dateReversal(response.mjson.data.manufacture + '000') : '';
+            //     this.carData.init_reg = response.mjson.data.init_reg != '' ? this.dateReversal(response.mjson.data.init_reg + '000') : '';
+            //     this.carData.emission_standards = response.mjson.data.emission_standards;
+            // }
 
         }, (error) => {
             this.props.showToast(error.msg);
@@ -363,6 +359,9 @@ export default class StockManagementScene extends BaseComponent {
 
     }
 
+    /**
+     * 设置默认数据
+     */
     setCarData = () => {
         if (this.carData.vin) {
             this.vinInput.setNativeProps({
@@ -399,15 +398,17 @@ export default class StockManagementScene extends BaseComponent {
             return;
         }
 
-        let navigatorParams = {
-            name: "CarPublishSecondScene",
-            component: CarPublishSecondScene,
-            params: {
-                carData: this.carData,
-                carConfigurationData: this.carConfigurationData,
-            }
-        }
-        this.toNextPage(navigatorParams);
+        // let navigatorParams = {
+        //     name: "CarPublishSecondScene",
+        //     component: CarPublishSecondScene,
+        //     params: {
+        //         carData: this.carData,
+        //         carConfigurationData: this.carConfigurationData,
+        //     }
+        // }
+        // this.toNextPage(navigatorParams);
+
+        this.saveStockData();
 
     }
 
