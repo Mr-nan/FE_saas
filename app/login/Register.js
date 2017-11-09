@@ -377,6 +377,24 @@ export default class Register extends BaseComponent {
             } else {
                 device_code = 'dycd_platform_ios';
             }
+
+//
+// 	        code	短信验证码		【必填】
+// confirm_pwd	确认密码		【必填】
+// device_code			【必填】
+// invi_code	注册邀请码
+// 	        merchant_name	商户名称		【必填】
+// phone	手机号		【必填】
+// province_id	定位省ID
+// 	        province_name	省名
+// 	        pwd	密码		【必填】
+// street_id	街道id
+// 	        street_name	街道名称
+// 	        user_name	用户姓名		【必填】
+
+
+
+
             let maps = {
                 device_code: device_code,
                 user_name: name,
@@ -385,13 +403,13 @@ export default class Register extends BaseComponent {
                 confirm_pwd: md5.hex_md5(passwoedAgain),
                 merchant_name: businessName,
                 code: smsCode,
-                idcard_img: idcardf + "," + idcardback,
-                license_img: businessid,
+                // idcard_img: idcardf + "," + idcardback,
+                // license_img: businessid,
             };
             this.setState({
                 loading: true,
             });
-            request(AppUrls.REGISTER, 'Post', maps)
+            request(AppUrls.ZHUCE, 'Post', maps)
                 .then((response) => {
                     this.setState({
                         loading: false,
