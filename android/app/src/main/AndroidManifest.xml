@@ -48,15 +48,15 @@
                 android:exported="true"
                 android:label="@string/app_name"
         />
-        <!--<meta-data-->
-                <!--android:name="UMENG_APPKEY"-->
-                <!--android:value="589d77ef310c93264f0012c0" >-->
-        <!--</meta-data>-->
-        <!--<meta-data-->
-                <!--android:name="UMENG_MESSAGE_SECRET"-->
-                <!--android:value="2c2d53fc1ae56ec03221bcb605de1fd0" >-->
-        <!--</meta-data>-->
-        <meta-data android:value="59472d73a325114927001745" android:name="UMENG_APPKEY"/>
+        <meta-data
+                android:name="UMENG_APPKEY"
+                android:value="59dc344fc62dca36b0000124" >
+        </meta-data>
+        <meta-data
+                android:name="UMENG_MESSAGE_SECRET"
+                android:value="ac7d2f2703ba036efdb3bd83488f1882" >
+        </meta-data>
+        <!--<meta-data android:value="59472d73a325114927001745" android:name="UMENG_APPKEY"/>-->
         <meta-data android:value="pugongying" android:name="UMENG_CHANNEL"/>
     </application>
 

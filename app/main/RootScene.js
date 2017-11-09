@@ -28,14 +28,58 @@ import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import codePush from 'react-native-code-push'
 import SQLiteUtil from "../utils/SQLiteUtil";
+import PromotionScene from "./PromotionScene";
 const SQLite = new SQLiteUtil();
 const versionCode = 24.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
 import ErrorUtils from "ErrorUtils"
+import UmengPush from 'react-native-umeng-push';
 
 export default class RootScene extends BaseComponent {
+
+    constructor(props) {
+        super(props);
+//获取DeviceToken
+        UmengPush.getDeviceToken(deviceToken => {
+            console.log('deviceToken', deviceToken)
+        });
+
+//接收到推送消息回调
+        UmengPush.didReceiveMessage(message => {
+
+        });
+
+//点击推送消息打开应用回调
+        UmengPush.didOpenMessage(message => {
+            const navigator = this.props.navigator;
+            if (navigator) {
+                let toWeb = true;
+                for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                    if (navigator.getCurrentRoutes()[i].name == 'PromotionScene') {
+                        toWeb = false;
+                        break;
+                    }
+                }
+                if (toWeb) {
+                    let mProps = {
+                        name: 'PromotionScene',
+                        component: PromotionScene, params: {
+                            webUrl: JSON.parse(message.extra).url,
+                            name: JSON.parse(message.extra).name
+                        }
+                    };
+                    navigator.push({
+                        ...mProps
+                    })
+                }
+            }
+            console.log(message);
+            console.log(JSON.parse(message.extra).url);
+
+        });
+    }
 
     componentDidMount() {
         // codePush.sync();
@@ -133,7 +177,7 @@ export default class RootScene extends BaseComponent {
                     }
                 },
                 (error) => {
-                    this.toJump();
+
                 });
     }
 
