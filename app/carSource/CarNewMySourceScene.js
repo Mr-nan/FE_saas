@@ -94,7 +94,7 @@ export default class CarMySourceScene extends BaceComponent {
                     this.state.isShowCarSharedView && <CarSharedView offClick={()=>{this.setState({isShowCarSharedView:false})}} carSharedBtnClick={this.carSharedBtnClick} isShowMore={this.carData.img!=''?true:false}/>
                 }
                 <AccountModal ref="accountmodal"/>
-                <EditCarPriceView ref={(ref)=>{this.EditCarPriceView = ref}}  hiddeClick={()=>{this.setState({isShowEditcarPrice:false})}} carData={this.editCarData}/>
+                <EditCarPriceView ref={(ref)=>{this.EditCarPriceView = ref}}/>
 
             </View>)
 
@@ -161,8 +161,7 @@ export default class CarMySourceScene extends BaceComponent {
     }
 
     carPriceEditClick=(carData)=>{
-        this.editCarData = carData;
-        this.EditCarPriceView.isShowView(true);
+        this.EditCarPriceView.isShowView(true,carData);
     }
 
 
@@ -1489,13 +1488,21 @@ class EditCarPriceView extends Component {
       constructor(props) {
         super(props);
         this.state={
+            carData:{},
             modalOpen: false,
         }
       }
 
-    isShowView=(show)=>{
+    isShowView=(show,carData)=>{
+
+          if(carData){
+              this.carNumber = carData.stock;
+              this.carPrice = carData.dealer_price;
+          }
+
           this.setState({
               modalOpen:show,
+              carData:carData,
           });
     }
 
@@ -1503,7 +1510,7 @@ class EditCarPriceView extends Component {
 
         return(
                 <Modal animationType={'fade'} visible={this.state.modalOpen} transparent={true}>
-                    <TouchableOpacity style={styles.editCarPriceContainer} onPress={()=>{this.isShowView(false)}}>
+                    <TouchableOpacity style={styles.editCarPriceContainer} onPress={()=>{this.isShowView(false,{})}}>
                         <View style={styles.editCarContentView}>
                             <View style={styles.editCarHeadView}>
                                 <Image style={{right:Pixel.getPixel(10),
@@ -1513,27 +1520,73 @@ class EditCarPriceView extends Component {
                                     position:'absolute'}} source={require('../../images/deleteIcon2x.png')}/>
                                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>修改数量/价格</Text>
                             </View>
+                            <TouchableOpacity activeOpacity={1}>
                             <View style={styles.editCarInputView}>
                                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>修改在售车辆数</Text>
-                                <TextInput style={styles.textInput} keyboardType="numeric"/>
+                                <TextInput style={styles.textInput}
+                                           keyboardType="numeric"
+                                           autoFocus={true}
+                                           maxLength={7}
+                                           onChangeText={(text)=>{this.carNumber = text}}
+                                           defaultValue={this.state.carData.stock}
+                                />
                             </View>
                             <View style={styles.editCarInputView}>
                                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'center'}}>修改销售价</Text>
                                 <View style={{flexDirection:'row', alignItems:'center'}}>
-                                    <TextInput style={[styles.textInput,{marginTop:0}]} keyboardType="numeric"/>
+                                    <TextInput style={[styles.textInput,{marginTop:0}]}
+                                               ref={(ref)=>{this.carPriceInput = ref}}
+                                               keyboardType="numeric"
+                                               maxLength={7}
+                                               onChangeText={(text)=>{
+                                                   if(text.length>4&&text.indexOf('.')==-1){
+                                                       text = text.substring(0,4);
+                                                   }
+                                                   let moneyStr = this.chkPrice(text);
+                                                   this.carPrice= moneyStr;
+                                                   this.carPriceInput.setNativeProps({
+                                                       text: moneyStr,
+                                                   });
+                                               }}
+                                               defaultValue={this.state.carData.dealer_price}
+                                    />
                                     <Text style={{color:fontAndColor.COLORA1,
                                         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>万</Text>
                                 </View>
                             </View>
+                            </TouchableOpacity>
                             <View style={styles.editCarFootView}>
+                                <TouchableOpacity onPress={()=>{alert(this.carNumber,this.carPrice)}}>
                                 <View style={styles.editCarFootBtn}>
                                     <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>确认</Text>
                                 </View>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </TouchableOpacity>
                 </Modal>)
     }
+
+    /**
+     * from @zhaojian
+     *
+     * 正则校验，保证小数点后只能有两位
+     **/
+    chkPrice = (obj) => {
+        obj = obj.replace(/[^\d.]/g, "");
+        //必须保证第一位为数字而不是.
+        obj = obj.replace(/^\./g, "");
+        //保证只有出现一个.而没有多个.
+        obj = obj.replace(/\.{2,}/g, ".");
+        //保证.只出现一次，而不能出现两次以上
+        obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        if ((/\.\d{3}/).test(obj)) {
+            obj = obj.substring(0, obj.length - 1);
+        }
+
+        return obj;
+    }
+
 }
 
 const styles = StyleSheet.create({
