@@ -92,7 +92,7 @@ export  default class MsgCarUpImageCell extends PureComponent {
                         <Text allowFontScaling={false}
                               style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA0}}>{movie.title}</Text>
                         <Text allowFontScaling={false}
-                              style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA1}}>{movie.subTitle}</Text>
+                              style={{fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22), color: fontAndColor.COLORA1,marginRight:Pixel.getPixel(22)}}>{movie.subTitle}</Text>
                     </View>
                 </View>
                 <View style={{width: width, flexDirection: 'row', flexWrap: 'wrap'}}>

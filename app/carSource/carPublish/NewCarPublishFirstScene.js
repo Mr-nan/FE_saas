@@ -92,8 +92,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
-        this.xianChe = '有现车';
-        this.carData = {'xianche': this.carData};
+        this.is_cargo_str = '有现车';
+        this.carData = {'is_cargo_str': this.is_cargo_str,'is_cargo':'1'};
         this.titleData1 = [
             [{
                 title: '车型',
@@ -127,8 +127,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 isShowTag: true,
                 isShowTail: true,
                 selectDict: {
-                    current: this.xianChe,
-                    data: [{title: '有现车', value: 1}, {title: '无现车', value: 2}]
+                    current: this.is_cargo_str,
+                    data: [{title: '有现车', value: 1}, {title: '无现车', value: 0}]
                 },
             }, {
                 title: '在售车辆数',//xxxxxxxxxx
@@ -173,15 +173,15 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                     return (
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
-                                       placeholder='请输入  '
+                                       placeholder='  '
                                        keyboardType={'numeric'}
                                        maxLength={7}
+                                       editable={false}
                                        underlineColorAndroid='transparent'
                                        ref={(ref)=>{this.suggestionPriceInput = ref}}
                                        onFocus={()=>{
                                            this.setCurrentPy(this.suggestionPriceInput);
                                        }}
-                                       defaultValue={this.carData.suggestion_price?this.carMoneyChange(this.carData.suggestion_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
                                        onChangeText={(text)=>{
                                                if(text.length>4&&text.indexOf('.')==-1){
@@ -193,7 +193,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                            <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
+                            <Text allowFontScaling={false} style={styles.textInputTitle}>{this.carData.suggestion_price?this.carMoneyChange(this.carData.suggestion_price):'0'}万元</Text>
                         </View>)
                 }
             }, {
@@ -300,8 +300,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                 placeholder='合格证齐全，可开发票 '
                                 maxLength={50}
                                 underlineColorAndroid='transparent'
-                                defaultValue={this.carData.procedure_description?this.carData.procedure_description:''}
-                                onChangeText={(text)=>{this.carData['procedure_description']=text}}
+                                defaultValue={this.carData.procedure_desc?this.carData.procedure_desc:''}
+                                onChangeText={(text)=>{this.carData['procedure_desc']=text}}
                                 onEndEditing={()=>{this.saveCarData();}}
                                 ref={(input) => {this.procedureInput = input}}
                                 onFocus={()=>{
@@ -597,16 +597,16 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     }
 
     setCarData = () => {
-        // this.xianChe = this.titleData1[1][1].selectDict.current;//是否有现车
-        // alert(this.titleData1[1][1].selectDict.current)
-        this.refs.cellSelectView.setCurrentChecked(this.carData.xianche ? this.carData.xianche : this.xianChe);
-        if (!this.carData.xianche) {
-            this.carData['xianche'] = this.xianChe;
+        this.refs.cellSelectView.setCurrentChecked(this.carData.is_cargo_str ? this.carData.is_cargo_str : this.is_cargo_str);
+        if (!this.carData.is_cargo_str) {
+            this.carData['is_cargo_str'] = this.is_cargo_str;
+            this.carData['is_cargo'] = "1";
         }
 
-
         this.titleData1[0][0].value = this.carData.model_name ? this.carData.model_name : '请选择';
-        this.titleData1[0][1].value = this.carData.car_gui ? this.carData.car_gui : '请选择';//??????
+
+        this.titleData1[0][1].value = ( this.carData.second_type ? this.carData.second_type : this.carData.first_type) ?
+            ( this.carData.second_type ? this.carData.second_type : this.carData.first_type) : '请选择';//??????
 
         this.titleData1[0][2].value = this.carData.car_color ? this.carData.car_color.split("|")[0] : '请选择';
         this.titleData1[0][3].value = this.carData.trim_color ? this.carData.trim_color.split("|")[0] : '请选择';
@@ -652,8 +652,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
     checkedSpecification = (specificationData) => {
 
         this.titleData1[0][1].value = specificationData.subTitle ? specificationData.subTitle : specificationData.title;
-        ;
-        this.carData['car_gui'] = specificationData.subTitle ? specificationData.subTitle : specificationData.title;
+        this.carData['first_type'] = specificationData.title;
+        this.carData['second_type'] = specificationData.subTitle;
 
         this.upTitleData();
     }
@@ -694,9 +694,10 @@ export default class NewCarPublishFirstScene extends BaseComponent {
 
     cellSelectAction = (selectDict) => {
 
-        // this.carData['xianche'] = selectDict.value;
-        this.carData['xianche'] = selectDict.title;
-        this.xianChe = selectDict.title;
+        // this.carData['is_cargo'] = selectDict.value;
+        this.carData['is_cargo_str'] = selectDict.title;
+        this.carData['is_cargo'] = selectDict.value;
+        this.is_cargo_str = selectDict.title;
         this.upTitleData();
     }
 
@@ -739,7 +740,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
             return;
         }
 
-        if (!this.carData.xianche) {
+        if (!this.carData.is_cargo_str) {
             this.props.showToast('填写是否有现车');
             return;
         }
@@ -813,6 +814,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
         this.carData['brand_id'] = carObject.brand_id;
         this.carData['brand_name'] = carObject.brand_name;
         this.carData['series_name'] = carObject.series_name;
+        this.carData['suggestion_price'] = carObject.model_price;
 
         this.upTitleData();
     }
@@ -939,14 +941,14 @@ const styles = StyleSheet.create({
     textInput: {
         height: Pixel.getPixel(30),
         borderColor: fontAndColor.COLORA0,
-        width: Pixel.getPixel(170),
+        width: Pixel.getPixel(100),
         textAlign: 'right',
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         paddingTop: 0,
         paddingBottom: 0,
         paddingLeft: 0,
         paddingRight: 0,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
     scanImage: {
         height: Pixel.getPixel(18),
