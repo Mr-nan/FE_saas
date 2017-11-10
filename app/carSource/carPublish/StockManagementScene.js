@@ -45,6 +45,9 @@ export default class StockManagementScene extends BaseComponent {
 
     initFinish = () => {
         // this.loadCarConfigurationData();
+        if (this.props.carData) {
+            this.carData = this.props.carData;
+        }
         this.setState({
             renderPlaceholderOnly: /*value ? 'loading' :*/ 'success'
         });
@@ -181,7 +184,7 @@ export default class StockManagementScene extends BaseComponent {
             [
                 {
                     type: '2',
-                    name: 'left_anterior',
+                    name: 'procedure',
                     title: '手续图',
                     subTitle: '中规车请上传合格证照片，非中规车请上传关单、商检单、一次性证书正反面',
                     number: 5,
@@ -393,10 +396,10 @@ export default class StockManagementScene extends BaseComponent {
             return;
         }
 
-        if (!this.carData.manufacture) {
-            this.props.showToast('选择出厂日期');
-            return;
-        }
+        // if (!this.carData.manufacture) {
+        //     this.props.showToast('选择出厂日期');
+        //     return;
+        // }
 
         // let navigatorParams = {
         //     name: "CarPublishSecondScene",
