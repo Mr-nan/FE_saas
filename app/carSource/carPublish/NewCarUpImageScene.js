@@ -41,37 +41,12 @@ export default class NewCarUpImageScene extends BaseComponent {
         this.titleData = [];
         this.results = [];
         this.carData = this.props.carData;
-        if (this.carData.v_type == 1) {
-
-            for (let carImageObject of this.props.carConfigurationData.used_car_pic) {
-                carImageObject['imgArray'] = [];
-                if (carImageObject.title == '权属声明/买卖协议') {
-
-                    if (this.carData.registrant_actual == 0) {
-                        this.titleData.push(carImageObject);
-                    }
-
-                } else {
-                    this.titleData.push(carImageObject);
-                }
-            }
-
-        } else if (this.carData.v_type == 2) {
-
+        if (this.carData.v_type == 2) {
             for (let carImageObject of this.props.carConfigurationData.new_car_pic) {
                 carImageObject['imgArray'] = [];
                 this.titleData.push(carImageObject);
             }
-
-
-        } else if (this.carData.v_type == 3) {
-
-            for (let carImageObject of this.props.carConfigurationData.imported_car_pic) {
-                carImageObject['imgArray'] = [];
-                this.titleData.push(carImageObject);
-            }
         }
-
 
         if (this.carData.pictures) {
             let imgas = JSON.parse(this.carData.pictures);
