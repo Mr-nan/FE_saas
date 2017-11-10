@@ -203,10 +203,35 @@ single_implementation(LLMapViewController)
      @property (nonatomic, strong) NSString* adCode;
      */
 
+    /*
+     address  详细地址
+     area_id  地区ID
+     area_name  地区名字
+     city_id  市区id
+     city_name  市区名字
+     code  短信验证码    【必填】
+     confirm_pwd  确认密码    【必填】
+     device_code      【必填】
+     invi_code  注册邀请码
+     merchant_name  商户名称    【必填】
+     phone  手机号    【必填】
+     province_id  定位省ID
+     province_name  省名
+     pwd  密码    【必填】
+     street_id  街道id
+     street_name  街道名称
+     user_name
+     */
     
     NSDictionary *dict = @{
-                           @"cityCode":result.cityCode,
                            @"address":result.address,
+                           @"city_id":result.cityCode,
+                           @"city_name":result.addressDetail.city,
+                           @"street_name":result.addressDetail.streetName,
+                           @"province_name":result.addressDetail.province,
+                           @"area_name":result.addressDetail.district,
+
+                           
                            };
 
     self.locationBlock(dict,nil);

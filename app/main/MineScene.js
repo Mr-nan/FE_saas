@@ -142,8 +142,9 @@ export default class MineScene extends BaseComponent {
 
 			this.renzhengData = {
 				RenZhengVisiable: back,//是否显示认证条目 true 显示
-				enterpriseRenZheng: false,//企业是否认证 true已经认证
-				personRenZheng: false,//个人是否认证    false 未认证
+				enterpriseRenZheng: 0,//企业是否认证 	0-> 未审核 1->审核中 2->通过  3->未通过
+				personRenZheng: 0,//个人是否认证  0-> 未审核 1->审核中 2->通过  3->未通过
+
 			};
 
 			this.authenOptions = {
@@ -166,6 +167,7 @@ export default class MineScene extends BaseComponent {
 			};
 
 			this.mColor = {
+				//0-> 未审核 1->审核中 2->通过  3->未通过
 				0: 'gray',
 				1: 'black',
 				2: 'black',
@@ -813,7 +815,9 @@ export default class MineScene extends BaseComponent {
 						style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
 
 						<TouchableOpacity onPress={() => {
-							if(this.renzhengData.enterpriseRenZheng == 2){
+							if(this.renzhengData.enterpriseRenZheng == 2  || this.renzhengData.enterpriseRenZheng == 1){
+							//0-> 未审核 1->审核中 2->通过  3->未通过
+
 
 							}else {
 								this._qiyerenzheng();
@@ -847,7 +851,8 @@ export default class MineScene extends BaseComponent {
 						       style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
 
 						<TouchableOpacity onPress={() => {
-							if(this.renzhengData.personRenZheng == 2){
+							if(this.renzhengData.personRenZheng == 2 || this.renzhengData.personRenZheng == 1){
+								//0-> 未审核 1->审核中 2->通过  3->未通过
 
 							}else {
                                 this._gerenrenzheng();
