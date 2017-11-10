@@ -45,9 +45,6 @@ export default class StockManagementScene extends BaseComponent {
 
     initFinish = () => {
         // this.loadCarConfigurationData();
-        if (this.props.carData) {
-            this.carData = this.props.carData;
-        }
         this.setState({
             renderPlaceholderOnly: /*value ? 'loading' :*/ 'success'
         });
@@ -396,6 +393,14 @@ export default class StockManagementScene extends BaseComponent {
             this.props.showToast('请输入正确的车架号');
             return;
         }
+        this.carData['auto_id'] = this.carData.id;
+        this.carData['auto_pid'] = this.carData.id;
+        this.carData['flag'] = '1';
+
+        if (!this.carData.pictures) {
+            this.carData.pictures = ""
+        }
+
 
         // if (!this.carData.manufacture) {
         //     this.props.showToast('选择出厂日期');
