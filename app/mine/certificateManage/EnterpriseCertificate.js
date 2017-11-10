@@ -111,33 +111,84 @@ export default class EnterpriseCertificate extends BaseComponent {
 
 			if (response.mycode == "1") {
 				let PersonResule = response.mjson.data;
+				if(PersonResule){
+					idHandle = PersonResule.company.legal_no_img_touch.file_id;
+					idcardfront = PersonResule.company.legal_no_img_fort.file_id;
+					idcardback = PersonResule.company.legal_no_img_back.file_id;
+					businessid = PersonResule.company.business_license_img.file_id;
+					city_ID = PersonResule.company.city_id;
+					prov_ID = PersonResule.company.prov_id;
 
-				idHandle = PersonResule.company.legal_no_img_touch.file_id;
-				idcardfront = PersonResule.company.legal_no_img_fort.file_id;
-				idcardback = PersonResule.company.legal_no_img_back.file_id;
-				businessid = PersonResule.company.business_license_img.file_id;
-				city_ID = PersonResule.company.city_id;
-				prov_ID = PersonResule.company.prov_id;
+					this.enterpriseData.zhuceren_IDNo = PersonResule.person.idcard_number;
+					this.enterpriseData.zhuceren_name = PersonResule.person.real_name;
 
-				this.enterpriseData.zhuceren_IDNo = PersonResule.person.idcard_number;
-				this.enterpriseData.zhuceren_name = PersonResule.person.real_name;
-
-				this.enterpriseData.enterprise_name = PersonResule.company.legal;
-				this.enterpriseData.enterprise_tel = PersonResule.company.contact_phone;
-				this.enterpriseData.enterprise_IDNo = PersonResule.company.legal_idno;
-				this.enterpriseData.businessLicense_IDNo = PersonResule.company.business_license;
-				this.enterpriseData.qiyemingcheng = PersonResule.company.enterprise_name;
+					this.enterpriseData.enterprise_name = PersonResule.company.legal;
+					this.enterpriseData.enterprise_tel = PersonResule.company.contact_phone;
+					this.enterpriseData.enterprise_IDNo = PersonResule.company.legal_idno;
+					this.enterpriseData.businessLicense_IDNo = PersonResule.company.business_license;
+					this.enterpriseData.qiyemingcheng = PersonResule.company.enterprise_name;
 
 
-				this.setState({
-					business_home: PersonResule.company.prov_name + ' ' + PersonResule.company.city_name,//商户所在地
-					enterpriseHandle: {uri: PersonResule.company.legal_no_img_touch.img_url},//个人手持照片
-					enterpriseFront: {uri: PersonResule.company.legal_no_img_fort.img_url},//个人正面照片
-					enterpriseBack: {uri: PersonResule.company.legal_no_img_back.img_url},//个人反面照片
-					businessLicense: {uri: PersonResule.company.business_license_img.img_url},//工作证照片
+					let shanghusuozaidi;
+					let handleSource;
+					let frontSource;
+					let backSource;
+					let licenseSource;
 
-					renderPlaceholderOnly: 'success'
-				});
+					//对商户所在地判空  进行界面显示处理
+					if(this.isEmpty(PersonResule.company.prov_name  + PersonResule.company.city_name) === true){
+						shanghusuozaidi = '请选择'
+					}else {
+						shanghusuozaidi =  PersonResule.company.prov_name + ' ' + PersonResule.company.city_name;
+					}
+
+					//对手持照片判空  进行界面显示处理
+					if(this.isEmpty(PersonResule.company.legal_no_img_touch.img_url) === true){
+						handleSource = null;
+					}else {
+						handleSource =  {uri: PersonResule.company.legal_no_img_touch.img_url};
+					}
+
+					//对正面照片判空  进行界面显示处理
+					if(this.isEmpty(PersonResule.company.legal_no_img_fort.img_url) === true){
+						frontSource = null;
+					}else {
+						frontSource =  {uri: PersonResule.company.legal_no_img_fort.img_url};
+					}
+
+					//对反面照片判空  进行界面显示处理
+					if(this.isEmpty(PersonResule.company.legal_no_img_back.img_url) === true){
+						backSource = null;
+					}else {
+						backSource =  {uri: PersonResule.company.legal_no_img_back.img_url};
+					}
+
+					//对营业执照 照片判空  进行界面显示处理
+					if(this.isEmpty(PersonResule.company.business_license_img.img_url) === true){
+						licenseSource = null;
+					}else {
+						licenseSource =  {uri: PersonResule.company.business_license_img.img_url};
+					}
+
+
+
+					this.setState({
+						business_home: shanghusuozaidi,//商户所在地
+						enterpriseHandle: handleSource,//个人手持照片
+						enterpriseFront: frontSource,//个人正面照片
+						enterpriseBack: backSource,//个人反面照片
+						businessLicense: licenseSource,//工作证照片
+
+						renderPlaceholderOnly: 'success'
+					});
+				}else {
+					this.setState({
+						renderPlaceholderOnly: 'success'
+					});
+
+				}
+
+
 
 
 			} else {
@@ -323,7 +374,9 @@ export default class EnterpriseCertificate extends BaseComponent {
 				if (response.mycode == "1") {
 
 					this.props.showToast("信息提交成功");
-					this.props.callBack();
+					if(this.props.callBack){
+						this.props.callBack();
+					}
 					this.backPage();
 				} else {
 					this.props.showToast(response.mjson.msg + "");
@@ -395,30 +448,6 @@ export default class EnterpriseCertificate extends BaseComponent {
 				</View>
 
 				{/*注册人view*/}
-				<View style={styles.itemBackground}>
-					<Text allowFontScaling={false} style={styles.leftFont}>注册人</Text>
-					<TextInput
-						ref={(input) => {
-                                this.zhucerenInput = input
-                            }}
-						style={[styles.inputHintFont, styles.fillSpace]}
-						underlineColorAndroid='transparent'
-						onChangeText={this._zhucerenChange}
-						placeholder='请输入'
-						defaultValue={this.enterpriseData.zhuceren_name}
-						placeholderTextColor={fontAndColor.COLORA1}
-						onFocus={()=>{
-                                       this.setState({
-                                           keyboardOffset:-Pixel.getPixel(300)
-                                       });
-                                   }}
-						onBlur={()=>{
-                                       this.setState({
-                                           keyboardOffset:Pixel.getPixel(64)
-                                       });
-                                   }}
-					/>
-				</View>
 				<View style={styles.splitItem}/>
 
 				{/*注册人身份证号view*/}
@@ -918,7 +947,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	splitItem: {
-		height: Pixel.getPixel(0.5),
+		height: Pixel.getPixel(1),
 		backgroundColor: fontAndColor.COLORA4,
 		marginLeft: Pixel.getPixel(15),
 		marginRight: Pixel.getPixel(15),

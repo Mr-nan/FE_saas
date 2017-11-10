@@ -530,7 +530,7 @@ export default class Register extends BaseComponent {
 	}
 
 	componentWillUnmount = () => {
-		NativeAppEventEmitter.remove()
+
 	}
 
 	//获取短信验证码

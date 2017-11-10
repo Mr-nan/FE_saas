@@ -60,8 +60,12 @@ RCT_REMAP_METHOD(Location,
       }else{
         
         resolve(@{
-                  @"cityCode":result[@"cityCode"],
                   @"address":result[@"address"],
+                  @"city_id":result[@"city_id"],
+                  @"city_name":result[@"city_name"],
+                  @"street_name":result[@"street_name"],
+                  @"province_name":result[@"province_name"],
+                  @"area_name":result[@"area_name"],
                   });
     
         

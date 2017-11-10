@@ -116,12 +116,62 @@ export default class EnterpriseCertificate extends BaseComponent {
 				prov_ID = PersonResule.prov_id;
 				this.enterpriseData.zhuceren_IDNo = PersonResule.idcard_number;
 				this.enterpriseData.zhuceren_name = PersonResule.real_name;
+
+
+
+
+
+
+
+				let shanghusuozaidi;
+				let handleSource;
+				let frontSource;
+				let backSource;
+				let licenseSource;
+
+				//对商户所在地判空  进行界面显示处理
+				if(this.isEmpty(PersonResule.prov_name  + PersonResule.city_name) === true){
+					shanghusuozaidi = '请选择'
+				}else {
+					shanghusuozaidi =  PersonResule.prov_name + ' ' + PersonResule.city_name;
+				}
+
+				//对手持照片判空  进行界面显示处理
+				if(this.isEmpty(PersonResule.idcard_img_touch.img_url) === true){
+					handleSource = null;
+				}else {
+					handleSource =  {uri: PersonResule.idcard_img_touch.img_url};
+				}
+
+				//对正面照片判空  进行界面显示处理
+				if(this.isEmpty(PersonResule.idcard_img_fort.img_url) === true){
+					frontSource = null;
+				}else {
+					frontSource =  {uri: PersonResule.idcard_img_fort.img_url};
+				}
+
+				//对反面照片判空  进行界面显示处理
+				if(this.isEmpty(PersonResule.idcard_img_back.img_url) === true){
+					backSource = null;
+				}else {
+					backSource =  {uri: PersonResule.idcard_img_back.img_url};
+				}
+
+				//对营业执照 照片判空  进行界面显示处理
+				if(this.isEmpty(PersonResule.work_img.img_url) === true){
+					licenseSource = null;
+				}else {
+					licenseSource =  {uri: PersonResule.work_img.img_url};
+				}
+
+
+
 				this.setState({
-					business_home: PersonResule.prov_name + ' ' + PersonResule.city_name,//商户所在地
-					enterpriseHandle: {uri: PersonResule.idcard_img_touch.img_url},//个人手持照片
-					enterpriseFront: {uri: PersonResule.idcard_img_fort.img_url},//个人正面照片
-					enterpriseBack: {uri: PersonResule.idcard_img_back.img_url},//个人反面照片
-					businessLicense: {uri: PersonResule.work_img.img_url},//工作证照片
+					business_home: shanghusuozaidi,//商户所在地
+					enterpriseHandle: handleSource,//个人手持照片
+					enterpriseFront: frontSource,//个人正面照片
+					enterpriseBack: backSource,//个人反面照片
+					businessLicense: licenseSource,//工作证照片
 
 					renderPlaceholderOnly: 'success'
 				});
