@@ -29,6 +29,7 @@ import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import * as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
+import StockManagementScene from "./carPublish/StockManagementScene";
 const Pixel = new PixelUtil();
 const ScreenWidth = Dimensions.get('window').width;
 
@@ -110,7 +111,15 @@ export default class CarNewNumberListScene extends BaseComponent {
     }
 
     pushNewCarScene=()=>{
+        let navigatorParams = {
 
+            name: "StockManagementScene",
+            component: StockManagementScene,
+            params: {
+                carData:this.props.carData,
+            }
+        };
+        this.props.toNextPage(navigatorParams);
     }
 }
 

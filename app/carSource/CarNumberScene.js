@@ -31,7 +31,7 @@ export default class CarNumberScene extends BaceComponent {
             <View style={styles.rootContainer}>
                 <NavigatorView switchoverType={this.state.switchoverType} switchoverAction={this.switchoverAction} backPage={this.backPage}/>
                 {
-                    this.state.switchoverType==0?(<CarNewNumberListScene showToast={this.props.showToast} showModal={this.props.showModal} toNextPage={this.toNextPage}/>):
+                    this.state.switchoverType==0?(<CarNewNumberListScene showToast={this.props.showToast} showModal={this.props.showModal} toNextPage={this.toNextPage} carData={this.props.carData}/>):
                         (<CarUserNumberListScene showToast={this.props.showToast} showModal={this.props.showModal} toNextPage={this.toNextPage}/>)
                 }
             </View>)

@@ -131,6 +131,7 @@ export default class CarMySourceScene extends BaceComponent {
             car_status: '1',
             page: 1,
             row: 1,
+            type:2,
         }).then((response) => {
             let data =response.mjson.data.total;
             this.setState({
@@ -309,7 +310,7 @@ export default class CarMySourceScene extends BaceComponent {
                 name: "CarNumberScene",
                 component: CarNumberScene,
                 params: {
-
+                    carData:this.carData,
                     defaultType: 0,
                 }
             };
@@ -782,9 +783,10 @@ class MyCarSourceUpperFrameView extends BaceComponent {
         let url = AppUrls.CAR_USER_CAR;
         carUpperFramePage = 1;
         request(url, 'post', {
-            car_status: '4',
+            car_status: '1',
             page: carUpperFramePage,
             row: 10,
+            type:2,
 
         }).then((response) => {
 
@@ -836,6 +838,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
             car_status: '1',
             page: carUpperFramePage,
             row: 10,
+            type:2,
 
         }).then((response) => {
             carUpperFrameStatus = response.mjson.data.status;
@@ -1002,9 +1005,10 @@ class MyCarSourceDropFrameView extends BaceComponent {
         let url = AppUrls.CAR_USER_CAR;
         carDropFramePage = 1;
         request(url, 'post', {
-            car_status: '4',
+            car_status: '2',
             page: carDropFramePage,
             row: 10,
+            type:2,
 
         }).then((response) => {
 
@@ -1048,6 +1052,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
             car_status: '2',
             page: carDropFramePage,
             row: 10,
+            type:2,
 
         }).then((response) => {
 
@@ -1184,6 +1189,7 @@ class MyCarSourceAuditView extends BaceComponent {
             car_status: '3',
             page: carAuditPage,
             row: 10,
+            type:2,
 
         }).then((response) => {
 
@@ -1225,6 +1231,7 @@ class MyCarSourceAuditView extends BaceComponent {
             car_status: '3',
             page: carAuditPage,
             row: 10,
+            type:2,
 
         }).then((response) => {
 
@@ -1495,7 +1502,9 @@ class EditCarPriceView extends Component {
 
     isShowView=(show,carData)=>{
 
-          if(carData){
+        console.log('============',carData.stock);
+
+        if(carData){
               this.carNumber = carData.stock;
               this.carPrice = carData.dealer_price;
           }
@@ -1525,10 +1534,10 @@ class EditCarPriceView extends Component {
                                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>修改在售车辆数</Text>
                                 <TextInput style={styles.textInput}
                                            keyboardType="numeric"
-                                           autoFocus={true}
+                                           autoFocus={false}
                                            maxLength={7}
                                            onChangeText={(text)=>{this.carNumber = text}}
-                                           defaultValue={this.state.carData.stock}
+                                           defaultValue={String(this.state.carData.stock)}
                                 />
                             </View>
                             <View style={styles.editCarInputView}>

@@ -56,6 +56,7 @@ export default class StockManagementScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+
         this.results = [];
         this.enterpriseList = [];
         this.scanType = [
@@ -64,7 +65,7 @@ export default class StockManagementScene extends BaseComponent {
         ];
         this.modelData = [];
         this.modelInfo = {};
-        this.carData = {'v_type': 1};
+        this.carData = this.props.carData;
         this.titleData1 = [
             [
                 {

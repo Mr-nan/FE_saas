@@ -134,6 +134,23 @@ export default class CarUpImageScene extends BaseComponent{
           this.titleData = [];
           this.results = [];
           this.carData = this.props.carData;
+
+          for(let carImageObject of this.props.carConfigurationData.used_car_pic){
+              carImageObject['imgArray'] = [];
+              if(carImageObject.title == '权属声明/买卖协议'){
+
+                  if(this.carData.registrant_actual == 0)
+                  {
+                      this.titleData.push(carImageObject);
+                  }
+
+              }else {
+                  this.titleData.push(carImageObject);
+              }
+          }
+
+          /*===========之前的逻辑============================*/
+          /*
           if(this.carData.v_type==1){
 
               for(let carImageObject of this.props.carConfigurationData.used_car_pic){
@@ -165,6 +182,7 @@ export default class CarUpImageScene extends BaseComponent{
                   this.titleData.push(carImageObject);
               }
           }
+          */
 
 
           if(this.carData.pictures){

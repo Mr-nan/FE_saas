@@ -404,285 +404,9 @@ export default class CarPublishSecondScene extends BaseComponent {
 
         ];
 
-        this.titleData2 = [
-            [
-                {
-                    title: '过户次数',
-                    isShowTag: true,
-                    value: '0',
-                    isShowTail: false,
-                },
-                // {
-                //     title:'车牌号',
-                //     isShowTag:true,
-                //     isShowTail:true,
-                //     value:this.carData.plate_number?this.carData.plate_number:'请选择'
-                // },
-                {
-                    title: '表显里程',
-                    isShowTag: true,
-                    isShowTail: false,
-                    value: '0 万公里',
-                },
 
-            ],
-            [
-                {
-                    title: '分销批发价',
-                    subTitle: '展示给其他车商看',
-                    isShowTag: true,
-                    isShowTail: true,
-                    tailView: () => {
-                        return (
-                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <TextInput style={styles.textInput}
-                                           ref={(ref)=>{this.dealerPriceInput = ref}}
-                                           placeholder='请输入'
-                                           keyboardType={'numeric'}
-                                           maxLength={7}
-                                           onFocus={()=>{
-                                           this.setCurrentPy(this.dealerPriceInput);
-                                       }}
-                                           underlineColorAndroid='transparent'
-                                           defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
-                                           onEndEditing={()=>{this.saveCarData();}}
-                                           onChangeText={(text)=>{
-                                            if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,4);
-                                            }
-                                           let moneyStr = this.chkPrice(text);
-                                           this.carData['dealer_price']= moneyStr;
-                                           this.dealerPriceInput.setNativeProps({
-                                               text: moneyStr,
-                                           });
-                                       }}/>
-                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
-                            </View>)
-                    }
-                },
-                {
-                    title: '圈子内的分销批发价',
-                    subTitle: '展示给其他圈友看',
-                    isShowTag: false,
-                    isShowTail: false,
-                    tailView: () => {
-                        return (
-                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <TextInput style={styles.textInput}
-                                           ref={(ref)=>{this.dealer_price_circle = ref}}
-                                           placeholder='请输入'
-                                           keyboardType={'numeric'}
-                                           maxLength={7}
-                                           onFocus={()=>{
-                                           this.setCurrentPy(this.dealer_price_circle);
-                                       }}
-                                           underlineColorAndroid='transparent'
-                                           defaultValue={this.carData.dealer_price_circle?this.carMoneyChange(this.carData.dealer_price_circle):''}
-                                           onEndEditing={()=>{this.saveCarData();}}
-                                           onChangeText={(text)=>{
-                                            if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,4);
-                                            }
-                                           let moneyStr = this.chkPrice(text);
-                                           this.carData['dealer_price_circle']= moneyStr;
-                                           this.dealer_price_circle.setNativeProps({
-                                               text: moneyStr,
-                                           });
-                                       }}/>
-                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
-                            </View>)
-                    }
-                },
-                {
-                    title: '采购价',
-                    subTitle: '仅供车商老板、采购、财务查看',
-                    isShowTag: false,
-                    isShowTail: false,
-                    tailView: () => {
-                        return (
-                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <TextInput style={styles.textInput}
-                                           ref={(ref)=>{this.buying_price = ref}}
-                                           placeholder='请输入'
-                                           keyboardType={'numeric'}
-                                           maxLength={7}
-                                           onFocus={()=>{
-                                           this.setCurrentPy(this.buying_price);
-                                       }}
-                                           underlineColorAndroid='transparent'
-                                           defaultValue={this.carData.buying_price?this.carMoneyChange(this.carData.buying_price):''}
-                                           onEndEditing={()=>{this.saveCarData();}}
-                                           onChangeText={(text)=>{
-                                            if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,4);
-                                            }
-                                           let moneyStr = this.chkPrice(text);
-                                           this.carData['buying_price']= moneyStr;
-                                           this.buying_price.setNativeProps({
-                                               text: moneyStr,
-                                           });
-                                       }}/>
-                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
-                            </View>)
-                    }
-                },
-                {
-                    title: '网上零售价',
-                    subTitle: '展示给个人消费者看',
-                    isShowTag: true,
-                    isShowTail: true,
-                    tailView: () => {
-                        return (
-                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <TextInput style={styles.textInput}
-                                           ref={(ref)=>{this.online_retail_price = ref}}
-                                           placeholder='请输入'
-                                           keyboardType={'numeric'}
-                                           maxLength={7}
-                                           onFocus={()=>{
-                                           this.setCurrentPy(this.online_retail_price);
-                                       }}
-                                           underlineColorAndroid='transparent'
-                                           defaultValue={this.carData.online_retail_price?this.carMoneyChange(this.carData.online_retail_price):''}
-                                           onEndEditing={()=>{this.saveCarData();}}
-                                           onChangeText={(text)=>{
-
-                                           if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,4);
-                                            }
-                                           let moneyStr = this.chkPrice(text);
-                                           this.carData['online_retail_price']= moneyStr;
-                                           this.online_retail_price.setNativeProps({
-                                               text: moneyStr,
-                                           });
-                                       }}/>
-                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
-                            </View>)
-                    }
-                },
-                {
-                    title: '销售底价',
-                    subTitle: '仅供内部销售人员查看',
-                    isShowTag: false,
-                    isShowTail: true,
-                    tailView: () => {
-                        return (
-                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <TextInput style={styles.textInput}
-                                           placeholder='请输入'
-                                           keyboardType={'numeric'}
-                                           maxLength={7}
-                                           underlineColorAndroid='transparent'
-                                           ref={(ref)=>{this.lowPriceInput = ref}}
-                                           onFocus={()=>{
-                                           this.setCurrentPy(this.lowPriceInput);
-                                       }}
-                                           defaultValue={this.carData.low_price?this.carMoneyChange(this.carData.low_price):''}
-                                           onEndEditing={()=>{this.saveCarData();}}
-                                           onChangeText={(text)=>{
-                                               if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,4);
-                                            }
-                                           let moneyStr = this.chkPrice(text);
-                                           this.carData['low_price']= moneyStr;
-                                           this.lowPriceInput.setNativeProps({
-                                               text: moneyStr,
-                                           });
-                                       }}/>
-                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
-                            </View>)
-                    }
-                },
-                {
-                    title: '到店零售价',
-                    subTitle: '销售人员 对到店个人消费者报价',
-                    isShowTag: false,
-                    isShowTail: true,
-                    tailView: () => {
-                        return (
-                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <TextInput style={styles.textInput}
-                                           placeholder='请输入'
-                                           keyboardType={'numeric'}
-                                           maxLength={7}
-                                           underlineColorAndroid='transparent'
-                                           ref={(ref)=>{this.retail_price_store = ref}}
-                                           onFocus={()=>{
-                                           this.setCurrentPy(this.retail_price_store);
-                                       }}
-                                           defaultValue={this.carData.retail_price_store?this.carMoneyChange(this.carData.retail_price_store):''}
-                                           onEndEditing={()=>{this.saveCarData();}}
-                                           onChangeText={(text)=>{
-                                               if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,4);
-                                            }
-                                           let moneyStr = this.chkPrice(text);
-                                           this.carData['retail_price_store']= moneyStr;
-                                           this.retail_price_store.setNativeProps({
-                                               text: moneyStr,
-                                           });
-                                       }}/>
-                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
-                            </View>)
-                    }
-                },
-                {
-                    title: '评估师价格-对平台交易',
-                    subTitle: '此项在申请评估服务后由评估师填写',
-                    isShowTag: false,
-                    isShowTail: true,
-                    tailView: () => {
-                        return (
-                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <Text allowFontScaling={false}  style={styles.textInputTitle}></Text>
-                            </View>)
-                    }
-                },
-                {
-                    title: '评估师价格-对金融业务',
-                    subTitle: '此项在申请金融服务后由评估师填写',
-                    isShowTag: false,
-                    isShowTail: true,
-                    tailView: () => {
-                        return (
-                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <Text allowFontScaling={false}  style={styles.textInputTitle}></Text>
-                            </View>)
-                    }
-                },
-            ],
-            [{
-                title: '车辆所在地',
-                isShowTag: true,
-                value: this.carData.city_name ? this.carData.city_name : '请选择',
-                isShowTail: true,
-            },
-                {
-                    title: '车况描述',
-                    isShowTag: false,
-                    isShowTail: false,
-                    tailView: () => {
-                        return (
-                            <TextInput
-                                ref={(ref)=>{this.describeInput = ref}}
-                                style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(100),height:Pixel.getPixel(50)}]}
-                                placeholder='请填写'
-                                maxLength={50}
-                                onFocus={()=>{
-                                    this.setCurrentPy(this.describeInput)
-                                }}
-                                underlineColorAndroid='transparent'
-                                defaultValue={this.carData.describe?this.carMoneyChange(this.carData.describe):''}
-                                onEndEditing={()=>{this.saveCarData();}}
-                                onChangeText={(text)=>{this.carData['describe']=text}}/>
-                        )
-                    }
-                },
-            ]
-
-        ];
         this.state = {
-            titleData: this.props.carData.v_type == 1 ? this.titleData1 : this.titleData2,
+            titleData:this.titleData1,
         };
     }
 
@@ -804,16 +528,9 @@ export default class CarPublishSecondScene extends BaseComponent {
      * 根据不同车辆类型赋值不同可添字段
      **/
     updateUI = () => {
-
-        if (this.props.carData.v_type == 1) {
-            this.setState({
-                titleData: this.titleData1,
-            });
-        } else {
-            this.setState({
-                titleData: this.titleData2,
-            });
-        }
+        this.setState({
+            titleData: this.titleData1,
+        });
         this.saveCarData();
 
     }
@@ -1015,7 +732,6 @@ export default class CarPublishSecondScene extends BaseComponent {
      **/
     _checkedCarlicenseTagClick = (title) => {
         this.titleData1[0][2].value = title;
-        this.titleData2[0][1].value = title;
         this.carData['plate_number'] = title;
         this.updateUI();
     }
@@ -1046,7 +762,6 @@ export default class CarPublishSecondScene extends BaseComponent {
 
         //console.log(city);
         this.titleData1[2][0].value = city.city_name;
-        this.titleData2[2][0].value = city.city_name;
         this.carData['city_name'] = city.city_name;
         this.carData['city_id'] = city.city_id;
         this.carData['provice_id'] = city.provice_id;

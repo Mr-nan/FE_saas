@@ -122,6 +122,7 @@ export default class CarMySourceScene extends BaceComponent {
             car_status: '1',
             page: 1,
             row: 1,
+            type:1,
         }).then((response) => {
             let data =response.mjson.data.total;
             this.setState({
@@ -771,6 +772,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
             car_status: '1',
             page: carUpperFramePage,
             row: 10,
+            type:1,
 
         }).then((response) => {
 
@@ -822,6 +824,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
             car_status: '1',
             page: carUpperFramePage,
             row: 10,
+            type:1,
 
         }).then((response) => {
             carUpperFrameStatus = response.mjson.data.status;
@@ -988,9 +991,10 @@ class MyCarSourceDropFrameView extends BaceComponent {
         let url = AppUrls.CAR_USER_CAR;
         carDropFramePage = 1;
         request(url, 'post', {
-            car_status: '4',
+            car_status: '2',
             page: carDropFramePage,
             row: 10,
+            type:1,
 
         }).then((response) => {
 
@@ -1031,9 +1035,10 @@ class MyCarSourceDropFrameView extends BaceComponent {
         let url = AppUrls.CAR_USER_CAR;
         carDropFramePage += 1;
         request(url, 'post', {
-            car_status: '4',
+            car_status: '2',
             page: carDropFramePage,
             row: 10,
+            type:1,
 
         }).then((response) => {
 
@@ -1167,9 +1172,10 @@ class MyCarSourceAuditView extends BaceComponent {
         carAuditPage = 1;
         request(url, 'post', {
 
-            car_status: '5',
+            car_status: '3',
             page: carAuditPage,
             row: 10,
+            type:1,
 
         }).then((response) => {
 
@@ -1208,9 +1214,10 @@ class MyCarSourceAuditView extends BaceComponent {
         let url = AppUrls.CAR_USER_CAR;
         carAuditPage += 1;
         request(url, 'post', {
-            car_status: '5',
+            car_status: '3',
             page: carAuditPage,
             row: 10,
+            type:1,
 
         }).then((response) => {
 

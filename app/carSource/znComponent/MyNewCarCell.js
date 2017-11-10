@@ -102,7 +102,7 @@ export default class MyCarCell extends Component {
                                     <TouchableOpacity style={[styles.cellSubContentView,this.props.carPriceEditClick && {backgroundColor:fontAndColor.COLORA3,paddingHorizontal:Pixel.getPixel(10)}]} activeOpacity={1}
                                                       onPress={()=>{this.props.carPriceEditClick ? this.props.carPriceEditClick(carCellData) : this.cellClick(carCellData)}}>
                                         <View>
-                                            <Text allowFontScaling={false} numberOfLines={1}  style={[styles.subTitleText]}>{carCellData.car_color?(carCellData.car_color.split("|")[0]+'|'):''+carCellData.stock+'辆'}</Text>
+                                            <Text allowFontScaling={false} numberOfLines={1}  style={[styles.subTitleText]}>{(carCellData.car_color?(carCellData.car_color.split("|")[0]+' | '):'')+String(carCellData.stock)+'辆'}</Text>
                                             {
                                                 (carCellData.dealer_price>0) &&
                                                 (<Text allowFontScaling={false}  style={[styles.carPriceText, {marginTop:Pixel.getPixel(5)}]}>{(this.carMoneyChange(carCellData.dealer_price))}万</Text>)

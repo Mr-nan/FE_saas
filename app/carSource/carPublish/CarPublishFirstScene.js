@@ -116,12 +116,6 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.titleData1=[
             [
                 {
-                    title:'车辆类型',
-                    isShowTag:false,
-                    isShowTail:true,
-                    selectDict:{current:this.carType,data:[{title:'二手车',value:1},{title:'新车',value:2},{title:'平行进口车',value:3}]},
-                },
-                {
                     title:'车架号',
                     isShowTag:true,
                     subTitle:"",
@@ -247,137 +241,6 @@ export default class CarPublishFirstScene extends BaseComponent{
             ]
 
         ];
-        this.titleData2 = [
-            [
-                {
-                    title:'车辆类型',
-                    isShowTag:false,
-                    value:'扫描',
-                    isShowTail:true,
-                    selectDict:{current:this.carType,data:[{title:'二手车',value:1},{title:'新车',value:2},{title:'平行进口车',value:3}]},
-                },
-                {
-                    title:'车架号',
-                    subTitle:"",
-                    isShowTag:true,
-                    tailView:()=>{
-                        return(
-                            <View style={{flexDirection:'row', alignItems:'center'}}>
-                                <TextInput style={styles.textInput}
-                                           ref={(input) => {this.vinInput = input}}
-                                           placeholder='输入车架号'
-                                           underlineColorAndroid='transparent'
-                                           maxLength={17}
-                                           editable={this.props.carID?false:true}
-                                           onChangeText={this._onVinChange}
-                                           onFocus={()=>{
-                                                 this.setCurrentPy('vinInput');
-                                             }}
-                                           placeholderTextColor={fontAndColor.COLORA4}
-                                           keyboardType={'ascii-capable'}
-                                           placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                                />
-                                {
-                                    !this.props.carID &&(<TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
-                                        <Image style={styles.scanImage} source={scanImg}/>
-                                        <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
-                                    </TouchableOpacity>)
-                                }
-                            </View>
-                        )
-                    }
-                },
-                {
-                    title:'车型',
-                    isShowTag:true,
-                    value:'请选择',
-                    isShowTail:true,
-                },
-                {
-                    title:'排量',
-                    isShowTag:true,
-                    isShowTail:false,
-                    tailView:()=>{
-                        return(
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder='请输入'
-                                onChangeText={(text)=>{
-                                      this.carData['displacement']=text}
-                                  }
-                                ref={(input) => {this.displacementInput = input}}
-                                underlineColorAndroid='transparent'
-                                onEndEditing={()=>{this.saveCarData();}}
-                                onFocus={()=>{
-                                      this.setCurrentPy('displacementInput');
-                                  }}
-                                placeholderTextColor={fontAndColor.COLORA4}
-                                placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                            />
-                        )
-                    }
-                },
-                {
-                    title:'排放标准',
-                    isShowTag:true,
-                    value:'请选择',
-                    isShowTail:true,
-                },
-                {
-                    title:'车身颜色',
-                    isShowTag:true,
-                    value:'请选择',
-                    isShowTail:true,
-                },{
-                title:'内饰颜色',
-                isShowTag:true,
-                value:'请选择',
-                isShowTail:true,
-            },
-            ],
-            [
-                {
-                    title:'出厂日期',
-                    isShowTag:true,
-                    value:'请选择',
-                    isShowTail:true,
-                },
-            ],
-            [
-                {
-                    title:'标准配置',
-                    isShowTag:false,
-                    value:'查看',
-                    isShowTail:true,
-                },
-                {
-                    title:'配置改装说明',
-                    isShowTag:false,
-                    tailView:()=>{
-                        return(
-                            <TextInput
-                                style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
-                                ref={(input) => {this.instructionsInput = input}}
-                                placeholder='请填写'
-                                maxLength={50}
-                                underlineColorAndroid='transparent'
-                                onChangeText={(text)=>{
-                                      this.carData['modification_instructions']=text}
-                                  }
-                                onEndEditing={()=>{this.saveCarData();}}
-                                onFocus={()=>{
-                                      this.setCurrentPy('instructionsInput');
-                                  }}
-                                placeholderTextColor={fontAndColor.COLORA4}
-                                placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                            />
-                        )
-                    }
-                },
-            ]
-
-        ];
-
         this.state = {
             titleData:this.titleData1,
             isDateTimePickerVisible:false,
@@ -565,12 +428,6 @@ export default class CarPublishFirstScene extends BaseComponent{
     }
 
     setCarData=()=>{
-        if(this.carData.v_type!==1){
-            this.titleData1[0][0].selectDict.current = this.carData.v_type == 2?'新车':'平行进口车';
-            this.titleData2[0][0].selectDict.current = this.carData.v_type == 2?'新车':'平行进口车';
-            this.carType=this.titleData1[0][0].selectDict.current;
-            this.refs.cellSelectView.setCurrentChecked(this.carType);
-        }
 
         if(this.carData.vin){
             this.vinInput.setNativeProps({
@@ -582,8 +439,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                 this._onVinChange(this.carData.vin);
             }
         }
-        this.titleData1[0][2].value = this.carData.model_name?this.carData.model_name:'请选择';
-        this.titleData2[0][2].value = this.carData.model_name?this.carData.model_name:'请选择';
+        this.titleData1[0][1].value = this.carData.model_name?this.carData.model_name:'请选择';
 
         if(this.carData.displacement){
             this.displacementInput.setNativeProps({
@@ -591,18 +447,10 @@ export default class CarPublishFirstScene extends BaseComponent{
             });
         }
 
-        this.titleData1[0][4].value = this.carData.emission_standards?this.carData.emission_standards:'请选择';
-        this.titleData2[0][4].value = this.carData.emission_standards?this.carData.emission_standards:'请选择';
-
-        this.titleData1[0][5].value = this.carData.car_color?this.carData.car_color.split("|")[0]:'请选择';
-        this.titleData2[0][5].value = this.carData.car_color?this.carData.car_color.split("|")[0]:'请选择';
-
-        this.titleData1[0][6].value = this.carData.trim_color?this.carData.trim_color.split("|")[0]:'请选择';
-        this.titleData2[0][6].value = this.carData.trim_color?this.carData.trim_color.split("|")[0]:'请选择';
-
+        this.titleData1[0][3].value = this.carData.emission_standards?this.carData.emission_standards:'请选择';
+        this.titleData1[0][4].value = this.carData.car_color?this.carData.car_color.split("|")[0]:'请选择';
+        this.titleData1[0][5].value = this.carData.trim_color?this.carData.trim_color.split("|")[0]:'请选择';
         this.titleData1[1][0].value = this.carData.manufacture?this.carData.manufacture:'请选择';
-        this.titleData2[1][0].value = this.carData.manufacture?this.carData.manufacture:'请选择';
-
         this.titleData1[1][1].value = this.carData.init_reg?this.carData.init_reg:'请选择';
 
         if(this.carData.modification_instructions){
@@ -610,16 +458,9 @@ export default class CarPublishFirstScene extends BaseComponent{
                 text: this.carData.modification_instructions
             });
         }
-
-        if(this.carType=='二手车'){
-            this.setState({
-                titleData:this.titleData1,
-            });
-        }else {
-            this.setState({
-                titleData:this.titleData2,
-            });
-        }
+        this.setState({
+            titleData:this.titleData1,
+        });
     }
 
 
@@ -749,7 +590,6 @@ export default class CarPublishFirstScene extends BaseComponent{
         if(this.type === 'factory'){
 
             this.titleData1[1][0].value = d;
-            this.titleData2[1][0].value = d;
             this.carData['manufacture']=d;
 
         }else{
@@ -798,14 +638,10 @@ export default class CarPublishFirstScene extends BaseComponent{
             }
         }else if (type==0){
 
-            this.titleData1[0][2].value = this.modelData[index].model_name;
-            this.titleData1[0][4].value = this.modelData[index].model_emission_standard;
+            this.titleData1[0][1].value = this.modelData[index].model_name;
+            this.titleData1[0][3].value = this.modelData[index].model_emission_standard;
             this.titleData1[1][0].value = this.modelData[index].model_year+'-06-01';
             this.titleData1[1][1].value = this.modelData[index].model_year+'-06-01';
-
-            this.titleData2[0][2].value = this.modelData[index].model_name;
-            this.titleData2[0][4].value = this.modelData[index].model_emission_standard;
-            this.titleData2[1][0].value = this.modelData[index].model_year+'-06-01';
 
             this.carData['manufacture'] = this.modelData[index].model_year+'-06-01';
             this.carData['model_id'] = this.modelData[index].model_id;
@@ -845,16 +681,11 @@ export default class CarPublishFirstScene extends BaseComponent{
                 (response) => {
                     if (response.mycode === 1 &&  response.mjson.data.valid)
                     {
-                        this.titleData1[0][1].subTitle='';
-                        this.titleData2[0][1].subTitle='';
-                        this.titleData1[0][2].value = '请选择';
-                        this.titleData1[0][4].value = '请选择';
+                        this.titleData1[0][0].subTitle='';
+                        this.titleData1[0][1].value = '请选择';
+                        this.titleData1[0][3].value = '请选择';
                         this.titleData1[1][0].value = '请选择';
                         this.titleData1[1][1].value = '请选择';
-
-                        this.titleData2[0][2].value = '请选择';
-                        this.titleData2[0][4].value = '请选择';
-                        this.titleData2[1][0].value = '请选择';
 
                         this.carData['vin'] = text;
                         this.carData['model_id'] = '';
@@ -878,14 +709,10 @@ export default class CarPublishFirstScene extends BaseComponent{
                                         this.modelInfo['model_year'] = rd[0].model_year;
                                         this.modelInfo['model_name'] = rd[0].model_name;
 
-                                        this.titleData1[0][2].value = rd[0].model_name;
-                                        this.titleData1[0][4].value = rd[0].model_emission_standard;
+                                        this.titleData1[0][1].value = rd[0].model_name;
+                                        this.titleData1[0][3].value = rd[0].model_emission_standard;
                                         this.titleData1[1][0].value = rd[0].model_year+'-06-01';
                                         this.titleData1[1][1].value = rd[0].model_year+'-06-01';
-
-                                        this.titleData2[0][2].value = rd[0].model_name;
-                                        this.titleData2[0][4].value = rd[0].model_emission_standard;
-                                        this.titleData2[1][0].value = rd[0].model_year+'-06-01';
 
                                         this.carData['manufacture'] = rd[0].model_year+'-06-01';
                                         if(this.carType=='二手车')
@@ -932,16 +759,14 @@ export default class CarPublishFirstScene extends BaseComponent{
 
                     } else {
                         this._closeLoading();
-                        this.titleData1[0][1].subTitle='校验失败';
-                        this.titleData2[0][1].subTitle='校验失败';
+                        this.titleData1[0][0].subTitle='校验失败';
                         this.carData['vin'] = '';
                         this.upTitleData();
                     }
                 },
                 (error) => {
                     this._closeLoading();
-                    this.titleData1[0][1].subTitle='校验失败';
-                    this.titleData2[0][1].subTitle='校验失败';
+                    this.titleData1[0][0].subTitle='校验失败';
                     this.carData['vin'] = '';
                     this.upTitleData();
                 }
@@ -953,17 +778,9 @@ export default class CarPublishFirstScene extends BaseComponent{
 
 
     upTitleData=()=>{
-
-        if(this.carType=='二手车'){
-            this.setState({
-                titleData:this.titleData1,
-            });
-        }else {
-            this.setState({
-                titleData:this.titleData2,
-            });
-        }
-
+        this.setState({
+            titleData:this.titleData1,
+        });
         this.saveCarData();
     };
 
@@ -1011,15 +828,11 @@ export default class CarPublishFirstScene extends BaseComponent{
             });
         }
         this.titleData1[0][1].subTitle='';
-        this.titleData2[0][1].subTitle='';
         this.titleData1[0][2].value = carObject.model_name;
-        this.titleData1[0][4].value = carObject.discharge_standard;
+        this.titleData1[0][3].value = carObject.discharge_standard;
         this.titleData1[1][0].value = carObject.model_year+'-06-01';
         this.titleData1[1][1].value = carObject.model_year+'-06-01';
 
-        this.titleData2[0][2].value = carObject.model_name;
-        this.titleData2[0][4].value = carObject.discharge_standard;
-        this.titleData2[1][0].value = carObject.model_year+'-06-01';
 
         this.carData['manufacture'] = carObject.model_year+'-06-01';
         if(this.carType =='二手车')
@@ -1049,7 +862,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             component: CarDischargeScene,
             params: {
                 checkedCarDischargeClick:this._checkedCarDischargeClick,
-                currentChecked:this.titleData1[0][4].value,
+                currentChecked:this.titleData1[0][3].value,
                 DischargeData:this.carConfigurationData.auto_es,
             }
         };
@@ -1059,8 +872,7 @@ export default class CarPublishFirstScene extends BaseComponent{
     }
 
     _checkedCarDischargeClick=(dischargeObject)=>{
-        this.titleData1[0][4].value = dischargeObject.title;
-        this.titleData2[0][4].value = dischargeObject.title;
+        this.titleData1[0][3].value = dischargeObject.title;
         this.carData['emission_standards'] = dischargeObject.title;
         this.upTitleData();
     }
@@ -1072,7 +884,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             component:CarBodyColorScene,
             params: {
                 checkedCarBodyColorClick:this._checkedCarBodyColorClick,
-                currentChecked:this.titleData1[0][5].value,
+                currentChecked:this.titleData1[0][4].value,
                 carBodyColorData:this.carConfigurationData.auto_body_color,
             }
         };
@@ -1082,9 +894,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     _checkedCarBodyColorClick=(carBodyColorSceneObject)=>{
 
-        this.titleData1[0][5].value = carBodyColorSceneObject.title;
-        this.titleData2[0][5].value = carBodyColorSceneObject.title;
-
+        this.titleData1[0][4].value = carBodyColorSceneObject.title;
         this.carData['car_color'] = carBodyColorSceneObject.title+'|'+carBodyColorSceneObject.value;
         this.upTitleData();
     }
@@ -1096,7 +906,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             component: CarInwardColorScene,
             params: {
                 checkedCarInwardColorClick:this._checkedCarInwardColorClick,
-                currentChecked:this.titleData1[0][6].value,
+                currentChecked:this.titleData1[0][5].value,
                 carInwardColor:this.carConfigurationData.auto_interior_color,
             }
         };
@@ -1107,8 +917,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     _checkedCarInwardColorClick=(carInwardSceneObject)=>{
 
-        this.titleData1[0][6].value = carInwardSceneObject.title;
-        this.titleData2[0][6].value = carInwardSceneObject.title;
+        this.titleData1[0][5].value = carInwardSceneObject.title;
         this.carData['trim_color']=carInwardSceneObject.title+'|'+carInwardSceneObject.value;
         this.upTitleData();
     }
