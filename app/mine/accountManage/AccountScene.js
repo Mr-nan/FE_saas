@@ -150,11 +150,11 @@ export  default class AccountScene extends BaseComponent {
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
                     removeClippedSubviews={false}
-                    style={{marginTop: Pixel.getTitlePixel(64),marginBottom:Pixel.getPixel(45)}}
+                    style={{marginTop: Pixel.getTitlePixel(64),marginBottom:Pixel.getPixel(1)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderHeader={this._renderHeader}
-                    renderSeparator={this._renderSeparator}
+                    //renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                     refreshControl={
                                     <RefreshControl
@@ -166,7 +166,7 @@ export  default class AccountScene extends BaseComponent {
                                 }
                 />
                 <View style={{width:width,height:Pixel.getPixel(44),backgroundColor: fontAndColor.COLORA3,
-                flexDirection:'row',position: 'absolute',bottom: 0}}>
+                flexDirection:'row',}}>
                     <TouchableOpacity onPress={()=>{
                         this.toNextPage({name:'WithdrawalsScene',
                         component:WithdrawalsScene,params:{callBack:()=>{
@@ -200,7 +200,7 @@ export  default class AccountScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         if (movie == '1') {
-            return (<View></View>);
+            return (<View />);
         } else {
             return (
                 <View style={{width:width,height:Pixel.getPixel(72),backgroundColor: '#fff',flexDirection: 'row',

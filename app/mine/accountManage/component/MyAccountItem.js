@@ -361,7 +361,8 @@ export default class MyAccountItem extends BaseComponent {
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(15),
                             color: fontAndColor.COLORA0
-                        }}>2017-10-10</Text>
+                        }}>{!this.state.data.update_time || this.state.data.update_time.substr(0, 10) === '0000-00-00' ?
+                            '****-**-**' : this.state.data.update_time.substr(0, 10)}</Text>
                     </View>
                 </Image>
             </View>

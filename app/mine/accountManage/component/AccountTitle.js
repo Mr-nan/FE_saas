@@ -34,6 +34,7 @@ export  default class AccountTitle extends PureComponent {
     constructor(props) {
         super(props);
         list = [];
+        list.push(new listValue('开通白条账户', require('../../../../images/mainImage/Transfer.png'), this.props.transfer));
         list.push(new listValue('转账', require('../../../../images/mainImage/Transfer.png'), this.props.transfer));
         list.push(new listValue('银行卡', require('../../../../images/mainImage/bankCard.png'), this.props.bankCard));
         list.push(new listValue('账户流水', require('../../../../images/mainImage/flow.png'), this.props.flow));
@@ -102,8 +103,8 @@ export  default class AccountTitle extends PureComponent {
             </View>
         );*/
         return (
-            <View style={{width:width,height:Pixel.getPixel(584),backgroundColor:fontAndColor.COLORA3}}>
-                <View style={{width:width,height:Pixel.getPixel(211),backgroundColor:fontAndColor.COLORB0}}>
+            <View style={{width:width,height:Pixel.getPixel(665),backgroundColor:fontAndColor.COLORA3}}>
+                <View style={{width:width,height:Pixel.getPixel(271),backgroundColor:fontAndColor.COLORB0}}>
                     <View style={{width:width,height:Pixel.getPixel(35),backgroundColor:'rgba(105,105,105,0.1)',
                     flexDirection: 'row',alignItems:'center'}}>
                         <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(20),color: '#fff',
@@ -123,7 +124,7 @@ export  default class AccountTitle extends PureComponent {
                         </TouchableOpacity>
 
                     </View>
-                    <View style={{width:width,height:Pixel.getPixel(175)}}>
+                    <View style={{width:width,height:Pixel.getPixel(295)}}>
                         <View
                             style={{width:width,height:Pixel.getPixel(115),justifyContent:'center',alignItems:'center'}}>
                             <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>账户总额(元)</Text>
@@ -149,6 +150,24 @@ export  default class AccountTitle extends PureComponent {
                                     冻结金额(元)</Text>
                                 <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(18),
                                 color:'#fff',marginTop:Pixel.getPixel(2)}}>
+                                    {this.toDecimal(parseFloat(this.props.info.frozen_balance) +
+                                        parseFloat(this.props.info.pending_balance))}</Text>
+                            </View>
+                        </View>
+                        <View style={{width:width,height:Pixel.getPixel(60),
+                            backgroundColor:'rgba(1,54,188,0.1)',flexDirection: 'row'}}>
+                            <View style={{flex:1,justifyContent:'center',paddingLeft:Pixel.getPixel(15)}}>
+                                <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>
+                                    白条余额(元)</Text>
+                                <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(18),color:'#fff',
+                                    marginTop:Pixel.getPixel(2)}}>
+                                    {this.toDecimal(parseFloat(this.props.info.balance))}</Text>
+                            </View>
+                            <View style={{flex:1,justifyContent:'center',paddingLeft:Pixel.getPixel(30)}}>
+                                <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>
+                                    白条冻结金额(元)</Text>
+                                <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(18),
+                                    color:'#fff',marginTop:Pixel.getPixel(2)}}>
                                     {this.toDecimal(parseFloat(this.props.info.frozen_balance) +
                                         parseFloat(this.props.info.pending_balance))}</Text>
                             </View>
