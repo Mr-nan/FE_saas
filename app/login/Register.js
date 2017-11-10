@@ -504,8 +504,12 @@ export default class Register extends BaseComponent {
 			NativeAppEventEmitter
 				.addListener('onReceiveBDLocation', (loc) => {
 					console.log(loc);
-					this.cityCode = loc.city_code;
-					this.cityDetail = loc.addr;
+                    this.locateDate.address = loc.addr;
+                    this.locateDate.city_id = loc.city_code;
+                    this.locateDate.city_name = loc.city;
+                    this.locateDate.street_name = loc.street;
+                    this.locateDate.province_name = loc.province;
+                    this.locateDate.area_name = loc.district;
 				});
 		} else {
 			NativeModules.Location.Location().then((vl) => {
