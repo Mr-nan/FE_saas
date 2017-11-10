@@ -35,10 +35,10 @@ const Pixel = new PixelUtil();
 const selectImg = require('../../../images/financeImages/celljiantou.png');
 const IS_ANDROID = Platform.OS === 'android';
 //以下为上传需要的参数
-let idHandle: '';
-let idcardfront: '';
-let idcardback: '';
-let businessid: '';
+let idHandle;
+let idcardfront;
+let idcardback;
+let businessid;
 let city_ID;
 let prov_ID;
 //以上为上传需要的参数
@@ -60,6 +60,8 @@ const options = {
 	}
 };
 export default class EnterpriseCertificate extends BaseComponent {
+	/*
+	 * 为了延迟调用*/
 	componentWillUnmount() {
 		this.timer && clearTimeout(this.timer);
 	}
@@ -82,14 +84,60 @@ export default class EnterpriseCertificate extends BaseComponent {
 			businessLicense: null,//工作证照片
 
 			keyboardOffset: -Pixel.getPixel(64),
+			renderPlaceholderOnly: 'loading'
 		};
 
 	}
 
 	initFinish = () => {
 
+		/*
+		 * 认证未通过，获取用户填写信息*/
+		this._getCertificateInfo();
+
 	};
 
+	/*
+	 * 认证未通过，获取用户填写过的信息
+	 * */
+	_getCertificateInfo = () => {
+
+		request(AppUrls.GETAPPLYAUTHUSERINFO, 'post', {}).then((response) => {
+
+
+			if (response.mycode == "1") {
+				let PersonResule = response.mjson.data;
+
+				idHandle = PersonResule.idcard_img_touch.file_id;
+				idcardfront = PersonResule.idcard_img_fort.file_id;
+				idcardback = PersonResule.idcard_img_back.file_id;
+				businessid = PersonResule.work_img.file_id;
+				city_ID = PersonResule.city_id;
+				prov_ID = PersonResule.prov_id;
+				this.enterpriseData.zhuceren_IDNo = PersonResule.idcard_number;
+				this.enterpriseData.zhuceren_name = PersonResule.real_name;
+				this.setState({
+					business_home: PersonResule.prov_name + ' ' + PersonResule.city_name,//商户所在地
+					enterpriseHandle: {uri: PersonResule.idcard_img_touch.img_url},//个人手持照片
+					enterpriseFront: {uri: PersonResule.idcard_img_fort.img_url},//个人正面照片
+					enterpriseBack: {uri: PersonResule.idcard_img_back.img_url},//个人反面照片
+					businessLicense: {uri: PersonResule.work_img.img_url},//工作证照片
+
+					renderPlaceholderOnly: 'success'
+				});
+
+				console.log(response.mjson.data);
+
+			} else {
+
+			}
+		}, (error) => {
+			this.setState({
+				renderPlaceholderOnly: 'error'
+			});
+		});
+
+	};
 	_showLoading = () => {
 		this.props.showModal(true);
 	};
@@ -131,7 +179,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 		prov_ID = cityType.provice_id;
 		this.setState(
 			{
-				business_home: cityType.provice_name + ' '+cityType.city_name
+				business_home: cityType.provice_name + ' ' + cityType.city_name
 
 			}
 		);
@@ -157,11 +205,15 @@ export default class EnterpriseCertificate extends BaseComponent {
 			this._showHint('请填写注册人姓名');
 			return;
 		}
+		if (this.enterpriseData.zhuceren_name.length < 2 || this.enterpriseData.zhuceren_name.length > 5) {
+			this._showHint('请填写有效的注册人姓名');
+			return;
+		}
 		if (this.isEmpty(this.enterpriseData.zhuceren_IDNo) === true) {
 			this._showHint('请填写注册人身份证号');
 			return;
 		}
-		if (this.enterpriseData.zhuceren_IDNo.length != 18) {
+		if (this.enterpriseData.zhuceren_IDNo.length != 18 && this.enterpriseData.zhuceren_IDNo.length != 15) {
 			this._showHint('请填写有效的注册人身份证号');
 			return;
 		}
@@ -190,29 +242,16 @@ export default class EnterpriseCertificate extends BaseComponent {
 
 
 		let maps = {
-// business_card_id	名片或工作证上传ID		【必填】
-// city_id	城市ID		【必填】
-// device_code		string	【必填】
-// idcard_back_id	身份证背面上传ID		【必填】
-// idcard_fort_id	身份证正面上传ID		【必填】
-// idcard_no	身份证号		【必填】
-// idcard_touch_id	身份证手持上传ID		【必填】
-// prov_id	省ID		【必填】
-// real_name	用户真实姓名		【必填】
-// token
-			business_card_id:businessid,
-			city_id : city_ID,
-			prov_id : prov_ID,
-			idcard_back_id : idcardback,
-			idcard_fort_id : idcardfront,
-			idcard_touch_id : idHandle,
-			// idcard_back_id : '2267196',
-			// idcard_fort_id : '2267197',
-			// idcard_touch_id : '2267198',
-			// business_card_id:'2267199',
+			business_card_id: businessid,
+			city_id: city_ID,
+			prov_id: prov_ID,
+			idcard_back_id: idcardback,
+			idcard_fort_id: idcardfront,
+			idcard_touch_id: idHandle,
+
 
 			idcard_no: this.enterpriseData.zhuceren_IDNo,
-			real_name:this.enterpriseData.zhuceren_name,
+			real_name: this.enterpriseData.zhuceren_name,
 
 		};
 		this.props.showModal(true);
@@ -221,7 +260,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 			.then((response) => {
 				if (response.mycode == "1") {
 
-					this.props.showToast("注册成功");
+					this.props.showToast("信息提交成功");
 					this.props.callBack();
 					this.backPage();
 				} else {
@@ -240,6 +279,9 @@ export default class EnterpriseCertificate extends BaseComponent {
 	};
 
 	render() {
+		if (this.state.renderPlaceholderOnly !== 'success') {
+			return this.loadView();
+		}
 		return (
 			<View style={styles.container}>
 				{
@@ -300,6 +342,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 						underlineColorAndroid='transparent'
 						onChangeText={this._zhucerenChange}
 						placeholder='请输入'
+						defaultValue={this.enterpriseData.zhuceren_name}
 						placeholderTextColor={fontAndColor.COLORA1}
 						onFocus={()=>{
                                        this.setState({
@@ -328,6 +371,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 						onChangeText={this._shenfenzhengChange}
 						placeholder='请输入'
 						placeholderTextColor={fontAndColor.COLORA1}
+						defaultValue={this.enterpriseData.zhuceren_IDNo}
 						onFocus={()=>{
                                        this.setState({
                                            keyboardOffset:-Pixel.getPixel(300)
@@ -352,7 +396,8 @@ export default class EnterpriseCertificate extends BaseComponent {
 						<View style={styles.rightContainer}>
 							<Text allowFontScaling={false}
 							      ref='business_home'
-							      style={styles.selectHintFont}>{this.state.business_home}</Text>
+							      style={styles.selectHintFont}>
+								{this.state.business_home}</Text>
 
 
 							<Image style={styles.selectImage} source={selectImg}/>
@@ -496,7 +541,6 @@ export default class EnterpriseCertificate extends BaseComponent {
 						</View>
 					</View>
 				</TouchableWithoutFeedback>
-
 
 				<View style={{width:width,height:Pixel.getPixel(30),backgroundColor:fontAndColor.COLORA3}}/>
 

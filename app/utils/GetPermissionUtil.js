@@ -243,6 +243,27 @@ const GetPermissionUtil = React.createClass({
             }
             callBack(list);
         });
+    },getCertificateVisiable(callBack){
+		this.getData((data) => {
+		    let back = false;
+			for (let i = 0; i < data.data.length; i++) {
+				if (data.data[i].id == 5) {
+					for (let j = 0; j < data.data[i].children.length; j++) {
+					    if(data.data[i].children[j].id==59){
+					        back = true;
+					        break;
+
+                        }
+					}
+				}
+			}
+			if(back){
+			    callBack(true);
+            }else{
+			    callBack(false);
+            }
+
+		});
     }
 });
 
