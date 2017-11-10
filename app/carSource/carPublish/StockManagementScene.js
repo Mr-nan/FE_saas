@@ -33,6 +33,7 @@ import * as Net from '../../utils/RequestUtil';
 import * as AppUrls from '../../constant/appUrls';
 import PixelUtil from '../../utils/PixelUtil';
 import CarUpImageCell from '../znComponent/MsgCarUpImageCell';
+import  AllLoading from '../../component/AllLoading';
 
 const Pixel = new PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
@@ -282,6 +283,14 @@ export default class StockManagementScene extends BaseComponent {
                 <EnterpriseInfo viewData={this.enterpriseList}
                                 enterpricePress={this._enterprisePress}
                                 ref={(modal) => {this.enterpriseModal = modal}}/>
+
+                <AllLoading callEsc={()=>{
+                            this.carData['flag'] = '0';
+                            this.saveStockData();
+                }} ref={(modal) => {this.allloading = modal}} canColse='false' callBack={()=>{
+                            this.carData['flag'] = '1';
+                            this.saveStockData();
+                }}/>
                 <AllNavigationView title="车辆信息" backIconClick={this.backPage}/>
             </View>
         )
@@ -342,7 +351,6 @@ export default class StockManagementScene extends BaseComponent {
     saveStockData = () => {
 
         this.props.showModal(true);
-
         Net.request(AppUrls.CAR_STOCK_SAVE, 'post', this.carData).then((response) => {
 
             this.props.showModal(false);
@@ -354,8 +362,18 @@ export default class StockManagementScene extends BaseComponent {
             //     this.carData.emission_standards = response.mjson.data.emission_standards;
             // }
 
+
         }, (error) => {
-            this.props.showToast(error.msg);
+            this.props.showModal(false);
+            // 600030：该车辆已存在，不可重复入库
+            // 600031：确认是否将该车源的可售车辆数+1
+            // 600032：确认是否将该车源的可售车辆数-1
+            if (error.mycode == 600030 || error.mycode == 600031 || error.mycode == 600032) {
+                this.allloading.changeShowType(true, error.mjson.msg);
+            } else {
+                this.props.showToast(error.mjson.msg);
+            }
+
         });
 
     }
@@ -395,7 +413,6 @@ export default class StockManagementScene extends BaseComponent {
         }
         this.carData['auto_id'] = this.carData.id;
         this.carData['auto_pid'] = this.carData.id;
-        this.carData['flag'] = '1';
 
         if (!this.carData.pictures) {
             this.carData.pictures = ""
@@ -416,7 +433,7 @@ export default class StockManagementScene extends BaseComponent {
         //     }
         // }
         // this.toNextPage(navigatorParams);
-
+        // this.carData['flag'] = '1';
         this.saveStockData();
 
     }
