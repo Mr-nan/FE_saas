@@ -66,7 +66,22 @@ export default class StockManagementScene extends BaseComponent {
         ];
         this.modelData = [];
         this.modelInfo = {};
-        this.carData = this.props.carData;
+        this.carData = {
+            auto_pid:this.props.carData.id,
+            car_color:this.props.carData.car_color,
+            engine_number:this.props.carData.engine_number,
+            manufacture:this.props.carData.manufacture,
+            pictures :this.props.carData.pictures,
+            purchase_price:this.props.carData.purchase_price,
+            status:this.props.carData.status,
+            vin:this.props.carData.vin,
+            model_name:this.props.carData.model_name
+        };
+
+        if(this.props.dataID){
+            this.carData.id = this.props.dataID;
+        }
+
         this.titleData1 = [
             [
                 {
@@ -351,7 +366,7 @@ export default class StockManagementScene extends BaseComponent {
     saveStockData = () => {
 
         this.props.showModal(true);
-        Net.request(AppUrls.CAR_STOCK_SAVE, 'post', this.map).then((response) => {
+        Net.request(AppUrls.CAR_STOCK_SAVE, 'post', this.carData).then((response) => {
 
             this.props.showModal(false);
 
@@ -433,16 +448,7 @@ export default class StockManagementScene extends BaseComponent {
         // vin	车架号		【必填】
         console.log(this.carData)
         this.map = {};
-        this.map.auto_pid = this.carData.id;
-        this.map.car_color = this.carData.car_color;
-        this.map.engine_number = this.carData.engine_number;
-        // this.map.id = this.carData.id;//嘻嘻嘻、
-        this.map.manufacture = this.carData.manufacture;
-        this.map.pictures = this.carData.pictures;
-        this.map.purchase_price = this.carData.purchase_price;
-        this.map.status = this.carData.status;
-        this.map.vin = this.carData.vin;
-        this.map.model_name = this.carData.model_name;
+
 
         if (!this.carData.manufacture) {
             this.props.showToast('选择出厂日期');

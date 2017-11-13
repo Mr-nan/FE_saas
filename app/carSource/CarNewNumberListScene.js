@@ -138,7 +138,7 @@ export default class CarNewNumberListScene extends BaseComponent {
                 name: "StockManagementScene",
                 component: StockManagementScene,
                 params: {
-                    carData:this.props.carData,
+                    carData:cellData,
                     refreshingData:this.refs.upperFrameView.loadData(),
                     dataID:cellData.id
                 }
