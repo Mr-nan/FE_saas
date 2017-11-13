@@ -67,20 +67,21 @@ export default class StockManagementScene extends BaseComponent {
         this.modelData = [];
         this.modelInfo = {};
         this.carData = {
-            auto_pid:this.props.carData.id,
-            car_color:this.props.carData.car_color,
-            engine_number:this.props.carData.engine_number,
-            manufacture:this.props.carData.manufacture,
-            pictures :this.props.carData.pictures,
-            purchase_price:this.props.carData.purchase_price,
-            status:this.props.carData.status,
-            vin:this.props.carData.vin,
-            model_name:this.props.carData.model_name
+            auto_pid: this.props.carData.id,
+            car_color: this.props.carData.car_color,
+            engine_number: this.props.carData.engine_number,
+            manufacture: this.props.carData.manufacture,
+            pictures: this.props.carData.pictures,
+            purchase_price: this.props.carData.purchase_price,
+            status: this.props.carData.status,
+            vin: this.props.carData.vin,
+            model_name: this.props.carData.model_name
         };
 
-        if(this.props.dataID){
+        if (this.props.dataID) {
             this.carData.id = this.props.dataID;
         }
+        console.log('xxxxxx',this.props.carData)
 
         this.titleData1 = [
             [
@@ -95,6 +96,7 @@ export default class StockManagementScene extends BaseComponent {
                                            ref={(input) => {this.vinInput = input}}
                                            placeholder='请输入车架号'
                                            underlineColorAndroid='transparent'
+                                           defaultValue={this.carData.vin?this.carData.vin:''}
                                            maxLength={17}
                                            editable={this.props.carID?false:true}
                                            onChangeText={this._onVinChange}
@@ -300,10 +302,10 @@ export default class StockManagementScene extends BaseComponent {
                                 ref={(modal) => {this.enterpriseModal = modal}}/>
 
                 <AllLoading callEsc={()=>{
-                            this.map['flag'] = '0';
+                            this.carData['flag'] = '2';
                             this.saveStockData();
                 }} ref={(modal) => {this.allloading = modal}} canColse='false' callBack={()=>{
-                            this.map['flag'] = '1';
+                            this.carData['flag'] = '1';
                             this.saveStockData();
                 }}/>
                 <AllNavigationView title="车辆信息" backIconClick={this.backPage}/>
@@ -433,23 +435,6 @@ export default class StockManagementScene extends BaseComponent {
             this.carData.pictures = ""
         }
 
-        // auto_id	车辆id		【必填】
-        // car_color	车辆颜色
-        //         device_code			【必填】
-        // engine_number	发动机编号
-        //         flag	库存是否加一（减一）
-        // id			【修改必填】
-        // manufacture	车辆出厂日期
-        // model_name	车型名称		【必填】
-        // pictures	图片		【必填】
-        // purchase_price	采购价		【必填】
-        // status	状态在售1,2已售		【必填】
-        // token			【必填】
-        // vin	车架号		【必填】
-        console.log(this.carData)
-        this.map = {};
-
-
         if (!this.carData.manufacture) {
             this.props.showToast('选择出厂日期');
             return;
@@ -534,11 +519,11 @@ export default class StockManagementScene extends BaseComponent {
 
             this.titleData1[0][2].value = this.modelData[index].model_year + '-06-01';
 
-            // this.carData['manufacture'] = this.modelData[index].model_year + '-06-01';
+            this.carData['manufacture'] = this.modelData[index].model_year + '-06-01';
             // this.carData['model_id'] = this.modelData[index].model_id;
             // this.carData['emission_standards'] = this.modelData[index].model_emission_standard;
             // this.carData['series_id'] = this.modelData[index].series_id;
-            // this.carData['model_name'] = this.modelData[index].model_name;
+            this.carData['model_name'] = this.modelData[index].model_name;
             // this.carData['brand_id'] = this.modelData[index].brand_id;
             // this.carData['brand_name'] = this.modelData[index].brand_name;
             // this.carData['series_name'] = this.modelData[index].series_name;
@@ -580,6 +565,7 @@ export default class StockManagementScene extends BaseComponent {
 
 
                                         this.titleData1[0][2].value = rd[0].model_year + '-06-01';
+
                                         this.carData['manufacture'] = rd[0].model_year + '-06-01';
                                         // this.carData['model_id'] = rd[0].model_id;
                                         // this.carData['emission_standards'] = rd[0].model_emission_standard;
@@ -587,7 +573,7 @@ export default class StockManagementScene extends BaseComponent {
                                         // this.carData['brand_id'] = rd[0].brand_id;
                                         // this.carData['brand_name'] = rd[0].brand_name;
                                         // this.carData['series_name'] = rd[0].series_name;
-                                        // this.carData['model_name'] = rd[0].model_name;
+                                        this.carData['model_name'] = rd[0].model_name;
 
                                         if (rd[0].model_liter) {
                                             this.carData['displacement'] = rd[0].model_liter;
