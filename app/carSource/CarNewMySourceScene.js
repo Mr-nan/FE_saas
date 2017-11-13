@@ -78,7 +78,7 @@ export default class CarMySourceScene extends BaceComponent {
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page?this.props.page:0}
                     locked={true}
-                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架("+this.state.shelves_count+")", "已下架("+this.state.no_shelves_count+')', "审核中("+this.state.pre_count+')']}/>}>
+                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架("+this.state.shelves_count+")", "已下架("+this.state.unshelves_count+')', "审核中("+this.state.audit_count+')']}/>}>
                     <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"  carPriceEditClick={this.carPriceEditClick}/>
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
                     <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
@@ -109,8 +109,8 @@ export default class CarMySourceScene extends BaceComponent {
             isShowCarSharedView:false,
             renderPlaceholderOnly:'blank',
             shelves_count:0,
-            pre_count:0,
-            no_shelves_count:0,
+            unshelves_count:0,
+            audit_count:0,
             isShowEditcarPrice:false,
 
         };
@@ -137,8 +137,8 @@ export default class CarMySourceScene extends BaceComponent {
             this.setState({
                 renderPlaceholderOnly: 'success',
                 shelves_count:data.shelves_count,
-                pre_count:data.pre_count,
-                no_shelves_count:data.no_shelves_count,
+                audit_count:data.audit_count,
+                unshelves_count:data.unshelves_count,
             });
             action && action();
 
@@ -188,18 +188,6 @@ export default class CarMySourceScene extends BaceComponent {
                 });
 
         } else if (typeStr == '编辑') {
-
-            // let navigatorParams = {
-            //
-            //     name: "EditCarScene",
-            //     component: EditCarScene,
-            //     params: {
-            //
-            //         fromNew: false,
-            //         carId: carData.id,
-            //     }
-            // };
-            // this.toNextPage(navigatorParams);
 
             if(this.carData.in_valid_order==1){
                 this.props.showToast('该车辆在有效订单中,不可操作编辑');
@@ -263,7 +251,11 @@ export default class CarMySourceScene extends BaceComponent {
                     this.carAction(3,this.groupStr,this.carData.id);
                 });
 
-        }else if(type=='编辑'){
+        } else if(type=='上架'){
+
+            this.carAction(2,this.groupStr,this.carData.id);
+
+        } else if(type=='编辑'){
 
             if(this.carData.in_valid_order==1){
                 this.props.showToast('该车辆在有效订单中,不可操作编辑');
@@ -1354,14 +1346,29 @@ class ManageView extends  Component {
             <TouchableOpacity style={styles.manageView} activeOpacity={1} onPress={this.props.offClick}>
                 <View style={styles.sharedView}>
                     <View style={{flexDirection: 'row',paddingVertical:Pixel.getPixel(15)}}>
-                        <TouchableOpacity style={styles.sharedItemView} onPress={() => {
-                            this.btnClick('下架');
-                        }}>
-                            <View style={styles.sharedImageBack}>
-                                <Image source={require('../../images/carSourceImages/carSoldOut.png')}/>
-                            </View>
-                            <Text allowFontScaling={false}  style={styles.sharedText}>下架</Text>
-                        </TouchableOpacity>
+                        {
+                            this.props.carData.status ==2 && (
+                            <TouchableOpacity style={styles.sharedItemView} onPress={() => {
+                                this.btnClick('下架');
+                            }}>
+                                <View style={styles.sharedImageBack}>
+                                    <Image source={require('../../images/carSourceImages/carSoldOut.png')}/>
+                                </View>
+                                <Text allowFontScaling={false}  style={styles.sharedText}>下架</Text>
+                            </TouchableOpacity>)
+                        }
+                        {
+                            this.props.carData.status ==3 && (
+                            <TouchableOpacity style={styles.sharedItemView} onPress={() => {
+                                this.btnClick('上架');
+                            }}>
+                                <View style={styles.sharedImageBack}>
+                                    <Image source={require('../../images/carSourceImages/carOutIcon.png')}/>
+                                </View>
+                                <Text allowFontScaling={false}  style={styles.sharedText}>上架</Text>
+                            </TouchableOpacity>)
+                        }
+
                         <TouchableOpacity style={styles.sharedItemView} onPress={() => {
                             this.btnClick('编辑');
                         }}>

@@ -57,9 +57,9 @@ export default class CarNewNumberListScene extends BaseComponent {
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page?this.props.page:0}
                     locked={true}
-                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售 ("+this.state.shelves_count+")", "已售 ("+this.state.sold_count+')']}/>}>
-                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"  carPriceEditClick={this.carPriceEditClick}/>
-                    <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
+                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售 ("+this.state.total_on_sale+")", "已售 ("+this.state.total_sold+')']}/>}>
+                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"  carPriceEditClick={this.carPriceEditClick} carData={this.props.carData}/>
+                    <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2" carData={this.props.carData}/>
                 </ScrollableTabView>
                 <TouchableOpacity style={styles.footBtn} onPress={this.pushNewCarScene}>
                     <Text style={styles.footBtnText}>车辆入库</Text>
@@ -74,8 +74,8 @@ export default class CarNewNumberListScene extends BaseComponent {
         // 初始状态
         this.state = {
             renderPlaceholderOnly:'blank',
-            shelves_count:0,
-            sold_count:0,
+            total_on_sale:0,
+            total_sold:0,
         };
     }
 
@@ -89,17 +89,22 @@ export default class CarNewNumberListScene extends BaseComponent {
 
     loadHeadData=(action)=>{
 
+        console.log('===========',this.props.carData);
+
+
         this.setState({renderPlaceholderOnly:'loading'});
-        request(AppUrls.CAR_USER_CAR, 'post', {
-            car_status: '1',
+        request(AppUrls.CAR_STOCK_LIST, 'post', {
+            status: '1',
             page: 1,
-            row: 1,
+            pageCount: 1,
+            auto_id:this.props.carData.id
         }).then((response) => {
-            let data =response.mjson.data.total;
+            let data =response.mjson.data;
+            console.log('===========',data);
             this.setState({
                 renderPlaceholderOnly: 'success',
-                shelves_count:data.shelves_count,
-                sold_count:data.sold_count,
+                total_sold:data.total_sold,
+                total_on_sale:data.total_on_sale,
             });
             action && action();
 
@@ -129,7 +134,7 @@ class MyCarSourceUpperFrameView extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
-        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2});
         this.state = {
             carData:carData,
             isRefreshing: true,
@@ -158,18 +163,22 @@ class MyCarSourceUpperFrameView extends BaseComponent {
     }
     loadData = () => {
 
-        let url = AppUrls.CAR_USER_CAR;
+        let url = AppUrls.CAR_STOCK_LIST;
         carUpperFramePage = 1;
         request(url, 'post', {
-            car_status: '1',
+            status: '1',
             page: carUpperFramePage,
-            row: 10,
+            pageCount: 10,
+            auto_id:this.props.carData.id
 
         }).then((response) => {
 
             carUpperFrameData=response.mjson.data.list;
-            carUpperFrameStatus = response.mjson.data.status;
 
+            if(carUpperFrameData.length>=response.mjson.data.total_on_sale)
+            {
+                carUpperFrameStatus = 2;
+            }
 
             if (carUpperFrameData.length) {
                 this.setState({
@@ -192,6 +201,7 @@ class MyCarSourceUpperFrameView extends BaseComponent {
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error',
             });
+            this.props.showToast(error.mjson.msg);
 
         });
 
@@ -199,20 +209,26 @@ class MyCarSourceUpperFrameView extends BaseComponent {
 
     loadMoreData = () => {
 
-        let url = AppUrls.CAR_USER_CAR;
+        let url = AppUrls.CAR_STOCK_LIST;
         carUpperFramePage += 1;
         request(url, 'post', {
-            car_status: '1',
+            status: '1',
             page: carUpperFramePage,
-            row: 10,
+            pageCount: 10,
+            auto_id:this.props.carData.id
 
         }).then((response) => {
-            carUpperFrameStatus = response.mjson.data.status;
             let carData = response.mjson.data.list;
             if (carData.length) {
                 for (let i = 0; i < carData.length; i++) {
                     carUpperFrameData.push(carData[i]);
                 }
+
+                if(carUpperFrameData.length>=response.mjson.data.total_on_sale)
+                {
+                    carUpperFrameStatus = 2;
+                }
+
                 this.setState({
                     carData:this.state.carData.cloneWithRows(carUpperFrameData),
                     carUpperFrameStatus:carUpperFrameStatus,
@@ -324,7 +340,7 @@ class MyCarSourceDropFrameView extends BaseComponent {
         super(props);
         // 初始状态
 
-        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2});
         this.state = {
 
             carData: carData,
@@ -359,17 +375,21 @@ class MyCarSourceDropFrameView extends BaseComponent {
     }
     loadData = () => {
 
-        let url = AppUrls.CAR_USER_CAR;
+        let url = AppUrls.CAR_STOCK_LIST;
         carDropFramePage = 1;
         request(url, 'post', {
-            car_status: '4',
+            status: '1',
             page: carDropFramePage,
-            row: 10,
+            pageCount: 10,
+            auto_id:this.props.carData.id
 
         }).then((response) => {
 
             carDropFrameData = response.mjson.data.list;
-            carDropFrameStatus = response.mjson.data.status;
+            if(carDropFrameData.length>=response.mjson.data.total_on_sale)
+            {
+                carDropFrameStatus = 2;
+            }
             if (carDropFrameData.length) {
                 this.setState({
                     carData: this.state.carData.cloneWithRows(carDropFrameData),
@@ -402,20 +422,24 @@ class MyCarSourceDropFrameView extends BaseComponent {
 
     loadMoreData = () => {
 
-        let url = AppUrls.CAR_USER_CAR;
+        let url = AppUrls.CAR_STOCK_LIST;
         carDropFramePage += 1;
         request(url, 'post', {
-            car_status: '4',
+            status: '1',
             page: carDropFramePage,
-            row: 10,
+            pageCount: 10,
+            auto_id:this.props.carData.id
 
         }).then((response) => {
 
-            carDropFrameStatus = response.mjson.data.status;
             let carData = response.mjson.data.list;
             if (carData.length) {
                 for (let i = 0; i < carData.length; i++) {
                     carDropFrameData.push(carData[i]);
+                }
+                if(carDropFrameData.length>=response.mjson.data.total_on_sale)
+                {
+                    carDropFrameStatus = 2;
                 }
 
                 this.setState({

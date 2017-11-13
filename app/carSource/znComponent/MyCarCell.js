@@ -175,14 +175,14 @@ export default class MyCarCell extends Component {
                                             {/*</View>*/}
                                         {/*</TouchableOpacity>*/}
                                     {/*}*/}
-                                    {/*{*/}
-                                        {/*((carType==1&&carCellData.review_status==1)||carType==3 ) &&*/}
-                                        {/*<TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>*/}
-                                            {/*<View style={styles.cellFoot}>*/}
-                                                {/*<Text allowFontScaling={false}  style={styles.cellFootText}> 申请上架 </Text>*/}
-                                            {/*</View>*/}
-                                        {/*</TouchableOpacity>*/}
-                                    {/*}*/}
+                                    {
+                                        ((carType==1&&carCellData.review_status==1)||carType==3 ) &&
+                                        <TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>
+                                            <View style={styles.cellFoot}>
+                                                <Text allowFontScaling={false}  style={styles.cellFootText}> 申请上架 </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    }
 
                                     {
                                         carType == 2 &&
