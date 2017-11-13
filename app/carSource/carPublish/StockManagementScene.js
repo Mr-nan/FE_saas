@@ -285,10 +285,10 @@ export default class StockManagementScene extends BaseComponent {
                                 ref={(modal) => {this.enterpriseModal = modal}}/>
 
                 <AllLoading callEsc={()=>{
-                            this.carData['flag'] = '0';
+                            this.map['flag'] = '0';
                             this.saveStockData();
                 }} ref={(modal) => {this.allloading = modal}} canColse='false' callBack={()=>{
-                            this.carData['flag'] = '1';
+                            this.map['flag'] = '1';
                             this.saveStockData();
                 }}/>
                 <AllNavigationView title="车辆信息" backIconClick={this.backPage}/>
@@ -351,7 +351,7 @@ export default class StockManagementScene extends BaseComponent {
     saveStockData = () => {
 
         this.props.showModal(true);
-        Net.request(AppUrls.CAR_STOCK_SAVE, 'post', this.carData).then((response) => {
+        Net.request(AppUrls.CAR_STOCK_SAVE, 'post', this.map).then((response) => {
 
             this.props.showModal(false);
 
@@ -368,7 +368,7 @@ export default class StockManagementScene extends BaseComponent {
             // 600030：该车辆已存在，不可重复入库
             // 600031：确认是否将该车源的可售车辆数+1
             // 600032：确认是否将该车源的可售车辆数-1
-            if (error.mycode == 600030 || error.mycode == 600031 || error.mycode == 600032) {
+            if (/*error.mycode == 600030 ||*/ error.mycode == 600031 || error.mycode == 600032) {
                 this.allloading.changeShowType(true, error.mjson.msg);
             } else {
                 this.props.showToast(error.mjson.msg);
@@ -411,15 +411,36 @@ export default class StockManagementScene extends BaseComponent {
             this.props.showToast('请输入正确的车架号');
             return;
         }
-        this.carData.auto_id= this.carData.id;
-        this.carData.auto_pid= this.carData.id;
 
         if (!this.carData.pictures) {
             this.carData.pictures = ""
         }
 
-
-        console.log('============',this.carData);
+// auto_id	车辆id		【必填】
+// car_color	车辆颜色
+//         device_code			【必填】
+// engine_number	发动机编号
+//         flag	库存是否加一（减一）
+// id			【修改必填】
+// manufacture	车辆出厂日期
+// model_name	车型名称		【必填】
+// pictures	图片		【必填】
+// purchase_price	采购价		【必填】
+// status	状态在售1,2已售		【必填】
+// token			【必填】
+// vin	车架号		【必填】
+        console.log(this.carData)
+        this.map = {};
+        this.map.auto_pid = this.carData.id;
+        this.map.car_color = this.carData.car_color;
+        this.map.engine_number = this.carData.engine_number;
+        // this.map.id = this.carData.id;//嘻嘻嘻、
+        this.map.manufacture = this.carData.manufacture;
+        this.map.pictures = this.carData.pictures;
+        this.map.purchase_price = this.carData.purchase_price;
+        this.map.status = this.carData.status;
+        this.map.vin = this.carData.vin;
+        this.map.model_name = this.carData.model_name;
 
         // if (!this.carData.manufacture) {
         //     this.props.showToast('选择出厂日期');
