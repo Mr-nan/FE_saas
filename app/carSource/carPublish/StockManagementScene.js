@@ -80,28 +80,6 @@ export default class StockManagementScene extends BaseComponent {
 
         console.log("xxx",this.props.carData.imgs)
 
-        // if (this.carData.pictures) {
-        //     let imgas = JSON.parse(this.carData.pictures);
-        //     this.results.push(...imgas);
-        //     this.titleData.map((data, index) => {
-        //         imgas.map((imgData, subIndex) => {
-        //             if (data.name == imgData.name) {
-        //                 data.imgArray.push(imgData);
-        //             }
-        //         });
-        //     });
-        // } else if (this.carData.imgs) {
-        //     this.results.push(...this.carData.imgs);
-        //     this.carData['pictures'] = JSON.stringify(this.results);
-        //     this.titleData.map((data, index) => {
-        //         this.carData.imgs.map((imgData, subIndex) => {
-        //             if (data.name == imgData.name) {
-        //                 data.imgArray.push(imgData);
-        //             }
-        //         });
-        //     });
-        // }
-
         if (this.props.dataID) {
             this.carData.id = this.props.dataID;
         }
@@ -209,6 +187,9 @@ export default class StockManagementScene extends BaseComponent {
                         </View>)
                 }
             }],
+        ];
+
+        let imagTitle = [
             [
                 {
                     type: '2',
@@ -231,8 +212,21 @@ export default class StockManagementScene extends BaseComponent {
                     explain: '2',
                 }
             ]
-
         ];
+
+        if (this.props.carData.imgs)
+        {
+            this.results.push(...this.props.carData.imgs);
+            this.carData['pictures'] = JSON.stringify(this.results);
+            imagTitle.map((data, index) => {
+                this.props.carData.imgs.map((imgData, subIndex) => {
+                    if (data[0].name == imgData.name) {
+                        data[0].imgArray.push(imgData);
+                    }
+                });
+            });
+        }
+        this.titleData1.push(...imagTitle);
 
         this.state = {
             titleData: this.titleData1,

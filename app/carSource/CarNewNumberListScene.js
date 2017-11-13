@@ -295,7 +295,7 @@ class MyCarSourceUpperFrameView extends BaseComponent {
         }
         return (
 
-            <View style={[styles.viewContainer,{justifyContent:'space-between'}]}>
+            <View style={styles.viewContainer}>
                     <ListView
                         removeClippedSubviews={false}
                         style={styles.listView}
@@ -614,6 +614,11 @@ const  styles = StyleSheet.create({
         color:'white',
     },
     listView:{
-        marginBottom:Pixel.getPixel(44)
-    }
+        backgroundColor: fontAndColor.COLORA3,
+
+    },
+    viewContainer: {
+        flex: 1,
+        backgroundColor: fontAndColor.COLORA3
+    },
 });
