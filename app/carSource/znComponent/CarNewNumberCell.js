@@ -23,16 +23,17 @@ export default class CarNewNumberCell extends Component{
             <View style={styles.cell}>
                 <View style={styles.headView}>
                     <Text style={styles.headTitle}>{this.props.carData.model_name+'  '+this.props.carData.car_color.split("|")[0]}</Text>
-                    <Text style={styles.headSubTitle}>{'VIN：'+'车架号'+' / '+'发动机号：'+''}</Text>
-                    <Text style={styles.headSubTitle}>{'出厂日期：'+ this.props.carData.manufacture && this.dateReversal(this.props.carData.manufacture+'000',true)+' / '+'采购价：'+''}</Text>
+                    <Text style={styles.headSubTitle}>{'VIN：'+this.props.carData.vin+' / '+'发动机号：'+this.props.carData.engine_number}</Text>
+                    <Text style={styles.headSubTitle}>{ (this.props.carData.manufacture && ('出厂日期：'+ this.dateReversal(this.props.carData.manufacture+'000',true)))+' / '+'采购价：'+this.carMoneyChange(this.props.carData.purchase_price)+'万'}</Text>
                 </View>
                 <ScrollView style={styles.imgScrollView} horizontal={true} showsHorizontalScrollIndicator={false}>
-
-                      <Image style={styles.imgView}/>
-                      <Image style={styles.imgView}/>
-                      <Image style={styles.imgView}/>
-                      <Image style={styles.imgView}/>
-                      <Image style={styles.imgView}/>
+                    {
+                        this.props.carData.imgs.map((data,index)=>{
+                            return(
+                                <Image style={styles.imgView} key = {index} source={{uri:data.icon_url}} />
+                            )
+                        })
+                    }
                 </ScrollView>
                 {
                     this.props.type ==1 ? (
@@ -54,6 +55,30 @@ export default class CarNewNumberCell extends Component{
         )
     }
 
+    carMoneyChange = (carMoney) => {
+
+        let newCarMoney = parseFloat(carMoney);
+        let carMoneyStr = newCarMoney.toFixed(2);
+        let moneyArray = carMoneyStr.split(".");
+
+        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
+
+        if (moneyArray.length > 1) {
+            if (moneyArray[1] > 0) {
+
+                return moneyArray[0] + '.' + moneyArray[1];
+
+            } else {
+
+                return moneyArray[0];
+            }
+
+        } else {
+            return carMoneyStr;
+        }
+
+
+    }
 
     dateReversal = (time,isDay) => {
 

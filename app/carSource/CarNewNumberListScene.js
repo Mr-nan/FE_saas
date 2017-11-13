@@ -64,9 +64,12 @@ export default class CarNewNumberListScene extends BaseComponent {
                                                tabLabel="ios-paper1"
                                                carPriceEditClick={this.carPriceEditClick}
                                                carData={this.props.carData}
-                                               pushNewCarScene={this.pushNewCarScene}/>
+                                               cellClick={this.cellClick}/>
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2" carData={this.props.carData}/>
                 </ScrollableTabView>
+                <TouchableOpacity style={styles.footBtn} onPress={this.pushNewCarScene}>
+                    <Text style={styles.footBtnText}>车辆入库</Text>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -92,8 +95,6 @@ export default class CarNewNumberListScene extends BaseComponent {
 
     loadHeadData=(action)=>{
 
-        console.log('===========',this.props.carData);
-
         this.setState({renderPlaceholderOnly:'loading'});
         request(AppUrls.CAR_STOCK_LIST, 'post', {
             status: '1',
@@ -102,7 +103,6 @@ export default class CarNewNumberListScene extends BaseComponent {
             auto_id:this.props.carData.id
         }).then((response) => {
             let data =response.mjson.data;
-            console.log('===========',data);
             this.setState({
                 renderPlaceholderOnly: 'success',
                 total_sold:data.total_sold,
@@ -129,6 +129,24 @@ export default class CarNewNumberListScene extends BaseComponent {
             }
         };
         this.props.toNextPage(navigatorParams);
+    }
+
+    cellClick=(btnTitle,cellData)=>{
+        if(btnTitle=='编辑'){
+            let navigatorParams = {
+
+                name: "StockManagementScene",
+                component: StockManagementScene,
+                params: {
+                    carData:this.props.carData,
+                    refreshingData:this.refs.upperFrameView.loadData(),
+                    dataID:cellData.id
+                }
+            };
+            this.props.toNextPage(navigatorParams);
+        }else {
+
+        }
     }
 }
 
@@ -271,15 +289,13 @@ class MyCarSourceUpperFrameView extends BaseComponent {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
-                <View style={styles.loadView}>
+                <View style={[styles.loadView,{justifyContent:'space-between'}]}>
                     {this.loadView()}
                 </View>);
         }
         return (
 
-            <View style={styles.viewContainer}>
-                {
-                    this.state.carData &&
+            <View style={[styles.viewContainer,{justifyContent:'space-between'}]}>
                     <ListView
                         removeClippedSubviews={false}
                         style={styles.listView}
@@ -302,21 +318,14 @@ class MyCarSourceUpperFrameView extends BaseComponent {
                                 tintColor={[fontAndColor.COLORB0]}
                                 colors={[fontAndColor.COLORB0]}/>}
                     />
-                }
-                <TouchableOpacity style={styles.footBtn} onPress={this.props.pushNewCarScene}>
-                    <Text style={styles.footBtnText}>车辆入库</Text>
-                </TouchableOpacity>
             </View>
         )
     }
 
     cellFootBtnClick=(btnTitle,carData)=>{
-        alert(btnTitle);
-        if(btnTitle=='编辑'){
 
-        }else if(btnTitle=='出库'){
+        this.props.cellClick(btnTitle,carData);
 
-        }
     }
 
     renderRow =(rowData)=>{
@@ -591,12 +600,12 @@ const  styles = StyleSheet.create({
     },
     footBtn:{
         left:0,
-        bottom:0,
         right:0,
+        position: 'absolute',
+        bottom:0,
         backgroundColor:fontAndColor.COLORB0,
         justifyContent:'center',
         alignItems:'center',
-        position: 'absolute',
         height:Pixel.getPixel(44),
     },
     footBtnText:{
@@ -604,4 +613,7 @@ const  styles = StyleSheet.create({
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
         color:'white',
     },
+    listView:{
+        marginBottom:Pixel.getPixel(44)
+    }
 });
