@@ -541,19 +541,7 @@ export default class StockManagementScene extends BaseComponent {
         } else if (type == 0) {
 
             this.titleData1[0][2].value = this.modelData[index].model_year + '-06-01';
-
             this.carData['manufacture'] = this.modelData[index].model_year + '-06-01';
-            // this.carData['model_id'] = this.modelData[index].model_id;
-            // this.carData['emission_standards'] = this.modelData[index].model_emission_standard;
-            // this.carData['series_id'] = this.modelData[index].series_id;
-            this.carData['model_name'] = this.modelData[index].model_name;
-            // this.carData['brand_id'] = this.modelData[index].brand_id;
-            // this.carData['brand_name'] = this.modelData[index].brand_name;
-            // this.carData['series_name'] = this.modelData[index].series_name;
-
-            // if (this.modelData[index].model_liter) {
-            //     this.carData['displacement'] = this.modelData[index].model_liter;
-            // }
             this.upTitleData();
         }
 
@@ -571,13 +559,6 @@ export default class StockManagementScene extends BaseComponent {
                         this.titleData1[0][2].value = '请选择';
 
                         this.carData['vin'] = text;
-                        // this.carData['model_id'] = '';
-                        // this.carData['emission_standards'] = '';
-                        // this.carData['series_id'] = '';
-                        // this.carData['brand_id'] = '';
-                        // this.carData['brand_name'] = '';
-                        // this.carData['series_name'] = '';
-                        // this.carData['model_name'] = '';
 
                         Net.request(AppUrls.VININFO, 'post', {vin: text}).then(
                             (response) => {
@@ -588,19 +569,8 @@ export default class StockManagementScene extends BaseComponent {
 
 
                                         this.titleData1[0][2].value = rd[0].model_year + '-06-01';
-
                                         this.carData['manufacture'] = rd[0].model_year + '-06-01';
-                                        // this.carData['model_id'] = rd[0].model_id;
-                                        // this.carData['emission_standards'] = rd[0].model_emission_standard;
-                                        // this.carData['series_id'] = rd[0].series_id;
-                                        // this.carData['brand_id'] = rd[0].brand_id;
-                                        // this.carData['brand_name'] = rd[0].brand_name;
-                                        // this.carData['series_name'] = rd[0].series_name;
-                                        this.carData['model_name'] = rd[0].model_name;
 
-                                        if (rd[0].model_liter) {
-                                            this.carData['displacement'] = rd[0].model_liter;
-                                        }
 
                                     } else if (rd.length > 1) {
 
@@ -683,22 +653,8 @@ export default class StockManagementScene extends BaseComponent {
         }
 
         this.titleData1[1][0].value = carObject.model_year + '-06-01';
-
-
-        // if (this.carType == '二手车') {
-        //     this.carData['init_reg'] = carObject.model_year + '-06-01';
-        // } else {
-        //     this.carData['init_reg'] = '';
-        //     this.titleData1[1][1].value = '请选择';
-        // }
         this.carData['manufacture'] = carObject.model_year + '-06-01';
-        this.carData['model_id'] = carObject.model_id;
-        this.carData['emission_standards'] = carObject.discharge_standard;//排量
-        this.carData['series_id'] = carObject.series_id;
-        this.carData['model_name'] = carObject.model_name;
-        this.carData['brand_id'] = carObject.brand_id;
-        this.carData['brand_name'] = carObject.brand_name;
-        this.carData['series_name'] = carObject.series_name;
+
 
         this.upTitleData();
     }
