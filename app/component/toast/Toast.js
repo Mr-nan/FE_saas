@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 5,
         borderRadius: 5,
-        marginBottom: 45,
     },
     thumbnail: {
         width: 26,
