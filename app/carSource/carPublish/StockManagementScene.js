@@ -71,17 +71,40 @@ export default class StockManagementScene extends BaseComponent {
             car_color: this.props.carData.car_color,
             engine_number: this.props.carData.engine_number,
             manufacture: this.props.carData.manufacture,
-            pictures: this.props.carData.pictures,
+            pictures: this.props.carData.imgs,
             purchase_price: this.props.carData.purchase_price,
             status: this.props.carData.status,
             vin: this.props.carData.vin,
             model_name: this.props.carData.model_name
         };
 
+        console.log("xxx",this.props.carData.imgs)
+
+        // if (this.carData.pictures) {
+        //     let imgas = JSON.parse(this.carData.pictures);
+        //     this.results.push(...imgas);
+        //     this.titleData.map((data, index) => {
+        //         imgas.map((imgData, subIndex) => {
+        //             if (data.name == imgData.name) {
+        //                 data.imgArray.push(imgData);
+        //             }
+        //         });
+        //     });
+        // } else if (this.carData.imgs) {
+        //     this.results.push(...this.carData.imgs);
+        //     this.carData['pictures'] = JSON.stringify(this.results);
+        //     this.titleData.map((data, index) => {
+        //         this.carData.imgs.map((imgData, subIndex) => {
+        //             if (data.name == imgData.name) {
+        //                 data.imgArray.push(imgData);
+        //             }
+        //         });
+        //     });
+        // }
+
         if (this.props.dataID) {
             this.carData.id = this.props.dataID;
         }
-        console.log('xxxxxx',this.props.carData)
 
         this.titleData1 = [
             [
