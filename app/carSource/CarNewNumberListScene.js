@@ -58,12 +58,15 @@ export default class CarNewNumberListScene extends BaseComponent {
                     initialPage={this.props.page?this.props.page:0}
                     locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售 ("+this.state.total_on_sale+")", "已售 ("+this.state.total_sold+')']}/>}>
-                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"  carPriceEditClick={this.carPriceEditClick} carData={this.props.carData}/>
+                    <MyCarSourceUpperFrameView ref="upperFrameView"
+                                               carCellClick={this.carCellClick}
+                                               footButtonClick={this.footButtonClick}
+                                               tabLabel="ios-paper1"
+                                               carPriceEditClick={this.carPriceEditClick}
+                                               carData={this.props.carData}
+                                               pushNewCarScene={this.pushNewCarScene}/>
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2" carData={this.props.carData}/>
                 </ScrollableTabView>
-                <TouchableOpacity style={styles.footBtn} onPress={this.pushNewCarScene}>
-                    <Text style={styles.footBtnText}>车辆入库</Text>
-                </TouchableOpacity>
             </View>
         )
     }
@@ -90,7 +93,6 @@ export default class CarNewNumberListScene extends BaseComponent {
     loadHeadData=(action)=>{
 
         console.log('===========',this.props.carData);
-
 
         this.setState({renderPlaceholderOnly:'loading'});
         request(AppUrls.CAR_STOCK_LIST, 'post', {
@@ -122,6 +124,8 @@ export default class CarNewNumberListScene extends BaseComponent {
             component: StockManagementScene,
             params: {
                 carData:this.props.carData,
+                refreshingData:this.refs.upperFrameView.loadData()
+
             }
         };
         this.props.toNextPage(navigatorParams);
@@ -299,7 +303,9 @@ class MyCarSourceUpperFrameView extends BaseComponent {
                                 colors={[fontAndColor.COLORB0]}/>}
                     />
                 }
-
+                <TouchableOpacity style={styles.footBtn} onPress={this.props.pushNewCarScene}>
+                    <Text style={styles.footBtnText}>车辆入库</Text>
+                </TouchableOpacity>
             </View>
         )
     }
