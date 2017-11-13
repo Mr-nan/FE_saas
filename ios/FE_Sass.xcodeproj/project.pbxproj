@@ -49,6 +49,7 @@
 		245A5B121FB972B100B70104 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5AE31FB972B000B70104 /* libssl.a */; };
 		245A5B131FB972B100B70104 /* LLMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 245A5AE51FB972B000B70104 /* LLMapViewController.m */; };
 		245A5B141FB972B100B70104 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 245A5AE71FB972B000B70104 /* Location.m */; };
+		245A5B161FB9744300B70104 /* BMKMapView.h in Sources */ = {isa = PBXBuildFile; fileRef = 245A5B151FB9744300B70104 /* BMKMapView.h */; };
 		247AE7381FA3311D0039B52A /* XWLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 247AE7161FA3311D0039B52A /* XWLocationManager.m */; };
 		247AE73B1FA331810039B52A /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 247AE73A1FA331810039B52A /* LocationViewController.m */; };
 		2C1964C803524664A77CBF9E /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 754AC2C278594A7D8ACD7F05 /* libRCTWeChat.a */; };
@@ -421,6 +422,7 @@
 		245A5AE51FB972B000B70104 /* LLMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLMapViewController.m; sourceTree = "<group>"; };
 		245A5AE61FB972B000B70104 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		245A5AE71FB972B000B70104 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
+		245A5B151FB9744300B70104 /* BMKMapView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BMKMapView.h; path = FE_Sass/BaiduLocation/Baidu_SDK/BaiduMapAPI_Map.framework/Headers/BMKMapView.h; sourceTree = "<group>"; };
 		247AE7141FA3311D0039B52A /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
 		247AE7151FA3311D0039B52A /* XWLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XWLocationManager.h; sourceTree = "<group>"; };
 		247AE7161FA3311D0039B52A /* XWLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XWLocationManager.m; sourceTree = "<group>"; };
@@ -920,6 +922,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				245A5B151FB9744300B70104 /* BMKMapView.h */,
 				245A5AD71FB972B000B70104 /* BaiduLocation */,
 				7D9B6C261F8DB56B0063B7C1 /* MBProgressHUD.h */,
 				7D9B6C281F8DB56B0063B7C1 /* MBProgressHUD.m */,
@@ -1535,6 +1538,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				245A5B161FB9744300B70104 /* BMKMapView.h in Sources */,
 				7D9B6C2B1F8DB56B0063B7C1 /* ZNShareClass.m in Sources */,
 				7D9B6C2C1F8DB56B0063B7C1 /* MBProgressHUD.h in Sources */,
 				7D9B6C2D1F8DB56B0063B7C1 /* ZNShareViewController.h in Sources */,
