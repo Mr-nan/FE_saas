@@ -170,6 +170,11 @@ export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
 export const CAR_USER_CAR = BASEURL + V + 'user/car';
 
 /**
+ * 获取库存车辆列表
+ */
+export const CAR_STOCK_LIST = BASEURL + V + 'car.stock/lists';
+
+/**
  * 我的车源-已上架/下架-操作
  */
 export const CAR_STATUS = BASEURL + V + 'car/status';

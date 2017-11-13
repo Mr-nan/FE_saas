@@ -73,7 +73,7 @@ export default class CarMySourceScene extends BaceComponent {
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page?this.props.page:0}
                     locked={true}
-                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售车源("+this.state.shelves_count+")", "已售车源("+this.state.sold_count+')', "未上架车源("+this.state.no_shelves_count+')']}/>}>
+                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架("+this.state.shelves_count+")", "已下架("+this.state.unshelves_count+')', "审核中("+this.state.audit_count+')']}/>}>
                     <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1" />
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
                     <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
@@ -102,8 +102,8 @@ export default class CarMySourceScene extends BaceComponent {
             isShowCarSharedView:false,
             renderPlaceholderOnly:'blank',
             shelves_count:0,
-            sold_count:0,
-            no_shelves_count:0,
+            audit_count:0,
+            unshelves_count:0,
         };
     }
 
@@ -128,8 +128,8 @@ export default class CarMySourceScene extends BaceComponent {
             this.setState({
                 renderPlaceholderOnly: 'success',
                 shelves_count:data.shelves_count,
-                sold_count:data.sold_count,
-                no_shelves_count:data.no_shelves_count,
+                audit_count:data.audit_count,
+                unshelves_count:data.unshelves_count,
             });
             action && action();
 

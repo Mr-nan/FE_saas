@@ -31,7 +31,7 @@ export default class CarMySourceScene extends BaceComponent {
     render() {
         return (
             <View style={styles.rootContainer}>
-                <NavigatorView switchoverType={this.state.switchoverType} switchoverAction={this.switchoverAction} backPage={this.backPage}/>
+                <NavigatorView switchoverType={this.state.switchoverType} switchoverAction={this.switchoverAction} backPage={this.backToTop}/>
                 {
                     this.state.switchoverType==0?(<CarNewMySourceScene showToast={this.props.showToast} showModal={this.props.showModal} toNextPage={this.toNextPage}/>):
                         (<CarUserMySourceScene showToast={this.props.showToast} showModal={this.props.showModal} toNextPage={this.toNextPage}/>)

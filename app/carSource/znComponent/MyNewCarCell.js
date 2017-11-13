@@ -45,12 +45,12 @@ export default class MyCarCell extends Component {
                     return(require('../../../images/carSourceImages/audit.png')); // 审核中
                     break;
                 }
-            case 3:
-                return(require('../../../images/carSourceImages/soldOut.png')); // 已下架
-                break;
-            case 4:
-                return(require('../../../images/carSourceImages/accomplish.png')); //已成交
-                break;
+            // case 3:
+            //     return(require('../../../images/carSourceImages/soldOut.png')); // 已下架
+            //     break;
+            // case 4:
+            //     return(require('../../../images/carSourceImages/accomplish.png')); //已成交
+            //     break;
             default:
                 break;
         }
@@ -115,7 +115,7 @@ export default class MyCarCell extends Component {
                                 </View>
                             </View>
                         </View>
-                        {/*<Image style={styles.tailImage} source={this.getImage(carType,review_status)}/>*/}
+                        <Image style={styles.tailImage} source={this.getImage(carType,review_status)}/>
                     </View>
                     <View style={styles.cellFootView}>
                         <View style={{justifyContent:'center'}}>
@@ -178,14 +178,11 @@ export default class MyCarCell extends Component {
                                 {/*</TouchableOpacity>*/}
                                 {/*}*/}
 
-                                {
-                                    (carType == 2 || carType==3 || carType == 4) &&
-                                    <TouchableOpacity onPress={()=>{this.footButtonClick('管理',this.props.type,carCellData)}}>
-                                        <View style={styles.cellFoot}>
-                                            <Text allowFontScaling={false}  style={styles.cellFootText}>  管理  </Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                }
+                                <TouchableOpacity onPress={()=>{this.footButtonClick('管理',this.props.type,carCellData)}}>
+                                    <View style={styles.cellFoot}>
+                                        <Text allowFontScaling={false}  style={styles.cellFootText}>  管理  </Text>
+                                    </View>
+                                </TouchableOpacity>
                                 {/*{*/}
                                     {/*(carType == 4 || carType == 3 ||  (carType==1&&carCellData.review_status==2))&&*/}
                                     {/*<TouchableOpacity onPress={()=>{this.footButtonClick('删除',this.props.type,carCellData)}}>*/}
@@ -195,15 +192,15 @@ export default class MyCarCell extends Component {
                                     {/*</TouchableOpacity>*/}
 
                                 {/*}*/}
-                                {
-                                    (carType == 1) &&
-                                    <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
-                                        <View style={styles.cellFoot}>
-                                            <Text allowFontScaling={false}  style={styles.cellFootText}>  编辑  </Text>
-                                        </View>
-                                    </TouchableOpacity>
+                                {/*{*/}
+                                    {/*(carType == 1) &&*/}
+                                    {/*<TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>*/}
+                                        {/*<View style={styles.cellFoot}>*/}
+                                            {/*<Text allowFontScaling={false}  style={styles.cellFootText}>  编辑  </Text>*/}
+                                        {/*</View>*/}
+                                    {/*</TouchableOpacity>*/}
 
-                                }
+                                {/*}*/}
                             </View>
                         }
                     </View>
