@@ -26,6 +26,7 @@ let oldUrl = '';
 import WebViewTitle from '../mine/accountManage/component/WebViewTitle';
 import CarInfoScene from '../carSource/CarInfoScene';
 import MainPage from './MainPage'
+import RootScene from './RootScene';
 export  default class PromotionScene extends BaseComponent {
 
     constructor(props) {
@@ -44,15 +45,17 @@ export  default class PromotionScene extends BaseComponent {
 
         } finally {
             //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: false});
+            this.setState({renderPlaceholderOnly: false});
             //});
         }
     }
 
     handleBack = () => {
-        this.props.showModal(false);
         if (oldUrl == this.props.webUrl) {
-            this.backPage();
+            this.toNextPage({
+                name: 'RootScene',
+                component: RootScene
+            });
         } else {
             this.refs.www.goBack();
         }
@@ -86,9 +89,10 @@ export  default class PromotionScene extends BaseComponent {
                 <NavigationView
                     title={this.props.name}
                     backIconClick={()=>{
-                         this.props.showModal(false);
                         if(oldUrl==this.props.webUrl){
-                                this.backPage();
+                                this.toNextPage({
+                        name: 'RootScene',
+                        component: RootScene});
                         }else{
                             this.refs.www.goBack();
                         }
@@ -98,33 +102,24 @@ export  default class PromotionScene extends BaseComponent {
         );
     }
 
-    onNavigationStateChange = (navState) => {
-        oldUrl = navState.url;
-        let urls = oldUrl.split('?');
-        if (urls[0] == 'http://dycd.tocarsource.com/') {
-            let id = urls[1].replace('id=','');
-            let navigatorParams = {
-                name: "CarInfoScene",
-                component: CarInfoScene,
-                params: {
-                    carID: id,
-                    from:'webview'
-                }
-            };
-            let mainParams = {
-                name: "MainPage",
-                component: MainPage,
-                params: {
-                }
-            };
-            this.loginPage(navigatorParams,mainParams)
+    toNextPage = (mProps) => {
+        console.log('123123');
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.replace({
+                ...mProps
+            })
         }
     }
 
-    loginPage = (mProps,mainParams) => {
+    onNavigationStateChange = (navState) => {
+
+    }
+
+    loginPage = (mProps, mainParams) => {
         const navigator = this.props.navigator;
         if (navigator) {
-            navigator.immediatelyResetRouteStack([{...mainParams},{
+            navigator.immediatelyResetRouteStack([{...mainParams}, {
                 ...mProps
             }])
         }
@@ -136,7 +131,6 @@ export  default class PromotionScene extends BaseComponent {
                 <NavigationView
                     title={this.props.name}
                     backIconClick={()=>{
-                         this.props.showModal(false);
                         this.backPage();
                     }}
                 />

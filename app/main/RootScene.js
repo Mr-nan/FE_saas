@@ -70,9 +70,7 @@ export default class RootScene extends BaseComponent {
                             name: JSON.parse(message.extra).name
                         }
                     };
-                    navigator.push({
-                        ...mProps
-                    })
+                    this.toNextPage(mProps);
                 }
             }
             console.log(message);
