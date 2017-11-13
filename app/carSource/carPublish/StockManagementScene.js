@@ -580,8 +580,7 @@ export default class StockManagementScene extends BaseComponent {
 
 
                                         this.titleData1[0][2].value = rd[0].model_year + '-06-01';
-
-                                        // this.carData['manufacture'] = rd[0].model_year + '-06-01';
+                                        this.carData['manufacture'] = rd[0].model_year + '-06-01';
                                         // this.carData['model_id'] = rd[0].model_id;
                                         // this.carData['emission_standards'] = rd[0].model_emission_standard;
                                         // this.carData['series_id'] = rd[0].series_id;
