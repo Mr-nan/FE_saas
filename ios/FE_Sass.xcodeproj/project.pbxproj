@@ -696,6 +696,7 @@
 			isa = PBXGroup;
 			children = (
 				24A2D0BC1FAB183A00FA28B7 /* BaiduLocation */,
+				24A2D0C51FAB293A00FA28B7 /* Baidu_SDK */,
 				247AE7131FA3311C0039B52A /* LocationManger */,
 				1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */,
 				7DB2CBB31E779DDF00DE146C /* OCRSCancer */,
@@ -749,7 +750,6 @@
 		24A2D0BC1FAB183A00FA28B7 /* BaiduLocation */ = {
 			isa = PBXGroup;
 			children = (
-				24A2D0C51FAB293A00FA28B7 /* Baidu_SDK */,
 				24A2D0C21FAB1D2C00FA28B7 /* LLMapViewController.h */,
 				24A2D0C31FAB1D2C00FA28B7 /* LLMapViewController.m */,
 				24A2D0BD1FAB183A00FA28B7 /* Location.h */,
