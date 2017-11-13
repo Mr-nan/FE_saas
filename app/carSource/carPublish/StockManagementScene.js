@@ -130,7 +130,7 @@ export default class StockManagementScene extends BaseComponent {
                 },
                 {
                     title: '出厂日期',
-                    isShowTag: false,
+                    isShowTag: true,
                     value: '请选择',
                     isShowTail: true,
                 }
@@ -138,7 +138,7 @@ export default class StockManagementScene extends BaseComponent {
             [{
                 title: '采购价',
                 subTitle: '仅供车商老板、采购、财务查看',
-                isShowTag: false,
+                isShowTag: true,
                 isShowTail: false,
                 tailView: () => {
                     return (
