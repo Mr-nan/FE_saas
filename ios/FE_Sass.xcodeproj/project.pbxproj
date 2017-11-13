@@ -37,18 +37,18 @@
 		1510B5531F2067570046BBD8 /* libGrowing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5511F2067570046BBD8 /* libGrowing.a */; };
 		1510B5541F2067570046BBD8 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 1510B5521F2067570046BBD8 /* VERSION */; };
 		16FB421C1EF23352006C6077 /* SystomTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 16FB421B1EF23352006C6077 /* SystomTools.m */; };
-		245A5B091FB972B000B70104 /* BaiduMapAPI_Base.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5AD91FB972B000B70104 /* BaiduMapAPI_Base.framework */; };
-		245A5B0A1FB972B000B70104 /* BaiduMapAPI_Cloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5ADA1FB972B000B70104 /* BaiduMapAPI_Cloud.framework */; };
-		245A5B0B1FB972B000B70104 /* BaiduMapAPI_Location.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5ADB1FB972B000B70104 /* BaiduMapAPI_Location.framework */; };
-		245A5B0C1FB972B100B70104 /* BaiduMapAPI_Map.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5ADC1FB972B000B70104 /* BaiduMapAPI_Map.framework */; };
-		245A5B0D1FB972B100B70104 /* BaiduMapAPI_Radar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5ADD1FB972B000B70104 /* BaiduMapAPI_Radar.framework */; };
-		245A5B0E1FB972B100B70104 /* BaiduMapAPI_Search.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5ADE1FB972B000B70104 /* BaiduMapAPI_Search.framework */; };
-		245A5B0F1FB972B100B70104 /* BaiduMapAPI_Utils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5ADF1FB972B000B70104 /* BaiduMapAPI_Utils.framework */; };
-		245A5B101FB972B100B70104 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 245A5AE01FB972B000B70104 /* readme.txt */; };
-		245A5B111FB972B100B70104 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5AE21FB972B000B70104 /* libcrypto.a */; };
-		245A5B121FB972B100B70104 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5AE31FB972B000B70104 /* libssl.a */; };
-		245A5B131FB972B100B70104 /* LLMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 245A5AE51FB972B000B70104 /* LLMapViewController.m */; };
-		245A5B141FB972B100B70104 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 245A5AE71FB972B000B70104 /* Location.m */; };
+		245A5B281FB9793300B70104 /* BaiduMapAPI_Base.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5B181FB9793200B70104 /* BaiduMapAPI_Base.framework */; };
+		245A5B291FB9793300B70104 /* BaiduMapAPI_Cloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5B191FB9793200B70104 /* BaiduMapAPI_Cloud.framework */; };
+		245A5B2A1FB9793300B70104 /* BaiduMapAPI_Location.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5B1A1FB9793200B70104 /* BaiduMapAPI_Location.framework */; };
+		245A5B2B1FB9793300B70104 /* BaiduMapAPI_Map.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5B1B1FB9793200B70104 /* BaiduMapAPI_Map.framework */; };
+		245A5B2C1FB9793300B70104 /* BaiduMapAPI_Radar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5B1C1FB9793200B70104 /* BaiduMapAPI_Radar.framework */; };
+		245A5B2D1FB9793300B70104 /* BaiduMapAPI_Search.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5B1D1FB9793200B70104 /* BaiduMapAPI_Search.framework */; };
+		245A5B2E1FB9793300B70104 /* BaiduMapAPI_Utils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5B1E1FB9793200B70104 /* BaiduMapAPI_Utils.framework */; };
+		245A5B2F1FB9793300B70104 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 245A5B1F1FB9793200B70104 /* readme.txt */; };
+		245A5B301FB9793300B70104 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5B211FB9793200B70104 /* libcrypto.a */; };
+		245A5B311FB9793300B70104 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 245A5B221FB9793200B70104 /* libssl.a */; };
+		245A5B321FB9793300B70104 /* LLMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 245A5B251FB9793300B70104 /* LLMapViewController.m */; };
+		245A5B331FB9793300B70104 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 245A5B271FB9793300B70104 /* Location.m */; };
 		247AE7381FA3311D0039B52A /* XWLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 247AE7161FA3311D0039B52A /* XWLocationManager.m */; };
 		247AE73B1FA331810039B52A /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 247AE73A1FA331810039B52A /* LocationViewController.m */; };
 		2C1964C803524664A77CBF9E /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 754AC2C278594A7D8ACD7F05 /* libRCTWeChat.a */; };
@@ -407,20 +407,20 @@
 		16FB421A1EF23352006C6077 /* SystomTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystomTools.h; sourceTree = "<group>"; };
 		16FB421B1EF23352006C6077 /* SystomTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystomTools.m; sourceTree = "<group>"; };
 		1F2A351FE20A472BABAB3F42 /* RCTBEEPickerManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTBEEPickerManager.xcodeproj; path = "../node_modules/react-native-picker/ios/RCTBEEPickerManager.xcodeproj"; sourceTree = "<group>"; };
-		245A5AD91FB972B000B70104 /* BaiduMapAPI_Base.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Base.framework; sourceTree = "<group>"; };
-		245A5ADA1FB972B000B70104 /* BaiduMapAPI_Cloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Cloud.framework; sourceTree = "<group>"; };
-		245A5ADB1FB972B000B70104 /* BaiduMapAPI_Location.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Location.framework; sourceTree = "<group>"; };
-		245A5ADC1FB972B000B70104 /* BaiduMapAPI_Map.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Map.framework; sourceTree = "<group>"; };
-		245A5ADD1FB972B000B70104 /* BaiduMapAPI_Radar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Radar.framework; sourceTree = "<group>"; };
-		245A5ADE1FB972B000B70104 /* BaiduMapAPI_Search.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Search.framework; sourceTree = "<group>"; };
-		245A5ADF1FB972B000B70104 /* BaiduMapAPI_Utils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Utils.framework; sourceTree = "<group>"; };
-		245A5AE01FB972B000B70104 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
-		245A5AE21FB972B000B70104 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
-		245A5AE31FB972B000B70104 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
-		245A5AE41FB972B000B70104 /* LLMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLMapViewController.h; sourceTree = "<group>"; };
-		245A5AE51FB972B000B70104 /* LLMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLMapViewController.m; sourceTree = "<group>"; };
-		245A5AE61FB972B000B70104 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
-		245A5AE71FB972B000B70104 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
+		245A5B181FB9793200B70104 /* BaiduMapAPI_Base.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Base.framework; sourceTree = "<group>"; };
+		245A5B191FB9793200B70104 /* BaiduMapAPI_Cloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Cloud.framework; sourceTree = "<group>"; };
+		245A5B1A1FB9793200B70104 /* BaiduMapAPI_Location.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Location.framework; sourceTree = "<group>"; };
+		245A5B1B1FB9793200B70104 /* BaiduMapAPI_Map.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Map.framework; sourceTree = "<group>"; };
+		245A5B1C1FB9793200B70104 /* BaiduMapAPI_Radar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Radar.framework; sourceTree = "<group>"; };
+		245A5B1D1FB9793200B70104 /* BaiduMapAPI_Search.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Search.framework; sourceTree = "<group>"; };
+		245A5B1E1FB9793200B70104 /* BaiduMapAPI_Utils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Utils.framework; sourceTree = "<group>"; };
+		245A5B1F1FB9793200B70104 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		245A5B211FB9793200B70104 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		245A5B221FB9793200B70104 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
+		245A5B241FB9793300B70104 /* LLMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLMapViewController.h; sourceTree = "<group>"; };
+		245A5B251FB9793300B70104 /* LLMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLMapViewController.m; sourceTree = "<group>"; };
+		245A5B261FB9793300B70104 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
+		245A5B271FB9793300B70104 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		247AE7141FA3311D0039B52A /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
 		247AE7151FA3311D0039B52A /* XWLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XWLocationManager.h; sourceTree = "<group>"; };
 		247AE7161FA3311D0039B52A /* XWLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XWLocationManager.m; sourceTree = "<group>"; };
@@ -508,14 +508,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				245A5B091FB972B000B70104 /* BaiduMapAPI_Base.framework in Frameworks */,
+				245A5B281FB9793300B70104 /* BaiduMapAPI_Base.framework in Frameworks */,
 				EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */,
-				245A5B0A1FB972B000B70104 /* BaiduMapAPI_Cloud.framework in Frameworks */,
+				245A5B291FB9793300B70104 /* BaiduMapAPI_Cloud.framework in Frameworks */,
 				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
 				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
 				1510B5491F2058080046BBD8 /* Security.framework in Frameworks */,
 				E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */,
-				245A5B0B1FB972B000B70104 /* BaiduMapAPI_Location.framework in Frameworks */,
+				245A5B2A1FB9793300B70104 /* BaiduMapAPI_Location.framework in Frameworks */,
 				1510B5471F2057D50046BBD8 /* libicucore.tbd in Frameworks */,
 				1510B5451F2057B40046BBD8 /* libsqlite3.tbd in Frameworks */,
 				7D4BDE2A1ECAD84A002DD5E1 /* AdSupport.framework in Frameworks */,
@@ -535,11 +535,11 @@
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
-				245A5B121FB972B100B70104 /* libssl.a in Frameworks */,
+				245A5B311FB9793300B70104 /* libssl.a in Frameworks */,
 				7DB2CBD21E779DDF00DE146C /* libvinTyper.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
-				245A5B0D1FB972B100B70104 /* BaiduMapAPI_Radar.framework in Frameworks */,
-				245A5B0C1FB972B100B70104 /* BaiduMapAPI_Map.framework in Frameworks */,
+				245A5B2C1FB9793300B70104 /* BaiduMapAPI_Radar.framework in Frameworks */,
+				245A5B2B1FB9793300B70104 /* BaiduMapAPI_Map.framework in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
@@ -547,13 +547,13 @@
 				569F6F90327249F99E9186DD /* libRNImagePicker.a in Frameworks */,
 				6B4FBA6C55A04B9CA9AED806 /* libRCTBEEPickerManager.a in Frameworks */,
 				400052FA1E8E478F9E60534C /* libRCTUmengPush.a in Frameworks */,
-				245A5B0F1FB972B100B70104 /* BaiduMapAPI_Utils.framework in Frameworks */,
+				245A5B2E1FB9793300B70104 /* BaiduMapAPI_Utils.framework in Frameworks */,
 				2C1964C803524664A77CBF9E /* libRCTWeChat.a in Frameworks */,
-				245A5B111FB972B100B70104 /* libcrypto.a in Frameworks */,
+				245A5B301FB9793300B70104 /* libcrypto.a in Frameworks */,
 				1510B5531F2067570046BBD8 /* libGrowing.a in Frameworks */,
 				8764F52B800544BDB35F20A3 /* libRCTBEEPickerManager.a in Frameworks */,
 				57AE4D60A14A49F3BFB62E1A /* libRNSpinkit.a in Frameworks */,
-				245A5B0E1FB972B100B70104 /* BaiduMapAPI_Search.framework in Frameworks */,
+				245A5B2D1FB9793300B70104 /* BaiduMapAPI_Search.framework in Frameworks */,
 				4F901FA6C8544C1C9AE1F413 /* libCodePush.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -733,42 +733,42 @@
 			path = "GrowingIO-iOS-SDK";
 			sourceTree = "<group>";
 		};
-		245A5AD71FB972B000B70104 /* BaiduLocation */ = {
+		245A5B171FB9793200B70104 /* Baidu_SDK */ = {
 			isa = PBXGroup;
 			children = (
-				245A5AD81FB972B000B70104 /* Baidu_SDK */,
-				245A5AE41FB972B000B70104 /* LLMapViewController.h */,
-				245A5AE51FB972B000B70104 /* LLMapViewController.m */,
-				245A5AE61FB972B000B70104 /* Location.h */,
-				245A5AE71FB972B000B70104 /* Location.m */,
+				245A5B181FB9793200B70104 /* BaiduMapAPI_Base.framework */,
+				245A5B191FB9793200B70104 /* BaiduMapAPI_Cloud.framework */,
+				245A5B1A1FB9793200B70104 /* BaiduMapAPI_Location.framework */,
+				245A5B1B1FB9793200B70104 /* BaiduMapAPI_Map.framework */,
+				245A5B1C1FB9793200B70104 /* BaiduMapAPI_Radar.framework */,
+				245A5B1D1FB9793200B70104 /* BaiduMapAPI_Search.framework */,
+				245A5B1E1FB9793200B70104 /* BaiduMapAPI_Utils.framework */,
+				245A5B1F1FB9793200B70104 /* readme.txt */,
+				245A5B201FB9793200B70104 /* thirdlibs */,
+			);
+			name = Baidu_SDK;
+			path = FE_Sass/Baidu_SDK;
+			sourceTree = "<group>";
+		};
+		245A5B201FB9793200B70104 /* thirdlibs */ = {
+			isa = PBXGroup;
+			children = (
+				245A5B211FB9793200B70104 /* libcrypto.a */,
+				245A5B221FB9793200B70104 /* libssl.a */,
+			);
+			path = thirdlibs;
+			sourceTree = "<group>";
+		};
+		245A5B231FB9793300B70104 /* BaiduLocation */ = {
+			isa = PBXGroup;
+			children = (
+				245A5B241FB9793300B70104 /* LLMapViewController.h */,
+				245A5B251FB9793300B70104 /* LLMapViewController.m */,
+				245A5B261FB9793300B70104 /* Location.h */,
+				245A5B271FB9793300B70104 /* Location.m */,
 			);
 			name = BaiduLocation;
 			path = FE_Sass/BaiduLocation;
-			sourceTree = "<group>";
-		};
-		245A5AD81FB972B000B70104 /* Baidu_SDK */ = {
-			isa = PBXGroup;
-			children = (
-				245A5AD91FB972B000B70104 /* BaiduMapAPI_Base.framework */,
-				245A5ADA1FB972B000B70104 /* BaiduMapAPI_Cloud.framework */,
-				245A5ADB1FB972B000B70104 /* BaiduMapAPI_Location.framework */,
-				245A5ADC1FB972B000B70104 /* BaiduMapAPI_Map.framework */,
-				245A5ADD1FB972B000B70104 /* BaiduMapAPI_Radar.framework */,
-				245A5ADE1FB972B000B70104 /* BaiduMapAPI_Search.framework */,
-				245A5ADF1FB972B000B70104 /* BaiduMapAPI_Utils.framework */,
-				245A5AE01FB972B000B70104 /* readme.txt */,
-				245A5AE11FB972B000B70104 /* thirdlibs */,
-			);
-			path = Baidu_SDK;
-			sourceTree = "<group>";
-		};
-		245A5AE11FB972B000B70104 /* thirdlibs */ = {
-			isa = PBXGroup;
-			children = (
-				245A5AE21FB972B000B70104 /* libcrypto.a */,
-				245A5AE31FB972B000B70104 /* libssl.a */,
-			);
-			path = thirdlibs;
 			sourceTree = "<group>";
 		};
 		247AE7131FA3311C0039B52A /* LocationManger */ = {
@@ -920,7 +920,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				245A5AD71FB972B000B70104 /* BaiduLocation */,
+				245A5B171FB9793200B70104 /* Baidu_SDK */,
+				245A5B231FB9793300B70104 /* BaiduLocation */,
 				7D9B6C261F8DB56B0063B7C1 /* MBProgressHUD.h */,
 				7D9B6C281F8DB56B0063B7C1 /* MBProgressHUD.m */,
 				7D9B6C2A1F8DB56B0063B7C1 /* ZNShareClass.h */,
@@ -1455,7 +1456,7 @@
 				7DB2CBDE1E779DDF00DE146C /* take_pic_btn@3x.png in Resources */,
 				124A591B1E9CA419007C1C15 /* 相机蒙版.png in Resources */,
 				7DB2CBDC1E779DDF00DE146C /* scan_line@3x.png in Resources */,
-				245A5B101FB972B100B70104 /* readme.txt in Resources */,
+				245A5B2F1FB9793300B70104 /* readme.txt in Resources */,
 				7DB2CBD41E779DDF00DE146C /* back_btn@3x.png in Resources */,
 				124A590F1E9C8B12007C1C15 /* Icon_SaoLine@2x.png in Resources */,
 				7DB2CBD61E779DDF00DE146C /* change_btn@3x.png in Resources */,
@@ -1539,13 +1540,13 @@
 				7D9B6C2C1F8DB56B0063B7C1 /* MBProgressHUD.h in Sources */,
 				7D9B6C2D1F8DB56B0063B7C1 /* ZNShareViewController.h in Sources */,
 				7D9B6C2E1F8DB56B0063B7C1 /* MBProgressHUD.m in Sources */,
-				245A5B141FB972B100B70104 /* Location.m in Sources */,
+				245A5B331FB9793300B70104 /* Location.m in Sources */,
 				247AE7381FA3311D0039B52A /* XWLocationManager.m in Sources */,
 				7D9B6C2F1F8DB56B0063B7C1 /* ZNShareViewController.m in Sources */,
 				7D9B6C301F8DB56B0063B7C1 /* ZNShareClass.h in Sources */,
 				124A59191E9C8B90007C1C15 /* CameraController.m in Sources */,
 				7DB2CBDF1E779DDF00DE146C /* TopView.m in Sources */,
-				245A5B131FB972B100B70104 /* LLMapViewController.m in Sources */,
+				245A5B321FB9793300B70104 /* LLMapViewController.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				16FB421C1EF23352006C6077 /* SystomTools.m in Sources */,
@@ -1672,6 +1673,7 @@
 					"$(PROJECT_DIR)/BaiduLocation",
 					"$(PROJECT_DIR)/BaiduLocation/Baidu_SDK",
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK",
+					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
@@ -1690,6 +1692,7 @@
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK",
 					"$(PROJECT_DIR)/BaiduLocation/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK/thirdlibs",
+					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK/thirdlibs",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1719,6 +1722,7 @@
 					"$(PROJECT_DIR)/BaiduLocation",
 					"$(PROJECT_DIR)/BaiduLocation/Baidu_SDK",
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK",
+					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
@@ -1737,6 +1741,7 @@
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK",
 					"$(PROJECT_DIR)/BaiduLocation/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK/thirdlibs",
+					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK/thirdlibs",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1803,6 +1808,7 @@
 					"$(PROJECT_DIR)/BaiduLocation",
 					"$(PROJECT_DIR)/BaiduLocation/Baidu_SDK",
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK",
+					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
@@ -1821,6 +1827,7 @@
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK",
 					"$(PROJECT_DIR)/BaiduLocation/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK/thirdlibs",
+					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK/thirdlibs",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
