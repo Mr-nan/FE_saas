@@ -418,19 +418,19 @@ export default class StockManagementScene extends BaseComponent {
             this.carData.pictures = ""
         }
 
-// auto_id	车辆id		【必填】
-// car_color	车辆颜色
-//         device_code			【必填】
-// engine_number	发动机编号
-//         flag	库存是否加一（减一）
-// id			【修改必填】
-// manufacture	车辆出厂日期
-// model_name	车型名称		【必填】
-// pictures	图片		【必填】
-// purchase_price	采购价		【必填】
-// status	状态在售1,2已售		【必填】
-// token			【必填】
-// vin	车架号		【必填】
+        // auto_id	车辆id		【必填】
+        // car_color	车辆颜色
+        //         device_code			【必填】
+        // engine_number	发动机编号
+        //         flag	库存是否加一（减一）
+        // id			【修改必填】
+        // manufacture	车辆出厂日期
+        // model_name	车型名称		【必填】
+        // pictures	图片		【必填】
+        // purchase_price	采购价		【必填】
+        // status	状态在售1,2已售		【必填】
+        // token			【必填】
+        // vin	车架号		【必填】
         console.log(this.carData)
         this.map = {};
         this.map.auto_pid = this.carData.id;
@@ -444,10 +444,15 @@ export default class StockManagementScene extends BaseComponent {
         this.map.vin = this.carData.vin;
         this.map.model_name = this.carData.model_name;
 
-        // if (!this.carData.manufacture) {
-        //     this.props.showToast('选择出厂日期');
-        //     return;
-        // }
+        if (!this.carData.manufacture) {
+            this.props.showToast('选择出厂日期');
+            return;
+        }
+
+        if (!this.carData.purchase_price) {
+            this.props.showToast('请填写采购价');
+            return;
+        }
 
         // let navigatorParams = {
         //     name: "CarPublishSecondScene",
