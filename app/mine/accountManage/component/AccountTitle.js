@@ -34,7 +34,7 @@ export  default class AccountTitle extends PureComponent {
     constructor(props) {
         super(props);
         list = [];
-        list.push(new listValue('开通白条账户', require('../../../../images/mainImage/Transfer.png'), this.props.transfer));
+        list.push(new listValue('开通白条账户', require('../../../../images/account/trustAccountLog.png'), this.props.openTrustAccount));
         list.push(new listValue('转账', require('../../../../images/mainImage/Transfer.png'), this.props.transfer));
         list.push(new listValue('银行卡', require('../../../../images/mainImage/bankCard.png'), this.props.bankCard));
         list.push(new listValue('账户流水', require('../../../../images/mainImage/flow.png'), this.props.flow));

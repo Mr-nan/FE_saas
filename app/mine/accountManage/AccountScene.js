@@ -35,6 +35,8 @@ import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as webBackUrl from "../../constant/webBackUrl";
 import AccountWebScene from './AccountWebScene';
+import OpenIndividualTrustAccountScene from "./trustAccount/OpenIndividualTrustAccountScene";
+import OpenEntTrustAccStp1Scene from "./trustAccount/OpenEntTrustAccStp1Scene";
 export  default class AccountScene extends BaseComponent {
 
     constructor(props) {
@@ -288,7 +290,25 @@ export  default class AccountScene extends BaseComponent {
                           transfer={()=>{this.toNextPage({name:'TransferScene',
                           component:TransferScene,params:{money:this.state.info.balance,callBack:()=>{
                               this.allRefresh()}}})}}
+                          openTrustAccount={() => {
+                              if (this.state.info.account_open_type === 2) {  //开通现金账户的用户类型 1:企业
+                                  this.toNextPage({
+                                      name:'OpenEntTrustAccStp1Scene',
+                                      component:OpenEntTrustAccStp1Scene,
+                                      params:{
 
+                                      }
+                                  })
+                              } else {
+                                  this.toNextPage({                           // 2:个人
+                                      name:'OpenIndividualTrustAccountScene',
+                                      component:OpenIndividualTrustAccountScene,
+                                      params:{
+
+                                      }
+                                  })
+                              }
+                          }}
 
             />
         )
