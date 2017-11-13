@@ -35,6 +35,7 @@ import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as webBackUrl from "../../constant/webBackUrl";
 import AccountWebScene from './AccountWebScene';
+import OpenTrustAccountView from "./component/OpenTrustAccountView";
 export  default class AccountScene extends BaseComponent {
 
     constructor(props) {
@@ -154,7 +155,7 @@ export  default class AccountScene extends BaseComponent {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderHeader={this._renderHeader}
-                    renderSeparator={this._renderSeparator}
+                    //renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                     refreshControl={
                         <RefreshControl
@@ -189,6 +190,7 @@ export  default class AccountScene extends BaseComponent {
                     title="账户管理"
                     backIconClick={this.backPage}
                 />
+                <OpenTrustAccountView ref="openAccount"/>
             </View>
         );
     }
@@ -289,7 +291,7 @@ export  default class AccountScene extends BaseComponent {
                               component:TransferScene,params:{money:this.state.info.balance,callBack:()=>{
                                   this.allRefresh()}}})}}
                           openTrustAccount={() => {
-                              // TODO 弹窗
+                              this.refs.openAccount.changeState(true);
                           }}
             />
         )
