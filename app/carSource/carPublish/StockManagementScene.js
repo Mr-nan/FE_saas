@@ -80,6 +80,7 @@ export default class StockManagementScene extends BaseComponent {
 
         if (this.props.dataID) {
             this.carData.id = this.props.dataID;
+            this.carData.auto_pid = this.props.carData.svi_id;
         }
 
         this.titleData1 = [

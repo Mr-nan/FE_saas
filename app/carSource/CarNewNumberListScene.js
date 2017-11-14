@@ -30,6 +30,8 @@ import  {request}           from '../utils/RequestUtil';
 import * as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 import StockManagementScene from "./carPublish/StockManagementScene";
+import  AllLoading from '../../component/AllLoading';
+
 const Pixel = new PixelUtil();
 const ScreenWidth = Dimensions.get('window').width;
 
@@ -76,6 +78,13 @@ export default class CarNewNumberListScene extends BaseComponent {
                 <TouchableOpacity style={styles.footBtn} onPress={this.pushNewCarScene}>
                     <Text style={styles.footBtnText}>车辆入库</Text>
                 </TouchableOpacity>
+                <AllLoading callEsc={()=>{
+                    this.carData['flag'] = '2';
+                    this.saveStockData();
+                }} ref={(modal) => {this.allloading = modal}} canColse='false' callBack={()=>{
+                    this.carData['flag'] = '1';
+                    this.saveStockData();
+                }}/>
             </View>
         )
     }
@@ -150,13 +159,16 @@ export default class CarNewNumberListScene extends BaseComponent {
                 component: StockManagementScene,
                 params: {
                     carData:cellData,
-                    refreshingData:this.refs.upperFrameView.loadData(),
+                    refreshingData:this.loadHeadData,
                     dataID:cellData.id
                 }
             };
             this.props.toNextPage(navigatorParams);
         }else {
+          if( this.props.carData.reserve_num)
+          {
 
+          }
         }
     }
 }
