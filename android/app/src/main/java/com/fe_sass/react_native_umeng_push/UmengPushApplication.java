@@ -58,6 +58,7 @@ public class UmengPushApplication extends Application {
         });
         //统计应用启动数据
         mPushAgent.onAppStart();
+        mPushAgent.setPushCheck(true);
 
         UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
             @Override
