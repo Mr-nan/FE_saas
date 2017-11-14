@@ -70,15 +70,13 @@ export default class StockManagementScene extends BaseComponent {
             auto_pid: this.props.carData.id,
             car_color: this.props.carData.car_color,
             engine_number: this.props.carData.engine_number,
-            manufacture: this.props.carData.manufacture,
+            manufacture: this.props.carData.manufacture != '' ? this.dateReversal(this.props.carData.manufacture + "000") : "",
             pictures: this.props.carData.imgs,
             purchase_price: this.props.carData.purchase_price,
             status: this.props.carData.status,
             vin: this.props.carData.vin,
             model_name: this.props.carData.model_name
         };
-
-        console.log("xxx",this.props.carData.imgs)
 
         if (this.props.dataID) {
             this.carData.id = this.props.dataID;
@@ -214,8 +212,7 @@ export default class StockManagementScene extends BaseComponent {
             ]
         ];
 
-        if (this.props.carData.imgs)
-        {
+        if (this.props.carData.imgs) {
             this.results.push(...this.props.carData.imgs);
             this.carData['pictures'] = JSON.stringify(this.results);
             imagTitle.map((data, index) => {
@@ -233,6 +230,7 @@ export default class StockManagementScene extends BaseComponent {
             isDateTimePickerVisible: false,
             renderPlaceholderOnly: 'loading'
         };
+        this.setCarData();
     }
 
     setCurrentPy = (ref) => {
@@ -418,15 +416,15 @@ export default class StockManagementScene extends BaseComponent {
      * 设置默认数据
      */
     setCarData = () => {
-        if (this.carData.vin) {
-            this.vinInput.setNativeProps({
-                text: this.carData.vin
-            });
-
-            if (this.props.carData) {
-                this._onVinChange(this.carData.vin);
-            }
-        }
+        // if (this.carData.vin) {
+        //     this.vinInput.setNativeProps({
+        //         text: this.carData.vin
+        //     });
+        //
+        //     if (this.props.carData) {
+        //         this._onVinChange(this.carData.vin);
+        //     }
+        // }
         this.titleData1[0][2].value = this.carData.manufacture ? this.carData.manufacture : '请选择';//出厂日期
     }
 
@@ -482,6 +480,7 @@ export default class StockManagementScene extends BaseComponent {
     }
 
     _handleDatePicked = (date) => {
+        alert(date)
         let d = this.dateFormat(date, 'yyyy-MM-dd');
         if (this.type === 'factory') {
 
