@@ -42,17 +42,23 @@ let carUpperFrameStatus = 1;
 let carDropFramePage = 1;
 let carDropFrameStatus = 1;
 
+let carSeekStr = '';
+
 export default class CarNewNumberListScene extends BaseComponent {
     render(){
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={{backgroundColor:'white', flex:1}}>
-                    {this.loadView()}
+                    <CarSeekView carSeekAction={this.carSeekAction}/>
+                    {
+                        this.loadView()
+                    }
+
                 </View>);
         }
         return(
             <View style={styles.rootContainer}>
-                <CarSeekView/>
+                <CarSeekView carSeekAction={this.carSeekAction}/>
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page?this.props.page:0}
@@ -100,7 +106,8 @@ export default class CarNewNumberListScene extends BaseComponent {
             status: '1',
             page: 1,
             pageCount: 1,
-            auto_id:this.props.carData.id
+            auto_id:this.props.carData.id,
+            search_text:carSeekStr,
         }).then((response) => {
             let data =response.mjson.data;
             this.setState({
@@ -116,6 +123,10 @@ export default class CarNewNumberListScene extends BaseComponent {
             });
         });
     }
+    carSeekAction=(seekStr)=>{
+        carSeekStr=seekStr;
+        this.loadHeadData();
+    }
 
     pushNewCarScene=()=>{
         let navigatorParams = {
@@ -124,7 +135,7 @@ export default class CarNewNumberListScene extends BaseComponent {
             component: StockManagementScene,
             params: {
                 carData:this.props.carData,
-                refreshingData:this.refs.upperFrameView.loadData()
+                refreshingData:this.loadHeadData,
 
             }
         };
@@ -191,8 +202,8 @@ class MyCarSourceUpperFrameView extends BaseComponent {
             status: '1',
             page: carUpperFramePage,
             pageCount: 10,
-            auto_id:this.props.carData.id
-
+            auto_id:this.props.carData.id,
+            search_text:carSeekStr,
         }).then((response) => {
 
             carUpperFrameData=response.mjson.data.list;
@@ -237,7 +248,8 @@ class MyCarSourceUpperFrameView extends BaseComponent {
             status: '1',
             page: carUpperFramePage,
             pageCount: 10,
-            auto_id:this.props.carData.id
+            auto_id:this.props.carData.id,
+            search_text:carSeekStr,
 
         }).then((response) => {
             let carData = response.mjson.data.list;
@@ -393,15 +405,16 @@ class MyCarSourceDropFrameView extends BaseComponent {
         let url = AppUrls.CAR_STOCK_LIST;
         carDropFramePage = 1;
         request(url, 'post', {
-            status: '1',
+            status: '2',
             page: carDropFramePage,
             pageCount: 10,
-            auto_id:this.props.carData.id
+            auto_id:this.props.carData.id,
+            search_text:carSeekStr,
 
         }).then((response) => {
 
             carDropFrameData = response.mjson.data.list;
-            if(carDropFrameData.length>=response.mjson.data.total_on_sale)
+            if(carDropFrameData.length>=response.mjson.data.total_sold)
             {
                 carDropFrameStatus = 2;
             }
@@ -440,10 +453,11 @@ class MyCarSourceDropFrameView extends BaseComponent {
         let url = AppUrls.CAR_STOCK_LIST;
         carDropFramePage += 1;
         request(url, 'post', {
-            status: '1',
+            status: '2',
             page: carDropFramePage,
             pageCount: 10,
-            auto_id:this.props.carData.id
+            auto_id:this.props.carData.id,
+            search_text:carSeekStr,
 
         }).then((response) => {
 
@@ -452,7 +466,7 @@ class MyCarSourceDropFrameView extends BaseComponent {
                 for (let i = 0; i < carData.length; i++) {
                     carDropFrameData.push(carData[i]);
                 }
-                if(carDropFrameData.length>=response.mjson.data.total_on_sale)
+                if(carDropFrameData.length>=response.mjson.data.total_sold)
                 {
                     carDropFrameStatus = 2;
                 }
@@ -553,7 +567,14 @@ class CarSeekView extends Component {
                     <View style={styles.navigatorSousuoView}>
                         <Image
                                source={require('../../images/carSourceImages/sousuoicon.png')}/>
-                        <TextInput allowFontScaling={false}  style={styles.navigatorSousuoText} placeholder={'请输入车型关键词或车架号'} placeholderTextColor={fontAndColor.COLORA1}/>
+                        <TextInput
+                            allowFontScaling={false}
+                            underlineColorAndroid='transparent'
+                            style={styles.navigatorSousuoText}
+                            placeholder={'请输入车型关键词或车架号'}
+                            defaultValue={carSeekStr}
+                            placeholderTextColor={fontAndColor.COLORA1}
+                            onChangeText={(text)=>{this.props.carSeekAction(text)}}/>
                     </View>
                 </View>
             </View>
@@ -579,7 +600,7 @@ const  styles = StyleSheet.create({
     },
     navigatorSousuoText: {
 
-        color: fontAndColor.COLORA1,
+        color: fontAndColor.COLORA0,
         height: Pixel.getPixel(30),
         width:ScreenWidth - Pixel.getPixel(130),
         textAlign: 'center',
@@ -619,6 +640,7 @@ const  styles = StyleSheet.create({
     },
     viewContainer: {
         flex: 1,
-        backgroundColor: fontAndColor.COLORA3
+        backgroundColor: fontAndColor.COLORA3,
+        marginBottom:Pixel.getPixel(44)
     },
 });

@@ -78,7 +78,7 @@ export default class StockManagementScene extends BaseComponent {
             model_name: this.props.carData.model_name
         };
 
-        console.log("xxx",this.props.carData.imgs)
+        console.log("=============",this.carData)
 
         if (this.props.dataID) {
             this.carData.id = this.props.dataID;
