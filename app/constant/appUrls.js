@@ -1259,4 +1259,7 @@ export const ZS_GET_CITY = BASEURL + "v1/bankRoute.query/findCity";
  *  查询是否开启浙商银行可见
  */
 export const ZS_BANK_IS_SHOW = BASEURL + "v1/account.cz_bank/zsBankIsShow";
-
+/**
+ *   获取用户的账户详情(我的账户页面-卡片页  调用)
+ */
+export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccountDetail";
