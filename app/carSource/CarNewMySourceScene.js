@@ -1525,7 +1525,7 @@ class EditCarPriceView extends Component {
     render(){
 
         return(
-                <Modal animationType={'fade'} visible={this.state.modalOpen} transparent={true}>
+                <Modal visible={this.state.modalOpen} transparent={true}>
                     <TouchableOpacity style={styles.editCarPriceContainer} onPress={()=>{this.isShowView(false,{})}}>
                         <View style={styles.editCarContentView}>
                             <View style={styles.editCarHeadView}>
@@ -1564,7 +1564,7 @@ class EditCarPriceView extends Component {
                                                        text: moneyStr,
                                                    });
                                                }}
-                                               defaultValue={this.state.carData.dealer_price}
+                                               defaultValue={this.carMoneyChange(this.state.carData.dealer_price)}
                                     />
                                     <Text style={{color:fontAndColor.COLORA1,
                                         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>万</Text>
@@ -1601,6 +1601,31 @@ class EditCarPriceView extends Component {
         }
 
         return obj;
+    }
+
+    carMoneyChange = (carMoney) => {
+
+        let newCarMoney = parseFloat(carMoney);
+        let carMoneyStr = newCarMoney.toFixed(2);
+        let moneyArray = carMoneyStr.split(".");
+
+        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
+
+        if (moneyArray.length > 1) {
+            if (moneyArray[1] > 0) {
+
+                return moneyArray[0] + '.' + moneyArray[1];
+
+            } else {
+
+                return moneyArray[0];
+            }
+
+        } else {
+            return carMoneyStr;
+        }
+
+
     }
 
 }

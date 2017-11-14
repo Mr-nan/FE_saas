@@ -70,7 +70,7 @@ export default class CarNewNumberListScene extends BaseComponent {
                                                tabLabel="ios-paper1"
                                                carData={this.props.carData}
                                                cellClick={this.cellClick}/>
-                    <MyCarSourceDropFrameView  ref="dropFrameView"  tabLabel="ios-paper2"/>
+                    <MyCarSourceDropFrameView  ref="dropFrameView"  tabLabel="ios-paper2" carData={this.props.carData}/>
                 </ScrollableTabView>
                 <TouchableOpacity style={styles.footBtn} onPress={this.pushNewCarScene}>
                     <Text style={styles.footBtnText}>车辆入库</Text>
@@ -379,7 +379,7 @@ class MyCarSourceUpperFrameView extends BaseComponent {
     renderRow =(rowData)=>{
 
         return(
-            <CarNewNumberCell carData={rowData} type={1}  footBtnClick={this.cellFootBtnClick}/>
+            <CarNewNumberCell carData={rowData} type={1} carType={1}  footBtnClick={this.cellFootBtnClick}/>
         )
     }
     renderSeperator=(sectionID, rowID, adjacentRowHighlighted)=>{
@@ -567,7 +567,7 @@ class MyCarSourceDropFrameView extends BaseComponent {
                               pageSize={10}
                               renderFooter={this.renderListFooter}
                               onEndReached={this.toEnd}
-                              renderRow={(rowData) => <CarNewNumberCell carData={rowData} type={2} />}
+                              renderRow={(rowData) => <CarNewNumberCell carData={rowData} type={2} carType={1}/>}
                               renderSeparator={this.renderSeperator}
                               refreshControl={
                                   <RefreshControl

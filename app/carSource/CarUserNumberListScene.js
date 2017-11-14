@@ -29,6 +29,8 @@ import  {request}           from '../utils/RequestUtil';
 import * as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 import StockManagementScene from "./carPublish/StockManagementScene";
+import CarPublishFirstScene from "./carPublish/CarPublishFirstScene";
+import CarDealInfoScene from "./CarDealInfoScene";
 const Pixel = new PixelUtil();
 const ScreenWidth = Dimensions.get('window').width;
 
@@ -60,10 +62,10 @@ export default class CarUserNumberListScene extends BaseComponent {
                     initialPage={this.props.page?this.props.page:0}
                     locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售 ("+this.state.shelves_count+")", "已售 ("+this.state.sold_count+')']}/>}>
-                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"  carPriceEditClick={this.carPriceEditClick}/>
-                    <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
+                    <MyCarSourceUpperFrameView ref="upperFrameView" cellFootBtnClick={this.cellFootBtnClick} tabLabel="ios-paper1"/>
+                    <MyCarSourceDropFrameView  ref="dropFrameView"  tabLabel="ios-paper2"/>
                 </ScrollableTabView>
-                <TouchableOpacity style={styles.footBtn} onPress={this.pushNewCarScene}>
+                <TouchableOpacity style={styles.footBtn} onPress={this.pushCarScene}>
                     <Text style={styles.footBtnText}>车辆入库</Text>
                 </TouchableOpacity>
             </View>
@@ -121,16 +123,51 @@ export default class CarUserNumberListScene extends BaseComponent {
         carSeekStr=seekStr;
         this.loadHeadData();
     }
-    pushNewCarScene=()=>{
+    pushCarScene=()=>{
         let navigatorParams = {
 
-            name: "StockManagementScene",
-            component: StockManagementScene,
+            name: "CarPublishFirstScene",
+            component: CarPublishFirstScene,
             params: {
-                carData:this.props.carData,
             }
         };
         this.props.toNextPage(navigatorParams);
+    }
+    cellFootBtnClick=(btnTitle,carData)=>{
+        this.carData = carData;
+        if(btnTitle=='编辑'){
+            if(carData.in_valid_order==1){
+                this.props.showToast('该车辆在有效订单中,不可操作编辑');
+                return;
+            }
+            let navigatorParams = {
+
+                name: "CarPublishFirstScene",
+                component: CarPublishFirstScene,
+                params: {
+
+                    carID: carData.id,
+                }
+            };
+            this.props.toNextPage(navigatorParams);
+
+        }else {
+
+            if(carData.in_valid_order==1){
+                this.props.showToast('该车辆在有效订单中,不可操作已售');
+                return;
+            }
+            let navigatorParams = {
+
+                name: "CarDealInfoScene",
+                component: CarDealInfoScene,
+                params: {
+                    refreshDataAction:this.loadHeadData,
+                    carID:carData.id,
+                }
+            };
+            this.props.toNextPage(navigatorParams);
+        }
     }
 }
 
@@ -305,18 +342,13 @@ class MyCarSourceUpperFrameView extends BaseComponent {
     }
 
     cellFootBtnClick=(btnTitle,carData)=>{
-        alert(btnTitle);
-        if(btnTitle=='编辑'){
-
-        }else if(btnTitle=='出库'){
-
-        }
+        this.props.cellFootBtnClick(btnTitle,carData);
     }
 
     renderRow =(rowData)=>{
 
         return(
-            <CarNewNumberCell carData={rowData} type={1}  footBtnClick={this.cellFootBtnClick}/>
+            <CarNewNumberCell carData={rowData} type={1} carType={2}  footBtnClick={this.cellFootBtnClick} />
         )
     }
     renderSeperator=(sectionID, rowID, adjacentRowHighlighted)=>{
@@ -499,7 +531,7 @@ class MyCarSourceDropFrameView extends BaseComponent {
                               pageSize={10}
                               renderFooter={this.renderListFooter}
                               onEndReached={this.toEnd}
-                              renderRow={(rowData) => <CarNewNumberCell carData={rowData} type={2} />}
+                              renderRow={(rowData) => <CarNewNumberCell carData={rowData} type={2} carType={2}/>}
                               renderSeparator={this.renderSeperator}
                               refreshControl={
                                   <RefreshControl

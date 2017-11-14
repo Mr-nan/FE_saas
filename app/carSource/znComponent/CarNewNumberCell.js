@@ -24,14 +24,24 @@ export default class CarNewNumberCell extends Component{
                 <View style={styles.headView}>
                     <Text style={styles.headTitle}>{this.props.carData.model_name+'  '+this.props.carData.car_color.split("|")[0]}</Text>
                     <Text style={styles.headSubTitle}>{'VIN：'+this.props.carData.vin+' / '+'发动机号：'+this.props.carData.engine_number}</Text>
-                    <Text style={styles.headSubTitle}>{ (this.props.carData.manufacture && ('出厂日期：'+ this.dateReversal(this.props.carData.manufacture+'000',true)))+' / '+'采购价：'+this.carMoneyChange(this.props.carData.purchase_price)+'万'}</Text>
+                    <Text style={styles.headSubTitle}>{(this.props.carData.manufacture && ('出厂日期：'+ this.dateReversal(this.props.carData.manufacture+'000',true)))+
+                    ' / '+ (this.props.carType==2? ('分销批发价：'+this.carMoneyChange(this.props.carData.dealer_price)):
+                        ('采购价：'+this.carMoneyChange(this.props.carData.purchase_price)))+'万'}</Text>
                 </View>
                 <ScrollView style={styles.imgScrollView} horizontal={true} showsHorizontalScrollIndicator={false}>
                     {
                         this.props.carData.imgs.map((data,index)=>{
-                            return(
-                                <Image style={styles.imgView} key = {index} source={{uri:data.icon_url}} />
-                            )
+                            if(this.props.carType == 1){
+                                return(
+                                    <Image style={styles.imgView} key = {index} source={{uri:data.url}} />
+                                )
+                            }else {
+                                console.log('====',data.name);
+                                return(
+                                    (data.name == 'engine' ||data.name == 'vin_no' || data.name == 'registration_card' ) && <Image style={styles.imgView} key = {index} source={{uri:data.url}} />
+                                )
+                            }
+
                         })
                     }
                 </ScrollView>

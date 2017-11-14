@@ -827,22 +827,14 @@ export default class CarPublishFirstScene extends BaseComponent{
                 text:carObject.liter
             });
         }
-        this.titleData1[0][1].subTitle='';
-        this.titleData1[0][2].value = carObject.model_name;
-        this.titleData1[0][3].value = carObject.discharge_standard;
-        this.titleData1[1][0].value = carObject.model_year+'-06-01';
-        this.titleData1[1][1].value = carObject.model_year+'-06-01';
+        this.titleData1[0][0].subTitle='';
+        this.titleData1[0][1].value = carObject.model_name;
+        this.titleData1[0][2].value = carObject.discharge_standard;
+
 
 
         this.carData['manufacture'] = carObject.model_year+'-06-01';
-        if(this.carType =='二手车')
-        {
-            this.carData['init_reg'] = carObject.model_year+'-06-01';
-        }else {
-            this.carData['init_reg'] = '';
-            this.titleData1[1][1].value = '请选择';
-
-        }
+        this.carData['init_reg'] = carObject.model_year+'-06-01';
         this.carData['model_id'] = carObject.model_id;
         this.carData['emission_standards'] = carObject.discharge_standard;
         this.carData['series_id'] = carObject.series_id;
