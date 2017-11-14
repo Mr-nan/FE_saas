@@ -175,6 +175,11 @@ export const CAR_USER_CAR = BASEURL + V + 'user/car';
 export const CAR_STOCK_LIST = BASEURL + V + 'car.stock/lists';
 
 /**
+ * 库存车辆出库
+ */
+export const CAR_STOCK_SOLD_OUT = BASEURL + V + '/car.stock/soldOut';
+
+/**
  * 我的车源-已上架/下架-操作
  */
 export const CAR_STATUS = BASEURL + V + 'car/status';

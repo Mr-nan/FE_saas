@@ -30,7 +30,7 @@ import  {request}           from '../utils/RequestUtil';
 import * as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 import StockManagementScene from "./carPublish/StockManagementScene";
-import  AllLoading from '../../component/AllLoading';
+import  AllLoading from '../component/AllLoading';
 
 const Pixel = new PixelUtil();
 const ScreenWidth = Dimensions.get('window').width;
@@ -78,13 +78,10 @@ export default class CarNewNumberListScene extends BaseComponent {
                 <TouchableOpacity style={styles.footBtn} onPress={this.pushNewCarScene}>
                     <Text style={styles.footBtnText}>车辆入库</Text>
                 </TouchableOpacity>
-                <AllLoading callEsc={()=>{
-                    this.carData['flag'] = '2';
-                    this.saveStockData();
-                }} ref={(modal) => {this.allloading = modal}} canColse='false' callBack={()=>{
-                    this.carData['flag'] = '1';
-                    this.saveStockData();
-                }}/>
+                <AllLoading callEsc={()=>{this.carSoldOut(2);}}
+                            ref={(modal) => {this.allloading = modal}}
+                            canColse='false'
+                            callBack={()=>{this.carSoldOut(1);}}/>
             </View>
         )
     }
@@ -151,7 +148,26 @@ export default class CarNewNumberListScene extends BaseComponent {
         this.props.toNextPage(navigatorParams);
     }
 
+    carSoldOut=(type)=>{
+
+        this.props.showModal(true);
+        request(AppUrls.CAR_STOCK_SOLD_OUT, 'post', {
+            id:this.cellData.id,
+            flag:type
+        }).then((response) => {
+
+            this.props.showModal(false);
+            this.props.showToast('成功出库');
+            this.loadHeadData();
+
+        }, (error) => {
+           this.props.showToast(error.mjson.msg);
+        });
+    }
+
     cellClick=(btnTitle,cellData)=>{
+
+        this.cellData = cellData;
         if(btnTitle=='编辑'){
             let navigatorParams = {
 
@@ -164,13 +180,22 @@ export default class CarNewNumberListScene extends BaseComponent {
                 }
             };
             this.props.toNextPage(navigatorParams);
-        }else {
-          if( this.props.carData.reserve_num)
-          {
 
-          }
+        }else {
+
+            let carNumber = parseFloat(this.props.carData.stock)-parseFloat(this.props.carData.reserve_num);
+            if(carNumber <=0)
+            {
+                this.carSoldOut(1);
+
+            }else if(carNumber>=1 || !this.props.carData.reserve_num)
+            {
+                this.allloading.changeShowType(true,'是否将该车源可售车辆数-1');
+            }
         }
     }
+
+
 }
 
 class MyCarSourceUpperFrameView extends BaseComponent {
