@@ -31,8 +31,8 @@ export default  class ShowToast extends PureComponent {
 
 
     _toastOnPress = () => {
-        this.setState({height: height});
-        this.refs.toast.changeType(this.state.toastType);
+        // this.setState({height: height});
+        // this.refs.toast.changeType(this.、state.toastType);
         this.refs.toast.open();
         this.timer = setTimeout(() => {
 
@@ -49,8 +49,9 @@ export default  class ShowToast extends PureComponent {
             this.setState({
                 msg: msg,
                 height: height
+            }, () => {
+                this._toastOnPress();
             });
-            this._toastOnPress();
         } else if (_type === ShowToast.CONFIRM) {
             this._confirmOnPress();
         }
@@ -58,15 +59,19 @@ export default  class ShowToast extends PureComponent {
 
     showModal = (value) => {
         if (value) {
-            this.setState({height: height});
+            this.setState({height: height}, () => {
+                this.refs.toast.openLoading(value);
+            });
         } else {
             this.setState({height: 0});
-        }
 
-        this.refs.toast.openLoading(value);
+        }
     }
 
     render() {
+        if (this.state.height == 0) {
+            return (<View></View>);
+        }
         return (
             <View style={{width:width,height:this.state.height,position:'absolute',overflow:'hidden'}}>
                 <Toast hide={()=>{this.setState({height: 0}); }} ref='toast' msg={this.state.msg}></Toast>
