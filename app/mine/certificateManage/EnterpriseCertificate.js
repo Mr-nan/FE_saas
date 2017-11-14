@@ -578,12 +578,12 @@ export default class EnterpriseCertificate extends BaseComponent {
 						placeholderTextColor={fontAndColor.COLORA1}
 						onFocus={()=>{
                                       this.setState({
-                                          keyboardOffset:Pixel.getPixel(0)
+                                          keyboardOffset:-Pixel.getPixel(300)
                                       });
                                   }}
 						onBlur={()=>{
                                       this.setState({
-                                          keyboardOffset:-Pixel.getPixel(64)
+                                          keyboardOffset:Pixel.getPixel(64)
                                       });
                                   }}
 
@@ -610,12 +610,12 @@ export default class EnterpriseCertificate extends BaseComponent {
 						placeholderTextColor={fontAndColor.COLORA1}
 						onFocus={()=>{
                                       this.setState({
-                                          keyboardOffset:Pixel.getPixel(0)
+                                          keyboardOffset:-Pixel.getPixel(300)
                                       });
                                   }}
 						onBlur={()=>{
                                       this.setState({
-                                          keyboardOffset:-Pixel.getPixel(64)
+                                          keyboardOffset:Pixel.getPixel(64)
                                       });
                                   }}
 					/>
