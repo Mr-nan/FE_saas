@@ -67,13 +67,10 @@ export default class CarNewNumberListScene extends BaseComponent {
                     locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售 ("+this.state.total_on_sale+")", "已售 ("+this.state.total_sold+')']}/>}>
                     <MyCarSourceUpperFrameView ref="upperFrameView"
-                                               carCellClick={this.carCellClick}
-                                               footButtonClick={this.footButtonClick}
                                                tabLabel="ios-paper1"
-                                               carPriceEditClick={this.carPriceEditClick}
                                                carData={this.props.carData}
                                                cellClick={this.cellClick}/>
-                    <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2" carData={this.props.carData}/>
+                    <MyCarSourceDropFrameView  ref="dropFrameView"  tabLabel="ios-paper2"/>
                 </ScrollableTabView>
                 <TouchableOpacity style={styles.footBtn} onPress={this.pushNewCarScene}>
                     <Text style={styles.footBtnText}>车辆入库</Text>
@@ -90,6 +87,8 @@ export default class CarNewNumberListScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
+
+        carSeekStr  = '';
         this.state = {
             renderPlaceholderOnly:'blank',
             total_on_sale:0,

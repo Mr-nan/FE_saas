@@ -41,17 +41,20 @@ let carUpperFrameStatus = 1;
 let carDropFramePage = 1;
 let carDropFrameStatus = 1;
 
+let carSeekStr  = '';
+
 export default class CarUserNumberListScene extends BaseComponent {
     render(){
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={{backgroundColor:'white', flex:1}}>
+                    <CarSeekView carSeekAction={this.carSeekAction}/>
                     {this.loadView()}
                 </View>);
         }
         return(
             <View style={styles.rootContainer}>
-                <CarSeekView/>
+                <CarSeekView carSeekAction={this.carSeekAction}/>
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page?this.props.page:0}
@@ -71,6 +74,8 @@ export default class CarUserNumberListScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
+
+        carSeekStr  = '';
         this.state = {
             renderPlaceholderOnly:'blank',
             shelves_count:0,
@@ -94,6 +99,8 @@ export default class CarUserNumberListScene extends BaseComponent {
             page: 1,
             row: 1,
             type:1,
+            search_text:carSeekStr,
+
         }).then((response) => {
             let data =response.mjson.data.total;
             this.setState({
@@ -110,6 +117,10 @@ export default class CarUserNumberListScene extends BaseComponent {
         });
     }
 
+    carSeekAction=(seekStr)=>{
+        carSeekStr=seekStr;
+        this.loadHeadData();
+    }
     pushNewCarScene=()=>{
         let navigatorParams = {
 
@@ -165,6 +176,8 @@ class MyCarSourceUpperFrameView extends BaseComponent {
             page: carUpperFramePage,
             row: 10,
             type:1,
+            search_text:carSeekStr,
+
         }).then((response) => {
 
             carUpperFrameData=response.mjson.data.list;
@@ -206,6 +219,8 @@ class MyCarSourceUpperFrameView extends BaseComponent {
             page: carUpperFramePage,
             row: 10,
             type:1,
+            search_text:carSeekStr,
+
 
         }).then((response) => {
             carUpperFrameStatus = response.mjson.data.status;
@@ -332,7 +347,7 @@ class MyCarSourceDropFrameView extends BaseComponent {
             isRefreshing: true,
             carDropFrameStatus: carDropFrameStatus,
             renderPlaceholderOnly: 'blank',
-
+            search_text:carSeekStr,
 
         };
     }
@@ -367,6 +382,8 @@ class MyCarSourceDropFrameView extends BaseComponent {
             page: carDropFramePage,
             row: 10,
             type:1,
+            search_text:carSeekStr,
+
 
         }).then((response) => {
 
@@ -411,6 +428,7 @@ class MyCarSourceDropFrameView extends BaseComponent {
             page: carDropFramePage,
             row: 10,
             type:1,
+            search_text:carSeekStr,
 
         }).then((response) => {
 
@@ -517,7 +535,14 @@ class CarSeekView extends Component {
                     <View style={styles.navigatorSousuoView}>
                         <Image
                             source={require('../../images/carSourceImages/sousuoicon.png')}/>
-                        <TextInput allowFontScaling={false}  style={styles.navigatorSousuoText} placeholder={'请输入车型关键词或车架号'} placeholderTextColor={fontAndColor.COLORA1}/>
+                        <TextInput
+                            allowFontScaling={false}
+                            underlineColorAndroid='transparent'
+                            style={styles.navigatorSousuoText}
+                            placeholder={'请输入车型关键词或车架号'}
+                            defaultValue={carSeekStr}
+                            placeholderTextColor={fontAndColor.COLORA1}
+                            onChangeText={(text)=>{this.props.carSeekAction(text)}}/>
                     </View>
                 </View>
             </View>
@@ -543,7 +568,7 @@ const  styles = StyleSheet.create({
     },
     navigatorSousuoText: {
 
-        color: fontAndColor.COLORA1,
+        color: fontAndColor.COLORA0,
         height: Pixel.getPixel(30),
         width:ScreenWidth - Pixel.getPixel(130),
         textAlign: 'center',
@@ -561,6 +586,11 @@ const  styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'center',
+    },
+    viewContainer:{
+        marginBottom:Pixel.getBottomPixel(44),
+        backgroundColor:fontAndColor.COLORA3,
+        flex:1,
     },
     footBtn:{
         left:0,
