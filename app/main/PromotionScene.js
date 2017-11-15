@@ -103,7 +103,6 @@ export  default class PromotionScene extends BaseComponent {
     }
 
     toNextPage = (mProps) => {
-        console.log('123123');
         const navigator = this.props.navigator;
         if (navigator) {
             navigator.replace({

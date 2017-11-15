@@ -44,7 +44,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
     initFinish = () => {
         this.getData();
-        this.setPushData();
+        // this.setPushData();
     }
 
     allRefresh = () => {

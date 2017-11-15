@@ -36,6 +36,7 @@ let Platform = require('Platform');
 let deploymentKey = '';
 import ErrorUtils from "ErrorUtils"
 import UmengPush from 'react-native-umeng-push';
+import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi';
 const IS_ANDROID = Platform.OS === 'android';
 
 export default class RootScene extends BaseComponent {
@@ -64,26 +65,42 @@ export default class RootScene extends BaseComponent {
                     }
                 }
                 if (toWeb) {
+                    StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
+                        if (res.result == "true") {
+                            let mProps = {
+                                name: 'YaoQingDeHaoLi',
+                                component: YaoQingDeHaoLi, params: {
+                                    from: 'RootScene'
+                                }
+                            };
+                            this.toNextPage(mProps);
+                        } else {
+                            try {
+                                if (IS_ANDROID) {
+                                    let mProps = {
+                                        name: 'PromotionScene',
+                                        component: PromotionScene, params: {
+                                            webUrl: JSON.parse(message.extra).url,
+                                            name: JSON.parse(message.extra).name
+                                        }
+                                    };
+                                    this.toNextPage(mProps);
+                                } else {
+                                    let mProps = {
+                                        name: 'PromotionScene',
+                                        component: PromotionScene, params: {
+                                            webUrl: message.url,
+                                            name: message.name
+                                        }
+                                    };
+                                    this.toNextPage(mProps);
+                                }
+                            } catch (e) {
 
-                    if(IS_ANDROID){
-                        let mProps = {
-                            name: 'PromotionScene',
-                            component: PromotionScene, params: {
-                                webUrl: JSON.parse(message.extra).url,
-                                name: JSON.parse(message.extra).name
                             }
-                        };
-                        this.toNextPage(mProps);
-                    }else {
-                        let mProps = {
-                            name: 'PromotionScene',
-                            component: PromotionScene, params: {
-                                webUrl: message.url,
-                                name: message.name
-                            }
-                        };
-                        this.toNextPage(mProps);
-                    }
+
+                        }
+                    });
                 }
 
             }
