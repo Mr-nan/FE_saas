@@ -56,11 +56,11 @@ export default class MyAccountItem extends BaseComponent {
 
     /**
      *   跳转页面分发
-     *   type 0恒丰 1浙商
+     *   type 315恒丰 316浙商
      *   state 开户状态
      **/
     pageDispense = (type, state) => {
-        if (type == '0') {
+        if (type == '315') {
             switch (state) {
                 case 0:
                     this.navigatorParams.name = 'AccountManageScene';
@@ -126,10 +126,10 @@ export default class MyAccountItem extends BaseComponent {
 
     /**
      *   点击跳转方法
-     *   type 0恒丰 1浙商
+     *   type 315恒丰 316浙商
      **/
     jumpDetailPage = (type) => {
-        if (type == '0') {
+        if (type == '315') {
             this.props.showModal(true);
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code == 1) {
@@ -153,9 +153,6 @@ export default class MyAccountItem extends BaseComponent {
                 }
             });
         } else {
-            //this.props.showModal(false);
-            //this.pageDispense(type, 0);
-            //this.toNextPage(this.navigatorParams);
             this.props.showModal(true);
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code == 1) {
@@ -168,11 +165,7 @@ export default class MyAccountItem extends BaseComponent {
                     request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                         .then((response) => {
                             this.props.showModal(false);
-
-                            this.pageDispense(type, 0);
-
-                            //this.pageDispense(type, response.mjson.data.account.status);
-
+                            this.pageDispense(type, response.mjson.data.account.status);
                             this.toNextPage(this.navigatorParams);
                         }, (error) => {
                             this.props.showModal(false);
@@ -194,7 +187,7 @@ export default class MyAccountItem extends BaseComponent {
         let bank = ''; //银行图标
         let bankName = ''; //账户类型名称
         let accountState = ''; //账户状态
-        if (this.props.type == '0') {
+        if (this.props.type == '315') {
             back = require('../../../../images/account/hengfengback.png');
             bank = require('../../../../images/account/hengfengbank.png');
             bankName = '恒丰银行';
@@ -333,7 +326,7 @@ export default class MyAccountItem extends BaseComponent {
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(20),
                             color: fontAndColor.COLORA0
-                        }}>{this.state.data.bank_card_no ? this.state.data.bank_card_no :
+                        }}>{this.state.data.bank_card_no && this.state.data.status != 0 ? this.state.data.bank_card_no :
                             '***** ***** ***** ***** *****'}</Text>
                     </View>
                     <View style={{
@@ -361,8 +354,8 @@ export default class MyAccountItem extends BaseComponent {
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(15),
                             color: fontAndColor.COLORA0
-                        }}>{!this.state.data.update_time || this.state.data.update_time.substr(0, 10) === '0000-00-00' ?
-                            '****-**-**' : this.state.data.update_time.substr(0, 10)}</Text>
+                        }}>{!this.state.data.account_open_date || this.state.data.account_open_date.substr(0, 10) === '0000-00-00' ?
+                            '****-**-**' : this.state.data.account_open_date.substr(0, 10)}</Text>
                     </View>
                 </Image>
             </View>

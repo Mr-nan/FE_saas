@@ -2,7 +2,10 @@
  * Created by hanmeng on 2017/10/30.
  *  恒丰银行、浙商银行统一账户管理页面
  *  页面接口调用规则:
- *  恒丰数据 -> 浙商开关接口 -> 白名单 -> 浙商数据(如在白名单)
+ *  旧：恒丰数据 -> 浙商开关接口 -> 白名单 -> 浙商数据(如在白名单)
+ *  新：浙商开关接口 -> 关：恒丰数据
+ *                 -> 开：白名单  -> 在：所有银行数据
+ *                               -> 不在：恒丰数据
  */
 import React, {Component, PropTypes} from 'react'
 import {
@@ -31,6 +34,9 @@ import * as Urls from '../../constant/appUrls';
 
 var Pixel = new PixelUtil();
 
+const HENG_FENG_CODE = '315';
+const ZHE_SHANG_CODE = '316';
+
 export default class MyAccountScene extends BaseComponent {
 
     navigatorParams = {
@@ -44,6 +50,8 @@ export default class MyAccountScene extends BaseComponent {
         super(props);
         this.hengFengInfo = {};
         this.zheShangInfo = {};
+        HENG_FENG_CODE = "315";
+        ZHE_SHANG_CODE = String("316");
         this.lastType = '-1';
         this.state = {
             dataSource: [],
@@ -89,25 +97,23 @@ export default class MyAccountScene extends BaseComponent {
         this.loadData();
     };
 
+    /**
+     *   页面起调，浙商开关接口
+     **/
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
-                let maps = {
-                    enter_base_ids: datas.company_base_id,
-                    child_type: '1'
-                };
-                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                request(Urls.ZS_BANK_IS_SHOW, 'Post', {})
                     .then((response) => {
-                        //this.props.showModal(false);
-                        this.lastType = response.mjson.data.account.status;
-                        this.hengFengInfo = response.mjson.data.account;
-                        this.props.callBack(this.lastType);   //最新的账户状态回传给"我的"页面
-                        //this.getIsInWhiteList(datas.company_base_id);
-                        this.getZsBankIsShow(datas.company_base_id);
+                        if (response.mjson.data.status === 1) {
+                            this.getIsInWhiteList(datas.company_base_id);
+                        } else {
+                            this.getAccountInfo(datas.company_base_id, 315);
+                        }
                     }, (error) => {
                         this.props.showModal(false);
-                        this.props.showToast('用户信息查询失败');
+                        this.props.showToast(error.mjson.msg);
                         this.setState({
                             renderPlaceholderOnly: 'error',
                             isRefreshing: false
@@ -122,35 +128,6 @@ export default class MyAccountScene extends BaseComponent {
                 });
             }
         });
-
-    };
-
-    /**
-     *  浙商开关接口
-     * @param companyBaseId
-     **/
-    getZsBankIsShow = (companyBaseId) => {
-        request(Urls.ZS_BANK_IS_SHOW, 'Post', {})
-            .then((response) => {
-                if (response.mjson.data.status === 1) {
-                    this.getIsInWhiteList(companyBaseId);
-                } else {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        dataSource: ds.cloneWithRows(['0']),
-                        renderPlaceholderOnly: 'success',
-                        isRefreshing: false,
-                        backColor: fontAndColor.COLORB0
-                    });
-                }
-            }, (error) => {
-                this.props.showModal(false);
-                this.props.showToast(error.mjson.msg);
-                this.setState({
-                    renderPlaceholderOnly: 'error',
-                    isRefreshing: false
-                });
-            });
     };
 
     /**
@@ -164,17 +141,10 @@ export default class MyAccountScene extends BaseComponent {
         request(Urls.IS_IN_WHITE_LIST, 'Post', maps)
             .then((response) => {
                 let isWhiteList = response.mjson.data.status;
-                if (isWhiteList === 0) {
-                    this.props.showModal(false);
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        dataSource: ds.cloneWithRows(['0']),
-                        renderPlaceholderOnly: 'success',
-                        isRefreshing: false,
-                        backColor: fontAndColor.COLORB0
-                    });
+                if (isWhiteList === 0) {  //1 在白名单中，0 不在白名单中
+                    this.getAccountInfo(companyBaseId, 315);
                 } else {
-                    this.getZheShangAccountInfo(companyBaseId, isWhiteList);
+                    this.getAccountInfo(companyBaseId);
                 }
             }, (error) => {
                 this.props.showModal(false);
@@ -187,23 +157,31 @@ export default class MyAccountScene extends BaseComponent {
     };
 
     /**
-     *  获取浙商账户数据
+     *  获取账户数据
      * @returns {XML}
      **/
-    getZheShangAccountInfo = (companyBaseId, isWhiteList) => {
+    getAccountInfo = (companyBaseId, bankId) => {
         let maps = {
             enter_base_ids: companyBaseId,
             child_type: '1',
-            bank_id: 316
+            bank_id: bankId ? bankId : ''
         };
-        request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+        request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
             .then((response) => {
                 this.props.showModal(false);
-                //let zheShangStatus = response.mjson.data.account.status;
-                this.zheShangInfo = response.mjson.data.account;
+                //console.log('USER_ACCOUNT_INFO=====', response.mjson.data);
+                this.hengFengInfo = response.mjson.data['315'] ? response.mjson.data['315'][0] : {};
+                this.zheShangInfo = response.mjson.data['316'] ? response.mjson.data['316'][0] : {};
+                let dataList = [];
+                //dataList.push(bankId ? bankId : ['315', '316']);
+                if (bankId) {
+                    dataList.push(bankId);
+                } else {
+                    dataList = ['315', '316'];
+                }
                 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                 this.setState({
-                    dataSource: ds.cloneWithRows(['0', '1']),
+                    dataSource: ds.cloneWithRows(dataList),
                     renderPlaceholderOnly: 'success',
                     isRefreshing: false,
                     backColor: fontAndColor.COLORB0
@@ -264,7 +242,7 @@ export default class MyAccountScene extends BaseComponent {
 
     _renderRow = (rowData, selectionID, rowID) => {
         let info = {};
-        if (rowData == '0') {
+        if (rowData == '315') {
             info = this.hengFengInfo;
         } else {
             info = this.zheShangInfo;
