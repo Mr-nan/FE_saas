@@ -643,7 +643,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
             component: CarSpecificationScene,
             params: {
                 checkedSpecification: this.checkedSpecification,
-                currentTitle: '',
+                carSpecificationData:this.carConfigurationData.auto_standard,
             }
         }
         this.toNextPage(navigatorParams);

@@ -302,7 +302,7 @@ export default class CarMySourceScene extends BaceComponent {
                 name: "CarNumberScene",
                 component: CarNumberScene,
                 params: {
-                    carData:this.carData,
+                    // carData:this.carData,
                     defaultType: 0,
                 }
             };
@@ -1522,7 +1522,7 @@ class EditCarPriceView extends Component {
 
     render(){
         return(
-                <Modal visible={this.state.modalOpen} transparent={true}>
+                <Modal visible={this.state.modalOpen} transparent={true} animationType={'none'}>
                     <TouchableOpacity style={styles.editCarPriceContainer} onPress={()=>{this.isShowView(false,{})}}>
                         <View style={styles.editCarContentView}>
                             <View style={styles.editCarHeadView}>
