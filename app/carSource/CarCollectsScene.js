@@ -59,14 +59,12 @@ export  default class CarCollectsScene extends BaseComponent {
                     {/*新车*/}
                     <NewCarCollectSourceScene ref="new" tabLabel="ios-paper0"
                                               showToast={(str)=>{this.props.showToast(str)}}
-                                              toNextPage={(id)=>{this.toNextPage({name:'CarNewInfoScene',component:CarNewInfoScene,params:{carID:id}})}}
-                                              transfer_type="all"/>
+                                              toNextPage={(id)=>{this.toNextPage({name:'CarNewInfoScene',component:CarNewInfoScene,params:{carID:id}})}}/>
 
                     {/*二手车*/}
                     <OldCarCollectSourceScene ref="old" tabLabel="ios-paper1"
                                               showToast={(str)=>{this.props.showToast(str)}}
-                                              toNextPage={(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}}
-                                              transfer_type="3"/>
+                                              toNextPage={(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}}/>
 
                 </ScrollableTabView>
                 <View style={{position: 'absolute',marginTop:Pixel.getPixel(54),flexDirection:'row'}}>

@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react';
 import {
     StyleSheet,
@@ -63,12 +62,14 @@ export  default class BrowsingHistorysScene extends BaseComponent {
                 >
                     {/*新车*/}
                     <NewBrowsingHistoryScene ref="new" tabLabel="ios-paper0"
-                                             showToast={(str)=>{this.props.showToast(str)}} showModal={(obj)=>this.props.showModal(obj)}
-                                             toNextPage = {(id)=>{this.toNextPage({name:'CarNewInfoScene',component:CarNewInfoScene,params:{carID:id}})}} transfer_type="all"/>
+                                             showToast={(str)=>{this.props.showToast(str)}}
+                                             showModal={(obj)=>this.props.showModal(obj)}
+                                             toNextPage={(id)=>{this.toNextPage({name:'CarNewInfoScene',component:CarNewInfoScene,params:{carID:id}})}}/>
                     {/*二手车*/}
                     <OldBrowsingHistoryScene ref="old" tabLabel="ios-paper1"
-                                             showToast={(str)=>{this.props.showToast(str)}} showModal={(obj)=>this.props.showModal(obj)}
-                                             toNextPage = {(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}}transfer_type="3"/>
+                                             showToast={(str)=>{this.props.showToast(str)}}
+                                             showModal={(obj)=>this.props.showModal(obj)}
+                                             toNextPage={(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}}/>
 
                 </ScrollableTabView>
                 <View style={{position: 'absolute',marginTop:Pixel.getPixel(54),flexDirection:'row'}}>
@@ -81,22 +82,22 @@ export  default class BrowsingHistorysScene extends BaseComponent {
                         this.deleteAllCliiection();
                 }}/>
                 <NavigationView title='浏览历史' backIconClick={this.backPage}
-                               renderRihtFootView={this._navigatorRightView}/>
+                                renderRihtFootView={this._navigatorRightView}/>
             </View>
         );
     }
 
     deleteAllCliiection = () => {
-        if(index == 0){
+        if (index == 0) {
             this.refs.new.deleteAllCliiection();
-        }else if(index ==1){
+        } else if (index == 1) {
             this.refs.old.deleteAllCliiection();
         }
     }
 
     _navigatorRightView = () => {
         return (
-            <TouchableOpacity  activeOpacity={0.8} onPress={()=>{
+            <TouchableOpacity activeOpacity={0.8} onPress={()=>{
             this.refs.allloading.changeShowType(true,'确认清空吗？');
         }}>
                 <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent'}}>
