@@ -1263,3 +1263,7 @@ export const ZS_BANK_IS_SHOW = BASEURL + "v1/account.cz_bank/zsBankIsShow";
  *   获取用户的账户详情(我的账户页面-卡片页  调用)
  */
 export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccountDetail";
+/**
+ *   信托开户
+ */
+export const OPEN_PERSON_TRUST_ACCOUNT = BASEURL + "v1/account.zsyxt/openPersonAccount";
