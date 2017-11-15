@@ -66,23 +66,36 @@ export default class StockManagementScene extends BaseComponent {
         ];
         this.modelData = [];
         this.modelInfo = {};
-        this.carData = {
-            auto_pid: this.props.carData.id,
-            car_color: this.props.carData.car_color,
-            engine_number: this.props.carData.engine_number,
-            manufacture: this.props.carData.manufacture != '' ? this.dateReversal(this.props.carData.manufacture + "000") : "",
-            pictures: this.props.carData.imgs,
-            purchase_price: this.props.carData.purchase_price,
-            status: this.props.carData.status,
-            vin: this.props.carData.vin,
-            model_name: this.props.carData.model_name
-        };
 
         if (this.props.dataID) {
+            this.carData = {
+                auto_pid: this.props.carData.id,
+                car_color: this.props.carData.car_color,
+                engine_number: this.props.carData.engine_number,
+                manufacture: this.props.carData.manufacture != '' ? this.dateReversal(this.props.carData.manufacture + "000") : "",
+                pictures: this.props.carData.imgs,
+                purchase_price: this.props.carData.purchase_price,
+                status: this.props.carData.status,
+                vin: this.props.carData.vin,
+                model_name: this.props.carData.model_name
+            };
             this.carData.id = this.props.dataID;
             this.carData.auto_pid = this.props.carData.svi_id;
+        } else {
+            this.props.carData.imgs = [];
+            this.carData = {
+                auto_pid: this.props.carData.id,
+                car_color: this.props.carData.car_color,
+                engine_number: this.props.carData.engine_number,
+                manufacture: this.props.carData.manufacture != '' ? this.dateReversal(this.props.carData.manufacture + "000") : "",
+                pictures: this.props.carData.imgs,
+                purchase_price: this.props.carData.purchase_price,
+                status: this.props.carData.status,
+                vin: this.props.carData.vin,
+                model_name: this.props.carData.model_name
+            };
         }
-
+        console.log(this.props.carData.imgs)
         this.titleData1 = [
             [
                 {
