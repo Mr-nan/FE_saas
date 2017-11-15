@@ -157,7 +157,9 @@ export default class OldBrowsingHistoryScene extends BaceComponent {
 
     deleteAllCliiection = () => {
         this.props.showModal(true);
-        let maps = {};
+        let maps = {
+            type:'1'
+        };
         request(Urls.USER_HISTORY_DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
