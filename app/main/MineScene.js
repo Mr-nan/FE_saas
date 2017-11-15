@@ -394,6 +394,7 @@ export default class MineScene extends BaseComponent {
 		StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
 			if (data.code == 1 && data.result != null) {
 				let datas = JSON.parse(data.result);
+				BASE_ID = [];
 				BASE_ID.push(datas.company_base_id);
 
 				StorageUtil.mGetItem(StorageKeyNames.BASE_USER_ID, (data2) => {

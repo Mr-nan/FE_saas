@@ -586,7 +586,6 @@ export default class EnterpriseCertificate extends BaseComponent {
                                           keyboardOffset:Pixel.getPixel(64)
                                       });
                                   }}
-
 					/>
 				</View>
 				<View style={styles.splitItem}/>
