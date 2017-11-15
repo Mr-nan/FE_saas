@@ -49,6 +49,7 @@ let carNatureSource = [];
 let carColorSource = [];
 let carDischargeSource = [];
 let carPriceSource = [];
+let carSpecificationSource = [];
 let sequencingDataSource = carFilterData.newCarSequencingDataSource;
 let currentCheckedIndex = 0;
 let checkedSource = [];
@@ -71,6 +72,8 @@ const APIParameter = {
     nature_use:0,
     car_color:0,
     model_name:'',
+    first_type:'',
+    second_type:'',
     prov_id:0,
     v_type:2,
     rows: 10,
@@ -146,8 +149,9 @@ export  default  class CarUserListScene extends BaseComponent {
                 value: '',
             },
             checkedCarSpecification:{
-                title:'',
-                value:'',
+                title: '',
+                mainValue: '',
+                subValue:''
             },
 
             renderPlaceholderOnly: 'blank',
@@ -430,6 +434,7 @@ export  default  class CarUserListScene extends BaseComponent {
             carColorSource = carConfigData.auto_body_color;
             carDischargeSource = carConfigData.auto_es;
             carPriceSource = carConfigData.auto_price;
+            carSpecificationSource = carConfigData.auto_standard;
 
             let {checkedCarType,checkedCarGenre,checkedCity,checkedCarPrice,checkedCarDischarge,checkedCarColor,checkedCarNature,checkedCarSpecification}= this.state;
             let screeningObject = {
@@ -440,12 +445,13 @@ export  default  class CarUserListScene extends BaseComponent {
                 checkedCarDischarge:{title:checkedCarDischarge.title,value:checkedCarDischarge.value},
                 checkedCarColor:{title:checkedCarColor.title,value:checkedCarColor.value},
                 checkedCarNature:{title:checkedCarNature.title,value:checkedCarNature.value},
-                checkedCarSpecification:{title:checkedCarSpecification.title,value:checkedCarSpecification.value},
+                checkedCarSpecification:{title:checkedCarSpecification.title,mainValue:checkedCarSpecification.mainValue,subValue:checkedCarSpecification.subValue},
                 carTypeSource:carTypeSource,
                 carNatureSource:carNatureSource,
                 carColorSource:carColorSource,
                 carDischargeSource:carDischargeSource,
                 carPriceSource:carPriceSource,
+                carSpecificationSource:carSpecificationSource,
             };
             let navigatorParams = {
                 name: "CarScreeningScene",
@@ -479,11 +485,13 @@ export  default  class CarUserListScene extends BaseComponent {
         APIParameter.series_id = screeningObject.checkedCarType.series_id;
         APIParameter.provice_id = screeningObject.checkedCity.provice_id;
         APIParameter.city_id = screeningObject.checkedCity.city_id;
-        APIParameter.v_type = screeningObject.checkedCarGenre.value;
+        APIParameter.v_type = 2;
         APIParameter.car_color = screeningObject.checkedCarColor.value;
         APIParameter.emission_standards = screeningObject.checkedCarDischarge.value;
         APIParameter.nature_use = screeningObject.checkedCarNature.value;
         APIParameter.dealer_price = screeningObject.checkedCarPrice.value;
+        APIParameter.first_type = screeningObject.checkedCarSpecification.mainValue;
+        APIParameter.second_type = screeningObject.checkedCarSpecification.subValue;
         this.setHeadViewType();
     }
 
@@ -554,12 +562,26 @@ export  default  class CarUserListScene extends BaseComponent {
         if (!isHighlighted) {
 
             if(index==2){
-                this.setState({
-                    isHide: !isHighlighted,
-                    isHideCarSpecification:isHighlighted,
+                if(carSpecificationSource.length<=0){
+                    this.loadCarConfigData((configData)=>{
+                        carSpecificationSource = configData.auto_standard;
+                        this.setState({
+                            isHide: !isHighlighted,
+                            isHideCarSpecification:isHighlighted,
 
-                });
-                setImgHighlighted(!isHighlighted); // 回调按钮状态
+                        });
+                        setImgHighlighted(!isHighlighted); // 回调按钮状态
+
+                    })
+                }else {
+                    this.setState({
+                        isHide: !isHighlighted,
+                        isHideCarSpecification:isHighlighted,
+
+                    });
+                    setImgHighlighted(!isHighlighted); // 回调按钮状态
+                }
+
             } else if(index==3){
                 if(carPriceSource.length<=0 ){
                     this.loadCarConfigData((configData)=>{
@@ -786,9 +808,12 @@ export  default  class CarUserListScene extends BaseComponent {
         this.setState({
             checkedCarSpecification:{
                 title: '',
-                value: '',
+                mainValue: '',
+                subValue:''
             },
         });
+        APIParameter.first_type = '';
+        APIParameter.second_type = '';
         this.setHeadViewType();
     };
 
@@ -832,7 +857,8 @@ export  default  class CarUserListScene extends BaseComponent {
             },
             checkedCarSpecification:{
                 title: '',
-                value: '',
+                mainValue: '',
+                subValue:''
             },
         });
 
@@ -846,6 +872,8 @@ export  default  class CarUserListScene extends BaseComponent {
         APIParameter.city_id=0;
         APIParameter.dealer_price = 0;
         APIParameter.emission_standards = 0;
+        APIParameter.first_type='';
+        APIParameter.second_type = '';
         APIParameter.car_color = 0;
         APIParameter.nature_use = 0;
         APIParameter.model_name = '';
@@ -1011,10 +1039,14 @@ export  default  class CarUserListScene extends BaseComponent {
                                     isHideCarSpecification:true,
                                     checkedCarSpecification:{
                                         title:specificationData.subTitle?specificationData.subTitle:specificationData.title,
-                                        value:''
+                                        mainValue:specificationData.title,
+                                        subValue:specificationData.subTitle,
                                     },
                                 });
-                            }}/>
+                                APIParameter.first_type = specificationData.title;
+                                APIParameter.second_type = specificationData.subTitle;
+                                this.setHeadViewType();
+                            }} carSpecificationData = {carSpecificationSource} isAllChecked={true}/>
                         </View>
                     )
                 }

@@ -353,7 +353,8 @@ export default class CarInfoScene extends BaseComponent {
             component: CarSpecificationScene,
             params: {
                 checkedSpecification:this.checkedSpecification,
-                currentTitle:this.props.screeningObject.checkedCarSpecification.title,
+                carSpecificationData:this.props.screeningObject.carSpecificationSource,
+                isAllChecked:true,
             }
         }
         this.toNextPage(navigatorParams);
@@ -395,7 +396,8 @@ export default class CarInfoScene extends BaseComponent {
     checkedSpecification=(specificationData)=>{
         this.refs.carSpecificationView.setContent(specificationData.subTitle?specificationData.subTitle:specificationData.title);
         this.props.screeningObject.checkedCarSpecification.title = specificationData.subTitle?specificationData.subTitle:specificationData.title;
-        this.props.screeningObject.checkedCarSpecification.value = '';
+        this.props.screeningObject.checkedCarSpecification.mainValue = specificationData.title;
+        this.props.screeningObject.checkedCarSpecification.subValue = specificationData.subTitle;
 
     }
 

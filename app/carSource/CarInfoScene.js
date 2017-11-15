@@ -125,7 +125,6 @@ export default class CarInfoScene extends BaseComponent {
         this.isUserBoss = false;
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-            console.log(data);
             if (data.code == 1 && data.result != '') {
                 let enters = JSON.parse(data.result);
                 for (let item of enters.enterprise_list[0].role_type){
@@ -136,7 +135,6 @@ export default class CarInfoScene extends BaseComponent {
                 }
             }
             getRole.getRoleList((data)=>{
-                console.log(data);
                 this.roleList = data;
                 this.loadData();
             });
@@ -282,12 +280,14 @@ export default class CarInfoScene extends BaseComponent {
                         renderPageIndicator={(index) => {
                             return (
                                 <View style={styles.imageFootView}>
+                                    {/*<View style={styles.carAgeView}>*/}
+                                        {/*<Text allowFontScaling={false} */}
+                                            {/*style={styles.carAgeText}>{carData.v_type == 1 ? '车龄 ' + carData.init_coty : carData.v_type_str}</Text>*/}
+                                    {/*</View>*/}
                                     <View style={styles.carAgeView}>
-                                        <Text allowFontScaling={false} 
-                                            style={styles.carAgeText}>{carData.v_type == 1 ? '车龄 ' + carData.init_coty : carData.v_type_str}</Text>
+                                        <Text allowFontScaling={false}
+                                              style={styles.imageIndexText}>{this.state.currentImageIndex + '/' + this.state.carData.imgs.length}</Text>
                                     </View>
-                                    <Text allowFontScaling={false} 
-                                        style={styles.imageIndexText}>{this.state.currentImageIndex + '/' + this.state.carData.imgs.length}</Text>
                                 </View>
                             )
                         }}

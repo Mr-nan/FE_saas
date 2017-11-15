@@ -37,6 +37,7 @@ import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAcco
 import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailScene";
 import CarMyListScene from "./CarMyListScene";
 import GetPermissionUtil from '../utils/GetRoleUtil';
+import CarCell from './znComponent/CarCell';
 let Platform = require('Platform');
 let getRole = new GetPermissionUtil();
 const Pixel = new PixelUtil();
@@ -52,7 +53,7 @@ var shareClass = NativeModules.ZNShareClass;
 
 let carConfigurationData = [];
 
-export default class CarInfoScene extends BaseComponent {
+export default class CarNewInfoScene extends BaseComponent {
 
 
     // 构造
@@ -67,6 +68,7 @@ export default class CarInfoScene extends BaseComponent {
             currentImageIndex: 1,
             switchoverCarInfo: 0,
             carConfigurationBriefData:[],
+            carDetailData:[],
         };
     }
 
@@ -86,17 +88,17 @@ export default class CarInfoScene extends BaseComponent {
             }
             getRole.getRoleList((data)=>{
                 this.roleList = data;
-                this.loadData();
+                this.loadData(this.props.carID);
             });
         });
 
     }
 
     allRefresh=()=>{
-        this.loadData();
+        this.loadData(this.props.carID);
     }
 
-    loadData = () => {
+    loadData = (carID) => {
 
 
         /*        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -122,19 +124,19 @@ export default class CarInfoScene extends BaseComponent {
                     }
                 }
                 //console.log('enters=-=-=-=--=',company_base_ids);
-                this.loadCarData(company_base_ids);
+                this.loadCarData(company_base_ids,carID);
             } else {
-                this.loadCarData('');
+                this.loadCarData('',carID);
             }
         });
 
 
     }
 
-    loadCarData = (show_shop_id) => {
+    loadCarData = (show_shop_id,carID) => {
 
         request(AppUrls.CAR_DETAIL, 'post', {
-            id: this.props.carID,
+            id: carID,
             imgType: 1,
             shop_ids: show_shop_id,
         }).then((response) => {
@@ -142,6 +144,8 @@ export default class CarInfoScene extends BaseComponent {
             let carData = response.mjson.data;
             this.loadCarResidualsData(carData);
             this.loadCarConfigurationData(carData);
+            this.loadCarDetailData(carData);
+
             if (carData.imgs.length <= 0) {
 
                 carData.imgs = [{require: require('../../images/carSourceImages/car_info_null.png')}];
@@ -159,7 +163,7 @@ export default class CarInfoScene extends BaseComponent {
             carData.infoData = [
                 {
                 title:'车规',
-                value:'',
+                value:carData.first_type+'('+carData.second_type+')',
                 },
                 {
                 title:'颜色(车身/内饰)',
@@ -167,11 +171,11 @@ export default class CarInfoScene extends BaseComponent {
                 },
                 {
                 title:'是否现车',
-                value:'',
+                value:carData.is_cargo==1?('有现车'):('无现车'),
                 },
                 {
                 title:'手续备注',
-                value:'',
+                value:carData.procedure_desc,
                 },
                 {
                 title:'配置改装说明',
@@ -194,7 +198,7 @@ export default class CarInfoScene extends BaseComponent {
     loadCarResidualsData = (carData) => {
 
         request(AppUrls.CAR_GET_RESIDUALS, 'post', {
-            id: this.props.carID,
+            id: carData.id,
             mile: carData.mileage,
             modelId: carData.model_id,
             regDate: this.dateReversal(carData.init_reg + '000'),
@@ -239,6 +243,22 @@ export default class CarInfoScene extends BaseComponent {
         });
     }
 
+    loadCarDetailData=(carData)=>{
+        request(AppUrls.CAR_DETAIL_RELATION,'post',{
+            id:carData.id,
+        }).then((response) => {
+
+            console.log('================',response.mjson.data.list);
+            if(response.mycode==1){
+               this.setState({
+                   carDetailData:response.mjson.data.list
+               });
+            }
+        }, (error) => {
+
+        });
+    }
+
 
 
 
@@ -274,12 +294,14 @@ export default class CarInfoScene extends BaseComponent {
                         renderPageIndicator={(index) => {
                             return (
                                 <View style={styles.imageFootView}>
+                                    {/*<View style={styles.carAgeView}>*/}
+                                        {/*<Text allowFontScaling={false}*/}
+                                              {/*style={styles.carAgeText}>{carData.v_type == 1 ? '车龄 ' + carData.init_coty : carData.v_type_str}</Text>*/}
+                                    {/*</View>*/}
                                     <View style={styles.carAgeView}>
-                                        <Text allowFontScaling={false}
-                                              style={styles.carAgeText}>{carData.v_type == 1 ? '车龄 ' + carData.init_coty : carData.v_type_str}</Text>
-                                    </View>
                                     <Text allowFontScaling={false}
                                           style={styles.imageIndexText}>{this.state.currentImageIndex + '/' + this.state.carData.imgs.length}</Text>
+                                    </View>
                                 </View>
                             )
                         }}
@@ -338,6 +360,22 @@ export default class CarInfoScene extends BaseComponent {
                             this.state.carConfigurationBriefData.length>0 && (
                                 <CarConfigurationView carConfigurationData={this.state.carConfigurationBriefData}
                                                       modelID ={carData.modelID}/>
+                            )
+                        }
+                        {
+                            this.state.carDetailData.length>0 && (
+                                <View style={{marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
+                                    <View style={{paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white'}}>
+                                        <TitleView title={'相关推荐'} footTitle={'更多'} clickAction={this.pushCarConfigScene}/>
+                                    </View>
+                                    {
+                                        this.state.carDetailData.map((data,index)=>{
+                                            return(
+                                                <CarCell style={styles.carCell} carCellData={data} isNewCar={true} onPress={()=> this.carCellOnPres(data.id)} key={index}/>
+                                            )
+                                        })
+                                    }
+                                </View>
                             )
                         }
                     </View>
@@ -418,6 +456,8 @@ export default class CarInfoScene extends BaseComponent {
 
         this.backPage();
     };
+
+
 
     // 下订单
     orderClick = (carData) => {
@@ -585,6 +625,18 @@ export default class CarInfoScene extends BaseComponent {
                 carConfiguraInfo: this.state.carData.modification_instructions,
                 carConfigurationData: carConfigurationData,
                 renderCarConfigurationDataAction: this.renderCarConfigDataAction,
+            }
+        }
+        this.toNextPage(navigationParams);
+    };
+
+    carCellOnPres = (carID) => {
+
+        let navigationParams = {
+            name: "CarNewInfoScene",
+            component: CarNewInfoScene,
+            params: {
+               carID:carID
             }
         }
         this.toNextPage(navigationParams);
@@ -1267,7 +1319,6 @@ const styles = StyleSheet.create({
         marginTop: Pixel.getPixel(10),
     },
     carIconsView: {
-
         backgroundColor: 'white',
         flexWrap: 'wrap',
         paddingHorizontal:Pixel.getPixel(15)
@@ -1509,5 +1560,8 @@ const styles = StyleSheet.create({
         color:fontAndColor.COLORA2,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         marginRight:Pixel.getPixel(5),
-    }
+    },
+    carCell: {
+        height: Pixel.getPixel(110),
+    },
 })

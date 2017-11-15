@@ -119,6 +119,11 @@ export const CAR_SEARCH_TOP = BASEURL + V + 'car/searchTop';
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
 
 /**
+ * 新车详情推荐
+ */
+export const CAR_DETAIL_RELATION = BASEURL + V + 'car/detailRelation';
+
+/**
  * 创建、修改库存
  */
 export const CAR_STOCK_SAVE = BASEURL + V + 'car.stock/save';

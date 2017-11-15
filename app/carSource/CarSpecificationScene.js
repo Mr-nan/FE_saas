@@ -23,16 +23,7 @@ import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
 
-const specificationData = [{
-    title:'中规',
-    subData:['全部','国产','合资','进口']
-},{
-    title:'非中规',
-    subData:['全部','美规','墨规','加规','中东版','欧版']
-}];
-
 let currentSubData = [];
-
 const SceneWidth = Dimensions.get('window').width;
 
 let selectData={
@@ -53,7 +44,7 @@ export default class CarSpecificationScene extends BaseComponent{
     render(){
         return(
             <View style={styles.rootContainer}>
-                <CarSpecificationView checkedSpecification={this._checkedSpecificationClick}/>
+                <CarSpecificationView checkedSpecification={this._checkedSpecificationClick} carSpecificationData={this.props.carSpecificationData} isAllChecked={this.props.isAllChecked}/>
                 <AllNavigationView title="选择车规" backIconClick={this.backPage}/>
             </View>)
     }
@@ -82,9 +73,9 @@ export class CarSpecificationView extends Component{
             rowHasChanged:(r1,r2)=>r1===r2,
         });
         this.state = {
-            dataSource:dataSource.cloneWithRows(specificationData),
+            dataSource:dataSource.cloneWithRows(this.props.carSpecificationData),
             isShowSubSpecification:false,
-            currentTitle:this.props.currentTitle,
+            currentTitle:'',
         };
     }
 
@@ -118,23 +109,27 @@ export class CarSpecificationView extends Component{
         return (
             <TouchableOpacity onPress={()=>{
 
-                if(selectData.title == rowData.title){return;}
-
-                currentSubData = rowData.subData;
+                if(selectData.title == rowData.name){return;}
+                if(this.props.isAllChecked){
+                    currentSubData = [{name:'全部'}];
+                    currentSubData.push(...rowData.child);
+                }else {
+                    currentSubData = rowData.child;
+                }
                 this.setState({
                     isShowSubSpecification:true,
-                    currentTitle:rowData.title,
-                    dataSource:this.state.dataSource.cloneWithRows(specificationData)
+                    currentTitle:rowData.name,
+                    dataSource:this.state.dataSource.cloneWithRows(this.props.carSpecificationData)
                 });
 
-                selectData.title=rowData.title;
+                selectData.title=rowData.name;
                 selectData.subTitle='';
 
                 this.refs.subSpecificationView && this.refs.subSpecificationView.loadData(currentSubData);
 
             }} activeOpacity={1}>
                 <View style={styles.rowCell}>
-                    <Text allowFontScaling={false}  style={[styles.rowCellText,this.state.currentTitle==rowData.title && {color:fontAndColor.COLORB0} ]}>{rowData.title}</Text>
+                    <Text allowFontScaling={false}  style={[styles.rowCellText,this.state.currentTitle==rowData.name && {color:fontAndColor.COLORB0} ]}>{rowData.name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -194,12 +189,12 @@ class SubSpecificationView extends  Component{
         return (
 
             <TouchableOpacity style={styles.rowCell} onPress={()=>{
-                if(rowData!='全部'){
-                    selectData.subTitle=rowData;
+                if(rowData.name!='全部'){
+                    selectData.subTitle=rowData.name;
                 }
                 this.props.checkedSpecificationClick();
             }} activeOpacity={1}>
-                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData}</Text>
+                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.name}</Text>
             </TouchableOpacity>
         )
     };

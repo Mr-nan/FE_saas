@@ -1509,8 +1509,6 @@ class EditCarPriceView extends Component {
 
     isShowView=(show,carData)=>{
 
-        console.log('============',carData.stock);
-
         if(carData){
               this.carNumber = carData.stock;
               this.carPrice = carData.dealer_price;
@@ -1523,7 +1521,6 @@ class EditCarPriceView extends Component {
     }
 
     render(){
-
         return(
                 <Modal visible={this.state.modalOpen} transparent={true}>
                     <TouchableOpacity style={styles.editCarPriceContainer} onPress={()=>{this.isShowView(false,{})}}>

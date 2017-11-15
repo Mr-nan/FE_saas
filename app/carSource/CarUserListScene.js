@@ -482,7 +482,7 @@ export  default  class CarUserListScene extends BaseComponent {
         APIParameter.coty = screeningObject.checkedCarAgeType.value;
         APIParameter.provice_id = screeningObject.checkedCity.provice_id;
         APIParameter.city_id = screeningObject.checkedCity.city_id;
-        APIParameter.v_type = screeningObject.checkedCarGenre.value;
+        APIParameter.v_type = 1;
         APIParameter.car_color = screeningObject.checkedCarColor.value;
         APIParameter.emission_standards = screeningObject.checkedCarDischarge.value;
         APIParameter.nature_use = screeningObject.checkedCarNature.value;
