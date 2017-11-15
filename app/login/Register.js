@@ -10,7 +10,7 @@ import {
 	KeyboardAvoidingView,
 	TouchableOpacity,
 	NativeModules,
-	NativeAppEventEmitter
+	NativeAppEventEmitter,
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import * as FontAndColor from "../constant/fontAndColor";
@@ -41,6 +41,8 @@ let confirm = false;
 const dismissKeyboard = require('dismissKeyboard');
 
 var Platform = require('Platform');
+const IS_ANDROID = Platform.OS === 'android';
+
 const options = {
 	//弹出框选项
 	title: '请选择',
@@ -67,6 +69,8 @@ export default class Register extends BaseComponent {
 			businessLicense: null,
 			verifyCode: null,
 			renderPlaceholderOnly: true,
+			keyboardOffset: -Pixel.getPixel(64),
+
 		}
 		this.id;
 		this.timer = null;
@@ -113,212 +117,123 @@ export default class Register extends BaseComponent {
                 dismissKeyboard();
             }}>
 				<View style={styles.container}>
-					<ImageSourceSample
-						sampleText={"手持身份证件示例"}
-						sampleImage={require('./../../images/login/holdSample.png')}
-						galleryClick={this._galleryClick}
-						cameraClick={this._cameraClick}
-						ref={(modal) => {
-                                     this.imageSource = modal
-                                 }}/>
 
 					<NavigationBar
 						leftImageCallBack={this.backPage}
 						rightText={""}
 					/>
-					<ScrollView keyboardShouldPersistTaps={'handled'}>
-						<KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
-							<View style={styles.inputTextLine}/>
-							<View style={styles.inputTextsStyle}>
-								<LoginInputText
-									ref="userName"
-									textPlaceholder={'请输入手机号'}
-									viewStytle={styles.itemStyel}
-									inputTextStyle={styles.inputTextStyle}
-									leftIcon={false}
-									clearValue={true}
-									maxLength={11}
-									keyboardType={'phone-pad'}
-									import={true}
-									rightIcon={false}/>
-								<LoginInputText
-									ref="verifycode"
-									textPlaceholder={'请输入验证码'}
-									viewStytle={styles.itemStyel}
-									inputTextStyle={styles.inputTextStyle}
-									leftIcon={false}
-									import={true}
-									keyboardType={'phone-pad'}
-									rightIconClick={this.Verifycode}
-									rightIconStyle={{width: Pixel.getPixel(100)}}
-									rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
-								<LoginInputText
-									ref="smsCode"
-									textPlaceholder={'请输入短信验证码'}
-									viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-									inputTextStyle={styles.inputTextStyle}
-									rightButton={true}
-									rightIcon={false}
-									import={true}
-									callBackSms={this.sendSms}
-									keyboardType={'phone-pad'}
-									leftIcon={false}/>
-							</View>
-							<View style={styles.inputTextLine}/>
-							<View style={styles.inputTextsStyle}>
-								<LoginInputText
-									ref="password"
-									textPlaceholder={'请输入密码'}
-									viewStytle={styles.itemStyel}
-									inputTextStyle={styles.inputTextStyle}
-									secureTextEntry={true}
-									clearValue={true}
-									leftIcon={false}
-									import={true}
-									maxLength={16}
-									rightIcon={false}/>
-								<LoginInputText
-									ref="passwoedAgain"
-									textPlaceholder={'请再次输入密码'}
-									viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-									inputTextStyle={styles.inputTextStyle}
-									secureTextEntry={true}
-									maxLength={16}
-									leftIcon={false}
-									clearValue={true}
-									import={true}
-									rightIcon={false}/>
-							</View>
-							<View style={styles.inputTextLine}/>
-							<View style={styles.inputTextsStyle}>
-								<LoginInputText
-									ref="name"
-									textPlaceholder={'请输入姓名'}
-									viewStytle={styles.itemStyel}
-									inputTextStyle={styles.inputTextStyle}
-									leftIcon={false}
-									import={true}
-									clearValue={true}
-									rightIcon={false}/>
-								<LoginInputText
-									ref="businessName"
-									textPlaceholder={'请输入商家名称'}
-									viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-									inputTextStyle={styles.inputTextStyle}
-									leftIcon={false}
-									import={true}
-									clearValue={true}
-									rightIcon={false}/>
-							</View>
-							<View style={styles.inputTextLine}/>
-						</KeyboardAvoidingView>
-						{/*<TouchableWithoutFeedback onPress={() => dismissKeyboard()}>*/}
-						{/*<View style={styles.imageButtonsStyle}>*/}
-						{/*<Text allowFontScaling={false} */}
-						{/*style={{*/}
-						{/*flex: 1,*/}
-						{/*color: FontAndColor.COLORA1,*/}
-						{/*fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)*/}
-						{/*}}>添加身份证照片</Text>*/}
-						{/*<View>*/}
-						{/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
-						{/*content={this.state.idcard === null ?*/}
-						{/*require('../../images/login/idcard.png') : this.state.idcard*/}
-						{/*}*/}
-						{/*parentStyle={[styles.buttonStyle]}*/}
-						{/*childStyle={styles.imageButtonStyle}*/}
-						{/*mOnPress={this.selectPhotoTapped.bind(this, 'idcard')}/>*/}
-						{/*{this.state.idcard ?*/}
-						{/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
-						{/*content={require('../../images/login/clear.png')}*/}
-						{/*parentStyle={{*/}
-						{/*position: 'absolute',*/}
-						{/*marginTop: Pixel.getPixel(2),*/}
-						{/*marginLeft: Pixel.getPixel(2),*/}
-						{/*}}*/}
-						{/*childStyle={styles.imageClearButtonStyle}*/}
-						{/*mOnPress={() => {*/}
-						{/*this.setState({*/}
-						{/*idcard: null*/}
-						{/*});*/}
-						{/*}}/>*/}
-						{/*: null}*/}
-						{/*</View>*/}
+					{
+						IS_ANDROID ? (this.loadScrollView()) : (
+								<KeyboardAvoidingView behavior={'position'}
+								                      keyboardVerticalOffset={this.state.keyboardOffset}>
+									{
+										this.loadScrollView()
+									}
+								</KeyboardAvoidingView>
+							)
+					}
 
-						{/*<View>*/}
-						{/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
-						{/*content={this.state.idcardBack === null ?*/}
-						{/*require('../../images/login/idcard_back.png') : this.state.idcardBack*/}
-						{/*}*/}
-						{/*parentStyle={styles.buttonStyle}*/}
-						{/*childStyle={styles.imageButtonStyle}*/}
-						{/*mOnPress={this.selectPhotoTapped.bind(this, 'idcardBack')}/>*/}
-						{/*{this.state.idcardBack ?*/}
-						{/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
-						{/*content={require('../../images/login/clear.png')}*/}
-						{/*parentStyle={{*/}
-						{/*position: 'absolute',*/}
-						{/*marginTop: Pixel.getPixel(2),*/}
-						{/*marginLeft: Pixel.getPixel(2),*/}
-						{/*}}*/}
-						{/*childStyle={styles.imageClearButtonStyle}*/}
-						{/*mOnPress={() => {*/}
-						{/*this.setState({*/}
-						{/*idcardBack: null*/}
-						{/*});*/}
-						{/*}}/>*/}
-						{/*: null}*/}
+					{this.loadingView()}
+				</View>
+			</TouchableWithoutFeedback>
+		);
+	}
 
-						{/*</View>*/}
-						{/*</View>*/}
-						{/*</TouchableWithoutFeedback>*/}
+	/*
+	 * 主界面
+	 * */
+	loadScrollView = () => {
+		return (
+			<ScrollView keyboardShouldPersistTaps={'handled'}>
 
+				<View style={styles.inputTextLine}/>
+				<View style={styles.inputTextsStyle}>
+					<LoginInputText
+						ref="userName"
+						textPlaceholder={'请输入手机号'}
+						viewStytle={styles.itemStyel}
+						inputTextStyle={styles.inputTextStyle}
+						leftIcon={false}
+						clearValue={true}
+						maxLength={11}
+						keyboardType={'phone-pad'}
+						import={true}
+						rightIcon={false}/>
+					<LoginInputText
+						ref="verifycode"
+						textPlaceholder={'请输入验证码'}
+						viewStytle={styles.itemStyel}
+						inputTextStyle={styles.inputTextStyle}
+						leftIcon={false}
+						import={true}
+						keyboardType={'phone-pad'}
+						rightIconClick={this.Verifycode}
+						rightIconStyle={{width: Pixel.getPixel(100)}}
+						rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
+					<LoginInputText
+						ref="smsCode"
+						textPlaceholder={'请输入短信验证码'}
+						viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
+						inputTextStyle={styles.inputTextStyle}
+						rightButton={true}
+						rightIcon={false}
+						import={true}
+						callBackSms={this.sendSms}
+						keyboardType={'phone-pad'}
+						leftIcon={false}/>
+				</View>
+				<View style={styles.inputTextLine}/>
+				<View style={styles.inputTextsStyle}>
+					<LoginInputText
+						ref="password"
+						textPlaceholder={'请输入密码'}
+						viewStytle={styles.itemStyel}
+						inputTextStyle={styles.inputTextStyle}
+						secureTextEntry={true}
+						clearValue={true}
+						leftIcon={false}
+						import={true}
+						maxLength={16}
+						rightIcon={false}/>
+					<LoginInputText
+						ref="passwoedAgain"
+						textPlaceholder={'请再次输入密码'}
+						viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
+						inputTextStyle={styles.inputTextStyle}
+						secureTextEntry={true}
+						maxLength={16}
+						leftIcon={false}
+						clearValue={true}
+						import={true}
+						rightIcon={false}/>
+				</View>
+				<View style={styles.inputTextLine}/>
+				<View style={styles.inputTextsStyle}>
+					<LoginInputText
+						ref="name"
+						textPlaceholder={'请输入姓名'}
+						viewStytle={styles.itemStyel}
+						inputTextStyle={styles.inputTextStyle}
+						leftIcon={false}
+						import={true}
+						clearValue={true}
+						rightIcon={false}/>
+					<LoginInputText
+						ref="businessName"
+						textPlaceholder={'请输入商家名称'}
+						viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
+						inputTextStyle={styles.inputTextStyle}
+						leftIcon={false}
+						import={true}
+						clearValue={true}
+						rightIcon={false}
 
-						{/*<View style={styles.inputTextLine}/>*/}
-						{/*<TouchableWithoutFeedback onPress={() => dismissKeyboard() }>*/}
-						{/*<View style={styles.imageButtonsStyle}>*/}
+					/>
+				</View>
+				<View style={styles.inputTextLine}/>
+				<View style={styles.imagebuttonok}>
 
-						{/*<Text allowFontScaling={false}  style={{*/}
-						{/*flex: 1,*/}
-						{/*color: FontAndColor.COLORA1,*/}
-						{/*fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)*/}
-						{/*}}>添加营业执照</Text>*/}
-						{/*<View>*/}
-						{/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
-						{/*content={this.state.businessLicense === null ?*/}
-						{/*require('../../images/login/idcard.png') : this.state.businessLicense*/}
-						{/*}*/}
-						{/*parentStyle={styles.buttonStyle}*/}
-						{/*childStyle={styles.imageButtonStyle}*/}
-						{/*mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>*/}
-						{/*{this.state.businessLicense ?*/}
-						{/*<MyButton buttonType={MyButton.IMAGEBUTTON}*/}
-						{/*content={require('../../images/login/clear.png')}*/}
-						{/*parentStyle={{*/}
-						{/*position: 'absolute',*/}
-						{/*marginTop: Pixel.getPixel(2),*/}
-						{/*marginLeft: Pixel.getPixel(2),*/}
-						{/*}}*/}
-						{/*childStyle={styles.imageClearButtonStyle}*/}
-						{/*mOnPress={() => {*/}
-						{/*this.setState({*/}
-						{/*businessLicense: null*/}
-						{/*});*/}
-						{/*}}/>*/}
-						{/*: null}*/}
-
-						{/*</View>*/}
-						{/*</View>*/}
-						{/*</TouchableWithoutFeedback>*/}
-						<View style={styles.imagebuttonok}>
-
-
-							{/*<ConfirmButton imageButton={(value)=>{*/}
-							{/*confirm = value;*/}
-							{/*}} textButton={()=>{*/}
-							{/*this.toNextPage({name:ElectronicContract,component:ElectronicContract,params:{}})*/}
-							{/*}}/>*/}
-							<TouchableOpacity onPress={() => {
+					<TouchableOpacity onPress={() => {
                                 this.register();
                             }} activeOpacity={0.8} style={{
                                 marginTop: Pixel.getPixel(7),
@@ -328,19 +243,15 @@ export default class Register extends BaseComponent {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-								<Text allowFontScaling={false} style={{
+						<Text allowFontScaling={false} style={{
                                     color: '#fff',
                                     fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT28)
                                 }}>提交</Text>
-							</TouchableOpacity>
-						</View>
-					</ScrollView>
-					{this.loadingView()}
+					</TouchableOpacity>
 				</View>
-			</TouchableWithoutFeedback>
-		);
+			</ScrollView>
+		)
 	}
-
 	register = () => {
 
 		let userName = this.refs.userName.getInputTextValue();
@@ -504,12 +415,12 @@ export default class Register extends BaseComponent {
 			NativeAppEventEmitter
 				.addListener('onReceiveBDLocation', (loc) => {
 					console.log(loc);
-                    this.locateDate.address = loc.addr;
-                    this.locateDate.city_id = loc.city_code;
-                    this.locateDate.city_name = loc.city;
-                    this.locateDate.street_name = loc.street;
-                    this.locateDate.province_name = loc.province;
-                    this.locateDate.area_name = loc.district;
+					this.locateDate.address = loc.addr;
+					this.locateDate.city_id = loc.city_code;
+					this.locateDate.city_name = loc.city;
+					this.locateDate.street_name = loc.street;
+					this.locateDate.province_name = loc.province;
+					this.locateDate.area_name = loc.district;
 				});
 		} else {
 			NativeModules.Location.Location().then((vl) => {
