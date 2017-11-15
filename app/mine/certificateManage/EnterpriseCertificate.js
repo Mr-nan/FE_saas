@@ -31,6 +31,8 @@ import ProvinceListScene from "../../carSource/ProvinceListScene";
 import ImageSourceSample from "../../publish/component/ImageSourceSample";
 import * as ImageUpload from "../../utils/ImageUpload";
 import {request} from '../../utils/RequestUtil';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 
 const Pixel = new PixelUtil();
 const selectImg = require('../../../images/financeImages/celljiantou.png');
@@ -106,99 +108,121 @@ export default class EnterpriseCertificate extends BaseComponent {
 	};
 	_getCertificateInfo = () => {
 
-		request(AppUrls.GETAPPLYENTERPRISEINFO, 'post', {enterprise_id: this.props.qiye_id}).then((response) => {
 
 
-			if (response.mycode == "1") {
-				let PersonResule = response.mjson.data;
-				if(PersonResule){
-					idHandle = PersonResule.company.legal_no_img_touch.file_id;
-					idcardfront = PersonResule.company.legal_no_img_fort.file_id;
-					idcardback = PersonResule.company.legal_no_img_back.file_id;
-					businessid = PersonResule.company.business_license_img.file_id;
-					city_ID = PersonResule.company.city_id;
-					prov_ID = PersonResule.company.prov_id;
-
-					this.enterpriseData.zhuceren_IDNo = PersonResule.person.idcard_number;
-					this.enterpriseData.zhuceren_name = PersonResule.person.real_name;
-
-					this.enterpriseData.enterprise_name = PersonResule.company.legal;
-					this.enterpriseData.enterprise_tel = PersonResule.company.contact_phone;
-					this.enterpriseData.enterprise_IDNo = PersonResule.company.legal_idno;
-					this.enterpriseData.businessLicense_IDNo = PersonResule.company.business_license;
-					this.enterpriseData.qiyemingcheng = PersonResule.company.enterprise_name;
 
 
-					let shanghusuozaidi;
-					let handleSource;
-					let frontSource;
-					let backSource;
-					let licenseSource;
+		StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+			if (data.code == 1 && data.result != null) {
+				let datas = JSON.parse(data.result);
 
-					//对商户所在地判空  进行界面显示处理
-					if(this.isEmpty(PersonResule.company.prov_name) === true || this.isEmpty(PersonResule.company.city_name) === true ){
-						shanghusuozaidi = '请选择'
-					}else {
-						shanghusuozaidi =  PersonResule.company.prov_name + ' ' + PersonResule.company.city_name;
+				request(AppUrls.GETAPPLYENTERPRISEINFO, 'post', {enterprise_id: datas.company_base_id}).then((response) => {
+
+
+					if (response.mycode == "1") {
+						let PersonResule = response.mjson.data;
+						if(PersonResule){
+							idHandle = PersonResule.company.legal_no_img_touch.file_id;
+							idcardfront = PersonResule.company.legal_no_img_fort.file_id;
+							idcardback = PersonResule.company.legal_no_img_back.file_id;
+							businessid = PersonResule.company.business_license_img.file_id;
+							city_ID = PersonResule.company.city_id;
+							prov_ID = PersonResule.company.prov_id;
+
+							this.enterpriseData.zhuceren_IDNo = PersonResule.person.idcard_number;
+							this.enterpriseData.zhuceren_name = PersonResule.person.real_name;
+
+							this.enterpriseData.enterprise_name = PersonResule.company.legal;
+							this.enterpriseData.enterprise_tel = PersonResule.company.contact_phone;
+							this.enterpriseData.enterprise_IDNo = PersonResule.company.legal_idno;
+							this.enterpriseData.businessLicense_IDNo = PersonResule.company.business_license;
+							this.enterpriseData.qiyemingcheng = PersonResule.company.enterprise_name;
+
+
+							let shanghusuozaidi;
+							let handleSource;
+							let frontSource;
+							let backSource;
+							let licenseSource;
+
+							//对商户所在地判空  进行界面显示处理
+							if(this.isEmpty(PersonResule.company.prov_name) === true || this.isEmpty(PersonResule.company.city_name) === true ){
+								shanghusuozaidi = '请选择'
+							}else {
+								shanghusuozaidi =  PersonResule.company.prov_name + ' ' + PersonResule.company.city_name;
+							}
+
+							//对手持照片判空  进行界面显示处理
+							if(this.isEmpty(PersonResule.company.legal_no_img_touch.img_url) === true){
+								handleSource = null;
+							}else {
+								handleSource =  {uri: PersonResule.company.legal_no_img_touch.img_url};
+							}
+
+							//对正面照片判空  进行界面显示处理
+							if(this.isEmpty(PersonResule.company.legal_no_img_fort.img_url) === true){
+								frontSource = null;
+							}else {
+								frontSource =  {uri: PersonResule.company.legal_no_img_fort.img_url};
+							}
+
+							//对反面照片判空  进行界面显示处理
+							if(this.isEmpty(PersonResule.company.legal_no_img_back.img_url) === true){
+								backSource = null;
+							}else {
+								backSource =  {uri: PersonResule.company.legal_no_img_back.img_url};
+							}
+
+							//对营业执照 照片判空  进行界面显示处理
+							if(this.isEmpty(PersonResule.company.business_license_img.img_url) === true){
+								licenseSource = null;
+							}else {
+								licenseSource =  {uri: PersonResule.company.business_license_img.img_url};
+							}
+
+
+
+							this.setState({
+								business_home: shanghusuozaidi,//商户所在地
+								enterpriseHandle: handleSource,//个人手持照片
+								enterpriseFront: frontSource,//个人正面照片
+								enterpriseBack: backSource,//个人反面照片
+								businessLicense: licenseSource,//工作证照片
+
+								renderPlaceholderOnly: 'success'
+							});
+						}else {
+							this.setState({
+								renderPlaceholderOnly: 'success'
+							});
+
+						}
+
+
+
+
+					} else {
+
 					}
-
-					//对手持照片判空  进行界面显示处理
-					if(this.isEmpty(PersonResule.company.legal_no_img_touch.img_url) === true){
-						handleSource = null;
-					}else {
-						handleSource =  {uri: PersonResule.company.legal_no_img_touch.img_url};
-					}
-
-					//对正面照片判空  进行界面显示处理
-					if(this.isEmpty(PersonResule.company.legal_no_img_fort.img_url) === true){
-						frontSource = null;
-					}else {
-						frontSource =  {uri: PersonResule.company.legal_no_img_fort.img_url};
-					}
-
-					//对反面照片判空  进行界面显示处理
-					if(this.isEmpty(PersonResule.company.legal_no_img_back.img_url) === true){
-						backSource = null;
-					}else {
-						backSource =  {uri: PersonResule.company.legal_no_img_back.img_url};
-					}
-
-					//对营业执照 照片判空  进行界面显示处理
-					if(this.isEmpty(PersonResule.company.business_license_img.img_url) === true){
-						licenseSource = null;
-					}else {
-						licenseSource =  {uri: PersonResule.company.business_license_img.img_url};
-					}
-
-
-
+				}, (error) => {
 					this.setState({
-						business_home: shanghusuozaidi,//商户所在地
-						enterpriseHandle: handleSource,//个人手持照片
-						enterpriseFront: frontSource,//个人正面照片
-						enterpriseBack: backSource,//个人反面照片
-						businessLicense: licenseSource,//工作证照片
-
-						renderPlaceholderOnly: 'success'
+						renderPlaceholderOnly: 'error'
 					});
-				}else {
-					this.setState({
-						renderPlaceholderOnly: 'success'
-					});
-
-				}
-
-
-
+				});
 
 			} else {
-
+				this.props.showToast('获取企业信息失败');
 			}
-		}, (error) => {
-			this.setState({
-				renderPlaceholderOnly: 'error'
-			});
 		});
+
+
+
+
+
+
+
+
+
 
 	};
 

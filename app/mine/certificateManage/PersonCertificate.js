@@ -31,6 +31,10 @@ import ProvinceListScene from "../../carSource/ProvinceListScene";
 import ImageSourceSample from "../../publish/component/ImageSourceSample";
 import * as ImageUpload from "../../utils/ImageUpload";
 import {request} from '../../utils/RequestUtil';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
+
+
 const Pixel = new PixelUtil();
 const selectImg = require('../../../images/financeImages/celljiantou.png');
 const IS_ANDROID = Platform.OS === 'android';
