@@ -69,7 +69,7 @@ export default class Register extends BaseComponent {
 			businessLicense: null,
 			verifyCode: null,
 			renderPlaceholderOnly: true,
-			keyboardOffset: -Pixel.getPixel(64),
+			keyboardOffset: -Pixel.getPixel(100),
 
 		}
 		this.id;
