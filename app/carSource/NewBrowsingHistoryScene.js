@@ -49,11 +49,11 @@ export default class NewBrowsingHistoryScene extends BaceComponent {
         let maps = {
             page: page,
             rows: 10,
-            type:'2'
+            type: '2'
         };
         request(Urls.USER_HISTORY, 'Post', maps)
             .then((response) => {
-                    allPage=response.mjson.data.pageCount;
+                    allPage = response.mjson.data.pageCount;
                     if (page == 1 && response.mjson.data.list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
                     } else {
@@ -82,9 +82,9 @@ export default class NewBrowsingHistoryScene extends BaceComponent {
         };
     }
 
-    toEnd =() => {
+    toEnd = () => {
 
-        if(!this.state.isRefreshing && allSouce.length>0 && allPage!=page){
+        if (!this.state.isRefreshing && allSouce.length > 0 && allPage != page) {
 
             page++;
             this.getApplyData();
@@ -92,17 +92,16 @@ export default class NewBrowsingHistoryScene extends BaceComponent {
 
     };
 
-    getApplyData=()=>{
+    getApplyData = () => {
 
         let maps = {
             page: page,
             rows: 10,
-            type:'2'
+            type: '2'
         };
         request(Urls.USER_HISTORY, 'Post', maps)
             .then((response) => {
-                    if (response.mjson.data.list.length>0)
-                    {
+                    if (response.mjson.data.list.length > 0) {
                         allSouce.push(...response.mjson.data.list);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -157,7 +156,9 @@ export default class NewBrowsingHistoryScene extends BaceComponent {
 
     deleteAllCliiection = () => {
         this.props.showModal(true);
-        let maps = {};
+        let maps = {
+            type: '2'
+        };
         request(Urls.USER_HISTORY_DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
@@ -176,7 +177,8 @@ export default class NewBrowsingHistoryScene extends BaceComponent {
             return ( <View style={styles.rootContainer}>
                 {/*<View style={{height:Pixel.getPixel(1) ,backgroundColor:fontAndColor.COLORA3}}></View>*/}
                 {this.loadView()}
-            </View>);F
+            </View>);
+            F
         }
         return (
             <View style={styles.rootContainer}>
@@ -226,7 +228,7 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
         backgroundColor: 'white',
-        flexDirection:'column'
+        flexDirection: 'column'
 
     },
 
