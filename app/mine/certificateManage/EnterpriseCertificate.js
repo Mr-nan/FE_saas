@@ -136,7 +136,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 					let licenseSource;
 
 					//对商户所在地判空  进行界面显示处理
-					if(this.isEmpty(PersonResule.company.prov_name  + PersonResule.company.city_name) === true){
+					if(this.isEmpty(PersonResule.company.prov_name) === true || this.isEmpty(PersonResule.company.city_name) === true ){
 						shanghusuozaidi = '请选择'
 					}else {
 						shanghusuozaidi =  PersonResule.company.prov_name + ' ' + PersonResule.company.city_name;
@@ -288,8 +288,15 @@ export default class EnterpriseCertificate extends BaseComponent {
 			this._showHint('请填写注册人身份证号');
 			return;
 		}
+		console.log('1111111111111' + this.enterpriseData.zhuceren_IDNo)
+
+
 		if (this.enterpriseData.zhuceren_IDNo.length != 18 && this.enterpriseData.zhuceren_IDNo.length != 15) {
 			this._showHint('请填写有效的注册人身份证号');
+			return;
+		}
+		if (this.isEmpty(this.enterpriseData.qiyemingcheng) === true) {
+			this._showHint('请填写企业名称');
 			return;
 		}
 		if (this.isEmpty(this.enterpriseData.enterprise_name) === true) {
@@ -308,6 +315,18 @@ export default class EnterpriseCertificate extends BaseComponent {
 			this._showHint('请填写有效的企业负责人手机号');
 			return;
 		}
+		if (this.isEmpty(this.enterpriseData.enterprise_IDNo) === true) {
+			this._showHint('请填写企业负责人身份证号');
+			return;
+		}
+		if (this.enterpriseData.enterprise_IDNo.length != 18 && this.enterpriseData.enterprise_IDNo.length != 15) {
+			this._showHint('请填写有效的企业负责人身份证号');
+			return;
+		}
+		if (this.isEmpty(this.enterpriseData.businessLicense_IDNo) === true) {
+			this._showHint('请填写营业执照号/注册号');
+			return;
+		}
 		if (this.state.business_home === '请选择') {
 			this._showHint('请选择商户经营所在地');
 			return;
@@ -324,26 +343,13 @@ export default class EnterpriseCertificate extends BaseComponent {
 			this._showHint('请上传企业负责人身份证反面');
 			return;
 		}
-		if (this.isEmpty(this.enterpriseData.enterprise_IDNo) === true) {
-			this._showHint('请填写企业负责人身份证号');
-			return;
-		}
-		if (this.enterpriseData.enterprise_IDNo.length != 18 && this.enterpriseData.enterprise_IDNo.length != 15) {
-			this._showHint('请填写有效的企业负责人身份证号');
-			return;
-		}
+
 		if (this.isEmpty(businessid) === true) {
 			this._showHint('请上传营业执照');
 			return;
 		}
-		if (this.isEmpty(this.enterpriseData.businessLicense_IDNo) === true) {
-			this._showHint('请填写营业执照号/注册号');
-			return;
-		}
-		if (this.isEmpty(this.enterpriseData.qiyemingcheng) === true) {
-			this._showHint('请填写企业名称');
-			return;
-		}
+
+
 
 		let maps = {
 
@@ -372,7 +378,6 @@ export default class EnterpriseCertificate extends BaseComponent {
 		request(AppUrls.ENTERPRISECERTIFICATE, 'Post', maps)
 			.then((response) => {
 				if (response.mycode == "1") {
-
 					this.props.showToast("信息提交成功");
 					if(this.props.callBack){
 						this.props.callBack();
@@ -448,6 +453,30 @@ export default class EnterpriseCertificate extends BaseComponent {
 				</View>
 
 				{/*注册人view*/}
+				<View style={styles.itemBackground}>
+					<Text allowFontScaling={false} style={styles.leftFont}>注册人</Text>
+					<TextInput
+						ref={(input) => {
+                                this.zhucerenInput = input
+                            }}
+						style={[styles.inputHintFont, styles.fillSpace]}
+						underlineColorAndroid='transparent'
+						onChangeText={this._zhucerenChange}
+						placeholder='请输入'
+						defaultValue={this.enterpriseData.zhuceren_name}
+						placeholderTextColor={fontAndColor.COLORA1}
+						onFocus={()=>{
+                                       this.setState({
+                                           keyboardOffset:-Pixel.getPixel(300)
+                                       });
+                                   }}
+						onBlur={()=>{
+                                       this.setState({
+                                           keyboardOffset:Pixel.getPixel(64)
+                                       });
+                                   }}
+					/>
+				</View>
 				<View style={styles.splitItem}/>
 
 				{/*注册人身份证号view*/}
@@ -586,6 +615,7 @@ export default class EnterpriseCertificate extends BaseComponent {
                                           keyboardOffset:Pixel.getPixel(64)
                                       });
                                   }}
+
 					/>
 				</View>
 				<View style={styles.splitItem}/>
@@ -609,7 +639,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 						placeholderTextColor={fontAndColor.COLORA1}
 						onFocus={()=>{
                                       this.setState({
-                                          keyboardOffset:-Pixel.getPixel(300)
+                                          keyboardOffset:-Pixel.getPixel(200)
                                       });
                                   }}
 						onBlur={()=>{
@@ -785,7 +815,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 	 * 判断非空函数
 	 * */
 	isEmpty = (str) => {
-		if (typeof(str) != 'undefined' && str !== '') {
+		if (typeof(str) != 'undefined' && str !== '' && str !== null) {
 			return false;
 		} else {
 			return true;

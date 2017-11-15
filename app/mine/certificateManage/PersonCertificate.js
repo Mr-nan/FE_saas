@@ -130,7 +130,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 				let licenseSource;
 
 				//对商户所在地判空  进行界面显示处理
-				if(this.isEmpty(PersonResule.prov_name  + PersonResule.city_name) === true){
+				if(this.isEmpty(PersonResule.prov_name) === true || this.isEmpty(PersonResule.city_name) === true){
 					shanghusuozaidi = '请选择'
 				}else {
 					shanghusuozaidi =  PersonResule.prov_name + ' ' + PersonResule.city_name;
@@ -604,7 +604,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 		)
 	}
 	isEmpty = (str) => {
-		if (typeof(str) != 'undefined' && str !== '') {
+		if (typeof(str) != 'undefined' && str !== '' && str !== null) {
 			return false;
 		} else {
 			return true;
