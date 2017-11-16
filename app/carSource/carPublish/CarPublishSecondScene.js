@@ -408,7 +408,7 @@ export default class CarPublishSecondScene extends BaseComponent {
             [
                 {
                     title: '过户次数',
-                    isShowTag: true,
+                    isShowTag: this.props.carData.v_type==3?false:true,
                     value: '0',
                     isShowTail: false,
                 },
@@ -420,7 +420,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                 // },
                 {
                     title: '表显里程',
-                    isShowTag: true,
+                    isShowTag: this.props.carData.v_type==3?false:true,
                     isShowTail: false,
                     value: '0 万公里',
                 },
@@ -529,7 +529,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                 {
                     title: '网上零售价',
                     subTitle: '展示给个人消费者看',
-                    isShowTag: true,
+                    isShowTag: this.props.carData.v_type==3?false:true,
                     isShowTail: true,
                     tailView: () => {
                         return (
@@ -893,12 +893,12 @@ export default class CarPublishSecondScene extends BaseComponent {
             return;
         }
 
-        if (this.carData.online_retail_price == '' || !this.carData.online_retail_price) {
+        if ((this.carData.online_retail_price == '' || !this.carData.online_retail_price) && this.carData.v_type!=3) {
             this.props.showToast('请输入网上零售价');
             return;
         }
 
-        if (parseFloat(this.carData.online_retail_price) <= 0) {
+        if ((parseFloat(this.carData.online_retail_price) <= 0) &&  this.carData.v_type!=3 ) {
             this.props.showToast('网上零售价不能等于0');
             return;
         }
