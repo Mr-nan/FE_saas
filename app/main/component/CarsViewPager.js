@@ -106,7 +106,7 @@ export default class CarsViewPager extends Component {
             return (
                 <TouchableOpacity onPress={()=>{
                     this.props.toNext?this.props.toNext(data.id):'';
-                }} activeOpacity={1} style={{width:width}}>
+                }} activeOpacity={0.5} style={{width:width}}>
                     <View
                         style={{flexDirection:'row',alignItems:'center',paddingLeft:Pixel.getPixel(10)}}>
                         <Image style={styles.postPosition}
