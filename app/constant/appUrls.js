@@ -1260,6 +1260,7 @@ export const ZS_GET_CITY = BASEURL + "v1/bankRoute.query/findCity";
  */
 export const ZS_BANK_IS_SHOW = BASEURL + "v1/account.cz_bank/zsBankIsShow";
 
+
 /**
  *  from @dingnyonggang
  *
@@ -1290,4 +1291,13 @@ export const ZS_WORTER_FLOW = BASEURL + "v2/user.account/payLog";
  *  银行限额说明
  */
 export const ZS_BANK_INSTRUCTION = BASEURL + "v1/account.cz_bank/getPaymentRelatedInfo";
+
+/**
+ *   获取用户的账户详情(我的账户页面-卡片页  调用)
+ */
+export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccountDetail";
+/**
+ *   信托开户
+ */
+export const OPEN_PERSON_TRUST_ACCOUNT = BASEURL + "v1/account.zsyxt/openPersonAccount";
 
