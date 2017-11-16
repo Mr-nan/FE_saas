@@ -147,6 +147,10 @@ export default class Setting extends BaseComponent {
 
     // 清空推送deviceToken
     checkPushData =()=>{
+
+        this.loginOut();
+        return;
+
         this.props.showModal(true);
         request(Urls.PUSH_CLEAR, 'Post', {
             deviceToken:global.pushDeviceToken,
