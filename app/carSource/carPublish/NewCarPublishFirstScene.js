@@ -147,14 +147,14 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                        onFocus={()=>{
                                            this.setCurrentPy(this.saleCountInput);
                                        }}
-                                       defaultValue={this.carData.sale_count?this.carMoneyChange(this.carData.sale_count):''}
+                                       defaultValue={this.carData.stock?this.carMoneyChange(this.carData.stock):''}
                                        onEndEditing={()=>{this.saveCarData();}}
                                        onChangeText={(text)=>{
                                                if(text.length>4&&text.indexOf('.')==-1){
                                                text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
-                                           this.carData['sale_count']= moneyStr;
+                                           this.carData['stock']= moneyStr;
                                            this.saleCountInput.setNativeProps({
                                                text: moneyStr,
                                            });
