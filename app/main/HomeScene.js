@@ -111,9 +111,10 @@ export default class HomeScene extends BaseComponet {
 
                 <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}
                              callBack={(params)=>{this.props.callBack(params)}}/>
-                <HomeRowButton onPress={(id)=>{
-                    this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});
-                }} list={this.carData}/>
+
+                {/*<HomeRowButton onPress={(id)=>{*/}
+                    {/*this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});*/}
+                {/*}} list={this.carData}/>*/}
 
                 <CarsViewPager items={this.state.allData} toNext={()=>{
                          this.props.jumpScene('financePage','');
@@ -216,7 +217,8 @@ export default class HomeScene extends BaseComponet {
             this.props.backToLogin()
         })
             .then((response) => {
-                    // allList.push(...response.mjson.data.carList.list);
+
+                    allList.push(...response.mjson.data.carList);
                     StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
@@ -236,13 +238,15 @@ export default class HomeScene extends BaseComponet {
                             if (allList.length <= 0) {
                                 this.setState({
                                     renderPlaceholderOnly: 'success',
-                                    source: ds.cloneWithRows(['1']), isRefreshing: false,
+                                    source: ds.cloneWithRows(['1']),
+                                    isRefreshing: false,
                                     allData: response.mjson.data
                                 });
                             } else {
                                 this.setState({
                                     renderPlaceholderOnly: 'success',
-                                    source: ds.cloneWithRows(allList), isRefreshing: false,
+                                    source: ds.cloneWithRows(allList),
+                                    isRefreshing: false,
                                     allData: response.mjson.data
                                 });
                             }
@@ -287,13 +291,15 @@ export default class HomeScene extends BaseComponet {
                     if (allList.length <= 0) {
                         this.setState({
                             renderPlaceholderOnly: 'success',
-                            source: ds.cloneWithRows(['1']), isRefreshing: false,
+                            source: ds.cloneWithRows(['1']),
+                            isRefreshing: false,
                             allData: allData
                         });
                     } else {
                         this.setState({
                             renderPlaceholderOnly: 'success',
-                            source: ds.cloneWithRows(allList), isRefreshing: false,
+                            source: ds.cloneWithRows(allList),
+                            isRefreshing: false,
                             allData: allData
                         });
                     }
@@ -321,17 +327,6 @@ export default class HomeScene extends BaseComponet {
             </View>
         )
     }
-
-//触底加载
-    toEnd = () => {
-        if (page < status) {
-            page++;
-            this.loadData();
-        }
-        // else {
-        //     this.props.jumpScene('carpage');
-        // }
-    };
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -368,34 +363,13 @@ export default class HomeScene extends BaseComponet {
                             colors={[fontAndClolr.COLORB0]}
                         />
                     }
-                    renderFooter={
-                        this.renderListFooter
-                    }
-                    onEndReached={this.toEnd}
+
+
                 />
 
 
             </View>
         )
-    }
-
-    renderListFooter = () => {
-
-        if (this.state.isRefreshing) {
-            return null;
-        } else {
-            return (
-                <TouchableOpacity onPress={()=> {
-                    this.props.jumpScene('carpage','checkRecommend');
-                }} activeOpacity={0.8} style={{
-                    width: width, height: Pixel.getPixel(60), backgroundColor: fontAndClolr.COLORA3,
-                    alignItems: 'center'
-                }}>
-                    <Text allowFontScaling={false}
-                          style={{fontSize: Pixel.getFontPixel(14), marginTop: Pixel.getPixel(7)}}>查看更多车源 ></Text>
-                </TouchableOpacity>)
-        }
-
     }
 
     refreshingData = () => {

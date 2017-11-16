@@ -29,7 +29,6 @@ export default class HomeRowButton extends PureComponent {
     }
 
     render() {
-        return <View></View>
         if (this.props.list == null || this.props.list.length <= 0) {
             return <View></View>
         }
