@@ -10,7 +10,6 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-import ViewPager from 'react-native-viewpager';
 import CarViewPage from '../../viewpager/CarViewPage';
 const {width, height} = Dimensions.get('window');
 import  PixelUtil from '../../utils/PixelUtil'
@@ -27,12 +26,13 @@ export default class CarsViewPager extends Component {
     getData = () => {
         alldata = this.props.items;
         let imageItems = [];
-        if (alldata.banners == null || alldata.banners.length <= 0) {
+        if (alldata.list == null || alldata.list.length <= 0) {
             imageItems.push({id: '-200', ret_img: '', ret_url: '', title: ''});
         } else {
-            imageItems = alldata.banners;
+            imageItems = alldata.list;
         }
-        let dataSource = new ViewPager.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
+        console.log('xxxxx', imageItems)
+        let dataSource = new CarViewPage.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithPages(imageItems),
         };
@@ -41,12 +41,12 @@ export default class CarsViewPager extends Component {
     componentWillReceiveProps(nextProps) {
         alldata = nextProps.items;
         let imageItems = [];
-        if (alldata.banners == null || alldata.banners.length <= 0) {
+        if (alldata.list == null || alldata.list.length <= 0) {
             imageItems.push({id: '-200', ret_img: '', ret_url: '', title: ''});
         } else {
-            imageItems = alldata.banners;
+            imageItems = alldata.list;
         }
-        let dataSource = new ViewPager.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
+        let dataSource = new CarViewPage.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithPages(imageItems),
         };
@@ -87,10 +87,10 @@ export default class CarsViewPager extends Component {
                 <CarViewPage
                     dataSource={this.state.dataSource}    //数据源（必须）
                     renderPage={this._renderPage}         //page页面渲染方法（必须）
-                    isLoop={alldata.banners.length <= 1?false:true}                        //是否可以循环
-                    autoPlay={alldata.banners.length <= 1?false:true}                      //是否自动
+                    isLoop={false}                        //是否可以循环  {alldata.list.length <= 1?false:true}
+                    autoPlay={false}                      //是否自动  alldata.list.length <= 1?false:true
                     initialPage={0}       //指定初始页面的index
-                    locked={alldata.banners.length <= 1?true:false}                        //为true时禁止滑动翻页
+                    locked={alldata.list.length <= 1?true:false}                        //为true时禁止滑动翻页
                 />
             </View>
         )
@@ -99,7 +99,7 @@ export default class CarsViewPager extends Component {
     _renderPage = (data) => {
         if (data.id == '-200') {
             return (
-                <Image style={styles.postPosition}
+                <Image style={{width: width,height: Pixel.getPixel(225), resizeMode: 'stretch'}}
                        source={require('../../../images/mainImage/homebanner.png')}
                 />
             );
@@ -111,17 +111,37 @@ export default class CarsViewPager extends Component {
                     <View
                         style={{flexDirection:'row',alignItems:'center',paddingLeft:Pixel.getPixel(10)}}>
                         <Image style={styles.postPosition}
-                               source={{uri: data.ret_img+'?x-oss-process=image/resize,w_'+450+',h_'+270}}/>
+                               source={{uri: data.img+'?x-oss-process=image/resize,w_'+450+',h_'+270}}/>
                         <View
-                            style={{height:Pixel.getPixel(100),flexDirection:'column',justifyContent:'center',marginLeft:Pixel.getPixel(10)}}>
-                            <Text style={{fontSize:Pixel.getFontPixel(14),color:'#000000'}}>哈哈哈哈</Text>
-                            <Text style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>哈哈哈哈</Text>
-                            <Text style={{fontSize:Pixel.getFontPixel(17),color:'#fa5741'}}>哈哈哈哈</Text>
+                            style={{height:Pixel.getPixel(100),flexDirection:'column',justifyContent:'center',marginLeft:Pixel.getPixel(10),marginRight:Pixel.getPixel(130)}}>
+                            <Text
+                                style={{fontSize:Pixel.getFontPixel(14),color:'#000000'}}>[{data.city_name}]{data.model_name}</Text>
+                            {this.props.type == '6' ?
+                                <Text style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>{data.stock}辆在售</Text> :
+                                <Text
+                                    style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>{this.dateReversal(data.manufacture + "000")}
+                                    /{data.mileage}万公里</Text>}
+
+                            <Text style={{fontSize:Pixel.getFontPixel(17),color:'#fa5741'}}>{data.dealer_price}万</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
             );
         }
+    }
+
+    dateReversal = (time) => {
+
+        const date = new Date();
+        date.setTime(time);
+        return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2))) + "-" + (this.PrefixInteger(date.getDate(), 2));
+
+    };
+
+    PrefixInteger = (num, length) => {
+
+        return (Array(length).join('0') + num).slice(-length);
+
     }
 }
 

@@ -51,7 +51,6 @@ export default class HomeScene extends BaseComponet {
     constructor(props) {
         super(props);
         // 初始状态
-        this.carData = [];
         this.state = {
             source: [],
             renderPlaceholderOnly: 'blank',
@@ -111,23 +110,27 @@ export default class HomeScene extends BaseComponet {
 
                 <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}
                              callBack={(params)=>{this.props.callBack(params)}}/>
-                <HomeRowButton onPress={(id)=>{
-                    this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});
-                }} list={this.carData}/>
-
-                <CarsViewPager items={this.state.allData} toNext={()=>{
-                         this.props.jumpScene('financePage','');
+                {/*<HomeRowButton onPress={(id)=>{*/}
+                {/*this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});*/}
+                {/*}} list={this.carData}/>*/}
+                {
+                    this.state.newData && <CarsViewPager items={this.state.newData} toNext={()=>{
+                         {/*this.props.jumpScene('financePage','');*/}
+                         alert('去哪里？')
                     }} more={()=>{
                          alert("我是新车")
-                    }} title="推荐新车源"
-                />
-
-                <CarsViewPager items={this.state.allData} toNext={()=>{
-                         this.props.jumpScene('financePage','');
+                    }} title="推荐新车源" type="6"
+                    />
+                }
+                {
+                    this.state.oldData && <CarsViewPager items={this.state.oldData} toNext={()=>{
+                         alert('去哪里？')
                     }} more={()=>{
                          alert("我是二手车")
-                    }} title="推荐二手车源"
-                />
+                    }} title="推荐二手车源" type="8"
+                    />
+                }
+
 
                 <HomeAdvertisementButton click={()=>{
                     this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);
@@ -190,7 +193,7 @@ export default class HomeScene extends BaseComponet {
         }
     }
 
-//初始化结束后,请求网络,将数据添加到界面
+    //初始化结束后,请求网络,将数据添加到界面
     initFinish = () => {
         this.loadData();
     }
@@ -232,7 +235,6 @@ export default class HomeScene extends BaseComponet {
                             } else {
 
                             }
-                            this.getCarData(response.mjson.data);
                             if (allList.length <= 0) {
                                 this.setState({
                                     renderPlaceholderOnly: 'success',
@@ -247,6 +249,8 @@ export default class HomeScene extends BaseComponet {
                                 });
                             }
 
+                            this.getCarData('6');
+
                         }
                     });
                     status = response.mjson.data.carList.pageCount;
@@ -256,7 +260,7 @@ export default class HomeScene extends BaseComponet {
                 });
     }
 
-    getCarData(allData) {
+    getCarData(type) {
         let maps = {
             brand_id: 0,
             series_id: 0,
@@ -276,29 +280,36 @@ export default class HomeScene extends BaseComponet {
             rows: 5,
             page: 1,
             start: 0,
-            type: 2,
+            type: type,
             status: 1,
             no_cache: 1,
         };
         request(Urls.CAR_INDEX, 'Post', maps)
             .then((response) => {
-                    console.log(response);
-                    this.carData = response.mjson.data.list;
-                    if (allList.length <= 0) {
-                        this.setState({
-                            renderPlaceholderOnly: 'success',
-                            source: ds.cloneWithRows(['1']), isRefreshing: false,
-                            allData: allData
-                        });
-                    } else {
-                        this.setState({
-                            renderPlaceholderOnly: 'success',
-                            source: ds.cloneWithRows(allList), isRefreshing: false,
-                            allData: allData
-                        });
+                    // this.carData = response.mjson.data.list;
+                    if (maps.type == '6') {
+                        if (allList.length <= 0) {
+                            this.setState({
+                                newData: response.mjson.data,
+                            });
+                        } else {
+                            this.setState({
+                                newData: response.mjson.data,
+                            });
+                        }
+                        this.getCarData('8');
+                    } else if (maps.type == '8') {
+                        if (allList.length <= 0) {
+                            this.setState({
+                                oldData: response.mjson.data,
+                            });
+                        } else {
+                            this.setState({
+                                oldData: response.mjson.data,
+                            });
+                        }
                     }
-                }
-                ,
+                },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 }
