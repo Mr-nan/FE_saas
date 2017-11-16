@@ -34,9 +34,6 @@ import * as Urls from '../../constant/appUrls';
 
 var Pixel = new PixelUtil();
 
-const HENG_FENG_CODE = '315';
-const ZHE_SHANG_CODE = '316';
-
 export default class MyAccountScene extends BaseComponent {
 
     navigatorParams = {
@@ -50,8 +47,6 @@ export default class MyAccountScene extends BaseComponent {
         super(props);
         this.hengFengInfo = {};
         this.zheShangInfo = {};
-        HENG_FENG_CODE = "315";
-        ZHE_SHANG_CODE = String("316");
         this.lastType = '-1';
         this.state = {
             dataSource: [],
@@ -170,10 +165,14 @@ export default class MyAccountScene extends BaseComponent {
             .then((response) => {
                 this.props.showModal(false);
                 //console.log('USER_ACCOUNT_INFO=====', response.mjson.data);
-                this.hengFengInfo = response.mjson.data['315'] ? response.mjson.data['315'][0] : {};
-                this.zheShangInfo = response.mjson.data['316'] ? response.mjson.data['316'][0] : {};
+                //this.hengFengInfo = response.mjson.data['315'][0] ? response.mjson.data['315'][0] : {};
+                if (response.mjson.data['315'][0]) {
+                    this.hengFengInfo = response.mjson.data['315'][0];
+                    this.lastType = response.mjson.data['315'][0].status;
+                    this.props.callBack(this.lastType);
+                }
+                this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
                 let dataList = [];
-                //dataList.push(bankId ? bankId : ['315', '316']);
                 if (bankId) {
                     dataList.push(bankId);
                 } else {
