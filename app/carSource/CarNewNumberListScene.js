@@ -13,7 +13,8 @@ import {
     TextInput,
     ScrollView,
     ListView,
-    RefreshControl
+    RefreshControl,
+    Modal,
 
 } from 'react-native';
 
@@ -34,15 +35,20 @@ import  AllLoading from '../component/AllLoading';
 
 const Pixel = new PixelUtil();
 const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 
 let carUpperFrameData = [];
 let carDropFrameData = [];
+let carSelectViewData = [];
 
 let carUpperFramePage = 1;
 let carUpperFrameStatus = 1;
 
 let carDropFramePage = 1;
 let carDropFrameStatus = 1;
+
+let carSelectViewDataPage = 1;
+let carSelectViewDataStatus = 1;
 
 let carSeekStr = '';
 
@@ -79,6 +85,7 @@ export default class CarNewNumberListScene extends BaseComponent {
                             ref={(modal) => {this.allloading = modal}}
                             canColse='false'
                             callBack={()=>{this.carSoldOut(1);}}/>
+                <SelectCarSourceView ref={(ref)=>{this.SelectCarSourceView = ref}}/>
             </View>
         )
     }
@@ -111,7 +118,7 @@ export default class CarNewNumberListScene extends BaseComponent {
             status: '1',
             page: 1,
             pageCount: 1,
-            auto_id:this.props.carData.id,
+            auto_id: this.props.carData ? this.props.carData.id :'',
             search_text:carSeekStr,
         }).then((response) => {
             let data =response.mjson.data;
@@ -134,17 +141,24 @@ export default class CarNewNumberListScene extends BaseComponent {
     }
 
     pushNewCarScene=()=>{
-        let navigatorParams = {
 
-            name: "StockManagementScene",
-            component: StockManagementScene,
-            params: {
-                carData:this.props.carData,
-                refreshingData:this.loadHeadData,
 
-            }
-        };
-        this.props.toNextPage(navigatorParams);
+        if(this.props.carData){
+            let navigatorParams = {
+                name: "StockManagementScene",
+                component: StockManagementScene,
+                params: {
+                    carData:this.props.carData,
+                    refreshingData:this.loadHeadData,
+
+                }
+            };
+            this.props.toNextPage(navigatorParams);
+        }else {
+            this.SelectCarSourceView.setVisible(true);
+        }
+
+
     }
 
     carSoldOut=(type)=>{
@@ -238,7 +252,7 @@ class MyCarSourceUpperFrameView extends BaseComponent {
             status: '1',
             page: carUpperFramePage,
             pageCount: 10,
-            auto_id:this.props.carData.id,
+            auto_id: this.props.carData ? this.props.carData.id :'',
             search_text:carSeekStr,
         }).then((response) => {
 
@@ -284,7 +298,7 @@ class MyCarSourceUpperFrameView extends BaseComponent {
             status: '1',
             page: carUpperFramePage,
             pageCount: 10,
-            auto_id:this.props.carData.id,
+            auto_id: this.props.carData ? this.props.carData.id :'',
             search_text:carSeekStr,
 
         }).then((response) => {
@@ -444,7 +458,7 @@ class MyCarSourceDropFrameView extends BaseComponent {
             status: '2',
             page: carDropFramePage,
             pageCount: 10,
-            auto_id:this.props.carData.id,
+            auto_id: this.props.carData ? this.props.carData.id :'',
             search_text:carSeekStr,
 
         }).then((response) => {
@@ -492,7 +506,7 @@ class MyCarSourceDropFrameView extends BaseComponent {
             status: '2',
             page: carDropFramePage,
             pageCount: 10,
-            auto_id:this.props.carData.id,
+            auto_id: this.props.carData ? this.props.carData.id :'',
             search_text:carSeekStr,
 
         }).then((response) => {
@@ -618,6 +632,214 @@ class CarSeekView extends Component {
     }
 }
 
+class  SelectCarSourceView extends BaseComponent {
+
+    // 构造
+    constructor(props) {
+        super(props);
+        // 初始状态
+
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
+        this.state = {
+            visible :false,
+            carData:carData,
+            isRefreshing: true,
+            renderPlaceholderOnly: 'blank',
+            carSelectViewData: carSelectViewDataStatus,
+        };
+    }
+
+    setVisible=(isShow)=>{
+          this.setState({
+              visible:isShow,
+          });
+      }
+
+
+    componentDidMount() {
+        // InteractionManager.runAfterInteractions(() => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.initFinish();
+        // });
+    }
+
+    initFinish = () => {
+        if(carSelectViewData.length>0){
+            this.setState({
+                carData: this.state.carData.cloneWithRows(carSelectViewData),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success',
+                carSelectViewDataStatus:carSelectViewDataStatus,
+            });
+        }else {
+            this.loadData();
+        }
+
+    };
+
+    refreshingData = () => {
+
+        this.setState({
+            isRefreshing: true,
+        });
+        this.loadData();
+
+    }
+    loadData = () => {
+
+        let url = AppUrls.CAR_USER_CAR;
+        carSelectViewDataPage = 1;
+        request(url, 'post', {
+            car_status: '1',
+            page: carSelectViewDataPage,
+            row: 10,
+            type:2,
+
+        }).then((response) => {
+
+            carSelectViewData=response.mjson.data.list;
+            carSelectViewDataStatus = response.mjson.data.status;
+
+            for(let data of carSelectViewData){
+                if(!this.isCarLong && data.long_aging == 1){
+                    this.isCarLong = true;
+                }
+            }
+
+            if (carSelectViewData.length) {
+                this.setState({
+                    carData: this.state.carData.cloneWithRows(carSelectViewData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success',
+                    carSelectViewDataStatus:carSelectViewDataStatus,
+                });
+
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null',
+                    carSelectViewDataStatus: carSelectViewDataStatus,
+
+                });
+            }
+
+        }, (error) => {
+
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error',
+            });
+
+        });
+
+    }
+
+    loadMoreData = () => {
+
+        let url = AppUrls.CAR_USER_CAR;
+        carSelectViewDataPage += 1;
+        request(url, 'post', {
+            car_status: '1',
+            page: carSelectViewDataPage,
+            row: 10,
+            type:2,
+
+        }).then((response) => {
+            carSelectViewDataStatus = response.mjson.data.status;
+            let carData = response.mjson.data.list;
+            if (carData.length) {
+                for (let i = 0; i < carData.length; i++) {
+
+                    if(!this.isCarLong && carData[i].long_aging == 1){
+                        this.isCarLong = true;
+                    }
+                    carSelectViewData.push(carData[i]);
+                }
+
+                this.setState({
+                    carData:this.state.carData.cloneWithRows(carSelectViewData),
+                    carSelectViewDataStatus:carSelectViewDataStatus,
+                });
+            } else {
+
+                this.setState({
+                    carSelectViewDataStatus: carSelectViewDataStatus,
+                });
+            }
+
+        }, (error) => {
+
+
+        });
+    }
+
+
+    toEnd = () => {
+
+        if (carSelectViewData.length && !this.state.isRefreshing && carSelectViewDataStatus != 2) {
+            this.loadMoreData();
+        }
+
+    };
+
+    renderListFooter = () => {
+
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<ListFooter isLoadAll={this.state.carUpperFrameStatus==1? false : true}/>)
+        }
+    }
+
+
+    render(){
+        return(
+            <Modal animationType={'none'} visible={this.state.visible} transparent = {true}>
+                <TouchableOpacity style={{ backgroundColor:'rgba(0, 0, 0,0.3)', flex:1, alignItems:'center',justifyContent:'flex-end'}}>
+                    {
+                        this.state.renderPlaceholderOnly !== 'success'?(
+                            <View style={{backgroundColor:'white',height:ScreenHeight * 0.6}}>
+                                {this.loadView()}
+                            </View>):(
+                                <ListView
+                                removeClippedSubviews={false}
+                                style={{backgroundColor:'white',height:ScreenHeight * 0.6}}
+                                dataSource={this.state.carData}
+                                ref={'carListView'}
+                                initialListSize={10}
+                                onEndReachedThreshold={1}
+                                stickyHeaderIndices={[]}//仅ios
+                                enableEmptySections={true}
+                                scrollRenderAheadDistance={10}
+                                pageSize={10}
+                                renderFooter={this.renderListFooter}
+                                onEndReached={this.toEnd}
+                                renderRow={this.renderRow}
+                                refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={this.refreshingData}
+                                        tintColor={[fontAndColor.COLORB0]}
+                                        colors={[fontAndColor.COLORB0]}/>}
+                            />)
+                    }
+
+                </TouchableOpacity>
+            </Modal>
+        )
+    }
+
+    renderRow =(rowData)=>{
+
+        return(
+            <TouchableOpacity activeOpacity={1} onPress={()=>{this.setVisible(false)}}>
+            <View style={{height:Pixel.getPixel(44), alignItems:'center',justifyContent:'center',borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA3,backgroundColor:'white'}}>
+                <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{rowData.model_name+'  '+rowData.car_color.split("|")[0]}</Text>
+            </View>
+            </TouchableOpacity>
+        )
+    }
+}
 
 const  styles = StyleSheet.create({
     rootContainer: {
