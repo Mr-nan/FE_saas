@@ -19,7 +19,7 @@ var TimerMixin = require('react-timer-mixin');
 
 var DefaultViewPageIndicator = require('./DefaultViewPageIndicator');
 var deviceWidth = Dimensions.get('window').width;
-var ViewPagerDataSource = require('./DefaultViewPageIndicator');
+var ViewPagerDataSource = require('./ViewPagerDataSource');
 
 var ViewPager = React.createClass({
     mixins: [TimerMixin],
@@ -337,8 +337,7 @@ var styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         bottom: 10,
-        left: 0,
-        right: 0,
+        right: 15,
         backgroundColor: 'transparent',
     },
 });

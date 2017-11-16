@@ -24,7 +24,6 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft:deviceWidth/2
     },
 
     dot: {
@@ -41,7 +40,7 @@ var styles = StyleSheet.create({
         width: DOT_SIZE,
         height: DOT_SIZE,
         borderRadius: DOT_SIZE / 2,
-        backgroundColor: '#80ACD0',
+        backgroundColor: '#05c5c2',
         margin: DOT_SAPCE,
         bottom: 0,
     },

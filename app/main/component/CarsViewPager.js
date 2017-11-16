@@ -14,6 +14,7 @@ import ViewPager from 'react-native-viewpager';
 import CarViewPage from '../../viewpager/CarViewPage';
 const {width, height} = Dimensions.get('window');
 import  PixelUtil from '../../utils/PixelUtil'
+import  * as fontAndColor from '../../constant/fontAndColor'
 var Pixel = new PixelUtil();
 let alldata = {};
 export default class CarsViewPager extends Component {
@@ -53,14 +54,45 @@ export default class CarsViewPager extends Component {
 
     render() {
         return (
-            <CarViewPage
-                dataSource={this.state.dataSource}    //数据源（必须）
-                renderPage={this._renderPage}         //page页面渲染方法（必须）
-                isLoop={alldata.banners.length <= 1?false:true}                        //是否可以循环
-                autoPlay={alldata.banners.length <= 1?false:true}                      //是否自动
-                initialPage={0}       //指定初始页面的index
-                locked={alldata.banners.length <= 1?true:false}                        //为true时禁止滑动翻页
-            />
+            <View
+                style={{width:width,backgroundColor:'#ffffff', height:Pixel.getPixel(140),flexDirection:'column',marginBottom:Pixel.getPixel(10)}}>
+                <View
+                    style={{width:width-Pixel.getPixel(10),
+                    backgroundColor:'#fff', flexDirection:'row',height:Pixel.getPixel(39),alignItems:'center',marginLeft:Pixel.getPixel(10)}}>
+                    <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(15),
+                        fontWeight: 'bold',flex:1}}>{this.props.title ? this.props.title : '需要title'}
+                    </Text>
+                    <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
+                        this.props.more? this.props.more():"";
+                    }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
+                            <Text allowFontScaling={false} style={{color: 'gray', fontSize: Pixel.getFontPixel(12)}}>
+                                更多
+                            </Text>
+
+                            <Image source={require('../../../images/mainImage/more.png')} style={{
+                                width: Pixel.getPixel(5),
+                                height: Pixel.getPixel(10),
+                                marginLeft: Pixel.getPixel(2),
+                            }}/>
+
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View
+                    style={{backgroundColor:fontAndColor.COLORA3,width:width,height:Pixel.getPixel(1),marginLeft:Pixel.getPixel(10)}}></View>
+                <CarViewPage
+                    dataSource={this.state.dataSource}    //数据源（必须）
+                    renderPage={this._renderPage}         //page页面渲染方法（必须）
+                    isLoop={alldata.banners.length <= 1?false:true}                        //是否可以循环
+                    autoPlay={alldata.banners.length <= 1?false:true}                      //是否自动
+                    initialPage={0}       //指定初始页面的index
+                    locked={alldata.banners.length <= 1?true:false}                        //为true时禁止滑动翻页
+                />
+            </View>
         )
     }
 
@@ -74,15 +106,19 @@ export default class CarsViewPager extends Component {
         } else {
             return (
                 <TouchableOpacity onPress={()=>{
-                    if(data.ret_url=='finance'){
-                        this.props.toNext();
-                    }else if(data.ret_url){
-                        this.props.callBack(data.ret_url);
-                    }
-                }} activeOpacity={1} style={{width: width, height: Pixel.getPixel(225)}}>
-                    <Image style={styles.postPosition}
-                           source={{uri: data.ret_img+'?x-oss-process=image/resize,w_'+900+',h_'+555}}
-                    />
+                    this.props.toNext?this.props.toNext():'';
+                }} activeOpacity={1} style={{width:width}}>
+                    <View
+                        style={{flexDirection:'row',alignItems:'center',paddingLeft:Pixel.getPixel(10)}}>
+                        <Image style={styles.postPosition}
+                               source={{uri: data.ret_img+'?x-oss-process=image/resize,w_'+450+',h_'+270}}/>
+                        <View
+                            style={{height:Pixel.getPixel(100),flexDirection:'column',justifyContent:'center',marginLeft:Pixel.getPixel(10)}}>
+                            <Text style={{fontSize:Pixel.getFontPixel(14),color:'#000000'}}>哈哈哈哈</Text>
+                            <Text style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>哈哈哈哈</Text>
+                            <Text style={{fontSize:Pixel.getFontPixel(17),color:'#fa5741'}}>哈哈哈哈</Text>
+                        </View>
+                    </View>
                 </TouchableOpacity>
             );
         }
@@ -91,8 +127,9 @@ export default class CarsViewPager extends Component {
 
 const styles = StyleSheet.create({
     postPosition: {
-        width: width,
-        height: Pixel.getPixel(225),
+        width: Pixel.getPixel(120),
+        height: Pixel.getPixel(80),
+        backgroundColor: '#ffffff',
         resizeMode: 'stretch'
     },
 });

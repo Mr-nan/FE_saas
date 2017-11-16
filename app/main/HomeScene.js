@@ -24,6 +24,7 @@ var Pixel = new PixelUtil();
 let page = 1;
 let status = 1;
 import  ViewPagers from './component/ViewPager'
+import  CarsViewPager from './component/CarsViewPager'
 /*
  * 获取屏幕的宽和高
  **/
@@ -113,6 +114,21 @@ export default class HomeScene extends BaseComponet {
                 <HomeRowButton onPress={(id)=>{
                     this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});
                 }} list={this.carData}/>
+
+                <CarsViewPager items={this.state.allData} toNext={()=>{
+                         this.props.jumpScene('financePage','');
+                    }} more={()=>{
+                         alert("我是新车")
+                    }} title="推荐新车源"
+                />
+
+                <CarsViewPager items={this.state.allData} toNext={()=>{
+                         this.props.jumpScene('financePage','');
+                    }} more={()=>{
+                         alert("我是二手车")
+                    }} title="推荐二手车源"
+                />
+
                 <HomeAdvertisementButton click={()=>{
                     this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);
                 }}/>
