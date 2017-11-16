@@ -456,7 +456,7 @@ export const USER_ACCOUNT_SAVECOMPANY = BASEURL + 'v1/user.account/saveCompany';
  *
  * 获取账户信息
  **/
-export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
+export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/getUserAccountDetail';
 
 /**
  * from @zhaojian
@@ -1224,32 +1224,32 @@ export const IS_IN_WHITE_LIST = BASEURL + "v1/account.cz_bank/isInWhiteList";
 
 
 /**
- *    from @dignyonggang
+ *    from @dingnyonggang
  *
  *   生成资金账户
  */
 export const ZS_GENERATE_E_ACCOUNT = BASEURL + "v1/account.cz_bank/accountBuild";
 
 /**
- *    from @dignyonggang
+ *    from @dingnyonggang
  *
  *   发送短信验证码
  */
 export const ZS_SEND_SMS_CODE = BASEURL + "v1/account.cz_bank/sendSmsCode";
 /**
- *    from @dignyonggang
+ *    from @dingnyonggang
  *
- *   发送短信验证码
+ *   开户
  */
 export const ZS_OPEN_ACCOUNT = BASEURL + "v1/account.cz_bank/customerAccountOpen";
 /**
- *    from @dignyonggang
+ *    from @dingnyonggang
  *
  *   根据银行卡号查询联行号
  */
 export const ZS_PARSE_BANK = BASEURL + "v1/account.cz_bank/getBankNoByBankCard";
 /**
- *    from @dignyonggang
+ *    from @dingnyonggang
  *
  *   查询城市
  */
@@ -1259,4 +1259,35 @@ export const ZS_GET_CITY = BASEURL + "v1/bankRoute.query/findCity";
  *  查询是否开启浙商银行可见
  */
 export const ZS_BANK_IS_SHOW = BASEURL + "v1/account.cz_bank/zsBankIsShow";
+
+/**
+ *  from @dingnyonggang
+ *
+ *  查询是否开启浙商银行可见
+ */
+export const ZS_MODIFY_BANK_CARD = BASEURL + "v1/account.cz_bank/modifyAccountInfo";
+/**
+ *  from @dingnyonggang
+ *
+ *  浙商账户充值
+ */
+export const ZS_DEPOSIT = BASEURL + "v1/account.cz_bank/deposit";
+/**
+ *  from @dingnyonggang
+ *
+ *  浙商账户提现
+ */
+export const ZS_WITHDRAW = BASEURL + "v1/account.cz_bank/withdraw";
+/**
+ *  from @dingnyonggang
+ *
+ *  浙商账户流水
+ */
+export const ZS_WORTER_FLOW = BASEURL + "v2/user.account/payLog";
+/**
+ *  from @dingnyonggang
+ *
+ *  银行限额说明
+ */
+export const ZS_BANK_INSTRUCTION = BASEURL + "v1/account.cz_bank/getPaymentRelatedInfo";
 

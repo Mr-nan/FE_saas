@@ -25,6 +25,7 @@ import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import SendMmsCountDown from "../../../../login/component/SendMmsCountDown";
 import SText from '../component/SaasText'
 import SmsFillScene from './SmsFillScene'
+import ResultIndicativeScene from '../ResultIndicativeScene'
 
 
 let Dimensions = require('Dimensions');
@@ -47,26 +48,59 @@ let deposit_data = [
     }
 ]
 
+
 export default class DepositScene extends BaseComponent {
     constructor(props) {
         super(props)
         this.state = {
             renderPlaceholderOnly: true,
             deposit_style: 0,   //0:快捷充值 1：其他充值
-            sms_pad:false
+            sms_pad: false,
+            money_input: '',
+            allow_withdraw_amount:''
         }
         this.initValue = ['', '', '', '', '', '', ''];
     }
 
     initFinish() {
+
+        this.loadInstruction();
+
         this.setState({
             renderPlaceholderOnly: false,
         })
     }
 
-    callBackSms = () => {
-        this.refs.sendMms.StartCountDown();
+    // 加载限额说明
+    loadInstruction = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1 && data.result !== null) {
+                let datas = JSON.parse(data.result);
+                //this.isOpenContract = datas.is_open_electron_repayment_contract;
+                let maps = {
+                    enter_base_id: datas.company_base_id,
+                };
+
+                //TODO
+                request(AppUrls.ZS_BANK_INSTRUCTION, 'Post', maps)
+                    .then((response) => {
+                    this.setState({
+                        allow_withdraw_amount:response.mjson.data.allow_withdraw_amount,
+                    })
+                    }, (error) => {
+                        this.props.showToast(error.mjson.msg)
+
+                    });
+            } else {
+                this.props.showToast('限额说明查询失败');
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
+                });
+            }
+        })
     }
+
 
     render() {
 
@@ -92,7 +126,7 @@ export default class DepositScene extends BaseComponent {
                     leftImageShow={true}
                     leftTextShow={false}
                     centerText={'充值'}
-                    rightText={"限额说明"}
+                    rightText={""}
                     leftImageCallBack={() => {
                         this.backPage();
                     }}
@@ -112,7 +146,10 @@ export default class DepositScene extends BaseComponent {
                         <Image source={require('../../../../../images/account/zheshang_bank.png')}
                                style={{width: 55, height: 55, marginHorizontal: 15}}/>
                         <View>
-                            <SText style={{fontSize: 17, marginBottom: 10}}>浙商银行账户 王锋</SText>
+                            <SText style={{
+                                fontSize: 17,
+                                marginBottom: 10
+                            }}>{this.props.account.bank_name}账户 {this.props.account.bind_bank_card_name}</SText>
                             <SText style={{color: FontAndColor.COLORA1}}>充值限额 100万/笔
                                 ,1000万/日</SText>
                         </View>
@@ -167,23 +204,31 @@ export default class DepositScene extends BaseComponent {
                                         <View style={{flexDirection: 'row',}}>
                                             <SText style={{marginRight: 5, marginTop: 5, fontSize: 14}}>￥</SText>
                                             <TextInput
+                                                ref='money_input'
                                                 style={{height: 40, fontSize: 35, flex: 1, marginBottom: 15}}
                                                 keyboardType={'number-pad'}
 
+                                                onChangeText={(text) => {
+
+                                                    this.setState({
+                                                        money_input: text
+                                                    })
+                                                }}
+                                                value={this.state.money_input}
                                             />
                                         </View>
                                     </View>
                                     <View style={{paddingVertical: 10}}>
                                         <View style={{flexDirection: 'row', marginBottom: 5}}>
                                             <SText
-                                                style={{color: FontAndColor.COLORA1}}>浙商银行现金余额:</SText>
-                                            <SText>1234567.3元</SText>
+                                                style={{color: FontAndColor.COLORA1}}>{this.props.account.bank_name}现金余额:</SText>
+                                            <SText>{this.props.account.balance}元</SText>
                                         </View>
-                                        <View style={{flexDirection: 'row'}}>
-                                            <SText
-                                                style={{color: FontAndColor.COLORA1}}>可用余额:</SText>
-                                            <SText>34524.6元</SText>
-                                        </View>
+                                        {/*/!*<View style={{flexDirection: 'row'}}>*!/  //充值页面可用余额取消*/}
+                                        {/*<SText*/}
+                                        {/*style={{color: FontAndColor.COLORA1}}>可用余额:</SText>*/}
+                                        {/*<SText>{this.props.account.balance}元</SText>*/}
+                                        {/*</View>*/}
 
                                     </View>
                                 </View>
@@ -191,7 +236,6 @@ export default class DepositScene extends BaseComponent {
                                 <View style={{marginHorizontal: 15}}>
                                     <View style={{flexDirection: 'row', alignItems: 'center', marginVertical: 20}}>
                                         {deposit_data.map((data) => {
-
                                             return <DepositItem
                                                 key={data.title}
                                                 image={data.image}
@@ -231,8 +275,15 @@ export default class DepositScene extends BaseComponent {
                             parentStyle={styles.next_button_parent}
                             childStyle={{fontSize: 18, color: 'white'}}
                             mOnPress={() => {
+
+                                let money = parseFloat(this.state.money_input)
+                                if (money <= 0 || this.state.money_input === null || this.state.money_input === '') {
+                                    this.props.showToast('请输入金额')
+                                    return;
+                                }
+
                                 this.setState({
-                                    sms_pad:true
+                                    sms_pad: true
                                 })
                             }}
 
@@ -274,25 +325,92 @@ export default class DepositScene extends BaseComponent {
                 </ScrollView>
 
 
-                {this.state.sms_pad?
-                   <SmsFillScene
-                        orderId = {'12345698765432'}
-                        money = {134241}
-                        type = {1}
-                        closeCallBack = {()=>{
+                {this.state.sms_pad ?
+                    <SmsFillScene
+                        money={parseFloat(this.state.money_input)}
+                        account={this.props.account}
+                        type={1}
+                        closeCallBack={() => {
                             this.setState({
-                                sms_pad:false
+                                sms_pad: false
                             })
                         }}
-
-                   />
-                    :null
+                        codeCallBack={this.deposit}
+                    />
+                    : null
                 }
-
 
             </View>
 
         )
+    }
+
+    //充值
+    deposit = (sms_code, sms_no) => {
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1) {
+                let result = JSON.parse(data.result)
+                let params = {
+                    amount: parseFloat(this.state.money_input),
+                    enter_base_id: result.company_base_id,
+                    sub_acct_no: this.props.account.bank_card_no,
+                    sms_code: sms_code,
+                    sms_no: sms_no
+
+                }
+
+
+
+                this.props.showModal(true)
+
+                request(AppUrls.ZS_DEPOSIT, 'POST', params).then((response) => {
+                    this.props.showModal(false)
+                    this.toNextPage({
+                        component: ResultIndicativeScene,
+                        name: 'ResultIndicativeScene',
+                        params: {
+                            type:2,
+                            status: 1,
+                            account: params,
+                        }
+                    })
+
+                }, (error) => {
+                    this.props.showModal(false)
+                    this.setState({
+                        sms_pad: false
+                    })
+                    if (error.mycode === 8010007) {
+                        this.toNextPage({
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type: 2,
+                                status: 0,
+                                account: params,
+                            }
+                        })
+
+                    }else if(error.mycode === -300 || error.mycode === -500){
+                        this.props.showToast(error.mjson.msg)
+                    }else {
+                        this.toNextPage({
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type: 2,
+                                status: 2,
+                                account: params,
+                                param:error
+                            }
+                        })
+
+                    }
+
+                })
+            }
+        })
     }
 }
 

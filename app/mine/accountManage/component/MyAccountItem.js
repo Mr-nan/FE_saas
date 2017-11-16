@@ -173,9 +173,9 @@ export default class MyAccountItem extends BaseComponent {
                         .then((response) => {
                             this.props.showModal(false);
 
-                            this.pageDispense(type, 0);
+                            //this.pageDispense(type, 0);
 
-                            //this.pageDispense(type, response.mjson.data.account.status);
+                            this.pageDispense(type, response.mjson.data.account.status);
 
                             this.toNextPage(this.navigatorParams);
                         }, (error) => {

@@ -25,6 +25,7 @@ import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import SText from '../component/SaasText'
 import SmsFillScene from './SmsFillScene'
+import ResultIndicativeScene from '../ResultIndicativeScene'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -36,15 +37,48 @@ export default class WithdrawScene extends BaseComponent {
         super(props)
         this.state = {
             renderPlaceholderOnly: true,
-            sms_pad:false,
+            sms_pad: false,
+            money_input: '',
+            allow_withdraw_amount: ''
         }
     }
 
     initFinish() {
+        this.loadInstruction()
         this.setState({
             renderPlaceholderOnly: false,
         })
     }
+
+    loadInstruction = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1 && data.result !== null) {
+                let datas = JSON.parse(data.result);
+                //this.isOpenContract = datas.is_open_electron_repayment_contract;
+                let maps = {
+                    enter_base_id: datas.company_base_id,
+                };
+
+                //TODO
+                request(AppUrls.ZS_BANK_INSTRUCTION, 'Post', maps)
+                    .then((response) => {
+                        this.setState({
+                            allow_withdraw_amount: response.mjson.data.allow_withdraw_amount,
+                        })
+                    }, (error) => {
+                        this.props.showToast(error.mjson.msg)
+
+                    });
+            } else {
+                this.props.showToast('限额说明查询失败');
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
+                });
+            }
+        })
+    }
+
 
     render() {
 
@@ -64,6 +98,16 @@ export default class WithdrawScene extends BaseComponent {
         }
 
 
+        let a = Array.from(this.props.account.bind_bank_card_no)
+        let s = '';
+        for (let i = 0; i < a.length; i++) {
+            if (i >= 4 && i < a.length - 4) {
+                s += '*'
+            } else {
+                s += a[i];
+            }
+        }
+
         return (
             <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                 <NavigationBar
@@ -77,7 +121,7 @@ export default class WithdrawScene extends BaseComponent {
                 />
 
                 <ScrollView
-                    showsVerticalScrollIndicator = {false}
+                    showsVerticalScrollIndicator={false}
                 >
 
 
@@ -91,9 +135,9 @@ export default class WithdrawScene extends BaseComponent {
                         <Image source={require('../../../../../images/account/zheshang_bank.png')}
                                style={{width: 55, height: 55, marginHorizontal: 15}}/>
                         <View>
-                            <SText  style={{fontSize: 17, marginBottom: 10}}>浙商银行账户 王锋</SText>
-                            <SText  style={{color: FontAndColor.COLORA1}}>充值限额 100万/笔
-                                ,1000万/日</SText>
+                            <SText style={{fontSize: 17, marginBottom: 10}}>{this.props.account.bank_name}</SText>
+                            <SText
+                                style={{color: FontAndColor.COLORA1}}>{this.props.account.bind_bank_card_name}{s}</SText>
                         </View>
                     </View>
 
@@ -110,35 +154,52 @@ export default class WithdrawScene extends BaseComponent {
                                         style={{height: 40, fontSize: 35, flex: 1, marginBottom: 15}}
                                         keyboardType={'number-pad'}
 
+                                        onChangeText={(text) => {
 
+                                            console.log(parseFloat(text))
+                                            console.log(parseFloat(this.state.allow_withdraw_amount))
+                                            if (parseFloat(text) > parseFloat(this.state.allow_withdraw_amount)) {
+                                                this.setState({
+                                                    money_input: this.state.allow_withdraw_amount
+                                                })
+                                            } else {
+                                                this.setState({
+                                                    money_input: text
+                                                })
+                                            }
+                                        }}
+                                        value={this.state.money_input}
 
                                     />
                                 </View>
                             </View>
                             <View style={{paddingVertical: 10}}>
                                 <View style={{flexDirection: 'row', marginBottom: 5}}>
-                                    <SText 
-                                          style={{color: FontAndColor.COLORA1}}>浙商银行现金余额:</SText>
-                                    <SText >1234567.3元</SText>
                                     <SText
-                                        onLongPress = {()=>{
-                                            console.log('longpress')
-                                        }}
-                                        style = {{color:FontAndColor.COLORB4, fontSize:16, textAlign:'right', flex:1}}
-                                        onPress = {()=>{
-                                          console.log('123456')
+                                        style={{color: FontAndColor.COLORA1}}>{this.props.account.bank_name}现金余额:</SText>
+                                    <SText>{this.props.account.balance}元</SText>
+                                    <SText
+                                        style={{color: FontAndColor.COLORB4, fontSize: 16, textAlign: 'right', flex: 1}}
+                                        onPress={() => {
+
+                                            if (parseFloat(this.state.allow_withdraw_amount) === 0) {
+                                                this.props.showToast('暂无余额可提');
+                                                return;
+                                            }
+                                            this.setState({
+                                                money_input: this.state.allow_withdraw_amount,
+                                            })
                                         }}
                                     >全部提现</SText>
 
                                 </View>
                                 <View style={{flexDirection: 'row'}}>
-                                    <SText  style={{color: FontAndColor.COLORA1}}>可用余额:</SText>
-                                    <SText >34524.6元</SText>
+                                    <SText style={{color: FontAndColor.COLORA1}}>可取余额:</SText>
+                                    <SText>{this.state.allow_withdraw_amount}元</SText>
                                 </View>
 
                             </View>
                         </View>
-
 
                     </View>
 
@@ -148,8 +209,13 @@ export default class WithdrawScene extends BaseComponent {
                         parentStyle={styles.next_button_parent}
                         childStyle={{fontSize: 18, color: 'white'}}
                         mOnPress={() => {
+                            let money = parseFloat(this.state.money_input)
+                            if (money <= 0 || this.state.money_input === null || this.state.money_input === '') {
+                                this.props.showToast('请输入金额')
+                                return;
+                            }
                             this.setState({
-                                sms_pad:true
+                                sms_pad: true
                             })
                         }}
 
@@ -158,15 +224,15 @@ export default class WithdrawScene extends BaseComponent {
                     <View style={{marginHorizontal: 30, marginVertical: 40}}>
                         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
                             <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginRight: 15}}/>
-                            <SText  style={{color: FontAndColor.COLORA1}}>温馨提示</SText>
+                            <SText style={{color: FontAndColor.COLORA1}}>温馨提示</SText>
                             <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginLeft: 15}}/>
                         </View>
                         <SText style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>1
                             浙商银行及其它银行1000万以内的提现，实时到账，五分钟。</SText>
 
-                        <SText  style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
+                        <SText style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
                             企业用户及其它个人用户提现大于1000万以上的，工作日走大小额，资金0.5-2小时即可到达。</SText>
-                        <SText  style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
+                        <SText style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
                             企业用户及其它个人用户提现大于1000万以上的。</SText>
 
                     </View>
@@ -174,24 +240,103 @@ export default class WithdrawScene extends BaseComponent {
                 </ScrollView>
 
 
-                {this.state.sms_pad?
+                {this.state.sms_pad ?
                     <SmsFillScene
-                        orderId = {'12345698765432'}
-                        money = {134241}
-                        type = {1}
-                        closeCallBack = {()=>{
+                        money={parseFloat(this.state.money_input)}
+                        type={1}
+                        account={this.props.account}
+                        closeCallBack={() => {
                             this.setState({
-                                sms_pad:false
+                                sms_pad: false
                             })
                         }}
-
+                        codeCallBack={this.withdraw}
                     />
-                    :null
+                    : null
                 }
             </View>
 
         )
     }
+
+    withdraw = (sms_code, sms_no) => {
+
+        this.dismissKeyboard();
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1) {
+                let result = JSON.parse(data.result)
+                let params = {
+                    amount: parseFloat(this.state.money_input),
+                    enter_base_id: result.company_base_id,
+                    sub_acct_no: this.props.account.bank_card_no,
+                    sms_code: sms_code,
+                    sms_no: sms_no
+
+                }
+
+
+
+
+
+
+
+                this.props.showModal(true)
+
+                request(AppUrls.ZS_WITHDRAW, 'POST', params).then((response) => {
+                    this.props.showModal(false)
+                    this.setState({
+                        sms_pad: false
+                    })
+
+                    this.toNextPage({
+                        component: ResultIndicativeScene,
+                        name: 'ResultIndicativeScene',
+                        params: {
+                            type: 3,
+                            status: 2,
+                            account: params,
+                        }
+                    })
+                }, (error) => {
+
+                    this.props.showModal(false)
+                    this.setState({
+                        sms_pad: false
+                    })
+                    if (error.mycode === 8010007) {  // 存疑
+                        this.toNextPage({
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type: 3,
+                                status: 0,
+                                account: params,
+                            }
+                        })
+
+                    }else if(error.mycode === -300 || error.mycode === -500){
+                        this.props.showToast(error.mjson.msg)
+                    }else {
+                        this.toNextPage({
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type: 3,
+                                status: 2,
+                                account: params,
+                                param:error
+                            }
+                        })
+
+                    }
+
+                })
+            }
+        })
+
+    }
+
+
 }
 const styles = StyleSheet.create({
     deposit_container_selected: {

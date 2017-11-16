@@ -27,9 +27,11 @@ let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
 let Platform = require('Platform');
 
+
 export default class InformationFillScene extends BaseComponent {
     constructor(props) {
         super(props);
+       // this.props.account.account_open_type =1;
         this.state = {
             renderPlaceholderOnly: true,
         }
@@ -79,12 +81,12 @@ export default class InformationFillScene extends BaseComponent {
                         editable={false}
                     />
                     <TextInputItem
-                        title={'企业名称'}
+                        title={this.props.account.account_open_type === 1?'企业名称':'真实姓名'}
                         value={'发生防守打法三个傻瓜'}
                         editable={false}
                     />
                     <TextInputItem
-                        title={'企业组织机构代码'}
+                        title={this.props.account.account_open_type === 1?'企业组织机构代码':'证件号码'}
                         value={'12345678909'}
                         textPlaceholder={'请输入短信验证码'}
                         keyboardType={'number-pad'}
@@ -93,24 +95,28 @@ export default class InformationFillScene extends BaseComponent {
                     />
 
                 </View>
-                <View style = {{width:width, marginTop:15, }}>
-                    <TextInputItem
-                        title={'旧手机号'}
-                        textPlaceholder={'请输入您的手机号'}
-                        keyboardType={'number-pad'}
-                        rightButton={true}
-                        maxLength={11}
-                        editable={false}
-                        value={'1800000000'}
-                    />
-                    <TextInputItem
-                        titleStyle={{letterSpacing:8}}
-                        inputTextStyle={{paddingLeft:8}}
-                        title={'验证码'}
-                        textPlaceholder={'请输入短信验证码'}
-                        separator={false}
-                    />
-                </View>
+
+                {
+                    <View style = {{width:width, marginTop:15, }}>
+                        <TextInputItem
+                            title={'旧手机号'}
+                            textPlaceholder={'请输入您的手机号'}
+                            keyboardType={'number-pad'}
+                            rightButton={true}
+                            maxLength={11}
+                            editable={false}
+                            value={'1800000000'}
+                        />
+                        <TextInputItem
+                            titleStyle={{letterSpacing:8}}
+                            inputTextStyle={{paddingLeft:8}}
+                            title={'验证码'}
+                            textPlaceholder={'请输入短信验证码'}
+                            separator={false}
+                        />
+                    </View>
+                }
+
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'下一步'}
                           parentStyle={styles.buttonStyle}

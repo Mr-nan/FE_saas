@@ -34,8 +34,8 @@ export  default class ZheShangAccountTitle extends PureComponent {
     constructor(props) {
         super(props);
         list = [];
-        list.push(new listValue('银行卡', require('../../../../../images/mainImage/bankCard.png'), this.props.bankCard));
         list.push(new listValue('账户流水', require('../../../../../images/mainImage/flow.png'), this.props.flow));
+        list.push(new listValue('更换银行卡', require('../../../../../images/mainImage/bankCard.png'), this.props.bankCard));
         list.push(new listValue('修改银行预留手机号码', require('../../../../../images/mainImage/changePhone.png'), this.props.changePhone));
     }
 

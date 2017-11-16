@@ -17,6 +17,7 @@ import {
 //图片加文字
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
+
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
 import BaseComponent from '../../../component/BaseComponent';
@@ -40,7 +41,12 @@ import Log from "./accountLog/Log";
 import InformationFillScene from "./modifyPhone/InformationFillScene";
 import DepositScene from "./depositAndWithdraw/DepositScene";
 import WithdrawScene from "./depositAndWithdraw/WithdrawScene";
-export  default class ZheShangAccountScene extends BaseComponent {
+
+
+let account = {}
+
+
+export default class ZheShangAccountScene extends BaseComponent {
 
     constructor(props) {
         super(props);
@@ -72,7 +78,7 @@ export  default class ZheShangAccountScene extends BaseComponent {
 
     getData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
+            if (data.code === 1 && data.result !== null) {
                 let datas = JSON.parse(data.result);
                 //this.isOpenContract = datas.is_open_electron_repayment_contract;
                 let maps = {
@@ -82,8 +88,16 @@ export  default class ZheShangAccountScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.getAccountData(datas.company_base_id,
-                                response.mjson.data.account.account_open_type)
+                            account = response.mjson.data.account;
+                            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                            this.setState({
+                                renderPlaceholderOnly: 'success',
+                                source: ds.cloneWithRows([1]),
+                                info: response.mjson.data.account,
+                                isRefreshing: false
+                            })
+                            // this.getAccountData(datas.company_base_id,
+                            //     response.mjson.data.account.account_open_type)
                         },
                         (error) => {
                             this.props.showToast('用户信息查询失败');
@@ -102,51 +116,51 @@ export  default class ZheShangAccountScene extends BaseComponent {
         })
     }
 
-    getAccountData = (id, type) => {
-        let maps = {
-            enter_base_id: id,
-            user_type: type,
-            transfer_type: '0,3,4,104',
-            bank_id: 316
-        };
-        request(Urls.USER_ACCOUNT_INDEX, 'Post', maps)
-            .then((response) => {
-                    //TODO test
-                    if (response.mjson.data.info.status == '6') {
-                        this.props.callBack();
-                        this.backPage();
-                    } else {
-                        if (response.mjson.data.payLogs == null || response.mjson.data.payLogs.length <= 0) {
-                            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                            this.setState({
-                                renderPlaceholderOnly: 'success',
-                                source: ds.cloneWithRows([1]),
-                                info: response.mjson.data.info,
-                                enter_id: id,
-                                isRefreshing: false
-
-                            });
-                        } else {
-                            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                            this.setState({
-                                renderPlaceholderOnly: 'success',
-                                // source: ds.cloneWithRows(response.mjson.data.payLogs),
-                                source: ds.cloneWithRows([1]),
-                                info: response.mjson.data.info,
-                                enter_id: id,
-                                isRefreshing: false
-                            });
-                        }
-                    }
-                },
-                (error) => {
-                    this.props.showToast('用户信息查询失败');
-                    this.setState({
-                        renderPlaceholderOnly: 'error',
-                        isRefreshing: false
-                    });
-                });
-    }
+    // getAccountData = (id, type) => {
+    //     let maps = {
+    //         enter_base_id: id,
+    //         user_type: type,
+    //         transfer_type: '0,3,4,104',
+    //         bank_id: 316
+    //     };
+    //     request(Urls.USER_ACCOUNT_INDEX, 'Post', maps)
+    //         .then((response) => {
+    //                 //TODO test
+    //                 if (response.mjson.data.info.status === '6') {
+    //                     this.props.callBack();
+    //                     this.backPage();
+    //                 } else {
+    //                     if (response.mjson.data.payLogs === null || response.mjson.data.payLogs.length <= 0) {
+    //                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    //                         this.setState({
+    //                             renderPlaceholderOnly: 'success',
+    //                             source: ds.cloneWithRows([1]),
+    //                             info: response.mjson.data.info,
+    //                             enter_id: id,
+    //                             isRefreshing: false
+    //
+    //                         });
+    //                     } else {
+    //                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    //                         this.setState({
+    //                             renderPlaceholderOnly: 'success',
+    //                             // source: ds.cloneWithRows(response.mjson.data.payLogs),
+    //                             source: ds.cloneWithRows([1]),
+    //                             info: response.mjson.data.info,
+    //                             enter_id: id,
+    //                             isRefreshing: false
+    //                         });
+    //                     }
+    //                 }
+    //             },
+    //             (error) => {
+    //                 this.props.showToast('用户信息查询失败');
+    //                 this.setState({
+    //                     renderPlaceholderOnly: 'error',
+    //                     isRefreshing: false
+    //                 });
+    //             });
+    // }
 
 
     render() {
@@ -182,7 +196,8 @@ export  default class ZheShangAccountScene extends BaseComponent {
                             component: WithdrawScene, params: {
                                 callBack: () => {
                                     this.allRefresh()
-                                }, money: this.state.info.balance
+                                },
+                                account:account,
                             }
                         })
                     }} activeOpacity={0.8}
@@ -198,9 +213,9 @@ export  default class ZheShangAccountScene extends BaseComponent {
                     <View style={{
                         width: 1, justifyContent: 'center',
                         alignItems: 'center', height: Pixel.getPixel(44)
-                    }}></View>
+                    }}/>
                     <TouchableOpacity onPress={() => {
-                        this.toNextPage({name: 'DepositScene', component: DepositScene, params: {}})
+                        this.toNextPage({name: 'DepositScene', component: DepositScene, params: {account:account}})
                     }} activeOpacity={0.8}
                                       style={{
                                           flex: 1,
@@ -226,8 +241,8 @@ export  default class ZheShangAccountScene extends BaseComponent {
     };
 
     _renderRow = (movie, sectionId, rowId) => {
-        if (movie == '1') {
-            return (<View></View>);
+        if (movie === '1') {
+            return (<View/>);
         } else {
             return (
                 <View style={{
@@ -258,23 +273,24 @@ export  default class ZheShangAccountScene extends BaseComponent {
                                   bankCard={() => {  //更换银行卡
                                       this.toNextPage({
                                           name: 'ModifyBankCard',
-                                          component: ModifyBankCard, params: {
-                                              callBack: () => {
-                                                  //this.props.callBack()
-                                              }
-                                          }
+                                          component: ModifyBankCard,
+                                          params: {account:account,}
                                       })
                                   }}
                                   flow={() => {  //流水
                                       this.toNextPage({
                                           name: 'Log',
-                                          component: Log, params: {}
+                                          component: Log, params: {
+                                              account:account
+                                          }
                                       })
                                   }}
                                   changePhone={() => { //修改银行预留手机号码
                                       this.toNextPage({
                                           name: 'InformationFillScene',
-                                          component: InformationFillScene, params: {}
+                                          component: InformationFillScene, params: {
+                                              account:account
+                                          }
                                       })
                                   }}
                                   moreFlow={() => {

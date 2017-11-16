@@ -88,7 +88,7 @@ export default class NameAndIdScene extends BaseComponent {
                         <TextInputItem
                             ref='name'
                             title={type === 1?'企业名称':'真实姓名'}
-                            value={'小李子'}
+                            value={'测试零零'}
                         />
 
                         <TextInputItem
@@ -96,7 +96,7 @@ export default class NameAndIdScene extends BaseComponent {
                             title={type === 1?'组织机构':'证件号码'}
                             textPlaceholder={type===1?'请输入企业组织机构代码':'请输入身份证号码'}
                             separator={false}
-                            value={'111111111111111111'}
+                            value={'150121198506026213'}
                         />
                     </View>
                     <MyButton buttonType={MyButton.TEXTBUTTON}

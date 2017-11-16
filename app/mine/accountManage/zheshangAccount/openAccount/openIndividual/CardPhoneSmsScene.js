@@ -23,13 +23,14 @@ import StorageUtil from "../../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../../constant/storageKeyNames";
 import TextInputItem from '../../component/TextInputItem'
 import ResultIndicativeScene from '../../ResultIndicativeScene'
-import ChooseBankNameScene from './ChooseBankNameScene'
+import ChooseBankNameScene from '../../component/ChooseBankNameScene'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
 let Platform = require('Platform');
 
+let bank_card_no = ''
 let bank_no = ''
 let bank_name = ''
 let mobile_no = ''
@@ -44,12 +45,12 @@ export default class CardPhoneSmsScene extends BaseComponent {
     constructor(props) {
         super(props);
 
-        //type = props.account.type;
-        type = 1;
+        type = props.account.type;
+
         this.state = {
             renderPlaceholderOnly: true,
             loading_bank:false,
-            bankName:''
+            bankName:''  // 总行名
         }
     }
 
@@ -94,16 +95,17 @@ export default class CardPhoneSmsScene extends BaseComponent {
                         rightText={""}
                         leftImageCallBack={this.backPage}
                     />
-                    <View style={{width: width, marginTop: 15,}}>
+                    <View style={{width: width, marginTop: 15,}} >
 
                         <TextInputItem
-                            ref={'bank_no'}
+                            ref={'bank_card_no'}
                             title={'银行卡'}
                             textPlaceholder={type === 1?'请输入企业银行卡号':'请输入您的银行卡号'}
                             keyboardType={'number-pad'}
                             value={'6223093310090136493'}
                             onChangeText={this.bank}
                             loading={this.state.loading_bank}
+                            annotation={this.state.bankName}
                         />
                         <TouchableOpacity
                             onPress = {()=>{
@@ -112,7 +114,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
                                     name:'ChooseBankNameScene',
                                     params:{
                                         callBack:this.bankComeBack,
-                                        bank_no:this.refs.bank_no.getInputTextValue()},
+                                        bank_card_no:this.refs.bank_card_no.getInputTextValue()},
                                 })
 
                             }}
@@ -155,35 +157,51 @@ export default class CardPhoneSmsScene extends BaseComponent {
 
 
     bankComeBack = (bank)=>{
+        bank_no = bank.bankno;
        this.refs.bank_name.setInputTextValue(bank.bankname)
     }
 
     // 通过银行卡号调后台接口，解索发卡行
     bank = (text)=>{
-        if(text.length<15) {return}
 
-       let params = {
-           bankCardNo:text,
-           page:1,
-           rows:20,
-       }
+        if (text.length<10 && this.state.bankName!==''){
+            this.setState({
+                bankName:''
+            })
+            return;
+        }
+
+        if(text.length>=10 &&this.state.bankName===''){
+
+            let params = {
+                bankCardNo:text,
+                page:1,
+                rows:20,
+            }
 
 
-       this.setState({
-           loading_bank:true,
-       })
-       request(AppUrls.ZS_PARSE_BANK, 'POST', params).then((response)=>{
+            this.setState({
+                loading_bank:true,
+            })
+            request(AppUrls.ZS_PARSE_BANK, 'POST', params).then((response)=>{
 
+                if(response.mjson.data.info_list !== null&&response.mjson.data.info_list.length>0){
+                    this.setState({
+                        bankName:response.mjson.data.info_list[0].subbankname,
+                    })
+                }
 
+                console.log(response);
 
-           this.setState({
-               loading_bank:false,
-           })
-       }, (error)=>{
-           this.setState({
-               loading_bank:false,
-           })
-       })
+                this.setState({
+                    loading_bank:false,
+                })
+            }, (error)=>{
+                this.setState({
+                    loading_bank:false,
+                })
+            })
+        }
 
 
     }
@@ -201,27 +219,34 @@ export default class CardPhoneSmsScene extends BaseComponent {
             if (data.code === 1) {
                 let result = JSON.parse(data.result)
 
+                let device_code = '';
+
+                if (Platform.OS === 'android') {
+                    device_code = 'dycd_platform_android';
+                } else {
+                    device_code = 'dycd_platform_ios';
+                }
                 let params = {
+                    device_code:device_code,
                     enter_base_id: result.company_base_id,
                     from_bank_id: 123456789,
                     mobile_no: mobile_no,
-                    sub_acct_no: this.props.account.sub_acc_no,
+                    sub_acct_no: this.props.account.card_no,
+                    sub_acct_name:this.props.account.cust_name,
                     type: 0,
-                    acct_name:this.props.account.sub_acc_name,
-                    acct_no:bank_no,
+                    acct_name:this.props.account.cust_name,
+                    acct_no:bank_card_no,
                     acct_type:type,
-                    big_bank_no:'12345',
+                    bank_no:bank_no,
                     cert_no:this.props.account.cert_no,
                     cert_type:1,
                     sms_code:'123456',
                     sms_no:'52344234',
-                    sub_acct_name:this.props.account.sub_acc_name,
                     user_type:type,
-                    cust_name:this.props.account.sub_acc_name,
-                    bank_name:'招商银行'
+                    bank_name:bank_name
                 }
 
-                request(AppUrls.ZS_GENERATE_E_ACCOUNT, 'POST', params).then((response)=>{
+                request(AppUrls.ZS_OPEN_ACCOUNT, 'POST', params).then((response)=>{
 
                     this.props.showModal(false)
 
@@ -231,14 +256,15 @@ export default class CardPhoneSmsScene extends BaseComponent {
                         params:{
                             type:type === 1?1:0,
                             status:1,
-                            account:params
+                            account:params,
+                            append:this.state.bankName,
                         }
                     })
                     console.log(response);
 
                 }, (error)=>{
 
-                    if(error.mycode==='100001'){  // 存疑
+                    if(error.mycode===8010007){  // 存疑
 
                         this.toNextPage({
                             component:ResultIndicativeScene,
@@ -275,9 +301,9 @@ export default class CardPhoneSmsScene extends BaseComponent {
                 let result = JSON.parse(data.result)
                 let params = {
                     enter_base_id: result.company_base_id,
-                    from_bank_id: 123456789,
+                    from_bank_id: bank_no,
                     mobile_no: mobile_no,
-                    sub_acct_no: this.props.account.sub_acc_no,
+                    sub_acct_no: this.props.account.card_no,
                     type: 0
                 }
 
@@ -299,12 +325,12 @@ export default class CardPhoneSmsScene extends BaseComponent {
 
     verify = (with_sms_code) => {
 
-        bank_no = this.refs.bank_no.getInputTextValue();
+        bank_card_no = this.refs.bank_card_no.getInputTextValue();
         bank_name = this.refs.bank_name.getInputTextValue();
         mobile_no = this.refs.mobile_no.getInputTextValue();
         sms_code = this.refs.sms_code.getInputTextValue();
 
-        if (bank_no === '' || bank_no === null) {
+        if (bank_card_no === '' || bank_card_no === null) {
             this.props.showToast('请输入银行卡号');
             return false
         }

@@ -21,17 +21,27 @@ import * as AppUrls from "../../../../constant/appUrls";
 import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import TextInputItem from '../component/TextInputItem'
+import ChooseBankNameScene from '../component/ChooseBankNameScene'
 
-var Dimensions = require('Dimensions');
-var {width, height} = Dimensions.get('window');
-var Pixel = new PixelUtil();
-var Platform = require('Platform');
+let Dimensions = require('Dimensions');
+let {width, height} = Dimensions.get('window');
+let Pixel = new PixelUtil();
+let Platform = require('Platform');
+
+let bank_no = ''
+let bank_card_no = ''
+let bank_name = ''
+let mobile_no = ''
+let sms_code = ''
+
 
 export default class ModifyBankCard extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
             renderPlaceholderOnly: true,
+            loading_bank: false,
+            bankName: ''
         }
     }
 
@@ -55,83 +65,267 @@ export default class ModifyBankCard extends BaseComponent {
                         leftText={""}
                         centerText={'更换银行卡'}
                         rightText={""}
-                        centerTextStyle={{paddingHorizontal:0}}
+                        centerTextStyle={{paddingHorizontal: 0}}
                     />
                 </View>
             </TouchableWithoutFeedback>);
         }
+
         return (
-            <View style={styles.container}>
-                <NavigationBar
-                    leftImageShow={true}
-                    leftTextShow={false}
-                    centerText={"更换银行卡"}
-                    rightText={""}
-                    leftImageCallBack={this.backPage}
-                    centerTextStyle={{paddingLeft:0,paddingRight:0}}
-                />
-                <View style = {{width:width, marginTop:15, }}>
+            <TouchableWithoutFeedback
+                onPress={()=>{
+                    this.dismissKeyboard()
+                }}
+            >
+                <View style={styles.container}>
+                    <NavigationBar
+                        leftImageShow={true}
+                        leftTextShow={false}
+                        centerText={"更换银行卡"}
+                        rightText={""}
+                        leftImageCallBack={this.backPage}
+                        centerTextStyle={{paddingLeft: 0, paddingRight: 0}}
+                    />
+                    <View style={{width: width, marginTop: 15,}}>
 
-                    <TextInputItem
-                        title={'资金账号'}
-                        value={'1234567890987654321'}
-                        keyboardType={'number-pad'}
-                        editable={false}
-                    />
-                    <TextInputItem
-                        title={'原银行卡'}
-                        value={'发生防守打法三个傻瓜'}
-                        editable={false}
-                    />
-                    <TextInputItem
-                        title={'账户余额'}
-                        value={'12345678909'}
-                        textPlaceholder={'请输入短信验证码'}
-                        keyboardType={'number-pad'}
-                        editable={false}
-                        separator={false}
-                    />
+                        <TextInputItem
+                            title={'资金账号'}
+                            value={this.props.account.bank_card_no}
+                            keyboardType={'number-pad'}
+                            editable={false}
+                        />
+                        <TextInputItem
+                            title={'原银行卡'}
+                            value={this.props.account.bank_name}
+                            editable={false}
+                        />
+                        <TextInputItem
+                            title={'账户余额'}
+                            value={this.props.account.balance}
+                            textPlaceholder={'请输入短信验证码'}
+                            keyboardType={'number-pad'}
+                            editable={false}
+                            separator={false}
+                        />
 
+                    </View>
+                    <View style={{width: width, marginTop: 15,}}>
+                        <TextInputItem
+                            ref={'bank_card_no'}
+                            title={'新银行卡'}
+                            textPlaceholder={'请输入您的新银行卡卡号'}
+                            keyboardType={'number-pad'}
+                            //value={'6223093310090136493'}
+                            onChangeText={this.bank}
+                            loading={this.state.loading_bank}
+                            annotation={this.state.bankName}
+                        /><TouchableOpacity
+                        onPress={() => {
+                            this.toNextPage({
+                                component: ChooseBankNameScene,
+                                name: 'ChooseBankNameScene',
+                                params: {
+                                    callBack: this.bankComeBack,
+                                    bank_card_no: this.refs.bank_card_no.getInputTextValue()
+                                },
+                            })
+
+                        }}
+                    >
+                        <TextInputItem
+                            ref={'bank_name'}
+                            titleStyle={{letterSpacing: 8}}
+                            inputTextStyle={{paddingLeft: 8}}
+                            title={'开户行'}
+                            textPlaceholder={'请输入开户行支行信息'}
+                            rightIcon={true}
+                            editable={false}
+                        />
+                    </TouchableOpacity>
+                        <TextInputItem
+                            ref='mobile_no'
+                            titleStyle={{letterSpacing: 8}}
+                            inputTextStyle={{paddingLeft: 8}}
+                            title={'手机号'}
+                            keyboardType={'number-pad'}
+                            editable={false}
+                            rightButton={true}
+                            callBackSms={this.smscode}
+                        />
+                        <TextInputItem
+                            ref='sms_code'
+                            titleStyle={{letterSpacing: 8}}
+                            inputTextStyle={{paddingLeft: 8}}
+                            title={'验证码'}
+                            keyboardType={'number-pad'}
+                            textPlaceholder={'请输入短信验证码'}
+                            separator={false}
+                        />
+                    </View>
+                    <MyButton buttonType={MyButton.TEXTBUTTON}
+                              content={'更换银行卡'}
+                              parentStyle={styles.buttonStyle}
+                              childStyle={styles.buttonTextStyle}
+                              mOnPress={this.change}/>
                 </View>
-                <View style = {{width:width, marginTop:15, }}>
-                    <TextInputItem
-                        title={'新银行卡'}
-                        textPlaceholder={'请输入您的新银行卡卡号'}
-                        keyboardType={'number-pad'}
+            </TouchableWithoutFeedback>
 
-                        maxLength={11}
-                    />
-                    <TextInputItem
-                        titleStyle={{letterSpacing:8}}
-                        inputTextStyle={{paddingLeft:8}}
-                        title={'开户行'}
-                        textPlaceholder={'请输入开户行支行信息'}
-                    />
-                    <TextInputItem
-                        titleStyle={{letterSpacing:8}}
-                        inputTextStyle={{paddingLeft:8}}
-                        title={'手机号'}
-                        value={'1234567890'}
-                        editable={false}
-                        rightButton={true}
-                    />
-                    <TextInputItem
-                        titleStyle={{letterSpacing:8}}
-                        inputTextStyle={{paddingLeft:8}}
-                        title={'验证码'}
-                        textPlaceholder={'请输入短信验证码'}
-                        separator={false}
-                    />
-                </View>
-                <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'下一步'}
-                          parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle}
-                          mOnPress={this.setPwd}/>
-            </View>
         );
     }
 
+
+    change = () => {
+
+        if (!this.verify(true)) {
+            return
+        }
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1) {
+                let result = JSON.parse(data.result)
+                let device_code = '';
+
+                if (Platform.OS === 'android') {
+                    device_code = 'dycd_platform_android';
+                } else {
+                    device_code = 'dycd_platform_ios';
+                }
+                let params = {
+                    device_code:device_code,
+                    bank_no: bank_no,
+                    enter_base_id: result.company_base_id,
+                    new_acct_no: bank_card_no,
+                    sms_code:sms_code,
+                    sms_no:'234',
+                    user_type:this.props.account.account_open_type,
+                    sub_acct_no:this.props.account.bank_card_no
+                }
+
+                request(AppUrls.ZS_MODIFY_BANK_CARD, 'POST', params).then((response)=>{
+
+
+                }, (error)=>{
+
+
+                })
+
+
+
+            }
+        })
+
+    }
+    bank = (text) => {
+
+        if (text.length < 10 && this.state.bankName !== '') {
+            this.setState({
+                bankName: ''
+            })
+            return;
+        }
+
+        if (text.length >= 10 && this.state.bankName === '') {
+
+            let params = {
+                bankCardNo: text,
+                page: 1,
+                rows: 20,
+            }
+
+
+            this.setState({
+                loading_bank: true,
+            })
+            request(AppUrls.ZS_PARSE_BANK, 'POST', params).then((response) => {
+
+                if (response.mjson.data.info_list !== null && response.mjson.data.info_list.length > 0) {
+                    this.setState({
+                        bankName: response.mjson.data.info_list[0].subbankname,
+                    })
+                }
+
+                console.log(response);
+
+                this.setState({
+                    loading_bank: false,
+                })
+            }, (error) => {
+                this.setState({
+                    loading_bank: false,
+                })
+            })
+        }
+
+
+    }
+
+//获取短信验证码
+    smscode = () => {
+
+        if (!this.verify(false)) {
+            return
+        }
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1) {
+
+                let result = JSON.parse(data.result)
+                let params = {
+                    enter_base_id: result.company_base_id,
+                    from_bank_id: bank_no,
+                    mobile_no: mobile_no,
+                    sub_acct_no: this.props.account.sub_acc_no,
+                    type: 2  //2变更结算账号或客户信息，
+                }
+
+                request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {
+                    this.refs.mobile_no.StartCountDown();
+                    console.log(response);
+
+                }, (error) => {
+                    this.props.showModal(false)
+                    this.props.showToast(error.msg)
+                })
+
+            } else {
+                this.props.showToast('获取信息失败')
+            }
+        })
+
+    }
+
+
+    verify = (with_sms_code) => {
+
+        bank_card_no = this.refs.bank_card_no.getInputTextValue();
+        bank_name = this.refs.bank_name.getInputTextValue();
+        mobile_no = this.refs.mobile_no.getInputTextValue();
+        sms_code = this.refs.sms_code.getInputTextValue();
+
+        if (bank_card_no === '' || bank_card_no === null) {
+            this.props.showToast('请输入新银行卡号');
+            return false
+        }
+        if (bank_name === '' || bank_name === null) {
+            this.props.showToast('请输入开户行名称');
+            return false
+        }
+
+        if (with_sms_code) {
+            if (sms_code === '' || sms_code === null) {
+                this.props.showToast('请输入验证码');
+                return false
+            }
+        }
+
+        return true
+    }
+
+
+    bankComeBack = (bank) => {
+        bank_no = bank.bankno;
+        this.refs.bank_name.setInputTextValue(bank.bankname)
+    }
 
 }
 

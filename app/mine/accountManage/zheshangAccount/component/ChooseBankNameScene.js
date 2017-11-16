@@ -11,23 +11,24 @@ import {
     TextInput,
     InteractionManager,
     TouchableWithoutFeedback,
+    RefreshControl,
     ListView,
     Keyboard,
 } from "react-native";
-import BaseComponent from "../../../../../component/BaseComponent";
-import NavigationBar from "../../../../../component/NavigationBar";
-import * as FontAndColor from "../../../../../constant/fontAndColor";
-import PixelUtil from "../../../../../utils/PixelUtil";
-import MyButton from "../../../../../component/MyButton";
-import {request} from "../../../../../utils/RequestUtil";
-import * as AppUrls from "../../../../../constant/appUrls";
-import StorageUtil from "../../../../../utils/StorageUtil";
-import * as StorageKeyNames from "../../../../../constant/storageKeyNames";
-import TextInputItem from '../../component/TextInputItem'
-import CardPhoneSmsScene from './CardPhoneSmsScene'
-import ProvinceListScene from '../../../../../carSource/ProvinceListScene'
-import * as fontAndColor from '../../../../../constant/fontAndColor';
-import SText from '../../component/SaasText'
+import BaseComponent from "../../../../component/BaseComponent";
+import NavigationBar from "../../../../component/NavigationBar";
+import * as FontAndColor from "../../../../constant/fontAndColor";
+import PixelUtil from "../../../../utils/PixelUtil";
+import MyButton from "../../../../component/MyButton";
+import {request} from "../../../../utils/RequestUtil";
+import * as AppUrls from "../../../../constant/appUrls";
+import StorageUtil from "../../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../../constant/storageKeyNames";
+import TextInputItem from './TextInputItem'
+import CardPhoneSmsScene from '../openAccount/openIndividual/CardPhoneSmsScene'
+import ProvinceListScene from '../../../../carSource/ProvinceListScene'
+import * as fontAndColor from '../../../../constant/fontAndColor';
+import SText from './SaasText'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -37,6 +38,13 @@ let Platform = require('Platform');
 
 let ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2})
 let selectedBank = {}
+let selectedCity = {}
+let page = 0;
+let totalPage = 1
+let banks = []
+
+
+
 
 export default class ChooseBankNameScene extends BaseComponent{
 
@@ -48,8 +56,17 @@ export default class ChooseBankNameScene extends BaseComponent{
         this.state = {
             renderPlaceholderOnly: true,
             value:'',
-            source : ds.cloneWithRows([])
+            source : ds.cloneWithRows([]),
+            isRefreshing:false
         }
+    }
+
+    componentWillUnmount(){
+         selectedBank = {}
+         selectedCity = {}
+         page = 0;
+         totalPage = 1
+         banks = []
     }
 
 
@@ -87,6 +104,10 @@ export default class ChooseBankNameScene extends BaseComponent{
                     centerText={'开户行'}
                     rightText={"确定"}
                     rightTextCallBack={()=>{
+                        if(this.state.value.length<=0){
+                            this.props.showToast('请选择开户行名称');
+                            return;
+                        }
                         this.props.callBack(selectedBank);
                         this.backPage();
                     }}
@@ -111,13 +132,15 @@ export default class ChooseBankNameScene extends BaseComponent{
 
                     <View style = {{flexDirection:'row', alignItems:'center', marginVertical:15, paddingHorizontal:15, backgroundColor:'white'}}>
                         <TextInput
+                            ref = 'bank_name'
                             style = {{flex:1, height:45}}
                             editable = {false}
                             placeholder = {'请选择城市'}
                             underlineColorAndroid={"#00000000"}
                             value = {this.state.value}
+
                         />
-                        <Image source = {require('../../../../../../images/mainImage/celljiantou.png')}/>
+                        <Image source = {require('../../../../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </TouchableOpacity>
 
@@ -128,6 +151,19 @@ export default class ChooseBankNameScene extends BaseComponent{
                     renderSeparator = {this.renderSeparator}
                     removeClippedSubviews = {false}
                     dataSource = {this.state.source}
+                    onEndReachedThreshold = {1}
+                    onEndReached={this.loadMore}
+                    renderFooter = {this.renderFooter}
+                    refreshControl ={
+                        <RefreshControl
+                            refreshing = {this.state.isRefreshing}
+                            tintColor = {fontAndColor.COLORB5}
+                            colors = {[fontAndColor.COLORB5]}
+                            onRefresh = {this.refreshing}
+
+                        />
+                    }
+
                 />
 
 
@@ -138,6 +174,16 @@ export default class ChooseBankNameScene extends BaseComponent{
     }
 
 
+    refreshing = ()=>{
+        banks = []
+        this.setState({
+            isRefreshing:true,
+        })
+        page = 1;
+        this.loadBanks(selectedCity.city_id, page)
+    }
+
+
     renderSeparator(sectionId, rowId) {
 
         return (
@@ -145,6 +191,19 @@ export default class ChooseBankNameScene extends BaseComponent{
             </View>
         )
     }
+
+    renderFooter = ()=>{
+        if(banks.length <= 0) {return};
+        console.log( 'page == '+page)
+        console.log( 'totalPage == '+totalPage)
+
+        return<View style = {{height:40, justifyContent:'center', alignItems:'center'}}>
+                <SText>{page>=totalPage?'已全部加载': '加载更多...'}</SText>
+            </View>
+
+
+    }
+    
     renderRow = (data, sectionId, rowId) => {
         return<TouchableOpacity
             onPress = {()=>{
@@ -161,34 +220,43 @@ export default class ChooseBankNameScene extends BaseComponent{
         </TouchableOpacity>
 
     }
+    checkedCityClick=(city)=>{
+        selectedCity = city;
+        this.refreshing()
 
+    }
 
-    checkedCityClick=(cityType)=>{
-
+    loadBanks = (city, page)=>{
         let params = {
-            bankCardNo:this.props.bank_no,
-            cityName:cityType.city_name,
-            page:1,
+            bankCardNo:this.props.bank_card_no,
+            cityCode:city,
+            page:page,
             rows:20,
         }
 
-        this.props.showModal(true)
         request(AppUrls.ZS_PARSE_BANK, 'post', params).then((response)=>{
-            this.props.showModal(false)
 
-
+            banks.push(...response.mjson.data.info_list)
+            totalPage = response.mjson.data.page;
             console.log(response)
             this.setState({
-                source:ds.cloneWithRows(response.mjson.data.info_list)
+                isRefreshing:false,
+                source:ds.cloneWithRows(banks)
             })
 
         }, (error)=>{
 
         })
 
-        console.log(cityType)
+        console.log(city)
     }
 
+
+    loadMore = ()=>{
+        page++;
+        if(page >totalPage){return};
+        this.loadBanks(selectedCity.city_name , page)
+    }
 }
 
 

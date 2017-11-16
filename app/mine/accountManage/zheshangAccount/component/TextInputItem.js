@@ -48,10 +48,12 @@ export default class TextInputItem extends Component{
         keyboardType: 'default',
         secureTextEntry: false,//设置是否为密码安全输入框	bool，默认为false
         separator:true,
-        onChangeText:null
+        onChangeText:null,
+        annotation:null
     };
 
     static propTypes = {
+        annotation:PropTypes.string,
         rightIcon:PropTypes.bool,
         loading:PropTypes.bool,
         onChangeText:PropTypes.func,

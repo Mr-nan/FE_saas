@@ -27,14 +27,16 @@ let {width, height} = Dimensions.get('window');
 let Platform = require('Platform');
 const IS_ANDROID = Platform.OS === 'android';
 
-export default class SmsFillScene extends Component{
-    constructor(props){
+let sms_no = ''
+
+export default class SmsFillScene extends Component {
+    constructor(props) {
         super(props)
 
     }
 
-    render(){
-        return(
+    render() {
+        return (
 
             <View style={{
                 alignItems: 'center',
@@ -49,7 +51,7 @@ export default class SmsFillScene extends Component{
                     backgroundColor: 'white',
                     borderRadius: 4,
                     marginBottom: 250,
-                    height: 280,
+                    height: 250,
                     width: 260,
 
                 }}>
@@ -62,7 +64,7 @@ export default class SmsFillScene extends Component{
 
                     }}>
                         <TouchableOpacity
-                            onPress = {()=>{
+                            onPress={() => {
                                 this.props.closeCallBack()
                             }}
                         >
@@ -74,7 +76,7 @@ export default class SmsFillScene extends Component{
                             style={{marginRight: 27, flex: 1, textAlign: 'center', fontSize: 16}}>请输入短信验证码</SText>
                     </View>
 
-                    <SText style={{fontSize: 13, marginTop: 15,}}>订单号：{this.props.orderId}</SText>
+                    {/*/!*<SText style={{fontSize: 13, marginTop: 15,}}>订单号：{this.props.orderId}</SText>*!/  订单号取消*/}
                     <SText style={{fontSize: 26, marginTop: 15,}}>￥{this.props.money}</SText>
                     <SendMmsCountDown
                         parentStyle={{borderWidth: 0, marginTop: 15}}
@@ -82,22 +84,55 @@ export default class SmsFillScene extends Component{
                         pressParentStyle={{borderWidth: 0, marginTop: 15}}
                         ref="sendMms"
                         callBackSms={this.callBackSms}/>
-
-
                     <CubeTextInput
-                        style = {{marginTop:15}}
+                        style={{marginTop: 15}}
                         count={6}
                         onChangeText={(value) => {
-                            console.log(value)
+                            if(value.length === 6){
+                                this.props.codeCallBack(value, sms_no)
+                            }
                         }}
                     />
 
-                    <SText style={{color: FontAndColor.COLORA1, fontSize: 14, marginTop:20}}>支付方式：工商银行</SText>
+                    <SText style={{
+                        color: FontAndColor.COLORA1,
+                        fontSize: 14,
+                        marginTop: 20
+                    }}>支付方式：{this.props.account.bank_name}</SText>
 
                 </View>
             </View>
 
         )
+    }
+
+
+    callBackSms = () => {
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1) {
+                let result = JSON.parse(data.result)
+                let params = {
+                    amount: parseFloat(this.props.money),
+                    enter_base_id: result.company_base_id,
+                    from_bank_id:this.props.account.bind_bank_card_no,
+                    mobile_no:'15701239874',   //this.props.account.mobile_no,
+                    sub_acct_no:this.props.account.bank_card_no,
+                    type:1
+            }
+
+            request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response)=>{
+
+                sms_no = response.mjson.data.sms_no;
+                this.refs.sendMms.StartCountDown()
+
+            }, (error)=>{
+                this.props.showToast('发送验证码失败')
+
+            })}
+        })
+
+
     }
 
 }
