@@ -276,6 +276,8 @@ export  default class AccountScene extends BaseComponent {
                         this.props.showModal(false);
                         this.props.showToast('升级成功');
                         this.trustAccountState = 3;
+                        // 此接口未返回开户成功后的账户状态，手动置为3，
+                        // 配合setState用以触发AccountTitle中componentWillReceiveProps生命周期方法
                         this.setState({
                             enter_id: datas.company_base_id
                         });
