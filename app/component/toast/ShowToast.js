@@ -64,6 +64,7 @@ export default  class ShowToast extends PureComponent {
             });
         } else {
             this.setState({height: 0});
+
         }
     }
 
