@@ -85,7 +85,7 @@ export default class CarNewNumberListScene extends BaseComponent {
                             ref={(modal) => {this.allloading = modal}}
                             canColse='false'
                             callBack={()=>{this.carSoldOut(1);}}/>
-                <SelectCarSourceView ref={(ref)=>{this.SelectCarSourceView = ref}}/>
+                <SelectCarSourceView ref={(ref)=>{this.SelectCarSourceView = ref}} selectCarAction={this.selectAction}/>
             </View>
         )
     }
@@ -159,6 +159,19 @@ export default class CarNewNumberListScene extends BaseComponent {
         }
 
 
+    }
+
+    selectAction=(carData)=>{
+        let navigatorParams = {
+            name: "StockManagementScene",
+            component: StockManagementScene,
+            params: {
+                carData:carData,
+                refreshingData:this.loadHeadData,
+
+            }
+        };
+        this.props.toNextPage(navigatorParams);
     }
 
     carSoldOut=(type)=>{
@@ -643,7 +656,6 @@ class  SelectCarSourceView extends BaseComponent {
         this.state = {
             visible :false,
             carData:carData,
-            isRefreshing: true,
             renderPlaceholderOnly: 'blank',
             carSelectViewData: carSelectViewDataStatus,
         };
@@ -667,7 +679,6 @@ class  SelectCarSourceView extends BaseComponent {
         if(carSelectViewData.length>0){
             this.setState({
                 carData: this.state.carData.cloneWithRows(carSelectViewData),
-                isRefreshing: false,
                 renderPlaceholderOnly: 'success',
                 carSelectViewDataStatus:carSelectViewDataStatus,
             });
@@ -677,14 +688,13 @@ class  SelectCarSourceView extends BaseComponent {
 
     };
 
-    refreshingData = () => {
-
-        this.setState({
-            isRefreshing: true,
-        });
+    allRefresh=()=>{
+        this.setState({renderPlaceholderOnly: 'loading'});
         this.loadData();
 
     }
+
+
     loadData = () => {
 
         let url = AppUrls.CAR_USER_CAR;
@@ -709,14 +719,12 @@ class  SelectCarSourceView extends BaseComponent {
             if (carSelectViewData.length) {
                 this.setState({
                     carData: this.state.carData.cloneWithRows(carSelectViewData),
-                    isRefreshing: false,
                     renderPlaceholderOnly: 'success',
                     carSelectViewDataStatus:carSelectViewDataStatus,
                 });
 
             } else {
                 this.setState({
-                    isRefreshing: false,
                     renderPlaceholderOnly: 'null',
                     carSelectViewDataStatus: carSelectViewDataStatus,
 
@@ -726,7 +734,6 @@ class  SelectCarSourceView extends BaseComponent {
         }, (error) => {
 
             this.setState({
-                isRefreshing: false,
                 renderPlaceholderOnly: 'error',
             });
 
@@ -795,17 +802,20 @@ class  SelectCarSourceView extends BaseComponent {
     render(){
         return(
             <Modal animationType={'none'} visible={this.state.visible} transparent = {true}>
-                <TouchableOpacity style={{ backgroundColor:'rgba(0, 0, 0,0.3)', flex:1, alignItems:'center',justifyContent:'flex-end'}}>
+                <TouchableOpacity style={{ backgroundColor:'rgba(0, 0, 0,0.3)', alignItems:'center',justifyContent:'flex-end', flex:1} }
+                                  activeOpacity={1}
+                                  onPress={()=>{this.setVisible(false)}}>
                     {
                         this.state.renderPlaceholderOnly !== 'success'?(
-                            <View style={{backgroundColor:'white',height:ScreenHeight * 0.6}}>
+                            <View style={{backgroundColor:'white',flex:1,
+                                alignItems:'center',justifyContent:'center',width:ScreenWidth,
+                            }}>
                                 {this.loadView()}
-                            </View>):(
+                            </View >):(
+                                <View style={{width:ScreenWidth,backgroundColor:'white'}}>
                                 <ListView
                                 removeClippedSubviews={false}
-                                style={{backgroundColor:'white',height:ScreenHeight * 0.6}}
                                 dataSource={this.state.carData}
-                                ref={'carListView'}
                                 initialListSize={10}
                                 onEndReachedThreshold={1}
                                 stickyHeaderIndices={[]}//仅ios
@@ -815,13 +825,8 @@ class  SelectCarSourceView extends BaseComponent {
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
                                 renderRow={this.renderRow}
-                                refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={this.refreshingData}
-                                        tintColor={[fontAndColor.COLORB0]}
-                                        colors={[fontAndColor.COLORB0]}/>}
-                            />)
+                                />
+                                </View>)
                     }
 
                 </TouchableOpacity>
@@ -832,7 +837,7 @@ class  SelectCarSourceView extends BaseComponent {
     renderRow =(rowData)=>{
 
         return(
-            <TouchableOpacity activeOpacity={1} onPress={()=>{this.setVisible(false)}}>
+            <TouchableOpacity activeOpacity={1} onPress={()=>{ this.setVisible(false); this.props.selectCarAction(rowData)} }>
             <View style={{height:Pixel.getPixel(44), alignItems:'center',justifyContent:'center',borderBottomWidth:Pixel.getPixel(0.5),borderBottomColor:fontAndColor.COLORA3,backgroundColor:'white'}}>
                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{rowData.model_name+'  '+rowData.car_color.split("|")[0]}</Text>
             </View>

@@ -123,7 +123,7 @@ export default class BaseComponent extends Component {
         if (this.state.renderPlaceholderOnly == 'blank') {
             view = <View/>
         } else if (this.state.renderPlaceholderOnly == 'loading') {
-            view = <View style={{flex: 1, alignItems: 'center'}}>
+            view = <View style={{flex: 1, alignItems: 'center',}}>
                 <Image
                     style={{
                         width: Pixel.getPixel(150),

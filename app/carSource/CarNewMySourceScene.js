@@ -302,7 +302,7 @@ export default class CarMySourceScene extends BaceComponent {
                 name: "CarNumberScene",
                 component: CarNumberScene,
                 params: {
-                    // carData:this.carData,
+                    carData:this.carData,
                     defaultType: 0,
                 }
             };
@@ -740,7 +740,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
         // 初始状态
 
         this.isCarLong = false;
-        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id});
         this.state = {
             isCarLong :false,
             carData:carData,
@@ -959,7 +959,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
         super(props);
         // 初始状态
 
-        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id});
         this.state = {
 
             carData: carData,
@@ -1138,7 +1138,7 @@ class MyCarSourceAuditView extends BaceComponent {
         super(props);
         // 初始状态
 
-        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id});
         this.state = {
 
             carData: carData,

@@ -233,19 +233,19 @@ export default class HomeScene extends BaseComponet {
 
                             }
                             this.getCarData(response.mjson.data);
-                            // if (allList.length <= 0) {
-                            //     this.setState({
-                            //         renderPlaceholderOnly: 'success',
-                            //         source: ds.cloneWithRows(['1']), isRefreshing: false,
-                            //         allData: response.mjson.data
-                            //     });
-                            // } else {
-                            //     this.setState({
-                            //         renderPlaceholderOnly: 'success',
-                            //         source: ds.cloneWithRows(allList), isRefreshing: false,
-                            //         allData: response.mjson.data
-                            //     });
-                            // }
+                            if (allList.length <= 0) {
+                                this.setState({
+                                    renderPlaceholderOnly: 'success',
+                                    source: ds.cloneWithRows(['1']), isRefreshing: false,
+                                    allData: response.mjson.data
+                                });
+                            } else {
+                                this.setState({
+                                    renderPlaceholderOnly: 'success',
+                                    source: ds.cloneWithRows(allList), isRefreshing: false,
+                                    allData: response.mjson.data
+                                });
+                            }
 
                         }
                     });
