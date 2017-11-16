@@ -24,7 +24,17 @@
  NSURL *jsCodeLocation;
  [Growing startWithAccountId:@"8c70ed29c1985918"];
  [Growing setRnNavigatorPageEnabled:YES];
-   [RCTUmengPush registerWithAppkey:@"59c07978717c197a4b000015" launchOptions:launchOptions];
+  
+  NSString  *bundleIdentifier = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleIdentifier"];
+  NSString *umengPushKey = nil;
+  if([bundleIdentifier isEqualToString:@"com.dycd.dycdsaas"]) //企业 com.dycd.dycdsaas   AppStore版 com.dycd.BMSHtmls
+  {
+    umengPushKey = @"59c07978717c197a4b000015";
+  }else
+  {
+    umengPushKey = @"5a0d01c8f43e48245b0001e3";
+  }
+ [RCTUmengPush registerWithAppkey:umengPushKey launchOptions:launchOptions];
 
    
 #ifdef DEBUG
