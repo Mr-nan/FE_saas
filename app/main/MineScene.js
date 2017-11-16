@@ -446,11 +446,11 @@ export default class MineScene extends BaseComponent {
     };
 
     /**
-     *   更新 firstType lastType;
+     *   更新 lastType;
      **/
     updateType = (newLastType) => {
         lastType = newLastType;
-        firstType = newLastType;
+        //firstType = newLastType;
         //console.log('firstType=======',firstType);
     };
 
