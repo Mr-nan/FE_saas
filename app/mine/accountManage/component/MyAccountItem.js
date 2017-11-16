@@ -165,15 +165,11 @@ export default class MyAccountItem extends BaseComponent {
                     request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                         .then((response) => {
                             this.props.showModal(false);
-<<<<<<< HEAD
 
                             //this.pageDispense(type, 0);
 
                             this.pageDispense(type, response.mjson.data.account.status);
 
-=======
-                            this.pageDispense(type, response.mjson.data.account.status);
->>>>>>> 292daf09f0388ebc0e3cfefa5c7fc8cd8a381a22
                             this.toNextPage(this.navigatorParams);
                         }, (error) => {
                             this.props.showModal(false);

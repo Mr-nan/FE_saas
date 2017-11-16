@@ -456,7 +456,7 @@ export const USER_ACCOUNT_SAVECOMPANY = BASEURL + 'v1/user.account/saveCompany';
  *
  * 获取账户信息
  **/
-export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/getUserAccountDetail';
+export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
 
 /**
  * from @zhaojian
@@ -1292,6 +1292,7 @@ export const ZS_WORTER_FLOW = BASEURL + "v2/user.account/payLog";
  */
 export const ZS_BANK_INSTRUCTION = BASEURL + "v1/account.cz_bank/getPaymentRelatedInfo";
 
+
 /**
  *   获取用户的账户详情(我的账户页面-卡片页  调用)
  */
@@ -1300,4 +1301,3 @@ export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccount
  *   信托开户
  */
 export const OPEN_PERSON_TRUST_ACCOUNT = BASEURL + "v1/account.zsyxt/openPersonAccount";
-
