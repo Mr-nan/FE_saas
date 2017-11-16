@@ -31,7 +31,6 @@ export default class CarsViewPager extends Component {
         } else {
             imageItems = alldata.list;
         }
-        console.log('xxxxx', imageItems)
         let dataSource = new CarViewPage.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithPages(imageItems),
@@ -106,7 +105,7 @@ export default class CarsViewPager extends Component {
         } else {
             return (
                 <TouchableOpacity onPress={()=>{
-                    this.props.toNext?this.props.toNext():'';
+                    this.props.toNext?this.props.toNext(data.id):'';
                 }} activeOpacity={1} style={{width:width}}>
                     <View
                         style={{flexDirection:'row',alignItems:'center',paddingLeft:Pixel.getPixel(10)}}>
@@ -119,9 +118,7 @@ export default class CarsViewPager extends Component {
                             {this.props.type == '6' ?
                                 <Text style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>{data.stock}辆在售</Text> :
                                 <Text
-                                    style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>{this.dateReversal(data.manufacture + "000")}
-                                    /{data.mileage}万公里</Text>}
-
+                                    style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>{this.dateReversal(data.manufacture + "000")}/{data.mileage}万公里</Text>}
                             <Text style={{fontSize:Pixel.getFontPixel(17),color:'#fa5741'}}>{data.dealer_price}万</Text>
                         </View>
                     </View>

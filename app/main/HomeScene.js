@@ -33,6 +33,7 @@ import BaseComponet from '../component/BaseComponent';
 import * as Urls from '../constant/appUrls';
 import {request} from '../utils/RequestUtil';
 import CarInfoScene from '../carSource/CarInfoScene';
+import CarNewInfoScene from '../carSource/CarNewInfoScene';
 import  StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import WebScene from './WebScene';
@@ -114,17 +115,17 @@ export default class HomeScene extends BaseComponet {
                 {/*this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});*/}
                 {/*}} list={this.carData}/>*/}
                 {
-                    this.state.newData && <CarsViewPager items={this.state.newData} toNext={()=>{
+                    this.state.newData && <CarsViewPager items={this.state.newData} toNext={(id)=>{
                          {/*this.props.jumpScene('financePage','');*/}
-                         alert('去哪里？')
+                        this.props.callBack({name:'CarNewInfoScene',component:CarNewInfoScene,params:{carID:id}})
                     }} more={()=>{
                          alert("我是新车")
                     }} title="推荐新车源" type="6"
                     />
                 }
                 {
-                    this.state.oldData && <CarsViewPager items={this.state.oldData} toNext={()=>{
-                         alert('去哪里？')
+                    this.state.oldData && <CarsViewPager items={this.state.oldData} toNext={(id)=>{
+                        this.props.callBack({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})
                     }} more={()=>{
                          alert("我是二手车")
                     }} title="推荐二手车源" type="8"
@@ -288,26 +289,14 @@ export default class HomeScene extends BaseComponet {
             .then((response) => {
                     // this.carData = response.mjson.data.list;
                     if (maps.type == '6') {
-                        if (allList.length <= 0) {
-                            this.setState({
-                                newData: response.mjson.data,
-                            });
-                        } else {
-                            this.setState({
-                                newData: response.mjson.data,
-                            });
-                        }
+                        this.setState({
+                            newData: response.mjson.data,
+                        });
                         this.getCarData('8');
                     } else if (maps.type == '8') {
-                        if (allList.length <= 0) {
-                            this.setState({
-                                oldData: response.mjson.data,
-                            });
-                        } else {
-                            this.setState({
-                                oldData: response.mjson.data,
-                            });
-                        }
+                        this.setState({
+                            oldData: response.mjson.data,
+                        });
                     }
                 },
                 (error) => {
