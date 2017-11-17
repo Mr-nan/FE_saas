@@ -623,24 +623,24 @@ export default class MineScene extends BaseComponent {
 				this.toPage();
 				return
 				break;
-			case 17:
+			case 49:
 				this.props.toSelect();
 				return;
 				break;
-			case 18:
+			case 50:
 				this.navigatorParams.name = 'AdjustManageScene'
 				this.navigatorParams.component = AdjustManageScene
 				break;
 			case '积分管理':
 				break;
-			case 19:
+			case 51:
 				this.navigatorParams.name = 'ContractManageScene'
 				this.navigatorParams.component = ContractManageScene
 				this.navigatorParams.params = {
 					from: 'xs'
 				}
 				break;
-			case 16:
+			case 48:
 				this.navigatorParams.name = 'EmployeeManageScene'
 				this.navigatorParams.component = EmployeeManageScene
 				break;
@@ -648,19 +648,19 @@ export default class MineScene extends BaseComponent {
 				this.navigatorParams.name = 'MycarScene'
 				this.navigatorParams.component = MycarScene
 				break;
-			case 20:
+			case 52:
 				this.navigatorParams.name = 'OrderTypeSelectScene'
 				this.navigatorParams.component = OrderTypeSelectScene
 				break;
-			case 21:
+			case 53:
 				this.navigatorParams.name = 'CarCollectSourceScene'
 				this.navigatorParams.component = CarCollectSourceScene
 				break;
-			case 22:
+			case 54:
 				this.navigatorParams.name = 'BrowsingHistoryScene'
 				this.navigatorParams.component = BrowsingHistoryScene
 				break;
-			case 24:
+			case 56:
 				this.navigatorParams.name = 'Setting'
 				this.navigatorParams.component = Setting
 				break;

@@ -235,8 +235,8 @@ const GetPermissionUtil = React.createClass({
                 if (data.data[i].id == 5) {
                     for (let j = 0; j < data.data[i].children.length; j++) {
                         list.push({
-                            id: data.data[i].children[j].id,
-                            name: data.data[i].children[j].name
+                            id: data.data[i].children[j].children[0].id,
+                            name: data.data[i].children[j].children[0].name
                         });
                     }
                 }
