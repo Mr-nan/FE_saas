@@ -54,7 +54,7 @@ let sequencingDataSource = carFilterData.newCarSequencingDataSource;
 let currentCheckedIndex = 0;
 let checkedSource = [];
 let carData = [];
-let isCheckRecommend = true;
+let isNewCarCheckRecommend = true;
 
 
 const APIParameter = {
@@ -86,7 +86,7 @@ const APIParameter = {
 };
 
 
-export  default  class CarUserListScene extends BaseComponent {
+export  default  class CarNewListScene extends BaseComponent {
 
     handleBack = () => {
         NativeModules.VinScan.goBack();
@@ -170,10 +170,11 @@ export  default  class CarUserListScene extends BaseComponent {
             }
         });
 
-        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_RECOMMEND,(data)=>{
+        StorageUtil.mGetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,(data)=>{
 
             if(data.code == 1){
                 if(data.result == 'true'){
+                    console.log('newCar===========================NEED_CHECK_RECOMMEND=========componentWillReceiveProps');
                     if(this.refs.HeadView){
                         if (this.refs.HeadView.state.isCheckRecommend)
                         {
@@ -183,11 +184,8 @@ export  default  class CarUserListScene extends BaseComponent {
                 }
             }
         });
-
-
-
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
-        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,'false');
 
     }
 
@@ -203,11 +201,12 @@ export  default  class CarUserListScene extends BaseComponent {
             }
         });
 
-        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_RECOMMEND,(data)=>{
+        StorageUtil.mGetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,(data)=>{
 
             if(data.code == 1){
                 if(data.result == 'true'){
-                    isCheckRecommend = false
+                    console.log('newCar===========================NEED_CHECK_RECOMMEND=========initFinish');
+                    isNewCarCheckRecommend = false
                     APIParameter.type = 4;
                     APIParameter.prov_id = 0;
 
@@ -218,7 +217,7 @@ export  default  class CarUserListScene extends BaseComponent {
 
 
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
-        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,'false');
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
             if(data.code == 1 && data.result != '')
@@ -618,7 +617,6 @@ export  default  class CarUserListScene extends BaseComponent {
 
     // 选择意向
     checkRecommendClick = (isCheck) => {
-
         if (isCheck) {
             APIParameter.type = 5;
             APIParameter.prov_id=this.prov_id;
@@ -940,7 +938,7 @@ export  default  class CarUserListScene extends BaseComponent {
 
     renderPlaceholderView = () => {
         return (
-            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+            <View style={{ width:ScreenWidth, height:ScreenHeight,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
                 {this.loadView()}
             </View>
         );
@@ -958,7 +956,7 @@ export  default  class CarUserListScene extends BaseComponent {
                 <CarSourceSelectHeadView ref="HeadView"
                                          onPres={this.headViewOnPres}
                                          checkRecommendClick={this.checkRecommendClick}
-                                         isCheckRecommend = {isCheckRecommend}
+                                         isCheckRecommend = {isNewCarCheckRecommend}
                                          titleArray={['车型','地区','车规','价格']}/>
                 {
 
@@ -1193,11 +1191,14 @@ class CarSeekView extends Component {
 
 
 var ScreenWidth = Dimensions.get('window').width;
+var ScreenHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
 
     contaier: {
-        flex: 1,
-        backgroundColor: fontAndColor.COLORA3
+
+        backgroundColor: fontAndColor.COLORA3,
+        width:ScreenWidth,
+        height:ScreenHeight
     },
     checkedContentView: {
 

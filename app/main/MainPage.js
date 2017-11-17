@@ -201,7 +201,9 @@ export default class MainPage extends BaseComponent {
                 }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
                 }} jumpScene={(ref,openSelectBranch)=>{
+
                     if(openSelectBranch=='true'){
+
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
 
@@ -212,10 +214,21 @@ export default class MainPage extends BaseComponent {
 
                     }else if(openSelectBranch == storageKeyNames.NEED_CHECK_NEW_CAR){
 
-                        this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'true');
+                        StorageUtil.mSetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,'true',()=>{
+                            this.setState({selectedTab: ref})
 
-                    } else {
+                        });
+
+                    }else if(openSelectBranch == storageKeyNames.NEED_CHECK_USER_CAR)
+                    {
+                        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_USER_CAR,'true');
+                        StorageUtil.mSetItem(storageKeyNames.NEED_USER_CHECK_RECOMMEND,'true',()=>{
+                            this.setState({selectedTab: ref})
+                        });
+
+
+                    }else {
                         if(ref==='financePage'){
                              StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
                        if(datas.code==1){

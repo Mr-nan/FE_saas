@@ -25,7 +25,6 @@ export default class HomeJobButton extends PureComponent {
     }
 
     render() {
-        console.log('**********img',this.props.image);
         return (
             <TouchableOpacity onPress={()=>{
                 this.props.click();

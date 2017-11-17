@@ -51,9 +51,24 @@ export default class HomeScene extends BaseComponet {
     // 构造
     constructor(props) {
         super(props);
-        // 初始状态
+
+        let  getSectionData = (dataBlob,sectionID)=>{
+            return dataBlob[sectionID];
+        }
+        let  getRowData = (dataBlob,sectionID,rowID)=>{
+            return dataBlob[sectionID+":"+rowID];
+        }
+
+        const dataSource = new  ListView.DataSource(
+            {
+                getSectionData:getSectionData,
+                getRowData:getRowData,
+                sectionHeaderHasChanged:(s1,s2)=>s1!==s2,
+                rowHasChanged:(r1,r2)=>r1!==r2,
+            });
+        this.carArray = [];
         this.state = {
-            source: [],
+            source: dataSource,
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             headSource: [],
@@ -116,65 +131,30 @@ export default class HomeScene extends BaseComponet {
                 {/*}} list={this.carData}/>*/}
                 {
                     this.state.newData && <CarsViewPager items={this.state.newData} toNext={(id)=>{
-                         {/*this.props.jumpScene('financePage','');*/}
-                        this.props.callBack({name:'CarNewInfoScene',component:CarNewInfoScene,params:{carID:id}})
+                        this.pushNewCarInfoScene(id);
                     }} more={()=>{
-                         alert("我是新车")
+                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);
                     }} title="推荐新车源" type="6"
                     />
                 }
                 {
                     this.state.oldData && <CarsViewPager items={this.state.oldData} toNext={(id)=>{
-                        this.props.callBack({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})
+                       this.pushUserCarInfoScene(id);
                     }} more={()=>{
-                         alert("我是二手车")
+                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
                     }} title="推荐二手车源" type="8"
                     />
                 }
 
-
                 <HomeAdvertisementButton click={()=>{
                     this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);
                 }}/>
-                <View style={{
-                    flexDirection: 'row',
-                    width: width,
-                    height: Pixel.getPixel(40),
-                    backgroundColor: 'white',
-                    alignItems: 'center',
-                }}>
 
-                    <View style={{marginLeft: Pixel.getPixel(10), flex: 1}}>
-                        <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(15),
-                        fontWeight: 'bold',}}>
-                            已订阅车源
-                        </Text>
-
-                    </View>
-                    <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
-                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_RECOMMEND);
-                    }}>
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center'
-                        }}>
-                            <Text allowFontScaling={false} style={{color: 'gray', fontSize: Pixel.getFontPixel(12)}}>
-                                更多
-                            </Text>
-
-                            <Image source={require('../../images/mainImage/more.png')} style={{
-                                width: Pixel.getPixel(5),
-                                height: Pixel.getPixel(10),
-                                marginLeft: Pixel.getPixel(2),
-                            }}/>
-
-                        </View>
-                    </TouchableOpacity>
-                </View>
             </View>
 
         )
     }
+
 
     handleBack = () => {
         NativeModules.VinScan.goBack();
@@ -239,18 +219,20 @@ export default class HomeScene extends BaseComponet {
                             if (allList.length <= 0) {
                                 this.setState({
                                     renderPlaceholderOnly: 'success',
-                                    source: ds.cloneWithRows(['1']), isRefreshing: false,
+                                    isRefreshing: false,
                                     allData: response.mjson.data
                                 });
                             } else {
                                 this.setState({
                                     renderPlaceholderOnly: 'success',
-                                    source: ds.cloneWithRows(allList), isRefreshing: false,
+                                    isRefreshing: false,
                                     allData: response.mjson.data
                                 });
                             }
-
+                            this.carArray = []; // 初始化车源订阅数据
                             this.getCarData('6');
+                            this.getCarSubscriptionData(5);
+                            this.getCarSubscriptionData(7);
 
                         }
                     });
@@ -303,7 +285,74 @@ export default class HomeScene extends BaseComponet {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 }
             )
-        ;
+    }
+
+    // 获取订阅车源
+    getCarSubscriptionData=(type)=>{
+        let maps = {
+            brand_id: 0,
+            series_id: 0,
+            model_id: 0,
+            provice_id: 0,
+            city_id: 0,
+            order_type: 0,
+            coty: 0,
+            mileage: 0,
+            dealer_price: 0,
+            emission_standards: 0,
+            nature_use: 0,
+            car_color: 0,
+            model_name: '',
+            prov_id: 0,
+            v_type: 0,
+            rows: 8,
+            page: 1,
+            start: 0,
+            type: type,
+            status: 1,
+            no_cache: 1,
+        };
+        request(Urls.CAR_INDEX, 'Post', maps)
+            .then((response) => {
+
+                let carList = response.mjson.data.list;
+                if(carList.length <=0) return;
+
+                 if(type == 5 ){
+
+                     this.carArray.push({title:'新车订阅',subCarData:carList});
+
+
+                 }else if(type == 7) {
+
+                     this.carArray.push({title:'二手车订阅',subCarData:carList});
+                 }
+
+                 this.setCarData(this.carArray);
+
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                }
+            )
+    }
+
+    setCarData=(carArray)=>{
+        let dataBlob={},sectionIDS=[],rowIDS=[],rows=[];
+        for (var i=0;i<carArray.length;i++){
+
+            sectionIDS.push(i);
+            dataBlob[i]=carArray[i].title;
+            rows = carArray[i].subCarData;
+            rowIDS[i] = [];
+            for (var j=0;j<rows.length;j++){
+                rowIDS[i].push(j);
+                dataBlob[i+':'+j] = rows[j];
+            }
+        }
+        this.setState({
+            source:this.state.source.cloneWithRowsAndSections(dataBlob,sectionIDS,rowIDS),
+        });
     }
 
 
@@ -313,25 +362,6 @@ export default class HomeScene extends BaseComponet {
         page = 1;
         this.loadData();
     }
-
-    _renderSeparator(sectionId, rowId) {
-
-        return (
-            <View style={cellSheet.Separator} key={sectionId + rowId}>
-            </View>
-        )
-    }
-
-//触底加载
-    toEnd = () => {
-        if (page < status) {
-            page++;
-            this.loadData();
-        }
-        // else {
-        //     this.props.jumpScene('carpage');
-        // }
-    };
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -357,8 +387,8 @@ export default class HomeScene extends BaseComponet {
                     pageSize={6}
                     contentContainerStyle={cellSheet.listStyle}
                     dataSource={this.state.source}
+                    renderSectionHeader={this.renderSectionHeader}
                     renderRow={this._renderRow}
-                    renderSeparator={this._renderSeparator}
                     renderHeader={this._renderHeader}
                     refreshControl={
                         <RefreshControl
@@ -368,34 +398,11 @@ export default class HomeScene extends BaseComponet {
                             colors={[fontAndClolr.COLORB0]}
                         />
                     }
-                    renderFooter={
-                        this.renderListFooter
-                    }
-                    onEndReached={this.toEnd}
                 />
 
 
             </View>
         )
-    }
-
-    renderListFooter = () => {
-
-        if (this.state.isRefreshing) {
-            return null;
-        } else {
-            return (
-                <TouchableOpacity onPress={()=> {
-                    this.props.jumpScene('carpage','checkRecommend');
-                }} activeOpacity={0.8} style={{
-                    width: width, height: Pixel.getPixel(60), backgroundColor: fontAndClolr.COLORA3,
-                    alignItems: 'center'
-                }}>
-                    <Text allowFontScaling={false}
-                          style={{fontSize: Pixel.getFontPixel(14), marginTop: Pixel.getPixel(7)}}>查看更多车源 ></Text>
-                </TouchableOpacity>)
-        }
-
     }
 
     refreshingData = () => {
@@ -417,20 +424,78 @@ export default class HomeScene extends BaseComponet {
         }
     }
 
+    renderSectionHeader =(sectionData)=>{
+        return(
+            <View style={{
+                flexDirection: 'row',
+                width: width,
+                height: Pixel.getPixel(40),
+                backgroundColor: 'white',
+                alignItems: 'center',
+                marginTop:Pixel.getPixel(10)
+            }}>
+
+                <View style={{marginLeft: Pixel.getPixel(10), flex:1,flexDirection:'row'}}>
+                    <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(15), fontWeight: 'bold',}}>
+                        {sectionData}
+                    </Text>
+                </View>
+                <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
+
+
+                    if(sectionData=='新车订阅'){
+
+                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);
+
+                    }else {
+                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
+
+                    }
+
+                    {/*StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true',()=>{*/}
+                        {/*console.log('============='+sectionData+'==============');*/}
+                        {/*if(sectionData=='新车订阅'){*/}
+
+                            {/*this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);*/}
+
+                        {/*}else {*/}
+                            {/*this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);*/}
+
+                        {/*}*/}
+                    {/*});*/}
+
+
+                }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}>
+                        <Text allowFontScaling={false} style={{color: 'gray', fontSize: Pixel.getFontPixel(12)}}>更多</Text>
+                        <Image source={require('../../images/mainImage/more.png')} style={{width: Pixel.getPixel(5), height: Pixel.getPixel(10), marginLeft: Pixel.getPixel(2),
+                        }}/>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    }
 
     _renderRow = (movie, sindex, rowID) => {
         let DIDIAN;
         if (movie == '1') {
             return (<View/>);
         }
-        if (movie.city_name.length) {
+        if (movie.city_name) {
             DIDIAN = '[' + movie.city_name + ']'
         } else {
             DIDIAN = '';
         }
         return (
             <TouchableOpacity onPress={()=> {
-                this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID: movie.id}});
+                if(movie.v_type==1){
+                    this.pushUserCarInfoScene(movie.id);
+                }else {
+                    this.pushNewCarInfoScene(movie.id);
+                }
             }} activeOpacity={0.8} style={{
                 width: width / 2,
                 backgroundColor: '#ffffff',
@@ -454,6 +519,30 @@ export default class HomeScene extends BaseComponet {
 
         )
     }
+
+    pushNewCarInfoScene=(carID)=>{
+        this.props.callBack
+        (
+            {   name:'CarNewInfoScene',
+                component:CarNewInfoScene,
+                params: {
+                    carID: carID
+                }
+            }
+        );
+    }
+    pushUserCarInfoScene=(carID)=>{
+        this.props.callBack
+        (
+            {   name:'CarNewInfoScene',
+                component:CarNewInfoScene,
+                params: {
+                    carID: carID
+                }
+            }
+        );
+    }
+
     dateReversal = (time) => {
         const date = new Date();
         date.setTime(time);

@@ -94,8 +94,7 @@ export default class CarMySourceScene extends BaceComponent {
                     this.state.isShowCarSharedView && <CarSharedView offClick={()=>{this.setState({isShowCarSharedView:false})}} carSharedBtnClick={this.carSharedBtnClick} isShowMore={this.carData.img!=''?true:false}/>
                 }
                 <AccountModal ref="accountmodal"/>
-                <EditCarPriceView ref={(ref)=>{this.EditCarPriceView = ref}}/>
-
+                <EditCarPriceView ref={(ref)=>{this.EditCarPriceView = ref}} editCarPriceAction={this.editCarPriceAction}/>
             </View>)
 
     }
@@ -406,6 +405,37 @@ export default class CarMySourceScene extends BaceComponent {
                 }
             });
             this.props.showToast('已刷新了该车的排名');
+
+
+        }, (error) => {
+
+            this.props.showToast(error.mjson.msg);
+
+        });
+    }
+
+    /**
+     * 修改库存价格和数量
+     * @param carID     车ID
+     * @param carPrice  价格
+     * @param carStock  库存数
+     */
+    editCarPriceAction=(carID,carPrice,carStock)=>{
+        this.props.showModal(true);
+        request(AppUrls.CAR_MODIFY_QUANTITY_ORICE, 'post', {
+            auto_pid: carID,
+            dealer_price:carPrice,
+            stock:carStock
+        }).then((response) => {
+
+            this.props.showModal(false);
+            this.loadHeadData(()=>{
+                this.refs.upperFrameView.refreshingData();
+                if((typeof(this.refs.dropFrameView)!= "undefined")){
+                    this.refs.dropFrameView.refreshingData();
+                }
+            });
+            this.props.showToast('修改成功');
 
 
         }, (error) => {
@@ -1569,7 +1599,11 @@ class EditCarPriceView extends Component {
                             </View>
                             </TouchableOpacity>
                             <View style={styles.editCarFootView}>
-                                <TouchableOpacity onPress={()=>{alert(this.carNumber,this.carPrice)}}>
+                                <TouchableOpacity onPress={()=>{
+                                    this.props.editCarPriceAction(this.state.carData.id,this.carPrice,this.carNumber);
+                                    this.isShowView(false,{});
+
+                                }}>
                                 <View style={styles.editCarFootBtn}>
                                     <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>确认</Text>
                                 </View>

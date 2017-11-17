@@ -182,7 +182,12 @@ export const CAR_STOCK_LIST = BASEURL + V + 'car.stock/lists';
 /**
  * 库存车辆出库
  */
-export const CAR_STOCK_SOLD_OUT = BASEURL + V + '/car.stock/soldOut';
+export const CAR_STOCK_SOLD_OUT = BASEURL + V + 'car.stock/soldOut';
+
+/**
+ * 修改库存数量和价格
+ */
+export const CAR_MODIFY_QUANTITY_ORICE = BASEURL + V + 'car/modify_quantity_price';
 
 /**
  * 我的车源-已上架/下架-操作

@@ -13,7 +13,8 @@ import {
     Dimensions,
     BackAndroid,
     NativeModules,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    ScrollView,
 
 } from 'react-native';
 
@@ -48,46 +49,61 @@ export  default  class carSourceListScene extends BaseComponent {
 
     componentWillReceiveProps(nextProps) {
 
-        console.log('===================componentWillReceiveProps');
-
         StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
 
             if(data.code == 1){
                 if(data.result == 'true'){
-                    console.log('************************componentWillReceiveProps');
-                    this.setState({
-                        switchoverType:1
-                    })
-                    this.refs.CarListNavigatorView && this.refs.CarListNavigatorView.setBtnType(1);
 
+                    this.scrollView.scrollTo({x:ScreenWidth, y:0, animated: true});
+                    this.refs.CarListNavigatorView && this.refs.CarListNavigatorView.setBtnType(1);
+                }
+            }
+        });
+        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_USER_CAR,(data)=>{
+
+            if(data.code == 1){
+                if(data.result == 'true'){
+                    // this.setState({
+                    //     switchoverType:0
+                    // })
+                    this.scrollView.scrollTo({x:0, y:0, animated: false});
+                    this.refs.CarListNavigatorView && this.refs.CarListNavigatorView.setBtnType(0);
                 }
             }
         });
 
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_USER_CAR,'false');
 
     }
 
     componentWillMount() {
 
         StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
-            console.log('================componentWillMount');
 
             if(data.code == 1){
                 if(data.result == 'true'){
 
-                    console.log('***************=componentWillMount');
-
-                    this.setState({
-                        switchoverType:1
-                    })
-
+                    this.scrollView.scrollTo({x:ScreenWidth, y:0, animated: true});
                     this.refs.CarListNavigatorView && this.refs.CarListNavigatorView.setBtnType(1);
+                }
+            }
+        });
+        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_USER_CAR,(data)=>{
+
+            if(data.code == 1){
+                if(data.result == 'true'){
+                    // this.setState({
+                    //     switchoverType:0
+                    // })
+                    this.scrollView.scrollTo({x:0, y:0, animated: false});
+                    this.refs.CarListNavigatorView && this.refs.CarListNavigatorView.setBtnType(0);
                 }
             }
         });
 
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_USER_CAR,'false');
     }
 
     componentDidMount() {
@@ -98,7 +114,6 @@ export  default  class carSourceListScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
-        console.log('================constructor');
         this.state={
             switchoverType:0
         }
@@ -121,9 +136,10 @@ export  default  class carSourceListScene extends BaseComponent {
     };
 
     switchoverAction=(title,index)=>{
-        this.setState({
-            switchoverType:index
-        });
+        // this.setState({
+        //     switchoverType:index
+        // });
+        this.scrollView.scrollTo({x:index *ScreenWidth, y:0, animated: true});
     }
 
 
@@ -140,10 +156,17 @@ export  default  class carSourceListScene extends BaseComponent {
         return (
             <View style={styles.contaier}>
                 <CarListNavigatorView ref="CarListNavigatorView"  loactionClick={this.loactionClick} switchoverType={this.state.switchoverType} switchoverAction={this.switchoverAction}/>
-                {
-                    this.state.switchoverType==0?(
-                        <CarUserListScene showModal={this.props.showModal} callBack={this.props.callBack}/>):(<CarNewListScene showModal={this.props.showModal} callBack={this.props.callBack}/>)
-                }
+                <ScrollView
+                            ref={(ref)=>{this.scrollView = ref}}
+                            showsHorizontalScrollIndicator={false}
+                            showsVerticalScrollIndicator={false}
+                            horizontal={true}
+                            overScrollMode="never"
+                            scrollEnabled={false}>
+                    <CarUserListScene showModal={this.props.showModal} callBack={this.props.callBack}/>
+                    <CarNewListScene showModal={this.props.showModal} callBack={this.props.callBack}/>
+                </ScrollView>
+
 
             </View>
 
@@ -165,23 +188,6 @@ class CarListNavigatorView extends Component {
 
             <View style={styles.navigatorView}>
                 <View style={styles.navitgatorContentView}>
-                    {/*<TouchableOpacity style={styles.navigatorLoactionView} onPress={this.props.loactionClick}>*/}
-                    {/*<Image style={{marginLeft:15}} source={require('../../images/carSourceImages/location.png')}/>*/}
-                    {/*<Text allowFontScaling={false}  style={styles.navigatorText}>全国</Text>*/}
-                    {/*</TouchableOpacity>*/}
-                    {/*<TouchableOpacity onPress={this.props.searchClick}>*/}
-                        {/*<View style={styles.navigatorSousuoView}>*/}
-                            {/*<Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}}*/}
-                                   {/*source={require('../../images/carSourceImages/sousuoicon.png')}/>*/}
-                            {/*<Text allowFontScaling={false}  style={styles.navigatorSousuoText}>请输入车型关键词</Text>*/}
-                        {/*</View>*/}
-                    {/*</TouchableOpacity>*/}
-                    {/*<TouchableOpacity onPress={this.props.ScreeningClick}>*/}
-                        {/*<View style={{marginLeft:Pixel.getPixel(20),width:Pixel.getPixel(50),height:Pixel.getPixel(40),justifyContent:'center',*/}
-                            {/*alignItems:'center'}}>*/}
-                            {/*<Text allowFontScaling={false}  style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>筛选</Text>*/}
-                        {/*</View>*/}
-                    {/*</TouchableOpacity>*/}
                     <ZNSwitchoverButton ref="ZNSwitchoverButton" switchoverAction={this.props.switchoverAction} titleArray={['二手车','新车  ']} defaultIndex={this.props.switchoverType}/>
                 </View>
             </View>

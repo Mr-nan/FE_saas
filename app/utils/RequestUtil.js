@@ -27,7 +27,7 @@ const request = (url, method, params, backToLogin) => {
             if (data.code === 1) {
                 token = data.result;
             }
-            console.log('token===' + token);
+            // console.log('token===' + token);
             let device_code = '';
 
             if (Platform.OS === 'android') {
@@ -36,8 +36,6 @@ const request = (url, method, params, backToLogin) => {
                 device_code = 'dycd_platform_ios';
             }
 
-            console.log(url + '?token=' + token + '&device_code=' + device_code+
-                '&version='+StorageKeyNames.VERSON_CODE+'&'+body);
 
             fetch(url + '?token=' + token + '&device_code=' + device_code+'&version='+StorageKeyNames.VERSON_CODE+'&'+body, {
                 method,
@@ -55,9 +53,9 @@ const request = (url, method, params, backToLogin) => {
                 .then((responseData) => {
                     if (isOk) {
                         for (let key of Object.keys(params)) {
-                            console.log(key + "===" + params[key]);
+                            // console.log(key + "===" + params[key]);
                         }
-                        console.log("success----------" + JSON.stringify(responseData));
+                        // console.log("success----------" + JSON.stringify(responseData));
                         if (responseData.code == 1 && responseData.code!=='0001') {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
@@ -77,7 +75,7 @@ const request = (url, method, params, backToLogin) => {
                             }
                         }
                     } else {
-                        console.log("error----------" + JSON.stringify(responseData));
+                        // console.log("error----------" + JSON.stringify(responseData));
                         reject({mycode: -300});
                     }
                 })

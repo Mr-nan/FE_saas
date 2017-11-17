@@ -29,7 +29,6 @@ export default class HomeJobItem extends PureComponent {
 
     componentWillMount() {
         GetPermission.getLastList((preList) => {
-            console.log('==========',preList);
             this.list = preList;
             this.setState({show: true});
         });
