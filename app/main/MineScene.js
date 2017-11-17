@@ -245,61 +245,61 @@ export default class MineScene extends BaseComponent {
 
 
 
-		if (id == 15) {
+		if (id == 47) {
 			Car[0].cars.push({
 				"icon": require('../../images/mainImage/zhanghuguanli.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 16) {
+		} else if (id == 48) {
 			Car[0].cars.push({
 				"icon": require('../../images/mainImage/yuangongguanli.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 17) {
+		} else if (id == 49) {
 			Car[0].cars.push({
 				"icon": require('../../images/mainImage/switchcompony.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 20) {
+		} else if (id == 52) {
 			Car[2].cars.push({
 				"icon": require('../../images/mainImage/my_order.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 18) {
+		} else if (id == 50) {
 			Car[1].cars.push({
 				"icon": require('../../images/mainImage/youhuiquanguanli.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 19) {
+		} else if (id == 51) {
 			Car[1].cars.push({
 				"icon": require('../../images/mainImage/hetongguanli.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 21) {
+		} else if (id == 53) {
 			Car[2].cars.push({
 				"icon": require('../../images/mainImage/shoucangjilu.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 22) {
+		} else if (id == 54) {
 			Car[2].cars.push({
 				"icon": require('../../images/mainImage/liulanlishi.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 24) {
+		} else if (id == 56) {
 			Car[3].cars.push({
 				"icon": require('../../images/mainImage/shezhi.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 47) {
+		} else if (id == 100) {
 			Car[2].cars.push({
 				"icon": require('../../images/mainImage/myCarSource.png'),
 				"name": name
@@ -619,48 +619,48 @@ export default class MineScene extends BaseComponent {
 
 	_navigatorPage = (rowData) => {
 		switch (rowData.id) {
-			case 15:
+			case 47:
 				this.toPage();
 				return
 				break;
-			case 17:
+			case 49:
 				this.props.toSelect();
 				return;
 				break;
-			case 18:
+			case 50:
 				this.navigatorParams.name = 'AdjustManageScene'
 				this.navigatorParams.component = AdjustManageScene
 				break;
 			case '积分管理':
 				break;
-			case 19:
+			case 51:
 				this.navigatorParams.name = 'ContractManageScene'
 				this.navigatorParams.component = ContractManageScene
 				this.navigatorParams.params = {
 					from: 'xs'
 				}
 				break;
-			case 16:
+			case 48:
 				this.navigatorParams.name = 'EmployeeManageScene'
 				this.navigatorParams.component = EmployeeManageScene
 				break;
-			case 47:
+			case 100:
 				this.navigatorParams.name = 'MycarScene'
 				this.navigatorParams.component = MycarScene
 				break;
-			case 20:
+			case 52:
 				this.navigatorParams.name = 'OrderTypeSelectScene'
 				this.navigatorParams.component = OrderTypeSelectScene
 				break;
-			case 21:
+			case 53:
 				this.navigatorParams.name = 'CarCollectSourceScene'
 				this.navigatorParams.component = CarCollectSourceScene
 				break;
-			case 22:
+			case 54:
 				this.navigatorParams.name = 'BrowsingHistoryScene'
 				this.navigatorParams.component = BrowsingHistoryScene
 				break;
-			case 24:
+			case 56:
 				this.navigatorParams.name = 'Setting'
 				this.navigatorParams.component = Setting
 				break;
