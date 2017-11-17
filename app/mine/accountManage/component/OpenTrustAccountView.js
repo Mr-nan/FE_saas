@@ -85,7 +85,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                         marginTop: Pixel.getPixel(15), flexDirection: 'row', alignSelf: 'center',
                         marginLeft: Pixel.getPixel(20), marginRight: Pixel.getPixel(20),
                     }}>
-                        <Image style={{}}
+                        <Image style={{marginTop: Pixel.getPixel(5)}}
                                source={require('../../../../images/mainImage/agreed_sign.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(5),}}>
                             <Text >
