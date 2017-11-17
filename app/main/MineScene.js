@@ -245,61 +245,61 @@ export default class MineScene extends BaseComponent {
 
 
 
-		if (id == 15) {
+		if (id == 47) {
 			Car[0].cars.push({
 				"icon": require('../../images/mainImage/zhanghuguanli.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 16) {
+		} else if (id == 48) {
 			Car[0].cars.push({
 				"icon": require('../../images/mainImage/yuangongguanli.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 17) {
+		} else if (id == 49) {
 			Car[0].cars.push({
 				"icon": require('../../images/mainImage/switchcompony.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 20) {
+		} else if (id == 52) {
 			Car[2].cars.push({
 				"icon": require('../../images/mainImage/my_order.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 18) {
+		} else if (id == 50) {
 			Car[1].cars.push({
 				"icon": require('../../images/mainImage/youhuiquanguanli.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 19) {
+		} else if (id == 51) {
 			Car[1].cars.push({
 				"icon": require('../../images/mainImage/hetongguanli.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 21) {
+		} else if (id == 53) {
 			Car[2].cars.push({
 				"icon": require('../../images/mainImage/shoucangjilu.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 22) {
+		} else if (id == 54) {
 			Car[2].cars.push({
 				"icon": require('../../images/mainImage/liulanlishi.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 24) {
+		} else if (id == 56) {
 			Car[3].cars.push({
 				"icon": require('../../images/mainImage/shezhi.png'),
 				"name": name
 				, "id": id
 			},);
-		} else if (id == 47) {
+		} else if (id == 100) {
 			Car[2].cars.push({
 				"icon": require('../../images/mainImage/myCarSource.png'),
 				"name": name
@@ -619,7 +619,7 @@ export default class MineScene extends BaseComponent {
 
 	_navigatorPage = (rowData) => {
 		switch (rowData.id) {
-			case 15:
+			case 47:
 				this.toPage();
 				return
 				break;
@@ -644,7 +644,7 @@ export default class MineScene extends BaseComponent {
 				this.navigatorParams.name = 'EmployeeManageScene'
 				this.navigatorParams.component = EmployeeManageScene
 				break;
-			case 47:
+			case 100:
 				this.navigatorParams.name = 'MycarScene'
 				this.navigatorParams.component = MycarScene
 				break;
