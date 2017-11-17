@@ -131,7 +131,7 @@ export  default class AccountTitle extends PureComponent {
          </View>
          );*/
         return (
-            <View style={{width: width, height: Pixel.getPixel(584), backgroundColor: fontAndColor.COLORA3}}>
+            <View style={{width: width, height: Pixel.getPixel(604), backgroundColor: fontAndColor.COLORA3}}>
                 <View style={{width: width, height: Pixel.getPixel(211), backgroundColor: fontAndColor.COLORB0}}>
                     <View style={{
                         width: width, height: Pixel.getPixel(35), backgroundColor: 'rgba(105,105,105,0.1)',
@@ -211,7 +211,7 @@ export  default class AccountTitle extends PureComponent {
                         </View>
                     </View>
                 </View>
-                <View style={{width: width, height: Pixel.getPixel(374), backgroundColor: fontAndColor.COLORA3}}>
+                <View style={{width: width, height: Pixel.getPixel(394), backgroundColor: fontAndColor.COLORA3}}>
                     {itemList}
                 </View>
             </View>
