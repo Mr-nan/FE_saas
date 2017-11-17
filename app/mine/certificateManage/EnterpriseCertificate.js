@@ -391,7 +391,12 @@ export default class EnterpriseCertificate extends BaseComponent {
 					if (this.props.callBack) {
 						this.props.callBack();
 					}
-					this.backPage();
+					this.timer = setTimeout(
+						() => {
+							this.backPage();
+						},
+						200
+					);
 				} else {
 					this.props.showToast(response.mjson.msg + "");
 				}

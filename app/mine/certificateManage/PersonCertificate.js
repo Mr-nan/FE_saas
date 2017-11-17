@@ -309,8 +309,16 @@ export default class EnterpriseCertificate extends BaseComponent {
 				if (response.mycode == "1") {
 
 					this.props.showToast("信息提交成功");
-					this.props.callBack();
-					this.backPage();
+					if(this.props.callBack)
+					{
+						this.props.callBack();
+					}
+					this.timer = setTimeout(
+						() => {
+							this.backPage();
+						},
+						200
+					);
 				} else {
 					this.props.showToast(response.mjson.msg + "");
 				}
