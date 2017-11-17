@@ -122,11 +122,6 @@ export default class EnterpriseCertificate extends BaseComponent {
 				this.enterpriseData.zhuceren_name = PersonResule.real_name;
 
 
-
-
-
-
-
 				let shanghusuozaidi;
 				let handleSource;
 				let frontSource;
@@ -134,40 +129,39 @@ export default class EnterpriseCertificate extends BaseComponent {
 				let licenseSource;
 
 				//对商户所在地判空  进行界面显示处理
-				if(this.isEmpty(PersonResule.prov_name) === true || this.isEmpty(PersonResule.city_name) === true){
+				if (this.isEmpty(PersonResule.prov_name) === true || this.isEmpty(PersonResule.city_name) === true) {
 					shanghusuozaidi = '请选择'
-				}else {
-					shanghusuozaidi =  PersonResule.prov_name + ' ' + PersonResule.city_name;
+				} else {
+					shanghusuozaidi = PersonResule.prov_name + ' ' + PersonResule.city_name;
 				}
 
 				//对手持照片判空  进行界面显示处理
-				if(this.isEmpty(PersonResule.idcard_img_touch.img_url) === true){
+				if (this.isEmpty(PersonResule.idcard_img_touch.img_url) === true) {
 					handleSource = null;
-				}else {
-					handleSource =  {uri: PersonResule.idcard_img_touch.img_url};
+				} else {
+					handleSource = {uri: PersonResule.idcard_img_touch.img_url};
 				}
 
 				//对正面照片判空  进行界面显示处理
-				if(this.isEmpty(PersonResule.idcard_img_fort.img_url) === true){
+				if (this.isEmpty(PersonResule.idcard_img_fort.img_url) === true) {
 					frontSource = null;
-				}else {
-					frontSource =  {uri: PersonResule.idcard_img_fort.img_url};
+				} else {
+					frontSource = {uri: PersonResule.idcard_img_fort.img_url};
 				}
 
 				//对反面照片判空  进行界面显示处理
-				if(this.isEmpty(PersonResule.idcard_img_back.img_url) === true){
+				if (this.isEmpty(PersonResule.idcard_img_back.img_url) === true) {
 					backSource = null;
-				}else {
-					backSource =  {uri: PersonResule.idcard_img_back.img_url};
+				} else {
+					backSource = {uri: PersonResule.idcard_img_back.img_url};
 				}
 
 				//对营业执照 照片判空  进行界面显示处理
-				if(this.isEmpty(PersonResule.work_img.img_url) === true){
+				if (this.isEmpty(PersonResule.work_img.img_url) === true) {
 					licenseSource = null;
-				}else {
-					licenseSource =  {uri: PersonResule.work_img.img_url};
+				} else {
+					licenseSource = {uri: PersonResule.work_img.img_url};
 				}
-
 
 
 				this.setState({
@@ -496,8 +490,8 @@ export default class EnterpriseCertificate extends BaseComponent {
                                                   }}
 									          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
 									          mOnPress={() => {
-                                                      this.setState({
-                                                          enterpriseHandle: null
+									          	this.setState({
+									          		enterpriseHandle: null
                                                       });
                                                   }}/>
 									: null}
