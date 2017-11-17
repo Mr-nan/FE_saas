@@ -109,9 +109,6 @@ export default class EnterpriseCertificate extends BaseComponent {
 	_getCertificateInfo = () => {
 
 
-
-
-
 		StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
 			if (data.code == 1 && data.result != null) {
 				let datas = JSON.parse(data.result);
@@ -121,7 +118,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 
 					if (response.mycode == "1") {
 						let PersonResule = response.mjson.data;
-						if(PersonResule){
+						if (PersonResule) {
 							idHandle = PersonResule.company.legal_no_img_touch.file_id;
 							idcardfront = PersonResule.company.legal_no_img_fort.file_id;
 							idcardback = PersonResule.company.legal_no_img_back.file_id;
@@ -146,40 +143,39 @@ export default class EnterpriseCertificate extends BaseComponent {
 							let licenseSource;
 
 							//对商户所在地判空  进行界面显示处理
-							if(this.isEmpty(PersonResule.company.prov_name) === true || this.isEmpty(PersonResule.company.city_name) === true ){
+							if (this.isEmpty(PersonResule.company.prov_name) === true || this.isEmpty(PersonResule.company.city_name) === true) {
 								shanghusuozaidi = '请选择'
-							}else {
-								shanghusuozaidi =  PersonResule.company.prov_name + ' ' + PersonResule.company.city_name;
+							} else {
+								shanghusuozaidi = PersonResule.company.prov_name + ' ' + PersonResule.company.city_name;
 							}
 
 							//对手持照片判空  进行界面显示处理
-							if(this.isEmpty(PersonResule.company.legal_no_img_touch.img_url) === true){
+							if (this.isEmpty(PersonResule.company.legal_no_img_touch.img_url) === true) {
 								handleSource = null;
-							}else {
-								handleSource =  {uri: PersonResule.company.legal_no_img_touch.img_url};
+							} else {
+								handleSource = {uri: PersonResule.company.legal_no_img_touch.img_url};
 							}
 
 							//对正面照片判空  进行界面显示处理
-							if(this.isEmpty(PersonResule.company.legal_no_img_fort.img_url) === true){
+							if (this.isEmpty(PersonResule.company.legal_no_img_fort.img_url) === true) {
 								frontSource = null;
-							}else {
-								frontSource =  {uri: PersonResule.company.legal_no_img_fort.img_url};
+							} else {
+								frontSource = {uri: PersonResule.company.legal_no_img_fort.img_url};
 							}
 
 							//对反面照片判空  进行界面显示处理
-							if(this.isEmpty(PersonResule.company.legal_no_img_back.img_url) === true){
+							if (this.isEmpty(PersonResule.company.legal_no_img_back.img_url) === true) {
 								backSource = null;
-							}else {
-								backSource =  {uri: PersonResule.company.legal_no_img_back.img_url};
+							} else {
+								backSource = {uri: PersonResule.company.legal_no_img_back.img_url};
 							}
 
 							//对营业执照 照片判空  进行界面显示处理
-							if(this.isEmpty(PersonResule.company.business_license_img.img_url) === true){
+							if (this.isEmpty(PersonResule.company.business_license_img.img_url) === true) {
 								licenseSource = null;
-							}else {
-								licenseSource =  {uri: PersonResule.company.business_license_img.img_url};
+							} else {
+								licenseSource = {uri: PersonResule.company.business_license_img.img_url};
 							}
-
 
 
 							this.setState({
@@ -191,14 +187,12 @@ export default class EnterpriseCertificate extends BaseComponent {
 
 								renderPlaceholderOnly: 'success'
 							});
-						}else {
+						} else {
 							this.setState({
 								renderPlaceholderOnly: 'success'
 							});
 
 						}
-
-
 
 
 					} else {
@@ -214,14 +208,6 @@ export default class EnterpriseCertificate extends BaseComponent {
 				this.props.showToast('获取企业信息失败');
 			}
 		});
-
-
-
-
-
-
-
-
 
 
 	};
@@ -374,7 +360,6 @@ export default class EnterpriseCertificate extends BaseComponent {
 		}
 
 
-
 		let maps = {
 
 			license_id: businessid,
@@ -403,7 +388,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 			.then((response) => {
 				if (response.mycode == "1") {
 					this.props.showToast("信息提交成功");
-					if(this.props.callBack){
+					if (this.props.callBack) {
 						this.props.callBack();
 					}
 					this.backPage();
@@ -726,9 +711,10 @@ export default class EnterpriseCertificate extends BaseComponent {
                                                   }}
 									          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
 									          mOnPress={() => {
-                                                      this.setState({
-                                                          enterpriseHandle: null
-                                                      });
+									          	idHandle = '';
+									          	this.setState({
+									          		enterpriseHandle: null
+									          	});
                                                   }}/>
 									: null}
 							</View>
@@ -750,9 +736,10 @@ export default class EnterpriseCertificate extends BaseComponent {
                                                   }}
 									          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
 									          mOnPress={() => {
-                                                      this.setState({
-                                                          enterpriseFront: null
-                                                      });
+									          	idcardfront = '';
+									          	this.setState({
+									          		enterpriseFront: null
+									          	});
                                                   }}/>
 									: null}
 							</View>
@@ -774,9 +761,12 @@ export default class EnterpriseCertificate extends BaseComponent {
                                                   }}
 									          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
 									          mOnPress={() => {
-                                                      this.setState({
-                                                          enterpriseBack: null
-                                                      });
+									          	idcardback = '';
+
+									          	this.setState({
+									          		enterpriseBack: null
+
+									          	});
                                                   }}/>
 									: null}
 							</View>
@@ -815,9 +805,12 @@ export default class EnterpriseCertificate extends BaseComponent {
                                                   }}
 								          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
 								          mOnPress={() => {
-                                                      this.setState({
-                                                          businessLicense: null
-                                                      });
+								          	businessid = '';
+
+								          	this.setState({
+								          		businessLicense: null
+
+								          	});
                                                   }}/>
 								: null}
 

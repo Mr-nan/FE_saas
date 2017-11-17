@@ -490,6 +490,7 @@ export default class EnterpriseCertificate extends BaseComponent {
                                                   }}
 									          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
 									          mOnPress={() => {
+									          	idHandle = '';
 									          	this.setState({
 									          		enterpriseHandle: null
                                                       });
@@ -514,7 +515,8 @@ export default class EnterpriseCertificate extends BaseComponent {
                                                   }}
 									          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
 									          mOnPress={() => {
-                                                      this.setState({
+									          	idcardfront = '';
+                                                 this.setState({
                                                           enterpriseFront: null
                                                       });
                                                   }}/>
@@ -538,9 +540,10 @@ export default class EnterpriseCertificate extends BaseComponent {
                                                   }}
 									          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
 									          mOnPress={() => {
-                                                      this.setState({
-                                                          enterpriseBack: null
-                                                      });
+									          	idcardback =  '';
+                                                 this.setState({
+                                                 	enterpriseBack: null
+                                                 });
                                                   }}/>
 									: null}
 							</View>
@@ -580,9 +583,10 @@ export default class EnterpriseCertificate extends BaseComponent {
                                                   }}
 								          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
 								          mOnPress={() => {
-                                                      this.setState({
-                                                          businessLicense: null
-                                                      });
+								          	businessid = '';
+								          	this.setState({
+								          		businessLicense: null
+								          	});
                                                   }}/>
 								: null}
 
