@@ -23,10 +23,15 @@ import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import TextInputItem from '../component/TextInputItem'
 
-var Dimensions = require('Dimensions');
-var {width, height} = Dimensions.get('window');
-var Pixel = new PixelUtil();
-var Platform = require('Platform');
+let Dimensions = require('Dimensions');
+let {width, height} = Dimensions.get('window');
+let Pixel = new PixelUtil();
+let Platform = require('Platform');
+
+let new_mobile;
+let new_sms_code;
+let new_sms_no;
+
 
 export default class NameAndIdScene extends BaseComponent {
     constructor(props) {
@@ -56,7 +61,7 @@ export default class NameAndIdScene extends BaseComponent {
                         leftText={""}
                         centerText={'修改银行预留手机号'}
                         rightText={""}
-                        centerTextStyle={{paddingHorizontal:0, backgroundColor:'red'}}
+                        centerTextStyle={{paddingHorizontal: 0, backgroundColor: 'red'}}
                     />
                 </View>
             </TouchableWithoutFeedback>);
@@ -69,20 +74,23 @@ export default class NameAndIdScene extends BaseComponent {
                     centerText={"修改银行预留手机号"}
                     rightText={""}
                     leftImageCallBack={this.backPage}
-                    centerTextStyle={{paddingLeft:0,paddingRight:0}}
+                    centerTextStyle={{paddingLeft: 0, paddingRight: 0}}
                 />
-                <View style = {{width:width, marginTop:15, }}>
+                <View style={{width: width, marginTop: 15,}}>
 
                     <TextInputItem
+                        ref = {'new_mobile'}
                         title={'新手机号'}
                         textPlaceholder={'请输入您的手机号'}
                         keyboardType={'number-pad'}
                         rightButton={true}
                         maxLength={11}
+                        callBackSms={this.smscode}
                     />
                     <TextInputItem
-                        titleStyle={{letterSpacing:8}}
-                        inputTextStyle={{paddingLeft:8}}
+                        ref={'new_sms_code'}
+                        titleStyle={{letterSpacing: 8}}
+                        inputTextStyle={{paddingLeft: 8}}
                         title={'验证码'}
                         textPlaceholder={'请输入短信验证码'}
                         separator={false}
@@ -92,9 +100,128 @@ export default class NameAndIdScene extends BaseComponent {
                           content={'确认'}
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
-                          mOnPress={this.setPwd}/>
+                          mOnPress={this.next}/>
             </View>
         );
+    }
+
+    smscode = () => {
+        if (!this.verify(false)) {
+            return
+        }
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1) {
+
+                let result = JSON.parse(data.result)
+                let params = {
+                    enter_base_id: result.company_base_id,
+                    mobile_no: new_mobile,
+                    sub_acct_no: this.props.account.bank_card_no,
+                    type: 2
+                }
+
+                request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {
+                    this.refs.mobile_no.StartCountDown();
+                    new_sms_no=response.mjson.data.sms_no
+                    console.log(response);
+
+                }, (error) => {
+                    this.props.showModal(false)
+                    this.props.showToast(error.msg)
+                })
+
+            } else {
+                this.props.showToast('获取信息失败')
+            }
+        })
+
+    }
+
+    next = () => {
+
+        if (!this.verify(true)) {
+            return
+        }
+
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1) {
+
+                let result = JSON.parse(data.result)
+                let params = {
+                    user_type: this.props.account.account_open_type,
+                    new_mobile_no: new_mobile,
+                    new_sms_code: new_sms_code,
+                    new_sms_no:new_sms_no,
+                    old_sms_code:this.props.old_sms_code,
+                    old_sms_no:this.props.old_sms_no,
+                    sub_acct_no: this.props.account.bank_card_no,
+                    enter_base_id: result.company_base_id,
+
+                }
+                this.props.showModal(true)
+                request(AppUrls.ZS_BANK_MODIFY_MOBILE, 'POST', params).then((response) => {
+                    this.props.showModal(false)
+                    this.props.showToast('手机号码修改成功')
+                    this.backN(2)
+
+                }, (error) => {
+                    this.props.showModal(false)
+
+                    if(error.mycode===8010007){  // 存疑
+
+                        this.toNextPage({
+                            component:ResultIndicativeScene,
+                            name:'ResultIndicativeScene',
+                            params:{
+                                type:5,
+                                status:0,
+                                account:params
+                            }
+                        })
+                    }else {
+                        this.props.showToast(error.mjson.msg)
+                    }
+                })
+
+            } else {
+                this.props.showToast('获取信息失败')
+            }
+        })
+
+    }
+
+    verify = (with_sms_code) => {
+
+        new_mobile = this.refs.new_mobile.getInputTextValue();
+        new_sms_code = this.refs.new_sms_code.getInputTextValue();
+
+        if (new_mobile === '' || new_mobile === null) {
+            this.props.showToast('请输入手机号码');
+            return false
+        }
+        if (new_mobile.length !== 11) {
+            this.props.showToast('手机号格式有误');
+            return false
+        }
+
+        if (with_sms_code) {
+            if (new_sms_code === '' || new_sms_code === null) {
+                this.props.showToast('请输入验证码');
+                return false
+            }
+        }
+
+        return true
+    }
+
+
+    backN = (n) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.popN(n);
+        }
     }
 
 

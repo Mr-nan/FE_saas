@@ -236,7 +236,7 @@ class CityList extends  Component{
 
         this.props.showLoadModel(true);
 
-        request(this.props.isZs?appUrls.ZS_GET_CITY:appUrls.GET_PROVINCE,'post',this.props.isZs?{province_name:selectData.city_name}:{'prov_id':selectData.provice_id})
+        request(this.props.isZs?appUrls.ZS_GET_CITY:appUrls.GET_PROVINCE,'post',this.props.isZs?{province_name:selectData.city_name, payment_type:'ZS'}:{'prov_id':selectData.provice_id})
             .then((response) => {
 
                 this.props.showLoadModel(false);

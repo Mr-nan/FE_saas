@@ -1260,13 +1260,6 @@ export const ZS_GET_CITY = BASEURL + "v1/bankRoute.query/findCity";
  */
 export const ZS_BANK_IS_SHOW = BASEURL + "v1/account.cz_bank/zsBankIsShow";
 
-
-/**
- *  from @dingnyonggang
- *
- *  查询是否开启浙商银行可见
- */
-export const ZS_MODIFY_BANK_CARD = BASEURL + "v1/account.cz_bank/modifyAccountInfo";
 /**
  *  from @dingnyonggang
  *
@@ -1291,6 +1284,18 @@ export const ZS_WORTER_FLOW = BASEURL + "v2/user.account/payLog";
  *  银行限额说明
  */
 export const ZS_BANK_INSTRUCTION = BASEURL + "v1/account.cz_bank/getPaymentRelatedInfo";
+/**
+ *  from @dingnyonggang
+ *
+ *  浙商账户修改银行预留手机号
+ */
+export const ZS_BANK_MODIFY_MOBILE = BASEURL + "v1/account.cz_bank/modifyMobile";
+/**
+ *  from @dingnyonggang
+ *
+ *   浙商账户修改绑定的银行卡号
+ */
+export const ZS_MODIFY_BANK_CARD = BASEURL + "v1/account.cz_bank/modifyAccountInfo";
 
 
 /**

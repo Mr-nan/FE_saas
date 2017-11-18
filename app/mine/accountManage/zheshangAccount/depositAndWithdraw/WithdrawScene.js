@@ -159,9 +159,15 @@ export default class WithdrawScene extends BaseComponent {
                                             console.log(parseFloat(text))
                                             console.log(parseFloat(this.state.allow_withdraw_amount))
                                             if (parseFloat(text) > parseFloat(this.state.allow_withdraw_amount)) {
+
                                                 this.setState({
                                                     money_input: this.state.allow_withdraw_amount
                                                 })
+                                                if(text.length>this.state.allow_withdraw_amount){
+                                                    this.setState({
+                                                        money_input: this.state.allow_withdraw_amount
+                                                    })
+                                                }
                                             } else {
                                                 this.setState({
                                                     money_input: text
@@ -169,7 +175,6 @@ export default class WithdrawScene extends BaseComponent {
                                             }
                                         }}
                                         value={this.state.money_input}
-
                                     />
                                 </View>
                             </View>
@@ -242,6 +247,7 @@ export default class WithdrawScene extends BaseComponent {
 
                 {this.state.sms_pad ?
                     <SmsFillScene
+                        showToast={this.props.showToast}
                         money={parseFloat(this.state.money_input)}
                         type={1}
                         account={this.props.account}
@@ -274,12 +280,6 @@ export default class WithdrawScene extends BaseComponent {
 
                 }
 
-
-
-
-
-
-
                 this.props.showModal(true)
 
                 request(AppUrls.ZS_WITHDRAW, 'POST', params).then((response) => {
@@ -293,7 +293,7 @@ export default class WithdrawScene extends BaseComponent {
                         name: 'ResultIndicativeScene',
                         params: {
                             type: 3,
-                            status: 2,
+                            status: 1,
                             account: params,
                         }
                     })
@@ -327,16 +327,11 @@ export default class WithdrawScene extends BaseComponent {
                                 param:error
                             }
                         })
-
                     }
-
                 })
             }
         })
-
     }
-
-
 }
 const styles = StyleSheet.create({
     deposit_container_selected: {

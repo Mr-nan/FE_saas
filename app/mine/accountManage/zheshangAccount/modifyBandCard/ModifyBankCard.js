@@ -22,6 +22,7 @@ import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import TextInputItem from '../component/TextInputItem'
 import ChooseBankNameScene from '../component/ChooseBankNameScene'
+import ResultIndicativeScene from '../ResultIndicativeScene'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -33,6 +34,7 @@ let bank_card_no = ''
 let bank_name = ''
 let mobile_no = ''
 let sms_code = ''
+let sms_no = ''
 
 
 export default class ModifyBankCard extends BaseComponent {
@@ -96,7 +98,7 @@ export default class ModifyBankCard extends BaseComponent {
                         />
                         <TextInputItem
                             title={'原银行卡'}
-                            value={this.props.account.bank_name}
+                            value={this.props.account.bind_bank_card_no}
                             editable={false}
                         />
                         <TextInputItem
@@ -119,8 +121,15 @@ export default class ModifyBankCard extends BaseComponent {
                             onChangeText={this.bank}
                             loading={this.state.loading_bank}
                             annotation={this.state.bankName}
-                        /><TouchableOpacity
+                        />
+                        <TouchableOpacity
                         onPress={() => {
+
+                            if(this.state.bankName === ''){  //如果没有解锁出总行名，不允许选择支行名
+                                this.props.showToast('请填写银行卡')
+                                return;
+                            }
+
                             this.toNextPage({
                                 component: ChooseBankNameScene,
                                 name: 'ChooseBankNameScene',
@@ -129,7 +138,6 @@ export default class ModifyBankCard extends BaseComponent {
                                     bank_card_no: this.refs.bank_card_no.getInputTextValue()
                                 },
                             })
-
                         }}
                     >
                         <TextInputItem
@@ -150,6 +158,7 @@ export default class ModifyBankCard extends BaseComponent {
                             keyboardType={'number-pad'}
                             editable={false}
                             rightButton={true}
+                            value={this.props.account.operate_mobile}
                             callBackSms={this.smscode}
                         />
                         <TextInputItem
@@ -173,7 +182,7 @@ export default class ModifyBankCard extends BaseComponent {
         );
     }
 
-
+    // 更换银行卡
     change = () => {
 
         if (!this.verify(true)) {
@@ -196,25 +205,52 @@ export default class ModifyBankCard extends BaseComponent {
                     enter_base_id: result.company_base_id,
                     new_acct_no: bank_card_no,
                     sms_code:sms_code,
-                    sms_no:'234',
+                    sms_no:sms_no,
                     user_type:this.props.account.account_open_type,
-                    sub_acct_no:this.props.account.bank_card_no
+                    sub_acct_no:this.props.account.bank_card_no,
+                    bank_name:bank_name,
+
                 }
-
+                this.props.showModal(true)
                 request(AppUrls.ZS_MODIFY_BANK_CARD, 'POST', params).then((response)=>{
-
+                    this.props.showModal(false)
+                    this.toNextPage({
+                        component:ResultIndicativeScene,
+                        name:'ResultIndicativeScene',
+                        params:{
+                            params:params,
+                            type:4,
+                            status:1
+                        }
+                    })
 
                 }, (error)=>{
+                    this.props.showModal(false)
+                    if(error.mycode===8010007){  // 存疑
+
+                        this.toNextPage({
+                            component:ResultIndicativeScene,
+                            name:'ResultIndicativeScene',
+                            params:{
+                                type:4,
+                                status:0,
+                                account:params
+                            }
+                        })
+
+                    }else {
+                        this.props.showToast(error.mjson.msg)
+                    }
 
 
                 })
-
-
 
             }
         })
 
     }
+
+    // 解析银行卡所在总行名称
     bank = (text) => {
 
         if (text.length < 10 && this.state.bankName !== '') {
@@ -280,6 +316,7 @@ export default class ModifyBankCard extends BaseComponent {
 
                 request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {
                     this.refs.mobile_no.StartCountDown();
+                    sms_no = response.mjson.data.sms_no;
                     console.log(response);
 
                 }, (error) => {
@@ -317,7 +354,6 @@ export default class ModifyBankCard extends BaseComponent {
                 return false
             }
         }
-
         return true
     }
 

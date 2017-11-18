@@ -178,8 +178,6 @@ export default class NameAndIdScene extends BaseComponent {
 
     }
 
-
-
 }
 
 const styles = StyleSheet.create({

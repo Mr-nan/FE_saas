@@ -237,7 +237,7 @@ export default class ChooseBankNameScene extends BaseComponent{
         request(AppUrls.ZS_PARSE_BANK, 'post', params).then((response)=>{
 
             banks.push(...response.mjson.data.info_list)
-            totalPage = response.mjson.data.page;
+            totalPage = response.mjson.data.totalpage;
             console.log(response)
             this.setState({
                 isRefreshing:false,
@@ -245,17 +245,16 @@ export default class ChooseBankNameScene extends BaseComponent{
             })
 
         }, (error)=>{
-
+            this.props.showToast(error.mjson.msg);
         })
-
         console.log(city)
     }
 
 
     loadMore = ()=>{
         page++;
-        if(page >totalPage){return};
-        this.loadBanks(selectedCity.city_name , page)
+        if(page >totalPage){ page--;  return}
+        this.loadBanks(selectedCity.city_id , page)
     }
 }
 

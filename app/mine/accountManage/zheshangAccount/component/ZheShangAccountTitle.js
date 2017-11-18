@@ -104,7 +104,7 @@ export  default class ZheShangAccountTitle extends PureComponent {
                     flexDirection: 'row',alignItems:'center'}}>
                         <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(20),color: '#fff',
                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
-                            账户号码：{this.props.info.bank_card_no}
+                            账户号码：{this.props.info.cz_elec_account}
                         </Text>
                         <View style={{flex:1}}></View>
                         <TouchableOpacity

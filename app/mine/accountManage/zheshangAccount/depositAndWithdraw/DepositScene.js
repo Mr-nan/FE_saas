@@ -327,6 +327,7 @@ export default class DepositScene extends BaseComponent {
 
                 {this.state.sms_pad ?
                     <SmsFillScene
+                        showToast={this.props.showToast}
                         money={parseFloat(this.state.money_input)}
                         account={this.props.account}
                         type={1}

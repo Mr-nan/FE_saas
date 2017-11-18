@@ -34,6 +34,7 @@ let Platform = require('Platform');
 //    2：充值
 //    3：提现
 //    4: 更换银行卡
+//    5: 更换手机号
 
 // status;
 //    0：处理中

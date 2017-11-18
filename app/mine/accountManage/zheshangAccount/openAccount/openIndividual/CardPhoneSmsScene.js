@@ -109,6 +109,11 @@ export default class CardPhoneSmsScene extends BaseComponent {
                         />
                         <TouchableOpacity
                             onPress = {()=>{
+
+                                if(this.state.bankName === ''){  //如果没有解锁出总行名，不允许选择支行名
+                                    this.props.showToast('请填写银行卡')
+                                    return;
+                                }
                                 this.toNextPage({
                                     component:ChooseBankNameScene,
                                     name:'ChooseBankNameScene',
@@ -116,7 +121,6 @@ export default class CardPhoneSmsScene extends BaseComponent {
                                         callBack:this.bankComeBack,
                                         bank_card_no:this.refs.bank_card_no.getInputTextValue()},
                                 })
-
                             }}
                         >
                             <TextInputItem
@@ -264,6 +268,8 @@ export default class CardPhoneSmsScene extends BaseComponent {
 
                 }, (error)=>{
 
+                    this.props.showModal(false)
+
                     if(error.mycode===8010007){  // 存疑
 
                         this.toNextPage({
@@ -275,9 +281,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
                                 account:params
                             }
                         })
-
                     }else {
-                        this.props.showModal(false)
                         this.props.showToast(error.msg)
                     }
                 })

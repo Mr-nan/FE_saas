@@ -28,11 +28,17 @@ let Platform = require('Platform');
 const IS_ANDROID = Platform.OS === 'android';
 
 let sms_no = ''
+let did_send_sms = false;
 
 export default class SmsFillScene extends Component {
     constructor(props) {
         super(props)
 
+    }
+
+    componentWillUnmount() {
+        did_send_sms = false;
+        sms_no = false;
     }
 
     render() {
@@ -88,7 +94,15 @@ export default class SmsFillScene extends Component {
                         style={{marginTop: 15}}
                         count={6}
                         onChangeText={(value) => {
+
+                            if(!did_send_sms){
+                                this.props.showToast('请先发送验证码')
+                            }
+
                             if(value.length === 6){
+                                if(!did_send_sms){
+                                    return;
+                                }
                                 this.props.codeCallBack(value, sms_no)
                             }
                         }}
@@ -125,6 +139,7 @@ export default class SmsFillScene extends Component {
 
                 sms_no = response.mjson.data.sms_no;
                 this.refs.sendMms.StartCountDown()
+                did_send_sms = true;
 
             }, (error)=>{
                 this.props.showToast('发送验证码失败')

@@ -86,14 +86,14 @@ export default class ZheShangAccountScene extends BaseComponent {
                     child_type: '1',
                     bank_id: 316
                 };
-                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
                     .then((response) => {
-                            account = response.mjson.data.account;
+                            account = response.mjson.data['316'][0];
                             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                             this.setState({
                                 renderPlaceholderOnly: 'success',
                                 source: ds.cloneWithRows([1]),
-                                info: response.mjson.data.account,
+                                info: account,
                                 isRefreshing: false
                             })
                             // this.getAccountData(datas.company_base_id,
