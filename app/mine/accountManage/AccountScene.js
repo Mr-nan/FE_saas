@@ -195,7 +195,7 @@ export  default class AccountScene extends BaseComponent {
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
                     removeClippedSubviews={false}
-                    style={{marginTop: Pixel.getTitlePixel(64), marginBottom: Pixel.getPixel(45)}}
+                    style={{marginTop: Pixel.getTitlePixel(64)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderHeader={this._renderHeader}
@@ -210,9 +210,10 @@ export  default class AccountScene extends BaseComponent {
                         />
                     }
                 />
+                <View style={{height: 1}}/>
                 <View style={{
                     width: width, height: Pixel.getPixel(44), backgroundColor: fontAndColor.COLORA3,
-                    flexDirection: 'row', position: 'absolute', bottom: 0
+                    flexDirection: 'row',
                 }}>
                     <TouchableOpacity onPress={() => {
                         this.toNextPage({
