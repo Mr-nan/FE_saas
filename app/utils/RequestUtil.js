@@ -53,9 +53,9 @@ const request = (url, method, params, backToLogin) => {
                 .then((responseData) => {
                     if (isOk) {
                         for (let key of Object.keys(params)) {
-                            // console.log(key + "===" + params[key]);
+                            console.log(key + "===" + params[key]);
                         }
-                        // console.log("success----------" + JSON.stringify(responseData));
+                        console.log("success----------" + JSON.stringify(responseData));
                         if (responseData.code == 1 && responseData.code!=='0001') {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
@@ -75,7 +75,7 @@ const request = (url, method, params, backToLogin) => {
                             }
                         }
                     } else {
-                        // console.log("error----------" + JSON.stringify(responseData));
+                        console.log("error----------" + JSON.stringify(responseData));
                         reject({mycode: -300});
                     }
                 })
