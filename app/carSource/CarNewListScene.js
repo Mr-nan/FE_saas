@@ -174,7 +174,6 @@ export  default  class CarNewListScene extends BaseComponent {
 
             if(data.code == 1){
                 if(data.result == 'true'){
-                    console.log('newCar===========================NEED_CHECK_RECOMMEND=========componentWillReceiveProps');
                     if(this.refs.HeadView){
                         if (this.refs.HeadView.state.isCheckRecommend)
                         {
@@ -205,7 +204,6 @@ export  default  class CarNewListScene extends BaseComponent {
 
             if(data.code == 1){
                 if(data.result == 'true'){
-                    console.log('newCar===========================NEED_CHECK_RECOMMEND=========initFinish');
                     isNewCarCheckRecommend = false
                     APIParameter.type = 4;
                     APIParameter.prov_id = 0;

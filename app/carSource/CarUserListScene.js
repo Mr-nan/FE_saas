@@ -163,7 +163,6 @@ export  default  class CarUserListScene extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('====componentWillReceiveProps========');
 
         StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
             if(data.code==1){
@@ -179,7 +178,6 @@ export  default  class CarUserListScene extends BaseComponent {
             if(data.code == 1){
                 if(data.result == 'true'){
                     if(this.refs.HeadView){
-                        console.log('userCar===========================NEED_CHECK_RECOMMEND=========componentWillReceiveProps');
                         if (this.refs.HeadView.state.isCheckRecommend)
                         {
                             this.refs.HeadView.setCheckRecommend(false);
@@ -213,7 +211,6 @@ export  default  class CarUserListScene extends BaseComponent {
 
             if(data.code == 1){
                 if(data.result == 'true'){
-                    console.log('userCar===========================NEED_CHECK_RECOMMEND=========initFinish');
                     isUserCarCheckRecommend = false
                     APIParameter.type = 4;
                     APIParameter.prov_id = 0;
