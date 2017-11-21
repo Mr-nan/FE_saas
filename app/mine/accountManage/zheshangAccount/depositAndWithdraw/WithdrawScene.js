@@ -60,7 +60,7 @@ export default class WithdrawScene extends BaseComponent {
                 };
 
                 //TODO
-                request(AppUrls.ZS_BANK_INSTRUCTION, 'Post', maps)
+                request(AppUrls.ZS_QUOTA, 'Post', maps)
                     .then((response) => {
                         this.setState({
                             allow_withdraw_amount: response.mjson.data.allow_withdraw_amount,
@@ -294,7 +294,7 @@ export default class WithdrawScene extends BaseComponent {
                         params: {
                             type: 3,
                             status: 1,
-                            account: params,
+                            params: params,
                         }
                     })
                 }, (error) => {
@@ -310,7 +310,8 @@ export default class WithdrawScene extends BaseComponent {
                             params: {
                                 type: 3,
                                 status: 0,
-                                account: params,
+                                params: params,
+                                error:error.mjson
                             }
                         })
 
@@ -323,8 +324,8 @@ export default class WithdrawScene extends BaseComponent {
                             params: {
                                 type: 3,
                                 status: 2,
-                                account: params,
-                                param:error
+                                params: params,
+                                error:error.mjson
                             }
                         })
                     }

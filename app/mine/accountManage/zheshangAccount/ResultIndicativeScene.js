@@ -21,6 +21,7 @@ import * as AppUrls from "../../../constant/appUrls";
 import md5 from "react-native-md5";
 import StorageUtil from "../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../constant/storageKeyNames";
+import SaasText from "./component/SaasText";
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -49,7 +50,7 @@ export default class ResultIndicativeScene extends BaseComponent {
         super(props)
 
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
             type: this.props.type,
             status: this.props.status,
         }
@@ -59,7 +60,7 @@ export default class ResultIndicativeScene extends BaseComponent {
 
     initFinish() {
         this.setState({
-            renderPlaceholderOnly: false,
+            renderPlaceholderOnly: 'success',
             type: this.props.type,
             status: this.props.status,
         })
@@ -76,9 +77,13 @@ export default class ResultIndicativeScene extends BaseComponent {
             navi_title = '充值'
         } else if (this.state.type === 3) {
             navi_title = '提现'
+        } else if (this.state.type === 4) {
+            navi_title = '更换银行卡'
+        } else if (this.state.type === 5) {
+            navi_title = '修改银行预留手机号'
         }
 
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly === 'blank') {
             return ( <TouchableWithoutFeedback onPress={() => {
                 this.setState({
                     show: false,
@@ -97,6 +102,26 @@ export default class ResultIndicativeScene extends BaseComponent {
             </TouchableWithoutFeedback>);
         }
 
+        if(this.state.renderPlaceholderOnly === 'loading'){
+
+            return(
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    <NavigationBar
+                        leftImageShow={true}
+                        leftTextShow={false}
+                        centerText={navi_title}
+                        rightText={""}
+                        leftImageCallBack={() => {
+                            this.backPage();
+                        }}
+                    />
+
+                    {this.loadView()}
+                </View>
+                )
+
+        }
+
 
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -109,6 +134,16 @@ export default class ResultIndicativeScene extends BaseComponent {
                         this.backPage();
                     }}
                 />
+
+                {this.loadMainView()}
+            </View>
+
+        )
+    }
+
+    loadMainView = ()=>{
+        return(
+            <View style={{flex: 1}}>
 
                 <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
                     <Image style={{
@@ -135,8 +170,9 @@ export default class ResultIndicativeScene extends BaseComponent {
                     />
                 </View>
                 {this.renderFooter()}
-            </View>
 
+
+            </View>
         )
     }
 
@@ -162,61 +198,81 @@ export default class ResultIndicativeScene extends BaseComponent {
             case 1: {
                 switch (this.state.status) {
                     case 0: {
-                        this.refreshOpenAccount()
-                    } break
-                    case 1: {
-                        this.backN(3)
-                    }break
-                    case 2: {
-                        this.backN(3)
-                    }break
-                    case 3: {
-                       this.backN(3)
-                    }break
-                }
-            }
-                break;
-            case 2: {
-                switch (this.state.status) {
-                    case 0: {
-                       this.refreshDepositeAndWithdraw()
-                    }break
-                    case 1: {
-                        this.backN(2)
-                    }break
-                    case 2: {
-                        this.backPage()
+                        this.refresh()
                     }
-
+                        break;
+                    case 1: {
+                        this.backN(4)  //开户成功跳卡片页
+                    }
+                        break;
+                    case 2: {
+                        this.backN(3)  //开户失败跳选择开户类型页
+                    }
+                        break;
+                    case 3: {
+                        this.backN(4)  //提交资料成功跳卡片页
+                    }
+                        break
                 }
             }
                 break;
+            case 2:
             case 3: {
                 switch (this.state.status) {
                     case 0: {
-                        this.refreshDepositeAndWithdraw()
-                    }break
+                        this.refresh()
+                    }
+                        break;
                     case 1: {
                         this.backN(2)
-                    }break
+                    }
+                        break;
                     case 2: {
                         this.backPage()
                     }
-
                 }
             }
                 break;
             case 4: {
                 switch (this.state.status) {
                     case 0: {
-                        return '处理中'
-                    }break
+                        this.refresh()
+                    }
+                        break
                     case 1: {
-                        return '恭喜您更换成功'
-                    }break
+                        this.backN(2)
+                    }
+                        break
                     case 2: {
-                        return '您的银行卡更换失败'
-                    }break
+                        this.backN(1)
+                    }
+                        break
+
+                }
+            }
+                break
+            case 5: { //更换手机号
+                switch (this.state.status) {
+                    case 0: {
+                        this.refresh()
+                    }
+                        break
+                    case 1: {
+                        if (this.props.dose_need_old_number_sms_code === false) {
+                            this.backN(2)
+                        } else {
+                            this.backN(3)
+                        }
+                    }
+                        break
+                    case 2: {
+                        if (this.props.dose_need_old_number_sms_code === false) {
+                            this.backN(1)
+                        } else {
+                            this.backN(2)
+                        }
+                    }
+                        break
 
                 }
             }
@@ -224,12 +280,47 @@ export default class ResultIndicativeScene extends BaseComponent {
 
     }
 
-    refreshDepositeAndWithdraw = ()=>{
+    refresh = () => {
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1 && data.result !== null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_id: datas.company_base_id,
+                    bank_id: 316,
+                    serial_no: this.props.error.serial_no,
+                };
+
+                this.setState({
+                    renderPlaceholderOnly: 'loading'
+                })
+                request(AppUrls.ZS_FETCH_STATUS, 'Post', maps)
+                    .then((response) => {
+
+
+
+                        this.setState({
+                            status: response.mjson.data.transfer_status,
+                            renderPlaceholderOnly: 'success',
+                        })
+                    }, (error) => {
+
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                        })
+                        this.props.showToast(error.mjson.msg)
+                    });
+            } else {
+                this.props.showToast('刷新失败');
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
+                });
+            }
+        })
 
     }
-    refreshOpenAccount = ()=>{
 
-    }
 
     backN = (n) => {
         const navigator = this.props.navigator;
@@ -270,7 +361,6 @@ export default class ResultIndicativeScene extends BaseComponent {
                     case 2: {
                         return '充值失败'
                     }
-
                 }
             }
                 break;
@@ -303,6 +393,21 @@ export default class ResultIndicativeScene extends BaseComponent {
 
                 }
             }
+                break;
+            case 5: {
+                switch (this.state.status) {
+                    case 0: {
+                        return '处理中'
+                    }
+                    case 1: {
+                        return '手机号码修改成功'
+                    }
+                    case 2: {
+                        return '您的手机号修改失败'
+                    }
+
+                }
+            }
         }
     }
 
@@ -311,33 +416,70 @@ export default class ResultIndicativeScene extends BaseComponent {
         if (this.state.type === 0 || this.state.type === 1) {
             if (this.state.status === 0) {
                 return null;
-            } else {
+            } else if (this.state.status === 1) {
 
-                let bank_no = this.props.account.acct_no.substr(this.props.account.acct_no.length - 4, 4);
+                let bank_no = this.props.params.acct_no.substr(this.props.params.acct_no.length - 4, 4);
                 let bank_name = this.props.append;
                 return <View style={{alignItems: 'center'}}>
                     <Text allowFontScaling={false}
                           style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已成功开通浙商银行存管账户</Text>
                     <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}> 并已经绑定{bank_name}（尾号{bank_no}）的银行卡</Text>
                 </View>
+            } else if (this.state.status === 2) {
+                return <View style={{alignItems: 'center'}}>
+                    <SaasText style={{
+                        color: FontAndColor.COLORA1,
+                        marginBottom: 5,
+                        textAlign: 'center'
+                    }}>{this.props.error.msg}</SaasText>
+                </View>
+            } else {
+                return <View style={{alignItems: 'center'}}>
+                    <Text allowFontScaling={false}
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已成功提交浙商银行存管账户的资料</Text>
+                    <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}>银行将在1-2个工作日进行审核</Text>
+                </View>
             }
         } else if (this.state.type === 2 || this.state.type === 3) {
             if (this.state.status === 1) {
-                return <Text allowFontScaling={false} style={{fontSize: 18}}>￥{this.props.account.amount}</Text>
+                return <Text allowFontScaling={false} style={{fontSize: 18}}>￥{this.props.params.amount}</Text>
             } else {
                 return <View style={{alignItems: 'center', marginHorizontal: 50}}>
                     <Text allowFontScaling={false} style={{
                         color: FontAndColor.COLORA1,
                         marginBottom: 5,
                         textAlign: 'center'
-                    }}>{this.props.param.mjson.msg ? this.props.param.mjson.msg : '处理失败'}</Text>
+                    }}>{this.props.error.msg ? this.props.error.msg : '处理失败'}</Text>
                 </View>
             }
         } else if (this.state.type === 4) {
-            return <View style={{alignItems: 'center'}}>
-                <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1, marginBottom: 5}}>新银行卡为</Text>
-                <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}> 6282 9262 9292 229 220</Text>
-            </View>
+            if (this.state.status === 0) {
+                return null
+            } else if (this.state.status === 1) {
+                return <View style={{alignItems: 'center', marginTop: 10}}>
+                    <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1, marginBottom: 5}}>新银行卡为</Text>
+                    <Text allowFontScaling={false}
+                          style={{color: FontAndColor.COLORA1}}> {this.props.params.new_acct_no}</Text>
+                </View>
+            } else {
+                return <View style={{alignItems: 'center', marginTop: 10}}>
+                    <Text allowFontScaling={false}
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>{this.props.error.msg}</Text>
+                </View>
+            }
+        } else {
+            if (this.state.status === 0) {
+                return null
+            } else if (this.state.status === 1) {
+                return <View style={{alignItems: 'center', marginTop: 10}}>
+                    <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1, marginBottom: 5}}>转账或充值是请填写新的手机号码</Text>
+                </View>
+            } else {
+                return <View style={{alignItems: 'center', marginTop: 10}}>
+                    <Text allowFontScaling={false}
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>{this.props.error.msg}</Text>
+                </View>
+            }
         }
     }
 
@@ -370,6 +512,20 @@ export default class ResultIndicativeScene extends BaseComponent {
                     return require('../../../../images/account/withdraw_failure.png')
                 }
             }
+        } else if (this.state.type === 5) {  //修改手机号
+            switch (this.state.status) {
+                case 0: {
+                    return require('../../../../images/account/processing.png')
+                }
+                case 1: {
+                    return require('../../../../images/account/mobile_success.png')
+                }
+                case 2: {
+                    return require('../../../../images/account/mobile_fail.png')
+                }
+            }
+
+
         }
     }
 
@@ -383,7 +539,9 @@ export default class ResultIndicativeScene extends BaseComponent {
             }
                 break;
             case 1:
-            case 4: {   // 企业开户、更换银行卡
+            case 4:
+                case 5:{
+                // 企业开户、更换银行卡、更换手机号
                 return <View style={{marginTop: 200}}/>
             }
                 break;

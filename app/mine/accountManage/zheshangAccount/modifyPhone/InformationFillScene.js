@@ -22,13 +22,14 @@ import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import TextInputItem from '../component/TextInputItem'
 import NewNumber from './NewNumber'
+import ResultIndicativeScene from '../ResultIndicativeScene'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
 let Platform = require('Platform');
 
-let is_need_old_number_sms_code = false; //是否需要向旧的手机号发送短信验证码  他行对公客户必须输入验证码，其他的不需要
+let dose_need_old_number_sms_code = false; //是否需要向旧的手机号发送短信验证码  他行对公客户必须输入验证码，其他的不需要
 
 let mobile_no = ''
 let sms_code = ''
@@ -39,7 +40,7 @@ export default class InformationFillScene extends BaseComponent {
     constructor(props) {
         super(props);
         if (this.props.account_open_type === 1 && this.props.bind_bank_card_type === 0) {
-            is_need_old_number_sms_code = true;
+            dose_need_old_number_sms_code = true;
         }
         this.state = {
             renderPlaceholderOnly: true,
@@ -74,7 +75,7 @@ export default class InformationFillScene extends BaseComponent {
         return (
             <TouchableWithoutFeedback
                 onPress={()=>{
-                    this.componentDidMount()
+                    this.dismissKeyboard()
                 }}
             >
                 <View style={styles.container}>
@@ -114,13 +115,13 @@ export default class InformationFillScene extends BaseComponent {
                     <View style={{width: width, marginTop: 15,}}>
                         <TextInputItem
                             ref={'mobile'}
-                            title={is_need_old_number_sms_code ? '旧手机号' : '新手机号'}
+                            title={dose_need_old_number_sms_code ? '旧手机号' : '新手机号'}
                             textPlaceholder={'请输入您的手机号'}
                             keyboardType={'number-pad'}
                             rightButton={true}
                             maxLength={11}
-                            editable={is_need_old_number_sms_code ? false : true}
-                            value={is_need_old_number_sms_code ? this.props.account.operate_mobile : ''}
+                            editable={dose_need_old_number_sms_code ? false : true}
+                            value={dose_need_old_number_sms_code ? this.props.account.operate_mobile : ''}
                             callBackSms={this.smscode}
                         />
                         <TextInputItem
@@ -130,6 +131,7 @@ export default class InformationFillScene extends BaseComponent {
                             title={'验证码'}
                             textPlaceholder={'请输入短信验证码'}
                             separator={false}
+                            keyboardType={'number-pad'}
                             //value={'332036'}
                         />
                     </View>
@@ -179,7 +181,7 @@ export default class InformationFillScene extends BaseComponent {
 
     next = ()=>{
 
-        if(is_need_old_number_sms_code){
+        if(dose_need_old_number_sms_code){
             if(!this.verify(true)) {return}
 
             this.toNextPage({
@@ -207,11 +209,38 @@ export default class InformationFillScene extends BaseComponent {
                         sub_acct_no:this.props.account.bank_card_no,
                         enter_base_id: result.company_base_id,
                     }
+
+
+
+                    this.toNextPage({
+                        component:ResultIndicativeScene,
+                        name:'ResultIndicativeScene',
+                        params:{
+                            type:5,
+                            status:1,
+                            params:params,
+                            dose_need_old_number_sms_code:dose_need_old_number_sms_code,
+                            error:{msg:'发送方式发送分手就分手十大歌手'}
+                        }
+                    })
+                    return;
+
+
+
                     this.props.showModal(true)
                     request(AppUrls.ZS_BANK_MODIFY_MOBILE, 'POST', params).then((response) => {
                         this.props.showModal(false)
-                        this.props.showToast('手机号码修改成功')
-                        this.backPage();
+
+                        this.toNextPage({
+                            component:ResultIndicativeScene,
+                            name:'ResultIndicativeScene',
+                            params:{
+                                type:5,
+                                status:1,
+                                params:params,
+                                dose_need_old_number_sms_code:dose_need_old_number_sms_code
+                            }
+                        })
 
                     }, (error) => {
 
@@ -225,11 +254,25 @@ export default class InformationFillScene extends BaseComponent {
                                 params:{
                                     type:5,
                                     status:0,
-                                    account:params
+                                    params:params,
+                                    dose_need_old_number_sms_code:dose_need_old_number_sms_code,
+                                    error:error.mjson
                                 }
                             })
-                        }else {
+                        }else if(error.mycode === -300 || error.mycode === -500){
                             this.props.showToast(error.mjson.msg)
+                        }else {
+                            this.toNextPage({
+                                component: ResultIndicativeScene,
+                                name: 'ResultIndicativeScene',
+                                params: {
+                                    type: 5,
+                                    status: 2,
+                                    account: params,
+                                    error:error.mjson,
+                                    dose_need_old_number_sms_code:dose_need_old_number_sms_code
+                                }
+                            })
                         }
                     })
 

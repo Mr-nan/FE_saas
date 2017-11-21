@@ -22,6 +22,7 @@ import md5 from "react-native-md5";
 import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import TextInputItem from '../component/TextInputItem'
+import ResultIndicativeScene from '../ResultIndicativeScene'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -56,52 +57,63 @@ export default class NameAndIdScene extends BaseComponent {
             }}>
                 <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                     <NavigationBar
-                        leftImageShow={false}
-                        leftTextShow={true}
-                        leftText={""}
-                        centerText={'修改银行预留手机号'}
+                        leftImageShow={true}
+                        leftTextShow={false}
+                        centerText={"修改银行预留手机号"}
                         rightText={""}
-                        centerTextStyle={{paddingHorizontal: 0, backgroundColor: 'red'}}
+                        leftImageCallBack={this.backPage}
+                        centerTextStyle={{paddingLeft: 0, paddingRight: 0}}
                     />
                 </View>
             </TouchableWithoutFeedback>);
         }
         return (
-            <View style={styles.container}>
-                <NavigationBar
-                    leftImageShow={true}
-                    leftTextShow={false}
-                    centerText={"修改银行预留手机号"}
-                    rightText={""}
-                    leftImageCallBack={this.backPage}
-                    centerTextStyle={{paddingLeft: 0, paddingRight: 0}}
-                />
-                <View style={{width: width, marginTop: 15,}}>
 
-                    <TextInputItem
-                        ref = {'new_mobile'}
-                        title={'新手机号'}
-                        textPlaceholder={'请输入您的手机号'}
-                        keyboardType={'number-pad'}
-                        rightButton={true}
-                        maxLength={11}
-                        callBackSms={this.smscode}
+            <TouchableWithoutFeedback
+                onPress={()=>{
+                    this.dismissKeyboard()
+                }}
+            >
+                <View style={styles.container}>
+                    <NavigationBar
+                        leftImageShow={true}
+                        leftTextShow={false}
+                        centerText={"修改银行预留手机号"}
+                        rightText={""}
+                        leftImageCallBack={this.backPage}
+                        centerTextStyle={{paddingLeft: 0, paddingRight: 0}}
                     />
-                    <TextInputItem
-                        ref={'new_sms_code'}
-                        titleStyle={{letterSpacing: 8}}
-                        inputTextStyle={{paddingLeft: 8}}
-                        title={'验证码'}
-                        textPlaceholder={'请输入短信验证码'}
-                        separator={false}
-                    />
+                    <View style={{width: width, marginTop: 15,}}>
+
+                        <TextInputItem
+                            ref = {'new_mobile'}
+                            title={'新手机号'}
+                            textPlaceholder={'请输入您的手机号'}
+                            keyboardType={'number-pad'}
+                            rightButton={true}
+                            maxLength={11}
+                            callBackSms={this.smscode}
+                        />
+                        <TextInputItem
+                            ref={'new_sms_code'}
+                            titleStyle={{letterSpacing: 8}}
+                            inputTextStyle={{paddingLeft: 8}}
+                            title={'验证码'}
+                            textPlaceholder={'请输入短信验证码'}
+                            separator={false}
+                            keyboardType={'number-pad'}
+                        />
+                    </View>
+                    <MyButton buttonType={MyButton.TEXTBUTTON}
+                              content={'确认'}
+                              parentStyle={styles.buttonStyle}
+                              childStyle={styles.buttonTextStyle}
+                              mOnPress={this.next}/>
                 </View>
-                <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'确认'}
-                          parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle}
-                          mOnPress={this.next}/>
-            </View>
+
+            </TouchableWithoutFeedback>
+
+
         );
     }
 
@@ -135,7 +147,6 @@ export default class NameAndIdScene extends BaseComponent {
                 this.props.showToast('获取信息失败')
             }
         })
-
     }
 
     next = () => {
@@ -163,8 +174,15 @@ export default class NameAndIdScene extends BaseComponent {
                 this.props.showModal(true)
                 request(AppUrls.ZS_BANK_MODIFY_MOBILE, 'POST', params).then((response) => {
                     this.props.showModal(false)
-                    this.props.showToast('手机号码修改成功')
-                    this.backN(2)
+                    this.toNextPage({
+                        component:ResultIndicativeScene,
+                        name:'ResultIndicativeScene',
+                        params:{
+                            type:5,
+                            status:1,
+                            params:params,
+                        }
+                    })
 
                 }, (error) => {
                     this.props.showModal(false)
@@ -177,11 +195,23 @@ export default class NameAndIdScene extends BaseComponent {
                             params:{
                                 type:5,
                                 status:0,
-                                account:params
+                                account:params,
+                                error:error.mjson
                             }
                         })
-                    }else {
+                    }else if(error.mycode === -300 || error.mycode === -500){
                         this.props.showToast(error.mjson.msg)
+                    }else {
+                        this.toNextPage({
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type: 5,
+                                status: 2,
+                                account: params,
+                                error:error.mjson,
+                            }
+                        })
                     }
                 })
 

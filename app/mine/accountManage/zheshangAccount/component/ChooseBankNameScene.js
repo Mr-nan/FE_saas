@@ -25,7 +25,7 @@ import * as AppUrls from "../../../../constant/appUrls";
 import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import TextInputItem from './TextInputItem'
-import CardPhoneSmsScene from '../openAccount/openIndividual/CardPhoneSmsScene'
+import CardPhoneSmsScene from '../openAccount/CardPhoneSmsScene'
 import ProvinceListScene from '../../../../carSource/ProvinceListScene'
 import * as fontAndColor from '../../../../constant/fontAndColor';
 import SText from './SaasText'

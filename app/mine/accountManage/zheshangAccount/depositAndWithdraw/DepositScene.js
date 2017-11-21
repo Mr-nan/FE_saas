@@ -57,7 +57,9 @@ export default class DepositScene extends BaseComponent {
             deposit_style: 0,   //0:快捷充值 1：其他充值
             sms_pad: false,
             money_input: '',
-            allow_withdraw_amount:''
+            allow_withdraw_amount:'',
+            dayAmt:'',
+            singleAmt:''
         }
         this.initValue = ['', '', '', '', '', '', ''];
     }
@@ -82,10 +84,13 @@ export default class DepositScene extends BaseComponent {
                 };
 
                 //TODO
-                request(AppUrls.ZS_BANK_INSTRUCTION, 'Post', maps)
+                request(AppUrls.ZS_QUOTA, 'Post', maps)
                     .then((response) => {
+
                     this.setState({
-                        allow_withdraw_amount:response.mjson.data.allow_withdraw_amount,
+                        dayAmt:response.mjson.data.limit_info.dayAmt,
+                        singleAmt:response.mjson.data.limit_info.singleAmt,
+                        total_amount:response.mjson.data.total_amount
                     })
                     }, (error) => {
                         this.props.showToast(error.mjson.msg)
@@ -150,8 +155,7 @@ export default class DepositScene extends BaseComponent {
                                 fontSize: 17,
                                 marginBottom: 10
                             }}>{this.props.account.bank_name}账户 {this.props.account.bind_bank_card_name}</SText>
-                            <SText style={{color: FontAndColor.COLORA1}}>充值限额 100万/笔
-                                ,1000万/日</SText>
+                            <SText style={{color: FontAndColor.COLORA1}}>{'充值限额'+this.state.singleAmt+'/笔 '+this.state.dayAmt+'/日'}</SText>
                         </View>
                     </View>
 
@@ -222,7 +226,7 @@ export default class DepositScene extends BaseComponent {
                                         <View style={{flexDirection: 'row', marginBottom: 5}}>
                                             <SText
                                                 style={{color: FontAndColor.COLORA1}}>{this.props.account.bank_name}现金余额:</SText>
-                                            <SText>{this.props.account.balance}元</SText>
+                                            <SText>{this.state.total_amount}元</SText>
                                         </View>
                                         {/*/!*<View style={{flexDirection: 'row'}}>*!/  //充值页面可用余额取消*/}
                                         {/*<SText*/}
@@ -252,18 +256,16 @@ export default class DepositScene extends BaseComponent {
                                         marginVertical: 15
                                     }}/>
                                     <SText style={{fontWeight: 'bold', marginBottom: 5}}>转账时填写的信息如下：</SText>
-                                    <SText style={{fontWeight: 'bold', marginBottom: 5}}>收款人姓名：王淑梅</SText>
+                                    <SText style={{fontWeight: 'bold', marginBottom: 5}}>收款人姓名：{this.props.account.bank_card_name}</SText>
                                     <SText style={{
                                         fontWeight: 'bold',
                                         marginBottom: 5
-                                    }}>收款人账号：2282202829020282929222</SText>
+                                    }}>收款人账号：{this.props.account.cz_elec_account}</SText>
                                     <SText style={{fontWeight: 'bold', marginBottom: 25}}>收款银行：浙商银行</SText>
 
                                 </View>
 
-
                         }
-
 
                     </View>
 
@@ -362,11 +364,32 @@ export default class DepositScene extends BaseComponent {
                 }
 
 
+                this.toNextPage({
+                    component: ResultIndicativeScene,
+                    name: 'ResultIndicativeScene',
+                    params: {
+                        type: 2,
+                        status: 0,
+                        account: params,
+                        error:{serial_no:'52847104111231311313'}
+                    }
+                })
+
+                this.setState({
+                    sms_pad: false
+                })
+
+                return;
+
 
                 this.props.showModal(true)
 
                 request(AppUrls.ZS_DEPOSIT, 'POST', params).then((response) => {
                     this.props.showModal(false)
+                    this.setState({
+                        sms_pad: false
+                    })
+
                     this.toNextPage({
                         component: ResultIndicativeScene,
                         name: 'ResultIndicativeScene',
@@ -390,6 +413,7 @@ export default class DepositScene extends BaseComponent {
                                 type: 2,
                                 status: 0,
                                 account: params,
+                                error:error.mjson
                             }
                         })
 
@@ -403,7 +427,7 @@ export default class DepositScene extends BaseComponent {
                                 type: 2,
                                 status: 2,
                                 account: params,
-                                param:error
+                                error:error.mjson
                             }
                         })
 

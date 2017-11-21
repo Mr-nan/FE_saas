@@ -1278,12 +1278,7 @@ export const ZS_WITHDRAW = BASEURL + "v1/account.cz_bank/withdraw";
  *  浙商账户流水
  */
 export const ZS_WORTER_FLOW = BASEURL + "v2/user.account/payLog";
-/**
- *  from @dingnyonggang
- *
- *  银行限额说明
- */
-export const ZS_BANK_INSTRUCTION = BASEURL + "v1/account.cz_bank/getPaymentRelatedInfo";
+
 /**
  *  from @dingnyonggang
  *
@@ -1296,7 +1291,18 @@ export const ZS_BANK_MODIFY_MOBILE = BASEURL + "v1/account.cz_bank/modifyMobile"
  *   浙商账户修改绑定的银行卡号
  */
 export const ZS_MODIFY_BANK_CARD = BASEURL + "v1/account.cz_bank/modifyAccountInfo";
-
+/**
+ *  from @dingnyonggang
+ *
+ *   浙商账户查询交易相关的限额信息，可取金额，可用金额
+ */
+export const ZS_QUOTA = BASEURL + "v1/account.cz_bank/getPaymentRelatedInfo";
+/**
+ *  from @dingnyonggang
+ *
+ *   浙商账户查询交易相关的限额信息，可取金额，可用金额
+ */
+export const ZS_FETCH_STATUS = BASEURL + "v1/user.account/getTransferRecordStatus";
 
 /**
  *   获取用户的账户详情(我的账户页面-卡片页  调用)

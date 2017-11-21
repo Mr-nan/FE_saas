@@ -20,8 +20,8 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigationView from '../../../component/AllNavigationView';
-import NameAndIdScene from "./openAccount/openIndividual/NameAndIdScene";
-import NameInformationScene from "./openAccount/openEnterprise/NameInformationScene";
+import NameAndIdScene from "./openAccount/NameAndIdScene";
+
 export  default class ZSAccountTypeSelectScene extends BaseComponent {
 
     constructor(props) {

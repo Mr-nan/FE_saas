@@ -146,8 +146,6 @@ export default class SmsFillScene extends Component {
 
             })}
         })
-
-
     }
 
 }

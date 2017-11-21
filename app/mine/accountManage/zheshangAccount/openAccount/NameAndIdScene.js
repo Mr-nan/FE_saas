@@ -12,17 +12,17 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
 } from "react-native";
-import BaseComponent from "../../../../../component/BaseComponent";
-import NavigationBar from "../../../../../component/NavigationBar";
-import * as FontAndColor from "../../../../../constant/fontAndColor";
-import PixelUtil from "../../../../../utils/PixelUtil";
-import MyButton from "../../../../../component/MyButton";
-import {request} from "../../../../../utils/RequestUtil";
-import * as AppUrls from "../../../../../constant/appUrls";
+import BaseComponent from "../../../../component/BaseComponent";
+import NavigationBar from "../../../../component/NavigationBar";
+import * as FontAndColor from "../../../../constant/fontAndColor";
+import PixelUtil from "../../../../utils/PixelUtil";
+import MyButton from "../../../../component/MyButton";
+import {request} from "../../../../utils/RequestUtil";
+import * as AppUrls from "../../../../constant/appUrls";
 import md5 from "react-native-md5";
-import StorageUtil from "../../../../../utils/StorageUtil";
-import * as StorageKeyNames from "../../../../../constant/storageKeyNames";
-import TextInputItem from '../../component/TextInputItem'
+import StorageUtil from "../../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../../constant/storageKeyNames";
+import TextInputItem from '../component/TextInputItem'
 import CardPhoneSmsScene from './CardPhoneSmsScene'
 
 let Dimensions = require('Dimensions');
@@ -88,7 +88,7 @@ export default class NameAndIdScene extends BaseComponent {
                         <TextInputItem
                             ref='name'
                             title={type === 1?'企业名称':'真实姓名'}
-                            value={'测试零零'}
+
                         />
 
                         <TextInputItem
@@ -96,7 +96,6 @@ export default class NameAndIdScene extends BaseComponent {
                             title={type === 1?'组织机构':'证件号码'}
                             textPlaceholder={type===1?'请输入企业组织机构代码':'请输入身份证号码'}
                             separator={false}
-                            value={'150121198506026213'}
                         />
                     </View>
                     <MyButton buttonType={MyButton.TEXTBUTTON}
@@ -122,7 +121,7 @@ export default class NameAndIdScene extends BaseComponent {
         if(id === '' || id === null){
             this.props.showToast(type === 1?'请输入企业组织机构代码':'请输入身份证号码'); return;
         }
-        if(id.length!==18&&type === 1){
+        if(id.length!==18&&type === 2){
             this.props.showToast('身份证号格式有误'); return;
         }
 

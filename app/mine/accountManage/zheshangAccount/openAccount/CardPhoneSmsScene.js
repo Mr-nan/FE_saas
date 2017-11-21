@@ -11,19 +11,19 @@ import {
     InteractionManager,
     TouchableWithoutFeedback
 } from "react-native";
-import BaseComponent from "../../../../../component/BaseComponent";
-import NavigationBar from "../../../../../component/NavigationBar";
-import * as FontAndColor from "../../../../../constant/fontAndColor";
-import PixelUtil from "../../../../../utils/PixelUtil";
-import MyButton from "../../../../../component/MyButton";
-import {request} from "../../../../../utils/RequestUtil";
-import * as AppUrls from "../../../../../constant/appUrls";
+import BaseComponent from "../../../../component/BaseComponent";
+import NavigationBar from "../../../../component/NavigationBar";
+import * as FontAndColor from "../../../../constant/fontAndColor";
+import PixelUtil from "../../../../utils/PixelUtil";
+import MyButton from "../../../../component/MyButton";
+import {request} from "../../../../utils/RequestUtil";
+import * as AppUrls from "../../../../constant/appUrls";
 import md5 from "react-native-md5";
-import StorageUtil from "../../../../../utils/StorageUtil";
-import * as StorageKeyNames from "../../../../../constant/storageKeyNames";
-import TextInputItem from '../../component/TextInputItem'
-import ResultIndicativeScene from '../../ResultIndicativeScene'
-import ChooseBankNameScene from '../../component/ChooseBankNameScene'
+import StorageUtil from "../../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../../constant/storageKeyNames";
+import TextInputItem from '../component/TextInputItem'
+import ResultIndicativeScene from '../ResultIndicativeScene'
+import ChooseBankNameScene from '../component/ChooseBankNameScene'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -35,6 +35,7 @@ let bank_no = ''
 let bank_name = ''
 let mobile_no = ''
 let sms_code = ''
+let sms_no = ''
 
 let type = -1;
 //  1：企业
@@ -45,7 +46,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
     constructor(props) {
         super(props);
 
-        type = props.account.type;
+        type = parseInt(props.account.user_type)
 
         this.state = {
             renderPlaceholderOnly: true,
@@ -102,7 +103,6 @@ export default class CardPhoneSmsScene extends BaseComponent {
                             title={'银行卡'}
                             textPlaceholder={type === 1?'请输入企业银行卡号':'请输入您的银行卡号'}
                             keyboardType={'number-pad'}
-                            value={'6223093310090136493'}
                             onChangeText={this.bank}
                             loading={this.state.loading_bank}
                             annotation={this.state.bankName}
@@ -140,7 +140,6 @@ export default class CardPhoneSmsScene extends BaseComponent {
                             callBackSms={this.smscode}
                             maxLength={11}
                             keyboardType={'number-pad'}
-                            value={'15701239874'}
                         />
                         <TextInputItem
                             ref={'sms_code'}
@@ -214,10 +213,9 @@ export default class CardPhoneSmsScene extends BaseComponent {
     // 开户
     next = () => {
 
-        if(!this.verify(true)) {return};
+        if(!this.verify(true)) {return}
 
 
-        this.props.showModal(true)
 
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1) {
@@ -233,22 +231,22 @@ export default class CardPhoneSmsScene extends BaseComponent {
                 let params = {
                     device_code:device_code,
                     enter_base_id: result.company_base_id,
-                    from_bank_id: 123456789,
                     mobile_no: mobile_no,
                     sub_acct_no: this.props.account.card_no,
                     sub_acct_name:this.props.account.cust_name,
-                    type: 0,
                     acct_name:this.props.account.cust_name,
                     acct_no:bank_card_no,
                     acct_type:type,
                     bank_no:bank_no,
                     cert_no:this.props.account.cert_no,
                     cert_type:1,
-                    sms_code:'123456',
-                    sms_no:'52344234',
+                    sms_code:sms_code,
+                    sms_no:sms_no,
                     user_type:type,
                     bank_name:bank_name
                 }
+
+                this.props.showModal(true)
 
                 request(AppUrls.ZS_OPEN_ACCOUNT, 'POST', params).then((response)=>{
 
@@ -259,12 +257,12 @@ export default class CardPhoneSmsScene extends BaseComponent {
                         name:'ResultIndicativeScene',
                         params:{
                             type:type === 1?1:0,
-                            status:1,
-                            account:params,
+                            status:(this.state.bankName !== '浙商银行'&&type===1)?3:1,
+                            params:params,
                             append:this.state.bankName,
                         }
                     })
-                    console.log(response);
+
 
                 }, (error)=>{
 
@@ -278,11 +276,23 @@ export default class CardPhoneSmsScene extends BaseComponent {
                             params:{
                                 type:type === 1?1:0,
                                 status:0,
-                                account:params
+                                params:params,
+                                error:error.mjson
                             }
                         })
-                    }else {
+                    }else if(error.mycode === -500 ||error.mycode === -300){
                         this.props.showToast(error.msg)
+                    }else { // 开户失败
+                        this.toNextPage({
+                            component:ResultIndicativeScene,
+                            name:'ResultIndicativeScene',
+                            params:{
+                                type:type === 1?1:0,
+                                status:2,
+                                params:params,
+                                error:error.mjson
+                            }
+                        })
                     }
                 })
 
@@ -313,15 +323,16 @@ export default class CardPhoneSmsScene extends BaseComponent {
 
                 request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {
                         this.refs.mobile_no.StartCountDown();
+                        sms_no=response.mjson.data.sms_no
                         console.log(response);
 
                 }, (error) => {
                     this.props.showModal(false)
-                    this.props.showToast(error.msg)
+                    this.props.showToast(error.mjson.msg)
                 })
 
             } else {
-                this.props.showToast('获取信息失败')
+                this.props.showToast('获取短信验证码失败')
             }
         })
 

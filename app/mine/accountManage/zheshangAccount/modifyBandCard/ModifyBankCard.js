@@ -211,7 +211,9 @@ export default class ModifyBankCard extends BaseComponent {
                     bank_name:bank_name,
 
                 }
+
                 this.props.showModal(true)
+
                 request(AppUrls.ZS_MODIFY_BANK_CARD, 'POST', params).then((response)=>{
                     this.props.showModal(false)
                     this.toNextPage({
@@ -234,14 +236,25 @@ export default class ModifyBankCard extends BaseComponent {
                             params:{
                                 type:4,
                                 status:0,
-                                account:params
+                                params:params,
+                                error:error.mjson
                             }
                         })
 
-                    }else {
+                    }else if(error.mycode === -300 || error.mycode === -500){
                         this.props.showToast(error.mjson.msg)
+                    }else {
+                        this.toNextPage({
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type: 4,
+                                status: 2,
+                                account: params,
+                                error:error.mjson,
+                            }
+                        })
                     }
-
 
                 })
 
