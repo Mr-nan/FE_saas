@@ -19,6 +19,7 @@ import * as fontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import {request} from "../../../utils/RequestUtil";
 import * as AppUrls from "../../../constant/appUrls";
+import TrustAccountContractScene from "../trustAccount/TrustAccountContractScene";
 const Pixel = new PixelUtil();
 
 export default class OpenTrustAccountView extends BaseComponent {
@@ -29,6 +30,7 @@ export default class OpenTrustAccountView extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.contractList = [];
         this.state = {
             isShow: false
         };
@@ -42,10 +44,57 @@ export default class OpenTrustAccountView extends BaseComponent {
 
     };
 
+    /**
+     * 控制显示、隐藏
+     * @param isShow
+     **/
     changeState = (isShow) => {
         this.setState({
             isShow: isShow
         });
+    };
+
+    /**
+     *   跳转合同预览页
+     **/
+    openContractScene = (agreement_id) => {
+        if (this.contractList.length === 0) {
+            this.props.showModal(true);
+            let maps = {
+                source_type: '3',
+                fund_channel: '信托'
+            };
+            request(AppUrls.AGREEMENT_LISTS, 'Post', maps)
+                .then((response) => {
+                    this.props.showModal(false);
+                    //console.log('USER_ACCOUNT_INFO=====', response.mjson.data['zsyxt'].status);
+                    /*                this.toNextPage({
+                     name: 'AccountFlowScene',
+                     component: AccountFlowScene, params: {}
+                     })*/
+                    this.contractList = response.mjson.data.list;
+                    this.toNextPage({
+                        name: 'TrustAccountContractScene',
+                        component: TrustAccountContractScene,
+                        params: {
+                            title: this.contractList[0].name,
+                            webUrl: this.contractList[0].url
+                        }
+                    })
+                }, (error) => {
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+        } else {
+            this.toNextPage({
+                name: 'TrustAccountContractScene',
+                component: TrustAccountContractScene,
+                params: {
+                    title: this.contractList[0].name,
+                    webUrl: this.contractList[0].url
+                }
+            })
+        }
     };
 
     /**
@@ -100,6 +149,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                 </Text>
                                 <Text
                                     allowFontScaling={false}
+                                    onPress={() => {this.openContractScene(1)}}
                                     style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: fontAndColor.COLORA1,
@@ -109,6 +159,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                 </Text>
                                 <Text
                                     allowFontScaling={false}
+                                    onPress={() => {this.openContractScene(1)}}
                                     style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: fontAndColor.COLORA1,
@@ -118,6 +169,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                 </Text>
                                 <Text
                                     allowFontScaling={false}
+                                    onPress={() => {this.openContractScene(1)}}
                                     style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: fontAndColor.COLORA1,
@@ -127,6 +179,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                 </Text>
                                 <Text
                                     allowFontScaling={false}
+                                    onPress={() => {this.openContractScene(1)}}
                                     style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: fontAndColor.COLORA1,
@@ -136,6 +189,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                 </Text>
                                 <Text
                                     allowFontScaling={false}
+                                    onPress={() => {this.openContractScene(1)}}
                                     style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: fontAndColor.COLORA1,

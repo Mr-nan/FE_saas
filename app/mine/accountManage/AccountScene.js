@@ -128,7 +128,7 @@ export  default class AccountScene extends BaseComponent {
                     enter_id: enterBaseIds,
                     isRefreshing: false
                 });
-                if (info.account_open_type == 2 && this.trustAccountState == 0) {
+                if (info.account_open_type == 2 && this.trustAccountState == 3) {
                     this.refs.openAccount.changeState(true);
                 }
             }, (error) => {
@@ -255,7 +255,9 @@ export  default class AccountScene extends BaseComponent {
                     title="账户管理"
                     backIconClick={this.backPage}
                 />
-                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}/>
+                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}
+                                      showModal={this.props.showModal}
+                                      navigator={this.props.navigator}/>
             </View>
         );
     }
