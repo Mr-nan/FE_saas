@@ -696,11 +696,8 @@
 		13B07FAE1A68108700A75B9A /* FE_Sass */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				247AE7131FA3311C0039B52A /* LocationManger */,
-=======
 				7D017DCE1F8E217800ED740C /* FE_Sass.entitlements */,
->>>>>>> f30227abdeee8268e89c31f153e1b535369318b6
 				1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */,
 				7DB2CBB31E779DDF00DE146C /* OCRSCancer */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
