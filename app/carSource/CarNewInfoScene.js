@@ -634,7 +634,7 @@ export default class CarNewInfoScene extends BaseComponent {
     // 查看更多推荐车型
     pushCarMoreScene=()=>{
         this.backToTop();
-        DeviceEventEmitter.emit('pushCarListScene');
+        DeviceEventEmitter.emit('pushNewCarListScene');
     }
 
     carCellOnPres = (carID) => {

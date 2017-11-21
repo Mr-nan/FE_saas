@@ -209,6 +209,8 @@ export default class CarNewNumberListScene extends BaseComponent {
 
         }else {
 
+
+            // this.SelectCarSourceView.setVisible(true);
             let carNumber = parseFloat(this.props.carData.stock)-parseFloat(this.props.carData.reserve_num);
             if(carNumber <=0)
             {

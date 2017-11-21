@@ -71,7 +71,8 @@ export default class MainPage extends BaseComponent {
 
     componentWillUnmount() {
         tabArray = [];
-        this.emitter.remove();
+        this.emitterNewCarPage.remove();
+        this.emitterUserCarPage.remove();
     }
 
     /**
@@ -85,8 +86,12 @@ export default class MainPage extends BaseComponent {
             openSelectBranch: false
 
         }
-        this.emitter = DeviceEventEmitter.addListener('pushCarListScene',()=>{
+        this.emitterNewCarPage = DeviceEventEmitter.addListener('pushNewCarListScene',()=>{
             StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'true');
+            this.setState({selectedTab: 'carpage'});
+        });
+        this.emitterUserCarPage = DeviceEventEmitter.addListener('pushUserCarListScene',()=>{
+            StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_USER_CAR,'true');
             this.setState({selectedTab: 'carpage'});
         })
         tabArray = [];

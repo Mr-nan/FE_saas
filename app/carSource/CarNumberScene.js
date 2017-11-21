@@ -48,7 +48,7 @@ export default class CarNumberScene extends BaceComponent {
         super(props);
         // 初始状态
         this.state = {
-            switchoverType:this.props.defaultType
+            switchoverType:this.props.defaultType?this.props.defaultType:0
         };
     }
 }
