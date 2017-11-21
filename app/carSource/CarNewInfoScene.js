@@ -14,6 +14,7 @@ import {
     Dimensions,
     Modal,
     NativeModules,
+    DeviceEventEmitter,
 
 } from 'react-native';
 
@@ -366,7 +367,7 @@ export default class CarNewInfoScene extends BaseComponent {
                             this.state.carDetailData.length>0 && (
                                 <View style={{marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
                                     <View style={{paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white'}}>
-                                        <TitleView title={'相关推荐'} footTitle={'更多'} clickAction={this.pushCarConfigScene}/>
+                                        <TitleView title={'相关推荐'} footTitle={'更多'} clickAction={this.pushCarMoreScene}/>
                                     </View>
                                     {
                                         this.state.carDetailData.map((data,index)=>{
@@ -629,6 +630,12 @@ export default class CarNewInfoScene extends BaseComponent {
         }
         this.toNextPage(navigationParams);
     };
+
+    // 查看更多推荐车型
+    pushCarMoreScene=()=>{
+        this.backToTop();
+        DeviceEventEmitter.emit('pushCarListScene');
+    }
 
     carCellOnPres = (carID) => {
 

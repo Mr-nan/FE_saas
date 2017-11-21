@@ -534,8 +534,8 @@ export default class HomeScene extends BaseComponet {
     pushUserCarInfoScene=(carID)=>{
         this.props.callBack
         (
-            {   name:'CarNewInfoScene',
-                component:CarNewInfoScene,
+            {   name:'CarInfoScene',
+                component:CarInfoScene,
                 params: {
                     carID: carID
                 }

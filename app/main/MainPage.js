@@ -12,7 +12,8 @@ import {
     PixelRatio,
     TouchableOpacity,
     NativeModules,
-    InteractionManager
+    InteractionManager,
+    DeviceEventEmitter,
 } from 'react-native';
 
 const {width, height} = Dimensions.get('window');
@@ -66,8 +67,11 @@ export default class MainPage extends BaseComponent {
     };
 
 
+
+
     componentWillUnmount() {
         tabArray = [];
+        this.emitter.remove();
     }
 
     /**
@@ -81,6 +85,10 @@ export default class MainPage extends BaseComponent {
             openSelectBranch: false
 
         }
+        this.emitter = DeviceEventEmitter.addListener('pushCarListScene',()=>{
+            StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'true');
+            this.setState({selectedTab: 'carpage'});
+        })
         tabArray = [];
     }
 
