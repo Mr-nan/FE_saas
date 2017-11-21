@@ -88,6 +88,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                     if(data.code == 1 && data.result != '')
                     {
                         let enters = JSON.parse(data.result);
+                        console.log('=====================',enters);
                         this.carData['show_shop_id'] = enters.company_base_id;
                         this.carData['city_id'] = enters.city_id;
                         this.carData['provice_id'] = enters.prov_id;
