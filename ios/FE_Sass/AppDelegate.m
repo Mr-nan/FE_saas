@@ -15,6 +15,7 @@
 #import <AdSupport/AdSupport.h>
 #import "sys/utsname.h"
 #import "Growing.h"
+#import "RCTUmengPush.h"
 
 @implementation AppDelegate
 
@@ -23,7 +24,7 @@
  NSURL *jsCodeLocation;
  [Growing startWithAccountId:@"8c70ed29c1985918"];
  [Growing setRnNavigatorPageEnabled:YES];
-  
+
   
   // 要使用百度地图，请先启动BaiduMapManager
   _mapManager = [[BMKMapManager alloc]init];
@@ -33,6 +34,17 @@
   if (!ret) {
     NSLog(@"manager start failed!");
   }
+
+  NSString  *bundleIdentifier = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleIdentifier"];
+  NSString *umengPushKey = nil;
+  if([bundleIdentifier isEqualToString:@"com.dycd.dycdsaas"]) //企业 com.dycd.dycdsaas   AppStore版 com.dycd.BMSHtmls
+  {
+    umengPushKey = @"59c07978717c197a4b000015";
+  }else
+  {
+    umengPushKey = @"5a0d01c8f43e48245b0001e3";
+  }
+ [RCTUmengPush registerWithAppkey:umengPushKey launchOptions:launchOptions];
 
    
 #ifdef DEBUG
@@ -100,6 +112,8 @@
   return [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
   
 }
+
+
 -(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
   if ([Growing handleUrl:url]) // 请务必确保该函数被调用
@@ -107,6 +121,19 @@
     return YES;
   }
   return NO;
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+  //获取deviceToken
+  NSLog(@"%@",deviceToken);
+  [RCTUmengPush application:application didRegisterDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+  //获取远程推送消息
+  [RCTUmengPush application:application didReceiveRemoteNotification:userInfo];
 }
 
 @end

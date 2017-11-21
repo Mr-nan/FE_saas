@@ -18,6 +18,8 @@ import LoginFailSmsNo from "./LoginFailSmsNo";
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
+
+
 export default class LoginFail extends BaseComponent {
 
     constructor(props) {

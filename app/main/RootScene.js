@@ -28,14 +28,87 @@ import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import codePush from 'react-native-code-push'
 import SQLiteUtil from "../utils/SQLiteUtil";
+import PromotionScene from "./PromotionScene";
 const SQLite = new SQLiteUtil();
-const versionCode = 24.0;
+const versionCode = 26.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
 import ErrorUtils from "ErrorUtils"
+import UmengPush from 'react-native-umeng-push';
+import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi';
+const IS_ANDROID = Platform.OS === 'android';
 
 export default class RootScene extends BaseComponent {
+
+    constructor(props) {
+        super(props);
+//获取DeviceToken
+        UmengPush.getDeviceToken(deviceToken => {
+            console.log('deviceToken', deviceToken)
+        });
+
+//接收到推送消息回调
+        UmengPush.didReceiveMessage(message => {
+
+        });
+
+//点击推送消息打开应用回调
+        UmengPush.didOpenMessage(message => {
+            const navigator = this.props.navigator;
+            if (navigator) {
+                let toWeb = true;
+                for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                    if (navigator.getCurrentRoutes()[i].name == 'PromotionScene') {
+                        toWeb = false;
+                        break;
+                    }
+                }
+                if (toWeb) {
+                    StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
+                        if (res.result == "true") {
+                            let mProps = {
+                                name: 'YaoQingDeHaoLi',
+                                component: YaoQingDeHaoLi, params: {
+                                    from: 'RootScene'
+                                }
+                            };
+                            this.toNextPage(mProps);
+                        } else {
+                            try {
+                                if (IS_ANDROID) {
+                                    let mProps = {
+                                        name: 'PromotionScene',
+                                        component: PromotionScene, params: {
+                                            webUrl: JSON.parse(message.extra).url,
+                                            name: JSON.parse(message.extra).name
+                                        }
+                                    };
+                                    this.toNextPage(mProps);
+                                } else {
+                                    let mProps = {
+                                        name: 'PromotionScene',
+                                        component: PromotionScene, params: {
+                                            webUrl: message.url,
+                                            name: message.name
+                                        }
+                                    };
+                                    this.toNextPage(mProps);
+                                }
+                            } catch (e) {
+
+                            }
+
+                        }
+                    });
+                }
+
+            }
+
+            console.log(message);
+
+        });
+    }
 
     componentDidMount() {
         // codePush.sync();
@@ -132,7 +205,7 @@ export default class RootScene extends BaseComponent {
                     }
                 },
                 (error) => {
-                    this.toJump();
+
                 });
     }
 

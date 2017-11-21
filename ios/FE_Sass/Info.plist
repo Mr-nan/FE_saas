@@ -91,5 +91,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>teamID</key>
+	<string>8RXU2MG5MH</string>
 </dict>
 </plist>

@@ -49,6 +49,7 @@ import PersonCertificate from "../mine/certificateManage/PersonCertificate";
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
+import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi'
 let firstType = '-1';
 let lastType = '-1';
 let haveOrder = 0;
@@ -243,8 +244,6 @@ export default class MineScene extends BaseComponent {
 
 	initData = (id, name) => {
 
-
-
 		if (id == 47) {
 			Car[0].cars.push({
 				"icon": require('../../images/mainImage/zhanghuguanli.png'),
@@ -302,6 +301,14 @@ export default class MineScene extends BaseComponent {
 		} else if (id == 100) {
 			Car[2].cars.push({
 				"icon": require('../../images/mainImage/myCarSource.png'),
+				"name": name
+				, "id": id
+			},);
+
+		}
+		else if (id == 57) {
+			Car[2].cars.push({
+				"icon": require('../../images/mainImage/my_yqdhl.png'),
 				"name": name
 				, "id": id
 			},);
@@ -664,6 +671,10 @@ export default class MineScene extends BaseComponent {
 				this.navigatorParams.name = 'Setting'
 				this.navigatorParams.component = Setting
 				break;
+			case 57:
+				this.navigatorParams.name = 'YaoQingDeHaoLi'
+				this.navigatorParams.component = YaoQingDeHaoLi
+				break;
 		}
 
 		this.props.callBack(this.navigatorParams);
@@ -686,6 +697,7 @@ export default class MineScene extends BaseComponent {
 		} else {
 			return (
 				<TouchableOpacity style={styles.rowView} onPress={() => {
+
                     this._navigator(rowData)
                 }}>
 
