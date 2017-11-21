@@ -84,6 +84,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                         this.carData = this.props.carData;
                 }
                 StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+
                     if(data.code == 1 && data.result != '')
                     {
                         let enters = JSON.parse(data.result);
