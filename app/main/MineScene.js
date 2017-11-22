@@ -820,6 +820,39 @@ export default class MineScene extends BaseComponent {
 						style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
 
 						<TouchableOpacity onPress={() => {
+							if(this.renzhengData.personRenZheng == 2 || this.renzhengData.personRenZheng == 1){
+								//0-> 未审核 1->审核中 2->通过  3->未通过
+
+							}else {
+                                this._gerenrenzheng();
+							}
+                            }} activeOpacity={0.8}
+						                  style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+							<Image
+								source={this.renzhengData.personRenZheng == 2  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
+								style={{
+                            width: Pixel.getPixel(27),
+                            height: Pixel.getPixel(20),
+                            resizeMode: 'stretch',
+                            marginLeft:Pixel.getPixel(37)
+                        }}
+							/>
+							<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
+
+								<Text allowFontScaling={false}
+								      style={{color:this.mColor[this.renzhengData.personRenZheng]}}
+
+								>
+									{this._getRenZhengResult(this.renzhengData.personRenZheng)}
+
+								</Text>
+							</Text>
+						</TouchableOpacity>
+
+						<Image source={require('../../images/login/xuxian.png')}
+						       style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
+
+						<TouchableOpacity onPress={() => {
 							if(this.renzhengData.enterpriseRenZheng == 2  || this.renzhengData.enterpriseRenZheng == 1){
 							//0-> 未审核 1->审核中 2->通过  3->未通过
 
@@ -850,39 +883,6 @@ export default class MineScene extends BaseComponent {
 								</Text>
 							</Text>
 
-						</TouchableOpacity>
-
-						<Image source={require('../../images/login/xuxian.png')}
-						       style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
-
-						<TouchableOpacity onPress={() => {
-							if(this.renzhengData.personRenZheng == 2 || this.renzhengData.personRenZheng == 1){
-								//0-> 未审核 1->审核中 2->通过  3->未通过
-
-							}else {
-                                this._gerenrenzheng();
-							}
-                            }} activeOpacity={0.8}
-						                  style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-							<Image
-								source={this.renzhengData.personRenZheng == 2  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
-								style={{
-                            width: Pixel.getPixel(27),
-                            height: Pixel.getPixel(20),
-                            resizeMode: 'stretch',
-                            marginLeft:Pixel.getPixel(37)
-                        }}
-							/>
-							<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
-
-								<Text allowFontScaling={false}
-								      style={{color:this.mColor[this.renzhengData.personRenZheng]}}
-
-								>
-									{this._getRenZhengResult(this.renzhengData.personRenZheng)}
-
-								</Text>
-							</Text>
 						</TouchableOpacity>
 
 					</View>}
