@@ -306,7 +306,7 @@ export default class MineScene extends BaseComponent {
 			},);
 
 		}
-		else if (id == 57) {
+		else if (id == 58) {
 			Car[2].cars.push({
 				"icon": require('../../images/mainImage/my_yqdhl.png'),
 				"name": name
@@ -671,7 +671,7 @@ export default class MineScene extends BaseComponent {
 				this.navigatorParams.name = 'Setting'
 				this.navigatorParams.component = Setting
 				break;
-			case 57:
+			case 58:
 				this.navigatorParams.name = 'YaoQingDeHaoLi'
 				this.navigatorParams.component = YaoQingDeHaoLi
 				break;
