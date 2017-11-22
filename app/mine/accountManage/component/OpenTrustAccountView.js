@@ -36,9 +36,8 @@ export default class OpenTrustAccountView extends BaseComponent {
         };
     }
 
-
     /**
-     *
+     *   没卵用.......
      **/
     loadData = () => {
 
@@ -55,46 +54,29 @@ export default class OpenTrustAccountView extends BaseComponent {
     };
 
     /**
+     * 控制显示、隐藏并接收数据
+     * @param isShow
+     * @param data
+     **/
+    changeStateWithData = (isShow, data) => {
+        this.contractList = data;
+        this.setState({
+            isShow: isShow
+        });
+    };
+
+    /**
      *   跳转合同预览页
      **/
-    openContractScene = (agreement_id) => {
-        if (this.contractList.length === 0) {
-            this.props.showModal(true);
-            let maps = {
-                source_type: '3',
-                fund_channel: '信托'
-            };
-            request(AppUrls.AGREEMENT_LISTS, 'Post', maps)
-                .then((response) => {
-                    this.props.showModal(false);
-                    //console.log('USER_ACCOUNT_INFO=====', response.mjson.data['zsyxt'].status);
-                    /*                this.toNextPage({
-                     name: 'AccountFlowScene',
-                     component: AccountFlowScene, params: {}
-                     })*/
-                    this.contractList = response.mjson.data.list;
-                    this.toNextPage({
-                        name: 'TrustAccountContractScene',
-                        component: TrustAccountContractScene,
-                        params: {
-                            title: this.contractList[0].name,
-                            webUrl: this.contractList[0].url
-                        }
-                    })
-                }, (error) => {
-                    this.props.showModal(false);
-                    this.props.showToast(error.mjson.msg);
-                });
-        } else {
+    openContractScene = (name, url) => {
             this.toNextPage({
                 name: 'TrustAccountContractScene',
                 component: TrustAccountContractScene,
                 params: {
-                    title: this.contractList[0].name,
-                    webUrl: this.contractList[0].url
+                    title: name,
+                    webUrl: url
                 }
             })
-        }
     };
 
     /**
@@ -102,6 +84,21 @@ export default class OpenTrustAccountView extends BaseComponent {
      **/
     render() {
         if (this.state.isShow) {
+            let contractList = [];
+            for (let i = 0; i < this.contractList.length; i++) {
+                contractList.push(<Text
+                    key={i + 'contractList'}
+                    allowFontScaling={false}
+                    onPress={() => {this.openContractScene('合同', this.contractList[i].url)}}
+                    style={{
+                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                        color: fontAndColor.COLORA1,
+                        lineHeight: Pixel.getPixel(20)
+                    }}>
+                    《{this.contractList[i].name}》
+                </Text>);
+                //contractList.push({title: this.contractList[i].name, webUrl: this.contractList[i].url});
+            }
             return (<View style={styles.container}>
                 <TouchableOpacity style={{flex: 1}} onPress={() => {
                     this.changeState(false)
@@ -147,56 +144,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                     }}>
                                     我已经阅读并同意
                                 </Text>
-                                <Text
-                                    allowFontScaling={false}
-                                    onPress={() => {this.openContractScene(1)}}
-                                    style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                        color: fontAndColor.COLORA1,
-                                        lineHeight: Pixel.getPixel(20)
-                                    }}>
-                                    《用户注册协议》,
-                                </Text>
-                                <Text
-                                    allowFontScaling={false}
-                                    onPress={() => {this.openContractScene(1)}}
-                                    style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                        color: fontAndColor.COLORA1,
-                                        lineHeight: Pixel.getPixel(20)
-                                    }}>
-                                    《服务信托项目信托合同》,
-                                </Text>
-                                <Text
-                                    allowFontScaling={false}
-                                    onPress={() => {this.openContractScene(1)}}
-                                    style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                        color: fontAndColor.COLORA1,
-                                        lineHeight: Pixel.getPixel(20)
-                                    }}>
-                                    《信托风险申请书》,
-                                </Text>
-                                <Text
-                                    allowFontScaling={false}
-                                    onPress={() => {this.openContractScene(1)}}
-                                    style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                        color: fontAndColor.COLORA1,
-                                        lineHeight: Pixel.getPixel(20)
-                                    }}>
-                                    《委托支付协议》,
-                                </Text>
-                                <Text
-                                    allowFontScaling={false}
-                                    onPress={() => {this.openContractScene(1)}}
-                                    style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                        color: fontAndColor.COLORA1,
-                                        lineHeight: Pixel.getPixel(20)
-                                    }}>
-                                    《平台与商户的民事信托合同》
-                                </Text>
+                                {contractList}
                             </Text>
                         </View>
                     </View>

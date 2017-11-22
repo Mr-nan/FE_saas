@@ -128,8 +128,9 @@ export  default class AccountScene extends BaseComponent {
                     enter_id: enterBaseIds,
                     isRefreshing: false
                 });
-                if (info.account_open_type == 2 && this.trustAccountState == 3) {
-                    this.refs.openAccount.changeState(true);
+                if (info.account_open_type == 2 && this.trustAccountState == 0) {
+                    //this.refs.openAccount.changeState(true);
+                    this.getTrustContract();
                 }
             }, (error) => {
                 this.props.showModal(false);
@@ -138,6 +139,31 @@ export  default class AccountScene extends BaseComponent {
                     renderPlaceholderOnly: 'error',
                     isRefreshing: false
                 });
+            });
+    };
+
+    /**
+     *   获取信托相关可供浏览的合同
+     **/
+    getTrustContract = () => {
+        this.props.showModal(true);
+        let maps = {
+            source_type: '3',
+            fund_channel: '信托'
+        };
+        request(Urls.AGREEMENT_LISTS, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                //console.log('USER_ACCOUNT_INFO=====', response.mjson.data['zsyxt'].status);
+                /*                this.toNextPage({
+                 name: 'AccountFlowScene',
+                 component: AccountFlowScene, params: {}
+                 })*/
+                this.contractList = response.mjson.data.list;
+                this.refs.openAccount.changeStateWithData(true, this.contractList);
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
             });
     };
 
@@ -420,7 +446,8 @@ export  default class AccountScene extends BaseComponent {
                               })
                           }}
                           openTrustAccount={() => {
-                              this.refs.openAccount.changeState(true);
+                              //this.refs.openAccount.changeState(true);
+                              this.getTrustContract();
                           }}
             />
         )
