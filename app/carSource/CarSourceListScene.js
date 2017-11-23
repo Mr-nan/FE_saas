@@ -63,9 +63,6 @@ export  default  class carSourceListScene extends BaseComponent {
 
             if(data.code == 1){
                 if(data.result == 'true'){
-                    // this.setState({
-                    //     switchoverType:0
-                    // })
                     this.scrollView.scrollTo({x:0, y:0, animated: false});
                     this.refs.CarListNavigatorView && this.refs.CarListNavigatorView.setBtnType(0);
                 }

@@ -1196,7 +1196,7 @@ const styles = StyleSheet.create({
 
         backgroundColor: fontAndColor.COLORA3,
         width:ScreenWidth,
-        height:ScreenHeight
+        height:ScreenHeight-Pixel.getTitlePixel(64)
     },
     checkedContentView: {
 

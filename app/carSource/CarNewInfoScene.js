@@ -164,7 +164,7 @@ export default class CarNewInfoScene extends BaseComponent {
             carData.infoData = [
                 {
                 title:'车规',
-                value:carData.first_type+'('+carData.second_type+')',
+                value: carData.first_type &&(carData.first_type+'('+carData.second_type+')'),
                 },
                 {
                 title:'颜色(车身/内饰)',
@@ -249,7 +249,6 @@ export default class CarNewInfoScene extends BaseComponent {
             id:carData.id,
         }).then((response) => {
 
-            console.log('================',response.mjson.data.list);
             if(response.mycode==1){
                this.setState({
                    carDetailData:response.mjson.data.list

@@ -1172,7 +1172,7 @@ const styles = StyleSheet.create({
     contaier: {
         backgroundColor: fontAndColor.COLORA3,
         width:ScreenWidth,
-        height:ScreenHeight
+        height:ScreenHeight-Pixel.getTitlePixel(64)
     },
     checkedContentView: {
 
