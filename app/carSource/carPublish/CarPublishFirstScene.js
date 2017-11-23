@@ -572,6 +572,13 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.refs.cellSelectView.setCurrentChecked(this.carType);
         }
 
+        if(this.carData.v_type == 3){
+            this.titleData2[0][1].isShowTag = false;
+        }else {
+            this.titleData2[0][1].isShowTag = true;
+
+        }
+
         if(this.carData.vin){
             this.vinInput.setNativeProps({
                 text: this.carData.vin
@@ -661,6 +668,14 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.carData['v_type']=selectDict.value;
         this.carData['v_type_str'] = selectDict.title;
         this.carType=selectDict.title;
+
+
+        if(this.carData.v_type == 3){
+            this.titleData2[0][1].isShowTag = false;
+        }else {
+            this.titleData2[0][1].isShowTag = true;
+
+        }
         this.upTitleData();
     }
 
@@ -669,7 +684,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         console.log(this.carData);
 
-        if(!this.carData.vin||this.carData.vin==''){
+        if((!this.carData.vin||this.carData.vin=='') && this.carData.v_type!=3){
             this.props.showToast('请输入正确的车架号');
             return;
         }

@@ -47,6 +47,7 @@ import MyAccountScene from "../mine/accountManage/MyAccountScene";
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
+import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi'
 let firstType = '-1';
 let lastType = '-1';
 let haveOrder = 0;
@@ -246,6 +247,12 @@ export default class MineScene extends BaseComponent {
         } else if (id == 47) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/myCarSource.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 57) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/my_yqdhl.png'),
                 "name": name
                 , "id": id
             },);
@@ -500,6 +507,10 @@ export default class MineScene extends BaseComponent {
             case 24:
                 this.navigatorParams.name = 'Setting'
                 this.navigatorParams.component = Setting
+                break;
+            case 57:
+                this.navigatorParams.name = 'YaoQingDeHaoLi'
+                this.navigatorParams.component = YaoQingDeHaoLi
                 break;
         }
         this.props.callBack(this.navigatorParams);
