@@ -210,13 +210,12 @@ export default class CarNewNumberListScene extends BaseComponent {
         }else {
 
 
-            // this.SelectCarSourceView.setVisible(true);
-            let carNumber = parseFloat(this.props.carData.stock)-parseFloat(this.props.carData.reserve_num);
+            let carNumber = parseFloat(cellData.stock)-parseFloat(cellData.reserve_num);
             if(carNumber <=0)
             {
                 this.carSoldOut(1);
 
-            }else if(carNumber>=1 || !this.props.carData.reserve_num)
+            }else if(carNumber>=1 || !cellData.reserve_num)
             {
                 this.allloading.changeShowType(true,'是否将该车源可售车辆数-1');
             }

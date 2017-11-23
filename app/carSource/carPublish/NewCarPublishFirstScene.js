@@ -651,10 +651,9 @@ export default class NewCarPublishFirstScene extends BaseComponent {
 
     checkedSpecification = (specificationData) => {
 
-        this.titleData1[0][1].value = specificationData.subTitle ? specificationData.subTitle : specificationData.title;
+        this.titleData1[0][1].value = specificationData.subTitle;
         this.carData['first_type'] = specificationData.title;
         this.carData['second_type'] = specificationData.subTitle;
-
         this.upTitleData();
     }
 

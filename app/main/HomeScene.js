@@ -381,7 +381,7 @@ export default class HomeScene extends BaseComponet {
                     enableEmptySections={true}
                     removeClippedSubviews={false}
                     initialListSize={6}
-                    stickyHeaderIndices={[]}
+                    stickySectionHeadersEnabled = {false}
                     onEndReachedThreshold={1}
                     scrollRenderAheadDistance={1}
                     pageSize={6}

@@ -36,12 +36,10 @@ export default class CarNewNumberCell extends Component{
                                     <Image style={styles.imgView} key = {index} source={{uri:data.url}} />
                                 )
                             }else {
-                                console.log('====',data.name);
                                 return(
-                                    (data.name == 'engine' ||data.name == 'vin_no' || data.name == 'registration_card' ) && <Image style={styles.imgView} key = {index} source={{uri:data.url}} />
+                                    (data.key == 'engine' ||data.key == 'vin_no' || data.key == 'registration_card' ) && <Image style={styles.imgView} key = {index} source={{uri:data.url}} />
                                 )
                             }
-
                         })
                     }
                 </ScrollView>

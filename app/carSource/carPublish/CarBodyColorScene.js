@@ -178,16 +178,20 @@ export default class CarBodyColorScene extends  BaseComponent{
         // });
 
         this.viewShell = this.props.carBodyColorData;
-        this.viewShell.push(
-            {
-                name:'',
-                value:'',
-            },
-            {
-                name:'',
-                value:''
-            });
-
+        let nodeNumber = 4; // 节点数
+        if(this.viewShell){
+            let length = this.viewShell.length;
+            if(length % nodeNumber!==0){
+                let number =(length % nodeNumber);
+                console.log('number:',number,'length',length,);
+                for(let i=0;i<number;i++){
+                    this.viewShell.push({
+                        name:'',
+                        value:''
+                    });
+                }
+            }
+        }
         this.viewShell.map((data,index)=>{
             data.index = index;
             if(data.name == this.props.currentChecked)
@@ -211,10 +215,6 @@ export default class CarBodyColorScene extends  BaseComponent{
         });
 
         let array = this.chunk(this.props.carBodyColorData,3);
-        console.log(array);
-
-
-
         this.state = {
             carShell: this.viewShell,
         }
@@ -222,8 +222,6 @@ export default class CarBodyColorScene extends  BaseComponent{
 
     chunk =(arr, n) =>{
         let length = arr.length;
-        console.log(length);
-        console.log(length / 6,length%6);
         return Array.from(Array(Math.ceil(arr.length / n)), (_, i) => arr.slice(i * n, (i * n) + n));
     }
 
