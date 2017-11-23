@@ -1303,6 +1303,12 @@ export const ZS_QUOTA = BASEURL + "v1/account.cz_bank/getPaymentRelatedInfo";
  *   浙商账户查询交易相关的限额信息，可取金额，可用金额
  */
 export const ZS_FETCH_STATUS = BASEURL + "v1/user.account/getTransferRecordStatus";
+/**
+ *  from @dingnyonggang
+ *
+ *   判断当前时间是否在浙商银行的服务时间段内
+ */
+export const ZS_IN_SERVICE = BASEURL + "v1/account.cz_bank/isOutOfService";
 
 /**
  *   获取用户的账户详情(我的账户页面-卡片页  调用)

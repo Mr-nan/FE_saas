@@ -56,7 +56,7 @@ export default class SmsFillScene extends Component {
                     alignItems: 'center',
                     backgroundColor: 'white',
                     borderRadius: 4,
-                    marginBottom: 250,
+                    marginBottom: 270,
                     height: 250,
                     width: 260,
 

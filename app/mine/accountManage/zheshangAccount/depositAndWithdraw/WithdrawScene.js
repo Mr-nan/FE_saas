@@ -151,9 +151,15 @@ export default class WithdrawScene extends BaseComponent {
                                 <View style={{flexDirection: 'row',}}>
                                     <SText style={{marginRight: 5, marginTop: 5, fontSize: 14}}>￥</SText>
                                     <TextInput
-                                        style={{height: 40, fontSize: 35, flex: 1, marginBottom: 15}}
-                                        keyboardType={'number-pad'}
-
+                                        style={{
+                                            height: 40,
+                                            fontSize: Pixel.getPixel(35),
+                                            flex: 1,
+                                            marginBottom: 15,
+                                            padding: 0
+                                        }}
+                                        keyboardType={'numeric'}
+                                        underlineColorAndroid={"#00000000"}
                                         onChangeText={(text) => {
 
                                             console.log(parseFloat(text))

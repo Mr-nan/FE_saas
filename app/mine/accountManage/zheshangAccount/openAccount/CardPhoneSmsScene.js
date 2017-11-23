@@ -102,7 +102,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
                             ref={'bank_card_no'}
                             title={'银行卡'}
                             textPlaceholder={type === 1?'请输入企业银行卡号':'请输入您的银行卡号'}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                             onChangeText={this.bank}
                             loading={this.state.loading_bank}
                             annotation={this.state.bankName}
@@ -139,13 +139,13 @@ export default class CardPhoneSmsScene extends BaseComponent {
                             rightButton={true}
                             callBackSms={this.smscode}
                             maxLength={11}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                         />
                         <TextInputItem
                             ref={'sms_code'}
                             title={'验证码'}
                             separator={false}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                         />
                     </View>
                     <MyButton buttonType={MyButton.TEXTBUTTON}
@@ -212,11 +212,8 @@ export default class CardPhoneSmsScene extends BaseComponent {
 
     // 开户
     next = () => {
-
+        this.dismissKeyboard()
         if(!this.verify(true)) {return}
-
-
-
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1) {
                 let result = JSON.parse(data.result)
@@ -324,11 +321,10 @@ export default class CardPhoneSmsScene extends BaseComponent {
                 request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {
                         this.refs.mobile_no.StartCountDown();
                         sms_no=response.mjson.data.sms_no
-                        console.log(response);
 
                 }, (error) => {
-                    this.props.showModal(false)
                     this.props.showToast(error.mjson.msg)
+
                 })
 
             } else {

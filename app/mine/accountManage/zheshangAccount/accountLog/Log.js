@@ -95,8 +95,8 @@ export default class Log extends BaseComponent {
 
                     response.mjson.data.data.map((data) => {
 
-                        let date = new Date(data.create_time)
-                        let d = this.dateFormat(date, 'yyyy-MM-dd')
+                        let splited_date = data.create_time.split(' ');
+                        let d = splited_date[0]
 
                         if (d !== old_date) {
                             rows = [];
@@ -211,8 +211,10 @@ export default class Log extends BaseComponent {
 
                                 style={{
                                     position: 'absolute',
-                                    width: width,
-                                    height: height,
+                                    top:0,
+                                    right:0,
+                                    bottom:0,
+                                    left:0,
                                     backgroundColor: 'rgba(0,0,0,.4)'
                                 }}>
 
@@ -401,10 +403,13 @@ export default class Log extends BaseComponent {
     }
 
     _renderSectionHeader = (data, sectionID) => {
-        let d = new Date(data[0].create_time)
-        let y = d.getFullYear()
-        let m = d.getMonth()
-        let day = d.getDate()
+
+        let splited_date = data[0].create_time.split(' ')[0].split('-')
+
+        let y = splited_date[0]
+        let m = splited_date[1]
+        let day = splited_date[2]
+
 
         return (
             <View style={{

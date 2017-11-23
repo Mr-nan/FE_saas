@@ -89,7 +89,7 @@ export default class NameAndIdScene extends BaseComponent {
                             ref = {'new_mobile'}
                             title={'新手机号'}
                             textPlaceholder={'请输入您的手机号'}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                             rightButton={true}
                             maxLength={11}
                             callBackSms={this.smscode}
@@ -101,7 +101,7 @@ export default class NameAndIdScene extends BaseComponent {
                             title={'验证码'}
                             textPlaceholder={'请输入短信验证码'}
                             separator={false}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                         />
                     </View>
                     <MyButton buttonType={MyButton.TEXTBUTTON}
@@ -151,11 +151,10 @@ export default class NameAndIdScene extends BaseComponent {
 
     next = () => {
 
+        this.dismissKeyboard()
         if (!this.verify(true)) {
             return
         }
-
-
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1) {
 

@@ -93,7 +93,7 @@ export default class ModifyBankCard extends BaseComponent {
                         <TextInputItem
                             title={'资金账号'}
                             value={this.props.account.bank_card_no}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                             editable={false}
                         />
                         <TextInputItem
@@ -105,7 +105,7 @@ export default class ModifyBankCard extends BaseComponent {
                             title={'账户余额'}
                             value={this.props.account.balance}
                             textPlaceholder={'请输入短信验证码'}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                             editable={false}
                             separator={false}
                         />
@@ -116,7 +116,7 @@ export default class ModifyBankCard extends BaseComponent {
                             ref={'bank_card_no'}
                             title={'新银行卡'}
                             textPlaceholder={'请输入您的新银行卡卡号'}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                             //value={'6223093310090136493'}
                             onChangeText={this.bank}
                             loading={this.state.loading_bank}
@@ -155,7 +155,7 @@ export default class ModifyBankCard extends BaseComponent {
                             titleStyle={{letterSpacing: 8}}
                             inputTextStyle={{paddingLeft: 8}}
                             title={'手机号'}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                             editable={false}
                             rightButton={true}
                             value={this.props.account.operate_mobile}
@@ -166,7 +166,7 @@ export default class ModifyBankCard extends BaseComponent {
                             titleStyle={{letterSpacing: 8}}
                             inputTextStyle={{paddingLeft: 8}}
                             title={'验证码'}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                             textPlaceholder={'请输入短信验证码'}
                             separator={false}
                         />
@@ -185,6 +185,7 @@ export default class ModifyBankCard extends BaseComponent {
     // 更换银行卡
     change = () => {
 
+        this.dismissKeyboard()
         if (!this.verify(true)) {
             return
         }

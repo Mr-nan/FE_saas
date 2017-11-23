@@ -92,7 +92,7 @@ export default class InformationFillScene extends BaseComponent {
                         <TextInputItem
                             title={'资金账号'}
                             value={this.props.account.bank_card_no}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                             editable={false}
                         />
                         <TextInputItem
@@ -104,7 +104,7 @@ export default class InformationFillScene extends BaseComponent {
                             title={this.props.account.account_open_type === 1 ? '企业组织机构代码' : '证件号码'}
                             value={this.props.account.cert_no}
                             textPlaceholder={'请输入短信验证码'}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                             editable={false}
                             separator={false}
                         />
@@ -117,7 +117,7 @@ export default class InformationFillScene extends BaseComponent {
                             ref={'mobile'}
                             title={dose_need_old_number_sms_code ? '旧手机号' : '新手机号'}
                             textPlaceholder={'请输入您的手机号'}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                             rightButton={true}
                             maxLength={11}
                             editable={dose_need_old_number_sms_code ? false : true}
@@ -131,7 +131,7 @@ export default class InformationFillScene extends BaseComponent {
                             title={'验证码'}
                             textPlaceholder={'请输入短信验证码'}
                             separator={false}
-                            keyboardType={'number-pad'}
+                            keyboardType={'numeric'}
                             //value={'332036'}
                         />
                     </View>
@@ -180,8 +180,9 @@ export default class InformationFillScene extends BaseComponent {
     }
 
     next = ()=>{
-
+        this.dismissKeyboard()
         if(dose_need_old_number_sms_code){
+
             if(!this.verify(true)) {return}
 
             this.toNextPage({
@@ -209,23 +210,6 @@ export default class InformationFillScene extends BaseComponent {
                         sub_acct_no:this.props.account.bank_card_no,
                         enter_base_id: result.company_base_id,
                     }
-
-
-
-                    this.toNextPage({
-                        component:ResultIndicativeScene,
-                        name:'ResultIndicativeScene',
-                        params:{
-                            type:5,
-                            status:1,
-                            params:params,
-                            dose_need_old_number_sms_code:dose_need_old_number_sms_code,
-                            error:{msg:'发送方式发送分手就分手十大歌手'}
-                        }
-                    })
-                    return;
-
-
 
                     this.props.showModal(true)
                     request(AppUrls.ZS_BANK_MODIFY_MOBILE, 'POST', params).then((response) => {

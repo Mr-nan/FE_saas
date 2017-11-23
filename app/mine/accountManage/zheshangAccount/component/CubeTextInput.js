@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from "react";
 import {
-
+    TouchableWithoutFeedback,
     StyleSheet,
     Text,
     View,
@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import * as FontAndColor from "../../../../constant/fontAndColor";
 import PixelUtil from "../../../../utils/PixelUtil";
+import SaasText from "./SaasText";
 
 
 let Pixel = new PixelUtil();
@@ -24,20 +25,21 @@ let Size = 37;
 export default class CubeTextInput extends Component {
 
 
-    constructor(props){
+    constructor(props) {
         super(props)
-        this.state= {
-            values: this.pushVules('')
+        this.state = {
+            values: this.pushVules(''),
+            focus:true
         }
     }
 
-    pushVules = (text)=>{
+    pushVules = (text) => {
 
         let valueArray = []
-        for (let i = 0; i < this.props.count; i++){
-            if(i < text.length){
+        for (let i = 0; i < this.props.count; i++) {
+            if (i < text.length) {
                 valueArray.push(Array.from(text)[i]);
-            }else {
+            } else {
                 valueArray.push('')
             }
         }
@@ -46,7 +48,7 @@ export default class CubeTextInput extends Component {
 
     onChangeText = (text) => {
         this.setState({
-            values:this.pushVules(text)
+            values: this.pushVules(text)
         })
         this.props.onChangeText(text)
     }
@@ -58,20 +60,31 @@ export default class CubeTextInput extends Component {
 
         for (let i = 0; i < this.props.count; i++) {
             cubes.push(
-                <View
-                    key={i + ''}
-                    style={{
-                        borderRightColor: FontAndColor.COLORA4,
-                        borderRightWidth: i === this.props.count -1? 0 : StyleSheet.hairlineWidth,
-                        width: Size,
-                        height: Size,
-                        alignItems:'center',
-                        justifyContent:'center'
+                <TouchableWithoutFeedback
+                    key={i}
+                    onPress={()=>{
+                        if(!this.refs.text_input.isFocused()){
+                            this.refs.text_input.focus()
+                        }
                     }}
                 >
-                    <Text style={{fontSize: 25}}
-                    >{this.state.values[i]}</Text>
-                </View>
+                    <View
+                        key={i + ''}
+                        style={{
+                            borderRightColor: FontAndColor.COLORA4,
+                            borderRightWidth: i === this.props.count - 1 ? 0 : StyleSheet.hairlineWidth,
+                            width: Size,
+                            height: Size,
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <SaasText
+                            style={{fontSize: 25}}
+                        >{this.state.values[i]}</SaasText>
+                    </View>
+                </TouchableWithoutFeedback>
+
             )
         }
 
@@ -81,11 +94,21 @@ export default class CubeTextInput extends Component {
             >
                 {cubes}
                 <TextInput
-                    keyboardType={'number-pad'}
+                    ref='text_input'
+                    style={{
+                        width: 0,
+                        height: 0,
+                        padding: 0
+                    }}
+                    underlineColorAndroid={"#00000000"}
+                    keyboardType={'numeric'}
                     autoFocus={true}
                     maxLength={this.props.count}
                     onChangeText={(text) => {
                         this.onChangeText(text);
+                    }}
+                    onSubmitEditing={(event) => {
+                        this.refs.text_input.blur()
                     }}
                 />
             </View>

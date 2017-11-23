@@ -57,9 +57,9 @@ export default class DepositScene extends BaseComponent {
             deposit_style: 0,   //0:快捷充值 1：其他充值
             sms_pad: false,
             money_input: '',
-            allow_withdraw_amount:'',
-            dayAmt:'',
-            singleAmt:''
+            allow_withdraw_amount: '',
+            dayAmt: '',
+            singleAmt: ''
         }
         this.initValue = ['', '', '', '', '', '', ''];
     }
@@ -87,11 +87,11 @@ export default class DepositScene extends BaseComponent {
                 request(AppUrls.ZS_QUOTA, 'Post', maps)
                     .then((response) => {
 
-                    this.setState({
-                        dayAmt:response.mjson.data.limit_info.dayAmt,
-                        singleAmt:response.mjson.data.limit_info.singleAmt,
-                        total_amount:response.mjson.data.total_amount
-                    })
+                        this.setState({
+                            dayAmt: response.mjson.data.limit_info.dayAmt,
+                            singleAmt: response.mjson.data.limit_info.singleAmt,
+                            total_amount: response.mjson.data.total_amount
+                        })
                     }, (error) => {
                         this.props.showToast(error.mjson.msg)
 
@@ -155,7 +155,8 @@ export default class DepositScene extends BaseComponent {
                                 fontSize: 17,
                                 marginBottom: 10
                             }}>{this.props.account.bank_name}账户 {this.props.account.bind_bank_card_name}</SText>
-                            <SText style={{color: FontAndColor.COLORA1}}>{'充值限额'+this.state.singleAmt+'/笔 '+this.state.dayAmt+'/日'}</SText>
+                            <SText
+                                style={{color: FontAndColor.COLORA1}}>{'充值限额' + this.state.singleAmt + '/笔 ' + this.state.dayAmt + '/日'}</SText>
                         </View>
                     </View>
 
@@ -209,9 +210,15 @@ export default class DepositScene extends BaseComponent {
                                             <SText style={{marginRight: 5, marginTop: 5, fontSize: 14}}>￥</SText>
                                             <TextInput
                                                 ref='money_input'
-                                                style={{height: 40, fontSize: 35, flex: 1, marginBottom: 15}}
-                                                keyboardType={'number-pad'}
-
+                                                style={{
+                                                    height: 40,
+                                                    fontSize: Pixel.getPixel(35),
+                                                    flex: 1,
+                                                    marginBottom: 15,
+                                                    padding: 0
+                                                }}
+                                                keyboardType={'numeric'}
+                                                underlineColorAndroid={"#00000000"}
                                                 onChangeText={(text) => {
 
                                                     this.setState({
@@ -256,7 +263,10 @@ export default class DepositScene extends BaseComponent {
                                         marginVertical: 15
                                     }}/>
                                     <SText style={{fontWeight: 'bold', marginBottom: 5}}>转账时填写的信息如下：</SText>
-                                    <SText style={{fontWeight: 'bold', marginBottom: 5}}>收款人姓名：{this.props.account.bank_card_name}</SText>
+                                    <SText style={{
+                                        fontWeight: 'bold',
+                                        marginBottom: 5
+                                    }}>收款人姓名：{this.props.account.bank_card_name}</SText>
                                     <SText style={{
                                         fontWeight: 'bold',
                                         marginBottom: 5
@@ -351,6 +361,8 @@ export default class DepositScene extends BaseComponent {
     //充值
     deposit = (sms_code, sms_no) => {
 
+
+        this.dismissKeyboard()
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1) {
                 let result = JSON.parse(data.result)
@@ -362,25 +374,6 @@ export default class DepositScene extends BaseComponent {
                     sms_no: sms_no
 
                 }
-
-
-                this.toNextPage({
-                    component: ResultIndicativeScene,
-                    name: 'ResultIndicativeScene',
-                    params: {
-                        type: 2,
-                        status: 0,
-                        account: params,
-                        error:{serial_no:'52847104111231311313'}
-                    }
-                })
-
-                this.setState({
-                    sms_pad: false
-                })
-
-                return;
-
 
                 this.props.showModal(true)
 
@@ -394,7 +387,7 @@ export default class DepositScene extends BaseComponent {
                         component: ResultIndicativeScene,
                         name: 'ResultIndicativeScene',
                         params: {
-                            type:2,
+                            type: 2,
                             status: 1,
                             account: params,
                         }
@@ -413,13 +406,13 @@ export default class DepositScene extends BaseComponent {
                                 type: 2,
                                 status: 0,
                                 account: params,
-                                error:error.mjson
+                                error: error.mjson
                             }
                         })
 
-                    }else if(error.mycode === -300 || error.mycode === -500){
+                    } else if (error.mycode === -300 || error.mycode === -500) {
                         this.props.showToast(error.mjson.msg)
-                    }else {
+                    } else {
                         this.toNextPage({
                             component: ResultIndicativeScene,
                             name: 'ResultIndicativeScene',
@@ -427,7 +420,7 @@ export default class DepositScene extends BaseComponent {
                                 type: 2,
                                 status: 2,
                                 account: params,
-                                error:error.mjson
+                                error: error.mjson
                             }
                         })
 
