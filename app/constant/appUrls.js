@@ -1318,3 +1318,7 @@ export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccount
  *   信托开户
  */
 export const OPEN_PERSON_TRUST_ACCOUNT = BASEURL + "v1/account.zsyxt/openPersonAccount";
+/**
+ *   微众借据详情API(信托开户)
+ */
+export const AGREEMENT_LISTS = BASEURL + "v1/contract/agreementLists";
