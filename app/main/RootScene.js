@@ -206,7 +206,7 @@ export default class RootScene extends BaseComponent {
                     }
                 },
                 (error) => {
-
+                    this.toJump();
                 });
     }
 
