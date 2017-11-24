@@ -96,6 +96,11 @@ export class CarConfigurationView extends BaseComponent{
           }
 
       }
+      componentDidMount(){
+
+      }
+
+
 
       loadData=()=>{
 

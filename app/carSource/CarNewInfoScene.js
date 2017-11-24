@@ -236,8 +236,6 @@ export default class CarNewInfoScene extends BaseComponent {
                     carConfigurationBriefData:newData
                 });
 
-
-
             }
         }, (error) => {
 
