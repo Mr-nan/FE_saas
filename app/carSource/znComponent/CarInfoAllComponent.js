@@ -78,14 +78,19 @@ export class CarConfigurationView extends BaseComponent{
             sectionHeaderHasChanged:(s1,s2) => s1!==s2,
         });
 
-
-
         // 初始状态
         this.state = {
             renderPlaceholderOnly: this.props.carConfigurationData.length>0?'success':'blank',
             dataSource:dataSource,
         };
       }
+
+    componentDidMount() {
+        //InteractionManager.runAfterInteractions(() => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.initFinish();
+        // });
+    }
 
       initFinish=()=>{
 
