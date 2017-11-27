@@ -19,6 +19,9 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil';
 let     Pixel = new PixelUtil();
 
+import  StringTransformUtil from  "../../utils/StringTransformUtil";
+let stringTransform = new StringTransformUtil();
+
 export default class MyCarCell extends Component {
 
     cellClick=(carData)=>{
@@ -56,23 +59,6 @@ export default class MyCarCell extends Component {
         }
     };
 
-    dateReversal = (time,isDay) => {
-
-        const date = new Date();
-        date.setTime(time);
-        if(isDay){
-            return (date.getFullYear() + '-' + (this.PrefixInteger(date.getMonth() + 1, 2))+'-'+(this.PrefixInteger(date.getDate(), 2)));
-
-        }
-        return (date.getFullYear() + '-' + (this.PrefixInteger(date.getMonth() + 1, 2)));
-
-    };
-    PrefixInteger = (num, length) => {
-
-        return (Array(length).join('0') + num).slice(-length);
-
-    }
-
     render(){
 
         const {carCellData} = this.props;
@@ -84,7 +70,7 @@ export default class MyCarCell extends Component {
                     <View style={styles.cellHeadView}>
                         <Text allowFontScaling={false} style={styles.mainText}>{carCellData.serial_num}</Text>
                         <Text allowFontScaling={false} style={{color:fontAndColor.COLORA1,
-                            fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT)}}>{this.dateReversal(carCellData.public_time+'000',true)}上架</Text>
+                            fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT)}}>{stringTransform.dateReversal(carCellData.public_time+'000',true)}上架</Text>
                     </View>
                     <View style={styles.cellContentView}>
                         <View style={styles.imageView} >
@@ -105,7 +91,7 @@ export default class MyCarCell extends Component {
                                             <Text allowFontScaling={false} numberOfLines={1}  style={[styles.subTitleText]}>{(carCellData.car_color?(carCellData.car_color.split("|")[0]+' | '):'')+String(carCellData.stock)+'辆'}</Text>
                                             {
                                                 (carCellData.dealer_price>0) &&
-                                                (<Text allowFontScaling={false}  style={[styles.carPriceText, {marginTop:Pixel.getPixel(5)}]}>{(this.carMoneyChange(carCellData.dealer_price))}万</Text>)
+                                                (<Text allowFontScaling={false}  style={[styles.carPriceText, {marginTop:Pixel.getPixel(5)}]}>{(stringTransform.carMoneyChange(carCellData.dealer_price))}万</Text>)
                                             }
                                         </View>
                                         {
@@ -134,11 +120,11 @@ export default class MyCarCell extends Component {
                                     <View style={{flexDirection:'row',alignItems:'center'}}>
                                         {
                                             carCellData.sale_time &&(
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售出:{this.dateReversal(carCellData.sale_time+'000',true)}</Text>)
+                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售出:{stringTransform.dateReversal(carCellData.sale_time+'000',true)}</Text>)
                                         }
                                         {
                                             carCellData.current_rate &&(
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售价:{this.carMoneyChange(carCellData.current_rate)}万元</Text>
+                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售价:{stringTransform.carMoneyChange(carCellData.current_rate)}万元</Text>
                                             )
                                         }
                                     </View>
@@ -209,31 +195,7 @@ export default class MyCarCell extends Component {
         )
     }
 
-    carMoneyChange=(carMoney)=>{
 
-        let newCarMoney = parseFloat(carMoney);
-        let carMoneyStr = newCarMoney.toFixed(2);
-        let moneyArray = carMoneyStr.split(".");
-
-        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
-
-        if(moneyArray.length>1)
-        {
-            if(moneyArray[1]>0){
-
-                return moneyArray[0]+'.'+moneyArray[1];
-
-            }else {
-
-                return moneyArray[0];
-            }
-
-        }else {
-            return carMoneyStr;
-        }
-
-
-    }
 
 }
 const styles = StyleSheet.create({

@@ -40,7 +40,7 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
            rowHasChanged:(r1,r2)=>r1!==r2,
         });
         this.state = {
-            dataSource:dataSource.cloneWithRows(data),
+            dataSource:dataSource,
             renderPlaceholderOnly: 'blank',
 
         };

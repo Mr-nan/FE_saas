@@ -28,15 +28,11 @@
 #ifdef DEBUG
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 #else
-
-
-
     jsCodeLocation = [CodePush bundleURL];
 #endif
   NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
   NSString  *idfaStr = [[ASIdentifierManager sharedManager]advertisingIdentifier].UUIDString;
   NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
-  
   NSString *appVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
   
@@ -45,7 +41,9 @@
                                                initialProperties:@{@"IDFA":idfaStr,
                                                                    @"phoneVersion":phoneVersion,
                                                                    @"phoneModel":[self getPhoneModel],
-                                                                   @"appVersion":appVersion}
+                                                                   @"appVersion":appVersion,
+                                                                   @"networkType":[self checkNetworkPermission]
+                                                                   }
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
@@ -82,9 +80,13 @@
   if ([deviceString isEqualToString:@"iPhone8,1"])    return @"iPhone 6s";
   if ([deviceString isEqualToString:@"iPhone8,2"])    return @"iPhone 6s Plus";
   if ([deviceString isEqualToString:@"iPhone8,4"])    return @"iPhone SE";
-  
-  
   return deviceString;
+}
+
+-(NSString *)checkNetworkPermission{
+  CTCellularData *cellularData = [[CTCellularData alloc]init];
+  CTCellularDataRestrictedState state = cellularData.restrictedState;
+  return @(state);
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation

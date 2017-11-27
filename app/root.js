@@ -38,6 +38,9 @@ export default class root extends Component {
         global.phoneVersion = this.props.phoneVersion;
         global.phoneModel = this.props.phoneModel;
         global.appVersion = this.props.appVersion;
+        global.networkType = this.props.networkType; // 0是关闭，1仅wifi,2流量+wifi
+
+        console.log('===============>',global.networkType);
 
     }
 

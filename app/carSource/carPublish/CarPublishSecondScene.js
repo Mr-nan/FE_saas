@@ -29,7 +29,8 @@ import *as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 import StorageUtil from "../../utils/StorageUtil";
 import CarReferencePriceScene from '../CarReferencePriceScene';
-
+import  StringTransformUtil from  "../../utils/StringTransformUtil";
+let stringTransform = new StringTransformUtil();
 const Pixel = new PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 const sceneHeight = Dimensions.get('window').height;
@@ -159,7 +160,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            this.setCurrentPy(this.dealerPriceInput);
                                        }}
                                            underlineColorAndroid='transparent'
-                                           defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
+                                           defaultValue={this.carData.dealer_price?stringTransform.carMoneyChange(this.carData.dealer_price):''}
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                             if(text.length>4&&text.indexOf('.')==-1){
@@ -192,7 +193,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            this.setCurrentPy(this.dealer_price_circle);
                                        }}
                                            underlineColorAndroid='transparent'
-                                           defaultValue={this.carData.dealer_price_circle?this.carMoneyChange(this.carData.dealer_price_circle):''}
+                                           defaultValue={this.carData.dealer_price_circle?stringTransform.carMoneyChange(this.carData.dealer_price_circle):''}
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                             if(text.length>4&&text.indexOf('.')==-1){
@@ -225,7 +226,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            this.setCurrentPy(this.buying_price);
                                        }}
                                            underlineColorAndroid='transparent'
-                                           defaultValue={this.carData.buying_price?this.carMoneyChange(this.carData.buying_price):''}
+                                           defaultValue={this.carData.buying_price?stringTransform.carMoneyChange(this.carData.buying_price):''}
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                             if(text.length>4&&text.indexOf('.')==-1){
@@ -258,7 +259,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            this.setCurrentPy(this.online_retail_price);
                                        }}
                                            underlineColorAndroid='transparent'
-                                           defaultValue={this.carData.online_retail_price?this.carMoneyChange(this.carData.online_retail_price):''}
+                                           defaultValue={this.carData.online_retail_price?stringTransform.carMoneyChange(this.carData.online_retail_price):''}
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
 
@@ -292,7 +293,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onFocus={()=>{
                                            this.setCurrentPy(this.lowPriceInput);
                                        }}
-                                           defaultValue={this.carData.low_price?this.carMoneyChange(this.carData.low_price):''}
+                                           defaultValue={this.carData.low_price?stringTransform.carMoneyChange(this.carData.low_price):''}
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                                if(text.length>4&&text.indexOf('.')==-1){
@@ -325,7 +326,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onFocus={()=>{
                                            this.setCurrentPy(this.retail_price_store);
                                        }}
-                                           defaultValue={this.carData.retail_price_store?this.carMoneyChange(this.carData.retail_price_store):''}
+                                           defaultValue={this.carData.retail_price_store?stringTransform.carMoneyChange(this.carData.retail_price_store):''}
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                                if(text.length>4&&text.indexOf('.')==-1){
@@ -768,33 +769,7 @@ export default class CarPublishSecondScene extends BaseComponent {
         this.updateUI();
     }
 
-    /**
-     * from @zhaojian
-     *
-     * 校验车辆金额
-     **/
-    carMoneyChange = (carMoney) => {
 
-        let newCarMoney = parseFloat(carMoney);
-        let carMoneyStr = newCarMoney.toFixed(2);
-        let moneyArray = carMoneyStr.split(".");
-
-        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
-
-        if (moneyArray.length > 1) {
-            if (moneyArray[1] > 0) {
-
-                return moneyArray[0] + '.' + moneyArray[1];
-
-            } else {
-
-                return moneyArray[0];
-            }
-
-        } else {
-            return carMoneyStr;
-        }
-    }
 
     /**
      * from @zhaojian

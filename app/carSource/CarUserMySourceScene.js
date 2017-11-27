@@ -43,6 +43,8 @@ const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 var shareClass = NativeModules.ZNShareClass;
 let Platform = require('Platform');
+import  StringTransformUtil from  "../utils/StringTransformUtil";
+let stringTransform = new StringTransformUtil();
 const IS_ANDROID = Platform.OS === 'android';
 
 let carUpperFrameData = [];
@@ -465,9 +467,9 @@ export default class CarMySourceScene extends BaceComponent {
             this.props.showModal(false);
             let carData = response.mjson.data;
             carData.carIconsContentData = [
-                carData.manufacture != '' ? this.dateReversal(carData.manufacture + '000') : '',
-                carData.init_reg != '' ? this.dateReversal(carData.init_reg + '000') : '',
-                carData.mileage > 0 ? this.carMoneyChange(carData.mileage) + '万公里' : '',
+                carData.manufacture != '' ? stringTransform.dateReversal(carData.manufacture + '000') : '',
+                carData.init_reg != '' ? stringTransform.dateReversal(carData.init_reg + '000') : '',
+                carData.mileage > 0 ? stringTransform.carMoneyChange(carData.mileage) + '万公里' : '',
                 carData.transfer_times + '次',
                 carData.nature_str,
                 carData.car_color.split("|")[0] + '/' + carData.trim_color.split("|")[0],
@@ -666,38 +668,6 @@ export default class CarMySourceScene extends BaceComponent {
 
     }
 
-    dateReversal = (time) => {
-
-        const date = new Date();
-        date.setTime(time);
-        return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2)));
-    };
-    PrefixInteger = (num, length) => {
-        return (Array(length).join('0') + num).slice(-length);
-    }
-
-    carMoneyChange = (carMoney) => {
-
-        let newCarMoney = parseFloat(carMoney);
-        let carMoneyStr = newCarMoney.toFixed(2);
-        let moneyArray = carMoneyStr.split(".");
-
-        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
-
-        if (moneyArray.length > 1) {
-            if (moneyArray[1] > 0) {
-
-                return moneyArray[0] + '.' + moneyArray[1];
-
-            } else {
-
-                return moneyArray[0];
-            }
-
-        } else {
-            return carMoneyStr;
-        }
-    }
 
     renderRightFootView = () => {
         return null;

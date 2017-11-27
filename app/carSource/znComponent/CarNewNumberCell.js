@@ -16,6 +16,8 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 const SceneWidth = Dimensions.get('window').width;
+import  StringTransformUtil from  "../../utils/StringTransformUtil";
+let stringTransform = new StringTransformUtil();
 
 export default class CarNewNumberCell extends Component{
     render(){
@@ -24,9 +26,9 @@ export default class CarNewNumberCell extends Component{
                 <View style={styles.headView}>
                     <Text style={styles.headTitle}>{this.props.carData.model_name+'  '+this.props.carData.car_color.split("|")[0]}</Text>
                     <Text style={styles.headSubTitle}>{'VIN：'+this.props.carData.vin+' / '+'发动机号：'+this.props.carData.engine_number}</Text>
-                    <Text style={styles.headSubTitle}>{(this.props.carData.manufacture && ('出厂日期：'+ this.dateReversal(this.props.carData.manufacture+'000',true)))+
-                    ' / '+ (this.props.carType==2? ('分销批发价：'+this.carMoneyChange(this.props.carData.dealer_price)):
-                        ('采购价：'+this.carMoneyChange(this.props.carData.purchase_price)))+'万'}</Text>
+                    <Text style={styles.headSubTitle}>{(this.props.carData.manufacture && ('出厂日期：'+ stringTransform.dateReversal(this.props.carData.manufacture+'000',true)))+
+                    ' / '+ (this.props.carType==2? ('分销批发价：'+stringTransform.carMoneyChange(this.props.carData.dealer_price)):
+                        ('采购价：'+stringTransform.carMoneyChange(this.props.carData.purchase_price)))+'万'}</Text>
                 </View>
                 <ScrollView style={styles.imgScrollView} horizontal={true} showsHorizontalScrollIndicator={false}>
                     {
@@ -63,48 +65,6 @@ export default class CarNewNumberCell extends Component{
         )
     }
 
-    carMoneyChange = (carMoney) => {
-
-        let newCarMoney = parseFloat(carMoney);
-        let carMoneyStr = newCarMoney.toFixed(2);
-        let moneyArray = carMoneyStr.split(".");
-
-        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
-
-        if (moneyArray.length > 1) {
-            if (moneyArray[1] > 0) {
-
-                return moneyArray[0] + '.' + moneyArray[1];
-
-            } else {
-
-                return moneyArray[0];
-            }
-
-        } else {
-            return carMoneyStr;
-        }
-
-
-    }
-
-    dateReversal = (time,isDay) => {
-
-        const date = new Date();
-        date.setTime(time);
-        if(isDay){
-            return (date.getFullYear() + '-' + (this.PrefixInteger(date.getMonth() + 1, 2))+'-'+(this.PrefixInteger(date.getDate(), 2)));
-
-        }
-        return (date.getFullYear() + '-' + (this.PrefixInteger(date.getMonth() + 1, 2)));
-
-    };
-
-    PrefixInteger = (num, length) => {
-
-        return (Array(length).join('0') + num).slice(-length);
-
-    }
 
 }
 

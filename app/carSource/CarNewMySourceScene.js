@@ -44,8 +44,9 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import CarNewInfoScene from "./CarNewInfoScene";
 import CarNumberScene from "./CarNumberScene";
 const Pixel = new PixelUtil();
+import  StringTransformUtil from  "../utils/StringTransformUtil";
+let stringTransform = new StringTransformUtil();
 var ScreenWidth = Dimensions.get('window').width;
-;
 var shareClass = NativeModules.ZNShareClass;
 let Platform = require('Platform');
 const IS_ANDROID = Platform.OS === 'android';
@@ -501,9 +502,9 @@ export default class CarMySourceScene extends BaceComponent {
             this.props.showModal(false);
             let carData = response.mjson.data;
             carData.carIconsContentData = [
-                carData.manufacture != '' ? this.dateReversal(carData.manufacture + '000') : '',
-                carData.init_reg != '' ? this.dateReversal(carData.init_reg + '000') : '',
-                carData.mileage > 0 ? this.carMoneyChange(carData.mileage) + '万公里' : '',
+                carData.manufacture != '' ? stringTransform.dateReversal(carData.manufacture + '000') : '',
+                carData.init_reg != '' ? stringTransform.dateReversal(carData.init_reg + '000') : '',
+                carData.mileage > 0 ? stringTransform.carMoneyChange(carData.mileage) + '万公里' : '',
                 carData.transfer_times + '次',
                 carData.nature_str,
                 carData.car_color.split("|")[0] + '/' + carData.trim_color.split("|")[0],
@@ -1591,7 +1592,7 @@ class EditCarPriceView extends Component {
                                                        text: moneyStr,
                                                    });
                                                }}
-                                               defaultValue={this.carMoneyChange(this.state.carData.dealer_price)}
+                                               defaultValue={stringTransform.carMoneyChange(this.state.carData.dealer_price)}
                                     />
                                     <Text style={{color:fontAndColor.COLORA1,
                                         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>万</Text>
@@ -1634,30 +1635,6 @@ class EditCarPriceView extends Component {
         return obj;
     }
 
-    carMoneyChange = (carMoney) => {
-
-        let newCarMoney = parseFloat(carMoney);
-        let carMoneyStr = newCarMoney.toFixed(2);
-        let moneyArray = carMoneyStr.split(".");
-
-        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
-
-        if (moneyArray.length > 1) {
-            if (moneyArray[1] > 0) {
-
-                return moneyArray[0] + '.' + moneyArray[1];
-
-            } else {
-
-                return moneyArray[0];
-            }
-
-        } else {
-            return carMoneyStr;
-        }
-
-
-    }
 
 }
 

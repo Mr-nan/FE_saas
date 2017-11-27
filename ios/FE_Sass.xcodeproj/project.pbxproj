@@ -96,7 +96,6 @@
 		E36AEB841E6ABF17000F4E11 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36AEB831E6ABF17000F4E11 /* AVFoundation.framework */; };
 		E36AEB861E6ABF2A000F4E11 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36AEB851E6ABF2A000F4E11 /* CoreMedia.framework */; };
 		E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36AEB871E6ABF35000F4E11 /* Foundation.framework */; };
-		E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B817051E613EAC00279287 /* SystemConfiguration.framework */; };
 		E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B817071E613EB600279287 /* CoreTelephony.framework */; };
 		E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2B1E602A630039526C /* libc++.tbd */; };
 		E3B8170B1E613ED600279287 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B8170A1E613ED600279287 /* libz.tbd */; };
@@ -476,12 +475,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */,
 				7D83AEBF1FA2CC3B001A24F7 /* libSVehicleLicense.a in Frameworks */,
 				EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */,
-				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
 				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
 				1510B5491F2058080046BBD8 /* Security.framework in Frameworks */,
-				E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */,
 				1510B5471F2057D50046BBD8 /* libicucore.tbd in Frameworks */,
 				1510B5451F2057B40046BBD8 /* libsqlite3.tbd in Frameworks */,
 				7D4BDE2A1ECAD84A002DD5E1 /* AdSupport.framework in Frameworks */,

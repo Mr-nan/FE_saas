@@ -43,6 +43,8 @@ let Platform = require('Platform');
 let getRole = new GetPermissionUtil();
 const Pixel = new PixelUtil();
 
+import  StringTransformUtil from  "../utils/StringTransformUtil";
+let stringTransform = new StringTransformUtil();
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 
@@ -202,7 +204,7 @@ export default class CarNewInfoScene extends BaseComponent {
             id: carData.id,
             mile: carData.mileage,
             modelId: carData.model_id,
-            regDate: this.dateReversal(carData.init_reg + '000'),
+            regDate: stringTransform.dateReversal(carData.init_reg + '000'),
             zone: carData.city_id,
 
         }).then((response) => {
@@ -319,8 +321,8 @@ export default class CarNewInfoScene extends BaseComponent {
                                         carData.dealer_price > 0 ? (
                                             <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
                                                 <Text allowFontScaling={false}
-                                                      style={styles.priceText}>{this.carMoneyChange(carData.dealer_price) + '万'}  </Text>
-                                                <Text style={styles.browseText}>{this.carMoneyChange(carData.dealer_price) + '万'}</Text>
+                                                      style={styles.priceText}>{stringTransform.carMoneyChange(carData.dealer_price) + '万'}  </Text>
+                                                <Text style={styles.browseText}>{stringTransform.carMoneyChange(carData.dealer_price) + '万'}</Text>
                                             </View>
                                         ):(<View/>)
                                     }
@@ -437,18 +439,6 @@ export default class CarNewInfoScene extends BaseComponent {
         )
     }
 
-    dateReversal = (time) => {
-
-        const date = new Date();
-        date.setTime(time);
-        return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2)));
-
-    };
-    PrefixInteger = (num, length) => {
-
-        return (Array(length).join('0') + num).slice(-length);
-
-    }
 
     backIconClick = () => {
 
