@@ -434,6 +434,7 @@
 		754AC2C278594A7D8ACD7F05 /* libRCTWeChat.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTWeChat.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7AF474FC8B6C4EC78759A9DA /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
+		7D017DCE1F8E217800ED740C /* FE_Sass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FE_Sass.entitlements; path = FE_Sass/FE_Sass.entitlements; sourceTree = "<group>"; };
 		7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
 		7D769E2B1E602A630039526C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -696,6 +697,7 @@
 			isa = PBXGroup;
 			children = (
 				247AE7131FA3311C0039B52A /* LocationManger */,
+				7D017DCE1F8E217800ED740C /* FE_Sass.entitlements */,
 				1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */,
 				7DB2CBB31E779DDF00DE146C /* OCRSCancer */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -1091,6 +1093,11 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 8RXU2MG5MH;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1663,6 +1670,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODEPUSH_KEY = "4Wr88ywryi8HoitS9eM4T_LMBKUNe1b7b22b-ea3f-4c77-abcc-72586c814b3c";
+				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -1682,6 +1690,7 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/Image/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/React",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-umeng-push/ios/**",
 				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1713,6 +1722,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8RXU2MG5MH;
@@ -1731,6 +1741,7 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/Image/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/React",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-umeng-push/ios/**",
 				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1799,6 +1810,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8RXU2MG5MH;
@@ -1817,6 +1829,7 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/Image/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/React",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-umeng-push/ios/**",
 				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
