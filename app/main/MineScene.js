@@ -40,6 +40,7 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
+import SupervisionFeeScene from  '../mine/supervisonFee/SupervisionFeeScene';
 import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
 import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
 import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
@@ -106,6 +107,7 @@ export default class MineScene extends BaseComponent {
         firstType = '-1';
         lastType = '-1';
         haveOrder = 0;
+        this.noPay=0;
         componyname = '';
         this.state = {
             renderPlaceholderOnly: 'blank',
@@ -127,6 +129,11 @@ export default class MineScene extends BaseComponent {
                     for (let i = 0; i < minList.length; i++) {
                         this.initData(minList[i].id, minList[i].name);
                     }
+                    Car[2].cars.push({
+                        "icon": require('../../images/mainImage/supervision_fee.png'),
+                        "name": '监管费'
+                        , "id": 60
+                    },);
                     let jsonData = user_list;
 
                     //    定义变量
@@ -549,6 +556,10 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.name = 'YaoQingDeHaoLi'
                 this.navigatorParams.component = YaoQingDeHaoLi
                 break;
+            case 60:
+                this.navigatorParams.name = 'SupervisionFeeScene'
+                this.navigatorParams.component = SupervisionFeeScene
+                break;
         }
         this.props.callBack(this.navigatorParams);
     }
@@ -589,6 +600,17 @@ export default class MineScene extends BaseComponent {
                             borderRadius: 10
                         }}
                         /> : <View/>}
+                    {rowData.name == '监管费' && this.noPay == 0 ?
+                        <View style={{
+                            marginRight: Pixel.getPixel(15),
+                            width: Pixel.getPixel(70),
+                            height: Pixel.getPixel(25),
+                            backgroundColor: '#FDEEEB',
+                            alignItems:'center',
+                            justifyContent:'center',
+                            borderRadius: 4}}>
+                            <Text style={{color:'#FC6855', fontSize:12}}> {this.noPay+'笔待付'}</Text>
+                        </View>: <View/>}
 
 
                     <Image source={cellJianTou} style={styles.rowjiantouImage}/>
