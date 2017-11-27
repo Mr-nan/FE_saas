@@ -63,6 +63,8 @@
   struct utsname systemInfo;
   uname(&systemInfo);
   NSString  *deviceString = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+  if ([deviceString isEqualToString:@"iPhone10,1"])    return @"iPhone 8 Plus";
+  if ([deviceString isEqualToString:@"iPhone10,2"])    return @"iPhone 8";
   if ([deviceString isEqualToString:@"iPhone9,1"])    return @"iPhone 7 Plus";
   if ([deviceString isEqualToString:@"iPhone9,2"])    return @"iPhone 7";
   if ([deviceString isEqualToString:@"iPhone3,1"])    return @"iPhone 4";
@@ -80,6 +82,7 @@
   if ([deviceString isEqualToString:@"iPhone8,1"])    return @"iPhone 6s";
   if ([deviceString isEqualToString:@"iPhone8,2"])    return @"iPhone 6s Plus";
   if ([deviceString isEqualToString:@"iPhone8,4"])    return @"iPhone SE";
+  
   
   return deviceString;
 }
