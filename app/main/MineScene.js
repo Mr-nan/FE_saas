@@ -405,7 +405,6 @@ export default class MineScene extends BaseComponent {
 						};
 						request(Urls.GETCHECKSTATUS, 'post', maps).then((response) => {
 
-
 							if (response.mycode == "1") {
 								let dataResult = response.mjson.data;
 
@@ -418,7 +417,9 @@ export default class MineScene extends BaseComponent {
 
 							}
 						}, (error) => {
+							this.setState({renderPlaceholderOnly: 'error'});
 							this.props.showToast(error.msg);
+
 						});
 
 					} else {
