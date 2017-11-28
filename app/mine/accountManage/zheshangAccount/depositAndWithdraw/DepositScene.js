@@ -156,7 +156,7 @@ export default class DepositScene extends BaseComponent {
                                 marginBottom: 10
                             }}>{this.props.account.bank_name}账户 {this.props.account.bind_bank_card_name}</SText>
                             <SText
-                                style={{color: FontAndColor.COLORA1}}>{'充值限额' + this.state.singleAmt + '/笔 ' + this.state.dayAmt + '/日'}</SText>
+                                style={{color: FontAndColor.COLORA1}}>{'快捷入金充值限额' + this.state.singleAmt + '/笔 ' + this.state.dayAmt + '/日'}</SText>
                         </View>
                     </View>
 
@@ -256,7 +256,7 @@ export default class DepositScene extends BaseComponent {
                                         }
 
                                     </View>
-                                    <SText style={{color: FontAndColor.COLORA1,}}>您也可以使用您的银行卡，通过线下转账（柜台，网银，手机银行）的方式将资金充值到您的浙商银行账户下。</SText>
+                                    <SText style={{color: FontAndColor.COLORA1,}}>您也可以使用您的银行卡，通过线下转账（柜台、网银、手机银行）的方式将资金充值到您的浙商银行账户下。</SText>
                                     <View style={{
                                         borderBottomColor: FontAndColor.COLORA4,
                                         borderBottomWidth: StyleSheet.hairlineWidth,
@@ -271,7 +271,7 @@ export default class DepositScene extends BaseComponent {
                                         fontWeight: 'bold',
                                         marginBottom: 5
                                     }}>收款人账号：{this.props.account.cz_elec_account}</SText>
-                                    <SText style={{fontWeight: 'bold', marginBottom: 25}}>收款银行：浙商银行</SText>
+                                    <SText style={{fontWeight: 'bold', marginBottom: 25}}>收款银行：浙商银行杭州玉泉支行</SText>
 
                                 </View>
 

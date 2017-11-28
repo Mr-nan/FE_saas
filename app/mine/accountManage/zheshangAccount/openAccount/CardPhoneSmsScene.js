@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     TextInput,
     InteractionManager,
+    Image,
     TouchableWithoutFeedback
 } from "react-native";
 import BaseComponent from "../../../../component/BaseComponent";
@@ -24,6 +25,8 @@ import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import TextInputItem from '../component/TextInputItem'
 import ResultIndicativeScene from '../ResultIndicativeScene'
 import ChooseBankNameScene from '../component/ChooseBankNameScene'
+import SaasText from "../component/SaasText";
+import WebScene from "../../../../main/WebScene";
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -46,12 +49,12 @@ export default class CardPhoneSmsScene extends BaseComponent {
     constructor(props) {
         super(props);
 
-        type = parseInt(props.account.user_type)
-
+        //type = parseInt(props.account.user_type)
+        type = 1
         this.state = {
             renderPlaceholderOnly: true,
             loading_bank:false,
-            bankName:''  // 总行名
+            bankName:'',  // 总行名,
         }
     }
 
@@ -153,6 +156,40 @@ export default class CardPhoneSmsScene extends BaseComponent {
                               parentStyle={styles.buttonStyle}
                               childStyle={styles.buttonTextStyle}
                               mOnPress={this.next}/>
+
+                    <View style = {{flexDirection:'row', alignItems:'center'}}>
+
+                        <TouchableWithoutFeedback
+                            onPress={()=>{
+                                this.setState({
+                                    isChecked:!this.state.isChecked
+                                })
+                            }}
+                        >
+                            <Image source={this.state.isChecked?require('../../../../../images/carSourceImages/checkIcone.png'):require('../../../../../images/carSourceImages/checkIcone_nil.png')}/>
+                        </TouchableWithoutFeedback>
+
+                        <TouchableWithoutFeedback
+                            onPress={()=>{
+
+                                this.toNextPage({
+                                    component:WebScene,
+                                    name:'WebScene',
+                                    params:{webUrl:'https://www.baidu.com/', title:'协议'}
+                                })
+                            }}
+                        >
+                            <View
+                                style={{flexDirection:'row', alignItems:'center', marginLeft:6}}
+                            >
+                                <SaasText style={{fontSize:13}}>我同意</SaasText>
+                                <SaasText style={{color:'blue', fontSize:13}}>《浙商银行存管通三方合作协议》</SaasText>
+                            </View>
+
+                        </TouchableWithoutFeedback>
+
+                    </View>
+
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -361,6 +398,11 @@ export default class CardPhoneSmsScene extends BaseComponent {
         if (with_sms_code) {
             if (sms_code === '' || sms_code === null) {
                 this.props.showToast('请输入验证码');
+                return false
+            }
+
+            if(!this.state.isChecked){
+                this.props.showToast('请同意三方存管协议')
                 return false
             }
         }

@@ -84,11 +84,13 @@ export  default class WebScene extends BaseComponent {
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
                 <NavigationView
-                    title="公告"
+                    title= {this.props.title?this.props.title:'公告'}
                     backIconClick={()=>{
                          this.props.showModal(false);
+                        console.log(this.props.webUrl)
                         if(oldUrl==this.props.webUrl){
                                 this.backPage();
+
                         }else{
                             this.refs.www.goBack();
                         }

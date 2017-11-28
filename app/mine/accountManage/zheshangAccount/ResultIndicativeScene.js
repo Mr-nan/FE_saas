@@ -422,7 +422,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                 let bank_name = this.props.append;
                 return <View style={{alignItems: 'center'}}>
                     <Text allowFontScaling={false}
-                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已成功开通浙商银行存管账户</Text>
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已成功开通浙商银行账户啦</Text>
                     <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}> 并已经绑定{bank_name}（尾号{bank_no}）的银行卡</Text>
                 </View>
             } else if (this.state.status === 2) {
@@ -433,11 +433,12 @@ export default class ResultIndicativeScene extends BaseComponent {
                         textAlign: 'center'
                     }}>{this.props.error.msg}</SaasText>
                 </View>
-            } else {
+            } else { // 提交资料成功
                 return <View style={{alignItems: 'center'}}>
                     <Text allowFontScaling={false}
-                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已成功提交浙商银行存管账户的资料</Text>
-                    <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}>银行将在1-2个工作日进行审核</Text>
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已提供对公开户线上资料，请尽快联系客服 4008-365-111</Text>
+                    <Text allowFontScaling={false}
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>请尽快联系客服 4008-365-111</Text>
                 </View>
             }
         } else if (this.state.type === 2 || this.state.type === 3) {
@@ -545,8 +546,20 @@ export default class ResultIndicativeScene extends BaseComponent {
                 return <View style={{marginTop: 200}}/>
             }
                 break;
-            case 2 :
-            case 3: {  //提现、充值
+            case 2 :{  //充值
+                return <View style={{marginHorizontal: 30, height: 180}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
+                        <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginRight: 15}}/>
+                        <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}>温馨提示</Text>
+                        <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginLeft: 15}}/>
+                    </View>
+                    <Text allowFontScaling={false}
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>快捷入金T+1日可提现，不影响交易哦~</Text>
+                </View>
+
+
+            } break;
+            case 3: {  //提现
 
                 return <View style={{marginHorizontal: 30, height: 180}}>
                     <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
@@ -555,11 +568,9 @@ export default class ResultIndicativeScene extends BaseComponent {
                         <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginLeft: 15}}/>
                     </View>
                     <Text allowFontScaling={false}
-                          style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>1
-                        浙商银行及其它银行1000万以内的提现，实时到账，五分钟。</Text>
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>1  个人7*24小时，实时到账。</Text>
 
-                    <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
-                        企业用户及其它个人用户提现大于1000万以上的，工作日走大小额，资金0.5-2小时即可到达。</Text>
+                    <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1, lineHeight: 20}}>{"2  企业工作日 9:00-16:30实时到账，其他时间单笔  <=5w 实时到账"}</Text>
 
                 </View>
             }

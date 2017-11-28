@@ -106,9 +106,14 @@ export default class Log extends BaseComponent {
                         rows.push(data)
                     })
 
-                    if (log_data.length === 0) {
+                    if (log_data.length === 0 &&  create_time!== '') {
                         log_data = [[{create_time: create_time}]]
+                    }else if(log_data.length ===0 && create_time === '') {
+                        this.setState({
+                            renderPlaceholderOnly:'null'
+                        })
                     }
+
                     this.setState({
                         source: ds.cloneWithRowsAndSections(log_data)
                     })
