@@ -130,7 +130,7 @@ export default class SmsFillScene extends Component {
                     amount: parseFloat(this.props.money),
                     enter_base_id: result.company_base_id,
                     from_bank_id:this.props.account.bind_bank_card_no,
-                    mobile_no:'15701239874',   //this.props.account.mobile_no,
+                    mobile_no:this.props.account.mobile_no,
                     sub_acct_no:this.props.account.bank_card_no,
                     type:1
             }
