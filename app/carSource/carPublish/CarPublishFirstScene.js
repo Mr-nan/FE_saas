@@ -53,7 +53,6 @@ const IS_ANDROID = Platform.OS === 'android';
 export default class CarPublishFirstScene extends BaseComponent{
 
 
-
     initFinish=()=>{
         this.loadCarConfigurationData();
     }
@@ -125,13 +124,11 @@ export default class CarPublishFirstScene extends BaseComponent{
                                 <TextInput style={styles.textInput}
                                            ref={(input) => {this.vinInput = input}}
                                            placeholder='输入车架号'
+                                           autoCapitalize="characters"
                                            underlineColorAndroid='transparent'
                                            maxLength={17}
                                            editable={this.props.carID?false:true}
                                            onChangeText={this._onVinChange}
-                                           onFocus={()=>{
-                                                this.setCurrentPy('vinInput');
-                                             }}
                                            placeholderTextColor={fontAndColor.COLORA4}
                                            keyboardType={'ascii-capable'}
                                            placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -165,9 +162,6 @@ export default class CarPublishFirstScene extends BaseComponent{
                                 underlineColorAndroid='transparent'
                                 onChangeText={(text)=>{this.carData['displacement']=text}}
                                 onEndEditing={()=>{this.saveCarData();}}
-                                onFocus={()=>{
-                                      this.setCurrentPy('displacementInput');
-                                  }}
                                 placeholderTextColor={fontAndColor.COLORA4}
                                 placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                             />
@@ -226,11 +220,11 @@ export default class CarPublishFirstScene extends BaseComponent{
                                 maxLength={50}
                                 underlineColorAndroid='transparent'
                                 onChangeText={(text)=>{this.carData['modification_instructions']=text}}
-                                onEndEditing={()=>{this.saveCarData();}}
+                                onEndEditing={()=>{
+                                    this.setState({keyboardGap:-Pixel.getPixel(200)});
+                                    this.saveCarData();}}
                                 ref={(input) => {this.instructionsInput = input}}
-                                onFocus={()=>{
-                                      this.setCurrentPy('instructionsInput');
-                                  }}
+                                onFocus={()=>{this.setState({keyboardGap:0});}}
                                 placeholderTextColor={fontAndColor.COLORA4}
                                 placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                             />
@@ -244,43 +238,23 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.state = {
             titleData:this.titleData1,
             isDateTimePickerVisible:false,
+            keyboardGap:-Pixel.getPixel(200),
             renderPlaceholderOnly:'loading'
         };
     }
 
-    // componentWillMount() {
-    //
-    //     // Keyboard events监听
-    //     Keyboard.addListener('keyboardWillShow', this.updateKeyboardSpace);
-    // }
-    //
-    // componentWillUnMount() {
-    //     Keyboard.removeAllListeners('keyboardWillShow');
-    // }
+
     setCurrentPy =(ref)=>{
 
         console.log(ref);
 
-        // ref.measure((ox, oy, width, height, px, py)=>{
-        //
-        //     let currentPy = py + height;
-        //     console.log(currentPy,sceneHeight);
-        //     if(sceneHeight - currentPy < this.keyboardSpace)
-        //     {
-        //         this.scrollView.scrollTo({x: 0, y:this.keyboardSpace + (sceneHeight- currentPy+Pixel.getPixel(50)), animated: true});
-        //     }
-        //
-        // });
+
     }
     componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
     }
 
-    // updateKeyboardSpace =(frames)=>{
-    //
-    //     this.keyboardSpace = frames.endCoordinates.height//获取键盘高度
-    //
-    // }
+
 
 
     render(){
@@ -296,7 +270,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             <View style={styles.rootContainer}>
                 {
                     IS_ANDROID?(this.loadScrollView()):(
-                            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(150)}>
+                            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardGap}>
                                 {
                                     this.loadScrollView()
                                 }
