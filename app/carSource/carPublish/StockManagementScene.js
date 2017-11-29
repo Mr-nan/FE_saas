@@ -95,7 +95,6 @@ export default class StockManagementScene extends BaseComponent {
                 model_name: this.props.carData.model_name
             };
         }
-        console.log(this.props.carData.imgs)
         this.titleData1 = [
             [
                 {
@@ -179,12 +178,14 @@ export default class StockManagementScene extends BaseComponent {
                                        keyboardType={'numeric'}
                                        maxLength={7}
                                        onFocus={()=>{
-                                           this.setCurrentPy(this.purchase_price);
+                                           this.setState({keyboardGap:0});
                                        }}
                                        underlineColorAndroid='transparent'
                                        placeholderTextColor={fontAndColor.COLORA1}
                                        defaultValue={this.carData.purchase_price?this.carMoneyChange(this.carData.purchase_price):''}
-                                       onEndEditing={()=>{this.saveCarData();}}
+                                       onEndEditing={()=>{
+                                           this.setState({keyboardGap:-Pixel.getPixel(180)});
+                                           this.saveCarData();}}
                                        onChangeText={(text)=>{
                                             if(text.length>4&&text.indexOf('.')==-1){
                                                text = text.substring(0,4);
@@ -242,7 +243,8 @@ export default class StockManagementScene extends BaseComponent {
         this.state = {
             titleData: this.titleData1,
             isDateTimePickerVisible: false,
-            renderPlaceholderOnly: 'loading'
+            renderPlaceholderOnly: 'loading',
+            keyboardGap:-Pixel.getPixel(180),
         };
         this.setCarData();
     }
@@ -309,7 +311,7 @@ export default class StockManagementScene extends BaseComponent {
             <View style={styles.rootContainer}>
                 {
                     IS_ANDROID ? (this.loadScrollView()) : (
-                            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(100)}>
+                            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardGap}>
                                 {
                                     this.loadScrollView()
                                 }

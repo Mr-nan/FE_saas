@@ -393,10 +393,12 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                        underlineColorAndroid='transparent'
                                        ref={(ref)=>{this.retail_price_store = ref}}
                                        onFocus={()=>{
-                                           this.setCurrentPy(this.retail_price_store);
+                                           this.setState({keyboardGap:0});
                                        }}
                                        defaultValue={this.carData.retail_price_store?this.carMoneyChange(this.carData.retail_price_store):''}
-                                       onEndEditing={()=>{this.saveCarData();}}
+                                       onEndEditing={()=>{
+                                           this.setState({keyboardGap:-Pixel.getPixel(100)});
+                                           this.saveCarData();}}
                                        onChangeText={(text)=>{
                                                if(text.length>4&&text.indexOf('.')==-1){
                                                text = text.substring(0,4);
@@ -417,7 +419,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
         this.state = {
             titleData: this.titleData1,
             isDateTimePickerVisible: false,
-            renderPlaceholderOnly: 'loading'
+            renderPlaceholderOnly: 'loading',
+            keyboardGap:-Pixel.getPixel(100),
         };
     }
 
@@ -442,7 +445,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
             <View style={styles.rootContainer}>
                 {
                     IS_ANDROID ? (this.loadScrollView()) : (
-                            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(100)}>
+                            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardGap}>
                                 {
                                     this.loadScrollView()
                                 }
