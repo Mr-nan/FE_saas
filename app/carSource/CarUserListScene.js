@@ -164,14 +164,6 @@ export  default  class CarUserListScene extends BaseComponent {
 
     componentWillReceiveProps(nextProps) {
 
-        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
-            if(data.code==1){
-                if(data.result=='true'){
-
-                    this.presCarTypeScene();
-                }
-            }
-        });
 
         StorageUtil.mGetItem(storageKeyNames.NEED_USER_CHECK_RECOMMEND,(data)=>{
 
@@ -182,30 +174,17 @@ export  default  class CarUserListScene extends BaseComponent {
                         {
                             this.refs.HeadView.setCheckRecommend(false);
                         }
-
-
                     }
                 }
             }
         });
 
 
-        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_USER_CHECK_RECOMMEND,'false');
 
     }
 
     initFinish = () => {
-
-        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
-            if(data.code==1){
-                if(data.result=='true'){
-                    this.presCarTypeScene();
-                    return;
-                }
-
-            }
-        });
 
         StorageUtil.mGetItem(storageKeyNames.NEED_USER_CHECK_RECOMMEND,(data)=>{
 
@@ -218,7 +197,6 @@ export  default  class CarUserListScene extends BaseComponent {
                 }
             }
         });
-        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_USER_CHECK_RECOMMEND,'false');
 
 
@@ -862,10 +840,11 @@ export  default  class CarUserListScene extends BaseComponent {
     };
 
     setHeadViewType =()=>{
-        if (this.refs.HeadView.state.isUserCarCheckRecommend) {
+        if (this.refs.HeadView.state.isCheckRecommend) {
             this.refs.HeadView.setCheckRecommend(false);
 
         } else {
+
             this.filterData();
         }
     }

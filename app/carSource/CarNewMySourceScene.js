@@ -64,7 +64,7 @@ let carDropFrameStatus = 1;
 let carAuditPage = 1;
 let carAuditStatus = 1;
 
-export default class CarMySourceScene extends BaceComponent {
+export default class CarNewMySourceScene extends BaceComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -536,18 +536,25 @@ export default class CarMySourceScene extends BaceComponent {
             {
                 shareArray.push(carData.imgs[i].url);
             }
-            let carContent = carData.model_name;
-            if (carData.city_name != "") {
+            let carContent = carData.city_name? ('['+carData.city_name+']'+ carData.model_name ):(carData.model_name);
+            if (carData.car_color) {
 
-                carContent += '\n'+carData.city_name + '\n';
+                carContent += carData.car_color.split("|")[0];
             }
-            if (carData.plate_number != "") {
-
-                carContent += carData.plate_number.substring(0, 2);
+            if(carContent!=='')
+            {
+                carContent+=' | ';
             }
-            if (carData.carIconsContentData[0] != "") {
+            if(carData.stock){
 
-                carContent += "\n" + carData.carIconsContentData[0] + '出厂';
+                carContent+=carData.stock+'辆在售';
+            }
+            if(carContent!=='')
+            {
+                carContent+="\n";
+            }
+            if(carData.dealer_price>0){
+                carContent+=stringTransform.carMoneyChange(carData.dealer_price)+'万元';
             }
             NativeModules.ShareNative.share({image:[shareArray],title:[carContent]}).then((suc)=>{
                     this.sharedSucceedAction();
@@ -581,19 +588,28 @@ export default class CarMySourceScene extends BaceComponent {
             .then((isInstalled) => {
                 if (isInstalled) {
                     let imageResource = require('../../images/carSourceImages/car_info_null.png');
+                    let title = carData.city_name? ('['+carData.city_name+']'+ carData.model_name ):(carData.model_name);
                     let carContent = '';
-                    if (carData.city_name != "") {
+                    if (carData.car_color) {
 
-                        carContent = carData.city_name + ' | ';
+                        carContent += carData.car_color.split("|")[0];
                     }
-                    if (carData.plate_number != "") {
+                    if(carContent!=='')
+                    {
+                        carContent+=' | ';
+                    }
+                    if(carData.stock){
 
-                        carContent += carData.plate_number.substring(0, 2);
+                        carContent+=carData.stock+'辆在售';
                     }
-                    if (carData.carIconsContentData[0] != "") {
+                    if(carContent!=='')
+                    {
+                        carContent+="\n";
+                    }
+                    if(carData.dealer_price>0){
+                        carContent+=stringTransform.carMoneyChange(carData.dealer_price)+'万元';
+                    }
 
-                        carContent += " | " + carData.carIconsContentData[0] + '出厂';
-                    }
                     let fenxiangUrl = '';
                     if (AppUrls.BASEURL == 'http://api-gateway.test.dycd.com/') {
                         fenxiangUrl = AppUrls.FENXIANGTEST;
@@ -603,7 +619,7 @@ export default class CarMySourceScene extends BaceComponent {
                     let carImage = typeof carData.imgs[0].url == 'undefined' ? resolveAssetSource(imageResource).uri : carData.imgs[0].url;
                     weChat.shareToSession({
                         type: 'news',
-                        title: carData.model_name,
+                        title: title,
                         description: carContent,
                         webpageUrl: fenxiangUrl + '?id=' + carData.id,
                         thumbImage: carImage,
@@ -631,18 +647,28 @@ export default class CarMySourceScene extends BaceComponent {
             .then((isInstalled) => {
                 if (isInstalled) {
                     let imageResource = require('../../images/carSourceImages/car_info_null.png');
+                    let title = carData.city_name? ('['+carData.city_name+']'+ carData.model_name ):(carData.model_name);
                     let carContent = '';
-                    if (carData.city_name != "") {
-                        carContent = carData.city_name + ' | ';
-                    }
-                    if (carData.plate_number != "") {
+                    if (carData.car_color) {
 
-                        carContent += carData.plate_number.substring(0, 2);
+                        carContent += carData.car_color.split("|")[0];
                     }
-                    if (carData.carIconsContentData[0] != "") {
+                    if(carContent!=='')
+                    {
+                        carContent+=' | ';
+                    }
+                    if(carData.stock){
 
-                        carContent += " | " + carData.carIconsContentData[0] + '出厂';
+                        carContent+=carData.stock+'辆在售';
                     }
+                    if(carContent!=='')
+                    {
+                        carContent+="\n";
+                    }
+                    if(carData.dealer_price>0){
+                        carContent+=stringTransform.carMoneyChange(carData.dealer_price)+'万元';
+                    }
+
                     let fenxiangUrl = '';
                     if (AppUrls.BASEURL == 'http://api-gateway.test.dycd.com/') {
                         fenxiangUrl = AppUrls.FENXIANGTEST;
@@ -652,7 +678,7 @@ export default class CarMySourceScene extends BaceComponent {
                     let carImage = typeof carData.imgs[0].url == 'undefined' ? resolveAssetSource(imageResource).uri : carData.imgs[0].url;
                     weChat.shareToTimeline({
                         type: 'news',
-                        title: carData.model_name,
+                        title: title,
                         description: carContent,
                         webpageUrl: fenxiangUrl + '?id=' + carData.id,
                         thumbImage: carImage,

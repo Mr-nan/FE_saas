@@ -296,7 +296,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             <View style={styles.rootContainer}>
                 {
                     IS_ANDROID?(this.loadScrollView()):(
-                            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(100)}>
+                            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(150)}>
                                 {
                                     this.loadScrollView()
                                 }

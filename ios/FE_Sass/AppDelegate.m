@@ -42,7 +42,6 @@
                                                                    @"phoneVersion":phoneVersion,
                                                                    @"phoneModel":[self getPhoneModel],
                                                                    @"appVersion":appVersion,
-                                                                   @"networkType":[self checkNetworkPermission]
                                                                    }
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
@@ -86,7 +85,7 @@
 -(NSString *)checkNetworkPermission{
   CTCellularData *cellularData = [[CTCellularData alloc]init];
   CTCellularDataRestrictedState state = cellularData.restrictedState;
-  return @(state);
+  return [NSString stringWithFormat:@"%lu",(unsigned long)state];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation

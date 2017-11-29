@@ -14,6 +14,9 @@ import CarViewPage from '../../viewpager/CarViewPage';
 const {width, height} = Dimensions.get('window');
 import  PixelUtil from '../../utils/PixelUtil'
 import  * as fontAndColor from '../../constant/fontAndColor'
+import  StringTransformUtil from  '../../utils/StringTransformUtil';
+
+let stringTransform  = new  StringTransformUtil();
 var Pixel = new PixelUtil();
 let alldata = {};
 export default class CarsViewPager extends Component {
@@ -118,8 +121,8 @@ export default class CarsViewPager extends Component {
                             {this.props.type == '6' ?
                                 <Text style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>{data.stock}辆在售</Text> :
                                 <Text
-                                    style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>{this.dateReversal(data.manufacture + "000")}/{data.mileage}万公里</Text>}
-                            <Text style={{fontSize:Pixel.getFontPixel(17),color:'#fa5741'}}>{data.dealer_price}万</Text>
+                                    style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>{stringTransform.dateReversal(data.manufacture + "000")}/{data.mileage}万公里</Text>}
+                            <Text style={{fontSize:Pixel.getFontPixel(17),color:'#fa5741'}}>{stringTransform.carMoneyChange(data.dealer_price)}万</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -127,19 +130,6 @@ export default class CarsViewPager extends Component {
         }
     }
 
-    dateReversal = (time) => {
-
-        const date = new Date();
-        date.setTime(time);
-        return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2))) + "-" + (this.PrefixInteger(date.getDate(), 2));
-
-    };
-
-    PrefixInteger = (num, length) => {
-
-        return (Array(length).join('0') + num).slice(-length);
-
-    }
 }
 
 const styles = StyleSheet.create({

@@ -161,15 +161,6 @@ export  default  class CarNewListScene extends BaseComponent {
 
     componentWillReceiveProps(nextProps) {
 
-        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
-            if(data.code==1){
-                if(data.result=='true'){
-
-                    this.presCarTypeScene();
-                }
-            }
-        });
-
         StorageUtil.mGetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,(data)=>{
 
             if(data.code == 1){
@@ -183,22 +174,11 @@ export  default  class CarNewListScene extends BaseComponent {
                 }
             }
         });
-        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,'false');
 
     }
 
     initFinish = () => {
-
-        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
-            if(data.code==1){
-                if(data.result=='true'){
-                    this.presCarTypeScene();
-                    return;
-                }
-
-            }
-        });
 
         StorageUtil.mGetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,(data)=>{
 
@@ -214,7 +194,6 @@ export  default  class CarNewListScene extends BaseComponent {
 
 
 
-        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,'false');
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
@@ -883,6 +862,7 @@ export  default  class CarNewListScene extends BaseComponent {
             this.refs.HeadView.setCheckRecommend(false);
 
         } else {
+
             this.filterData();
         }
     }
@@ -1028,7 +1008,7 @@ export  default  class CarNewListScene extends BaseComponent {
                 }
                 {
                     !this.state.isHideCarSpecification && (
-                        <View style={{top: Pixel.getTitlePixel(87), backgroundColor:'rgba(0, 0, 0,0.3)', left: 0, right: 0, position: 'absolute', bottom: 0,}}>
+                        <View style={{top: Pixel.getTitlePixel(87), backgroundColor:'rgba(0, 0, 0,0.3)', left: 0, right: 0, position: 'absolute', bottom:0,}}>
                             <CarSpecificationView checkedSpecification={(specificationData)=>{
                                 this.refs.HeadView.checkSelect(currentCheckedIndex);
                                 this.setState({

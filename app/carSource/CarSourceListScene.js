@@ -28,6 +28,7 @@ import CarUserListScene from './CarUserListScene';
 import CarNewListScene from './CarNewListScene';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import StorageUtil from '../utils/StorageUtil';
+import CarSeekScene from "./CarSeekScene";
 
 
 
@@ -49,6 +50,15 @@ export  default  class carSourceListScene extends BaseComponent {
 
     componentWillReceiveProps(nextProps) {
 
+        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
+            if(data.code==1){
+                if(data.result=='true'){
+
+                    this.presCarTypeScene();
+                }
+            }
+        });
+
         StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
 
             if(data.code == 1){
@@ -71,11 +81,22 @@ export  default  class carSourceListScene extends BaseComponent {
 
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_USER_CAR,'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+
 
     }
 
     componentWillMount() {
 
+        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
+            if(data.code==1){
+                if(data.result=='true'){
+
+                    this.presCarTypeScene();
+                }
+            }
+        });
+
         StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_NEW_CAR,(data)=>{
 
             if(data.code == 1){
@@ -90,9 +111,6 @@ export  default  class carSourceListScene extends BaseComponent {
 
             if(data.code == 1){
                 if(data.result == 'true'){
-                    // this.setState({
-                    //     switchoverType:0
-                    // })
                     this.scrollView.scrollTo({x:0, y:0, animated: false});
                     this.refs.CarListNavigatorView && this.refs.CarListNavigatorView.setBtnType(0);
                 }
@@ -101,6 +119,8 @@ export  default  class carSourceListScene extends BaseComponent {
 
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_USER_CAR,'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+
     }
 
     componentDidMount() {
@@ -133,9 +153,7 @@ export  default  class carSourceListScene extends BaseComponent {
     };
 
     switchoverAction=(title,index)=>{
-        // this.setState({
-        //     switchoverType:index
-        // });
+
         this.scrollView.scrollTo({x:index *ScreenWidth, y:0, animated: true});
     }
 
@@ -146,6 +164,25 @@ export  default  class carSourceListScene extends BaseComponent {
                 {this.loadView()}
             </View>
         );
+    }
+
+    presCarTypeScene = () => {
+
+        let navigatorParams = {
+            name: "CarSeekScene",
+            component: CarSeekScene,
+            params: {
+                checkedCarClick: this.checkedCarClick,
+            }
+
+        };
+        this.props.callBack(navigatorParams);
+
+    }
+
+    checkedCarClick=(carObject)=>{
+        this.carUserListScene && this.carUserListScene.checkedCarClick(carObject);
+        this.carNewListScene && this.carNewListScene.checkedCarClick(carObject);
     }
 
     render() {
@@ -160,8 +197,8 @@ export  default  class carSourceListScene extends BaseComponent {
                             horizontal={true}
                             overScrollMode="never"
                             scrollEnabled={false}>
-                    <CarUserListScene showModal={this.props.showModal} callBack={this.props.callBack}/>
-                    <CarNewListScene showModal={this.props.showModal} callBack={this.props.callBack}/>
+                    <CarUserListScene ref={(ref)=>{this.carUserListScene = ref}} showModal={this.props.showModal} callBack={this.props.callBack}/>
+                    <CarNewListScene ref={(ref)=>{this.carNewListScene = ref}} showModal={this.props.showModal} callBack={this.props.callBack}/>
                 </ScrollView>
 
 

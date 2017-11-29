@@ -322,7 +322,10 @@ export default class CarNewInfoScene extends BaseComponent {
                                             <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
                                                 <Text allowFontScaling={false}
                                                       style={styles.priceText}>{stringTransform.carMoneyChange(carData.dealer_price) + '万'}  </Text>
-                                                <Text style={styles.browseText}>{stringTransform.carMoneyChange(carData.dealer_price) + '万'}</Text>
+                                                {
+                                                    carData.model_price &&
+                                                    ( <Text style={styles.browseText}>{stringTransform.carMoneyChange(carData.model_price) + '万'}</Text>)
+                                                }
                                             </View>
                                         ):(<View/>)
                                     }
@@ -450,7 +453,8 @@ export default class CarNewInfoScene extends BaseComponent {
     // 下订单
     orderClick = (carData) => {
 
-        if (carData.show_order == 1) {
+        let carNumber = parseFloat(carData.stock?carData.stock:0)-parseFloat(carData.reserve_num?carData.reserve_num:0);
+        if (carNumber<=0) {
             this.props.showToast('该车辆已被订购');
 
         } else {
@@ -721,30 +725,7 @@ export default class CarNewInfoScene extends BaseComponent {
         );
     }
 
-    carMoneyChange = (carMoney) => {
 
-        let newCarMoney = parseFloat(carMoney);
-        let carMoneyStr = newCarMoney.toFixed(2);
-        let moneyArray = carMoneyStr.split(".");
-
-        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
-
-        if (moneyArray.length > 1) {
-            if (moneyArray[1] > 0) {
-
-                return moneyArray[0] + '.' + moneyArray[1];
-
-            } else {
-
-                return moneyArray[0];
-            }
-
-        } else {
-            return carMoneyStr;
-        }
-
-
-    }
 
 }
 
@@ -794,19 +775,31 @@ class SharedView extends Component {
             {
                 shareArray.push(carData.imgs[i].url);
             }
-            let carContent = carData.model_name;
-            if (carData.city_name != "") {
+            let carContent = carData.model_name+'|';
+            if (carData.car_color) {
 
-                carContent += '\n'+carData.city_name + '\n';
+                carContent += carData.car_color.split("|")[0];
             }
-            if (carData.plate_number != "") {
 
-                carContent += carData.plate_number.substring(0, 2);
+            if(carContent!=='')
+            {
+                carContent+=' | '
             }
-            if (carData.carIconsContentData[0] != "") {
 
-                carContent += "\n" + carData.carIconsContentData[0] + '出厂';
+            if(carData.stock){
+
+                carContent+=carData.stock+'辆在售';
             }
+
+            if(carContent!=='')
+            {
+                carContent+=' | '
+            }
+
+            if(carData.dealer_price>0){
+                carContent+=stringTransform.carMoneyChange(carData.dealer_price)+'万元';
+            }
+
             NativeModules.ShareNative.share({image:[shareArray],title:[carContent]}).then((suc)=>{
                     this.sharedSucceedAction();
 
@@ -841,19 +834,28 @@ class SharedView extends Component {
                 if (isInstalled) {
 
                     let imageResource = require('../../images/carSourceImages/car_info_null.png');
+                    let title = carData.city_name? ('['+carData.city_name+']'+ carData.model_name ):(carData.model_name);
                     let carContent = '';
-                    if (carData.city_name != "") {
+                    if (carData.car_color) {
 
-                        carContent = carData.city_name + ' | ';
+                        carContent += carData.car_color.split("|")[0];
                     }
-                    if (carData.plate_number != "") {
+                    if(carContent!=='')
+                    {
+                        carContent+=' | ';
+                    }
+                    if(carData.stock){
 
-                        carContent += carData.plate_number.substring(0, 2);
+                        carContent+=carData.stock+'辆在售';
                     }
-                    if (carData.carIconsContentData[0] != "") {
+                    if(carContent!=='')
+                    {
+                        carContent+="\n";
+                    }
+                    if(carData.dealer_price>0){
+                        carContent+=stringTransform.carMoneyChange(carData.dealer_price)+'万元';
+                    }
 
-                        carContent += " | " + carData.carIconsContentData[0] + '出厂';
-                    }
                     let fenxiangUrl = '';
                     if (AppUrls.BASEURL == 'http://api-gateway.test.dycd.com/') {
                         fenxiangUrl = AppUrls.FENXIANGTEST;
@@ -861,10 +863,9 @@ class SharedView extends Component {
                         fenxiangUrl = AppUrls.FENXIANGOPEN;
                     }
                     let carImage = typeof carData.imgs[0].url == 'undefined' ? resolveAssetSource(imageResource).uri : carData.imgs[0].url;
-                    console.log(fenxiangUrl + '?id=' + carData.id);
                     weChat.shareToSession({
                         type: 'news',
-                        title: carData.model_name,
+                        title: title,
                         description: carContent,
                         webpageUrl: fenxiangUrl + '?id=' + carData.id,
                         thumbImage: carImage,
@@ -892,18 +893,32 @@ class SharedView extends Component {
             .then((isInstalled) => {
                 if (isInstalled) {
                     let imageResource = require('../../images/carSourceImages/car_info_null.png');
+                    let title = carData.city_name? ('['+carData.city_name+']'+ carData.model_name ):(carData.model_name);
                     let carContent = '';
-                    if (carData.city_name != "") {
-                        carContent = carData.city_name + ' | ';
-                    }
-                    if (carData.plate_number != "") {
+                    if (carData.car_color) {
 
-                        carContent += carData.plate_number.substring(0, 2);
+                        carContent += carData.car_color.split("|")[0];
                     }
-                    if (carData.carIconsContentData[0] != "") {
 
-                        carContent += " | " + carData.carIconsContentData[0] + '出厂';
+                    if(carContent!=='')
+                    {
+                        carContent+=' | '
                     }
+
+                    if(carData.stock){
+
+                        carContent+=carData.stock+'辆在售';
+                    }
+
+                    if(carContent!=='')
+                    {
+                        carContent+=' | '
+                    }
+
+                    if(carData.dealer_price>0){
+                        carContent+=stringTransform.carMoneyChange(carData.dealer_price)+'万元';
+                    }
+
 
                     let fenxiangUrl = '';
                     if (AppUrls.BASEURL == 'http://api-gateway.test.dycd.com/') {
@@ -914,7 +929,7 @@ class SharedView extends Component {
                     let carImage = typeof carData.imgs[0].url == 'undefined' ? resolveAssetSource(imageResource).uri : carData.imgs[0].url;
                     weChat.shareToTimeline({
                         type: 'news',
-                        title: carData.model_name,
+                        title: title,
                         description: carContent,
                         webpageUrl: fenxiangUrl + '?id=' + carData.id,
                         thumbImage: carImage,
