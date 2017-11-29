@@ -197,6 +197,7 @@ export default class InformationFillScene extends BaseComponent {
         } else {
             if(!this.verify(true)) { return};
 
+            this.props.showModal(true)
 
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code === 1) {
@@ -211,7 +212,7 @@ export default class InformationFillScene extends BaseComponent {
                         enter_base_id: result.company_base_id,
                     }
 
-                    this.props.showModal(true)
+
                     request(AppUrls.ZS_BANK_MODIFY_MOBILE, 'POST', params).then((response) => {
                         this.props.showModal(false)
 
@@ -222,7 +223,8 @@ export default class InformationFillScene extends BaseComponent {
                                 type:5,
                                 status:1,
                                 params:params,
-                                dose_need_old_number_sms_code:dose_need_old_number_sms_code
+                                dose_need_old_number_sms_code:dose_need_old_number_sms_code,
+                                callBack:this.props.callBack
                             }
                         })
 
@@ -240,7 +242,8 @@ export default class InformationFillScene extends BaseComponent {
                                     status:0,
                                     params:params,
                                     dose_need_old_number_sms_code:dose_need_old_number_sms_code,
-                                    error:error.mjson
+                                    error:error.mjson,
+                                    callBack:this.props.callBack
                                 }
                             })
                         }else if(error.mycode === -300 || error.mycode === -500){
@@ -254,7 +257,8 @@ export default class InformationFillScene extends BaseComponent {
                                     status: 2,
                                     account: params,
                                     error:error.mjson,
-                                    dose_need_old_number_sms_code:dose_need_old_number_sms_code
+                                    dose_need_old_number_sms_code:dose_need_old_number_sms_code,
+                                    callBack:this.props.callBack
                                 }
                             })
                         }

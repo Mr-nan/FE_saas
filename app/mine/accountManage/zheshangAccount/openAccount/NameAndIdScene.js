@@ -163,7 +163,7 @@ export default class NameAndIdScene extends BaseComponent {
                         this.toNextPage({
                             component:CardPhoneSmsScene,
                             name:'CardPhoneSmsScene',
-                            params:{account:response.mjson.data}
+                            params:{account:response.mjson.data, callBack:this.props.callBack}
                         })
                 }, (error)=>{
 

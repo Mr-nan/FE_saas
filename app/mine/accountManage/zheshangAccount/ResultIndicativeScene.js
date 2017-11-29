@@ -203,6 +203,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                         break;
                     case 1: {
                         this.backN(4)  //开户成功跳卡片页
+                        this.props.callBack()
                     }
                         break;
                     case 2: {
@@ -225,6 +226,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                         break;
                     case 1: {
                         this.backN(2)
+                        this.props.callBack()
                     }
                         break;
                     case 2: {
@@ -241,6 +243,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                         break
                     case 1: {
                         this.backN(2)
+                        this.props.callBack()
                     }
                         break
                     case 2: {
@@ -260,8 +263,10 @@ export default class ResultIndicativeScene extends BaseComponent {
                     case 1: {
                         if (this.props.dose_need_old_number_sms_code === false) {
                             this.backN(2)
+                            this.props.callBack()
                         } else {
                             this.backN(3)
+                            this.props.callBack()
                         }
                     }
                         break
@@ -270,6 +275,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                             this.backN(1)
                         } else {
                             this.backN(2)
+
                         }
                     }
                         break
@@ -473,7 +479,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                 return null
             } else if (this.state.status === 1) {
                 return <View style={{alignItems: 'center', marginTop: 10}}>
-                    <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1, marginBottom: 5}}>转账或充值是请填写新的手机号码</Text>
+                    <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1, marginBottom: 5}}>转账或充值时请填写新的手机号码</Text>
                 </View>
             } else {
                 return <View style={{alignItems: 'center', marginTop: 10}}>
@@ -547,7 +553,7 @@ export default class ResultIndicativeScene extends BaseComponent {
             }
                 break;
             case 2 :{  //充值
-                return <View style={{marginHorizontal: 30, height: 180}}>
+                return <View style={{marginHorizontal: 30, height: 180, alignItems:'center'}}>
                     <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
                         <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginRight: 15}}/>
                         <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}>温馨提示</Text>

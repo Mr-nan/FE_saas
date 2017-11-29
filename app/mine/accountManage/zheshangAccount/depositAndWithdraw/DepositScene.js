@@ -340,6 +340,7 @@ export default class DepositScene extends BaseComponent {
                 {this.state.sms_pad ?
                     <SmsFillScene
                         showToast={this.props.showToast}
+                        showModal={this.props.showModal}
                         money={parseFloat(this.state.money_input)}
                         account={this.props.account}
                         type={1}
@@ -362,7 +363,9 @@ export default class DepositScene extends BaseComponent {
     deposit = (sms_code, sms_no) => {
 
 
+        this.props.showModal(true)
         this.dismissKeyboard()
+
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1) {
                 let result = JSON.parse(data.result)
@@ -375,7 +378,7 @@ export default class DepositScene extends BaseComponent {
 
                 }
 
-                this.props.showModal(true)
+
 
                 request(AppUrls.ZS_DEPOSIT, 'POST', params).then((response) => {
                     this.props.showModal(false)
@@ -389,7 +392,8 @@ export default class DepositScene extends BaseComponent {
                         params: {
                             type: 2,
                             status: 1,
-                            account: params,
+                            params: params,
+                            callBack:this.props.callBack,
                         }
                     })
 
@@ -406,7 +410,8 @@ export default class DepositScene extends BaseComponent {
                                 type: 2,
                                 status: 0,
                                 account: params,
-                                error: error.mjson
+                                error: error.mjson,
+                                callBack:this.props.callBack,
                             }
                         })
 
@@ -420,7 +425,8 @@ export default class DepositScene extends BaseComponent {
                                 type: 2,
                                 status: 2,
                                 account: params,
-                                error: error.mjson
+                                error: error.mjson,
+                                callBack:this.props.callBack,
                             }
                         })
 

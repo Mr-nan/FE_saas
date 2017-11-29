@@ -70,9 +70,7 @@ export  default class ZSAccountTypeSelectScene extends BaseComponent {
                         this.toNextPage({ // TODO 替换成浙商页面
                             name: 'NameAndIdScene', component: NameAndIdScene, params: {
                                 type :2,
-                                callBack: () => {
-                                    this.props.callBack();
-                                }
+                                callBack:this.props.callBack
                             }
                         })
                     }}
@@ -110,9 +108,7 @@ export  default class ZSAccountTypeSelectScene extends BaseComponent {
                         this.toNextPage({  // TODO 替换成浙商页面
                             name: 'NameAndIdScene', component: NameAndIdScene, params: {
                                 type :1,
-                                callBack: () => {
-                                    this.props.callBack();
-                                }
+                                callBack: this.props.callBack
                             }
                         })
                     }}

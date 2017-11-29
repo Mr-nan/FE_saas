@@ -104,7 +104,11 @@ export default class MyAccountItem extends BaseComponent {
                 case 0://未开户
                     this.navigatorParams.name = 'ZSAccountTypeSelectScene';
                     this.navigatorParams.component = ZSAccountTypeSelectScene;
-                    this.navigatorParams.params = {};
+                    this.navigatorParams.params = {
+                        callBack: () => {
+                            this.props.callBack();
+                        }
+                    };
                     break;
                 case 2: // 未激活
                     this.navigatorParams.name = 'WaitActivationAccountScene';

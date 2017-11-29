@@ -49,8 +49,8 @@ export default class CardPhoneSmsScene extends BaseComponent {
     constructor(props) {
         super(props);
 
-        //type = parseInt(props.account.user_type)
-        type = 1
+        type = parseInt(props.account.user_type)
+
         this.state = {
             renderPlaceholderOnly: true,
             loading_bank:false,
@@ -112,17 +112,12 @@ export default class CardPhoneSmsScene extends BaseComponent {
                         />
                         <TouchableOpacity
                             onPress = {()=>{
-
-                                if(this.state.bankName === ''){  //如果没有解锁出总行名，不允许选择支行名
-                                    this.props.showToast('请填写银行卡')
-                                    return;
-                                }
                                 this.toNextPage({
                                     component:ChooseBankNameScene,
                                     name:'ChooseBankNameScene',
                                     params:{
                                         callBack:this.bankComeBack,
-                                        bank_card_no:this.refs.bank_card_no.getInputTextValue()},
+                                        bank_card_no: this.state.bankName === ''?'':this.refs.bank_card_no.getInputTextValue()},
                                 })
                             }}
                         >
@@ -251,6 +246,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
     next = () => {
         this.dismissKeyboard()
         if(!this.verify(true)) {return}
+        this.props.showModal(true)
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1) {
                 let result = JSON.parse(data.result)
@@ -280,7 +276,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
                     bank_name:bank_name
                 }
 
-                this.props.showModal(true)
+
 
                 request(AppUrls.ZS_OPEN_ACCOUNT, 'POST', params).then((response)=>{
 
@@ -294,6 +290,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
                             status:(this.state.bankName !== '浙商银行'&&type===1)?3:1,
                             params:params,
                             append:this.state.bankName,
+                            callBack:this.props.callBack
                         }
                     })
 
@@ -311,7 +308,8 @@ export default class CardPhoneSmsScene extends BaseComponent {
                                 type:type === 1?1:0,
                                 status:0,
                                 params:params,
-                                error:error.mjson
+                                error:error.mjson,
+                                callBack:this.props.callBack
                             }
                         })
                     }else if(error.mycode === -500 ||error.mycode === -300){
@@ -324,7 +322,8 @@ export default class CardPhoneSmsScene extends BaseComponent {
                                 type:type === 1?1:0,
                                 status:2,
                                 params:params,
-                                error:error.mjson
+                                error:error.mjson,
+                                callBack:this.props.callBack
                             }
                         })
                     }

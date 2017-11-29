@@ -160,9 +160,7 @@ export default class ZheShangAccountScene extends BaseComponent {
                                 this.toNextPage({
                                     name: 'WithdrawScene',
                                     component: WithdrawScene, params: {
-                                        callBack: () => {
-                                            this.allRefresh()
-                                        },
+                                        callBack:this.refreshingData,
                                         account: account,
                                     }
                                 })
@@ -201,7 +199,7 @@ export default class ZheShangAccountScene extends BaseComponent {
                                 this.toNextPage({
                                     name: 'DepositScene',
                                     component: DepositScene,
-                                    params: {account: account}
+                                    params: {account: account,callBack:this.refreshingData }
                                 })
                             } else {
                                 this.setState({
@@ -349,7 +347,7 @@ export default class ZheShangAccountScene extends BaseComponent {
                                                           this.toNextPage({
                                                               name: 'ModifyBankCard',
                                                               component: ModifyBankCard,
-                                                              params: {account: account,}
+                                                              params: {account: account, callBack:this.refreshingData}
                                                           })
                                                       }else if(response.mjson.data.transfer_status === 0) {
                                                           this.props.showToast(response.mjson.data.transfer_msg)
@@ -359,7 +357,7 @@ export default class ZheShangAccountScene extends BaseComponent {
                                                       this.toNextPage({
                                                           name: 'ModifyBankCard',
                                                           component: ModifyBankCard,
-                                                          params: {account: account,}
+                                                          params: {account: account,callBack:this.refreshingData}
                                                       })
 
                                                   });
@@ -368,7 +366,10 @@ export default class ZheShangAccountScene extends BaseComponent {
                                               this.toNextPage({
                                                   name: 'ModifyBankCard',
                                                   component: ModifyBankCard,
-                                                  params: {account: account,}
+                                                  params: {
+                                                      account: account,
+                                                      callBack:this.refreshingData
+                                                  }
                                               })
                                           }
                                       })
@@ -403,7 +404,8 @@ export default class ZheShangAccountScene extends BaseComponent {
                                                               name: 'InformationFillScene',
                                                               component: InformationFillScene,
                                                               params: {
-                                                                  account: account
+                                                                  account: account,
+                                                                  callBack:this.refreshingData
                                                               }
                                                           })
                                                       } else if(response.mjson.data.transfer_status === 0) {
@@ -415,7 +417,8 @@ export default class ZheShangAccountScene extends BaseComponent {
                                                           name: 'InformationFillScene',
                                                           component: InformationFillScene,
                                                           params: {
-                                                              account: account
+                                                              account: account,
+                                                              callBack:this.refreshingData
                                                           }
                                                       })
 
@@ -426,7 +429,8 @@ export default class ZheShangAccountScene extends BaseComponent {
                                                   name: 'InformationFillScene',
                                                   component: InformationFillScene,
                                                   params: {
-                                                      account: account
+                                                      account: account,
+                                                      callBack:this.refreshingData
                                                   }
                                               })
                                           }

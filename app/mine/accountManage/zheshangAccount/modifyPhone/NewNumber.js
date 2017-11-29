@@ -155,6 +155,9 @@ export default class NameAndIdScene extends BaseComponent {
         if (!this.verify(true)) {
             return
         }
+
+        this.props.showModal(true)
+
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1) {
 
@@ -170,7 +173,7 @@ export default class NameAndIdScene extends BaseComponent {
                     enter_base_id: result.company_base_id,
 
                 }
-                this.props.showModal(true)
+
                 request(AppUrls.ZS_BANK_MODIFY_MOBILE, 'POST', params).then((response) => {
                     this.props.showModal(false)
                     this.toNextPage({
@@ -180,6 +183,7 @@ export default class NameAndIdScene extends BaseComponent {
                             type:5,
                             status:1,
                             params:params,
+                            callBack:this.props.callBack
                         }
                     })
 
@@ -195,7 +199,8 @@ export default class NameAndIdScene extends BaseComponent {
                                 type:5,
                                 status:0,
                                 account:params,
-                                error:error.mjson
+                                error:error.mjson,
+                                callBack:this.props.callBack
                             }
                         })
                     }else if(error.mycode === -300 || error.mycode === -500){
@@ -209,6 +214,7 @@ export default class NameAndIdScene extends BaseComponent {
                                 status: 2,
                                 account: params,
                                 error:error.mjson,
+                                callBack:this.props.callBack
                             }
                         })
                     }

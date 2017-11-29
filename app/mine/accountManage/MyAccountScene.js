@@ -249,6 +249,7 @@ export default class MyAccountScene extends BaseComponent {
         return (
             <MyAccountItem
                 navigator={this.props.navigator}
+                showToast={this.props.showToast}
                 showModal={this.props.showModal}
                 type={rowData}     //账户类型
                 data={info}        //账户数据

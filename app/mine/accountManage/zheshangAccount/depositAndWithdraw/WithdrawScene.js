@@ -253,6 +253,7 @@ export default class WithdrawScene extends BaseComponent {
 
                 {this.state.sms_pad ?
                     <SmsFillScene
+                        showModal={this.props.showModal}
                         showToast={this.props.showToast}
                         money={parseFloat(this.state.money_input)}
                         type={1}
@@ -273,6 +274,7 @@ export default class WithdrawScene extends BaseComponent {
 
     withdraw = (sms_code, sms_no) => {
 
+        this.props.showModal(true)
         this.dismissKeyboard();
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1) {
@@ -285,8 +287,6 @@ export default class WithdrawScene extends BaseComponent {
                     sms_no: sms_no
 
                 }
-
-                this.props.showModal(true)
 
                 request(AppUrls.ZS_WITHDRAW, 'POST', params).then((response) => {
                     this.props.showModal(false)
@@ -301,6 +301,7 @@ export default class WithdrawScene extends BaseComponent {
                             type: 3,
                             status: 1,
                             params: params,
+                            callBack:this.props.callBack,
                         }
                     })
                 }, (error) => {
@@ -317,7 +318,8 @@ export default class WithdrawScene extends BaseComponent {
                                 type: 3,
                                 status: 0,
                                 params: params,
-                                error:error.mjson
+                                error:error.mjson,
+                                callBack:this.props.callBack,
                             }
                         })
 
@@ -331,7 +333,8 @@ export default class WithdrawScene extends BaseComponent {
                                 type: 3,
                                 status: 2,
                                 params: params,
-                                error:error.mjson
+                                error:error.mjson,
+                                callBack:this.props.callBack,
                             }
                         })
                     }

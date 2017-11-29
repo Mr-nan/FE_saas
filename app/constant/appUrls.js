@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
@@ -1315,6 +1315,20 @@ export const ZS_FETCH_STATUS = BASEURL + "v1/user.account/getTransferRecordStatu
  *   判断当前时间是否在浙商银行的服务时间段内
  */
 export const ZS_IN_SERVICE = BASEURL + "v1/account.cz_bank/isOutOfService";
+
+/**
+ *  from @dingnyonggang
+ *
+ *  查询大行信息（对公)
+ */
+export const ZS_HEAD_BANK = BASEURL + "v1/bankRoute.query/findSubBankNo";
+
+/**
+ *  from @dingnyonggang
+ *
+ *  查询支行信息（对公）
+ */
+export const ZS_SUB_BANK = BASEURL + "v1/bankRoute.query/findChildBankNo";
 
 /**
  *   获取用户的账户详情(我的账户页面-卡片页  调用)

@@ -36,37 +36,37 @@ let Pixel = new PixelUtil();
 let Platform = require('Platform');
 
 
-let ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2})
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
 let selectedBank = {}
 let selectedCity = {}
+let selectedHeadBank = {}
 let page = 0;
 let totalPage = 1
 let banks = []
+let old_t = ''  //查询过的关键字
+let old_p = 1  //查询过的页数
 
 
-
-
-export default class ChooseBankNameScene extends BaseComponent{
+export default class ChooseBankNameScene extends BaseComponent {
 
     constructor(props) {
         super(props);
 
-
-
         this.state = {
             renderPlaceholderOnly: true,
-            value:'',
-            source : ds.cloneWithRows([]),
-            isRefreshing:false
+            value: '',
+            source: ds.cloneWithRows([]),
+            isRefreshing: false,
+            headValue: ''
         }
     }
 
-    componentWillUnmount(){
-         selectedBank = {}
-         selectedCity = {}
-         page = 0;
-         totalPage = 1
-         banks = []
+    componentWillUnmount() {
+        selectedBank = {}
+        selectedCity = {}
+        page = 0;
+        totalPage = 1
+        banks = []
     }
 
 
@@ -77,7 +77,7 @@ export default class ChooseBankNameScene extends BaseComponent{
     }
 
 
-    render(){
+    render() {
         if (this.state.renderPlaceholderOnly) {
             return ( <TouchableWithoutFeedback onPress={() => {
                 this.setState({
@@ -96,15 +96,15 @@ export default class ChooseBankNameScene extends BaseComponent{
             </TouchableWithoutFeedback>);
         }
 
-        return(
+        return (
             <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
                     centerText={'开户行'}
                     rightText={"确定"}
-                    rightTextCallBack={()=>{
-                        if(this.state.value.length<=0){
+                    rightTextCallBack={() => {
+                        if (this.state.value.length <= 0) {
                             this.props.showToast('请选择开户行名称');
                             return;
                         }
@@ -114,73 +114,178 @@ export default class ChooseBankNameScene extends BaseComponent{
                     leftImageCallBack={this.backPage}
                 />
 
+                {
+                    this.props.bank_card_no == ''?
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginTop: 15,
+                        paddingHorizontal: 15,
+                        backgroundColor: 'white'
+                    }}>
+                        <TextInput
+                            ref='bank_name'
+                            style={{flex: 1, height: 45}}
+                            placeholder={'请输入开户行名称'}
+                            underlineColorAndroid={"#00000000"}
+                            value={this.state.headValue}
+                            onChangeText={(t) => {
+                                this.setState({
+                                    headValue: t,
+                                })
+                                this.refreshing()
+
+
+                            }}
+                        />
+                    </View>
+                        :null
+
+                }
+
                 <TouchableOpacity
-                    activeOpacity = {.9}
-                    onPress = {()=>{
-                        this.toNextPage({
-                            component:ProvinceListScene,
-                            name:'ProvinceListScene',
-                            params:{
-                                isZs:true,
-                                checkedCityClick:this.checkedCityClick,
-                                unlimitedAction:this.cityUnlimitedAction,
-                                isSelectProvince:true,
-                            }
-                        })
+                    activeOpacity={.9}
+                    onPress={() => {
+
+                        if(selectedHeadBank.subbankname == ''||typeof (selectedHeadBank.subbankname) == 'undefined'){
+                            this.props.showToast('请输入开户行名称');
+                        }else {
+                            this.toNextPage({
+
+                                component: ProvinceListScene,
+                                name: 'ProvinceListScene',
+                                params: {
+                                    isZs: true,
+                                    checkedCityClick: this.checkedCityClick,
+                                    unlimitedAction: this.cityUnlimitedAction,
+                                    isSelectProvince: true,
+                                }
+                            })
+                        }
+
+
                     }}
                 >
 
-                    <View style = {{flexDirection:'row', alignItems:'center', marginVertical:15, paddingHorizontal:15, backgroundColor:'white'}}>
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginVertical: 15,
+                        paddingHorizontal: 15,
+                        backgroundColor: 'white'
+                    }}>
                         <TextInput
-                            ref = 'bank_name'
-                            style = {{flex:1, height:45}}
-                            editable = {false}
-                            placeholder = {'请选择城市'}
+                            ref='bank_name'
+                            style={{flex: 1, height: 45}}
+                            editable={false}
+                            placeholder={'请选择城市'}
                             underlineColorAndroid={"#00000000"}
-                            value = {this.state.value}
+                            value={this.state.value}
 
                         />
-                        <Image source = {require('../../../../../images/mainImage/celljiantou.png')}/>
+                        <Image source={require('../../../../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </TouchableOpacity>
 
                 <ListView
-                    enableEmptySections = {true}
-                    style ={{marginTop:10,flex:1}}
-                    renderRow = {this.renderRow}
-                    renderSeparator = {this.renderSeparator}
-                    removeClippedSubviews = {false}
-                    dataSource = {this.state.source}
-                    onEndReachedThreshold = {1}
+                    enableEmptySections={true}
+                    style={{marginTop: 10, flex: 1}}
+                    renderRow={this.renderRow}
+                    renderSeparator={this.renderSeparator}
+                    removeClippedSubviews={false}
+                    dataSource={this.state.source}
+                    onEndReachedThreshold={1}
                     onEndReached={this.loadMore}
-                    renderFooter = {this.renderFooter}
-                    refreshControl ={
+                    renderFooter={this.renderFooter}
+                    refreshControl={
                         <RefreshControl
-                            refreshing = {this.state.isRefreshing}
-                            tintColor = {fontAndColor.COLORB5}
-                            colors = {[fontAndColor.COLORB5]}
-                            onRefresh = {this.refreshing}
-
+                            refreshing={this.state.isRefreshing}
+                            tintColor={fontAndColor.COLORB5}
+                            colors={[fontAndColor.COLORB5]}
+                            onRefresh={this.refreshing}
                         />
                     }
 
                 />
-
-
             </View>
-
         )
-
     }
 
 
-    refreshing = ()=>{
+    // t:text
+    // p:page
+    loadHeadBank = (t, p) => {
+
+        if(!this.isChinese(t)){
+            this.setState({
+                isRefreshing: false,
+            })
+           return;
+        }
+
+        if(t == old_t&& p == old_p){
+            this.setState({
+                isRefreshing: false,
+            })
+            return
+        }
+        old_t = t
+        old_p = p
+
+        request(AppUrls.ZS_HEAD_BANK, 'post', {
+            page: p,
+            rows: 20,
+            subbankName: t
+        }).then((response) => {
+            if (p === 1) {
+                banks = []
+            }
+            banks.push(...response.mjson.data.info_list)
+            totalPage = response.mjson.data.totalpage;
+
+            this.setState({
+                isRefreshing: false,
+                source: ds.cloneWithRows(banks)
+            })
+
+        }, (error) => {
+            this.setState({
+                isRefreshing: false,
+            })
+
+            this.props.showToast(error.mjson.msg);
+        })
+
+    }
+
+    isChinese = (t) => {
+
+
+        if (t == ''|| typeof (t) == 'undefined') {
+            return
+        }
+
+        let re = /[^\u4e00-\u9fa5]/;
+        if (re.test(t)) {
+            console.log( t + '   1')
+            return false;
+        }
+        console.log(t+'   2')
+        return true;
+    }
+
+    refreshing = () => {
         banks = []
         this.setState({
-            isRefreshing:true,
+            isRefreshing: true,
         })
         page = 1;
-        this.loadBanks(selectedCity.city_id, page)
+        if (this.props.bank_card_no == '') {
+            this.loadHeadBank(this.state.headValue, 1)
+        } else {
+
+            this.loadBanks(selectedCity.city_id, page)
+        }
     }
 
 
@@ -192,69 +297,138 @@ export default class ChooseBankNameScene extends BaseComponent{
         )
     }
 
-    renderFooter = ()=>{
-        if(banks.length <= 0) {return};
-        console.log( 'page == '+page)
-        console.log( 'totalPage == '+totalPage)
+    renderFooter = () => {
+        if (banks.length <= 0) {
+            return
+        }
+        ;
+        console.log('page == ' + page)
+        console.log('totalPage == ' + totalPage)
 
-        return<View style = {{height:40, justifyContent:'center', alignItems:'center'}}>
-                <SText>{page>=totalPage?'已全部加载': '加载更多...'}</SText>
-            </View>
+        return <View style={{height: 40, justifyContent: 'center', alignItems: 'center'}}>
+            <SText>{page >= totalPage ? '已全部加载' : '加载更多...'}</SText>
+        </View>
 
 
     }
-    
-    renderRow = (data, sectionId, rowId) => {
-        return<TouchableOpacity
-            onPress = {()=>{
-                selectedBank = data;
-                this.setState({
-                    value:data.bankname,
-                })
-            }}
 
+    renderRow = (data, sectionId, rowId) => {
+        return <TouchableOpacity
+            onPress={() => {
+                if (this.props.bank_card_no == '') {
+
+                    if(!data.bankname){
+                        selectedHeadBank = data;
+                        this.setState({
+                            headValue: data.subbankname,
+                        })
+                    }else {
+                        selectedBank = data;
+                        this.setState({
+                            value: data.bankname,
+                        })
+                    }
+
+                } else {
+                    selectedBank = data;
+                    this.setState({
+                        value: data.bankname,
+                    })
+                }
+            }}
         >
-            <View style = {{backgroundColor:'white', height:40, paddingHorizontal:15, justifyContent:'center'}}>
-                <SText style = {{}}>{data.bankname}</SText>
+            <View style={{backgroundColor: 'white', height: 40, paddingHorizontal: 15, justifyContent: 'center'}}>
+                <SText style={{}}>{data.bankname ? data.bankname : data.subbankname}</SText>
             </View>
         </TouchableOpacity>
 
     }
-    checkedCityClick=(city)=>{
+    checkedCityClick = (city) => {
         selectedCity = city;
-        this.refreshing()
 
+        if(this.props.bank_card_no == ''){
+            banks = []
+            this.loadChildBank(1)
+        }else {
+          this.refreshing()
+
+        }
     }
 
-    loadBanks = (city, page)=>{
-        let params = {
-            bankCardNo:this.props.bank_card_no,
-            cityCode:city,
-            page:page,
-            rows:20,
-        }
 
-        request(AppUrls.ZS_PARSE_BANK, 'post', params).then((response)=>{
+    loadChildBank = (p)=>{
+
+        request(AppUrls.ZS_SUB_BANK, 'post', {
+            page:p,
+            rows:20,
+            subbankNo:selectedHeadBank.subbankno,
+            cityCode:selectedCity.city_id
+
+        }).then((response) => {
 
             banks.push(...response.mjson.data.info_list)
             totalPage = response.mjson.data.totalpage;
             console.log(response)
             this.setState({
-                isRefreshing:false,
-                source:ds.cloneWithRows(banks)
+                isRefreshing: false,
+                source: ds.cloneWithRows(banks)
             })
 
-        }, (error)=>{
+        }, (error) => {
+            this.setState({
+                isRefreshing: false,
+            })
+            this.props.showToast(error.mjson.msg);
+        })
+    }
+
+
+    loadBanks = (city, page) => {
+        let params = {
+            bankCardNo: this.props.bank_card_no,
+            cityCode: city,
+            page: page,
+            rows: 20,
+        }
+
+        request(AppUrls.ZS_PARSE_BANK, 'post', params).then((response) => {
+
+            banks.push(...response.mjson.data.info_list)
+            totalPage = response.mjson.data.totalpage;
+            console.log(response)
+            this.setState({
+                isRefreshing: false,
+                source: ds.cloneWithRows(banks)
+            })
+
+        }, (error) => {
+            this.setState({
+                isRefreshing: false,
+            })
             this.props.showToast(error.mjson.msg);
         })
         console.log(city)
     }
 
 
-    loadMore = ()=>{
+    loadMore = () => {
         page++;
-        if(page >totalPage){ page--;  return}
-        this.loadBanks(selectedCity.city_id , page)
+        if (page > totalPage) {
+            page--;
+            return
+        }
+        if (this.props.bank_card_no == '') {
+            this.loadHeadBank(this.state.headValue, page)
+        } else {
+
+            if(this.props.bank_card_no ==''){
+                this.loadChildBank(page)
+            }else {
+
+            this.loadBanks(selectedCity.city_id, page)
+            }
+
+        }
     }
 }
 

@@ -48,8 +48,8 @@ export default class ModifyBankCard extends BaseComponent {
     }
 
     initFinish = () => {
+        this.setState({renderPlaceholderOnly: false});
         InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
         });
     }
 
@@ -75,7 +75,7 @@ export default class ModifyBankCard extends BaseComponent {
 
         return (
             <TouchableWithoutFeedback
-                onPress={()=>{
+                onPress={() => {
                     this.dismissKeyboard()
                 }}
             >
@@ -123,33 +123,27 @@ export default class ModifyBankCard extends BaseComponent {
                             annotation={this.state.bankName}
                         />
                         <TouchableOpacity
-                        onPress={() => {
-
-                            if(this.state.bankName === ''){  //如果没有解锁出总行名，不允许选择支行名
-                                this.props.showToast('请填写银行卡')
-                                return;
-                            }
-
-                            this.toNextPage({
-                                component: ChooseBankNameScene,
-                                name: 'ChooseBankNameScene',
-                                params: {
-                                    callBack: this.bankComeBack,
-                                    bank_card_no: this.refs.bank_card_no.getInputTextValue()
-                                },
-                            })
-                        }}
-                    >
-                        <TextInputItem
-                            ref={'bank_name'}
-                            titleStyle={{letterSpacing: 8}}
-                            inputTextStyle={{paddingLeft: 8}}
-                            title={'开户行'}
-                            textPlaceholder={'请输入开户行支行信息'}
-                            rightIcon={true}
-                            editable={false}
-                        />
-                    </TouchableOpacity>
+                            onPress={() => {
+                                this.toNextPage({
+                                    component: ChooseBankNameScene,
+                                    name: 'ChooseBankNameScene',
+                                    params: {
+                                        callBack: this.bankComeBack,
+                                        bank_card_no: this.state.bankName===''?'': this.refs.bank_card_no.getInputTextValue()
+                                    },
+                                })
+                            }}
+                        >
+                            <TextInputItem
+                                ref={'bank_name'}
+                                titleStyle={{letterSpacing: 8}}
+                                inputTextStyle={{paddingLeft: 8}}
+                                title={'开户行'}
+                                textPlaceholder={'请输入开户行支行信息'}
+                                rightIcon={true}
+                                editable={false}
+                            />
+                        </TouchableOpacity>
                         <TextInputItem
                             ref='mobile_no'
                             titleStyle={{letterSpacing: 8}}
@@ -190,6 +184,8 @@ export default class ModifyBankCard extends BaseComponent {
             return
         }
 
+        this.props.showModal(true)
+
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1) {
                 let result = JSON.parse(data.result)
@@ -201,50 +197,51 @@ export default class ModifyBankCard extends BaseComponent {
                     device_code = 'dycd_platform_ios';
                 }
                 let params = {
-                    device_code:device_code,
+                    device_code: device_code,
                     bank_no: bank_no,
                     enter_base_id: result.company_base_id,
                     new_acct_no: bank_card_no,
-                    sms_code:sms_code,
-                    sms_no:sms_no,
-                    user_type:this.props.account.account_open_type,
-                    sub_acct_no:this.props.account.bank_card_no,
-                    bank_name:bank_name,
+                    sms_code: sms_code,
+                    sms_no: sms_no,
+                    user_type: this.props.account.account_open_type,
+                    sub_acct_no: this.props.account.bank_card_no,
+                    bank_name: bank_name,
 
                 }
 
-                this.props.showModal(true)
 
-                request(AppUrls.ZS_MODIFY_BANK_CARD, 'POST', params).then((response)=>{
+                request(AppUrls.ZS_MODIFY_BANK_CARD, 'POST', params).then((response) => {
                     this.props.showModal(false)
                     this.toNextPage({
-                        component:ResultIndicativeScene,
-                        name:'ResultIndicativeScene',
-                        params:{
-                            params:params,
-                            type:4,
-                            status:1
+                        component: ResultIndicativeScene,
+                        name: 'ResultIndicativeScene',
+                        params: {
+                            params: params,
+                            type: 4,
+                            status: 1,
+                            callBack: this.props.callBack
                         }
                     })
 
-                }, (error)=>{
+                }, (error) => {
                     this.props.showModal(false)
-                    if(error.mycode===8010007){  // 存疑
+                    if (error.mycode === 8010007) {  // 存疑
 
                         this.toNextPage({
-                            component:ResultIndicativeScene,
-                            name:'ResultIndicativeScene',
-                            params:{
-                                type:4,
-                                status:0,
-                                params:params,
-                                error:error.mjson
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type: 4,
+                                status: 0,
+                                params: params,
+                                error: error.mjson,
+                                callBack: this.props.callBack
                             }
                         })
 
-                    }else if(error.mycode === -300 || error.mycode === -500){
+                    } else if (error.mycode === -300 || error.mycode === -500) {
                         this.props.showToast(error.mjson.msg)
-                    }else {
+                    } else {
                         this.toNextPage({
                             component: ResultIndicativeScene,
                             name: 'ResultIndicativeScene',
@@ -252,7 +249,8 @@ export default class ModifyBankCard extends BaseComponent {
                                 type: 4,
                                 status: 2,
                                 account: params,
-                                error:error.mjson,
+                                error: error.mjson,
+                                callBack: this.props.callBack
                             }
                         })
                     }

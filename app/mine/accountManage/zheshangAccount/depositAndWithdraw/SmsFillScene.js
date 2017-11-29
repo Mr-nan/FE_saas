@@ -130,18 +130,20 @@ export default class SmsFillScene extends Component {
                     amount: parseFloat(this.props.money),
                     enter_base_id: result.company_base_id,
                     from_bank_id:this.props.account.bind_bank_card_no,
-                    mobile_no:this.props.account.mobile_no,
+                    mobile_no:this.props.account.operate_mobile,
                     sub_acct_no:this.props.account.bank_card_no,
                     type:1
             }
 
+            this.props.showModal(true)
             request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response)=>{
-
+                this.props.showModal(false)
                 sms_no = response.mjson.data.sms_no;
                 this.refs.sendMms.StartCountDown()
                 did_send_sms = true;
 
             }, (error)=>{
+                this.props.showModal(false)
                 this.props.showToast('发送验证码失败')
 
             })}
