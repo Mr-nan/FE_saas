@@ -30,7 +30,6 @@ export default class root extends Component {
                     this.showToast(content)
                 }} showModal={(value)=>{this.showModal(value)}}/>
                 <ShowToast ref='toast' msg={''}></ShowToast>
-
             </View>
         );
     }
