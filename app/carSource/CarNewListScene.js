@@ -55,6 +55,7 @@ let currentCheckedIndex = 0;
 let checkedSource = [];
 let carData = [];
 let isNewCarCheckRecommend = true;
+let currentCarCheckRecommend = true;
 
 
 const APIParameter = {
@@ -65,7 +66,6 @@ const APIParameter = {
     provice_id: 0,
     city_id: 0,
     order_type: 0,
-    coty: 0,
     mileage: 0,
     dealer_price:0,
     emission_standards:0,
@@ -223,7 +223,27 @@ export  default  class CarNewListScene extends BaseComponent {
     // 筛选数据刷新
     filterData = () => {
 
-        APIParameter.type = 0;
+
+        if(!currentCarCheckRecommend){
+            if(APIParameter.order_type == 0&&
+                APIParameter.mileage == 0 &&
+                APIParameter.brand_id == 0 &&
+                APIParameter.series_id == 0 &&
+                APIParameter.provice_id == 0 &&
+                APIParameter.city_id==0 &&
+                APIParameter.dealer_price == 0 &&
+                APIParameter.emission_standards == 0 &&
+                APIParameter.first_type=='' &&
+                APIParameter.second_type =='' &&
+                APIParameter.car_color == 0 &&
+                APIParameter.nature_use == 0 &&
+                APIParameter.model_name ==''){
+                APIParameter.type = 4;
+            }else {
+                APIParameter.type = 0;
+            }
+        }
+
         carData = [];
         this.setState({dataSource:this.state.dataSource.cloneWithRows(carData)});
         this.props.showModal(true);
@@ -596,6 +616,8 @@ export  default  class CarNewListScene extends BaseComponent {
 
     // 选择意向
     checkRecommendClick = (isCheck) => {
+
+        currentCarCheckRecommend = isCheck;
         if (isCheck) {
             APIParameter.type = 5;
             APIParameter.prov_id=this.prov_id;
@@ -841,7 +863,6 @@ export  default  class CarNewListScene extends BaseComponent {
 
         APIParameter.order_type = 0;
         APIParameter.mileage = 0;
-        APIParameter.coty = 0;
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
         APIParameter.v_type=2;
@@ -904,7 +925,6 @@ export  default  class CarNewListScene extends BaseComponent {
                 && APIParameter.provice_id == 0
                 && APIParameter.city_id == 0
                 && APIParameter.order_type == 0
-                && APIParameter.coty == 0
                 && APIParameter.mileage == 0 && APIParameter.type == 4)
             {
                 isCarFoot = false;
@@ -1178,7 +1198,7 @@ const styles = StyleSheet.create({
 
         backgroundColor: fontAndColor.COLORA3,
         width:ScreenWidth,
-        height:ScreenHeight-Pixel.getTitlePixel(64)
+        height:ScreenHeight-Pixel.getTitlePixel(64)-Pixel.getPixel(49)
     },
     checkedContentView: {
 

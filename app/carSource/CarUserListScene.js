@@ -56,7 +56,7 @@ let currentCheckedIndex = 0;
 let checkedSource = [];
 let carData = [];
 let isUserCarCheckRecommend = true;
-
+let currentCarCheckRecommend = true;
 
 const APIParameter = {
 
@@ -94,7 +94,6 @@ export  default  class CarUserListScene extends BaseComponent {
 
     componentDidMount() {
 
-        console.log('====componentDidMount========');
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
@@ -227,9 +226,23 @@ export  default  class CarUserListScene extends BaseComponent {
 
     // 筛选数据刷新
     filterData = () => {
-
-
-        APIParameter.type = 0;
+        if(!currentCarCheckRecommend){
+            if(APIParameter.brand_id == 0 &&
+                APIParameter.series_id ==0 &&
+                APIParameter.model_id ==0 &&
+                APIParameter.provice_id == 0 &&
+                APIParameter.city_id == 0 &&
+                APIParameter.order_type ==0 &&
+                APIParameter.coty ==0 &&
+                APIParameter.mileage ==0 &&
+                APIParameter.dealer_price ==0 &&
+                APIParameter.emission_standards ==0 &&
+                APIParameter.nature_use ==0 && APIParameter.car_color==0 && APIParameter.model_name==''){
+                APIParameter.type = 4;
+            }else {
+                APIParameter.type = 0;
+            }
+        }
         carData = [];
         this.setState({dataSource:this.state.dataSource.cloneWithRows(carData)});
         this.props.showModal(true);
@@ -448,7 +461,6 @@ export  default  class CarUserListScene extends BaseComponent {
 
     screeningCompleteClick=(screeningObject)=>{
 
-        console.log('=========',screeningObject);
         this.setState({
             checkedCarType: screeningObject.checkedCarType,
             checkedCarAgeType:screeningObject.checkedCarAgeType,
@@ -558,6 +570,8 @@ export  default  class CarUserListScene extends BaseComponent {
 
     // 选择意向
     checkRecommendClick = (isCheck) => {
+
+        currentCarCheckRecommend = isCheck;
         if (isCheck) {
             APIParameter.type = 7;
             APIParameter.prov_id=this.prov_id;
@@ -838,7 +852,6 @@ export  default  class CarUserListScene extends BaseComponent {
         APIParameter.car_color = 0;
         APIParameter.nature_use = 0;
         APIParameter.model_name = '';
-        APIParameter.type = 4;
         this.setHeadViewType();
 
 
@@ -1158,7 +1171,7 @@ const styles = StyleSheet.create({
     contaier: {
         backgroundColor: fontAndColor.COLORA3,
         width:ScreenWidth,
-        height:ScreenHeight-Pixel.getTitlePixel(64)
+        height:ScreenHeight-Pixel.getTitlePixel(64)-Pixel.getPixel(49)
     },
     checkedContentView: {
 
