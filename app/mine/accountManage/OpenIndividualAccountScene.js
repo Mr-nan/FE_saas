@@ -79,6 +79,7 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                             textPlaceholder={'请输入身份证号码'}
                             viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                             inputTextStyle={styles.inputTextStyle}
+
                             leftIcon={false}
                             import={false}
                             clearValue={true}
@@ -175,11 +176,11 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                    //  Linking.openURL(response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token);
                 },
                 (error) => {
-                    if (error.mycode == -300 || error.mycode == -500) {
-                        this.props.showToast('开户失败');
-                    } else {
-                        this.props.showToast(error.mjson.msg);
-                    }
+	                if (error.mycode == -300 || error.mycode == -500) {
+		                this.props.showToast('开户失败');
+	                } else {
+		                this.props.showToast(error.mjson.msg);
+	                }
                 });
     }
 
