@@ -20,6 +20,8 @@ import PixelUtil from '../../../utils/PixelUtil';
 import {request} from "../../../utils/RequestUtil";
 import * as AppUrls from "../../../constant/appUrls";
 import TrustAccountContractScene from "../trustAccount/TrustAccountContractScene";
+import SelectButton from "./SelectButton";
+import OpenTrustSubmit from "./OpenTrustSubmit";
 const Pixel = new PixelUtil();
 
 export default class OpenTrustAccountView extends BaseComponent {
@@ -80,7 +82,22 @@ export default class OpenTrustAccountView extends BaseComponent {
     };
 
     /**
-     *
+     *   获取OpenTrustSubmit组件ref
+     **/
+    getOpenTrustSubmitRef = () => {
+        return this.openTrustSubmit;
+    };
+
+    /**
+     *   开通信托账户提交
+     **/
+    openTrustSubmit = () => {
+        this.changeState(false);
+        this.props.callBack();
+    };
+
+    /**
+     *  render
      **/
     render() {
         if (this.state.isShow) {
@@ -131,8 +148,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                         marginTop: Pixel.getPixel(15), flexDirection: 'row', alignSelf: 'center',
                         marginLeft: Pixel.getPixel(20), marginRight: Pixel.getPixel(20),
                     }}>
-                        <Image style={{marginTop: Pixel.getPixel(5)}}
-                               source={require('../../../../images/mainImage/agreed_sign.png')}/>
+                        <SelectButton link={this.getOpenTrustSubmitRef}/>
                         <View style={{marginLeft: Pixel.getPixel(5),}}>
                             <Text >
                                 <Text
@@ -148,27 +164,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                             </Text>
                         </View>
                     </View>
-                    <TouchableOpacity style={{alignSelf: 'center', marginTop: Pixel.getPixel(25),}}
-                                      onPress={() => {
-                                          this.changeState(false);
-                                          this.props.callBack();
-                                      }}>
-                        <View style={{
-                            width: Pixel.getPixel(100),
-                            height: Pixel.getPixel(32),
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 3,
-                            borderWidth: 1,
-                            borderColor: fontAndColor.COLORB0
-                        }}>
-                            <Text allowFontScaling={false} style={{
-                                fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
-                                color: fontAndColor.COLORB0
-                            }}>立刻升级</Text>
-                        </View>
-                    </TouchableOpacity>
+                    <OpenTrustSubmit ref={(ref) => {this.openTrustSubmit = ref}} submit={this.openTrustSubmit}/>
                 </View>
             </View>);
         } else {
