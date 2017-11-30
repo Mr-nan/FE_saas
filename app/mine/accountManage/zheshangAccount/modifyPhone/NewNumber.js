@@ -140,7 +140,7 @@ export default class NameAndIdScene extends BaseComponent {
 
                 }, (error) => {
                     this.props.showModal(false)
-                    this.props.showToast(error.msg)
+                    this.props.showToast('验证码发送失败')
                 })
 
             } else {

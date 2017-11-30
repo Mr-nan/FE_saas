@@ -49,8 +49,6 @@ export default class ModifyBankCard extends BaseComponent {
 
     initFinish = () => {
         this.setState({renderPlaceholderOnly: false});
-        InteractionManager.runAfterInteractions(() => {
-        });
     }
 
     render() {
@@ -85,7 +83,10 @@ export default class ModifyBankCard extends BaseComponent {
                         leftTextShow={false}
                         centerText={"更换银行卡"}
                         rightText={""}
-                        leftImageCallBack={this.backPage}
+                        leftImageCallBack={()=>{
+                            this.props.callBack()
+                            this.backPage()
+                        }}
                         centerTextStyle={{paddingLeft: 0, paddingRight: 0}}
                     />
                     <View style={{width: width, marginTop: 15,}}>
@@ -240,7 +241,7 @@ export default class ModifyBankCard extends BaseComponent {
                         })
 
                     } else if (error.mycode === -300 || error.mycode === -500) {
-                        this.props.showToast(error.mjson.msg)
+                        this.props.showToast(error.mycode)
                     } else {
                         this.toNextPage({
                             component: ResultIndicativeScene,
@@ -333,7 +334,7 @@ export default class ModifyBankCard extends BaseComponent {
 
                 }, (error) => {
                     this.props.showModal(false)
-                    this.props.showToast(error.msg)
+                    this.props.showToast('验证码发送失败')
                 })
 
             } else {

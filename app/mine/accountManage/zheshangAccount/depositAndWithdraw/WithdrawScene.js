@@ -116,6 +116,7 @@ export default class WithdrawScene extends BaseComponent {
                     centerText={'提现'}
                     rightText={''}
                     leftImageCallBack={() => {
+                        this.props.callBack()
                         this.backPage();
                     }}
                 />
@@ -169,15 +170,18 @@ export default class WithdrawScene extends BaseComponent {
                                                 this.setState({
                                                     money_input: this.state.allow_withdraw_amount
                                                 })
+                                                console.log('1')
                                                 if(text.length>this.state.allow_withdraw_amount){
                                                     this.setState({
                                                         money_input: this.state.allow_withdraw_amount
                                                     })
+                                                    console.log('2')
                                                 }
                                             } else {
                                                 this.setState({
                                                     money_input: text
                                                 })
+                                                console.log('3')
                                             }
                                         }}
                                         value={this.state.money_input}
@@ -220,6 +224,12 @@ export default class WithdrawScene extends BaseComponent {
                         parentStyle={styles.next_button_parent}
                         childStyle={{fontSize: 18, color: 'white'}}
                         mOnPress={() => {
+
+                            if (parseFloat(this.state.allow_withdraw_amount) === 0) {
+                                this.props.showToast('暂无余额可提');
+                                return;
+                            }
+
                             let money = parseFloat(this.state.money_input)
                             if (money <= 0 || this.state.money_input === null || this.state.money_input === '') {
                                 this.props.showToast('请输入金额')
@@ -284,7 +294,7 @@ export default class WithdrawScene extends BaseComponent {
                     enter_base_id: result.company_base_id,
                     sub_acct_no: this.props.account.bank_card_no,
                     sms_code: sms_code,
-                    sms_no: sms_no
+                    sms_no: sms_no?sms_no:"000000"
 
                 }
 

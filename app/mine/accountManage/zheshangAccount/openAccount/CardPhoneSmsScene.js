@@ -194,6 +194,8 @@ export default class CardPhoneSmsScene extends BaseComponent {
     bankComeBack = (bank)=>{
         bank_no = bank.bankno;
        this.refs.bank_name.setInputTextValue(bank.bankname)
+
+        console.log(bank.bankname.indexOf('浙商银行'))
     }
 
     // 通过银行卡号调后台接口，解索发卡行
@@ -276,8 +278,6 @@ export default class CardPhoneSmsScene extends BaseComponent {
                     bank_name:bank_name
                 }
 
-
-
                 request(AppUrls.ZS_OPEN_ACCOUNT, 'POST', params).then((response)=>{
 
                     this.props.showModal(false)
@@ -287,7 +287,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
                         name:'ResultIndicativeScene',
                         params:{
                             type:type === 1?1:0,
-                            status:(this.state.bankName !== '浙商银行'&&type===1)?3:1,
+                            status:(params.bank_name.indexOf('浙商银行')<0&&type===1)?3:1,
                             params:params,
                             append:this.state.bankName,
                             callBack:this.props.callBack
@@ -313,7 +313,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
                             }
                         })
                     }else if(error.mycode === -500 ||error.mycode === -300){
-                        this.props.showToast(error.msg)
+                        this.props.showToast(error.mycode)
                     }else { // 开户失败
                         this.toNextPage({
                             component:ResultIndicativeScene,
@@ -359,12 +359,12 @@ export default class CardPhoneSmsScene extends BaseComponent {
                         sms_no=response.mjson.data.sms_no
 
                 }, (error) => {
-                    this.props.showToast(error.mjson.msg)
+                    this.props.showToast('验证码发送失败')
 
                 })
 
             } else {
-                this.props.showToast('获取短信验证码失败')
+                this.props.showToast('验证码发送失败')
             }
         })
 

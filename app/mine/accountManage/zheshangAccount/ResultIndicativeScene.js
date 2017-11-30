@@ -54,8 +54,18 @@ export default class ResultIndicativeScene extends BaseComponent {
             type: this.props.type,
             status: this.props.status,
         }
+    }
 
 
+    backPage=()=>{
+        if (this.state.status == 1){
+            this.buttonAction()
+        }else {
+            const navigator = this.props.navigator;
+            if (navigator) {
+                navigator.pop();
+            }
+        }
     }
 
     initFinish() {
@@ -202,8 +212,12 @@ export default class ResultIndicativeScene extends BaseComponent {
                     }
                         break;
                     case 1: {
-                        this.backN(4)  //开户成功跳卡片页
+
+                        InteractionManager.runAfterInteractions(() => {
                         this.props.callBack()
+
+                        });
+                        this.backN(4)  //开户成功跳卡片页
                     }
                         break;
                     case 2: {
@@ -225,8 +239,12 @@ export default class ResultIndicativeScene extends BaseComponent {
                     }
                         break;
                     case 1: {
-                        this.backN(2)
+                        InteractionManager.runAfterInteractions(() => {
                         this.props.callBack()
+
+                        });
+
+                        this.backN(2)
                     }
                         break;
                     case 2: {
@@ -242,8 +260,8 @@ export default class ResultIndicativeScene extends BaseComponent {
                     }
                         break
                     case 1: {
-                        this.backN(2)
                         this.props.callBack()
+                        this.backN(2)
                     }
                         break
                     case 2: {
@@ -262,11 +280,11 @@ export default class ResultIndicativeScene extends BaseComponent {
                         break
                     case 1: {
                         if (this.props.dose_need_old_number_sms_code === false) {
+                            this.props.callBack()
                             this.backN(2)
-                            this.props.callBack()
                         } else {
-                            this.backN(3)
                             this.props.callBack()
+                            this.backN(3)
                         }
                     }
                         break
@@ -294,7 +312,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                 let maps = {
                     enter_base_id: datas.company_base_id,
                     bank_id: 316,
-                    serial_no: this.props.error.serial_no,
+                    serial_no: this.props.error.data.response.serial_no,
                 };
 
                 this.setState({
@@ -302,8 +320,6 @@ export default class ResultIndicativeScene extends BaseComponent {
                 })
                 request(AppUrls.ZS_FETCH_STATUS, 'Post', maps)
                     .then((response) => {
-
-
 
                         this.setState({
                             status: response.mjson.data.transfer_status,
@@ -314,7 +330,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                         this.setState({
                             renderPlaceholderOnly: 'success',
                         })
-                        this.props.showToast(error.mjson.msg)
+                        //this.props.showToast(error.mjson.msg)
                     });
             } else {
                 this.props.showToast('刷新失败');
@@ -442,7 +458,7 @@ export default class ResultIndicativeScene extends BaseComponent {
             } else { // 提交资料成功
                 return <View style={{alignItems: 'center'}}>
                     <Text allowFontScaling={false}
-                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已提供对公开户线上资料，请尽快联系客服 4008-365-111</Text>
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已提供对公开户线上资料</Text>
                     <Text allowFontScaling={false}
                           style={{color: FontAndColor.COLORA1, marginBottom: 5}}>请尽快联系客服 4008-365-111</Text>
                 </View>

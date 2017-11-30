@@ -81,7 +81,9 @@ export default class NameAndIdScene extends BaseComponent {
                         leftTextShow={false}
                         centerText={type===1?'企业开户':'个人开户'}
                         rightText={""}
-                        leftImageCallBack={this.backPage}
+                        leftImageCallBack={()=>{
+                            this.backPage()
+                        }}
                     />
                     <View style = {{width:width, marginTop:15, }}>
 
@@ -168,7 +170,7 @@ export default class NameAndIdScene extends BaseComponent {
                 }, (error)=>{
 
                        this.props.showModal(false)
-                       this.props.showToast(error.msg)
+                       this.props.showToast(error.mycode)
                 })
 
             }

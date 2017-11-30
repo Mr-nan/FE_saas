@@ -53,6 +53,7 @@ export default class InformationFillScene extends BaseComponent {
         });
     }
 
+
     render() {
         if (this.state.renderPlaceholderOnly) {
             return ( <TouchableWithoutFeedback onPress={() => {
@@ -84,7 +85,10 @@ export default class InformationFillScene extends BaseComponent {
                         leftTextShow={false}
                         centerText={"修改银行预留手机号"}
                         rightText={""}
-                        leftImageCallBack={this.backPage}
+                        leftImageCallBack={()=>{
+                            this.props.callBack()
+                            this.backPage()
+                        }}
                         centerTextStyle={{paddingLeft: 0, paddingRight: 0}}
                     />
                     <View style={{width: width, marginTop: 15,}}>
@@ -169,7 +173,7 @@ export default class InformationFillScene extends BaseComponent {
                     sms_no = response.mjson.data.sms_no
                 }, (error) => {
                     this.props.showModal(false)
-                    this.props.showToast(error.msg)
+                    this.props.showToast('验证码发送失败')
                 })
 
             } else {

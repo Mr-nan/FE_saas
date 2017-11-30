@@ -130,11 +130,11 @@ export default class ChooseBankNameScene extends BaseComponent {
                             underlineColorAndroid={"#00000000"}
                             value={this.state.headValue}
                             onChangeText={(t) => {
+                                console.log(t)
+                                this.refreshing(t)
                                 this.setState({
                                     headValue: t,
                                 })
-                                this.refreshing()
-
 
                             }}
                         />
@@ -147,7 +147,7 @@ export default class ChooseBankNameScene extends BaseComponent {
                     activeOpacity={.9}
                     onPress={() => {
 
-                        if(selectedHeadBank.subbankname == ''||typeof (selectedHeadBank.subbankname) == 'undefined'){
+                        if((this.props.bank_card_no == '')&&(selectedHeadBank.subbankname == ''||typeof (selectedHeadBank.subbankname) == 'undefined')){
                             this.props.showToast('请输入开户行名称');
                         }else {
                             this.toNextPage({
@@ -267,21 +267,19 @@ export default class ChooseBankNameScene extends BaseComponent {
 
         let re = /[^\u4e00-\u9fa5]/;
         if (re.test(t)) {
-            console.log( t + '   1')
             return false;
         }
-        console.log(t+'   2')
         return true;
     }
 
-    refreshing = () => {
+    refreshing = (t) => {
         banks = []
         this.setState({
             isRefreshing: true,
         })
         page = 1;
         if (this.props.bank_card_no == '') {
-            this.loadHeadBank(this.state.headValue, 1)
+            this.loadHeadBank(t, 1)
         } else {
 
             this.loadBanks(selectedCity.city_id, page)

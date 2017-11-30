@@ -56,7 +56,10 @@ export  default class ZSAccountTypeSelectScene extends BaseComponent {
                 />
                 <NavigationView
                     title="账户类型选择"
-                    backIconClick={this.backPage}
+                    backIconClick={()=>{
+                        this.props.callBack()
+                        this.backPage()
+                    }}
                 />
             </View>
         );

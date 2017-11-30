@@ -73,6 +73,7 @@ export default class DepositScene extends BaseComponent {
         })
     }
 
+
     // 加载限额说明
     loadInstruction = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -133,6 +134,7 @@ export default class DepositScene extends BaseComponent {
                     centerText={'充值'}
                     rightText={""}
                     leftImageCallBack={() => {
+                        this.props.callBack();
                         this.backPage();
                     }}
                 />
@@ -374,11 +376,9 @@ export default class DepositScene extends BaseComponent {
                     enter_base_id: result.company_base_id,
                     sub_acct_no: this.props.account.bank_card_no,
                     sms_code: sms_code,
-                    sms_no: sms_no
+                    sms_no: sms_no?sms_no:"000000"
 
                 }
-
-
 
                 request(AppUrls.ZS_DEPOSIT, 'POST', params).then((response) => {
                     this.props.showModal(false)

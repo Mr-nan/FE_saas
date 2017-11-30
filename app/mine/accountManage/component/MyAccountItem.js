@@ -111,13 +111,16 @@ export default class MyAccountItem extends BaseComponent {
                     };
                     break;
                 case 2: // 未激活
-                    this.navigatorParams.name = 'WaitActivationAccountScene';
-                    this.navigatorParams.component = WaitActivationAccountScene;
-                    this.navigatorParams.params = {
-                        callBack: () => {
-                            this.props.callBack();
-                        }
-                    };
+                    // this.navigatorParams.name = 'WaitActivationAccountScene';
+                    // this.navigatorParams.component = WaitActivationAccountScene;
+                    // this.navigatorParams.params = {
+                    //     callBack: () => {
+                    //         this.props.callBack();
+                    //     }
+                    // };
+
+                    this.props.showToast('您的资料已经提交，请耐心等待')
+
                     break;
                 default:  //已开户
                     this.navigatorParams.name = 'ZheShangAccountScene';
@@ -166,11 +169,11 @@ export default class MyAccountItem extends BaseComponent {
                         child_type: '1',
                         bank_id: 316
                     };
-                    request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
                         .then((response) => {
                             this.props.showModal(false);
                             //this.pageDispense(type, 0);
-                            this.pageDispense(type, response.mjson.data.account.status);
+                            this.pageDispense(type, response.mjson.data['316'][0].status);
                             this.toNextPage(this.navigatorParams);
                         }, (error) => {
                             this.props.showModal(false);
@@ -331,8 +334,7 @@ export default class MyAccountItem extends BaseComponent {
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(20),
                             color: fontAndColor.COLORA0
-                        }}>{this.state.data.bank_card_no && this.state.data.status != 0 ? this.state.data.bank_card_no :
-                            '***** ***** ***** ***** *****'}</Text>
+                        }}>{this.props.type == '315'?(this.state.data.bank_card_no && this.state.data.status != 0 ? this.state.data.bank_card_no : '***** ***** ***** ***** *****'):(this.state.data.bank_card_no && this.state.data.status != 0 ? this.state.data.bank_card_no : '***** ***** ***** ***** *****')}</Text>
                     </View>
                     <View style={{
                         height: Pixel.getPixel(38),
