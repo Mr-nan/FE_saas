@@ -30,6 +30,7 @@ const provinceData = (require('./carData/carFilterData.json')).provinceSource;
 const SceneWidth = Dimensions.get('window').width;
 
 let selectData={
+    province_name:'',
     city_name:'',
     provice_id:0,
     city_id:0,
@@ -40,8 +41,9 @@ let selectData={
 
      componentWillMount() {
          selectData.provice_id = 0;
-         selectData.city_name='';
-         selectData.city_id=0;
+         selectData.province_name='';
+	     selectData.city_name='';
+	     selectData.city_id=0;
      }
 
     // 构造
@@ -151,6 +153,7 @@ let selectData={
 
                  selectData.city_name=rowData.title;
                  selectData.provice_id=rowData.ID;
+                 selectData.provice_name=rowData.title;
 
                  this.refs.cityList && this.refs.cityList.loadData();
              }}>
