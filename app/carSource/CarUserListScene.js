@@ -227,6 +227,9 @@ export  default  class CarUserListScene extends BaseComponent {
 
     // 筛选数据刷新
     filterData = () => {
+
+
+        APIParameter.type = 0;
         carData = [];
         this.setState({dataSource:this.state.dataSource.cloneWithRows(carData)});
         this.props.showModal(true);
@@ -445,6 +448,7 @@ export  default  class CarUserListScene extends BaseComponent {
 
     screeningCompleteClick=(screeningObject)=>{
 
+        console.log('=========',screeningObject);
         this.setState({
             checkedCarType: screeningObject.checkedCarType,
             checkedCarAgeType:screeningObject.checkedCarAgeType,
@@ -834,12 +838,15 @@ export  default  class CarUserListScene extends BaseComponent {
         APIParameter.car_color = 0;
         APIParameter.nature_use = 0;
         APIParameter.model_name = '';
+        APIParameter.type = 4;
         this.setHeadViewType();
 
 
     };
 
     setHeadViewType =()=>{
+
+
         if (this.refs.HeadView.state.isCheckRecommend) {
             this.refs.HeadView.setCheckRecommend(false);
 

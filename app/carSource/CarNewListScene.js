@@ -222,6 +222,8 @@ export  default  class CarNewListScene extends BaseComponent {
 
     // 筛选数据刷新
     filterData = () => {
+
+        APIParameter.type = 0;
         carData = [];
         this.setState({dataSource:this.state.dataSource.cloneWithRows(carData)});
         this.props.showModal(true);
