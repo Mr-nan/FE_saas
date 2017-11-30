@@ -195,14 +195,19 @@ export default class MyAccountItem extends BaseComponent {
         let bank = ''; //银行图标
         let bankName = ''; //账户类型名称
         let accountState = ''; //账户状态
+        let bankNo = ''; // 资金账号
         if (this.props.type == '315') {
             back = require('../../../../images/account/hengfengback.png');
             bank = require('../../../../images/account/hengfengbank.png');
             bankName = '恒丰银行';
+            bankNo = this.state.data.bank_card_no && this.state.data.status != 0 ? this.state.data.bank_card_no :
+                '***** ***** ***** ***** *****';
         } else {
             back = require('../../../../images/account/zheshangback.png');
             bank = require('../../../../images/account/zheshangbank.png');
             bankName = '浙商银行';
+            bankNo = this.state.data.cz_elec_account && this.state.data.status != 0 ? this.state.data.cz_elec_account :
+                '***** ***** ***** ***** *****';
         }
         if (this.state.data.status === 0 || !this.state.data.status) {
             accountState = '未开户';
@@ -334,7 +339,8 @@ export default class MyAccountItem extends BaseComponent {
                             textAlign: 'left',
                             fontSize: Pixel.getPixel(20),
                             color: fontAndColor.COLORA0
-                        }}>{this.props.type == '315'?(this.state.data.bank_card_no && this.state.data.status != 0 ? this.state.data.bank_card_no : '***** ***** ***** ***** *****'):(this.state.data.bank_card_no && this.state.data.status != 0 ? this.state.data.bank_card_no : '***** ***** ***** ***** *****')}</Text>
+                        }}>{bankNo}</Text>
+
                     </View>
                     <View style={{
                         height: Pixel.getPixel(38),
