@@ -510,11 +510,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
 				7D83AEBF1FA2CC3B001A24F7 /* libSVehicleLicense.a in Frameworks */,
-=======
 				245A5B281FB9793300B70104 /* BaiduMapAPI_Base.framework in Frameworks */,
->>>>>>> c5d749c411b1f193dbfd56527fab5fa9593357e7
 				EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */,
 				245A5B291FB9793300B70104 /* BaiduMapAPI_Cloud.framework in Frameworks */,
 				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
