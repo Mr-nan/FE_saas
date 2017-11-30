@@ -8,7 +8,9 @@ import {
     Text,
     Platform,
     Alert,
-    AppState
+    AppState,
+    NetInfo,
+
 } from 'react-native';
 
 import MyNavigator  from './component/MyNavigator';
@@ -18,6 +20,8 @@ import ShowToast from "./component/toast/ShowToast";
 import * as weChat from 'react-native-wechat';
 
 export default class root extends Component {
+
+
 
     render() {
         return (
@@ -38,10 +42,19 @@ export default class root extends Component {
         global.phoneVersion = this.props.phoneVersion;
         global.phoneModel = this.props.phoneModel;
         global.appVersion = this.props.appVersion;
-        global.networkType = this.props.networkType; // 0是关闭，1仅wifi,2流量+wifi
 
-        console.log('===============>',global.networkType);
+        NetInfo.addEventListener('change',this.handleConnectionInfoChange);
 
+    }
+
+    componentWillUnMount() {
+        NetInfo.removeEventListener('change',this.handleConnectionInfoChange);
+    }
+
+    handleConnectionInfoChange(connectionInfo) {
+        if(connectionInfo=='none'){
+            Alert.alert('提示','当前网络状态不太好，请检测网络',[{'text':"好的"}]);
+        }
     }
 
     showToast = (content) => {

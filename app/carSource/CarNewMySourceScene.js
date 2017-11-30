@@ -1579,7 +1579,7 @@ class EditCarPriceView extends Component {
 
     render(){
         return(
-                <Modal visible={this.state.modalOpen} transparent={true} animationType={'none'}>
+                <Modal visible={this.state.modalOpen} transparent={true} animationType={'none'} onRequestClose={()=>{()=>{this.isShowView(false,{})}}}>
                     <TouchableOpacity style={styles.editCarPriceContainer} onPress={()=>{this.isShowView(false,{})}}>
                         <View style={styles.editCarContentView}>
                             <View style={styles.editCarHeadView}>

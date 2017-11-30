@@ -9,7 +9,7 @@ import {
     BackAndroid,
     InteractionManager,
     Text,
-    AppState
+    AppState,
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';

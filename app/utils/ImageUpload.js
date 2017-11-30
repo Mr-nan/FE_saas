@@ -31,7 +31,10 @@ const request = (url, method, params) => {
             }
             fetch(url + '?token=' + '0dee763feb648e3b901af57146d428a3' + '&device_code=' + device_code, {
                 method,
-                body
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body:body
             })
                 .then((response) => {
                     if (response.ok) {

@@ -802,7 +802,7 @@ class  SelectCarSourceView extends BaseComponent {
 
     render(){
         return(
-            <Modal animationType={'none'} visible={this.state.visible} transparent = {true}>
+            <Modal animationType={'none'} visible={this.state.visible} transparent = {true} onRequestClose={()=>{this.setVisible(false)}}>
                 <TouchableOpacity style={{ backgroundColor:'rgba(0, 0, 0,0.3)', alignItems:'center',justifyContent:'flex-end', flex:1} }
                                   activeOpacity={1}
                                   onPress={()=>{this.setVisible(false)}}>

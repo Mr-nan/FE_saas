@@ -37,9 +37,12 @@ const request = (url, method, params, backToLogin) => {
             }
 
 
-            fetch(url + '?token=' + token + '&device_code=' + device_code+'&version='+StorageKeyNames.VERSON_CODE+'&'+body, {
+            fetch(url + '?token=' + token + '&device_code=' + device_code+'&version='+StorageKeyNames.VERSON_CODE, {
                 method,
-                body
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body:body
             })
                 .then((response) => {
                     if (response.ok) {
