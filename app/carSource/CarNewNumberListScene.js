@@ -84,8 +84,11 @@ export default class CarNewNumberListScene extends BaseComponent {
                 </TouchableOpacity>
                 <AllLoading callEsc={()=>{this.carSoldOut(2);}}
                             ref={(modal) => {this.allloading = modal}}
-                            canColse='false'
-                            callBack={()=>{this.carSoldOut(1);}}/>
+                            callBack={()=>{this.carSoldOut(1);}}
+                            canColse="false"
+                            showDelete={true}
+                            callEscText="否"
+                            callBackText="是"/>
                 <SelectCarSourceView ref={(ref)=>{this.SelectCarSourceView = ref}} selectCarAction={this.selectAction} pushNewCarAction = {this.pushNewCarAction}/>
             </View>
         )
@@ -229,7 +232,7 @@ export default class CarNewNumberListScene extends BaseComponent {
 
             }else if(carNumber>=1 || !cellData.reserve_num)
             {
-                this.allloading.changeShowType(true,'是否将该车源可售车辆数-1');
+                this.allloading.changeShowType(true,'确定是否将该车源可售车辆数-1');
             }
         }
     }
@@ -713,7 +716,6 @@ class  SelectCarSourceView extends BaseComponent {
         let url = AppUrls.CAR_USER_CAR;
         carSelectViewDataPage = 1;
         request(url, 'post', {
-            car_status: '1',
             page: carSelectViewDataPage,
             row: 10,
             type:2,
@@ -759,7 +761,6 @@ class  SelectCarSourceView extends BaseComponent {
         let url = AppUrls.CAR_USER_CAR;
         carSelectViewDataPage += 1;
         request(url, 'post', {
-            car_status: '1',
             page: carSelectViewDataPage,
             row: 10,
             type:2,

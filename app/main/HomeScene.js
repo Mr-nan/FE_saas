@@ -230,7 +230,7 @@ export default class HomeScene extends BaseComponet {
                                 });
                             }
                             this.carArray = []; // 初始化车源订阅数据
-                            this.getCarData('6');
+                            this.getCarData(6);
                             this.getCarSubscriptionData(5);
                             this.getCarSubscriptionData(7);
 
@@ -263,19 +263,19 @@ export default class HomeScene extends BaseComponet {
             rows: 5,
             page: 1,
             start: 0,
-            type: type,
+            type: 2,
             status: 1,
             no_cache: 1,
         };
         request(Urls.CAR_INDEX, 'Post', maps)
             .then((response) => {
                     // this.carData = response.mjson.data.list;
-                    if (maps.type == '6') {
+                    if (type == 6) {
                         this.setState({
                             newData: response.mjson.data,
                         });
-                        this.getCarData('8');
-                    } else if (maps.type == '8') {
+                        this.getCarData(8);
+                    } else if (type == 8) {
                         this.setState({
                             oldData: response.mjson.data,
                         });
@@ -308,7 +308,7 @@ export default class HomeScene extends BaseComponet {
             rows: 8,
             page: 1,
             start: 0,
-            type: type,
+            type: 1,
             status: 1,
             no_cache: 1,
         };

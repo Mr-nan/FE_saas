@@ -78,7 +78,7 @@ const APIParameter = {
     rows: 10,
     page: 1,
     start: 0,
-    type: 7,
+    type: 1,
     status: 1,
     no_cache:1,
 
@@ -573,7 +573,7 @@ export  default  class CarUserListScene extends BaseComponent {
 
         currentCarCheckRecommend = isCheck;
         if (isCheck) {
-            APIParameter.type = 7;
+            APIParameter.type = 1;
             APIParameter.prov_id=this.prov_id;
             this.allDelectClick();
 

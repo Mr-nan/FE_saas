@@ -619,7 +619,7 @@ export  default  class CarNewListScene extends BaseComponent {
 
         currentCarCheckRecommend = isCheck;
         if (isCheck) {
-            APIParameter.type = 5;
+            APIParameter.type = 1;
             APIParameter.prov_id=this.prov_id;
             this.allDelectClick();
 
