@@ -99,6 +99,8 @@ export default class MyAccountItem extends BaseComponent {
                     };
                     break;
             }
+
+            this.toNextPage(this.navigatorParams);
         } else {
             switch (state) {
                 case 0://未开户
@@ -109,6 +111,7 @@ export default class MyAccountItem extends BaseComponent {
                             this.props.callBack();
                         }
                     };
+                    this.toNextPage(this.navigatorParams);
                     break;
                 case 2: // 未激活
                     // this.navigatorParams.name = 'WaitActivationAccountScene';
@@ -126,6 +129,7 @@ export default class MyAccountItem extends BaseComponent {
                     this.navigatorParams.name = 'ZheShangAccountScene';
                     this.navigatorParams.component = ZheShangAccountScene;
                     this.navigatorParams.params = {};
+                    this.toNextPage(this.navigatorParams);
                     break;
             }
         }
@@ -174,7 +178,7 @@ export default class MyAccountItem extends BaseComponent {
                             this.props.showModal(false);
                             //this.pageDispense(type, 0);
                             this.pageDispense(type, response.mjson.data['316'][0].status);
-                            this.toNextPage(this.navigatorParams);
+
                         }, (error) => {
                             this.props.showModal(false);
                             this.props.showToast('用户信息查询失败');

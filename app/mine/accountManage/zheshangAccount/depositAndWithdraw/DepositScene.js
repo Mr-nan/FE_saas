@@ -393,14 +393,6 @@ export default class DepositScene extends BaseComponent {
     }
 
 
-    load_deposit_type = () => {
-
-
-        return
-
-
-    }
-
 
     //充值
     deposit = (sms_code, sms_no) => {

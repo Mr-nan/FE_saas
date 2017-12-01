@@ -162,27 +162,9 @@ export default class WithdrawScene extends BaseComponent {
                                         keyboardType={'numeric'}
                                         underlineColorAndroid={"#00000000"}
                                         onChangeText={(text) => {
-
-                                            console.log(parseFloat(text))
-                                            console.log(parseFloat(this.state.allow_withdraw_amount))
-                                            if (parseFloat(text) > parseFloat(this.state.allow_withdraw_amount)) {
-
-                                                this.setState({
-                                                    money_input: this.state.allow_withdraw_amount
-                                                })
-                                                console.log('1')
-                                                if(text.length>this.state.allow_withdraw_amount){
-                                                    this.setState({
-                                                        money_input: this.state.allow_withdraw_amount
-                                                    })
-                                                    console.log('2')
-                                                }
-                                            } else {
                                                 this.setState({
                                                     money_input: text
                                                 })
-                                                console.log('3')
-                                            }
                                         }}
                                         value={this.state.money_input}
                                     />
@@ -225,11 +207,10 @@ export default class WithdrawScene extends BaseComponent {
                         childStyle={{fontSize: 18, color: 'white'}}
                         mOnPress={() => {
 
-                            if (parseFloat(this.state.allow_withdraw_amount) === 0) {
-                                this.props.showToast('暂无余额可提');
+                            if (parseFloat(this.state.allow_withdraw_amount) < parseFloat(this.state.money_input)) {
+                                this.props.showToast('余额不足');
                                 return;
                             }
-
                             let money = parseFloat(this.state.money_input)
                             if (money <= 0 || this.state.money_input === null || this.state.money_input === '') {
                                 this.props.showToast('请输入金额')
