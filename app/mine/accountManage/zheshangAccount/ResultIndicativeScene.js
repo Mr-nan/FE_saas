@@ -312,7 +312,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                 let maps = {
                     enter_base_id: datas.company_base_id,
                     bank_id: 316,
-                    serial_no: this.props.error.data.response.serial_no,
+                    serial_no: this.props.error.data.serial_no,
                 };
 
                 this.setState({

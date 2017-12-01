@@ -332,7 +332,7 @@ export default class ModifyBankCard extends BaseComponent {
                 request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {
                     this.refs.mobile_no.StartCountDown();
                     sms_no = response.mjson.data.sms_no;
-                    console.log(response);
+                    //console.log(response);
 
                 }, (error) => {
                     this.props.showModal(false)
