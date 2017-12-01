@@ -37,6 +37,7 @@ const {width, height} = Dimensions.get('window');
 import * as fontAndClolr from '../../constant/fontAndColor';
 
 let lastType = '-1';
+let haveOrder = 0;
 const json={
     "token": "",
     "code": 1,
@@ -169,8 +170,7 @@ const json={
         "sql": null
     }
 }
-
-export default class SupervisionTotalScene extends BaseComponent {
+export default class SupervisionNoPayScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.tabNum = this.props.tabNum;
@@ -178,8 +178,8 @@ export default class SupervisionTotalScene extends BaseComponent {
         allSouce = [];
         this.url = '';
         this.accountStatus = '';
-        this.payFee=0.00;
         this.isVisible = false;
+        this.payFee = 0;
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.accountStatus = '';
         this.state = {
@@ -201,7 +201,7 @@ export default class SupervisionTotalScene extends BaseComponent {
 
     componentDidUpdate() {
         //记得改
-        if (this.state.renderPlaceholderOnly !== 'success' && this.tabNum === '0'){
+        if (this.state.renderPlaceholderOnly !== 'success' && this.tabNum !== '2') {
 
             this.checkAcountState();
         }
@@ -209,48 +209,46 @@ export default class SupervisionTotalScene extends BaseComponent {
 
     checkAcountState() {
         lastType = '-1';
-            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                if (data.code == 1) {
-                    let datas = JSON.parse(data.result);
-                    let maps = {
-                        enter_base_ids: datas.company_base_id,
-                        child_type: '1'
-                    };
-                    request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                        .then((response) => {
-                                this.props.closeLoading();
-                                lastType = response.mjson.data.account.status;
-                                console.log('-------', lastType);
-                                lastType = '0';
-                                if (lastType == '0') {
-                                    this.accountStatus = '开户';
-                                    this.isVisible = true;
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids: datas.company_base_id,
+                    child_type: '1'
+                };
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            haveOrder = response.mjson.data.order.tradeing_count;
+                            lastType = response.mjson.data.account.status;
+                            console.log('-------', lastType);
+                            lastType = '0';
+                            if (lastType == '0') {
+                                this.accountStatus = '开户';
+                                this.isVisible = true;
 
-                                } else if (lastType == '1') {
-                                    this.accountStatus = '绑卡';
-                                    this.isVisible = true;
+                            } else if (lastType == '1') {
+                                this.accountStatus = '绑卡';
+                                this.isVisible = true;
 
-                                } else if (lastType == '2') {
-                                    this.accountStatus = '激活';
-                                    this.isVisible = true;
-                                } else {
-                                    this.isVisible = false;
-                                }
-                                this.setState({
-                                    isVisible: this.isVisible,
-                                    accountStatus: this.accountStatus
-                                });
-
-                            },
-                            (error) => {
-                                this.props.closeLoading();
-                                this.props.showToast('用户信息查询失败');
+                            } else if (lastType == '2') {
+                                this.accountStatus = '激活';
+                                this.isVisible = true;
+                            } else {
+                                this.isVisible = false;
+                            }
+                            this.setState({
+                                isVisible: this.isVisible,
+                                accountStatus: this.accountStatus
                             });
-                } else {
-                    this.props.closeLoading();
-                    this.props.showToast('用户信息查询失败');
-                }
-            });
+
+                        },
+                        (error) => {
+                            this.props.showToast('用户信息查询失败');
+                        });
+            } else {
+                this.props.showToast('用户信息查询失败');
+            }
+        });
     }
 
     allRefresh = () => {
@@ -275,15 +273,16 @@ export default class SupervisionTotalScene extends BaseComponent {
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
                             this.props.closeLoading();
+                            haveOrder = response.mjson.data.order.tradeing_count;
                             lastType = response.mjson.data.account.status;
-                            lastType='0';
+                            lastType = '0';
                             if (lastType == '0') {
                                 this.toNextPage({
                                     name: 'AccountManageScene',
                                     component: AccountManageScene,
                                     params: {
                                         callBack: () => {
-                                            this.props.showLoading();
+                                            this.props.closeLoading();
                                             this.checkAcountState();
                                         }
                                     }
@@ -295,7 +294,7 @@ export default class SupervisionTotalScene extends BaseComponent {
                                     component: BindCardScene,
                                     params: {
                                         callBack: () => {
-                                            this.props.showLoading();
+                                            this.props.closeLoading();
                                             this.checkAcountState();
                                         }
                                     }
@@ -307,7 +306,7 @@ export default class SupervisionTotalScene extends BaseComponent {
                                     component: WaitActivationAccountScene,
                                     params: {
                                         callBack: () => {
-                                            this.props.showLoading();
+                                            this.props.closeLoading();
                                             this.checkAcountState();
                                         }
                                     }
@@ -340,28 +339,27 @@ export default class SupervisionTotalScene extends BaseComponent {
     getData = () => {
         let maps = {
             api: Urls.SUPERVISE_LIST,
-            status: '0',
+            status: '1',
         };
         request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
                     // let data=response.mjson.data;
-                let data=json.data.response;
+                    let data = json.data.response;
                     if (page == 1 && data.order_list.length <= 0) {
-                        this.setState({renderPlaceholderOnly: 'null'});
+                        this.setState({renderPlaceholderOnly: 'noPayOrder'});
                     } else {
-                        // allPage = data.total / 10;
                         allSouce.push(...data.order_list);
-                        allSouce.map((data)=>{
-                            if(data.pay_status=='1'){
-                                this.payFee+=parseFloat(data.supervision_fee);
+                        allSouce.map((data) => {
+                            if (data.pay_status == '1') {
+                                this.payFee += parseFloat(data.supervision_fee);
                             }
                         })
                         this.setState({
                             dataSource: this.ds.cloneWithRows(allSouce),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success',
-                            noPay: this.payFee>0 ? true: false
+                            noPay: this.payFee > 0 ? true : false
 
                         });
                     }
@@ -371,6 +369,32 @@ export default class SupervisionTotalScene extends BaseComponent {
                 });
     }
 
+    refreshingData = () => {
+        allSouce = [];
+        this.setState({isRefreshing: true});
+        page = 1;
+        this.getData();
+    };
+
+    toEnd = () => {
+        if (this.state.isRefreshing) {
+
+        } else {
+            if (page < allPage) {
+                page++;
+                this.getData();
+            }
+        }
+
+    };
+
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={page >= allPage ? true : false}/>)
+        }
+    }
 
     render() {
         let bottomStyle={};
@@ -393,7 +417,7 @@ export default class SupervisionTotalScene extends BaseComponent {
 
             return (
                 <View style={{flex: 1,}}>
-                    <View style={[styles.container , bottomStyle]}>
+                    <View style={[styles.container, bottomStyle]}>
                         {
                             this.state.isVisible ? this._renderHeader() : null
                         }
@@ -432,7 +456,6 @@ export default class SupervisionTotalScene extends BaseComponent {
                                         callBack: () => {
                                             allSouce = [];
                                             this.setState({renderPlaceholderOnly: 'loading'});
-                                            page = 1;
                                             this.getData();
                                         },
                                     },
@@ -470,28 +493,16 @@ export default class SupervisionTotalScene extends BaseComponent {
 
     // 每一行中的数据
     _renderRow = (rowData, sectionID, rowID,) => {
-        let payStatus={};
-        let statusText='';
-        if(rowData.pay_status=='3'){
-            payStatus={color: fontAndColor.COLORB1}
-            statusText='已支付';
-        }else if(rowData.pay_status=='2'){
-            payStatus={color: fontAndColor.COLORB3};
-            statusText='处理中';
-        }else{
-            payStatus={color: fontAndColor.COLORB2};
-            statusText='未支付';
-        }
         return (
             <TouchableOpacity activeOpacity={0.8}>
                 <View style={[styles.rowView, rowID == '0' ? {marginTop: 0} : {marginTop: Pixel.getPixel(10)}]}>
 
                     <View style={styles.orderNumStyle}>
                         <Text style={{flex: 1, fontSize: 14}}>{'订单号:' + rowData.supervision_fee_order_number}</Text>
-                        <Text style={[{
+                        <Text style={{
                             color: fontAndColor.COLORB2,
                             fontSize: 14
-                        }, payStatus]}>{statusText}</Text>
+                        }}>{'未支付'}</Text>
                     </View>
                     <Text style={{
                         color: '#333333',
@@ -508,6 +519,7 @@ export default class SupervisionTotalScene extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
+
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
         backgroundColor: fontAndColor.COLORA3,

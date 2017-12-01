@@ -603,12 +603,12 @@ export default class MineScene extends BaseComponent {
                     {rowData.name == '监管费' && this.noPay == 0 ?
                         <View style={{
                             marginRight: Pixel.getPixel(15),
-                            width: Pixel.getPixel(70),
+                            width: Pixel.getPixel(65),
                             height: Pixel.getPixel(25),
                             backgroundColor: '#FDEEEB',
                             alignItems:'center',
                             justifyContent:'center',
-                            borderRadius: 4}}>
+                            borderRadius: 14}}>
                             <Text style={{color:'#FC6855', fontSize:12}}> {this.noPay+'笔待付'}</Text>
                         </View>: <View/>}
 

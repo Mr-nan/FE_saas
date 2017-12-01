@@ -29,7 +29,7 @@ import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as webBackUrl from "../../constant/webBackUrl";
 import AccountWebScene from "../../mine/accountManage/AccountWebScene";
-import DDApplyLendScene from "../../finance/lend/DDApplyLendScene";
+import * as Urls from '../../constant/appUrls';
 
 const Pixel = new PixelUtil();
 
@@ -53,20 +53,35 @@ export default class CheckStand extends BaseComponent {
         } catch (e) {
 
         } finally {
-            //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.initFinish();
-           // });
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
         }
     }
 
     initFinish = () => {
-        /*        this.setState({
-         dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
-         renderPlaceholderOnly: 'success'
-         });*/
-        this.loadData();
+        this.getData();
     };
+
+    getData = () => {
+        let maps = {
+            api: Urls.CASHIER_TABLE,
+        };
+        request(Urls.FINANCE, 'Post', maps)
+
+            .then((response) => {
+                    if (response.mjson.data == null) {
+                        this.setState({renderPlaceholderOnly: 'null'});
+                    } else {
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+
+                        });
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                });
+    }
 
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -82,14 +97,10 @@ export default class CheckStand extends BaseComponent {
                     this.props.showModal(false);
                     this.accountInfo = response.mjson.data.account;
                     if (this.accountInfo) {
-                        if (this.props.payType == 2) {
-                            this.getMergeWhitePoStatus();
-                        } else {
-                            this.setState({
-                                isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
-                            });
-                        }
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
                     } else {
                         this.props.showToast('用户信息查询失败');
                         this.setState({
@@ -110,59 +121,6 @@ export default class CheckStand extends BaseComponent {
         });
     };
 
-    /**
-     *  检查用户是否是白名单用户
-     */
-    getMergeWhitePoStatus = () => {
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                let isDoneCredit = datas.is_done_credit;
-                let mergeId = datas.merge_id;
-                //let mergeId = 1110;
-                if (isDoneCredit == 0) {
-                    this.isShowFinancing = 0;
-                    this.setState({
-                        isRefreshing: false,
-                        renderPlaceholderOnly: 'success'
-                    });
-                } else {
-                    let maps = {
-                        api: AppUrls.ORDER_GET_MERGE_WHITE_PO_STATUS,
-                        merge_id: mergeId
-                    };
-                    let url = AppUrls.FINANCE;
-                    request(url, 'post', maps).then((response) => {
-                        if (response.mjson.code === 1) {
-                            this.isShowFinancing = 1;
-                            this.setState({
-                                isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
-                            });
-                        } else {
-                            this.isShowFinancing = 0;
-                            this.setState({
-                                isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
-                            });
-                        }
-                    }, (error) => {
-                        this.isShowFinancing = 0;
-                        this.setState({
-                            isRefreshing: false,
-                            renderPlaceholderOnly: 'success'
-                        });
-                    });
-                }
-            } else {
-                this.isShowFinancing = 0;
-                this.setState({
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
-                });
-            }
-        });
-    };
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -184,8 +142,7 @@ export default class CheckStand extends BaseComponent {
                                 marginTop: Pixel.getPixel(6),
                                 //fontWeight: 'bold',
                                 fontSize: Pixel.getFontPixel(38)
-                                //parseFloat(this.props.payAmount).toFixed(2)
-                            }}>{160.00}元</Text>
+                            }}>{parseFloat(this.props.payAmount).toFixed(2)}元</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
@@ -234,40 +191,6 @@ export default class CheckStand extends BaseComponent {
         }
     }
 
-    checkPay = () => {
-        this.props.showModal(true);
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    company_id: datas.company_base_id,
-                    order_id: this.props.orderId,
-                    type: this.props.payType,
-                    trans_serial_no: this.transSerialNo
-                };
-                let url = AppUrls.ORDER_CHECK_PAY;
-                request(url, 'post', maps).then((response) => {
-                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        if (response.mjson.data.pay_status == 3) {
-                            this.props.showToast('支付成功');
-                            this.props.callBack();
-                            this.backPage();
-                        } else {
-                            this.props.showToast('支付失败');
-                        }
-                    } else {
-                        this.props.showToast(response.mjson.msg);
-                    }
-                }, (error) => {
-                    //this.props.showToast('账户支付检查失败');
-                    this.props.showToast(error.mjson.msg);
-                });
-            } else {
-                this.props.showToast('账户支付检查失败');
-            }
-        });
-    };
-
     checkInitialPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -301,56 +224,6 @@ export default class CheckStand extends BaseComponent {
         });
     };
 
-    /**
-     *  跳转订单融资申请页
-     */
-    goApplyLoan = () => {
-        this.props.showModal(true);
-        if (this.props.pledgeType == 1 && this.props.pledgeStatus == 1) {
-            this.refs.expModal.changeShowType(true, '提示', '此车在质押中，需要卖方解除质押后可申请订单融资。', '确定');
-        } else {
-            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                if (data.code == 1 && data.result != null) {
-                    let datas = JSON.parse(data.result);
-                    let mergeId = datas.merge_id;
-                    let maps = {
-                        //api: AppUrls.ADD_PLATFORM_ORDER_CAR,
-                        merge_id: mergeId,
-                        platform_car_id: this.props.carId,
-                        platform_order_number: this.props.orderNo,
-                        register_seller_user_id: this.props.sellerId
-                    };
-                    let url = AppUrls.ADD_PLATFORM_ORDER_CAR;
-                    request(url, 'Post', maps).then((response) => {
-                        if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                            if (response.mjson.data.status === 1) {
-                                this.props.showModal(false);
-                                this.toNextPage({
-                                    name: 'DDApplyLendScene',
-                                    component: DDApplyLendScene,
-                                    params: {
-                                        orderNo: this.props.orderNo,
-                                        orderId: this.props.orderId,
-                                        callBack: this.props.callBack,
-                                        sceneName: 'CheckStand'
-                                    }
-                                });
-                            } else {
-                                this.props.showToast(response.mjson.msg);
-                            }
-                        } else {
-                            this.props.showToast(response.mjson.msg);
-                        }
-                    }, (error) => {
-                        //this.props.showToast('确认验收失败');
-                        this.props.showToast('添加订单融资车辆失败');
-                    });
-                } else {
-                    this.props.showToast('添加订单融资车辆失败');
-                }
-            });
-        }
-    };
 
     goPay = () => {
 
@@ -359,90 +232,37 @@ export default class CheckStand extends BaseComponent {
 
     goInitialPay = () => {
         this.props.showModal(true);
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    company_id: datas.company_base_id,
-                    order_id: this.props.orderId,
-                    back_url: webBackUrl.PAY,
-                    loan_amount: this.props.applyLoanAmount,
-                    finance_no: this.props.financeNo
-                };
-                let url = AppUrls.FIRST_PAYMENT_PAY;
-                request(url, 'post', maps).then((response) => {
-                    //this.loadData();
-                    //this.props.showToast('支付成功');
-                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        this.props.showModal(false);
-                        this.transSerialNo = response.mjson.data.trans_serial_no;
-                        this.toNextPage({
-                            name: 'AccountWebScene',
-                            component: AccountWebScene,
-                            params: {
-                                title: '支付',
-                                webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
-                                callBack: () => {
-                                    this.checkInitialPay()
-                                },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
-                                backUrl: webBackUrl.PAY
-                            }
-                        });
-                    } else {
-                        this.props.showToast(response.mjson.msg);
+        let maps = {
+            cashier_desk_trans_serial_no: '10101006201711301158066841270409',
+            transfer_accounts_url: webBackUrl.SUPERVICEPAY,
+        };
+        let url = AppUrls.SUPERVISE_PAY;
+        request(url, 'post', maps).then((response) => {
+            if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                this.props.showModal(false);
+                this.transSerialNo = response.mjson.data.trans_serial_no;
+                this.toNextPage({
+                    name: 'AccountWebScene',
+                    component: AccountWebScene,
+                    params: {
+                        title: '支付',
+                        webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
+                        callBack: () => {
+                            this.checkInitialPay()
+                        },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                        backUrl: webBackUrl.PAY
                     }
-                }, (error) => {
-                    //this.props.showToast('账户支付失败');
-                    this.props.showToast(error.mjson.msg);
                 });
             } else {
-                this.props.showToast('账户支付失败');
+                this.props.showToast(response.mjson.msg);
             }
+        }, (error) => {
+            //this.props.showToast('账户支付失败');
+            this.props.showToast(error.mjson.msg);
         });
+
     };
 
-    goDepositPay = () => {
-        this.props.showModal(true);
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    company_id: datas.company_base_id,
-                    order_id: this.props.orderId,
-                    type: this.props.payType,
-                    reback_url: webBackUrl.PAY
-                };
-                let url = AppUrls.ORDER_PAY;
-                request(url, 'post', maps).then((response) => {
-                    //this.loadData();
-                    //this.props.showToast('支付成功');
-                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        this.props.showModal(false);
-                        this.transSerialNo = response.mjson.data.trans_serial_no;
-                        this.toNextPage({
-                            name: 'AccountWebScene',
-                            component: AccountWebScene,
-                            params: {
-                                title: '支付',
-                                webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
-                                callBack: () => {
-                                    this.checkPay()
-                                },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
-                                backUrl: webBackUrl.PAY
-                            }
-                        });
-                    } else {
-                        this.props.showToast(response.mjson.msg);
-                    }
-                }, (error) => {
-                    //this.props.showToast('账户支付失败');
-                    this.props.showToast(error.mjson.msg);
-                });
-            } else {
-                this.props.showToast('账户支付失败');
-            }
-        });
-    }
 }
 
 const styles = StyleSheet.create({

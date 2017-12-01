@@ -37,6 +37,7 @@ const {width, height} = Dimensions.get('window');
 import * as fontAndClolr from '../../constant/fontAndColor';
 
 let lastType = '-1';
+let haveOrder = 0;
 const json={
     "token": "",
     "code": 1,
@@ -58,7 +59,7 @@ const json={
                     "merge_id": "37",
                     "supervision_fee_order_number": "JGF2017112415",
                     "supervision_fee_id": "15",
-                    "supervision_fee": "0.1",
+                    "supervision_fee": "77.00",
                     "pay_status": "1",
                     "pay_submit_time": "1970-01-01 00:00:00",
                     "pay_time": "1970-01-01 00:00:00",
@@ -78,7 +79,7 @@ const json={
                     "merge_id": "37",
                     "supervision_fee_order_number": "JGF2017112415",
                     "supervision_fee_id": "15",
-                    "supervision_fee": "1.00",
+                    "supervision_fee": "77.00",
                     "pay_status": "1",
                     "pay_submit_time": "1970-01-01 00:00:00",
                     "pay_time": "1970-01-01 00:00:00",
@@ -98,7 +99,7 @@ const json={
                     "merge_id": "37",
                     "supervision_fee_order_number": "JGF2017112415",
                     "supervision_fee_id": "15",
-                    "supervision_fee": "1.00",
+                    "supervision_fee": "77.00",
                     "pay_status": "1",
                     "pay_submit_time": "1970-01-01 00:00:00",
                     "pay_time": "1970-01-01 00:00:00",
@@ -118,8 +119,8 @@ const json={
                     "merge_id": "37",
                     "supervision_fee_order_number": "JGF201711237",
                     "supervision_fee_id": "7",
-                    "supervision_fee": "1.00",
-                    "pay_status": "2",
+                    "supervision_fee": "77.00",
+                    "pay_status": "3",
                     "pay_submit_time": "1970-01-01 00:00:00",
                     "pay_time": "1970-01-01 00:00:00",
                     "pay_trans_serial_no": "",
@@ -138,8 +139,8 @@ const json={
                     "merge_id": "37",
                     "supervision_fee_order_number": "JGF201711234",
                     "supervision_fee_id": "4",
-                    "supervision_fee": "1.00",
-                    "pay_status": "3",
+                    "supervision_fee": "77.00",
+                    "pay_status": "1",
                     "pay_submit_time": "1970-01-01 00:00:00",
                     "pay_time": "1970-01-01 00:00:00",
                     "pay_trans_serial_no": "",
@@ -169,8 +170,7 @@ const json={
         "sql": null
     }
 }
-
-export default class SupervisionTotalScene extends BaseComponent {
+export default class SupervisionPayScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.tabNum = this.props.tabNum;
@@ -178,7 +178,6 @@ export default class SupervisionTotalScene extends BaseComponent {
         allSouce = [];
         this.url = '';
         this.accountStatus = '';
-        this.payFee=0.00;
         this.isVisible = false;
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.accountStatus = '';
@@ -188,7 +187,6 @@ export default class SupervisionTotalScene extends BaseComponent {
             isRefreshing: false,
             accountStatus: '',
             isVisible: false,
-            noPay: false,
         };
     }
 
@@ -197,137 +195,6 @@ export default class SupervisionTotalScene extends BaseComponent {
         allPage = 1;
         allSouce = [];
         this.getData();
-    }
-
-    componentDidUpdate() {
-        //记得改
-        if (this.state.renderPlaceholderOnly !== 'success' && this.tabNum === '0'){
-
-            this.checkAcountState();
-        }
-    }
-
-    checkAcountState() {
-        lastType = '-1';
-            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                if (data.code == 1) {
-                    let datas = JSON.parse(data.result);
-                    let maps = {
-                        enter_base_ids: datas.company_base_id,
-                        child_type: '1'
-                    };
-                    request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                        .then((response) => {
-                                this.props.closeLoading();
-                                lastType = response.mjson.data.account.status;
-                                console.log('-------', lastType);
-                                lastType = '0';
-                                if (lastType == '0') {
-                                    this.accountStatus = '开户';
-                                    this.isVisible = true;
-
-                                } else if (lastType == '1') {
-                                    this.accountStatus = '绑卡';
-                                    this.isVisible = true;
-
-                                } else if (lastType == '2') {
-                                    this.accountStatus = '激活';
-                                    this.isVisible = true;
-                                } else {
-                                    this.isVisible = false;
-                                }
-                                this.setState({
-                                    isVisible: this.isVisible,
-                                    accountStatus: this.accountStatus
-                                });
-
-                            },
-                            (error) => {
-                                this.props.closeLoading();
-                                this.props.showToast('用户信息查询失败');
-                            });
-                } else {
-                    this.props.closeLoading();
-                    this.props.showToast('用户信息查询失败');
-                }
-            });
-    }
-
-    allRefresh = () => {
-        page = 1;
-        allPage = 1;
-        allSouce = [];
-        this.setState({
-            renderPlaceholderOnly: 'loading',
-        });
-        this.getData();
-    }
-
-    toPage = () => {
-        this.props.showLoading();
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    enter_base_ids: datas.company_base_id,
-                    child_type: '1'
-                };
-                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                    .then((response) => {
-                            this.props.closeLoading();
-                            lastType = response.mjson.data.account.status;
-                            lastType='0';
-                            if (lastType == '0') {
-                                this.toNextPage({
-                                    name: 'AccountManageScene',
-                                    component: AccountManageScene,
-                                    params: {
-                                        callBack: () => {
-                                            this.props.showLoading();
-                                            this.checkAcountState();
-                                        }
-                                    }
-                                });
-
-                            } else if (lastType == '1') {
-                                this.toNextPage({
-                                    name: 'BindCardScene',
-                                    component: BindCardScene,
-                                    params: {
-                                        callBack: () => {
-                                            this.props.showLoading();
-                                            this.checkAcountState();
-                                        }
-                                    }
-                                });
-
-                            } else if (lastType == '2') {
-                                this.toNextPage({
-                                    name: 'WaitActivationAccountScene',
-                                    component: WaitActivationAccountScene,
-                                    params: {
-                                        callBack: () => {
-                                            this.props.showLoading();
-                                            this.checkAcountState();
-                                        }
-                                    }
-                                });
-                            }
-                        },
-                        (error) => {
-                            this.props.showToast('用户信息查询失败');
-                        });
-            } else {
-                this.props.closeLoading();
-                this.props.showToast('用户信息查询失败');
-            }
-        });
-    }
-    navigatorParams = {
-
-        name: 'AccountManageScene',
-        component: AccountManageScene,
-        params: {}
     }
 
 
@@ -340,30 +207,22 @@ export default class SupervisionTotalScene extends BaseComponent {
     getData = () => {
         let maps = {
             api: Urls.SUPERVISE_LIST,
-            status: '0',
+            status: '3',
         };
         request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
+                    let data=json.data.response;
                     // let data=response.mjson.data;
-                let data=json.data.response;
                     if (page == 1 && data.order_list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
-                        // allPage = data.total / 10;
                         allSouce.push(...data.order_list);
-                        allSouce.map((data)=>{
-                            if(data.pay_status=='1'){
-                                this.payFee+=parseFloat(data.supervision_fee);
-                            }
-                        })
                         this.setState({
                             dataSource: this.ds.cloneWithRows(allSouce),
-                            isRefreshing: false,
-                            renderPlaceholderOnly: 'success',
-                            noPay: this.payFee>0 ? true: false
-
+                            isRefreshing: false
                         });
+                        this.setState({renderPlaceholderOnly: 'success'});
                     }
                 },
                 (error) => {
@@ -371,20 +230,34 @@ export default class SupervisionTotalScene extends BaseComponent {
                 });
     }
 
+    refreshingData = () => {
+        allSouce = [];
+        this.setState({isRefreshing: true});
+        page = 1;
+        this.getData();
+    };
 
-    render() {
-        let bottomStyle={};
-        if(Platform.OS === 'android'){
-            bottomStyle={marginBottom: Pixel.getPixel(25)};
-            if(this.state.noPay){
-                bottomStyle={marginBottom: Pixel.getPixel(78)};
-            }
-        }else{
-            bottomStyle={marginBottom: Pixel.getPixel(5)};
-            if(this.state.noPay){
-                bottomStyle={marginBottom: Pixel.getPixel(55)};
+    toEnd = () => {
+        if (this.state.isRefreshing) {
+
+        } else {
+            if (page < allPage) {
+                page++;
+                this.getData();
             }
         }
+
+    };
+
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={page >= allPage ? true : false}/>)
+        }
+    }
+
+    render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (<View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
                 {this.loadView()}
@@ -393,7 +266,7 @@ export default class SupervisionTotalScene extends BaseComponent {
 
             return (
                 <View style={{flex: 1,}}>
-                    <View style={[styles.container , bottomStyle]}>
+                    <View style={[styles.container , Platform.OS === 'android' ? {marginBottom: Pixel.getPixel(25)} : {}]}>
                         {
                             this.state.isVisible ? this._renderHeader() : null
                         }
@@ -405,43 +278,6 @@ export default class SupervisionTotalScene extends BaseComponent {
                         />
 
                     </View>
-                    {this.state.noPay ?
-                        <View
-                            style={[styles.footerStyle, Platform.OS === 'android' ? {bottom: Pixel.getPixel(25)} : {}]}>
-                            <Text
-                                style={{
-                                    color: '#666666',
-                                    fontSize: 13,
-                                    marginHorizontal: Pixel.getPixel(10)
-                                }}>待付合计:</Text>
-                            <Text style={{color: '#FA5C48', fontSize: 18, flex: 1}}>{'￥' + this.payFee}</Text>
-                            <TouchableOpacity activeOpacity={0.8} style={{
-                                width: Pixel.getPixel(80),
-                                height: Pixel.getPixel(38),
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                backgroundColor: '#69dcda',
-                                borderRadius: 4,
-                                marginRight: Pixel.getPixel(10)
-                            }} onPress={() => {
-                                this.toNextPage({
-                                    name: 'CheckStand',
-                                    component: CheckStand,
-                                    params: {
-                                        payAmount: this.payFee.toFixed(2),
-                                        callBack: () => {
-                                            allSouce = [];
-                                            this.setState({renderPlaceholderOnly: 'loading'});
-                                            page = 1;
-                                            this.getData();
-                                        },
-                                    },
-                                })
-                            }}
-                            >
-                                <Text style={{color: 'white', fontSize: 18}}>支付</Text>
-                            </TouchableOpacity>
-                        </View> : null}
                 </View>
             );
         }
@@ -475,30 +311,28 @@ export default class SupervisionTotalScene extends BaseComponent {
         if(rowData.pay_status=='3'){
             payStatus={color: fontAndColor.COLORB1}
             statusText='已支付';
-        }else if(rowData.pay_status=='2'){
+        }else {
             payStatus={color: fontAndColor.COLORB3};
             statusText='处理中';
-        }else{
-            payStatus={color: fontAndColor.COLORB2};
-            statusText='未支付';
         }
         return (
             <TouchableOpacity activeOpacity={0.8}>
                 <View style={[styles.rowView, rowID == '0' ? {marginTop: 0} : {marginTop: Pixel.getPixel(10)}]}>
 
                     <View style={styles.orderNumStyle}>
-                        <Text style={{flex: 1, fontSize: 14}}>{'订单号:' + rowData.supervision_fee_order_number}</Text>
+                        <Text style={{flex: 1, fontSize: 14}}>{'订单号:' + 'adsfasdfsa'}</Text>
                         <Text style={[{
-                            color: fontAndColor.COLORB2,
+                            color: fontAndColor.COLORB1,
                             fontSize: 14
-                        }, payStatus]}>{statusText}</Text>
+                        },payStatus]}>{statusText}</Text>
                     </View>
                     <Text style={{
                         color: '#333333',
                         marginVertical: Pixel.getPixel(10),
                         fontSize: 14,
-                    }}>{rowData.order_title}</Text>
-                    <Text style={{color: '#9b9b9b', fontSize: 13}}>{'置换时间：' + rowData.regulation_time}</Text>
+                        fontWeight: 'bold'
+                    }}>阿迪塞福罗萨街坊邻居</Text>
+                    <Text style={{color: '#9b9b9b', fontSize: 13}}>{'置换时间：' + '2017-11-12 10：23'}</Text>
                 </View>
             </TouchableOpacity>
 
@@ -508,6 +342,7 @@ export default class SupervisionTotalScene extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
+
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
         backgroundColor: fontAndColor.COLORA3,

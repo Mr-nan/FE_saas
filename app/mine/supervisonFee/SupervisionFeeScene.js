@@ -21,6 +21,8 @@ import BaseComponent from '../../component/BaseComponent';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import SupervisionTabBar from './SupervisionTabBar';
 import SupervisionTotalScene from './SupervisionTotalScene';
+import SupervisionPayScene from './SupervisionPayScene';
+import SupervisionNoPayScene from './SupervisionNoPayScene';
 import NavigationView from '../../component/AllNavigationView';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
@@ -31,7 +33,6 @@ export default class SupervisionFeeScene extends BaseComponent {
         super(props);
         this.noPayNum = 0;
         this.payNum = 0;
-        show = true;
         this.state = {
             renderPlaceholderOnly: 'blank',
         };
@@ -44,8 +45,6 @@ export default class SupervisionFeeScene extends BaseComponent {
 
 
     getData = () => {
-        first = '';
-        last = '';
         let maps = {
             api: Urls.GET_CONTRACT_REMIND,
             opt_user_id: this.props.opt_user_id,
@@ -54,12 +53,6 @@ export default class SupervisionFeeScene extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     if (response.mjson.data != null) {
-                        if (response.mjson.data.wait_ctc_sign_num != null && response.mjson.data.wait_ctc_sign_num != '0') {
-                            last = '、(' + response.mjson.data.wait_ctc_sign_num + ')';
-                        }
-                        if (response.mjson.data.wait_sign_num != null && response.mjson.data.wait_sign_num != '0') {
-                            first = '、(' + response.mjson.data.wait_sign_num + ')';
-                        }
                     }
                     this.setState({renderPlaceholderOnly: 'success'});
                 },
@@ -67,13 +60,23 @@ export default class SupervisionFeeScene extends BaseComponent {
                     this.setState({renderPlaceholderOnly: 'success'});
                 });
     }
+    _showLoadingModal=()=>{
+        this.props.showModal(true);
+    }
+    _closeLoadingModal=()=>{
+        this.props.showModal(false);
+    }
 
+    showToast=(msg)=>{
+        this.props.showToast(msg);
+    }
 
     render() {
         // if (this.state.renderPlaceholderOnly != 'success') {
         //     return this._renderPlaceholderView();
         //
         // }
+
         return (
             <View style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}>
                 <ScrollableTabView
@@ -84,13 +87,19 @@ export default class SupervisionFeeScene extends BaseComponent {
                     renderTabBar={() =>
                         <SupervisionTabBar
                             noPayNum={this.noPayNum}
-                            tabName={["全部", "未支付", "已支付 （" + this.payNum+"）"]}/>}>
+                            tabName={["全部", "未支付", "已支付 （" + this.payNum + "）"]}/>}>
                     <SupervisionTotalScene tabLabel="total"
-                                           navigator={this.props.navigator} tabNum={'0'}/>
-                    <SupervisionTotalScene tabLabel="no-pay"
-                                           navigator={this.props.navigator} tabNum={'1'}/>
-                    <SupervisionTotalScene tabLabel="pay"
-                                           navigator={this.props.navigator} tabNum={'2'}/>
+                                           navigator={this.props.navigator} tabNum={'0'}
+                                           closeLoading={this._closeLoadingModal}
+                                           showToast={this.showToast}
+                                           showLoading={this._showLoadingModal}/>
+                    <SupervisionNoPayScene tabLabel="no-pay"
+                                           navigator={this.props.navigator} tabNum={'1'}
+                                           closeLoading={this._closeLoadingModal}
+                                           showToast={this.showToast}
+                                           showLoading={this._showLoadingModal}/>
+                    <SupervisionPayScene tabLabel="pay"
+                                         navigator={this.props.navigator} tabNum={'2'}/>
 
 
                 </ScrollableTabView>
