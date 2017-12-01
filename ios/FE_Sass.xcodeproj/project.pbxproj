@@ -1092,7 +1092,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 3BH2YRLSPK;
+						DevelopmentTeam = 8RXU2MG5MH;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -1676,7 +1676,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = 8RXU2MG5MH;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1710,7 +1710,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaa;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1727,7 +1727,7 @@
 				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = 8RXU2MG5MH;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1761,7 +1761,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaa;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1815,7 +1815,7 @@
 				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = 8RXU2MG5MH;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1849,7 +1849,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaa;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
