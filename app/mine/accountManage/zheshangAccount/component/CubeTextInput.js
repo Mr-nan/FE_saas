@@ -66,6 +66,7 @@ export default class CubeTextInput extends Component {
                         if(!this.refs.text_input.isFocused()){
                             this.refs.text_input.focus()
                         }
+                            this.refs.text_input.focus()
                     }}
                 >
                     <View

@@ -29,7 +29,8 @@ let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
 let Platform = require('Platform');
 
-let bank_no = ''
+let bank_no = '' // 支行编号
+let sub_bank_no = '' //总行编号
 let bank_card_no = ''
 let bank_name = ''
 let mobile_no = ''
@@ -207,7 +208,7 @@ export default class ModifyBankCard extends BaseComponent {
                     user_type: this.props.account.account_open_type,
                     sub_acct_no: this.props.account.bank_card_no,
                     bank_name: bank_name,
-
+                    sub_bank_no:sub_bank_no,
                 }
 
 
@@ -291,6 +292,7 @@ export default class ModifyBankCard extends BaseComponent {
                     this.setState({
                         bankName: response.mjson.data.info_list[0].subbankname,
                     })
+                    sub_bank_no=response.mjson.data.info_list[0].subbankno
                 }
 
                 console.log(response);
@@ -371,7 +373,8 @@ export default class ModifyBankCard extends BaseComponent {
     }
 
 
-    bankComeBack = (bank) => {
+    bankComeBack = (bank, sub_bank) => {
+        sub_bank_no:sub_bank.subbankno
         bank_no = bank.bankno;
         this.refs.bank_name.setInputTextValue(bank.bankname)
     }

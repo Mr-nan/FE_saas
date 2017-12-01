@@ -108,7 +108,7 @@ export default class ChooseBankNameScene extends BaseComponent {
                             this.props.showToast('请选择开户行名称');
                             return;
                         }
-                        this.props.callBack(selectedBank);
+                        this.props.callBack(selectedBank, selectedHeadBank);
                         this.backPage();
                     }}
                     leftImageCallBack={this.backPage}

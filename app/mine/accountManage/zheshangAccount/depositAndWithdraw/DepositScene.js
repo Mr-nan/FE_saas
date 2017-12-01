@@ -53,7 +53,7 @@ export default class DepositScene extends BaseComponent {
     constructor(props) {
         super(props)
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'loading',
             deposit_style: 0,   //0:快捷充值 1：其他充值
             sms_pad: false,
             money_input: '',
@@ -68,9 +68,6 @@ export default class DepositScene extends BaseComponent {
 
         this.loadInstruction();
 
-        this.setState({
-            renderPlaceholderOnly: false,
-        })
     }
 
 
@@ -87,11 +84,12 @@ export default class DepositScene extends BaseComponent {
                 //TODO
                 request(AppUrls.ZS_QUOTA, 'Post', maps)
                     .then((response) => {
-
                         this.setState({
+                            support_quick_deposit:response.mjson.data.limit_info.support_quick_deposit,
                             dayAmt: response.mjson.data.limit_info.dayAmt,
                             singleAmt: response.mjson.data.limit_info.singleAmt,
-                            total_amount: response.mjson.data.total_amount
+                            total_amount: response.mjson.data.total_amount,
+                            renderPlaceholderOnly:'success'
                         })
                     }, (error) => {
                         this.props.showToast(error.mjson.msg)
@@ -110,7 +108,7 @@ export default class DepositScene extends BaseComponent {
 
     render() {
 
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly != 'success') {
             return (
                 <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                     <NavigationBar
@@ -165,39 +163,54 @@ export default class DepositScene extends BaseComponent {
                     <View style={{backgroundColor: 'white', marginTop: 10}}>
 
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <TouchableOpacity
-                                style={this.state.deposit_style === 0 ? styles.deposit_container_selected : styles.deposit_container_deselected}
-                                onPress={() => {
-                                    this.setState({
-                                        deposit_style: 0
-                                    })
 
-                                }}
-                                activeOpacity={.8}
+                            {
 
-                            >
-                                <SText
-                                    style={this.state.deposit_style === 0 ? styles.deposit_title_selected : styles.deposit_title_deselected}>快捷充值</SText>
-                            </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={this.state.deposit_style === 0 ? styles.deposit_container_selected : styles.deposit_container_deselected}
+                                    onPress={() => {
+                                        this.setState({
+                                            deposit_style: 0
+                                        })
 
-                            <View style={{
-                                width: .5,
-                                height: 30,
-                                marginRight: -0.5,
-                                backgroundColor: FontAndColor.COLORA4
-                            }}/>
-                            <TouchableOpacity
-                                style={this.state.deposit_style === 1 ? styles.deposit_container_selected : styles.deposit_container_deselected}
-                                onPress={() => {
-                                    this.setState({
-                                        deposit_style: 1
-                                    })
-                                }}
-                                activeOpacity={.8}
-                            >
-                                <SText
-                                    style={this.state.deposit_style === 1 ? styles.deposit_title_selected : styles.deposit_title_deselected}>其他充值</SText>
-                            </TouchableOpacity>
+                                    }}
+                                    activeOpacity={.8}
+
+                                >
+                                    <SText
+                                        style={this.state.deposit_style === 0 ? styles.deposit_title_selected : styles.deposit_title_deselected}>快捷充值</SText>
+                                </TouchableOpacity>
+
+
+                            }
+
+                            {
+
+                                <View style={{
+                                    width: .5,
+                                    height: 30,
+                                    marginRight: -0.5,
+                                    backgroundColor: FontAndColor.COLORA4
+                                }}/>
+
+
+                            }
+                            {
+                                <TouchableOpacity
+                                    style={this.state.deposit_style === 1 ? styles.deposit_container_selected : styles.deposit_container_deselected}
+                                    onPress={() => {
+                                        this.setState({
+                                            deposit_style: 1
+                                        })
+                                    }}
+                                    activeOpacity={.8}
+                                >
+                                    <SText
+                                        style={this.state.deposit_style === 1 ? styles.deposit_title_selected : styles.deposit_title_deselected}>其他充值</SText>
+                                </TouchableOpacity>
+
+                            }
+
                         </View>
 
                         {
@@ -237,11 +250,6 @@ export default class DepositScene extends BaseComponent {
                                                 style={{color: FontAndColor.COLORA1}}>{this.props.account.bank_name}现金余额:</SText>
                                             <SText>{this.state.total_amount}元</SText>
                                         </View>
-                                        {/*/!*<View style={{flexDirection: 'row'}}>*!/  //充值页面可用余额取消*/}
-                                        {/*<SText*/}
-                                        {/*style={{color: FontAndColor.COLORA1}}>可用余额:</SText>*/}
-                                        {/*<SText>{this.props.account.balance}元</SText>*/}
-                                        {/*</View>*/}
 
                                     </View>
                                 </View>
