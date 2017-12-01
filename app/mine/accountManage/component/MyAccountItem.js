@@ -70,6 +70,7 @@ export default class MyAccountItem extends BaseComponent {
                             this.props.callBack();
                         }
                     };
+                    this.toNextPage(this.navigatorParams);
                     break;
                 case 1:
                     this.navigatorParams.name = 'BindCardScene';
@@ -79,6 +80,7 @@ export default class MyAccountItem extends BaseComponent {
                             this.props.callBack();
                         }
                     };
+                    this.toNextPage(this.navigatorParams);
                     break;
                 case 2:
                     this.navigatorParams.name = 'WaitActivationAccountScene';
@@ -88,6 +90,7 @@ export default class MyAccountItem extends BaseComponent {
                             this.props.callBack();
                         }
                     };
+                    this.toNextPage(this.navigatorParams);
                     break;
                 default:
                     this.navigatorParams.name = 'AccountScene';
@@ -97,6 +100,7 @@ export default class MyAccountItem extends BaseComponent {
                             this.props.callBack();
                         }
                     };
+                    this.toNextPage(this.navigatorParams);
                     break;
             }
 
@@ -121,9 +125,7 @@ export default class MyAccountItem extends BaseComponent {
                     //         this.props.callBack();
                     //     }
                     // };
-
-                    this.props.showToast('您的资料已经提交，请耐心等待')
-
+                    this.props.showToast('您的资料已经提交，请耐心等待');
                     break;
                 default:  //已开户
                     this.navigatorParams.name = 'ZheShangAccountScene';
@@ -153,7 +155,6 @@ export default class MyAccountItem extends BaseComponent {
                         .then((response) => {
                             this.props.showModal(false);
                             this.pageDispense(type, response.mjson.data.account.status);
-                            this.toNextPage(this.navigatorParams);
                         }, (error) => {
                             this.props.showModal(false);
                             this.props.showToast('用户信息查询失败');
