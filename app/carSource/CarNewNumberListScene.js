@@ -32,6 +32,7 @@ import * as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 import StockManagementScene from "./carPublish/StockManagementScene";
 import  AllLoading from '../component/AllLoading';
+import NewCarPublishFirstScene from "./carPublish/NewCarPublishFirstScene";
 
 const Pixel = new PixelUtil();
 const ScreenWidth = Dimensions.get('window').width;
@@ -85,7 +86,7 @@ export default class CarNewNumberListScene extends BaseComponent {
                             ref={(modal) => {this.allloading = modal}}
                             canColse='false'
                             callBack={()=>{this.carSoldOut(1);}}/>
-                <SelectCarSourceView ref={(ref)=>{this.SelectCarSourceView = ref}} selectCarAction={this.selectAction}/>
+                <SelectCarSourceView ref={(ref)=>{this.SelectCarSourceView = ref}} selectCarAction={this.selectAction} pushNewCarAction = {this.pushNewCarAction}/>
             </View>
         )
     }
@@ -168,6 +169,17 @@ export default class CarNewNumberListScene extends BaseComponent {
             params: {
                 carData:carData,
                 refreshingData:this.loadHeadData,
+
+            }
+        };
+        this.props.toNextPage(navigatorParams);
+    }
+
+    pushNewCarAction=()=>{
+        let navigatorParams = {
+            name: "NewCarPublishFirstScene",
+            component: NewCarPublishFirstScene,
+            params: {
 
             }
         };
@@ -808,10 +820,13 @@ class  SelectCarSourceView extends BaseComponent {
                                   onPress={()=>{this.setVisible(false)}}>
                     {
                         this.state.renderPlaceholderOnly !== 'success'?(
+
                             <View style={{backgroundColor:'white',flex:1,
                                 alignItems:'center',justifyContent:'center',width:ScreenWidth,
                             }}>
-                                {this.loadView()}
+                                {
+                                    this.state.renderPlaceholderOnly == 'null'?(this.nullDataView()):(this.loadView())
+                                }
                             </View >):(
                                 <View style={{width:ScreenWidth,backgroundColor:'white'}}>
                                 <ListView
@@ -843,6 +858,40 @@ class  SelectCarSourceView extends BaseComponent {
                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{rowData.model_name+'  '+rowData.car_color.split("|")[0]}</Text>
             </View>
             </TouchableOpacity>
+        )
+    }
+
+    nullDataView=()=>{
+        return(
+            <View style={{flex: 1, alignItems: 'center',justifyContent:'center'}}>
+                <Image
+                    style={{
+                        width: Pixel.getPixel(121),
+                        height: Pixel.getPixel(163),
+                    }}
+                    source={require('../../images/noData.png')}/>
+                <Text allowFontScaling={false}
+                      style={{
+                          color: fontAndColor.COLORA0, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                          marginTop: Pixel.getPixel(27)
+                      }}>
+                    暂无数据
+                </Text>
+                <TouchableOpacity onPress={()=>{
+                    this.setVisible(false);
+                    this.props.pushNewCarAction();
+                }} activeOpacity={1} style={{justifyContent:'center',alignItems: 'center',
+                    backgroundColor: fontAndColor.COLORB0,marginTop:Pixel.getPixel(20),paddingHorizontal:Pixel.getPixel(60),paddingVertical:Pixel.getPixel(10)}}>
+                    <Text allowFontScaling={false}  style={{color: '#fff',fontSize:
+                        Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>发布新车源</Text>
+                </TouchableOpacity>
+                <Text allowFontScaling={false}
+                      style={{
+                          color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                          marginTop: Pixel.getPixel(10)
+                      }}>
+                </Text>
+            </View>
         )
     }
 }

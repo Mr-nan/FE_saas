@@ -79,7 +79,7 @@ const APIParameter = {
     rows: 10,
     page: 1,
     start: 0,
-    type: 5,
+    type: 1,
     status: 1,
     no_cache:1,
 
