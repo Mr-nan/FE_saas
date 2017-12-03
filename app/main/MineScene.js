@@ -721,7 +721,7 @@ export default class MineScene extends BaseComponent {
                             let datas = JSON.parse(data.result);
                             GetPermission.getMineList((mineList) => {
                                 for (let i = 0; i < mineList.length; i++) {
-                                    if (mineList[i].id == 15) {
+                                    if (mineList[i].id == 47) {
                                         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
                                             if (datac.code == 1) {
                                                 let datasc = JSON.parse(datac.result);
