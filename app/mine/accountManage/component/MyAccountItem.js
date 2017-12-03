@@ -70,7 +70,6 @@ export default class MyAccountItem extends BaseComponent {
                             this.props.callBack();
                         }
                     };
-                    this.toNextPage(this.navigatorParams);
                     break;
                 case 1:
                     this.navigatorParams.name = 'BindCardScene';
@@ -80,7 +79,6 @@ export default class MyAccountItem extends BaseComponent {
                             this.props.callBack();
                         }
                     };
-                    this.toNextPage(this.navigatorParams);
                     break;
                 case 2:
                     this.navigatorParams.name = 'WaitActivationAccountScene';
@@ -90,7 +88,6 @@ export default class MyAccountItem extends BaseComponent {
                             this.props.callBack();
                         }
                     };
-                    this.toNextPage(this.navigatorParams);
                     break;
                 default:
                     this.navigatorParams.name = 'AccountScene';
@@ -100,10 +97,8 @@ export default class MyAccountItem extends BaseComponent {
                             this.props.callBack();
                         }
                     };
-                    this.toNextPage(this.navigatorParams);
                     break;
             }
-
             this.toNextPage(this.navigatorParams);
         } else {
             switch (state) {
