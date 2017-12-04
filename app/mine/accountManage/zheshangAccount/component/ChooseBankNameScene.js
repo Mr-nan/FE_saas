@@ -62,11 +62,15 @@ export default class ChooseBankNameScene extends BaseComponent {
     }
 
     componentWillUnmount() {
+
+        console.log('componentWillUnmount')
         selectedBank = {}
         selectedCity = {}
+        selectedHeadBank = {}
         page = 0;
         totalPage = 1
         banks = []
+
     }
 
 
@@ -115,31 +119,31 @@ export default class ChooseBankNameScene extends BaseComponent {
                 />
 
                 {
-                    this.props.bank_card_no == ''?
-                    <View style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        marginTop: 15,
-                        paddingHorizontal: 15,
-                        backgroundColor: 'white'
-                    }}>
-                        <TextInput
-                            ref='bank_name'
-                            style={{flex: 1, height: 45}}
-                            placeholder={'请输入开户行名称'}
-                            underlineColorAndroid={"#00000000"}
-                            value={this.state.headValue}
-                            onChangeText={(t) => {
-                                console.log(t)
-                                this.refreshing(t)
-                                this.setState({
-                                    headValue: t,
-                                })
+                    this.props.bank_card_no == '' ?
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginTop: 15,
+                            paddingHorizontal: 15,
+                            backgroundColor: 'white'
+                        }}>
+                            <TextInput
+                                ref='sub_bank_name'
+                                style={{flex: 1, height: 45}}
+                                placeholder={'请输入开户行名称'}
+                                underlineColorAndroid={"#00000000"}
+                                value={this.state.headValue}
+                                onChangeText={(t) => {
+                                    console.log(t)
+                                    this.refreshing(t)
+                                    this.setState({
+                                        headValue: t,
+                                    })
 
-                            }}
-                        />
-                    </View>
-                        :null
+                                }}
+                            />
+                        </View>
+                        : null
 
                 }
 
@@ -147,9 +151,9 @@ export default class ChooseBankNameScene extends BaseComponent {
                     activeOpacity={.9}
                     onPress={() => {
 
-                        if((this.props.bank_card_no == '')&&(selectedHeadBank.subbankname == ''||typeof (selectedHeadBank.subbankname) == 'undefined')){
+                        if ((this.props.bank_card_no == '') && (selectedHeadBank.subbankname == '' || typeof (selectedHeadBank.subbankname) == 'undefined')) {
                             this.props.showToast('请输入开户行名称');
-                        }else {
+                        } else {
                             this.toNextPage({
 
                                 component: ProvinceListScene,
@@ -216,14 +220,14 @@ export default class ChooseBankNameScene extends BaseComponent {
     // p:page
     loadHeadBank = (t, p) => {
 
-        if(!this.isChinese(t)){
+        if (!this.isChinese(t)) {
             this.setState({
                 isRefreshing: false,
             })
-           return;
+            return;
         }
 
-        if(t == old_t&& p == old_p){
+        if (t == old_t && p == old_p) {
             this.setState({
                 isRefreshing: false,
             })
@@ -261,7 +265,7 @@ export default class ChooseBankNameScene extends BaseComponent {
     isChinese = (t) => {
 
 
-        if (t == ''|| typeof (t) == 'undefined') {
+        if (t == '' || typeof (t) == 'undefined') {
             return
         }
 
@@ -296,15 +300,29 @@ export default class ChooseBankNameScene extends BaseComponent {
     }
 
     renderFooter = () => {
-        if (banks.length <= 0) {
-            return
-        }
-        ;
-        console.log('page == ' + page)
-        console.log('totalPage == ' + totalPage)
+
+
+        let sub_bank_name = this.state.value
+
 
         return <View style={{height: 40, justifyContent: 'center', alignItems: 'center'}}>
-            <SText>{page >= totalPage ? '已全部加载' : '加载更多...'}</SText>
+            {
+                banks.length > 0 ?
+                    <SText>{page >= totalPage ? '已全部加载' : '加载更多...'}</SText>
+                    :
+
+                    this.props.bank_card_no == ''?
+
+                        !(!this.state.value && !this.state.headValue) ?
+                            <SText>暂无数据</SText>
+                            : null
+
+                        : selectedCity.city_name ?
+                        <SText>暂无数据</SText>
+                        : null
+
+            }
+
         </View>
 
 
@@ -315,12 +333,12 @@ export default class ChooseBankNameScene extends BaseComponent {
             onPress={() => {
                 if (this.props.bank_card_no == '') {
 
-                    if(!data.bankname){
+                    if (!data.bankname) {
                         selectedHeadBank = data;
                         this.setState({
                             headValue: data.subbankname,
                         })
-                    }else {
+                    } else {
                         selectedBank = data;
                         this.setState({
                             value: data.bankname,
@@ -344,23 +362,23 @@ export default class ChooseBankNameScene extends BaseComponent {
     checkedCityClick = (city) => {
         selectedCity = city;
 
-        if(this.props.bank_card_no == ''){
+        if (this.props.bank_card_no == '') {
             banks = []
             this.loadChildBank(1)
-        }else {
-          this.refreshing()
+        } else {
+            this.refreshing()
 
         }
     }
 
 
-    loadChildBank = (p)=>{
+    loadChildBank = (p) => {
 
         request(AppUrls.ZS_SUB_BANK, 'post', {
-            page:p,
-            rows:20,
-            subbankNo:selectedHeadBank.subbankno,
-            cityCode:selectedCity.city_id
+            page: p,
+            rows: 20,
+            subbankNo: selectedHeadBank.subbankno,
+            cityCode: selectedCity.city_id
 
         }).then((response) => {
 
@@ -419,11 +437,11 @@ export default class ChooseBankNameScene extends BaseComponent {
             this.loadHeadBank(this.state.headValue, page)
         } else {
 
-            if(this.props.bank_card_no ==''){
+            if (this.props.bank_card_no == '') {
                 this.loadChildBank(page)
-            }else {
+            } else {
 
-            this.loadBanks(selectedCity.city_id, page)
+                this.loadBanks(selectedCity.city_id, page)
             }
 
         }

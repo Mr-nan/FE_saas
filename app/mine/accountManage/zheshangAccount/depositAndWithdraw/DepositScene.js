@@ -108,8 +108,8 @@ export default class DepositScene extends BaseComponent {
                         }
 
                         this.setState({
-                            dayAmt: response.mjson.data.limit_info.dayAmt,
-                            singleAmt: response.mjson.data.limit_info.singleAmt,
+                            dayAmt: this.parse(response.mjson.data.limit_info.dayAmt),
+                            singleAmt:this.parse(response.mjson.data.limit_info.singleAmt),
                             total_amount: response.mjson.data.total_amount,
                             renderPlaceholderOnly: 'success'
                         })
@@ -129,6 +129,17 @@ export default class DepositScene extends BaseComponent {
         })
     }
 
+
+    parse = (t)=>{
+
+        let n = parseInt(t)
+        if (n>10000){
+         return n/10000 + '万元'
+        }else {
+           return  n + '元'
+        }
+
+    }
 
     render() {
 
@@ -181,7 +192,7 @@ export default class DepositScene extends BaseComponent {
                                 marginBottom: 10
                             }}>{this.props.account.bank_name}账户 {this.props.account.bind_bank_card_name}</SText>
                             <SText
-                                style={{color: FontAndColor.COLORA1}}>{'快捷入金充值限额' + this.state.singleAmt + '/笔 ' + this.state.dayAmt + '/日'}</SText>
+                                style={{color: FontAndColor.COLORA1}}>{'快捷充值限额' + this.state.singleAmt + '/笔 ' + this.state.dayAmt + '/日'}</SText>
                         </View>
                     </View>
 

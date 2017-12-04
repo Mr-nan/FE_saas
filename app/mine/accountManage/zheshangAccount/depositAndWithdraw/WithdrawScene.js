@@ -179,10 +179,6 @@ export default class WithdrawScene extends BaseComponent {
                                         style={{color: FontAndColor.COLORB4, fontSize: 16, textAlign: 'right', flex: 1}}
                                         onPress={() => {
 
-                                            if (parseFloat(this.state.allow_withdraw_amount) === 0) {
-                                                this.props.showToast('暂无余额可提');
-                                                return;
-                                            }
                                             this.setState({
                                                 money_input: this.state.allow_withdraw_amount,
                                             })
@@ -208,7 +204,7 @@ export default class WithdrawScene extends BaseComponent {
                         mOnPress={() => {
 
                             if (parseFloat(this.state.allow_withdraw_amount) < parseFloat(this.state.money_input)) {
-                                this.props.showToast('余额不足');
+                                this.props.showToast('可提余额不足');
                                 return;
                             }
                             let money = parseFloat(this.state.money_input)

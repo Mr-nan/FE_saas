@@ -395,7 +395,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                         return '提现成功'
                     }
                     case 2: {
-                        return '充值失败'
+                        return '提现失败'
                     }
 
                 }
@@ -404,7 +404,7 @@ export default class ResultIndicativeScene extends BaseComponent {
             case 4: {
                 switch (this.state.status) {
                     case 0: {
-                        return '处理中'
+                        return '处理中...'
                     }
                     case 1: {
                         return '恭喜您更换成功'
@@ -419,7 +419,7 @@ export default class ResultIndicativeScene extends BaseComponent {
             case 5: {
                 switch (this.state.status) {
                     case 0: {
-                        return '处理中'
+                        return '处理中...'
                     }
                     case 1: {
                         return '手机号码修改成功'

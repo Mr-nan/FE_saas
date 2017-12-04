@@ -9,7 +9,9 @@ import {
     TouchableOpacity,
     TextInput,
     InteractionManager,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    KeyboardAvoidingView,
+    ScrollView
 } from "react-native";
 import BaseComponent from "../../../../component/BaseComponent";
 import NavigationBar from "../../../../component/NavigationBar";
@@ -73,6 +75,8 @@ export default class ModifyBankCard extends BaseComponent {
         }
 
         return (
+
+
             <TouchableWithoutFeedback
                 onPress={() => {
                     this.dismissKeyboard()
@@ -90,6 +94,14 @@ export default class ModifyBankCard extends BaseComponent {
                         }}
                         centerTextStyle={{paddingLeft: 0, paddingRight: 0}}
                     />
+
+                    <ScrollView>
+
+
+                    <KeyboardAvoidingView  keyboardVerticalOffset={5}>
+
+
+
                     <View style={{width: width, marginTop: 15,}}>
 
                         <TextInputItem
@@ -167,6 +179,8 @@ export default class ModifyBankCard extends BaseComponent {
                             separator={false}
                         />
                     </View>
+                    </KeyboardAvoidingView>
+                    </ScrollView>
                     <MyButton buttonType={MyButton.TEXTBUTTON}
                               content={'更换银行卡'}
                               parentStyle={styles.buttonStyle}

@@ -50,8 +50,8 @@ export default class CardPhoneSmsScene extends BaseComponent {
     constructor(props) {
         super(props);
 
-        type = parseInt(props.account.user_type)
-
+       type = parseInt(props.account.user_type)
+        //type = 2;
         this.state = {
             renderPlaceholderOnly: true,
             loading_bank:false,
@@ -167,12 +167,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
 
                         <TouchableWithoutFeedback
                             onPress={()=>{
-
-                                this.toNextPage({
-                                    component:WebScene,
-                                    name:'WebScene',
-                                    params:{webUrl:'https://www.baidu.com/', title:'协议'}
-                                })
+                                this.getTrustContract()
                             }}
                         >
                             <View
@@ -190,6 +185,33 @@ export default class CardPhoneSmsScene extends BaseComponent {
             </TouchableWithoutFeedback>
         );
     }
+
+
+    getTrustContract = () => {
+        this.props.showModal(true);
+        let maps = {
+            source_type: '4',
+            fund_channel: '浙商'
+        };
+        request(AppUrls.AGREEMENT_LISTS, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+
+                // this.contractList = response.mjson.data.list;
+                // this.refs.openAccount.changeStateWithData(true, this.contractList);
+
+                this.toNextPage({
+                    component:WebScene,
+                    name:'WebScene',
+                    params:{webUrl:response.mjson.data.list[0].url, title:'协议'}
+                })
+
+
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+            });
+    };
 
 
     bankComeBack = (bank, sub_bank)=>{
