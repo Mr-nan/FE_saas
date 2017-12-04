@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -146,10 +146,10 @@ export const CAR_GET_RESIDUALS = BASEURL + V + 'che/residuals';
  */
 export const CAR_ORDER_SAVE = BASEURL + V + 'order/save';
 
-// /**
-//  * 获取客服电话号码
-//  */
-// export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
+/**
+ * 获取客服电话号码
+ */
+export const GET_CUSTOM_SERVICE = BASEURL + V + '/index/getCustomService';
 
 /**
  * 获取客服电话号码-商户号码
@@ -204,62 +204,62 @@ export const CAR_SASS_PUBLISH = BASEURL + 'cheshang/sass/publish';
 /**
  * 创建收车管理列表
  */
-export const CAR_SASS_SELECT_LIST= BASEURL + 'cheshang/sass/selectList';
+export const CAR_SASS_SELECT_LIST = BASEURL + 'cheshang/sass/selectList';
 
 /**
  * 收车任务详情
  */
-export const CAR_SASS_SELECT_MSG= BASEURL + 'cheshang/sass/selectMsg';
+export const CAR_SASS_SELECT_MSG = BASEURL + 'cheshang/sass/selectMsg';
 
 /**
  * 整备车辆任务列表
  */
-export const CAR_CHESHANG_TASKS= BASEURL + 'cheshang/sass/tasks';
+export const CAR_CHESHANG_TASKS = BASEURL + 'cheshang/sass/tasks';
 
 /**
  * 创建整备任务
  */
-export const CAR_CHESHANG_PUBLISHTASK= BASEURL + 'cheshang/sass/publishTask';
+export const CAR_CHESHANG_PUBLISHTASK = BASEURL + 'cheshang/sass/publishTask';
 
 /**
  * saas-发布车辆
  */
-export const CAR_CHESHANG_PUBLISHCAR= BASEURL + 'cheshang/sass/publishCar';
+export const CAR_CHESHANG_PUBLISHCAR = BASEURL + 'cheshang/sass/publishCar';
 
 /**
  * 查看整备任务
  */
-export const CAR_CHESHANG_TASKINFO= BASEURL + 'cheshang/sass/taskInfo';
+export const CAR_CHESHANG_TASKINFO = BASEURL + 'cheshang/sass/taskInfo';
 
 /**
  * 整备任务 - 评估师提交任务
  */
-export const CAR_CHESHANG_PGS_EDIT_TASK= BASEURL + 'cheshang/sass/pgsEditTask';
+export const CAR_CHESHANG_PGS_EDIT_TASK = BASEURL + 'cheshang/sass/pgsEditTask';
 
 /**
  * 整备任务 - 整备员提交任务
  */
-export const CAR_CHESHANG_ZBY_EDIT_TASK= BASEURL + 'cheshang/sass/zbyEditTask';
+export const CAR_CHESHANG_ZBY_EDIT_TASK = BASEURL + 'cheshang/sass/zbyEditTask';
 
 /**
  * 整备任务 - 经理提交任务
  */
-export const CAR_CHESHANG_MANAGER_EDIT_TASK= BASEURL + 'cheshang/sass/managerEditTask';
+export const CAR_CHESHANG_MANAGER_EDIT_TASK = BASEURL + 'cheshang/sass/managerEditTask';
 
 /**
  * 整备任务 - 运营专员交任务
  */
-export const CAR_CHESHANG_YYZY_EDIT_TASK= BASEURL + 'cheshang/sass/updateTaskByyyzy';
+export const CAR_CHESHANG_YYZY_EDIT_TASK = BASEURL + 'cheshang/sass/updateTaskByyyzy';
 
 /**
  * 获取销售员
  */
-export const CAR_CHESHANG_GET_ALLCHILD= BASEURL + 'cheshang/sass_php/subAccountGetAllChild';
+export const CAR_CHESHANG_GET_ALLCHILD = BASEURL + 'cheshang/sass_php/subAccountGetAllChild';
 
 /**
  * 分享成功回调
  */
-export const CAR_CHESHANG_SHARE_MOMENT_COUNT= BASEURL + 'cheshang/sass/shareMomentCount';
+export const CAR_CHESHANG_SHARE_MOMENT_COUNT = BASEURL + 'cheshang/sass/shareMomentCount';
 
 /**
  * 获取登记人信息
@@ -978,6 +978,7 @@ export const LOGIN = BASEURL + V + "auth/login";// auth/login
  */
 export const REGISTER = BASEURL + V + "auth/register";//  auth/register
 
+
 /**
  * 设置密码
  *
@@ -1227,8 +1228,6 @@ export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySear
  *   商户是否在(浙商)白名单中查询
  */
 export const IS_IN_WHITE_LIST = BASEURL + "v1/account.cz_bank/isInWhiteList";
-
-
 /**
  *    from @dingnyonggang
  *
@@ -1284,7 +1283,6 @@ export const ZS_WITHDRAW = BASEURL + "v1/account.cz_bank/withdraw";
  *  浙商账户流水
  */
 export const ZS_WORTER_FLOW = BASEURL + "v2/user.account/payLog";
-
 /**
  *  from @dingnyonggang
  *
@@ -1342,3 +1340,36 @@ export const OPEN_PERSON_TRUST_ACCOUNT = BASEURL + "v1/account.zsyxt/openPersonA
  *   微众借据详情API(信托开户)
  */
 export const AGREEMENT_LISTS = BASEURL + "v1/contract/agreementLists";
+/**
+ * 获取功能认证信息
+ */
+export const USER_IDENTITY_GET_INFO = BASEURL + V + "user.identity/getInfo";
+/**
+ * 添加个人认证申请
+ */
+export const PERSONCERTIFICATE = BASEURL + V + "user.identity/applyAuthUserInfo";//添加个人认证申请
+/**
+ *
+ * 添加企业认证申请
+ */
+export const ENTERPRISECERTIFICATE = BASEURL + V + "user.identity/applyEnterpriseInfo";//添加企业认证申请
+/**
+ *
+ * 注册(新)
+ */
+export const ZHUCE = BASEURL +  "v2/auth/register";//注册(新)
+/**
+ *
+ * 通过用户base_id,企业base_id 查看审核状态
+ */
+export const GETCHECKSTATUS = BASEURL + V + "user.identity/getCheckStatus";//通过用户base_id,企业base_id 查看审核状态
+/**
+ *
+ * 重新申请个人认证获取用户信息
+ */
+export const GETAPPLYAUTHUSERINFO = BASEURL + V + "user.identity/getApplyAuthUserInfo";//重新申请个人认证获取用户信息
+/**
+ *
+ * 重新申请企业认证获取企业信息
+ */
+export const GETAPPLYENTERPRISEINFO = BASEURL + V + "user.identity/getApplyEnterpriseInfo";//重新申请企业认证获取企业信息
