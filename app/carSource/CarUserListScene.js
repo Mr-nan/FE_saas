@@ -113,6 +113,7 @@ export  default  class CarUserListScene extends BaseComponent {
             dataSource: carSource,
             isHide: true,
             isFillData: 1,
+            isHideHeader:false,
             sequencingType: {
                 title: '',
                 value: '',
@@ -384,21 +385,6 @@ export  default  class CarUserListScene extends BaseComponent {
 
 
     presCarTypeScene = () => {
-
-        // let navigatorParams = {
-        //     name: "CarBrandSelectScene",
-        //     component: CarBrandSelectScene,
-        //     params: {
-        //         checkedCarType: this.state.checkedCarType,
-        //         checkedCarClick: this.checkedCarClick,
-        //         status: 1,
-        //         isHeadInteraction: true,
-        //         unlimitedAction:this.carTypeClick,
-        //         // isCheckedCarModel:true,
-        //
-        //     }
-        // };
-        // this.props.callBack(navigatorParams);
 
         let navigatorParams = {
             name: "CarSeekScene",
@@ -939,6 +925,7 @@ export  default  class CarUserListScene extends BaseComponent {
                                          checkRecommendClick={this.checkRecommendClick}
                                          isCheckRecommend = {isUserCarCheckRecommend}
                                          titleArray={['车型','车龄','里程']}/>
+
                 {
 
                     (this.state.checkedCarKMType.title || this.state.checkedCarAgeType.title || this.state.checkedCarType.title || this.state.sequencingType.title || this.state.checkedCity.title || this.state.checkedCarGenre.title || this.state.checkedCarPrice.title || this.state.checkedCarDischarge.title || this.state.checkedCarColor.title || this.state.checkedCarNature.title) ?

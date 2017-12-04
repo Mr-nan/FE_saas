@@ -52,8 +52,8 @@ export default class SuccessModal extends Component{
                         <Text allowFontScaling={false}  style={styles.fontMain}>发布成功</Text>
                         <Text allowFontScaling={false}  style={styles.fontHint}>可进入首页"车源管理"模块</Text>
                         <Text allowFontScaling={false}  style={styles.fontHint}>查看已发车辆</Text>
-                        <View style={styles.fillSpace}/>
                         <TouchableOpacity
+                            style={{marginTop:Pixel.getPixel(20)}}
                             activeOpacity={0.2}
                             onPress={()=>{this._okClick()}}>
                             <View style={styles.okBtn}>
