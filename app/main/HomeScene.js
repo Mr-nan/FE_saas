@@ -149,7 +149,7 @@ export default class HomeScene extends BaseComponet {
                 }
 
                 <HomeAdvertisementButton click={()=>{
-                    this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);
+                    {/*this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);*/}
                 }}/>
 
             </View>
