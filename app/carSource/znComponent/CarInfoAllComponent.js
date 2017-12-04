@@ -134,6 +134,8 @@ export class CarConfigurationView extends BaseComponent{
       }
 
       setData=(array)=>{
+
+          console.log('==========================array',array);
           var dataBlob = {}, sectionIDs = [], rowIDs = [], rows = [];
 
           for (var i = 0; i < array.length; i++) {

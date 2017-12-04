@@ -26,6 +26,7 @@ export default class root extends Component {
     render() {
         return (
             <View style={{flex:1,backgroundColor:fontAndColor.COLORA3}}>
+                <StatusBar barStyle="light-content"/>
                 <MyNavigator showToast={(content)=>{
                     this.showToast(content)
                 }} showModal={(value)=>{this.showModal(value)}}/>

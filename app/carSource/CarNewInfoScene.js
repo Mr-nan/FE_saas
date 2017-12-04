@@ -234,6 +234,7 @@ export default class CarNewInfoScene extends BaseComponent {
                     newArray.push(array[i]);
                 }
                 let newData = [{title:carConfigurationData[0].title,data:newArray}];
+                console.log('======================>',newData);
                 this.setState({
                     carConfigurationBriefData:newData
                 });
@@ -345,13 +346,16 @@ export default class CarNewInfoScene extends BaseComponent {
                             {
                                 carData.infoData.map((data,index)=>{
                                     return(
-                                        <View style={{borderTopColor:fontAndColor.COLORA3,borderTopWidth:Pixel.getPixel(1),height:Pixel.getPixel(40),
-                                            width:ScreenWidth - Pixel.getPixel(30),flexDirection:'row',justifyContent:'space-between',
-                                            alignItems:'center'
-                                        }} key={index}>
-                                            <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{data.title}</Text>
-                                            <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{data.value}</Text>
-                                        </View>
+
+                                            data.value?(<View style={{borderTopColor:fontAndColor.COLORA3,borderTopWidth:Pixel.getPixel(1),height:Pixel.getPixel(40),
+                                                width:ScreenWidth - Pixel.getPixel(30),flexDirection:'row',justifyContent:'space-between',
+                                                alignItems:'center'
+                                            }} key={index}>
+                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{data.title}</Text>
+                                                <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{data.value}</Text>
+                                            </View>):(null)
+
+
                                     )
                                 })
                             }
@@ -364,23 +368,23 @@ export default class CarNewInfoScene extends BaseComponent {
                                 <CarConfigurationView carConfigurationData={this.state.carConfigurationBriefData}
                                                       modelID ={carData.modelID}/>
                             )
-                        }
-                        {
-                            this.state.carDetailData.length>0 && (
-                                <View style={{marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
-                                    <View style={{paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white'}}>
-                                        <TitleView title={'相关推荐'} footTitle={'更多'} clickAction={this.pushCarMoreScene}/>
-                                    </View>
-                                    {
-                                        this.state.carDetailData.map((data,index)=>{
-                                            return(
-                                                <CarCell style={styles.carCell} carCellData={data} isNewCar={true} onPress={()=> this.carCellOnPres(data.id)} key={index}/>
-                                            )
-                                        })
-                                    }
+                        }{
+                        this.state.carDetailData.length>0 && (
+                            <View style={{marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
+                                <View style={{paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white'}}>
+                                    <TitleView title={'相关推荐'} footTitle={'更多'} clickAction={this.pushCarMoreScene}/>
                                 </View>
-                            )
-                        }
+                                {
+                                    this.state.carDetailData.map((data,index)=>{
+                                        return(
+                                            <CarCell style={styles.carCell} carCellData={data} isNewCar={true} onPress={()=> this.carCellOnPres(data.id)} key={index}/>
+                                        )
+                                    })
+                                }
+                            </View>
+                        )
+                    }
+
                     </View>
                 </ScrollView>
                 <View style={styles.footView}>

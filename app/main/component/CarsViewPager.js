@@ -109,19 +109,20 @@ export default class CarsViewPager extends Component {
             return (
                 <TouchableOpacity onPress={()=>{
                     this.props.toNext?this.props.toNext(data.id):'';
-                }} activeOpacity={0.5} style={{width:width}}>
+                }} activeOpacity={0.5} style={{width:width,paddingLeft:Pixel.getPixel(10)}}>
                     <View
-                        style={{flexDirection:'row',alignItems:'center',paddingLeft:Pixel.getPixel(10)}}>
+                        style={{flexDirection:'row',alignItems:'center',height:Pixel.getPixel(100)}}>
                         <Image style={styles.postPosition}
                                source={{uri: data.img+'?x-oss-process=image/resize,w_'+450+',h_'+270}}/>
                         <View
-                            style={{height:Pixel.getPixel(100),flexDirection:'column',justifyContent:'center',marginLeft:Pixel.getPixel(10),marginRight:Pixel.getPixel(130)}}>
+                            style={{height:Pixel.getPixel(80),justifyContent:'space-between',marginLeft:Pixel.getPixel(10)}}>
                             <Text
-                                style={{fontSize:Pixel.getFontPixel(14),color:'#000000'}}>[{data.city_name}]{data.model_name}</Text>
+                                style={{fontSize:Pixel.getFontPixel(14),color:'#000000',marginBottom:Pixel.getPixel(5),marginRight:Pixel.getPixel(130)}} >[{data.city_name}]{data.model_name}</Text>
                             {this.props.type == '6' ?
-                                <Text style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>{data.stock}辆在售</Text> :
+                                <View />:
                                 <Text
-                                    style={{fontSize:Pixel.getFontPixel(12),color:'#999999'}}>{stringTransform.dateReversal(data.manufacture + "000")}/{data.mileage}万公里</Text>}
+                                    style={{fontSize:Pixel.getFontPixel(12),color:'#999999',}}>{stringTransform.dateReversal(data.manufacture + "000")}/{data.mileage}万公里</Text>
+                            }
                             <Text style={{fontSize:Pixel.getFontPixel(17),color:'#fa5741'}}>{stringTransform.carMoneyChange(data.dealer_price)}万</Text>
                         </View>
                     </View>

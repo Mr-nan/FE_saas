@@ -42,6 +42,8 @@ import HomeJobItem from './component/HomeJobItem';
 import HomeRowButton from './component/HomeRowButton';
 import HomeAdvertisementButton from './component/HomeAdvertisementButton';
 import MessageListScene from "../message/MessageListScene";
+import  StringTransformUtil from  '../utils/StringTransformUtil';
+let stringTransform  = new  StringTransformUtil();
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
@@ -512,8 +514,8 @@ export default class HomeScene extends BaseComponet {
                     <Text allowFontScaling={false} style={cellSheet.despritonStyle}
                           numberOfLines={2}>{DIDIAN + movie.model_name}</Text>
                     <Text allowFontScaling={false}
-                          style={cellSheet.timeStyle}>{this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}</Text>
-
+                          style={cellSheet.timeStyle}>{movie.v_type==1?(this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'):((movie.car_color?(movie.car_color.split("|")[0]+'|'):'')+movie.stock+'辆')}</Text>
+                    <Text style={{color:fontAndClolr.COLORB2, fontSize:Pixel.getFontPixel(fontAndClolr.LITTLEFONT28), marginBottom:Pixel.getPixel(15)}}>{movie.dealer_price>0 && (stringTransform.carMoneyChange(movie.dealer_price)+'万')}</Text>
                 </View>
             </TouchableOpacity>
 
@@ -601,7 +603,7 @@ const cellSheet = StyleSheet.create({
         textAlign: 'left',
         color: fontAndClolr.COLORA1,
         fontSize: Pixel.getFontPixel(fontAndClolr.MARKFONT),
-        marginTop: Pixel.getPixel(8),
+        marginTop: Pixel.getPixel(5),
         marginBottom: Pixel.getPixel(10)
     },
 
