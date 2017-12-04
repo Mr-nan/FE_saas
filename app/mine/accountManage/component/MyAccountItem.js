@@ -218,6 +218,8 @@ export default class MyAccountItem extends BaseComponent {
         } else if (this.state.data.status === 2) {
             accountState = '未激活';
             bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
+        } else {
+            bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
         }
         return (
             <View style={{alignItems: 'center'}}>
