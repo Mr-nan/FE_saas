@@ -26,7 +26,6 @@ import AllNavigationView from '../../component/AllNavigationView';
 import {CellView, CellSelectView} from '../znComponent/CarPublishCell';
 import EnterpriseInfo from '../../publish/component/EnterpriseInfo';
 
-import CarPublishSecondScene from './CarPublishSecondScene';
 import *as fontAndColor from '../../constant/fontAndColor';
 import VinInfo from '../../publish/component/VinInfo';
 import * as Net from '../../utils/RequestUtil';
@@ -141,7 +140,7 @@ export default class StockManagementScene extends BaseComponent {
                                 <TextInput
                                     style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(220),height:Pixel.getPixel(50)}]}
                                     placeholder='请输入 '
-                                    maxLength={50}
+                                    maxLength={8}
                                     underlineColorAndroid='transparent'
                                     defaultValue={this.carData.engine_number?this.carData.engine_number:''}
                                     onChangeText={(text)=>{this.carData['engine_number']=text}}
@@ -496,7 +495,6 @@ export default class StockManagementScene extends BaseComponent {
     }
 
     _handleDatePicked = (date) => {
-        alert(date)
         let d = this.dateFormat(date, 'yyyy-MM-dd');
         if (this.type === 'factory') {
 
