@@ -50,8 +50,9 @@ export default class HomeJobItem extends PureComponent {
                                                    if(this.list[i].componentName){
                                                        this.props.callBack(
                                                            {    name:this.list[i].componentName,
-                                                                id:this.list[i],
-                                                                component:this.list[i].component,params:{}
+                                                                id:this.list[i].id,
+                                                                component:this.list[i].component,
+                                                               params:{}
                                                            }
                                                        )
                                                    }else{
@@ -69,7 +70,7 @@ export default class HomeJobItem extends PureComponent {
                                                   click={()=>{if(this.list[i].componentName){
                                                       this.props.callBack(
                                                           { name:this.list[i].componentName,
-                                                              id:this.list[i],
+                                                              id:this.list[i].id,
                                                               component:this.list[i].component,params:{}
                                                           }
                                                       )

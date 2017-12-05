@@ -128,6 +128,7 @@ export default class HomeScene extends BaseComponet {
 
     //认证功能验证
     _checkAuthen = (params)=>{
+        console.log('===============',params);
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -201,7 +202,7 @@ export default class HomeScene extends BaseComponet {
                 </View>
 
                 <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}
-                             callBack={(params)=>{this.props.callBack(params)}}/>
+                             callBack={(params)=>{this._checkAuthen(params)}}/>
                 {/*<HomeRowButton onPress={(id)=>{*/}
                 {/*this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});*/}
                 {/*}} list={this.carData}/>*/}
