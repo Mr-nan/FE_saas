@@ -357,7 +357,7 @@ export default class CarNewInfoScene extends BaseComponent {
                                                 <Text style={{color:fontAndColor.COLORA1,
                                                     fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),}}>{data.title}</Text>
                                                 <Text style={[{color:fontAndColor.COLORA0,
-                                                    fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)},data.value.length>35 && {width:ScreenWidth-Pixel.getPixel(135)}]}>{data.value}</Text>
+                                                    fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)},data.value.length>30 && {width:ScreenWidth-Pixel.getPixel(135)}]}>{data.value}</Text>
                                             </View>):(null)
 
 

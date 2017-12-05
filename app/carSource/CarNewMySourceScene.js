@@ -1597,10 +1597,17 @@ class EditCarPriceView extends Component {
                             <View style={styles.editCarInputView}>
                                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>修改在售车辆数</Text>
                                 <TextInput style={styles.textInput}
-                                           keyboardType="numeric"
+                                           ref={(ref)=>{this.carNumberInput = ref}}
+                                           keyboardType="number-pad"
                                            autoFocus={false}
-                                           maxLength={7}
-                                           onChangeText={(text)=>{this.carNumber = text}}
+                                           maxLength={5}
+                                           onChangeText={(text)=>{
+                                               let number = this.chkNumber(text);
+                                               this.carNumber = text;
+                                               this.carNumberInput.setNativeProps({
+                                                   text: number,
+                                               });
+                                               }}
                                            defaultValue={String(this.state.carData.stock)}
                                 />
                             </View>
@@ -1663,6 +1670,13 @@ class EditCarPriceView extends Component {
 
         return obj;
     }
+
+
+    chkNumber=(obj)=> {
+        obj = obj.toUpperCase();
+        return obj.replace(/[^\w\/]/ig,'');
+    }
+
 
 
 }
