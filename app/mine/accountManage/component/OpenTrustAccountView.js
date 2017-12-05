@@ -85,7 +85,7 @@ export default class OpenTrustAccountView extends BaseComponent {
      *   获取OpenTrustSubmit组件ref
      **/
     getOpenTrustSubmitRef = () => {
-        return this.openTrustSubmit;
+        return this.openTrustSubmitRef;
     };
 
     /**
@@ -164,7 +164,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                             </Text>
                         </View>
                     </View>
-                    <OpenTrustSubmit ref={(ref) => {this.openTrustSubmit = ref}} submit={this.openTrustSubmit}/>
+                    <OpenTrustSubmit ref={(ref) => {this.openTrustSubmitRef = ref}} submit={this.openTrustSubmit}/>
                 </View>
             </View>);
         } else {

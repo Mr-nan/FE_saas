@@ -120,6 +120,7 @@ export  default class AccountScene extends BaseComponent {
                 this.props.showModal(false);
                 //console.log('USER_ACCOUNT_INFO=====', response.mjson.data['zsyxt'].status);
                 this.trustAccountState = response.mjson.data['zsyxt'][0].status;
+                this.accountOpenType = info.account_open_type;
                 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                 this.setState({
                     renderPlaceholderOnly: 'success',
@@ -128,10 +129,10 @@ export  default class AccountScene extends BaseComponent {
                     enter_id: enterBaseIds,
                     isRefreshing: false
                 });
-                if (info.account_open_type == 2 && this.trustAccountState == 0) {
-                    //this.refs.openAccount.changeState(true);
+/*                if (info.account_open_type == 2 && this.trustAccountState == 0) {
+                    this.refs.openAccount.changeState(true);
                     this.getTrustContract();
-                }
+                }*/
             }, (error) => {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
@@ -281,12 +282,19 @@ export  default class AccountScene extends BaseComponent {
                     title="账户管理"
                     backIconClick={this.backPage}
                 />
-                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}
+{/*                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}
                                       showModal={this.props.showModal}
-                                      navigator={this.props.navigator}/>
+                                      navigator={this.props.navigator}/>*/}
             </View>
         );
     }
+
+    /**
+     *   变更信托账户开户状态
+     **/
+    changeTrustAccountState = (newState) => {
+        this.trustAccountState = newState;
+    };
 
     /**
      *   开通信托账户
@@ -413,6 +421,9 @@ export  default class AccountScene extends BaseComponent {
                                               name: 'AccountSettingScene',
                                               component: AccountSettingScene, params: {
                                                   protocolType: this.isOpenContract,
+                                                  accountOpenType: this.accountOpenType,
+                                                  trustAccountState: this.trustAccountState,
+                                                  changeState: this.changeTrustAccountState
                                               }
                                           })
                                       }
@@ -445,10 +456,10 @@ export  default class AccountScene extends BaseComponent {
                                   }
                               })
                           }}
-                          openTrustAccount={() => {
-                              //this.refs.openAccount.changeState(true);
+/*                          openTrustAccount={() => {
+                              this.refs.openAccount.changeState(true);
                               this.getTrustContract();
-                          }}
+                          }}*/
             />
         )
     }
