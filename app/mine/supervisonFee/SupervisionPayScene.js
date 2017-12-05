@@ -31,148 +31,17 @@ import * as StorageKeyNames from "../../constant/storageKeyNames";
  * 获取屏幕的宽和高
  **/
 let page = 1;
-let allPage = 1;
 let allSouce = [];
 const {width, height} = Dimensions.get('window');
 import * as fontAndClolr from '../../constant/fontAndColor';
 
 let lastType = '-1';
-let haveOrder = 0;
-const json={
-    "token": "",
-    "code": 1,
-    "msg": "ok",
-    "data": {
-        "request": {
-            "device_code": "dycd_platform_ios",
-            "token": "57b13e1b0bfdd8999e8174e17b160042",
-            "user_ip": "1.1.1.1",
-            "status": "0",
-            "merge_id": "37",
-            "page": "0",
-            "page_size": "5"
-        },
-        "response": {
-            "order_list": [
-                {
-                    "supervision_fee_order_id": "4",
-                    "merge_id": "37",
-                    "supervision_fee_order_number": "JGF2017112415",
-                    "supervision_fee_id": "15",
-                    "supervision_fee": "77.00",
-                    "pay_status": "1",
-                    "pay_submit_time": "1970-01-01 00:00:00",
-                    "pay_time": "1970-01-01 00:00:00",
-                    "pay_trans_serial_no": "",
-                    "pay_trans_cerificate_id": "0",
-                    "model_id": "22440",
-                    "model_name": "2014款 宝马X3 xDrive20i X设计套装 5座",
-                    "auto_vin": "WBAWX3108F0G41105",
-                    "regulation_time": "11",
-                    "is_show": "1",
-                    "created_time": "2017-11-24 18:43:56",
-                    "updated_time": "2017-11-24 18:43:56",
-                    "order_title": "2014款 宝马X3 xDrive20i X设计套装 5座(G41105)"
-                },
-                {
-                    "supervision_fee_order_id": "4",
-                    "merge_id": "37",
-                    "supervision_fee_order_number": "JGF2017112415",
-                    "supervision_fee_id": "15",
-                    "supervision_fee": "77.00",
-                    "pay_status": "1",
-                    "pay_submit_time": "1970-01-01 00:00:00",
-                    "pay_time": "1970-01-01 00:00:00",
-                    "pay_trans_serial_no": "",
-                    "pay_trans_cerificate_id": "0",
-                    "model_id": "22440",
-                    "model_name": "2014款 宝马X3 xDrive20i X设计套装 5座",
-                    "auto_vin": "WBAWX3108F0G41105",
-                    "regulation_time": "11",
-                    "is_show": "1",
-                    "created_time": "2017-11-24 18:43:56",
-                    "updated_time": "2017-11-24 18:43:56",
-                    "order_title": "2014款 宝马X3 xDrive20i X设计套装 5座(G41105)"
-                },
-                {
-                    "supervision_fee_order_id": "4",
-                    "merge_id": "37",
-                    "supervision_fee_order_number": "JGF2017112415",
-                    "supervision_fee_id": "15",
-                    "supervision_fee": "77.00",
-                    "pay_status": "1",
-                    "pay_submit_time": "1970-01-01 00:00:00",
-                    "pay_time": "1970-01-01 00:00:00",
-                    "pay_trans_serial_no": "",
-                    "pay_trans_cerificate_id": "0",
-                    "model_id": "22440",
-                    "model_name": "2014款 宝马X3 xDrive20i X设计套装 5座",
-                    "auto_vin": "WBAWX3108F0G41105",
-                    "regulation_time": "11",
-                    "is_show": "1",
-                    "created_time": "2017-11-24 18:43:56",
-                    "updated_time": "2017-11-24 18:43:56",
-                    "order_title": "2014款 宝马X3 xDrive20i X设计套装 5座(G41105)"
-                },
-                {
-                    "supervision_fee_order_id": "3",
-                    "merge_id": "37",
-                    "supervision_fee_order_number": "JGF201711237",
-                    "supervision_fee_id": "7",
-                    "supervision_fee": "77.00",
-                    "pay_status": "3",
-                    "pay_submit_time": "1970-01-01 00:00:00",
-                    "pay_time": "1970-01-01 00:00:00",
-                    "pay_trans_serial_no": "",
-                    "pay_trans_cerificate_id": "0",
-                    "model_id": "222",
-                    "model_name": "fsdaf",
-                    "auto_vin": "fds23aaassss",
-                    "regulation_time": "11",
-                    "is_show": "1",
-                    "created_time": "2017-11-23 19:21:07",
-                    "updated_time": "2017-11-24 18:33:20",
-                    "order_title": "fsdaf(aassss)"
-                },
-                {
-                    "supervision_fee_order_id": "2",
-                    "merge_id": "37",
-                    "supervision_fee_order_number": "JGF201711234",
-                    "supervision_fee_id": "4",
-                    "supervision_fee": "77.00",
-                    "pay_status": "1",
-                    "pay_submit_time": "1970-01-01 00:00:00",
-                    "pay_time": "1970-01-01 00:00:00",
-                    "pay_trans_serial_no": "",
-                    "pay_trans_cerificate_id": "0",
-                    "model_id": "11",
-                    "model_name": "fdsgsa",
-                    "auto_vin": "fds22654564",
-                    "regulation_time": "11",
-                    "is_show": "1",
-                    "created_time": "2017-11-23 19:20:40",
-                    "updated_time": "2017-11-24 18:34:07",
-                    "order_title": "fdsgsa(654564)"
-                }
-            ],
-            "total": "3"
-        }
-    },
-    "trace": {
-        "source_url": "http://finance.api.dev.dycd.com/api/v1/SuperviseFee/supervise_list",
-        "cost_time": "0.0840s",
-        "cost_mem": "454 B",
-        "server_ip": "127.0.0.1",
-        "server_version": "5.6.27",
-        "file_max_size": "2M",
-        "post_max_size": "8M",
-        "source_ip": "127.0.0.1",
-        "sql": null
-    }
-}
+let listLength=0;
 export default class SupervisionPayScene extends BaseComponent {
     constructor(props) {
         super(props);
+        listLength=0;
+        this.payList=[];
         this.tabNum = this.props.tabNum;
         lastType = '-1';
         allSouce = [];
@@ -191,18 +60,10 @@ export default class SupervisionPayScene extends BaseComponent {
     }
 
     initFinish = () => {
-        page = 1;
-        allPage = 1;
         allSouce = [];
         this.getData();
     }
 
-
-    componentWillUnmount() {
-        page = 1;
-        allPage = 1;
-        allSouce = [];
-    }
 
     getData = () => {
         let maps = {
@@ -212,17 +73,27 @@ export default class SupervisionPayScene extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
-                    let data=json.data.response;
-                    // let data=response.mjson.data;
+                    // let data=json.data.response;
+                    let data=response.mjson.data;
+                    this.payList=[];
                     if (page == 1 && data.order_list.length <= 0) {
+                        listLength=0;
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
+
                         allSouce.push(...data.order_list);
+                        allSouce.map((data)=>{
+                            if(data.pay_status=='3'){
+                                this.payList.push(data);
+                            }
+                        })
+                        listLength=this.payList.length;
                         this.setState({
                             dataSource: this.ds.cloneWithRows(allSouce),
                             isRefreshing: false
                         });
                         this.setState({renderPlaceholderOnly: 'success'});
+                        this.props.freshData(listLength);
                     }
                 },
                 (error) => {
@@ -233,29 +104,8 @@ export default class SupervisionPayScene extends BaseComponent {
     refreshingData = () => {
         allSouce = [];
         this.setState({isRefreshing: true});
-        page = 1;
         this.getData();
     };
-
-    toEnd = () => {
-        if (this.state.isRefreshing) {
-
-        } else {
-            if (page < allPage) {
-                page++;
-                this.getData();
-            }
-        }
-
-    };
-
-    renderListFooter = () => {
-        if (this.state.isRefreshing) {
-            return null;
-        } else {
-            return (<LoadMoreFooter isLoadAll={page >= allPage ? true : false}/>)
-        }
-    }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -275,6 +125,14 @@ export default class SupervisionPayScene extends BaseComponent {
                             dataSource={this.state.dataSource}
                             removeClippedSubviews={false}
                             renderRow={this._renderRow}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.isRefreshing}
+                                    onRefresh={this.refreshingData}
+                                    tintColor={[fontAndColor.COLORB0]}
+                                    colors={[fontAndColor.COLORB0]}
+                                />
+                            }
                         />
 
                     </View>
@@ -320,7 +178,7 @@ export default class SupervisionPayScene extends BaseComponent {
                 <View style={[styles.rowView, rowID == '0' ? {marginTop: 0} : {marginTop: Pixel.getPixel(10)}]}>
 
                     <View style={styles.orderNumStyle}>
-                        <Text style={{flex: 1, fontSize: 14}}>{'订单号:' + 'adsfasdfsa'}</Text>
+                        <Text style={{flex: 1, fontSize: 14}}>{'订单号:' + rowData.supervision_fee_order_number}</Text>
                         <Text style={[{
                             color: fontAndColor.COLORB1,
                             fontSize: 14
@@ -331,8 +189,8 @@ export default class SupervisionPayScene extends BaseComponent {
                         marginVertical: Pixel.getPixel(10),
                         fontSize: 14,
                         fontWeight: 'bold'
-                    }}>阿迪塞福罗萨街坊邻居</Text>
-                    <Text style={{color: '#9b9b9b', fontSize: 13}}>{'置换时间：' + '2017-11-12 10：23'}</Text>
+                    }}>{rowData.order_title}</Text>
+                    <Text style={{color: '#9b9b9b', fontSize: 13}}>{'置换时间：' + rowData.regulation_time}</Text>
                 </View>
             </TouchableOpacity>
 

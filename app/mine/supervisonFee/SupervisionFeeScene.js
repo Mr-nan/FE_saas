@@ -31,11 +31,12 @@ export default class SupervisionFeeScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        this.noPayNum = 0;
-        this.payNum = 0;
-        this.state = {
-            renderPlaceholderOnly: 'blank',
-        };
+        this.payNum = '';
+        this.noPays = '',
+            this.state = {
+                renderPlaceholderOnly: 'blank',
+                noPays: 0,
+            };
     }
 
 
@@ -60,22 +61,29 @@ export default class SupervisionFeeScene extends BaseComponent {
                     this.setState({renderPlaceholderOnly: 'success'});
                 });
     }
-    _showLoadingModal=()=>{
+    _showLoadingModal = () => {
         this.props.showModal(true);
     }
-    _closeLoadingModal=()=>{
+    _closeLoadingModal = () => {
         this.props.showModal(false);
     }
 
-    showToast=(msg)=>{
+    showToast = (msg) => {
         this.props.showToast(msg);
     }
 
+    freshData = (noPayNum) => {
+        this.noPayLength.freshPagNum(noPayNum);
+    }
+    freshPayData = (payNum) => {
+        this.noPayLength.freshPayNum(payNum);
+    }
+    firstFreshPayData = (nums) => {
+        console.log('+++++',nums)
+        this.noPayLength.firstFreshNum(nums);
+    }
+
     render() {
-        // if (this.state.renderPlaceholderOnly != 'success') {
-        //     return this._renderPlaceholderView();
-        //
-        // }
 
         return (
             <View style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}>
@@ -86,20 +94,30 @@ export default class SupervisionFeeScene extends BaseComponent {
                     scrollWithoutAnimation={true}
                     renderTabBar={() =>
                         <SupervisionTabBar
-                            noPayNum={this.noPayNum}
-                            tabName={["全部", "未支付", "已支付 （" + this.payNum + "）"]}/>}>
-                    <SupervisionTotalScene tabLabel="total"
-                                           navigator={this.props.navigator} tabNum={'0'}
-                                           closeLoading={this._closeLoadingModal}
-                                           showToast={this.showToast}
-                                           showLoading={this._showLoadingModal}/>
-                    <SupervisionNoPayScene tabLabel="no-pay"
-                                           navigator={this.props.navigator} tabNum={'1'}
-                                           closeLoading={this._closeLoadingModal}
-                                           showToast={this.showToast}
-                                           showLoading={this._showLoadingModal}/>
-                    <SupervisionPayScene tabLabel="pay"
-                                         navigator={this.props.navigator} tabNum={'2'}/>
+                            ref={(ref) => {
+                                this.noPayLength = ref
+                            }}
+                            noPayNum={this.noPays}
+                            payNum={this.payNum}
+                            tabName={["全部", "未支付", "已支付"]}/>}>
+                    <SupervisionTotalScene
+                        tabLabel="total"
+                        freshData={this.firstFreshPayData}
+                        navigator={this.props.navigator} tabNum={'0'}
+                        closeLoading={this._closeLoadingModal}
+                        showToast={this.showToast}
+                        showLoading={this._showLoadingModal}/>
+                    <SupervisionNoPayScene
+                        freshData={this.freshData}
+                        tabLabel="no-pay"
+                        navigator={this.props.navigator} tabNum={'1'}
+                        closeLoading={this._closeLoadingModal}
+                        showToast={this.showToast}
+                        showLoading={this._showLoadingModal}/>
+                    <SupervisionPayScene
+                        freshData={this.freshPayData}
+                        tabLabel="pay"
+                        navigator={this.props.navigator} tabNum={'2'}/>
 
 
                 </ScrollableTabView>

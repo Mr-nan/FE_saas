@@ -19,11 +19,9 @@ var Pixel = new PixelUtil();
 import BaseComponent from "../../component/BaseComponent";
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
-import LoadMoreFooter from '../../component/LoadMoreFooter';
 import CheckStand from "./CheckStand";
 import AccountManageScene from '../../mine/accountManage/AccountTypeSelectScene';
 import WaitActivationAccountScene from '../../mine/accountManage/WaitActivationAccountScene';
-import AccountScene from '../../mine/accountManage/AccountScene';
 import BindCardScene from '../../mine/accountManage/BindCardScene';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
@@ -31,154 +29,25 @@ import * as StorageKeyNames from "../../constant/storageKeyNames";
  * 获取屏幕的宽和高
  **/
 let page = 1;
-let allPage = 1;
 let allSouce = [];
 const {width, height} = Dimensions.get('window');
 import * as fontAndClolr from '../../constant/fontAndColor';
 
 let lastType = '-1';
-const json={
-    "token": "",
-    "code": 1,
-    "msg": "ok",
-    "data": {
-        "request": {
-            "device_code": "dycd_platform_ios",
-            "token": "57b13e1b0bfdd8999e8174e17b160042",
-            "user_ip": "1.1.1.1",
-            "status": "0",
-            "merge_id": "37",
-            "page": "0",
-            "page_size": "5"
-        },
-        "response": {
-            "order_list": [
-                {
-                    "supervision_fee_order_id": "4",
-                    "merge_id": "37",
-                    "supervision_fee_order_number": "JGF2017112415",
-                    "supervision_fee_id": "15",
-                    "supervision_fee": "0.1",
-                    "pay_status": "1",
-                    "pay_submit_time": "1970-01-01 00:00:00",
-                    "pay_time": "1970-01-01 00:00:00",
-                    "pay_trans_serial_no": "",
-                    "pay_trans_cerificate_id": "0",
-                    "model_id": "22440",
-                    "model_name": "2014款 宝马X3 xDrive20i X设计套装 5座",
-                    "auto_vin": "WBAWX3108F0G41105",
-                    "regulation_time": "11",
-                    "is_show": "1",
-                    "created_time": "2017-11-24 18:43:56",
-                    "updated_time": "2017-11-24 18:43:56",
-                    "order_title": "2014款 宝马X3 xDrive20i X设计套装 5座(G41105)"
-                },
-                {
-                    "supervision_fee_order_id": "4",
-                    "merge_id": "37",
-                    "supervision_fee_order_number": "JGF2017112415",
-                    "supervision_fee_id": "15",
-                    "supervision_fee": "1.00",
-                    "pay_status": "1",
-                    "pay_submit_time": "1970-01-01 00:00:00",
-                    "pay_time": "1970-01-01 00:00:00",
-                    "pay_trans_serial_no": "",
-                    "pay_trans_cerificate_id": "0",
-                    "model_id": "22440",
-                    "model_name": "2014款 宝马X3 xDrive20i X设计套装 5座",
-                    "auto_vin": "WBAWX3108F0G41105",
-                    "regulation_time": "11",
-                    "is_show": "1",
-                    "created_time": "2017-11-24 18:43:56",
-                    "updated_time": "2017-11-24 18:43:56",
-                    "order_title": "2014款 宝马X3 xDrive20i X设计套装 5座(G41105)"
-                },
-                {
-                    "supervision_fee_order_id": "4",
-                    "merge_id": "37",
-                    "supervision_fee_order_number": "JGF2017112415",
-                    "supervision_fee_id": "15",
-                    "supervision_fee": "1.00",
-                    "pay_status": "1",
-                    "pay_submit_time": "1970-01-01 00:00:00",
-                    "pay_time": "1970-01-01 00:00:00",
-                    "pay_trans_serial_no": "",
-                    "pay_trans_cerificate_id": "0",
-                    "model_id": "22440",
-                    "model_name": "2014款 宝马X3 xDrive20i X设计套装 5座",
-                    "auto_vin": "WBAWX3108F0G41105",
-                    "regulation_time": "11",
-                    "is_show": "1",
-                    "created_time": "2017-11-24 18:43:56",
-                    "updated_time": "2017-11-24 18:43:56",
-                    "order_title": "2014款 宝马X3 xDrive20i X设计套装 5座(G41105)"
-                },
-                {
-                    "supervision_fee_order_id": "3",
-                    "merge_id": "37",
-                    "supervision_fee_order_number": "JGF201711237",
-                    "supervision_fee_id": "7",
-                    "supervision_fee": "1.00",
-                    "pay_status": "2",
-                    "pay_submit_time": "1970-01-01 00:00:00",
-                    "pay_time": "1970-01-01 00:00:00",
-                    "pay_trans_serial_no": "",
-                    "pay_trans_cerificate_id": "0",
-                    "model_id": "222",
-                    "model_name": "fsdaf",
-                    "auto_vin": "fds23aaassss",
-                    "regulation_time": "11",
-                    "is_show": "1",
-                    "created_time": "2017-11-23 19:21:07",
-                    "updated_time": "2017-11-24 18:33:20",
-                    "order_title": "fsdaf(aassss)"
-                },
-                {
-                    "supervision_fee_order_id": "2",
-                    "merge_id": "37",
-                    "supervision_fee_order_number": "JGF201711234",
-                    "supervision_fee_id": "4",
-                    "supervision_fee": "1.00",
-                    "pay_status": "3",
-                    "pay_submit_time": "1970-01-01 00:00:00",
-                    "pay_time": "1970-01-01 00:00:00",
-                    "pay_trans_serial_no": "",
-                    "pay_trans_cerificate_id": "0",
-                    "model_id": "11",
-                    "model_name": "fdsgsa",
-                    "auto_vin": "fds22654564",
-                    "regulation_time": "11",
-                    "is_show": "1",
-                    "created_time": "2017-11-23 19:20:40",
-                    "updated_time": "2017-11-24 18:34:07",
-                    "order_title": "fdsgsa(654564)"
-                }
-            ],
-            "total": "3"
-        }
-    },
-    "trace": {
-        "source_url": "http://finance.api.dev.dycd.com/api/v1/SuperviseFee/supervise_list",
-        "cost_time": "0.0840s",
-        "cost_mem": "454 B",
-        "server_ip": "127.0.0.1",
-        "server_version": "5.6.27",
-        "file_max_size": "2M",
-        "post_max_size": "8M",
-        "source_ip": "127.0.0.1",
-        "sql": null
-    }
-}
 
 export default class SupervisionTotalScene extends BaseComponent {
     constructor(props) {
         super(props);
+        this.flag = true;
         this.tabNum = this.props.tabNum;
         lastType = '-1';
         allSouce = [];
         this.url = '';
+        this.noPayNum = [];
+        this.payNum = [];
+        this.nums = [];
         this.accountStatus = '';
-        this.payFee=0.00;
+        this.payFee = 0.00;
         this.isVisible = false;
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.accountStatus = '';
@@ -194,68 +63,66 @@ export default class SupervisionTotalScene extends BaseComponent {
 
     initFinish = () => {
         page = 1;
-        allPage = 1;
         allSouce = [];
         this.getData();
     }
 
     componentDidUpdate() {
         //记得改
-        if (this.state.renderPlaceholderOnly !== 'success' && this.tabNum === '0'){
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            if (this.flag) {
 
-            this.checkAcountState();
+                this.checkAcountState();
+            }
         }
     }
 
     checkAcountState() {
         lastType = '-1';
-            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                if (data.code == 1) {
-                    let datas = JSON.parse(data.result);
-                    let maps = {
-                        enter_base_ids: datas.company_base_id,
-                        child_type: '1'
-                    };
-                    request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                        .then((response) => {
-                                this.props.closeLoading();
-                                lastType = response.mjson.data.account.status;
-                                console.log('-------', lastType);
-                                lastType = '0';
-                                if (lastType == '0') {
-                                    this.accountStatus = '开户';
-                                    this.isVisible = true;
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids: datas.company_base_id,
+                    child_type: '1'
+                };
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            this.props.closeLoading();
+                            lastType = response.mjson.data.account.status;
+                            console.log('-------lastType', lastType);
+                            if (lastType == '0') {
+                                this.accountStatus = '开户';
+                                this.isVisible = true;
 
-                                } else if (lastType == '1') {
-                                    this.accountStatus = '绑卡';
-                                    this.isVisible = true;
+                            } else if (lastType == '1') {
+                                this.accountStatus = '绑卡';
+                                this.isVisible = true;
 
-                                } else if (lastType == '2') {
-                                    this.accountStatus = '激活';
-                                    this.isVisible = true;
-                                } else {
-                                    this.isVisible = false;
-                                }
-                                this.setState({
-                                    isVisible: this.isVisible,
-                                    accountStatus: this.accountStatus
-                                });
-
-                            },
-                            (error) => {
-                                this.props.closeLoading();
-                                this.props.showToast('用户信息查询失败');
+                            } else if (lastType == '2') {
+                                this.accountStatus = '激活';
+                                this.isVisible = true;
+                            } else {
+                                this.isVisible = false;
+                            }
+                            this.setState({
+                                isVisible: this.isVisible,
+                                accountStatus: this.accountStatus
                             });
-                } else {
-                    this.props.closeLoading();
-                    this.props.showToast('用户信息查询失败');
-                }
-            });
+
+                        },
+                        (error) => {
+                            this.props.closeLoading();
+                            this.props.showToast('用户信息查询失败');
+                        });
+            } else {
+                this.props.closeLoading();
+                this.props.showToast('用户信息查询失败');
+            }
+        });
     }
 
     allRefresh = () => {
-        page = 1;
-        allPage = 1;
         allSouce = [];
         this.setState({
             renderPlaceholderOnly: 'loading',
@@ -276,7 +143,6 @@ export default class SupervisionTotalScene extends BaseComponent {
                     .then((response) => {
                             this.props.closeLoading();
                             lastType = response.mjson.data.account.status;
-                            lastType='0';
                             if (lastType == '0') {
                                 this.toNextPage({
                                     name: 'AccountManageScene',
@@ -330,14 +196,10 @@ export default class SupervisionTotalScene extends BaseComponent {
         params: {}
     }
 
-
-    componentWillUnmount() {
-        page = 1;
-        allPage = 1;
-        allSouce = [];
-    }
-
     getData = () => {
+        this.noPayNum = [];
+        this.payNum = [];
+        this.nums = [];
         let maps = {
             api: Urls.SUPERVISE_LIST,
             status: '0',
@@ -345,44 +207,61 @@ export default class SupervisionTotalScene extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
-                    // let data=response.mjson.data;
-                let data=json.data.response;
+                    let data = response.mjson.data;
+                    // let data=json.data.response;
+                    this.payFee = 0;
                     if (page == 1 && data.order_list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
                         // allPage = data.total / 10;
                         allSouce.push(...data.order_list);
-                        allSouce.map((data)=>{
-                            if(data.pay_status=='1'){
-                                this.payFee+=parseFloat(data.supervision_fee);
-                            }
-                        })
+                        this.nums.push(this.payNum.length);
+                        this.nums.push(this.noPayNum.length);
+                        this.payFee = parseFloat(data.supervision_fee_total).toFixed(2);
                         this.setState({
                             dataSource: this.ds.cloneWithRows(allSouce),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success',
-                            noPay: this.payFee>0 ? true: false
+                            noPay: this.payFee > 0 ? true : false
 
                         });
+                        if (this.flag) {
+                            allSouce.map((data) => {
+                                if (data.pay_status == '3') {
+                                    this.payNum.push(data);
+                                } else if (data.pay_status == '1') {
+                                    this.noPayNum.push(data);
+                                }
+                            });
+                            this.props.freshData(this.nums);//第一次进来刷新未付已付订单标识
+                            this.flag=false;
+                        }
                     }
+
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     }
 
+    refreshingData = () => {
+        allSouce = [];
+        this.setState({isRefreshing: true});
+        this.getData();
+    };
+
 
     render() {
-        let bottomStyle={};
-        if(Platform.OS === 'android'){
-            bottomStyle={marginBottom: Pixel.getPixel(25)};
-            if(this.state.noPay){
-                bottomStyle={marginBottom: Pixel.getPixel(78)};
+        let bottomStyle = {};
+        if (Platform.OS === 'android') {
+            bottomStyle = {marginBottom: Pixel.getPixel(25)};
+            if (this.state.noPay) {
+                bottomStyle = {marginBottom: Pixel.getPixel(78)};
             }
-        }else{
-            bottomStyle={marginBottom: Pixel.getPixel(5)};
-            if(this.state.noPay){
-                bottomStyle={marginBottom: Pixel.getPixel(55)};
+        } else {
+            bottomStyle = {marginBottom: Pixel.getPixel(5)};
+            if (this.state.noPay) {
+                bottomStyle = {marginBottom: Pixel.getPixel(55)};
             }
         }
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -393,7 +272,7 @@ export default class SupervisionTotalScene extends BaseComponent {
 
             return (
                 <View style={{flex: 1,}}>
-                    <View style={[styles.container , bottomStyle]}>
+                    <View style={[styles.container, bottomStyle]}>
                         {
                             this.state.isVisible ? this._renderHeader() : null
                         }
@@ -402,6 +281,14 @@ export default class SupervisionTotalScene extends BaseComponent {
                             dataSource={this.state.dataSource}
                             removeClippedSubviews={false}
                             renderRow={this._renderRow}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.isRefreshing}
+                                    onRefresh={this.refreshingData}
+                                    tintColor={[fontAndColor.COLORB0]}
+                                    colors={[fontAndColor.COLORB0]}
+                                />
+                            }
                         />
 
                     </View>
@@ -428,7 +315,7 @@ export default class SupervisionTotalScene extends BaseComponent {
                                     name: 'CheckStand',
                                     component: CheckStand,
                                     params: {
-                                        payAmount: this.payFee.toFixed(2),
+                                        payAmount: this.payFee,
                                         callBack: () => {
                                             allSouce = [];
                                             this.setState({renderPlaceholderOnly: 'loading'});
@@ -470,17 +357,17 @@ export default class SupervisionTotalScene extends BaseComponent {
 
     // 每一行中的数据
     _renderRow = (rowData, sectionID, rowID,) => {
-        let payStatus={};
-        let statusText='';
-        if(rowData.pay_status=='3'){
-            payStatus={color: fontAndColor.COLORB1}
-            statusText='已支付';
-        }else if(rowData.pay_status=='2'){
-            payStatus={color: fontAndColor.COLORB3};
-            statusText='处理中';
-        }else{
-            payStatus={color: fontAndColor.COLORB2};
-            statusText='未支付';
+        let payStatus = {};
+        let statusText = '';
+        if (rowData.pay_status == '3') {
+            payStatus = {color: fontAndColor.COLORB1}
+            statusText = '已支付';
+        } else if (rowData.pay_status == '2') {
+            payStatus = {color: fontAndColor.COLORB3};
+            statusText = '处理中';
+        } else {
+            payStatus = {color: fontAndColor.COLORB2};
+            statusText = '未支付';
         }
         return (
             <TouchableOpacity activeOpacity={0.8}>

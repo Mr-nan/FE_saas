@@ -37,10 +37,12 @@ export default class CheckStand extends BaseComponent {
 
     constructor(props) {
         super(props);
+        this.balance='';
+        this.accountInfo=null;
+        this.cashier_desk_trans_serial_no='';
         this.accountInfo = '';
         this.transSerialNo = '';
         this.isShowFinancing = 0;
-        this.creditBalanceMny = 0;
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -71,7 +73,11 @@ export default class CheckStand extends BaseComponent {
             .then((response) => {
                     if (response.mjson.data == null) {
                         this.setState({renderPlaceholderOnly: 'null'});
+
                     } else {
+                        let data=response.mjson.data;
+                        this.cashier_desk_trans_serial_no=data.cashier_desk_trans_serial_no;
+                        this.accountInfo=data.account_info;
                         this.setState({
                             renderPlaceholderOnly: 'success',
 
@@ -232,12 +238,13 @@ export default class CheckStand extends BaseComponent {
 
     goInitialPay = () => {
         this.props.showModal(true);
-        let maps = {
-            cashier_desk_trans_serial_no: '10101006201711301158066841270409',
-            transfer_accounts_url: webBackUrl.SUPERVICEPAY,
-        };
         let url = AppUrls.SUPERVISE_PAY;
-        request(url, 'post', maps).then((response) => {
+        let maps = {
+            cashier_desk_trans_serial_no: this.cashier_desk_trans_serial_no,
+            transfer_accounts_url: webBackUrl.SUPERVICEPAY,
+            api:url
+        };
+        request(AppUrls.FINANCE, 'post', maps).then((response) => {
             if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                 this.props.showModal(false);
                 this.transSerialNo = response.mjson.data.trans_serial_no;

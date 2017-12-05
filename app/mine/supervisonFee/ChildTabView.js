@@ -15,9 +15,19 @@ export default class ChildTabView extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.noPayNum=this.props.noPayNum;
-        tabName=this.props.tabName
-        this.tabNum=tabName.length;
+        tabName=this.props.tabName;
+        this.tab=this.props.tab
+        this.tabNum=tabName.length;this.state = {
+            noPayNum:this.props.noPayNum ,
+        };
+
+    }
+
+    freshData=(data)=>{
+        console.log('^^^^^^^^^',data);
+        this.setState({
+            noPayNum: data
+        });
     }
 
     render() {
@@ -33,9 +43,9 @@ export default class ChildTabView extends PureComponent {
                         {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>
                     {tabName[this.props.i]}
                 </Text>
-                {!this.isEmpty(this.noPayNum)&& this.props.i=='1' ?<Text allowFontScaling={false}
+                {!this.isEmpty(this.state.noPayNum)&& this.tab==='no-pay' ?<Text allowFontScaling={false}
                         style={[{color: fontAndColor.COLORB2},
-                        {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>{" ("+this.noPayNum+")"}</Text>:<View/>}
+                        {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>{" ("+this.state.noPayNum+")"}</Text>:<View/>}
             </View>
             <View style={[{height: Pixel.getPixel(2)},
                 this.props.activeTab === this.props.i ? {backgroundColor: fontAndColor.COLORB0} : {backgroundColor: '#ffffff'}]}>
@@ -43,13 +53,6 @@ export default class ChildTabView extends PureComponent {
         </TouchableOpacity>);
     }
 
-    isEmpty = (str)=>{
-        if(typeof(str) != 'undefined' && str !== null && str !== ''){
-            return false;
-        }else {
-            return true;
-        }
-    };
 }
 
 const styles = StyleSheet.create({

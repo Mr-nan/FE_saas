@@ -173,7 +173,17 @@ export  default class AccountWebScene extends BaseComponent {
             } else if (oldUrl == 'http://' + webBackUrl.PAY + '/') {
                 //this.props.callBack();
                 this.backPage();
-            } else {
+            } else if(oldUrl=='http://' + webBackUrl.SUPERVICEPAY + '/'){
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                        if (navigator.getCurrentRoutes()[i].name == 'SupervisionFeeScene') {
+                            navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                            break;
+                        }
+                    }
+                }
+            }else{
                 this.backPage();
             }
         }
