@@ -1,6 +1,5 @@
 import  React, {Component, PropTypes} from  'react'
 import  {
-
     View,
     Text,
     ListView,
@@ -11,7 +10,8 @@ import  {
     NativeModules,
     BackAndroid,
     InteractionManager,
-    RefreshControl
+    RefreshControl,
+    Linking
 } from  'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
@@ -30,8 +30,8 @@ import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 import EvaluateCarInfo from '../mine/setting/EvaluateCarInfo'
 import Setting from './../mine/setting/Setting'
-import  CarCollectsScene from '../carSource/CarCollectsScene';
-import  BrowsingHistorysScene from '../carSource/BrowsingHistorysScene';
+import  CarCollectSourceScene from '../carSource/CarCollectSourceScene';
+import  BrowsingHistoryScene from '../carSource/BrowsingHistoryScene';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
@@ -39,10 +39,13 @@ import ImageSource from '../publish/component/ImageSource';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
+import AuthenticationModal from '../component/AuthenticationModal';
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
 import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
 import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
 import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
+import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
+import PersonCertificate from "../mine/certificateManage/PersonCertificate";
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
@@ -55,6 +58,7 @@ const GetPermission = new GetPermissionUtil();
 let componyname = '';
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 let Car = [];
+let BASE_ID = [];
 /*
  * 获取屏幕的宽和高
  **/
@@ -85,6 +89,7 @@ export default class MineScene extends BaseComponent {
         return true;
     }
 
+
     componentDidMount() {
         try {
             BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
@@ -103,315 +108,428 @@ export default class MineScene extends BaseComponent {
         super(props);
         // 初始状态
         //    拿到所有的json数据
-        firstType = '-1';
-        lastType = '-1';
-        haveOrder = 0;
-        componyname = '';
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
         };
     }
 
-    initFinish = () => {
-        this.getData();
-    }
-
-    changeData = () => {
-        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-            if (data.code == 1) {
-                let user_list = [];
-                let datas = JSON.parse(data.result);
-                user_list.push(...Car);
-                GetPermission.getMineList((minList) => {
-                    for (let i = 0; i < minList.length; i++) {
-                        this.initData(minList[i].id, minList[i].name);
-                    }
-                    let jsonData = user_list;
-
-                    //    定义变量
-                    let dataBlob = {},
-                        sectionIDs = [],
-                        rowIDs = [];
-                    for (let i = 0; i < jsonData.length; i++) {
-                        //    1.拿到所有的sectionId
-                        sectionIDs.push(i);
-
-                        //    2.把组中的内容放入dataBlob内容中
-                        dataBlob[i] = jsonData[i].title;
-
-                        //    3.设置改组中每条数据的结构
-                        rowIDs[i] = [];
-
-                        //    4.取出改组中所有的数据
-                        let cars = jsonData[i].cars;
-
-                        //    5.便利cars,设置每组的列表数据
-                        for (let j = 0; j < cars.length; j++) {
-                            //    改组中的每条对应的rowId
-                            rowIDs[i].push(j);
-
-                            // 把每一行中的内容放入dataBlob对象中
-                            dataBlob[i + ':' + j] = cars[j];
+    //联系客服
+    callAciton = () => {
+        request(Urls.GET_CUSTOM_SERVICE, 'Post', {})
+            .then((response) => {
+                    if (response.mjson.code == 1) {
+                        if (Platform.OS === 'android') {
+                            NativeModules.VinScan.callPhone(response.mjson.data.phone);
+                        } else {
+                            Linking.openURL('tel:' + response.mjson.data.phone);
                         }
+                    } else {
+                        this.props.showToast(response.mjson.msg);
                     }
-                    let getSectionData = (dataBlob, sectionID) => {
-                        return dataBlob[sectionID];
-                    };
-
-                    let getRowData = (dataBlob, sectionID, rowID) => {
-                        return dataBlob[sectionID + ":" + rowID];
-                    };
-                    let ds = new ListView.DataSource({
-                            getSectionData: getSectionData,
-                            getRowData: getRowData,
-                            rowHasChanged: (r1, r2) => r1 !== r2,
-                            sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-                        }
-                    );
-                    this.setState({
-                        source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
-                        name: datas.real_name,
-                        phone: datas.phone,
-                        headUrl: datas.head_portrait_url,
-                        renderPlaceholderOnly: 'success',
-                        isRefreshing: false
-                    });
+                },
+                (error) => {
+                    this.props.showToast(error.msg);
                 });
-
-            } else {
-                this.setState({
-                    renderPlaceholderOnly: 'error',
-                    isRefreshing: false
-                });
-            }
-        });
-    }
-
-    initData = (id, name) => {
-        if (id == 15) {
-            Car[0].cars.push({
-                "icon": require('../../images/mainImage/zhanghuguanli.png'),
-                "name": name
-                , "id": id
-            },);
-        } else if (id == 16) {
-            Car[0].cars.push({
-                "icon": require('../../images/mainImage/yuangongguanli.png'),
-                "name": name
-                , "id": id
-            },);
-        } else if (id == 17) {
-            Car[0].cars.push({
-                "icon": require('../../images/mainImage/switchcompony.png'),
-                "name": name
-                , "id": id
-            },);
-        } else if (id == 20) {
-            Car[2].cars.push({
-                "icon": require('../../images/mainImage/my_order.png'),
-                "name": name
-                , "id": id
-            },);
-        } else if (id == 18) {
-            Car[1].cars.push({
-                "icon": require('../../images/mainImage/youhuiquanguanli.png'),
-                "name": name
-                , "id": id
-            },);
-        } else if (id == 19) {
-            Car[1].cars.push({
-                "icon": require('../../images/mainImage/hetongguanli.png'),
-                "name": name
-                , "id": id
-            },);
-        } else if (id == 21) {
-            Car[2].cars.push({
-                "icon": require('../../images/mainImage/shoucangjilu.png'),
-                "name": name
-                , "id": id
-            },);
-        } else if (id == 22) {
-            Car[2].cars.push({
-                "icon": require('../../images/mainImage/liulanlishi.png'),
-                "name": name
-                , "id": id
-            },);
-        } else if (id == 24) {
-            Car[3].cars.push({
-                "icon": require('../../images/mainImage/shezhi.png'),
-                "name": name
-                , "id": id
-            },);
-        } else if (id == 47) {
-            Car[2].cars.push({
-                "icon": require('../../images/mainImage/myCarSource.png'),
-                "name": name
-                , "id": id
-            },);
-        } else if (id == 57) {
-            Car[2].cars.push({
-                "icon": require('../../images/mainImage/my_yqdhl.png'),
-                "name": name
-                , "id": id
-            },);
-        }
-    }
-
-    getData = () => {
-        Car = [
-            {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/zhanghuguanli.png'),
-                    //     "name": "账户管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/yuangongguanli.png'),
-                    //     "name": "员工管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/switchcompony.png'),
-                    //     "name": "切换公司"
-                    // },
-                ],
-                "title": "section0"
-            },
-            {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
-                    //     "name": "优惠券管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/hetongguanli.png'),
-                    //     "name": "合同管理"
-                    // },
-                ],
-                "title": "section1"
-            },
-            {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/myCarSource.png'),
-                    //     "name": "我的车源"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/my_order.png'),
-                    //     "name": "我的订单"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/shoucangjilu.png'),
-                    //     "name": "收藏记录"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/liulanlishi.png'),
-                    //     "name": "浏览历史"
-                    // },
-
-                ],
-                "title": "section2"
-            },
-            {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/shezhi.png'),
-                    //     "name": "设置"
-                    // },
-                ],
-                "title": "section3"
-            },
-            {
-                "cars": [
-                    {
-                        "icon": require('../../images/mainImage/shezhi.png'),
-                        "name": "blank"
-                    },
-                ],
-                "title": "section3"
-            },
-        ]
-
-        // StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-        //     if (data.code == 1) {
-        //         let datas = JSON.parse(data.result);
-        //         if(datas.user_level=='0'){
-        //             this.noCompany();
-        //         }else{
-        this.toCompany();
-        //         }
-        //     }
-        // });
-
-    }
-
-    noCompany = () => {
-        lastType = 'error';
-        this.changeData();
-    }
-
-    toCompany = () => {
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1) {
-                let datas = JSON.parse(data.result);
-                componyname = '';
-                if (datas.companyname == null || datas.companyname == '') {
-                    componyname = datas.name;
-                } else {
-                    componyname = datas.name + '(' + datas.companyname + ')';
-                }
-                let maps = {
-                    enter_base_ids: datas.company_base_id,
-                    child_type: '1'
-                };
-                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                    .then((response) => {
-                            haveOrder = response.mjson.data.order.tradeing_count;
-                            if (response.mjson.data.account == null || response.mjson.data.account.length <= 0) {
-                                lastType = 'error';
-                            } else {
-                                lastType = response.mjson.data.account.status;
-                            }
-                            // lastType = '3';、
-                            this.changeData();
-                        },
-                        (error) => {
-                            this.changeData();
-                        });
-            }
-        });
-    }
-    allRefresh = () => {
-        firstType = '-1';
-        lastType = '-1';
-        this.setState({
-            renderPlaceholderOnly: 'loading',
-        });
-        this.getData();
-    }
-
-    refreshingData = () => {
-        this.setState({isRefreshing: true});
-        this.getData();
     };
 
-    render() {
-        if (this.state.renderPlaceholderOnly !== 'success') {
-            return (
 
-                <View style={styles.container}>
+    initFinish = () => {
+        GetPermission.getCertificateVisiable((back) => {
+            firstType = '-1';
+            lastType = '-1';
+            haveOrder = 0;
+            componyname = '';
 
-                    {this.loadView()}
+            this.renzhengData = {
+                RenZhengVisiable: back,//是否显示认证条目 true 显示
+                enterpriseRenZheng: '',//企业是否认证 	0-> 未审核 1->审核中 2->通过  3->未通过
+                personRenZheng: '',//个人是否认证  0-> 未审核 1->审核中 2->通过  3->未通过
 
-                </View>
-            )
-        }
-        return (
+            };
 
-            <View style={styles.container}>
-                <ImageSource galleryClick={this._galleryClick}
-                             cameraClick={this._cameraClick}
-                             ref={(modal) => {
+            this.authenOptions = {
+                '1': [true, '请先完成认证后再进行操作', '取消', '', '个人认证', this._gerenrenzheng],
+                '2': [true, '请先完成认证后再进行操作', '取消', '', '企业认证', this._qiyerenzheng],
+                '3': [true, '认证未通过请重新认证，您可以重新认证或联系客服', '取消', '联系客服', '个人认证', this._gerenrenzheng, this.callAciton],
+                '4': [true, '认证未通过请重新认证，您可以重新认证或联系客服', '取消', '联系客服', '企业认证', this._qiyerenzheng, this.callAciton],
+                '5': [true, '您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。', '确定', '', '', () => {
+                }],
+                '6': [true, '您的认证申请正在审核中，您可查看所提交信息。我们会在一个工作日内向您反馈结果，请稍候。', '确定', '', '', () => {
+                }],
+                '7': [true, '需创建此账号的主账号通过个人认证后进行操作', '确定', '', '', () => {
+                }],
+                '8': [true, '需创建此账号的主账号通过企业认证后进行操作', '确定', '', '', () => {
+                }],
+            };
+
+			this.mColor = {
+				//0-> 未审核 1->审核中 2->通过  3->未通过
+				0: 'gray',
+				1: 'black',
+				2: 'black',
+				3: 'red'
+			}
+			this.getData();
+		});
+
+	}
+
+	changeData = () => {
+		StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+			if (data.code == 1) {
+				let user_list = [];
+				let datas = JSON.parse(data.result);
+				user_list.push(...Car);
+				GetPermission.getMineList((minList) => {
+					for (let i = 0; i < minList.length; i++) {
+						this.initData(minList[i].id, minList[i].name);
+					}
+					let jsonData = user_list;
+
+					//    定义变量
+					let dataBlob = {},
+						sectionIDs = [],
+						rowIDs = [];
+					for (let i = 0; i < jsonData.length; i++) {
+						//    1.拿到所有的sectionId
+						sectionIDs.push(i);
+
+						//    2.把组中的内容放入dataBlob内容中
+						dataBlob[i] = jsonData[i].title;
+
+						//    3.设置改组中每条数据的结构
+						rowIDs[i] = [];
+
+						//    4.取出改组中所有的数据
+						let cars = jsonData[i].cars;
+
+						//    5.便利cars,设置每组的列表数据
+						for (let j = 0; j < cars.length; j++) {
+							//    改组中的每条对应的rowId
+							rowIDs[i].push(j);
+
+							// 把每一行中的内容放入dataBlob对象中
+							dataBlob[i + ':' + j] = cars[j];
+						}
+					}
+					let getSectionData = (dataBlob, sectionID) => {
+						return dataBlob[sectionID];
+					};
+
+					let getRowData = (dataBlob, sectionID, rowID) => {
+						return dataBlob[sectionID + ":" + rowID];
+					};
+					let ds = new ListView.DataSource({
+							getSectionData: getSectionData,
+							getRowData: getRowData,
+							rowHasChanged: (r1, r2) => r1 !== r2,
+							sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+						}
+					);
+					this.setState({
+						source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+						name: datas.real_name,
+						phone: datas.phone,
+						headUrl: datas.head_portrait_url,
+						renderPlaceholderOnly: 'success',
+						isRefreshing: false
+					});
+				});
+
+			} else {
+				this.setState({
+					renderPlaceholderOnly: 'error',
+					isRefreshing: false
+				});
+			}
+		});
+	}
+
+	initData = (id, name) => {
+
+		if (id == 47) {
+			Car[0].cars.push({
+				"icon": require('../../images/mainImage/zhanghuguanli.png'),
+				"name": name
+				, "id": id
+			},);
+		} else if (id == 48) {
+			Car[0].cars.push({
+				"icon": require('../../images/mainImage/yuangongguanli.png'),
+				"name": name
+				, "id": id
+			},);
+		} else if (id == 49) {
+			Car[0].cars.push({
+				"icon": require('../../images/mainImage/switchcompony.png'),
+				"name": name
+				, "id": id
+			},);
+		} else if (id == 52) {
+			Car[2].cars.push({
+				"icon": require('../../images/mainImage/my_order.png'),
+				"name": name
+				, "id": id
+			},);
+		} else if (id == 50) {
+			Car[1].cars.push({
+				"icon": require('../../images/mainImage/youhuiquanguanli.png'),
+				"name": name
+				, "id": id
+			},);
+		} else if (id == 51) {
+			Car[1].cars.push({
+				"icon": require('../../images/mainImage/hetongguanli.png'),
+				"name": name
+				, "id": id
+			},);
+		} else if (id == 53) {
+			Car[2].cars.push({
+				"icon": require('../../images/mainImage/shoucangjilu.png'),
+				"name": name
+				, "id": id
+			},);
+		} else if (id == 54) {
+			Car[2].cars.push({
+				"icon": require('../../images/mainImage/liulanlishi.png'),
+				"name": name
+				, "id": id
+			},);
+		} else if (id == 56) {
+			Car[3].cars.push({
+				"icon": require('../../images/mainImage/shezhi.png'),
+				"name": name
+				, "id": id
+			},);
+		} else if (id == 100) {
+			Car[2].cars.push({
+				"icon": require('../../images/mainImage/myCarSource.png'),
+				"name": name
+				, "id": id
+			},);
+
+		}
+		else if (id == 58) {
+			Car[2].cars.push({
+				"icon": require('../../images/mainImage/my_yqdhl.png'),
+				"name": name
+				, "id": id
+			},);
+		}
+	}
+	getData = () => {
+		Car = [
+			{
+				"cars": [
+					// {
+					//     "icon": require('../../images/mainImage/zhanghuguanli.png'),
+					//     "name": "账户管理"
+					// },
+					// {
+					//     "icon": require('../../images/mainImage/yuangongguanli.png'),
+					//     "name": "员工管理"
+					// },
+					// {
+					//     "icon": require('../../images/mainImage/switchcompony.png'),
+					//     "name": "切换公司"
+					// },
+				],
+				"title": "section0"
+			},
+			{
+				"cars": [
+					// {
+					//     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
+					//     "name": "优惠券管理"
+					// },
+					// {
+					//     "icon": require('../../images/mainImage/hetongguanli.png'),
+					//     "name": "合同管理"
+					// },
+				],
+				"title": "section1"
+			},
+			{
+				"cars": [
+					// {
+					//     "icon": require('../../images/mainImage/myCarSource.png'),
+					//     "name": "我的车源"
+					// },
+					// {
+					//     "icon": require('../../images/mainImage/my_order.png'),
+					//     "name": "我的订单"
+					// },
+					// {
+					//     "icon": require('../../images/mainImage/shoucangjilu.png'),
+					//     "name": "收藏记录"
+					// },
+					// {
+					//     "icon": require('../../images/mainImage/liulanlishi.png'),
+					//     "name": "浏览历史"
+					// },
+
+				],
+				"title": "section2"
+			},
+			{
+				"cars": [
+					// {
+					//     "icon": require('../../images/mainImage/shezhi.png'),
+					//     "name": "设置"
+					// },
+				],
+				"title": "section3"
+			},
+			{
+				"cars": [
+					{
+						"icon": require('../../images/mainImage/shezhi.png'),
+						"name": "blank"
+					},
+				],
+				"title": "section3"
+			},
+		]
+
+
+		StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+			if (data.code == 1 && data.result != null) {
+				let datas = JSON.parse(data.result);
+				BASE_ID = [];
+				BASE_ID.push(datas.company_base_id);
+
+				StorageUtil.mGetItem(StorageKeyNames.BASE_USER_ID, (data2) => {
+
+					if (data2.code == 1 && data2.result != null) {
+						BASE_ID.push(data2.result)
+						let maps = {
+							base_id: BASE_ID,
+						};
+						request(Urls.GETCHECKSTATUS, 'post', maps).then((response) => {
+
+
+							if (response.mycode == "1") {
+								let dataResult = response.mjson.data;
+
+								this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
+								this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
+
+								this.toCompany();
+
+							} else {
+								this.setState({
+									renderPlaceholderOnly: 'error',
+									isRefreshing: false
+								});
+							}
+						}, (error) => {
+							this.props.showToast(error.msg);
+							this.setState({
+								renderPlaceholderOnly: 'error',
+								isRefreshing: false
+							});
+						});
+
+					} else {
+						this.props.showToast('获取个人信息失败');
+						this.setState({
+							renderPlaceholderOnly: 'error',
+							isRefreshing: false
+						});
+					}
+				});
+			} else {
+				this.props.showToast('获取企业信息失败');
+				this.setState({
+					renderPlaceholderOnly: 'error',
+					isRefreshing: false
+				});
+			}
+		});
+
+		// StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+		//     if (data.code == 1) {
+		//         let datas = JSON.parse(data.result);
+		//         if(datas.user_level=='0'){
+		//             this.noCompany();
+		//         }else{
+		// this.toCompany();
+
+
+		//         }
+		//     }
+		// });
+
+	}
+
+	noCompany = () => {
+		lastType = 'error';
+		this.changeData();
+	}
+
+	toCompany = () => {
+		StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+			if (data.code == 1) {
+				let datas = JSON.parse(data.result);
+				componyname = '';
+				if (datas.companyname == null || datas.companyname == '') {
+					componyname = datas.name;
+				} else {
+					componyname = datas.name + '(' + datas.companyname + ')';
+				}
+				let maps = {
+					enter_base_ids: datas.company_base_id,
+					child_type: '1'
+				};
+				request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+					.then((response) => {
+							haveOrder = response.mjson.data.order.tradeing_count;
+							if (response.mjson.data.account == null || response.mjson.data.account.length <= 0) {
+								lastType = 'error';
+							} else {
+								lastType = response.mjson.data.account.status;
+							}
+							// lastType = '3';、
+							this.changeData();
+						},
+						(error) => {
+							this.changeData();
+						});
+			}
+		});
+	}
+	allRefresh = () => {
+		firstType = '-1';
+		lastType = '-1';
+		this.setState({
+			renderPlaceholderOnly: 'loading',
+		});
+		this.getData();
+	}
+
+	refreshingData = () => {
+		this.setState({isRefreshing: true});
+		this.getData();
+	};
+
+	render() {
+		if (this.state.renderPlaceholderOnly !== 'success') {
+			return (
+
+				<View style={styles.container}>
+
+					{this.loadView()}
+
+				</View>
+			)
+		}
+		return (
+
+			<View style={styles.container}>
+				<ImageSource galleryClick={this._galleryClick}
+				             cameraClick={this._cameraClick}
+				             ref={(modal) => {
                                  this.imageSource = modal
                              }}/>
                 <ListView
@@ -431,6 +549,7 @@ export default class MineScene extends BaseComponent {
                     }
                 />
                 <AccountModal ref="accountmodal"/>
+                <AuthenticationModal ref="authenmodal"/>
             </View>
         )
     }
@@ -499,59 +618,85 @@ export default class MineScene extends BaseComponent {
     }
 
     _navigator(rowData) {
+        //先判断认证状态
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enterprise_id: datas.company_base_id,
+                    function_id: rowData.id,
+                    type: 'app'
+                };
+                request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                    if (response.mjson.data.auth == 0) {
+                        this._navigatorPage(rowData);
+                    } else {
+                        this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth + '']);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.msg);
+                });
+            } else {
+                this.props.showToast('获取企业信息失败');
+            }
+        });
+    }
+
+    _navigatorPage = (rowData) => {
         switch (rowData.id) {
-            case 15:
+            case 47:
                 this.toPage();
                 return
                 break;
-            case 17:
+            case 49:
                 this.props.toSelect();
                 return;
                 break;
-            case 18:
+            case 50:
                 this.navigatorParams.name = 'AdjustManageScene'
                 this.navigatorParams.component = AdjustManageScene
                 break;
             case '积分管理':
                 break;
-            case 19:
+            case 51:
                 this.navigatorParams.name = 'ContractManageScene'
                 this.navigatorParams.component = ContractManageScene
                 this.navigatorParams.params = {
                     from: 'xs'
                 }
                 break;
-            case 16:
+            case 48:
                 this.navigatorParams.name = 'EmployeeManageScene'
                 this.navigatorParams.component = EmployeeManageScene
                 break;
-            case 47:
+            case 100:
                 this.navigatorParams.name = 'MycarScene'
                 this.navigatorParams.component = MycarScene
                 break;
-            case 20:
+            case 52:
                 this.navigatorParams.name = 'OrderTypeSelectScene'
                 this.navigatorParams.component = OrderTypeSelectScene
                 break;
-            case 21:
-                this.navigatorParams.name = 'CarCollectsScene'
-                this.navigatorParams.component = CarCollectsScene
+            case 53:
+                this.navigatorParams.name = 'CarCollectSourceScene'
+                this.navigatorParams.component = CarCollectSourceScene
                 break;
-            case 22:
-                this.navigatorParams.name = 'BrowsingHistorysScene'
-                this.navigatorParams.component = BrowsingHistorysScene
+            case 54:
+                this.navigatorParams.name = 'BrowsingHistoryScene'
+                this.navigatorParams.component = BrowsingHistoryScene
                 break;
-            case 24:
+            case 56:
                 this.navigatorParams.name = 'Setting'
                 this.navigatorParams.component = Setting
                 break;
-            case 57:
+            case 58:
                 this.navigatorParams.name = 'YaoQingDeHaoLi'
                 this.navigatorParams.component = YaoQingDeHaoLi
                 break;
         }
+
         this.props.callBack(this.navigatorParams);
-    }
+    };
 
     // 每一行中的数据
     _renderRow = (rowData) => {
@@ -570,6 +715,7 @@ export default class MineScene extends BaseComponent {
         } else {
             return (
                 <TouchableOpacity style={styles.rowView} onPress={() => {
+
                     this._navigator(rowData)
                 }}>
 
@@ -669,22 +815,97 @@ export default class MineScene extends BaseComponent {
 
     _renderHeader = () => {
         return (
-            <View style={styles.headerViewStyle}>
-                <TouchableOpacity style={[styles.headerImageStyle]}>
-                    <Image
-                        source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
-                        style={{
+            <View style={{width:width}}>
+                <View style={styles.headerViewStyle}>
+                    <TouchableOpacity style={[styles.headerImageStyle]}>
+                        <Image
+                            source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
+                            style={{
                             width: Pixel.getPixel(65),
                             height: Pixel.getPixel(65), resizeMode: 'stretch'
                         }}
-                    />
-                </TouchableOpacity>
-                <Text allowFontScaling={false} style={styles.headerNameStyle}>
-                    {this.state.name}
-                </Text>
-                <Text allowFontScaling={false} style={styles.headerPhoneStyle}>
-                    {componyname}
-                </Text>
+                        />
+                    </TouchableOpacity>
+                    <Text allowFontScaling={false} style={styles.headerNameStyle}>
+                        {this.state.name}
+                    </Text>
+                    <Text allowFontScaling={false} style={styles.headerPhoneStyle}>
+                        {componyname}
+                    </Text>
+
+                </View>
+                {this.renzhengData.RenZhengVisiable != true ? null : <View
+                        style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+
+                        <TouchableOpacity onPress={() => {
+							if(this.renzhengData.personRenZheng == 2 || this.renzhengData.personRenZheng == 1){
+								//0-> 未审核 1->审核中 2->通过  3->未通过
+
+							}else {
+                                this._gerenrenzheng();
+							}
+                            }} activeOpacity={0.8}
+                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+                            <Image
+                                source={this.renzhengData.personRenZheng == 2  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
+                                style={{
+                            width: Pixel.getPixel(27),
+                            height: Pixel.getPixel(20),
+                            resizeMode: 'stretch',
+                            marginLeft:Pixel.getPixel(37)
+                        }}
+                            />
+                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
+
+                                <Text allowFontScaling={false}
+                                      style={{color:this.mColor[this.renzhengData.personRenZheng]}}
+
+                                >
+                                    {this._getRenZhengResult(this.renzhengData.personRenZheng)}
+
+                                </Text>
+                            </Text>
+                        </TouchableOpacity>
+
+                        <Image source={require('../../images/login/xuxian.png')}
+                               style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
+
+                        <TouchableOpacity onPress={() => {
+							if(this.renzhengData.enterpriseRenZheng == 2  || this.renzhengData.enterpriseRenZheng == 1){
+							//0-> 未审核 1->审核中 2->通过  3->未通过
+
+
+							}else {
+								this._qiyerenzheng();
+							}
+                            }} activeOpacity={0.8}
+                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+                            <Image
+                                source={this.renzhengData.enterpriseRenZheng == 2  ? require('../../images/login/qiyeyirenzheng.png') : require('../../images/login/qiyeweirenzheng.png')}
+                                style={{
+                            width: Pixel.getPixel(27),
+                            height: Pixel.getPixel(20),
+                            resizeMode: 'stretch',
+                            marginLeft:Pixel.getPixel(37)
+                        }}
+                            />
+                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
+
+                                <Text allowFontScaling={false}
+
+                                      style={{color:this.mColor[this.renzhengData.enterpriseRenZheng]}}
+
+                                >
+                                    {this._getRenZhengResult(this.renzhengData.enterpriseRenZheng)}
+
+                                </Text>
+                            </Text>
+
+                        </TouchableOpacity>
+
+                    </View>}
+
+
             </View>
         )
     }
@@ -706,6 +927,38 @@ export default class MineScene extends BaseComponent {
             });
         }
     }
+    _qiyerenzheng = () => {
+        this.navigatorParams.name = 'EnterpriseCertificate'
+        this.navigatorParams.component = EnterpriseCertificate
+        this.navigatorParams.params.callBack = this.allRefresh
+        this.navigatorParams.params.qiye_id = BASE_ID[0]
+        console.log('1111111111111111111');
+
+        console.log(this.navigatorParams.params.qiye_id);
+        console.log('1111111111111111111');
+        this.props.callBack(this.navigatorParams);
+    };
+    _getRenZhengResult = (result) => {
+        let renzheng = '(未认证)';
+        if (result == 1) {
+            renzheng = '(审核中)';
+        }
+        if (result == 2) {
+            renzheng = '(已认证)';
+        }
+        if (result == 3) {
+            renzheng = '(未通过)';
+        }
+        return renzheng;
+
+    };
+    _gerenrenzheng = () => {
+        this.navigatorParams.name = 'PersonCertificate'
+        this.navigatorParams.component = PersonCertificate
+        this.navigatorParams.params.callBack = this.allRefresh
+
+        this.props.callBack(this.navigatorParams);
+    };
 
     _labelPress = () => {
         this.imageSource.openModal();
@@ -751,7 +1004,7 @@ const styles = StyleSheet.create({
 
     headerViewStyle: {
 
-        height: Pixel.getPixel(210),
+        height: Pixel.getPixel(190),
         width: width,
         backgroundColor: fontAndClolr.COLORB0,
         alignItems: 'center',
@@ -761,7 +1014,7 @@ const styles = StyleSheet.create({
 
         width: Pixel.getPixel(65),
         height: Pixel.getPixel(65),
-        marginTop: Pixel.getPixel(55),
+        marginTop: Pixel.getPixel(45),
         justifyContent: 'center',
         alignItems: 'center',
 
@@ -770,13 +1023,13 @@ const styles = StyleSheet.create({
 
         color: 'white',
         fontSize: Pixel.getFontPixel(15),
-        marginTop: Pixel.getPixel(15),
+        marginTop: Pixel.getPixel(10),
         marginBottom: Pixel.getPixel(10),
         fontWeight: 'bold'
     },
     headerPhoneStyle: {
         color: 'white',
-        fontSize: Pixel.getFontPixel(12)
+        fontSize: Pixel.getFontPixel(12),
     },
     container: {
 
@@ -819,6 +1072,5 @@ const styles = StyleSheet.create({
         color: '#000',
 
     }
-
 
 });

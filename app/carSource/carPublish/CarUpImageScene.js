@@ -178,6 +178,7 @@ export default class CarUpImageScene extends BaseComponent{
           } else if(this.carData.v_type==3){
 
               for(let carImageObject of this.props.carConfigurationData.imported_car_pic){
+                  carImageObject.explain = 0;
                   carImageObject['imgArray'] = [];
                   this.titleData.push(carImageObject);
               }
@@ -310,7 +311,7 @@ export default class CarUpImageScene extends BaseComponent{
                 }
             }
         }
-        if(errorTitle!='')
+        if(errorTitle!='' && this.carData.v_type!=3)
         {
             this.props.showModal(false);
             this.props.showToast('请上传'+errorTitle+'图片');

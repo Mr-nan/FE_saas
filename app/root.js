@@ -15,7 +15,7 @@ import {
 
 import MyNavigator  from './component/MyNavigator';
 import * as fontAndColor from './constant/fontAndColor';
-
+import UmengPush from 'react-native-umeng-push';
 import ShowToast from "./component/toast/ShowToast";
 import * as weChat from 'react-native-wechat';
 
@@ -57,6 +57,7 @@ export default class root extends Component {
         }
     }
 
+
     showToast = (content) => {
         this.refs.toast.changeType(ShowToast.TOAST, content);
     }
@@ -64,4 +65,8 @@ export default class root extends Component {
     showModal = (value) => {
         this.refs.toast.showModal(value);
     }
+
+
 }
+
+

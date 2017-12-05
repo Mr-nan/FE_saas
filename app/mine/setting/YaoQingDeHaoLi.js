@@ -21,6 +21,7 @@ import * as FontAndColor from "../../constant/fontAndColor";
 import NavigationBar from "../../component/NavigationBar";
 import *as weChat from 'react-native-wechat';
 import WebViewTitle from './../../mine/accountManage/component/WebViewTitle'
+import RootScene from "../../main/RootScene";
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
@@ -48,6 +49,29 @@ export default class YaoQingDeHaoLi extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: 'blank',
             url: ""
+        }
+    }
+
+    backPage = () => {
+        if (this.props.from == 'RootScene') {
+            this.toNextPage({
+                name: 'RootScene',
+                component: RootScene
+            });
+        } else {
+            const navigator = this.props.navigator;
+            if (navigator) {
+                navigator.pop();
+            }
+        }
+    }
+
+    toNextPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.replace({
+                ...mProps
+            })
         }
     }
 

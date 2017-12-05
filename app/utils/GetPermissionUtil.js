@@ -267,14 +267,35 @@ const GetPermissionUtil = React.createClass({
                 if (data.data[i].id == 5) {
                     for (let j = 0; j < data.data[i].children.length; j++) {
                         list.push({
-                            id: data.data[i].children[j].id,
-                            name: data.data[i].children[j].name
+                            id: data.data[i].children[j].children[0].id,
+                            name: data.data[i].children[j].children[0].name
                         });
                     }
                 }
             }
             callBack(list);
         });
+    },getCertificateVisiable(callBack){
+		this.getData((data) => {
+		    let back = false;
+			for (let i = 0; i < data.data.length; i++) {
+				if (data.data[i].id == 5) {
+					for (let j = 0; j < data.data[i].children.length; j++) {
+					    if(data.data[i].children[j].id==59){
+					        back = true;
+					        break;
+
+                        }
+					}
+				}
+			}
+			if(back){
+			    callBack(true);
+            }else{
+			    callBack(false);
+            }
+
+		});
     }
 });
 
