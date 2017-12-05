@@ -42,17 +42,14 @@ import HomeJobItem from './component/HomeJobItem';
 import HomeRowButton from './component/HomeRowButton';
 import HomeAdvertisementButton from './component/HomeAdvertisementButton';
 import MessageListScene from "../message/MessageListScene";
-<<<<<<< HEAD
 import  StringTransformUtil from  '../utils/StringTransformUtil';
 let stringTransform  = new  StringTransformUtil();
-=======
 import * as Urls from '../constant/appUrls';
 import AuthenticationModal from '../component/AuthenticationModal';
 let Platform = require('Platform');
 import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
 import PersonCertificate from "../mine/certificateManage/PersonCertificate";
 
->>>>>>> develop
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
@@ -204,7 +201,6 @@ export default class HomeScene extends BaseComponet {
                 </View>
 
                 <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}
-<<<<<<< HEAD
                              callBack={(params)=>{this.props.callBack(params)}}/>
                 {/*<HomeRowButton onPress={(id)=>{*/}
                 {/*this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});*/}
@@ -225,13 +221,6 @@ export default class HomeScene extends BaseComponet {
                     }} title="推荐二手车源" type="8"
                     />
                 }
-
-=======
-                             callBack={(params)=>{this._checkAuthen(params)}}/>
-                <HomeRowButton onPress={(id)=>{
-                    this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});
-                }} list={this.carData}/>
->>>>>>> develop
                 <HomeAdvertisementButton click={()=>{
                     {/*this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);*/}
                 }}/>
@@ -537,20 +526,6 @@ export default class HomeScene extends BaseComponet {
                         this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
 
                     }
-
-                    {/*StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true',()=>{*/}
-                        {/*console.log('============='+sectionData+'==============');*/}
-                        {/*if(sectionData=='新车订阅'){*/}
-
-                            {/*this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);*/}
-
-                        {/*}else {*/}
-                            {/*this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);*/}
-
-                        {/*}*/}
-                    {/*});*/}
-
-
                 }}>
                     <View style={{
                         flexDirection: 'row',
