@@ -90,26 +90,25 @@ export default class DepositScene extends BaseComponent {
 
                         support_quick_deposit = response.mjson.data.support_quick_deposit
 
-                        if(support_quick_deposit === 1)
-                        {
+                        if (support_quick_deposit === 1) {
                             this.setState({
-                                deposit_style:0
+                                deposit_style: 0
                             })
                         }
 
-                        if(!(this.props.account.account_open_type == 2 && this.props.account.bind_bank_card_type == 1)){
+                        if (!(this.props.account.account_open_type == 2 && this.props.account.bind_bank_card_type == 1)) {
 
-                           if(this.state.deposit_style === -1){
-                               this.setState({
-                                   deposit_style:1
-                               })
+                            if (this.state.deposit_style === -1) {
+                                this.setState({
+                                    deposit_style: 1
+                                })
 
-                           }
+                            }
                         }
 
                         this.setState({
                             dayAmt: this.parse(response.mjson.data.limit_info.dayAmt),
-                            singleAmt:this.parse(response.mjson.data.limit_info.singleAmt),
+                            singleAmt: this.parse(response.mjson.data.limit_info.singleAmt),
                             total_amount: response.mjson.data.total_amount,
                             renderPlaceholderOnly: 'success'
                         })
@@ -130,13 +129,13 @@ export default class DepositScene extends BaseComponent {
     }
 
 
-    parse = (t)=>{
+    parse = (t) => {
 
         let n = parseInt(t)
-        if (n>10000){
-         return n/10000 + '万元'
-        }else {
-           return  n + '元'
+        if (n > 10000) {
+            return n / 10000 + '万元'
+        } else {
+            return n + '元'
         }
 
     }
@@ -198,9 +197,10 @@ export default class DepositScene extends BaseComponent {
 
                     <View style={{backgroundColor: 'white', marginTop: 10}}>
 
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center', flex:1}}>
 
                             {
+
                                 support_quick_deposit === 1 ?
                                     <TouchableOpacity
                                         style={this.state.deposit_style === 0 ? styles.deposit_container_selected : styles.deposit_container_deselected}
@@ -219,29 +219,30 @@ export default class DepositScene extends BaseComponent {
 
                             }
 
-                            {!(this.props.account.account_open_type == 2 && this.props.account.bind_bank_card_type == 1) ?
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <View style={{
-                                    width: .5,
-                                    height: 30,
-                                    marginRight: -0.5,
-                                    backgroundColor: FontAndColor.COLORA4
-                                }}/>
+                            {
+                                !(this.props.account.account_open_type == 2 && this.props.account.bind_bank_card_type == 1) ?
+                                    <View style={{flexDirection: 'row', alignItems: 'center', flex:1}}>
+                                        <View style={{
+                                            width: .5,
+                                            height: 30,
+                                            marginRight: -0.5,
+                                            backgroundColor: FontAndColor.COLORA4
+                                        }}/>
 
-                                <TouchableOpacity
-                                    style={this.state.deposit_style === 1 ? styles.deposit_container_selected : styles.deposit_container_deselected}
-                                    onPress={() => {
-                                        this.setState({
-                                            deposit_style: 1
-                                        })
-                                    }}
-                                    activeOpacity={.8}
-                                >
-                                    <SText
-                                        style={this.state.deposit_style === 1 ? styles.deposit_title_selected : styles.deposit_title_deselected}>非跨界充值</SText>
-                                </TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={this.state.deposit_style === 1 ? styles.deposit_container_selected : styles.deposit_container_deselected}
+                                            onPress={() => {
+                                                this.setState({
+                                                    deposit_style: 1
+                                                })
+                                            }}
+                                            activeOpacity={.8}
+                                        >
+                                            <SText
+                                                style={this.state.deposit_style === 1 ? styles.deposit_title_selected : styles.deposit_title_deselected}>非快捷充值</SText>
+                                        </TouchableOpacity>
 
-                            </View>:null
+                                    </View> : null
 
                             }
 
@@ -402,7 +403,6 @@ export default class DepositScene extends BaseComponent {
 
         )
     }
-
 
 
     //充值

@@ -39,20 +39,27 @@ export default class InformationFillScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        if (this.props.account_open_type === 1 && this.props.bind_bank_card_type === 0) {
+
+
+        console.log(props)
+
+        if (this.props.account.account_open_type === 1 && this.props.account.bind_bank_card_type === 0) {
             dose_need_old_number_sms_code = true;
+
         }
         this.state = {
             renderPlaceholderOnly: true,
         }
     }
 
+    componentWillUnmount() {
+        dose_need_old_number_sms_code = false
+    }
     initFinish = () => {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
         });
     }
-
 
     render() {
         if (this.state.renderPlaceholderOnly) {

@@ -172,7 +172,7 @@ export default class MyAccountItem extends BaseComponent {
                     request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
                         .then((response) => {
                             this.props.showModal(false);
-                           // this.pageDispense(type, 0);
+                            //this.pageDispense(type, 0);
                             this.pageDispense(type, response.mjson.data['316'][0].status);
 
                         }, (error) => {

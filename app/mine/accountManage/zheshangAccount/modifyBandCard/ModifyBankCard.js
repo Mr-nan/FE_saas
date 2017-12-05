@@ -88,7 +88,7 @@ export default class ModifyBankCard extends BaseComponent {
                         leftTextShow={false}
                         centerText={"更换银行卡"}
                         rightText={""}
-                        leftImageCallBack={()=>{
+                        leftImageCallBack={() => {
                             this.props.callBack()
                             this.backPage()
                         }}
@@ -98,88 +98,87 @@ export default class ModifyBankCard extends BaseComponent {
                     <ScrollView>
 
 
-                    <KeyboardAvoidingView  keyboardVerticalOffset={5}>
+                        <KeyboardAvoidingView keyboardVerticalOffset={5}>
 
 
+                            <View style={{width: width, marginTop: 15,}}>
 
-                    <View style={{width: width, marginTop: 15,}}>
+                                <TextInputItem
+                                    title={'资金账号'}
+                                    value={this.props.account.bank_card_no}
+                                    keyboardType={'numeric'}
+                                    editable={false}
+                                />
+                                <TextInputItem
+                                    title={'原银行卡'}
+                                    value={this.props.account.bind_bank_card_no}
+                                    editable={false}
+                                />
+                                <TextInputItem
+                                    title={'账户余额'}
+                                    value={this.props.account.balance}
+                                    textPlaceholder={'请输入短信验证码'}
+                                    keyboardType={'numeric'}
+                                    editable={false}
+                                    separator={false}
+                                />
 
-                        <TextInputItem
-                            title={'资金账号'}
-                            value={this.props.account.bank_card_no}
-                            keyboardType={'numeric'}
-                            editable={false}
-                        />
-                        <TextInputItem
-                            title={'原银行卡'}
-                            value={this.props.account.bind_bank_card_no}
-                            editable={false}
-                        />
-                        <TextInputItem
-                            title={'账户余额'}
-                            value={this.props.account.balance}
-                            textPlaceholder={'请输入短信验证码'}
-                            keyboardType={'numeric'}
-                            editable={false}
-                            separator={false}
-                        />
-
-                    </View>
-                    <View style={{width: width, marginTop: 15,}}>
-                        <TextInputItem
-                            ref={'bank_card_no'}
-                            title={'新银行卡'}
-                            textPlaceholder={'请输入您的新银行卡卡号'}
-                            keyboardType={'numeric'}
-                            //value={'6223093310090136493'}
-                            onChangeText={this.bank}
-                            loading={this.state.loading_bank}
-                            annotation={this.state.bankName}
-                        />
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.toNextPage({
-                                    component: ChooseBankNameScene,
-                                    name: 'ChooseBankNameScene',
-                                    params: {
-                                        callBack: this.bankComeBack,
-                                        bank_card_no: this.state.bankName===''?'': this.refs.bank_card_no.getInputTextValue()
-                                    },
-                                })
-                            }}
-                        >
-                            <TextInputItem
-                                ref={'bank_name'}
-                                titleStyle={{letterSpacing: 8}}
-                                inputTextStyle={{paddingLeft: 8}}
-                                title={'开户行'}
-                                textPlaceholder={'请输入开户行支行信息'}
-                                rightIcon={true}
-                                editable={false}
-                            />
-                        </TouchableOpacity>
-                        <TextInputItem
-                            ref='mobile_no'
-                            titleStyle={{letterSpacing: 8}}
-                            inputTextStyle={{paddingLeft: 8}}
-                            title={'手机号'}
-                            keyboardType={'numeric'}
-                            editable={false}
-                            rightButton={true}
-                            value={this.props.account.operate_mobile}
-                            callBackSms={this.smscode}
-                        />
-                        <TextInputItem
-                            ref='sms_code'
-                            titleStyle={{letterSpacing: 8}}
-                            inputTextStyle={{paddingLeft: 8}}
-                            title={'验证码'}
-                            keyboardType={'numeric'}
-                            textPlaceholder={'请输入短信验证码'}
-                            separator={false}
-                        />
-                    </View>
-                    </KeyboardAvoidingView>
+                            </View>
+                            <View style={{width: width, marginTop: 15,}}>
+                                <TextInputItem
+                                    ref={'bank_card_no'}
+                                    title={'新银行卡'}
+                                    textPlaceholder={'请输入您的新银行卡卡号'}
+                                    keyboardType={'numeric'}
+                                    //value={'6223093310090136493'}
+                                    onChangeText={this.bank}
+                                    loading={this.state.loading_bank}
+                                    annotation={this.state.bankName}
+                                />
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        this.toNextPage({
+                                            component: ChooseBankNameScene,
+                                            name: 'ChooseBankNameScene',
+                                            params: {
+                                                callBack: this.bankComeBack,
+                                                bank_card_no: this.state.bankName === '' ? '' : this.refs.bank_card_no.getInputTextValue()
+                                            },
+                                        })
+                                    }}
+                                >
+                                    <TextInputItem
+                                        ref={'bank_name'}
+                                        titleStyle={{letterSpacing: 8}}
+                                        inputTextStyle={{paddingLeft: 8}}
+                                        title={'开户行'}
+                                        textPlaceholder={'请输入开户行支行信息'}
+                                        rightIcon={true}
+                                        editable={false}
+                                    />
+                                </TouchableOpacity>
+                                <TextInputItem
+                                    ref='mobile_no'
+                                    titleStyle={{letterSpacing: 8}}
+                                    inputTextStyle={{paddingLeft: 8}}
+                                    title={'手机号'}
+                                    keyboardType={'numeric'}
+                                    editable={false}
+                                    rightButton={true}
+                                    value={this.props.account.operate_mobile}
+                                    callBackSms={this.smscode}
+                                />
+                                <TextInputItem
+                                    ref='sms_code'
+                                    titleStyle={{letterSpacing: 8}}
+                                    inputTextStyle={{paddingLeft: 8}}
+                                    title={'验证码'}
+                                    keyboardType={'numeric'}
+                                    textPlaceholder={'请输入短信验证码'}
+                                    separator={false}
+                                />
+                            </View>
+                        </KeyboardAvoidingView>
                     </ScrollView>
                     <MyButton buttonType={MyButton.TEXTBUTTON}
                               content={'更换银行卡'}
@@ -222,7 +221,7 @@ export default class ModifyBankCard extends BaseComponent {
                     user_type: this.props.account.account_open_type,
                     sub_acct_no: this.props.account.bank_card_no,
                     bank_name: bank_name,
-                    sub_bank_no:sub_bank_no,
+                    sub_bank_no: sub_bank_no,
                 }
 
 
@@ -281,7 +280,7 @@ export default class ModifyBankCard extends BaseComponent {
     // 解析银行卡所在总行名称
     bank = (text) => {
 
-        if (text.length < 10 && this.state.bankName !== '') {
+        if (text.length < 10) {
             this.setState({
                 bankName: ''
             })
@@ -302,18 +301,18 @@ export default class ModifyBankCard extends BaseComponent {
             })
             request(AppUrls.ZS_PARSE_BANK, 'POST', params).then((response) => {
 
+                this.setState({
+                    loading_bank: false,
+                })
+
                 if (response.mjson.data.info_list !== null && response.mjson.data.info_list.length > 0) {
                     this.setState({
                         bankName: response.mjson.data.info_list[0].subbankname,
                     })
-                    sub_bank_no=response.mjson.data.info_list[0].subbankno
+                    sub_bank_no = response.mjson.data.info_list[0].subbankno
                 }
 
-                console.log(response);
 
-                this.setState({
-                    loading_bank: false,
-                })
             }, (error) => {
                 this.setState({
                     loading_bank: false,
@@ -388,7 +387,8 @@ export default class ModifyBankCard extends BaseComponent {
 
 
     bankComeBack = (bank, sub_bank) => {
-        sub_bank_no:sub_bank.subbankno
+
+        sub_bank_no = sub_bank.subbankno ? sub_bank.subbankno : sub_bank_no
         bank_no = bank.bankno;
         this.refs.bank_name.setInputTextValue(bank.bankname)
     }

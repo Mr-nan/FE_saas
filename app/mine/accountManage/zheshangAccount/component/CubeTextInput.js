@@ -8,7 +8,8 @@ import {
     Text,
     View,
     TextInput,
-    PixelRatio
+    PixelRatio,
+    Keyboard
 } from "react-native";
 import * as FontAndColor from "../../../../constant/fontAndColor";
 import PixelUtil from "../../../../utils/PixelUtil";
@@ -22,6 +23,7 @@ let onePT = 1 / PixelRatio.get(); //一个像素
 let Size = 37;
 
 
+
 export default class CubeTextInput extends Component {
 
 
@@ -32,6 +34,20 @@ export default class CubeTextInput extends Component {
             focus:true
         }
     }
+
+    componentWillMount() {
+        this.k = Keyboard.addListener('keyboardDidHide', this.k_h)
+    }
+
+    componentWillUnmount() {
+        this.k.remove()
+    }
+
+    //键盘收起来了 哈哈
+    k_h = ()=>{
+        this.refs.text_input.blur()
+    }
+
 
     pushVules = (text) => {
 
@@ -108,9 +124,7 @@ export default class CubeTextInput extends Component {
                     onChangeText={(text) => {
                         this.onChangeText(text);
                     }}
-                    onSubmitEditing={(event) => {
-                        this.refs.text_input.blur()
-                    }}
+
                 />
             </View>
         )

@@ -63,7 +63,6 @@ export default class ChooseBankNameScene extends BaseComponent {
 
     componentWillUnmount() {
 
-        console.log('componentWillUnmount')
         selectedBank = {}
         selectedCity = {}
         selectedHeadBank = {}
@@ -201,20 +200,12 @@ export default class ChooseBankNameScene extends BaseComponent {
                     onEndReachedThreshold={1}
                     onEndReached={this.loadMore}
                     renderFooter={this.renderFooter}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            tintColor={fontAndColor.COLORB5}
-                            colors={[fontAndColor.COLORB5]}
-                            onRefresh={this.refreshing}
-                        />
-                    }
+
 
                 />
             </View>
         )
     }
-
 
     // t:text
     // p:page
@@ -233,8 +224,17 @@ export default class ChooseBankNameScene extends BaseComponent {
             })
             return
         }
+
+        if(p === 1){
+            page = p
+        }
+
         old_t = t
         old_p = p
+
+        this.setState({
+            isRefreshing: true,
+        })
 
         request(AppUrls.ZS_HEAD_BANK, 'post', {
             page: p,
@@ -277,16 +277,12 @@ export default class ChooseBankNameScene extends BaseComponent {
     }
 
     refreshing = (t) => {
-        banks = []
-        this.setState({
-            isRefreshing: true,
-        })
-        page = 1;
+
         if (this.props.bank_card_no == '') {
             this.loadHeadBank(t, 1)
         } else {
 
-            this.loadBanks(selectedCity.city_id, page)
+            this.loadBanks(selectedCity.city_id, 1)
         }
     }
 
@@ -301,14 +297,12 @@ export default class ChooseBankNameScene extends BaseComponent {
 
     renderFooter = () => {
 
-
         let sub_bank_name = this.state.value
-
 
         return <View style={{height: 40, justifyContent: 'center', alignItems: 'center'}}>
             {
                 banks.length > 0 ?
-                    <SText>{page >= totalPage ? '已全部加载' : '加载更多...'}</SText>
+                    <SText>{ page >  totalPage ? '已全部加载' : '加载更多...'}</SText>
                     :
 
                     this.props.bank_card_no == ''?
@@ -325,7 +319,27 @@ export default class ChooseBankNameScene extends BaseComponent {
 
         </View>
 
+    }
 
+    loadMore = () => {
+        page++;
+        if (page > totalPage) {
+
+            this.setState({
+                source: ds.cloneWithRows(banks)
+            })
+            return
+        }
+        if (this.props.bank_card_no == '') {
+            this.loadHeadBank(this.state.headValue, page)
+        } else {
+            if (this.props.bank_card_no == '') {
+                this.loadChildBank(page)
+            } else {
+
+                this.loadBanks(selectedCity.city_id, page)
+            }
+        }
     }
 
     renderRow = (data, sectionId, rowId) => {
@@ -359,6 +373,7 @@ export default class ChooseBankNameScene extends BaseComponent {
         </TouchableOpacity>
 
     }
+
     checkedCityClick = (city) => {
         selectedCity = city;
 
@@ -399,7 +414,17 @@ export default class ChooseBankNameScene extends BaseComponent {
     }
 
 
-    loadBanks = (city, page) => {
+    loadBanks = (city, p) => {
+
+        if(p ===1){
+            banks = []
+            page = 1
+        }
+
+        this.setState({
+            isRefreshing: true,
+        })
+
         let params = {
             bankCardNo: this.props.bank_card_no,
             cityCode: city,
@@ -423,29 +448,10 @@ export default class ChooseBankNameScene extends BaseComponent {
             })
             this.props.showToast(error.mjson.msg);
         })
-        console.log(city)
+
     }
 
 
-    loadMore = () => {
-        page++;
-        if (page > totalPage) {
-            page--;
-            return
-        }
-        if (this.props.bank_card_no == '') {
-            this.loadHeadBank(this.state.headValue, page)
-        } else {
-
-            if (this.props.bank_card_no == '') {
-                this.loadChildBank(page)
-            } else {
-
-                this.loadBanks(selectedCity.city_id, page)
-            }
-
-        }
-    }
 }
 
 

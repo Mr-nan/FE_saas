@@ -170,7 +170,7 @@ export default class NameAndIdScene extends BaseComponent {
                 }, (error)=>{
 
                        this.props.showModal(false)
-                       this.props.showToast(error.mycode)
+                       this.props.showToast(error.mjson.msg)
                 })
 
             }

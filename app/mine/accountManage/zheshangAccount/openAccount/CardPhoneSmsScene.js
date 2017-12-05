@@ -50,12 +50,12 @@ export default class CardPhoneSmsScene extends BaseComponent {
     constructor(props) {
         super(props);
 
-       type = parseInt(props.account.user_type)
+        type = parseInt(props.account.user_type)
         //type = 2;
         this.state = {
             renderPlaceholderOnly: true,
-            loading_bank:false,
-            bankName:'',  // 总行名,
+            loading_bank: false,
+            bankName: '',  // 总行名,
         }
     }
 
@@ -78,7 +78,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
                         leftImageShow={false}
                         leftTextShow={true}
                         leftText={""}
-                        centerText={type===1?'企业开户':'个人开户'}
+                        centerText={type === 1 ? '企业开户' : '个人开户'}
                         rightText={""}
                     />
                 </View>
@@ -96,29 +96,30 @@ export default class CardPhoneSmsScene extends BaseComponent {
                     <NavigationBar
                         leftImageShow={true}
                         leftTextShow={false}
-                        centerText={type===1?'企业开户':'个人开户'}
+                        centerText={type === 1 ? '企业开户' : '个人开户'}
                         rightText={""}
                         leftImageCallBack={this.backPage}
                     />
-                    <View style={{width: width, marginTop: 15,}} >
+                    <View style={{width: width, marginTop: 15,}}>
 
                         <TextInputItem
                             ref={'bank_card_no'}
                             title={'银行卡'}
-                            textPlaceholder={type === 1?'请输入企业银行卡号':'请输入您的银行卡号'}
+                            textPlaceholder={type === 1 ? '请输入企业银行卡号' : '请输入您的银行卡号'}
                             keyboardType={'numeric'}
                             onChangeText={this.bank}
                             loading={this.state.loading_bank}
                             annotation={this.state.bankName}
                         />
                         <TouchableOpacity
-                            onPress = {()=>{
+                            onPress={() => {
                                 this.toNextPage({
-                                    component:ChooseBankNameScene,
-                                    name:'ChooseBankNameScene',
-                                    params:{
-                                        callBack:this.bankComeBack,
-                                        bank_card_no: this.state.bankName === ''?'':this.refs.bank_card_no.getInputTextValue()},
+                                    component: ChooseBankNameScene,
+                                    name: 'ChooseBankNameScene',
+                                    params: {
+                                        callBack: this.bankComeBack,
+                                        bank_card_no: this.state.bankName === '' ? '' : this.refs.bank_card_no.getInputTextValue()
+                                    },
                                 })
                             }}
                         >
@@ -134,7 +135,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
                         <TextInputItem
                             ref={'mobile_no'}
                             title={'手机号'}
-                            textPlaceholder={type===1?'请输入经办人手机号':'请输入手机号'}
+                            textPlaceholder={type === 1 ? '请输入经办人手机号' : '请输入手机号'}
                             rightButton={true}
                             callBackSms={this.smscode}
                             maxLength={11}
@@ -153,28 +154,29 @@ export default class CardPhoneSmsScene extends BaseComponent {
                               childStyle={styles.buttonTextStyle}
                               mOnPress={this.next}/>
 
-                    <View style = {{flexDirection:'row', alignItems:'center'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
 
                         <TouchableWithoutFeedback
-                            onPress={()=>{
+                            onPress={() => {
                                 this.setState({
-                                    isChecked:!this.state.isChecked
+                                    isChecked: !this.state.isChecked
                                 })
                             }}
                         >
-                            <Image source={this.state.isChecked?require('../../../../../images/carSourceImages/checkIcone.png'):require('../../../../../images/carSourceImages/checkIcone_nil.png')}/>
+                            <Image
+                                source={this.state.isChecked ? require('../../../../../images/carSourceImages/checkIcone.png') : require('../../../../../images/carSourceImages/checkIcone_nil.png')}/>
                         </TouchableWithoutFeedback>
 
                         <TouchableWithoutFeedback
-                            onPress={()=>{
+                            onPress={() => {
                                 this.getTrustContract()
                             }}
                         >
                             <View
-                                style={{flexDirection:'row', alignItems:'center', marginLeft:6}}
+                                style={{flexDirection: 'row', alignItems: 'center', marginLeft: 6}}
                             >
-                                <SaasText style={{fontSize:13}}>我同意</SaasText>
-                                <SaasText style={{color:'blue', fontSize:13}}>《浙商银行存管通三方合作协议》</SaasText>
+                                <SaasText style={{fontSize: 13}}>我同意</SaasText>
+                                <SaasText style={{color: 'blue', fontSize: 13}}>《浙商银行存管通三方合作协议》</SaasText>
                             </View>
 
                         </TouchableWithoutFeedback>
@@ -201,9 +203,9 @@ export default class CardPhoneSmsScene extends BaseComponent {
                 // this.refs.openAccount.changeStateWithData(true, this.contractList);
 
                 this.toNextPage({
-                    component:WebScene,
-                    name:'WebScene',
-                    params:{webUrl:response.mjson.data.list[0].url, title:'协议'}
+                    component: WebScene,
+                    name: 'WebScene',
+                    params: {webUrl: response.mjson.data.list[0].url, title: '协议'}
                 })
 
 
@@ -214,53 +216,52 @@ export default class CardPhoneSmsScene extends BaseComponent {
     };
 
 
-    bankComeBack = (bank, sub_bank)=>{
-        sub_bank_no=sub_bank.subbankno
+    bankComeBack = (bank, sub_bank) => {
+        sub_bank_no = sub_bank.subbankno ? sub_bank.subbankno : sub_bank_no
         bank_no = bank.bankno;
-       this.refs.bank_name.setInputTextValue(bank.bankname)
+        this.refs.bank_name.setInputTextValue(bank.bankname)
 
-        console.log(bank.bankname.indexOf('浙商银行'))
     }
 
     // 通过银行卡号调后台接口，解索发卡行
-    bank = (text)=>{
+    bank = (text) => {
 
-        if (text.length<10 && this.state.bankName!==''){
+        if (text.length < 10) {
             this.setState({
-                bankName:''
+                bankName: ''
             })
             return;
         }
 
-        if(text.length>=10 &&this.state.bankName===''){
+        if (text.length >= 10 && this.state.bankName === '') {
 
             let params = {
-                bankCardNo:text,
-                page:1,
-                rows:20,
+                bankCardNo: text,
+                page: 1,
+                rows: 20,
             }
 
 
             this.setState({
-                loading_bank:true,
+                loading_bank: true,
             })
-            request(AppUrls.ZS_PARSE_BANK, 'POST', params).then((response)=>{
+            request(AppUrls.ZS_PARSE_BANK, 'POST', params).then((response) => {
 
-                if(response.mjson.data.info_list !== null&&response.mjson.data.info_list.length>0){
+                this.setState({
+                    loading_bank: false,
+                })
+
+                if (response.mjson.data.info_list !== null && response.mjson.data.info_list.length > 0) {
                     this.setState({
-                        bankName:response.mjson.data.info_list[0].subbankname,
+                        bankName: response.mjson.data.info_list[0].subbankname,
                     })
-                    sub_bank_no=response.mjson.data.info_list[0].subbankno
+                    sub_bank_no = response.mjson.data.info_list[0].subbankno
                 }
 
-                console.log(response);
 
+            }, (error) => {
                 this.setState({
-                    loading_bank:false,
-                })
-            }, (error)=>{
-                this.setState({
-                    loading_bank:false,
+                    loading_bank: false,
                 })
             })
         }
@@ -272,7 +273,9 @@ export default class CardPhoneSmsScene extends BaseComponent {
     // 开户
     next = () => {
         this.dismissKeyboard()
-        if(!this.verify(true)) {return}
+        if (!this.verify(true)) {
+            return
+        }
         this.props.showModal(true)
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1) {
@@ -286,75 +289,74 @@ export default class CardPhoneSmsScene extends BaseComponent {
                     device_code = 'dycd_platform_ios';
                 }
                 let params = {
-                    device_code:device_code,
+                    device_code: device_code,
                     enter_base_id: result.company_base_id,
                     mobile_no: mobile_no,
                     sub_acct_no: this.props.account.card_no,
-                    sub_acct_name:this.props.account.cust_name,
-                    acct_name:this.props.account.cust_name,
-                    acct_no:bank_card_no,
-                    acct_type:type,
-                    bank_no:bank_no,
-                    cert_no:this.props.account.cert_no,
-                    cert_type:1,
-                    sms_code:sms_code,
-                    sms_no:sms_no,
-                    user_type:type,
-                    bank_name:bank_name,
-                    sub_bank_no:sub_bank_no
+                    sub_acct_name: this.props.account.cust_name,
+                    acct_name: this.props.account.cust_name,
+                    acct_no: bank_card_no,
+                    acct_type: type,
+                    bank_no: bank_no,
+                    cert_no: this.props.account.cert_no,
+                    cert_type: 1,
+                    sms_code: sms_code,
+                    sms_no: sms_no,
+                    user_type: type,
+                    bank_name: bank_name,
+                    sub_bank_no: sub_bank_no
                 }
 
-                request(AppUrls.ZS_OPEN_ACCOUNT, 'POST', params).then((response)=>{
+                request(AppUrls.ZS_OPEN_ACCOUNT, 'POST', params).then((response) => {
 
                     this.props.showModal(false)
 
                     this.toNextPage({
-                        component:ResultIndicativeScene,
-                        name:'ResultIndicativeScene',
-                        params:{
-                            type:type === 1?1:0,
-                            status:(params.bank_name.indexOf('浙商银行')<0&&type===1)?3:1,
-                            params:params,
-                            append:this.state.bankName,
-                            callBack:this.props.callBack
+                        component: ResultIndicativeScene,
+                        name: 'ResultIndicativeScene',
+                        params: {
+                            type: type === 1 ? 1 : 0,
+                            status: (params.bank_name.indexOf('浙商银行') < 0 && type === 1) ? 3 : 1,
+                            params: params,
+                            append: this.state.bankName,
+                            callBack: this.props.callBack
                         }
                     })
 
 
-                }, (error)=>{
+                }, (error) => {
 
                     this.props.showModal(false)
 
-                    if(error.mycode===8010007){  // 存疑
+                    if (error.mycode === 8010007) {  // 存疑
 
                         this.toNextPage({
-                            component:ResultIndicativeScene,
-                            name:'ResultIndicativeScene',
-                            params:{
-                                type:type === 1?1:0,
-                                status:0,
-                                params:params,
-                                error:error.mjson,
-                                callBack:this.props.callBack
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type: type === 1 ? 1 : 0,
+                                status: 0,
+                                params: params,
+                                error: error.mjson,
+                                callBack: this.props.callBack
                             }
                         })
-                    }else if(error.mycode === -500 ||error.mycode === -300){
+                    } else if (error.mycode === -500 || error.mycode === -300) {
                         this.props.showToast(error.mycode)
-                    }else { // 开户失败
+                    } else { // 开户失败
                         this.toNextPage({
-                            component:ResultIndicativeScene,
-                            name:'ResultIndicativeScene',
-                            params:{
-                                type:type === 1?1:0,
-                                status:2,
-                                params:params,
-                                error:error.mjson,
-                                callBack:this.props.callBack
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type: type === 1 ? 1 : 0,
+                                status: 2,
+                                params: params,
+                                error: error.mjson,
+                                callBack: this.props.callBack
                             }
                         })
                     }
                 })
-
 
 
             }
@@ -366,7 +368,10 @@ export default class CardPhoneSmsScene extends BaseComponent {
     //获取短信验证码
     smscode = () => {
 
-        if(!this.verify(false)) { return};
+        if (!this.verify(false)) {
+            return
+        }
+        ;
 
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1) {
@@ -381,8 +386,8 @@ export default class CardPhoneSmsScene extends BaseComponent {
                 }
 
                 request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {
-                        this.refs.mobile_no.StartCountDown();
-                        sms_no=response.mjson.data.sms_no
+                    this.refs.mobile_no.StartCountDown();
+                    sms_no = response.mjson.data.sms_no
 
                 }, (error) => {
                     this.props.showToast('验证码发送失败')
@@ -426,7 +431,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
                 return false
             }
 
-            if(!this.state.isChecked){
+            if (!this.state.isChecked) {
                 this.props.showToast('请同意三方存管协议')
                 return false
             }
