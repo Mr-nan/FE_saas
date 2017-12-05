@@ -196,6 +196,7 @@ export default class MyAccountItem extends BaseComponent {
         let bankName = ''; //账户类型名称
         let accountState = ''; //账户状态
         let bankNo = ''; // 资金账号
+        let bindBankName = '**********'; // 绑定银行卡开户行
         if (this.props.type == '315') {
             back = require('../../../../images/account/hengfengback.png');
             bank = require('../../../../images/account/hengfengbank.png');
@@ -213,8 +214,12 @@ export default class MyAccountItem extends BaseComponent {
             accountState = '未开户';
         } else if (this.state.data.status === 1) {
             accountState = '未绑卡';
+            bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
         } else if (this.state.data.status === 2) {
             accountState = '未激活';
+            bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
+        } else {
+            bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
         }
         return (
             <View style={{alignItems: 'center'}}>
@@ -265,7 +270,7 @@ export default class MyAccountItem extends BaseComponent {
                                           textAlign: 'left',
                                           fontSize: Pixel.getPixel(12),
                                           color: fontAndColor.COLORA1
-                                      }}>{this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********'}</Text>
+                                      }}>{bindBankName}</Text>
                             </View>
                             {!this.state.data.status || this.state.data.status === 0 || this.state.data.status === 1 || this.state.data.status === 2 ?
                                 <Text
