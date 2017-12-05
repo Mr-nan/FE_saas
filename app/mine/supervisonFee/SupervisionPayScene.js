@@ -93,8 +93,8 @@ export default class SupervisionPayScene extends BaseComponent {
                             isRefreshing: false
                         });
                         this.setState({renderPlaceholderOnly: 'success'});
-                        this.props.freshData(listLength);
                     }
+                    this.props.freshData(listLength);
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});

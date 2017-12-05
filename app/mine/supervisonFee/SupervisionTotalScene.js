@@ -128,7 +128,7 @@ export default class SupervisionTotalScene extends BaseComponent {
         this.setState({
             renderPlaceholderOnly: 'loading',
         });
-        this.getData(false);
+        this.getData();
     }
 
     toPage = () => {
@@ -197,7 +197,7 @@ export default class SupervisionTotalScene extends BaseComponent {
         params: {}
     }
 
-    getData = (isFirst) => {
+    getData = () => {
         this.noPayNum = [];
         this.payNum = [];
         this.nums = [];
@@ -215,7 +215,17 @@ export default class SupervisionTotalScene extends BaseComponent {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
                         // allPage = data.total / 10;
+                        allSouce=[];
                         allSouce.push(...data.order_list);
+                        allSouce.map((data) => {
+                            if (data.pay_status == '3') {
+                                this.payNum.push(data);
+                            } else if (data.pay_status == '1') {
+                                this.noPayNum.push(data);
+                            }
+                        });
+                        this.nums.push(this.payNum.length);
+                        this.nums.push(this.noPayNum.length);
                         this.payFee = parseFloat(data.supervision_fee_total).toFixed(2);
                         this.setState({
                             dataSource: this.ds.cloneWithRows(allSouce),
@@ -224,18 +234,7 @@ export default class SupervisionTotalScene extends BaseComponent {
                             noPay: this.payFee > 0 ? true : false
 
                         });
-                        if(isFirst){
-                            allSouce.map((data) => {
-                                if (data.pay_status == '3') {
-                                    this.payNum.push(data);
-                                } else if (data.pay_status == '1') {
-                                    this.noPayNum.push(data);
-                                }
-                            });
-                            this.nums.push(this.payNum.length);
-                            this.nums.push(this.noPayNum.length);
                             this.props.freshData(this.nums);//第一次进来刷新未付已付订单标识
-                        }
                     }
 
                 },

@@ -72,7 +72,7 @@ export default class SupervisionFeeScene extends BaseComponent {
         this.props.showToast(msg);
     }
 
-    freshData = (noPayNum) => {
+    freshNopayData = (noPayNum) => {
         this.noPayLength.freshPagNum(noPayNum);
     }
     freshPayData = (payNum) => {
@@ -108,7 +108,7 @@ export default class SupervisionFeeScene extends BaseComponent {
                         showToast={this.showToast}
                         showLoading={this._showLoadingModal}/>
                     <SupervisionNoPayScene
-                        freshData={this.freshData}
+                        freshData={this.freshNopayData}
                         tabLabel="no-pay"
                         navigator={this.props.navigator} tabNum={'1'}
                         closeLoading={this._closeLoadingModal}

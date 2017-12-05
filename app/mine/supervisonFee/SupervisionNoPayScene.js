@@ -225,8 +225,8 @@ export default class SupervisionNoPayScene extends BaseComponent {
                             noPay: this.payFee > 0 ? true : false
 
                         });
-                        this.props.freshData(listLength);
                     }
+                    this.props.freshData(listLength);
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});

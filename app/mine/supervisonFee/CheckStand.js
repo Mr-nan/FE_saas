@@ -197,40 +197,6 @@ export default class CheckStand extends BaseComponent {
         }
     }
 
-    checkInitialPay = () => {
-        this.props.showModal(true);
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    company_id: datas.company_base_id,
-                    order_id: this.props.orderId,
-                    trans_serial_no: this.transSerialNo
-                };
-                let url = AppUrls.FIRST_PAYMENT_PAY_CALLBACK;
-                request(url, 'post', maps).then((response) => {
-                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        if (response.mjson.data.pay_status == 3) {
-                            this.props.showToast('支付成功');
-                            this.props.callBack();
-                            this.backPage();
-                        } else {
-                            this.props.showToast('支付失败');
-                        }
-                    } else {
-                        this.props.showToast(response.mjson.msg);
-                    }
-                }, (error) => {
-                    //this.props.showToast('账户支付检查失败');
-                    this.props.showToast(error.mjson.msg);
-                });
-            } else {
-                this.props.showToast('账户支付检查失败');
-            }
-        });
-    };
-
-
     goPay = () => {
 
         this.goInitialPay();
@@ -254,10 +220,9 @@ export default class CheckStand extends BaseComponent {
                     params: {
                         title: '支付',
                         webUrl: response.mjson.data.transfer_accounts_url,
-                        callBack: () => {
-                            this.checkInitialPay()
-                        },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
-                        backUrl: webBackUrl.PAY
+                        backUrl: webBackUrl.SUPERVICEPAY,
+                        callBack:
+                            ()=>{this.props.callBack()}
                     }
                 });
             } else {
