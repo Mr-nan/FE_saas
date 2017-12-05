@@ -103,7 +103,7 @@ export  default class AccountSettingScene extends BaseComponent {
                 </TouchableOpacity>
                 <View style={{height: Pixel.getPixel(5)}}/>
                 {
-                    this.state.accountOpenType == 2 && this.state.trustAccountState == 0 &&(<TouchableOpacity style={[styles.cellView, {height: Pixel.getPixel(50)}]}
+                    this.state.accountOpenType == 2 && this.state.trustAccountState == 0 &&(<TouchableOpacity style={styles.cellView}
                                       onPress={this.getTrustContract}>
                         <View style={{justifyContent: 'center'}}>
                             <Text allowFontScaling={false} style={{color: '#000', fontSize: Pixel.getFontPixel(14)}}>开通白条账户</Text>
