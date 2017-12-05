@@ -189,7 +189,7 @@ export default class DepositScene extends BaseComponent {
                             <SText style={{
                                 fontSize: 17,
                                 marginBottom: 10
-                            }}>{this.props.account.bank_name}账户 {this.props.account.bind_bank_card_name}</SText>
+                            }}>{this.props.account.sub_bank_name}账户 {this.props.account.bind_bank_card_name}</SText>
                             <SText
                                 style={{color: FontAndColor.COLORA1}}>{'快捷充值限额' + this.state.singleAmt + '/笔 ' + this.state.dayAmt + '/日'}</SText>
                         </View>

@@ -33,6 +33,7 @@ let Platform = require('Platform');
 
 let bank_no = '' // 支行编号
 let sub_bank_no = '' //总行编号
+let sub_bank_name = '' //总行名字
 let bank_card_no = ''
 let bank_name = ''
 let mobile_no = ''
@@ -222,6 +223,7 @@ export default class ModifyBankCard extends BaseComponent {
                     sub_acct_no: this.props.account.bank_card_no,
                     bank_name: bank_name,
                     sub_bank_no: sub_bank_no,
+                    sub_bank_name:sub_bank_name
                 }
 
 
@@ -310,6 +312,7 @@ export default class ModifyBankCard extends BaseComponent {
                         bankName: response.mjson.data.info_list[0].subbankname,
                     })
                     sub_bank_no = response.mjson.data.info_list[0].subbankno
+                    sub_bank_name = sub_bank.subbankname? sub_bank.subbankname: sub_bank_name
                 }
 
 
@@ -389,6 +392,7 @@ export default class ModifyBankCard extends BaseComponent {
     bankComeBack = (bank, sub_bank) => {
 
         sub_bank_no = sub_bank.subbankno ? sub_bank.subbankno : sub_bank_no
+        sub_bank_name = sub_bank.subbankname? sub_bank.subbankname: sub_bank_name
         bank_no = bank.bankno;
         this.refs.bank_name.setInputTextValue(bank.bankname)
     }

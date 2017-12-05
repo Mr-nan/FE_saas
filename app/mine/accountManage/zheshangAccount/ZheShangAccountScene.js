@@ -131,7 +131,7 @@ export default class ZheShangAccountScene extends BaseComponent {
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
                     removeClippedSubviews={false}
-                    style={{marginTop: Pixel.getTitlePixel(64), marginBottom: Pixel.getPixel(45)}}
+                    style={{marginTop: Pixel.getTitlePixel(64)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderHeader={this._renderHeader}
@@ -303,25 +303,31 @@ export default class ZheShangAccountScene extends BaseComponent {
             return (<View/>);
         } else {
             return (
-                <View style={{
-                    width: width, height: Pixel.getPixel(72), backgroundColor: '#fff', flexDirection: 'row',
-                    paddingRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(15)
-                }}>
-                    <View style={{flex: 1, justifyContent: 'center'}}>
-                        <Text allowFontScaling={false} style={{color: '#000', fontSize: Pixel.getPixel(14)}}>
-                            {movie.operate_name}
-                        </Text>
-                        <Text allowFontScaling={false}
-                              style={{color: fontAndColor.COLORA1, fontSize: Pixel.getPixel(12)}}>
-                            {movie.create_time}
-                        </Text>
-                    </View>
-                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
-                        <Text allowFontScaling={false} style={{color: '#000', fontSize: Pixel.getPixel(20)}}>
-                            {movie.amount}
-                        </Text>
-                    </View>
-                </View>
+
+                <View/>
+                //
+                //
+                // <View style={{
+                //     width: width, height: Pixel.getPixel(72), backgroundColor: fontAndColor.COLORA3, flexDirection: 'row',
+                //     paddingRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(15)
+                // }}>
+                //     <View style={{flex: 1, justifyContent: 'center'}}>
+                //         <Text allowFontScaling={false} style={{color: '#000', fontSize: Pixel.getPixel(14)}}>
+                //             {movie.operate_name}
+                //         </Text>
+                //         <Text allowFontScaling={false}
+                //               style={{color: fontAndColor.COLORA1, fontSize: Pixel.getPixel(12)}}>
+                //             {movie.create_time}
+                //         </Text>
+                //     </View>
+                //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                //         <Text allowFontScaling={false} style={{color: '#000', fontSize: Pixel.getPixel(20)}}>
+                //             {movie.amount}
+                //         </Text>
+                //     </View>
+                // </View>
+                //
+                //
             )
         }
     }

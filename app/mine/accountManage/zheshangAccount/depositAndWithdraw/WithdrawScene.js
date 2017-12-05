@@ -136,7 +136,7 @@ export default class WithdrawScene extends BaseComponent {
                         <Image source={require('../../../../../images/account/zheshang_bank.png')}
                                style={{width: 55, height: 55, marginHorizontal: 15}}/>
                         <View>
-                            <SText style={{fontSize: 17, marginBottom: 10}}>{this.props.account.bank_name}</SText>
+                            <SText style={{fontSize: 17, marginBottom: 10}}>{this.props.account.sub_bank_name}</SText>
                             <SText
                                 style={{color: FontAndColor.COLORA1}}>{this.props.account.bind_bank_card_name}{s}</SText>
                         </View>

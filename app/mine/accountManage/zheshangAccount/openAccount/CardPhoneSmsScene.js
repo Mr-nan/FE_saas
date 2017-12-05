@@ -36,6 +36,7 @@ let Platform = require('Platform');
 let bank_card_no = ''
 let bank_no = '' //支行编号
 let sub_bank_no = ''  //总行编号
+let sub_bank_name = '' //总行名字
 let bank_name = ''
 let mobile_no = ''
 let sms_code = ''
@@ -218,6 +219,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
 
     bankComeBack = (bank, sub_bank) => {
         sub_bank_no = sub_bank.subbankno ? sub_bank.subbankno : sub_bank_no
+        sub_bank_name = sub_bank.subbankname? sub_bank.subbankname: sub_bank_name
         bank_no = bank.bankno;
         this.refs.bank_name.setInputTextValue(bank.bankname)
 
@@ -256,6 +258,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
                         bankName: response.mjson.data.info_list[0].subbankname,
                     })
                     sub_bank_no = response.mjson.data.info_list[0].subbankno
+                    sub_bank_name = response.mjson.data.info_list[0].subbankname
                 }
 
 
@@ -304,7 +307,8 @@ export default class CardPhoneSmsScene extends BaseComponent {
                     sms_no: sms_no,
                     user_type: type,
                     bank_name: bank_name,
-                    sub_bank_no: sub_bank_no
+                    sub_bank_no: sub_bank_no,
+                    sub_bank_name:sub_bank_name
                 }
 
                 request(AppUrls.ZS_OPEN_ACCOUNT, 'POST', params).then((response) => {
