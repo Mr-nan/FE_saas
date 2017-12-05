@@ -34,9 +34,9 @@ export  default class AccountTitle extends PureComponent {
     constructor(props) {
         super(props);
         list = [];
-        if (this.props.info.account_open_type == 2 && this.props.trustAccountState == 0) {   // 只支持个人户开通信托账户，未来会有变动
+/*        if (this.props.info.account_open_type == 2 && this.props.trustAccountState == 0) {   // 只支持个人户开通信托账户，未来会有变动
             list.push(new listValue('开通白条账户', require('../../../../images/account/trustAccountLog.png'), this.props.openTrustAccount));
-        }
+        }*/
         list.push(new listValue('转账', require('../../../../images/mainImage/Transfer.png'), this.props.transfer));
         list.push(new listValue('银行卡', require('../../../../images/mainImage/bankCard.png'), this.props.bankCard));
         list.push(new listValue('账户流水', require('../../../../images/mainImage/flow.png'), this.props.flow));
@@ -51,7 +51,7 @@ export  default class AccountTitle extends PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        list = [];
+/*        list = [];
         if (nextProps.info.account_open_type == 2 && nextProps.trustAccountState == 0) {   // 只支持个人户开通信托账户，未来会有变动
             list.push(new listValue('开通白条账户', require('../../../../images/account/trustAccountLog.png'), this.props.openTrustAccount));
         }
@@ -62,7 +62,7 @@ export  default class AccountTitle extends PureComponent {
         list.push(new listValue('重置交易密码', require('../../../../images/mainImage/resetPwd.png'), this.props.resetPwd));
         list.push(new listValue('修改银行预留手机号码', require('../../../../images/mainImage/changePhone.png'), this.props.changePhone));
         list.push(new listValue('账户设置', require('../../../../images/mainImage/accountSetting.png'), this.props.accountSetting));
-        this.setState({dataList: list});
+        this.setState({dataList: list});*/
     }
 
     /**

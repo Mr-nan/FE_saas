@@ -22,8 +22,11 @@ import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 import Switch from './component/Switch';
 import AccountDeductProtocolScene from "./AccountDeductProtocolScene";
+import OpenTrustAccountView from "./component/OpenTrustAccountView";
 export  default class AccountSettingScene extends BaseComponent {
 
     constructor(props) {
@@ -33,6 +36,8 @@ export  default class AccountSettingScene extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: 'blank',
             protocolType:0,
+            accountOpenType: this.props.accountOpenType,
+            trustAccountState: this.props.trustAccountState
         };
     }
 
@@ -96,6 +101,22 @@ export  default class AccountSettingScene extends BaseComponent {
                         <Image style={{marginLeft:Pixel.getPixel(5)}} source={require('../../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </TouchableOpacity>
+                <View style={{height: Pixel.getPixel(5)}}/>
+                {
+                    this.state.accountOpenType == 2 && this.state.trustAccountState == 0 &&(<TouchableOpacity style={[styles.cellView, {height: Pixel.getPixel(50)}]}
+                                      onPress={this.getTrustContract}>
+                        <View style={{justifyContent: 'center'}}>
+                            <Text allowFontScaling={false} style={{color: '#000', fontSize: Pixel.getFontPixel(14)}}>开通白条账户</Text>
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                            <Image style={{marginLeft: Pixel.getPixel(5)}}
+                                   source={require('../../../images/mainImage/celljiantou.png')}/>
+                        </View>
+                    </TouchableOpacity>)
+                }
+                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}
+                                      showModal={this.props.showModal}
+                                      navigator={this.props.navigator}/>
                 <NavigationView
                     title="账户设置"
                     backIconClick={this.backPage}
@@ -115,6 +136,65 @@ export  default class AccountSettingScene extends BaseComponent {
             </View>
         );
     }
+
+    /**
+     *   获取信托相关可供浏览的合同
+     **/
+    getTrustContract = () => {
+        this.props.showModal(true);
+        let maps = {
+            source_type: '3',
+            fund_channel: '信托'
+        };
+        request(Urls.AGREEMENT_LISTS, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                //console.log('USER_ACCOUNT_INFO=====', response.mjson.data['zsyxt'].status);
+                /*                this.toNextPage({
+                 name: 'AccountFlowScene',
+                 component: AccountFlowScene, params: {}
+                 })*/
+                this.contractList = response.mjson.data.list;
+                this.refs.openAccount.changeStateWithData(true, this.contractList);
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+            });
+    };
+
+    /**
+     *   开通信托账户
+     **/
+    openTrustAccount = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_id: datas.company_base_id
+                    //enter_base_id: 8018
+                };
+                request(Urls.OPEN_PERSON_TRUST_ACCOUNT, 'Post', maps)
+                    .then((response) => {
+                        this.props.showModal(false);
+                        this.props.showToast('升级成功');
+                        //this.trustAccountState = 3;
+                        // 此接口未返回开户成功后的账户状态，手动置为3，
+                        // 配合setState用以触发AccountTitle中componentWillReceiveProps生命周期方法
+                        this.props.changeState(3);
+                        this.setState({
+                            trustAccountState: 3
+                        });
+                    }, (error) => {
+                        this.props.showModal(false);
+                        this.props.showToast(error.mjson.msg);
+                    });
+            } else {
+                this.props.showModal(false);
+                this.props.showToast('升级失败');
+            }
+        });
+    };
 
     pushDeductProtocol=()=>{
         this.toNextPage({
