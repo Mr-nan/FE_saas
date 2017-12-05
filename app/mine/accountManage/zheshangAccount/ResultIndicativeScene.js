@@ -321,6 +321,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                 request(AppUrls.ZS_FETCH_STATUS, 'Post', maps)
                     .then((response) => {
 
+                        this.props.error.msg = response.mjson.data.transfer_msg;
                         this.setState({
                             status: response.mjson.data.transfer_status,
                             renderPlaceholderOnly: 'success',

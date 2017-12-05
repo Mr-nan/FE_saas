@@ -42,6 +42,7 @@ let selectedCity = {}
 let selectedHeadBank = {}
 let page = 0;
 let totalPage = 1
+let total = 0
 let banks = []
 let old_t = ''  //查询过的关键字
 let old_p = 1  //查询过的页数
@@ -150,9 +151,12 @@ export default class ChooseBankNameScene extends BaseComponent {
                     activeOpacity={.9}
                     onPress={() => {
 
-                        if ((this.props.bank_card_no == '') && (selectedHeadBank.subbankname == '' || typeof (selectedHeadBank.subbankname) == 'undefined')) {
+                        console.log(selectedHeadBank)
+                        if ((this.props.bank_card_no == '') && (selectedHeadBank.subbankname == '' || typeof (selectedHeadBank.subbankname) == 'undefined'||this.state.headValue == '')) {
                             this.props.showToast('请输入开户行名称');
-                        } else {
+                        } else if((this.props.bank_card_no == '') && (selectedHeadBank.subbankname !== this.state.headValue)){
+                            this.props.showToast('请输入正确的开户行名称');
+                        }else {
                             this.toNextPage({
 
                                 component: ProvinceListScene,
@@ -165,8 +169,6 @@ export default class ChooseBankNameScene extends BaseComponent {
                                 }
                             })
                         }
-
-
                     }}
                 >
 
@@ -246,6 +248,7 @@ export default class ChooseBankNameScene extends BaseComponent {
             }
             banks.push(...response.mjson.data.info_list)
             totalPage = response.mjson.data.totalpage;
+            total = response.mjson.data.total;
 
             this.setState({
                 isRefreshing: false,
@@ -302,7 +305,7 @@ export default class ChooseBankNameScene extends BaseComponent {
         return <View style={{height: 40, justifyContent: 'center', alignItems: 'center'}}>
             {
                 banks.length > 0 ?
-                    <SText>{ page >  totalPage ? '已全部加载' : '加载更多...'}</SText>
+                    <SText>{ banks.length >= total ? '已全部加载' : '加载更多...'}</SText>
                     :
 
                     this.props.bank_card_no == ''?
@@ -399,11 +402,19 @@ export default class ChooseBankNameScene extends BaseComponent {
 
             banks.push(...response.mjson.data.info_list)
             totalPage = response.mjson.data.totalpage;
-            console.log(response)
+            total = response.mjson.data.total;
             this.setState({
                 isRefreshing: false,
                 source: ds.cloneWithRows(banks)
             })
+
+            if(banks.length<=0){
+
+                selectedBank = {}
+                this.setState({
+                    value:''
+                })
+            }
 
         }, (error) => {
             this.setState({
@@ -436,6 +447,7 @@ export default class ChooseBankNameScene extends BaseComponent {
 
             banks.push(...response.mjson.data.info_list)
             totalPage = response.mjson.data.totalpage;
+            total = response.mjson.data.total;
             console.log(response)
             this.setState({
                 isRefreshing: false,
@@ -450,8 +462,6 @@ export default class ChooseBankNameScene extends BaseComponent {
         })
 
     }
-
-
 }
 
 

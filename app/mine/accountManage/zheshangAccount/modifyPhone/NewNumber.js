@@ -134,7 +134,7 @@ export default class NameAndIdScene extends BaseComponent {
                 }
 
                 request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {
-                    this.refs.mobile_no.StartCountDown();
+                    this.refs.new_mobile.StartCountDown();
                     new_sms_no=response.mjson.data.sms_no
                     console.log(response);
 
