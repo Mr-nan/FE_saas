@@ -245,15 +245,15 @@ export default class CheckStand extends BaseComponent {
             api:url
         };
         request(AppUrls.FINANCE, 'post', maps).then((response) => {
-            if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                this.props.showModal(false);
+            this.props.showModal(false);
+            if (response.mjson.code === 1) {
                 this.transSerialNo = response.mjson.data.trans_serial_no;
                 this.toNextPage({
                     name: 'AccountWebScene',
                     component: AccountWebScene,
                     params: {
                         title: '支付',
-                        webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
+                        webUrl: response.mjson.data.transfer_accounts_url,
                         callBack: () => {
                             this.checkInitialPay()
                         },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作

@@ -64,7 +64,7 @@ export default class SupervisionTotalScene extends BaseComponent {
     initFinish = () => {
         page = 1;
         allSouce = [];
-        this.getData();
+        this.getData(true);
     }
 
     componentDidUpdate() {
@@ -109,6 +109,7 @@ export default class SupervisionTotalScene extends BaseComponent {
                                 isVisible: this.isVisible,
                                 accountStatus: this.accountStatus
                             });
+                            this.flag=false;
 
                         },
                         (error) => {
@@ -127,7 +128,7 @@ export default class SupervisionTotalScene extends BaseComponent {
         this.setState({
             renderPlaceholderOnly: 'loading',
         });
-        this.getData();
+        this.getData(false);
     }
 
     toPage = () => {
@@ -196,7 +197,7 @@ export default class SupervisionTotalScene extends BaseComponent {
         params: {}
     }
 
-    getData = () => {
+    getData = (isFirst) => {
         this.noPayNum = [];
         this.payNum = [];
         this.nums = [];
@@ -215,8 +216,6 @@ export default class SupervisionTotalScene extends BaseComponent {
                     } else {
                         // allPage = data.total / 10;
                         allSouce.push(...data.order_list);
-                        this.nums.push(this.payNum.length);
-                        this.nums.push(this.noPayNum.length);
                         this.payFee = parseFloat(data.supervision_fee_total).toFixed(2);
                         this.setState({
                             dataSource: this.ds.cloneWithRows(allSouce),
@@ -225,7 +224,7 @@ export default class SupervisionTotalScene extends BaseComponent {
                             noPay: this.payFee > 0 ? true : false
 
                         });
-                        if (this.flag) {
+                        if(isFirst){
                             allSouce.map((data) => {
                                 if (data.pay_status == '3') {
                                     this.payNum.push(data);
@@ -233,8 +232,9 @@ export default class SupervisionTotalScene extends BaseComponent {
                                     this.noPayNum.push(data);
                                 }
                             });
+                            this.nums.push(this.payNum.length);
+                            this.nums.push(this.noPayNum.length);
                             this.props.freshData(this.nums);//第一次进来刷新未付已付订单标识
-                            this.flag=false;
                         }
                     }
 
