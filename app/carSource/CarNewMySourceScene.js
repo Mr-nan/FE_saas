@@ -252,8 +252,11 @@ export default class CarNewMySourceScene extends BaceComponent {
                 });
 
         } else if(type=='上架'){
-
-            this.carAction(2,this.groupStr,this.carData.id);
+            if(!this.carData.stock){
+                this.props.showToast('在售车辆数为0，请先增加库存，再申请上架');
+            }else {
+                this.carAction(2,this.groupStr,this.carData.id);
+            }
 
         } else if(type=='编辑'){
 

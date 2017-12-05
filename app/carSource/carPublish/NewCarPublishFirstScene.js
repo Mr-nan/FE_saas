@@ -131,8 +131,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                     data: [{title: '有现车', value: 1}, {title: '无现车', value: 0}]
                 },
             }, {
-                title: '在售车辆数',//xxxxxxxxxx
-                // subTitle: '仅供内部销售人员查看',
+                title: '在售车辆数',
                 isShowTag: true,
                 isShowTail: true,
                 tailView: () => {
@@ -140,8 +139,8 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        placeholder='请输入  '
-                                       keyboardType={'numeric'}
-                                       maxLength={7}
+                                       keyboardType={'number-pad'}
+                                       maxLength={5}
                                        underlineColorAndroid='transparent'
                                        ref={(ref)=>{this.saleCountInput = ref}}
                                        onFocus={()=>{
@@ -150,13 +149,11 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                        defaultValue={this.carData.stock?this.carMoneyChange(this.carData.stock):''}
                                        onEndEditing={()=>{this.saveCarData();}}
                                        onChangeText={(text)=>{
-                                               if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,4);
-                                            }
-                                           let moneyStr = this.chkPrice(text);
-                                           this.carData['stock']= moneyStr;
+
+                                           let number = this.chkNumber(text);
+                                           this.carData['stock']= number;
                                            this.saleCountInput.setNativeProps({
-                                               text: moneyStr,
+                                               text: number,
                                            });
                                        }}/>
                             <Text allowFontScaling={false} style={styles.textInputTitle}>辆</Text>
@@ -274,7 +271,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                             <TextInput
                                 style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
                                 placeholder='请填写加装或改装的配置 '
-                                maxLength={50}
+                                maxLength={110}
                                 underlineColorAndroid='transparent'
                                 defaultValue={this.carData.modification_instructions?this.carData.modification_instructions:''}
                                 onChangeText={(text)=>{this.carData['modification_instructions']=text}}
@@ -298,7 +295,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                             <TextInput
                                 style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
                                 placeholder='合格证齐全，可开发票 '
-                                maxLength={50}
+                                maxLength={110}
                                 underlineColorAndroid='transparent'
                                 defaultValue={this.carData.procedure_desc?this.carData.procedure_desc:''}
                                 onChangeText={(text)=>{this.carData['procedure_desc']=text}}
@@ -586,6 +583,11 @@ export default class NewCarPublishFirstScene extends BaseComponent {
             obj = obj.substring(0, obj.length - 1);
         }
         return obj;
+    }
+
+    chkNumber=(obj)=> {
+        obj = obj.toUpperCase();
+        return obj.replace(/[^\w\/]/ig,'');
     }
 
     /**

@@ -426,44 +426,52 @@ export  default  class CarNewListScene extends BaseComponent {
 
     ScreeningClick=()=>{
 
-        this.loadCarConfigData((carConfigData)=>{
-            carTypeSource = carConfigData.auto_type;
-            carNatureSource = carConfigData.auto_use;
-            carColorSource = carConfigData.auto_body_color;
-            carDischargeSource = carConfigData.auto_es;
-            carPriceSource = carConfigData.auto_price;
-            carSpecificationSource = carConfigData.auto_standard;
+        if(!carTypeSource.length ||!carNatureSource.length|| !carColorSource.length || !carDischargeSource.length || !carPriceSource ||!carSpecificationSource){
+            this.loadCarConfigData((carConfigData)=>{
+                carTypeSource = carConfigData.auto_type;
+                carNatureSource = carConfigData.auto_use;
+                carColorSource = carConfigData.auto_body_color;
+                carDischargeSource = carConfigData.auto_es;
+                carPriceSource = carConfigData.auto_price;
+                carSpecificationSource = carConfigData.auto_standard;
 
-            let {checkedCarType,checkedCarGenre,checkedCity,checkedCarPrice,checkedCarDischarge,checkedCarColor,checkedCarNature,checkedCarSpecification}= this.state;
-            let screeningObject = {
-                checkedCarType:{title:checkedCarType.title,brand_id:checkedCarType.brand_id,series_id:checkedCarType.series_id},
-                checkedCarGenre:{title:checkedCarGenre.title,value:checkedCarGenre.value},
-                checkedCity:{title:checkedCity.title,provice_id:checkedCity.province_id,city_id:checkedCity.city_id},
-                checkedCarPrice:{title:checkedCarPrice.title,value:checkedCarPrice.value},
-                checkedCarDischarge:{title:checkedCarDischarge.title,value:checkedCarDischarge.value},
-                checkedCarColor:{title:checkedCarColor.title,value:checkedCarColor.value},
-                checkedCarNature:{title:checkedCarNature.title,value:checkedCarNature.value},
-                checkedCarSpecification:{title:checkedCarSpecification.title,mainValue:checkedCarSpecification.mainValue,subValue:checkedCarSpecification.subValue},
-                carTypeSource:carTypeSource,
-                carNatureSource:carNatureSource,
-                carColorSource:carColorSource,
-                carDischargeSource:carDischargeSource,
-                carPriceSource:carPriceSource,
-                carSpecificationSource:carSpecificationSource,
-            };
-            let navigatorParams = {
-                name: "CarScreeningScene",
-                component: CarScreeningScene,
-                params: {
-                    type:2,             //1二手车，2新车
-                    screeningObject:screeningObject,
-                    screeningCompleteClick:this.screeningCompleteClick
-                }
-            };
-            this.props.callBack(navigatorParams);
-        });
+                this.pushCarScreeningScene()
+            });
+        }else {
+            this.pushCarScreeningScene();
+        }
 
 
+    }
+    pushCarScreeningScene=()=>{
+
+        let {checkedCarType,checkedCarGenre,checkedCity,checkedCarPrice,checkedCarDischarge,checkedCarColor,checkedCarNature,checkedCarSpecification}= this.state;
+        let screeningObject = {
+            checkedCarType:{title:checkedCarType.title,brand_id:checkedCarType.brand_id,series_id:checkedCarType.series_id},
+            checkedCarGenre:{title:checkedCarGenre.title,value:checkedCarGenre.value},
+            checkedCity:{title:checkedCity.title,provice_id:checkedCity.province_id,city_id:checkedCity.city_id},
+            checkedCarPrice:{title:checkedCarPrice.title,value:checkedCarPrice.value},
+            checkedCarDischarge:{title:checkedCarDischarge.title,value:checkedCarDischarge.value},
+            checkedCarColor:{title:checkedCarColor.title,value:checkedCarColor.value},
+            checkedCarNature:{title:checkedCarNature.title,value:checkedCarNature.value},
+            checkedCarSpecification:{title:checkedCarSpecification.title,mainValue:checkedCarSpecification.mainValue,subValue:checkedCarSpecification.subValue},
+            carTypeSource:carTypeSource,
+            carNatureSource:carNatureSource,
+            carColorSource:carColorSource,
+            carDischargeSource:carDischargeSource,
+            carPriceSource:carPriceSource,
+            carSpecificationSource:carSpecificationSource,
+        };
+        let navigatorParams = {
+            name: "CarScreeningScene",
+            component: CarScreeningScene,
+            params: {
+                type:2,             //1二手车，2新车
+                screeningObject:screeningObject,
+                screeningCompleteClick:this.screeningCompleteClick
+            }
+        };
+        this.props.callBack(navigatorParams);
     }
 
     screeningCompleteClick=(screeningObject)=>{

@@ -234,7 +234,6 @@ export default class CarNewInfoScene extends BaseComponent {
                     newArray.push(array[i]);
                 }
                 let newData = [{title:carConfigurationData[0].title,data:newArray}];
-                console.log('======================>',newData);
                 this.setState({
                     carConfigurationBriefData:newData
                 });
@@ -342,17 +341,23 @@ export default class CarNewInfoScene extends BaseComponent {
                     </View>
                     <View style={styles.carIconsContainer}>
                         <View style={styles.carIconsView}>
-                           <TitleView title={'车辆信息'}/>
+                            <View style={{marginTop: Pixel.getPixel(10),paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white'}}>
+                                <TitleView title={'车辆信息'}/>
+                            </View>
                             {
                                 carData.infoData.map((data,index)=>{
+
                                     return(
 
-                                            data.value?(<View style={{borderTopColor:fontAndColor.COLORA3,borderTopWidth:Pixel.getPixel(1),height:Pixel.getPixel(40),
-                                                width:ScreenWidth - Pixel.getPixel(30),flexDirection:'row',justifyContent:'space-between',
-                                                alignItems:'center'
+                                            data.value?(
+                                                <View style={{borderTopColor:fontAndColor.COLORA3,borderTopWidth:Pixel.getPixel(1),
+                                                width:ScreenWidth,flexDirection:'row',justifyContent:'space-between',
+                                                alignItems:'center',paddingVertical:Pixel.getPixel(10),paddingHorizontal:Pixel.getPixel(15)
                                             }} key={index}>
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{data.title}</Text>
-                                                <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{data.value}</Text>
+                                                <Text style={{color:fontAndColor.COLORA1,
+                                                    fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),}}>{data.title}</Text>
+                                                <Text style={[{color:fontAndColor.COLORA0,
+                                                    fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)},data.value.length>35 && {width:ScreenWidth-Pixel.getPixel(135)}]}>{data.value}</Text>
                                             </View>):(null)
 
 
@@ -1334,7 +1339,6 @@ const styles = StyleSheet.create({
     carIconsView: {
         backgroundColor: 'white',
         flexWrap: 'wrap',
-        paddingHorizontal:Pixel.getPixel(15)
     },
     carIconItem: {
 
