@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        // backgroundColor:'red',
+        // backgroundColor:'red
         width: Pixel.getPixel(80),
         marginRight:Pixel.getPixel(15),
 
