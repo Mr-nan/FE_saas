@@ -53,7 +53,7 @@ export default class root extends Component {
 
     handleConnectionInfoChange(connectionInfo) {
         if(connectionInfo=='none'){
-            Alert.alert('提示','当前网络状态不太好，请检测网络',[{'text':"好的"}]);
+            this.showToast('当前网络状态不太好，请检测网络');
         }
     }
 
