@@ -103,7 +103,7 @@ export  default class AccountSettingScene extends BaseComponent {
                         <Image style={{marginLeft:Pixel.getPixel(5)}} source={require('../../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </TouchableOpacity>
-                <View style={{height: Pixel.getPixel(5)}}/>
+                <View style={{height: Pixel.getPixel(5), backgroundColor: fontAndColor.COLORA3}}/>
                 {
                     this.state.accountOpenType == 2 && (<TouchableOpacity style={styles.cellView}
                                       onPress={this.getTrustContract}>
