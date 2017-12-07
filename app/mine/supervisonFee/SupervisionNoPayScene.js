@@ -124,8 +124,6 @@ export default class SupervisionNoPayScene extends BaseComponent {
     }
 
     allRefresh = () => {
-        page = 1;
-        allPage = 1;
         allSouce = [];
         this.setState({
             renderPlaceholderOnly: 'loading',
@@ -213,7 +211,7 @@ export default class SupervisionNoPayScene extends BaseComponent {
                     // let data = json.data.response;
                     if (page == 1 && data.order_list.length <= 0) {
                         listLength=0;
-                        this.setState({renderPlaceholderOnly: 'noPayOrder'});
+                        this.setState({renderPlaceholderOnly: 'noData'});
                     } else {
                         listLength=data.order_list.length;
                         allSouce.push(...data.order_list);
@@ -232,6 +230,7 @@ export default class SupervisionNoPayScene extends BaseComponent {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     }
+
 
     refreshingData = () => {
         allSouce = [];
@@ -321,7 +320,6 @@ export default class SupervisionNoPayScene extends BaseComponent {
         }
     }
 
-    // }
     _renderHeader = () => {
         return (
             <View style={styles.headerStyle}>

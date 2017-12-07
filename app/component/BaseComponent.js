@@ -165,30 +165,7 @@ export default class BaseComponent extends Component {
                 </Text>
                 <MyButton {...this.allRefreshParams} />
             </View>
-        } else if(this.state.renderPlaceholderOnly == 'noPayOrder'){
-            view=<View style={{flex: 1, alignItems: 'center'}}>
-                <Image
-                    style={{
-                        width: Pixel.getPixel(160),
-                        height: Pixel.getPixel(163),
-                        marginTop: Pixel.getTitlePixel(85 + 64) - margintop
-                    }}
-                    source={require('../../images/mainImage/no_pay_order.png')}/>
-                <Text allowFontScaling={false}
-                      style={{
-                          color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                          marginTop: Pixel.getPixel(27)
-                      }}>
-                    无待支付订单
-                </Text>
-                <Text allowFontScaling={false}
-                      style={{
-                          color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                          marginTop: Pixel.getPixel(10)
-                      }}>
-                </Text>
-            </View>
-        }else{
+        } else{
             view = <View style={{flex: 1, alignItems: 'center'}}>
                 <Image
                     style={{
@@ -210,6 +187,7 @@ export default class BaseComponent extends Component {
                         marginTop: Pixel.getPixel(10)
                     }}>
                 </Text>
+                {this.state.renderPlaceholderOnly == 'noData'?  <MyButton {...this.allRefreshParams}/>: null}
             </View>
         }
         return view;

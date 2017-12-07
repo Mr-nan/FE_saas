@@ -64,6 +64,14 @@ export default class SupervisionPayScene extends BaseComponent {
         this.getData();
     }
 
+    allRefresh = () => {
+        allSouce = [];
+        this.setState({
+            renderPlaceholderOnly: 'loading',
+        });
+        this.getData();
+    }
+
 
     getData = () => {
         let maps = {
@@ -78,7 +86,7 @@ export default class SupervisionPayScene extends BaseComponent {
                     this.payList=[];
                     if (page == 1 && data.order_list.length <= 0) {
                         listLength=0;
-                        this.setState({renderPlaceholderOnly: 'null'});
+                        this.setState({renderPlaceholderOnly: 'noData'});
                     } else {
 
                         allSouce.push(...data.order_list);
