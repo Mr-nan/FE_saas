@@ -226,13 +226,10 @@ export default class WithdrawScene extends ZSBaseComponent {
                             <SText style={{color: FontAndColor.COLORA1}}>温馨提示</SText>
                             <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginLeft: 15}}/>
                         </View>
-                        <SText style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>1
-                            浙商银行及其它银行1000万以内的提现，实时到账，五分钟。</SText>
+                        <SText style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>1  个人7*24小时，实时到账。</SText>
 
-                        <SText style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
-                            企业用户及其它个人用户提现大于1000万以上的，工作日走大小额，资金0.5-2小时即可到达。</SText>
-                        <SText style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
-                            企业用户及其它个人用户提现大于1000万以上的。</SText>
+                        <SText style={{color: FontAndColor.COLORA1, lineHeight: 20}}>{"2  企业工作日 9:00-16:30实时到账，其他时间单笔  <=5w 实时到账"}</SText>
+
 
                     </View>
 
