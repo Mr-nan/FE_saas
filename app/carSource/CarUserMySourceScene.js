@@ -63,22 +63,17 @@ let carAuditStatus = 1;
 export default class CarMySourceScene extends BaceComponent {
 
     render() {
-        if (this.state.renderPlaceholderOnly !== 'success') {
-            return (
-                <View style={{backgroundColor:'white', flex:1}}>
-                    {this.loadView()}
-                </View>);
-        }
+
         return (
             <View style={styles.rootContainer}>
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page?this.props.page:0}
                     locked={true}
-                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架("+this.state.shelves_count+")", "已下架("+this.state.unshelves_count+')', "审核中("+this.state.audit_count+')']}/>}>
-                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1" />
-                    <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
-                    <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
+                    renderTabBar={this.renderTabBarView}>
+                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1" setHeadView={this.setHeadView}/>
+                    <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2" setHeadView={this.setHeadView}/>
+                    <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3" setHeadView={this.setHeadView}/>
                 </ScrollableTabView>
                 <TouchableOpacity style={styles.footBtn} onPress={this.pushNewCarScene}>
                     <Text style={styles.footBtnText}>发布二手车源</Text>
@@ -102,45 +97,27 @@ export default class CarMySourceScene extends BaceComponent {
         this.state = {
             isShowManageView:false,
             isShowCarSharedView:false,
-            renderPlaceholderOnly:'blank',
             shelves_count:0,
             audit_count:0,
             unshelves_count:0,
         };
     }
 
-    initFinish=()=>{
-        this.loadHeadData();
+    renderTabBarView =()=>{
+        return(
+            <RepaymenyTabBar ref={(ref)=>{this.tabBarView = ref}}
+                             style={{backgroundColor:'white'}}
+                             tabName={["已上架("+this.state.shelves_count+")", "已下架("+this.state.unshelves_count+')', "审核中("+this.state.audit_count+')']}/>
+        )
     }
 
-    allRefresh=()=>{
-        this.loadHeadData();
+    setHeadView=(shelves_count,unshelves_count,audit_count)=>{
+        this.state.shelves_count = shelves_count;
+        this.state.unshelves_count = unshelves_count;
+        this.state.audit_count = audit_count;
+        this.tabBarView.setTabName(["已上架("+this.state.shelves_count+")", "已下架("+this.state.unshelves_count+')', "审核中("+this.state.audit_count+')'])
     }
 
-    loadHeadData=(action)=>{
-
-        this.setState({renderPlaceholderOnly:'loading'});
-        request(AppUrls.CAR_USER_CAR, 'post', {
-            car_status: '1',
-            page: 1,
-            row: 1,
-            type:1,
-        }).then((response) => {
-            let data =response.mjson.data.total;
-            this.setState({
-                renderPlaceholderOnly: 'success',
-                shelves_count:data.shelves_count,
-                audit_count:data.audit_count,
-                unshelves_count:data.unshelves_count,
-            });
-            action && action();
-
-        }, (error) => {
-            this.setState({
-                renderPlaceholderOnly: 'error',
-            });
-        });
-    }
 
     carCellClick = (carData) => {
         let navigatorParams = {
@@ -178,17 +155,6 @@ export default class CarMySourceScene extends BaceComponent {
 
         } else if (typeStr == '编辑') {
 
-            // let navigatorParams = {
-            //
-            //     name: "EditCarScene",
-            //     component: EditCarScene,
-            //     params: {
-            //
-            //         fromNew: false,
-            //         carId: carData.id,
-            //     }
-            // };
-            // this.toNextPage(navigatorParams);
 
             if(this.carData.in_valid_order==1){
                 this.props.showToast('该车辆在有效订单中,不可操作编辑');
@@ -325,14 +291,11 @@ export default class CarMySourceScene extends BaceComponent {
             this.props.showModal(false);
             if (type == 3) {
 
-                this.loadHeadData(()=>{
-                    this.refs.upperFrameView.refreshingData();
-                    if((typeof(this.refs.dropFrameView)!= "undefined"))
-                    {
-                        this.refs.dropFrameView.refreshingData();
-                    }
-                });
-
+                this.refs.upperFrameView.refreshingData();
+                if((typeof(this.refs.dropFrameView)!= "undefined"))
+                {
+                    this.refs.dropFrameView.refreshingData();
+                }
                 this.props.showToast('已成功下架');
 
             } else if (type == 2) {
@@ -384,13 +347,10 @@ export default class CarMySourceScene extends BaceComponent {
         }).then((response) => {
 
             this.props.showModal(false);
-
-            this.loadHeadData(()=>{
-                this.refs.upperFrameView.refreshingData();
-                if((typeof(this.refs.dropFrameView)!= "undefined")){
-                    this.refs.dropFrameView.refreshingData();
-                }
-            });
+            this.refs.upperFrameView.refreshingData();
+            if((typeof(this.refs.dropFrameView)!= "undefined")){
+                this.refs.dropFrameView.refreshingData();
+            }
             this.props.showToast('已刷新了该车的排名');
 
 
@@ -444,17 +404,15 @@ export default class CarMySourceScene extends BaceComponent {
     }
 
     upAllData=()=>{
-        this.loadHeadData(()=>{
-            this.refs.upperFrameView.refreshingData();
-            if((typeof(this.refs.dropFrameView)!= "undefined"))
-            {
-                this.refs.dropFrameView.refreshingData();
-            }
-            if((typeof(this.refs.auditView)!= "undefined"))
-            {
-                this.refs.auditView.refreshingData();
-            }
-        });
+        this.refs.upperFrameView.refreshingData();
+        if((typeof(this.refs.dropFrameView)!= "undefined"))
+        {
+            this.refs.dropFrameView.refreshingData();
+        }
+        if((typeof(this.refs.auditView)!= "undefined"))
+        {
+            this.refs.auditView.refreshingData();
+        }
     }
 
     loadCarShareData = (shareType,carID) => {
@@ -748,7 +706,8 @@ class MyCarSourceUpperFrameView extends BaceComponent {
 
             carUpperFrameData=response.mjson.data.list;
             carUpperFrameStatus = response.mjson.data.status;
-
+            let total = response.mjson.data.total;
+            this.props.setHeadView(total.shelves_count,total.unshelves_count,total.audit_count);
             for(let data of carUpperFrameData){
                 if(!this.isCarLong && data.long_aging == 1){
                     this.isCarLong = true;
@@ -970,6 +929,8 @@ class MyCarSourceDropFrameView extends BaceComponent {
 
             carDropFrameData = response.mjson.data.list;
             carDropFrameStatus = response.mjson.data.status;
+            let total = response.mjson.data.total;
+            this.props.setHeadView(total.shelves_count,total.unshelves_count,total.audit_count);
             if (carDropFrameData.length) {
                 this.setState({
                     carData: this.state.carData.cloneWithRows(carDropFrameData),
@@ -1151,7 +1112,8 @@ class MyCarSourceAuditView extends BaceComponent {
 
             carAuditData = response.mjson.data.list;
             carAuditStatus = response.mjson.data.status;
-
+            let total = response.mjson.data.total;
+            this.props.setHeadView(total.shelves_count,total.unshelves_count,total.audit_count);
             if(carAuditData.length>0){
                 this.setState({
                     carData: this.state.carData.cloneWithRows(carAuditData),

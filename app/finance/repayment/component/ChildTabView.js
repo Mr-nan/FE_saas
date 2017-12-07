@@ -13,7 +13,6 @@ export default class ChildTabView extends Component {
 
     constructor(props) {
         super(props);
-
     }
 
     render() {
