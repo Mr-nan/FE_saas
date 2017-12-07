@@ -26,13 +26,14 @@ import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import SText from '../component/SaasText'
 import SmsFillScene from './SmsFillScene'
 import ResultIndicativeScene from '../ResultIndicativeScene'
+import ZSBaseComponent from  '../component/ZSBaseComponent'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
 let Platform = require('Platform');
 
-export default class WithdrawScene extends BaseComponent {
+export default class WithdrawScene extends ZSBaseComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -254,6 +255,7 @@ export default class WithdrawScene extends BaseComponent {
                     />
                     : null
                 }
+                {this.out_of_service()}
             </View>
 
         )
@@ -297,6 +299,16 @@ export default class WithdrawScene extends BaseComponent {
                     this.setState({
                         sms_pad: false
                     })
+
+
+                    if(error.mycode === 8050324){  // 不在服务时间内
+                        this.setState({
+                            out_of_service_msg:error.mjson.msg,
+                            alert:true
+                        })
+                        return
+                    }
+
                     if (error.mycode === 8010007) {  // 存疑
                         this.toNextPage({
                             component: ResultIndicativeScene,

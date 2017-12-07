@@ -23,6 +23,7 @@ import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import TextInputItem from '../component/TextInputItem'
 import ResultIndicativeScene from '../ResultIndicativeScene'
+import ZSBaseComponent from  '../component/ZSBaseComponent'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -34,7 +35,7 @@ let new_sms_code;
 let new_sms_no;
 
 
-export default class NameAndIdScene extends BaseComponent {
+export default class NameAndIdScene extends ZSBaseComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -109,6 +110,7 @@ export default class NameAndIdScene extends BaseComponent {
                               parentStyle={styles.buttonStyle}
                               childStyle={styles.buttonTextStyle}
                               mOnPress={this.next}/>
+                    {this.out_of_service()}
                 </View>
 
             </TouchableWithoutFeedback>
@@ -140,6 +142,13 @@ export default class NameAndIdScene extends BaseComponent {
 
                 }, (error) => {
                     this.props.showModal(false)
+                    if(error.mycode === 8050324){  // 不在服务时间内
+                        this.setState({
+                            out_of_service_msg:error.mjson.msg,
+                            alert:true
+                        })
+                        return
+                    }
                     this.props.showToast('验证码发送失败')
                 })
 

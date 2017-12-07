@@ -21,6 +21,7 @@ import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import SendMmsCountDown from "../../../../login/component/SendMmsCountDown";
 import SText from '../component/SaasText'
 import CubeTextInput from '../component/CubeTextInput'
+import ZSBaseComponent from  '../component/ZSBaseComponent'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -30,7 +31,7 @@ const IS_ANDROID = Platform.OS === 'android';
 let sms_no = ''
 
 
-export default class SmsFillScene extends Component {
+export default class SmsFillScene extends ZSBaseComponent {
     constructor(props) {
         super(props)
 
@@ -108,6 +109,7 @@ export default class SmsFillScene extends Component {
                     }}>支付方式：{this.props.account.bank_name}</SText>
 
                 </View>
+                {this.out_of_service()}
             </View>
 
         )
@@ -135,11 +137,18 @@ export default class SmsFillScene extends Component {
                 this.refs.sendMms.StartCountDown()
 
             }, (error)=>{
+
                 this.props.showModal(false)
+                if(error.mycode === 8050324){  // 不在服务时间内
+                    this.setState({
+                        out_of_service_msg:error.mjson.msg,
+                        alert:true
+                    })
+                    return
+                }
                 this.props.showToast('验证码发送失败')
 
             })}
         })
     }
-
 }

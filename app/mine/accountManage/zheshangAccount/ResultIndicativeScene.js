@@ -22,6 +22,8 @@ import md5 from "react-native-md5";
 import StorageUtil from "../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../constant/storageKeyNames";
 import SaasText from "./component/SaasText";
+import ZSBaseComponent from  './component/ZSBaseComponent'
+
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -44,7 +46,7 @@ let Platform = require('Platform');
 //    3：提交资料 （开通企业账户ONLY）
 
 
-export default class ResultIndicativeScene extends BaseComponent {
+export default class ResultIndicativeScene extends ZSBaseComponent {
 
     constructor(props) {
         super(props)
@@ -180,7 +182,7 @@ export default class ResultIndicativeScene extends BaseComponent {
                     />
                 </View>
                 {this.renderFooter()}
-
+                {this.out_of_service()}
 
             </View>
         )

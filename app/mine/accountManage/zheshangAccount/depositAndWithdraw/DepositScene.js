@@ -26,6 +26,7 @@ import SendMmsCountDown from "../../../../login/component/SendMmsCountDown";
 import SText from '../component/SaasText'
 import SmsFillScene from './SmsFillScene'
 import ResultIndicativeScene from '../ResultIndicativeScene'
+import ZSBaseComponent from  '../component/ZSBaseComponent'
 
 
 let Dimensions = require('Dimensions');
@@ -52,7 +53,7 @@ let deposit_data = [
 ]
 
 
-export default class DepositScene extends BaseComponent {
+export default class DepositScene extends ZSBaseComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -351,7 +352,7 @@ export default class DepositScene extends BaseComponent {
                     {this.state.deposit_style === 0 ?
 
 
-                        <View style={{marginHorizontal: 30, marginVertical: 40}}>
+                        <View style={{marginHorizontal: 30, marginVertical: 40, alignItems:'center'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
                                 <View style={{
                                     height: 1,
@@ -367,12 +368,9 @@ export default class DepositScene extends BaseComponent {
                                     marginLeft: 15
                                 }}/>
                             </View>
-                            <SText style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>1
-                                浙商银行及其它银行1000万以内的提现，实时到账，五分钟。</SText>
-                            <SText style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
-                                企业用户及其它个人用户提现大于1000万以上的，工作日走大小额，资金0.5-2小时即可到达。</SText>
-                            <SText style={{color: FontAndColor.COLORA1, lineHeight: 20}}>2
-                                企业用户及其它个人用户提现大于1000万以上的。</SText>
+                            <SText style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>
+                                快捷入金T+1日可提现，不影响交易哦~</SText>
+
 
                         </View>
                         : null
@@ -398,6 +396,7 @@ export default class DepositScene extends BaseComponent {
                     />
                     : null
                 }
+                {this.out_of_service()}
 
             </View>
 
@@ -446,7 +445,16 @@ export default class DepositScene extends BaseComponent {
                     this.setState({
                         sms_pad: false
                     })
-                    if (error.mycode === 8010007) {
+
+                    if(error.mycode === 8050324){  // 不在服务时间内
+                        this.setState({
+                            out_of_service_msg:error.mjson.msg,
+                            alert:true
+                        })
+                        return
+                    }
+
+                    if (error.mycode === 8010007) {  //存疑
                         this.toNextPage({
                             component: ResultIndicativeScene,
                             name: 'ResultIndicativeScene',

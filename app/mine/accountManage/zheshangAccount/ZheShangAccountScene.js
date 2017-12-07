@@ -336,51 +336,74 @@ export default class ZheShangAccountScene extends BaseComponent {
             <ZheShangAccountTitle info={this.state.info}
                                   bankCard={() => {  //更换银行卡
 
-                                      StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                                          if (data.code === 1 && data.result !== null) {
-                                              let datas = JSON.parse(data.result);
-                                              let maps = {
-                                                  enter_base_id: datas.company_base_id,
-                                                  bank_id: 316,
-                                                  operate_type: account.user_type === 1 ? 19 : 18
-                                              };
+                                      this.props.showModal(true)
+                                      request(Urls.ZS_IN_SERVICE, 'POST', {}).then((response) => {
+                                          this.props.showModal(false)
+                                          if (response.mjson.data.out_service === 0) {
 
-                                              this.props.showModal(true)
-                                              request(Urls.ZS_FETCH_STATUS, 'Post', maps)
-                                                  .then((response) => {
-                                                      this.props.showModal(false)
-                                                      if(response.mjson.data.transfer_status === 1){
-                                                          this.toNextPage({
-                                                              name: 'ModifyBankCard',
-                                                              component: ModifyBankCard,
-                                                              params: {account: account, callBack:this.refreshingData}
-                                                          })
-                                                      }else if(response.mjson.data.transfer_status === 0) {
-                                                          this.props.showToast(response.mjson.data.transfer_msg)
-                                                      }
-                                                  }, (error) => {
+                                              StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                                                  if (data.code === 1 && data.result !== null) {
+                                                      let datas = JSON.parse(data.result);
+                                                      let maps = {
+                                                          enter_base_id: datas.company_base_id,
+                                                          bank_id: 316,
+                                                          operate_type: account.user_type === 1 ? 19 : 18
+                                                      };
+
+                                                      this.props.showModal(true)
+                                                      request(Urls.ZS_FETCH_STATUS, 'Post', maps)
+                                                          .then((response) => {
+                                                              this.props.showModal(false)
+                                                              if(response.mjson.data.transfer_status === 1){
+                                                                  this.toNextPage({
+                                                                      name: 'ModifyBankCard',
+                                                                      component: ModifyBankCard,
+                                                                      params: {account: account, callBack:this.refreshingData}
+                                                                  })
+                                                              }else if(response.mjson.data.transfer_status === 0) {
+                                                                  this.props.showToast(response.mjson.data.transfer_msg)
+                                                              }
+                                                          }, (error) => {
+                                                              this.props.showModal(false)
+                                                              this.toNextPage({
+                                                                  name: 'ModifyBankCard',
+                                                                  component: ModifyBankCard,
+                                                                  params: {account: account,callBack:this.refreshingData}
+                                                              })
+
+                                                          });
+                                                  } else {
                                                       this.props.showModal(false)
                                                       this.toNextPage({
                                                           name: 'ModifyBankCard',
                                                           component: ModifyBankCard,
-                                                          params: {account: account,callBack:this.refreshingData}
+                                                          params: {
+                                                              account: account,
+                                                              callBack:this.refreshingData
+                                                          }
                                                       })
-
-                                                  });
-                                          } else {
-                                              this.props.showModal(false)
-                                              this.toNextPage({
-                                                  name: 'ModifyBankCard',
-                                                  component: ModifyBankCard,
-                                                  params: {
-                                                      account: account,
-                                                      callBack:this.refreshingData
                                                   }
                                               })
+
+                                          } else {
+                                              this.setState({
+                                                  service_in: response.mjson.data.in_time,
+                                                  service_out: response.mjson.data.out_time,
+                                                  alert: true
+                                              })
                                           }
+                                      }, (error) => {
+                                          this.props.showModal(false)
+                                          this.props.showToast(error.mjson.msg)
+
                                       })
 
+
+
                                   }}
+
+
+
                                   flow={() => {  //流水
 
                                       this.toNextPage({
@@ -392,32 +415,50 @@ export default class ZheShangAccountScene extends BaseComponent {
                                   }}
                                   changePhone={() => { //修改银行预留手机号码
 
-                                      StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                                          if (data.code === 1 && data.result !== null) {
-                                              let datas = JSON.parse(data.result);
-                                              let maps = {
-                                                  enter_base_id: datas.company_base_id,
-                                                  bank_id: 316,
-                                                  operate_type: account.user_type === 1 ? 8 : 7
-                                              };
 
-                                              this.props.showModal(true)
-                                              request(Urls.ZS_FETCH_STATUS, 'Post', maps)
-                                                  .then((response) => {
-                                                      this.props.showModal(false)
-                                                      if (response.mjson.data.transfer_status === 1) {
-                                                          this.toNextPage({
-                                                              name: 'InformationFillScene',
-                                                              component: InformationFillScene,
-                                                              params: {
-                                                                  account: account,
-                                                                  callBack:this.refreshingData
+                                      this.props.showModal(true)
+                                      request(Urls.ZS_IN_SERVICE, 'POST', {}).then((response) => {
+                                          this.props.showModal(false)
+                                          if (response.mjson.data.out_service === 0) {
+
+                                              StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                                                  if (data.code === 1 && data.result !== null) {
+                                                      let datas = JSON.parse(data.result);
+                                                      let maps = {
+                                                          enter_base_id: datas.company_base_id,
+                                                          bank_id: 316,
+                                                          operate_type: account.user_type === 1 ? 8 : 7
+                                                      };
+
+                                                      this.props.showModal(true)
+                                                      request(Urls.ZS_FETCH_STATUS, 'Post', maps)
+                                                          .then((response) => {
+                                                              this.props.showModal(false)
+                                                              if (response.mjson.data.transfer_status === 1) {
+                                                                  this.toNextPage({
+                                                                      name: 'InformationFillScene',
+                                                                      component: InformationFillScene,
+                                                                      params: {
+                                                                          account: account,
+                                                                          callBack:this.refreshingData
+                                                                      }
+                                                                  })
+                                                              } else if(response.mjson.data.transfer_status === 0) {
+                                                                  this.props.showToast(response.mjson.data.transfer_msg)
                                                               }
-                                                          })
-                                                      } else if(response.mjson.data.transfer_status === 0) {
-                                                          this.props.showToast(response.mjson.data.transfer_msg)
-                                                      }
-                                                  }, (error) => {
+                                                          }, (error) => {
+                                                              this.props.showModal(false)
+                                                              this.toNextPage({
+                                                                  name: 'InformationFillScene',
+                                                                  component: InformationFillScene,
+                                                                  params: {
+                                                                      account: account,
+                                                                      callBack:this.refreshingData
+                                                                  }
+                                                              })
+
+                                                          });
+                                                  } else {
                                                       this.props.showModal(false)
                                                       this.toNextPage({
                                                           name: 'InformationFillScene',
@@ -427,20 +468,28 @@ export default class ZheShangAccountScene extends BaseComponent {
                                                               callBack:this.refreshingData
                                                           }
                                                       })
-
-                                                  });
-                                          } else {
-                                              this.props.showModal(false)
-                                              this.toNextPage({
-                                                  name: 'InformationFillScene',
-                                                  component: InformationFillScene,
-                                                  params: {
-                                                      account: account,
-                                                      callBack:this.refreshingData
                                                   }
                                               })
+
+
+
+                                          } else {
+                                              this.setState({
+                                                  service_in: response.mjson.data.in_time,
+                                                  service_out: response.mjson.data.out_time,
+                                                  alert: true
+                                              })
                                           }
+                                      }, (error) => {
+                                          this.props.showModal(false)
+                                          this.props.showToast(error.mjson.msg)
+
                                       })
+
+
+
+
+
 
                                   }}
                                   moreFlow={() => {

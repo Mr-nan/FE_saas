@@ -23,6 +23,7 @@ import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import TextInputItem from '../component/TextInputItem'
 import NewNumber from './NewNumber'
 import ResultIndicativeScene from '../ResultIndicativeScene'
+import ZSBaseComponent from  '../component/ZSBaseComponent'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -35,7 +36,7 @@ let mobile_no = ''
 let sms_code = ''
 let sms_no = ''
 
-export default class InformationFillScene extends BaseComponent {
+export default class InformationFillScene extends ZSBaseComponent {
 
     constructor(props) {
         super(props);
@@ -153,6 +154,7 @@ export default class InformationFillScene extends BaseComponent {
                               parentStyle={styles.buttonStyle}
                               childStyle={styles.buttonTextStyle}
                               mOnPress={this.next}/>
+                    {this.out_of_service()}
                 </View>
             </TouchableWithoutFeedback>
 
@@ -180,6 +182,16 @@ export default class InformationFillScene extends BaseComponent {
                     sms_no = response.mjson.data.sms_no
                 }, (error) => {
                     this.props.showModal(false)
+
+                    if(error.mycode === 8050324){  // 不在服务时间内
+                        this.setState({
+                            out_of_service_msg:error.mjson.msg,
+                            alert:true
+                        })
+                        return
+                    }
+
+
                     this.props.showToast('验证码发送失败')
                 })
 
@@ -242,6 +254,14 @@ export default class InformationFillScene extends BaseComponent {
                     }, (error) => {
 
                         this.props.showModal(false)
+
+                        if(error.mycode === 8050324){  // 不在服务时间内
+                            this.setState({
+                                out_of_service_msg:error.mjson.msg,
+                                alert:true
+                            })
+                            return
+                        }
 
                         if(error.mycode===8010007){  // 存疑
 

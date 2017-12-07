@@ -27,6 +27,7 @@ import ResultIndicativeScene from '../ResultIndicativeScene'
 import ChooseBankNameScene from '../component/ChooseBankNameScene'
 import SaasText from "../component/SaasText";
 import WebScene from "../../../../main/WebScene";
+import ZSBaseComponent from  '../component/ZSBaseComponent'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -47,7 +48,7 @@ let type = -1;
 //  2：个人
 
 
-export default class CardPhoneSmsScene extends BaseComponent {
+export default class CardPhoneSmsScene extends ZSBaseComponent {
     constructor(props) {
         super(props);
 
@@ -184,6 +185,7 @@ export default class CardPhoneSmsScene extends BaseComponent {
 
                     </View>
 
+                    {this.out_of_service()}
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -332,6 +334,13 @@ export default class CardPhoneSmsScene extends BaseComponent {
 
                     this.props.showModal(false)
 
+                    if(error.mycode === 8050324){  // 不在服务时间内
+                        this.setState({
+                            out_of_service_msg:error.mjson.msg,
+                            alert:true
+                        })
+                        return
+                    }
                     if (error.mycode === 8010007) {  // 存疑
 
                         this.toNextPage({
