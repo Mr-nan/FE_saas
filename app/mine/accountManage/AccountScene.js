@@ -414,19 +414,16 @@ export  default class AccountScene extends BaseComponent {
                                   console.log(data);
                                   if (data.code == 1 && data.result) {
                                       let userInfo = JSON.parse(data.result);
-                                      if (userInfo.user_level != 2) {
-                                          this.props.showToast('您的账户未授信，请先去授信');
-                                      } else {
                                           this.toNextPage({
                                               name: 'AccountSettingScene',
                                               component: AccountSettingScene, params: {
                                                   protocolType: this.isOpenContract,
                                                   accountOpenType: this.accountOpenType,
                                                   trustAccountState: this.trustAccountState,
-                                                  changeState: this.changeTrustAccountState
+                                                  changeState: this.changeTrustAccountState,
+                                                  userLevel: userInfo.user_level
                                               }
                                           })
-                                      }
                                   }
                               }));
 
