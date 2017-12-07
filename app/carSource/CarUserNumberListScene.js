@@ -47,13 +47,7 @@ let carSeekStr  = '';
 
 export default class CarUserNumberListScene extends BaseComponent {
     render(){
-        if (this.state.renderPlaceholderOnly !== 'success') {
-            return (
-                <View style={{backgroundColor:'white', flex:1}}>
-                    <CarSeekView carSeekAction={this.carSeekAction}/>
-                    {this.loadView()}
-                </View>);
-        }
+
         return(
             <View style={styles.rootContainer}>
                 <CarSeekView carSeekAction={this.carSeekAction}/>
@@ -61,9 +55,15 @@ export default class CarUserNumberListScene extends BaseComponent {
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page?this.props.page:0}
                     locked={true}
-                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售 ("+this.state.shelves_count+")", "已售 ("+this.state.sold_count+')']}/>}>
-                    <MyCarSourceUpperFrameView ref="upperFrameView" cellFootBtnClick={this.cellFootBtnClick} tabLabel="ios-paper1"/>
-                    <MyCarSourceDropFrameView  ref="dropFrameView"  tabLabel="ios-paper2"/>
+                    renderTabBar={this.renderTabBarView}>
+                    <MyCarSourceUpperFrameView ref="upperFrameView"
+                                               cellFootBtnClick={this.cellFootBtnClick}
+                                               tabLabel="ios-paper1"
+                                               setHeadView={this.setHeadView}/>
+
+                    <MyCarSourceDropFrameView  ref="dropFrameView"
+                                               tabLabel="ios-paper2"
+                                               setHeadView={this.setHeadView}/>
                 </ScrollableTabView>
                 <TouchableOpacity style={styles.footBtn} onPress={this.pushCarScene}>
                     <Text style={styles.footBtnText}>车辆入库</Text>
@@ -79,53 +79,34 @@ export default class CarUserNumberListScene extends BaseComponent {
 
         carSeekStr  = '';
         this.state = {
-            renderPlaceholderOnly:'blank',
             shelves_count:0,
             sold_count:0,
         };
     }
 
-    initFinish=()=>{
-        this.loadHeadData();
+    renderTabBarView=()=>{
+        return(
+            <RepaymenyTabBar ref={(ref)=>{this.tabBarView = ref}}
+                             style={{backgroundColor:'white'}}
+                             tabName={["在售 ("+this.state.shelves_count+")", "已售 ("+this.state.sold_count+')']}/>
+        )
     }
 
-    allRefresh=()=>{
-        this.loadHeadData();
+    setHeadView=(shelves_count,sold_count)=>{
+
+        this.state.shelves_count = shelves_count;
+        this.state.sold_count = sold_count;
+        this.tabBarView.setTabName(["在售 ("+this.state.shelves_count+")", "已售 ("+this.state.sold_count+')']);
     }
 
-    loadHeadData=(action)=>{
-
-        this.setState({renderPlaceholderOnly:'loading'});
-        request(AppUrls.CAR_USER_CAR, 'post', {
-            car_status: '1',
-            page: 1,
-            row: 1,
-            type:1,
-            search_text:carSeekStr,
-
-        }).then((response) => {
-            let data =response.mjson.data.total;
-            this.setState({
-                renderPlaceholderOnly: 'success',
-                shelves_count:data.shelves_count,
-                sold_count:data.sold_count,
-            });
-            action && action();
-
-        }, (error) => {
-            this.setState({
-                renderPlaceholderOnly: 'error',
-            });
-        });
-    }
 
     carSeekAction=(seekStr)=>{
         carSeekStr=seekStr;
-        this.loadHeadData();
+        this.refs.upperFrameView && this.refs.upperFrameView.initFinish();
+        this.refs.dropFrameView && this.refs.dropFrameView.initFinish();
     }
     pushCarScene=()=>{
         let navigatorParams = {
-
             name: "CarPublishFirstScene",
             component: CarPublishFirstScene,
             params: {
@@ -220,6 +201,7 @@ class MyCarSourceUpperFrameView extends BaseComponent {
             carUpperFrameData=response.mjson.data.list;
             carUpperFrameStatus = response.mjson.data.status;
 
+            this.props.setHeadView(response.mjson.data.total.shelves_count,response.mjson.data.total.sold_count);
 
             if (carUpperFrameData.length) {
                 this.setState({
@@ -421,6 +403,9 @@ class MyCarSourceDropFrameView extends BaseComponent {
 
             carDropFrameData = response.mjson.data.list;
             carDropFrameStatus = response.mjson.data.status;
+
+            this.props.setHeadView(response.mjson.data.total.shelves_count,response.mjson.data.total.sold_count);
+
             if (carDropFrameData.length) {
                 this.setState({
                     carData: this.state.carData.cloneWithRows(carDropFrameData),
