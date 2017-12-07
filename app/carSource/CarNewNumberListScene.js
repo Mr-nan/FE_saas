@@ -203,7 +203,6 @@ export default class CarNewNumberListScene extends BaseComponent {
 
         }else {
 
-
             let carNumber = parseFloat(cellData.stock)-parseFloat(cellData.reserve_num);
             if(carNumber <=0)
             {
@@ -214,6 +213,11 @@ export default class CarNewNumberListScene extends BaseComponent {
                 this.allloading.changeShowType(true,'确定是否将该车源可售车辆数-1');
             }
         }
+    }
+
+    loadHeadData=()=>{
+        this.refs.upperFrameView && this.refs.upperFrameView.initFinish();
+        this.refs.dropFrameView && this.refs.dropFrameView.initFinish();
     }
 
 
