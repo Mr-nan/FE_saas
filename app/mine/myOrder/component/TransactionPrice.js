@@ -18,6 +18,7 @@ import * as fontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import InputAmountScene from "../InputAmountScene";
 import BaseComponent from "../../../component/BaseComponent";
+import TransactionPriceInput from "./TransactionPriceInput";
 const Pixel = new PixelUtil();
 
 
@@ -28,79 +29,26 @@ export default class TransactionPrice extends BaseComponent {
         let setAmount = this.props.amount;
         this.state = {
             amount: setAmount,
-            deposit: setAmount / 10
+            //deposit: setAmount / 10
         }
     }
 
-/*    isShowFinance = (financeInfo) => {
-        this.props.isShowFinance(financeInfo);
-    };*/
+    /*    isShowFinance = (financeInfo) => {
+     this.props.isShowFinance(financeInfo);
+     };*/
 
 
     componentWillReceiveProps(nextProps) {
-        this.setState({amount:nextProps.amount,deposit: nextProps.amount / 10});
-
+        this.setState({amount: nextProps.amount});
     }
 
     render() {
         return (
             <View style={styles.itemType4}>
-                <Text allowFontScaling={false}  style={{marginLeft: Pixel.getPixel(15), marginTop: Pixel.getPixel(12)}}>成交价(元)</Text>
-                <TouchableOpacity
-                    activeOpacity={0.9}
-                    style={{flex: 1, justifyContent: 'center'}}
-                    onPress={() => {
-                        this.toNextPage({
-                            name: 'InputAmountScene',
-                            component: InputAmountScene,
-                            params: {
-                                amount: this.state.amount,
-                                updateAmount: this.updateAmount,
-                                carId: this.props.carId,
-                                orderId: this.props.orderId,
-                                isShowFinance: this.props.isShowFinance
-                            }
-                        });
-                    }}>
-                    <View style={{
-                        alignItems: 'center',
-                        marginLeft: Pixel.getPixel(15),
-                        flexDirection: 'row'
-                    }}>
-                        <Image
-                            style={{marginTop: Pixel.getPixel(5), marginBottom: Pixel.getPixel(10)}}
-                            source={require('../../../../images/mainImage/rmb.png')}/>
-                        {/*<Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(25), marginTop: Pixel.getPixel(5)}}>￥</Text>*/}
-                        <Text allowFontScaling={false}  style={{
-                            //height: Pixel.getPixel(38),
-                            marginLeft: Pixel.getPixel(5),
-                            fontSize: Pixel.getFontPixel(38),
-                            color: fontAndColor.COLORA2,
-                            textAlign: 'center'
-                        }}>{this.state.amount}</Text>
-                        <Image
-                            style={{
-                                marginTop: Pixel.getPixel(5),
-                                marginLeft: Pixel.getPixel(5)
-                            }}
-                            source={require('../../../../images/mainImage/transaction_price.png')}/>
-                    </View>
-                </TouchableOpacity>
-                <View style={styles.separatedLine}/>
-                <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                    <Text allowFontScaling={false}  style={{
-                        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT28),
-                        marginLeft: Pixel.getPixel(15),
-                        color: fontAndColor.COLORA1
-                    }}>应付订金：</Text>
-                    <Text allowFontScaling={false}  style={{
-                        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT28),
-                    }}>{this.state.deposit}元</Text>
-                </View>
+                <TransactionPriceInput amount={this.state.amount}/>
             </View>
         )
     }
-
 
     updateAmount = (newAmount) => {
         this.props.updateCarAmount(newAmount);
