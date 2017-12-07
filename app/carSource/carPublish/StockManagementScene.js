@@ -86,11 +86,9 @@ export default class StockManagementScene extends BaseComponent {
                 auto_pid: this.props.carData.id,
                 car_color: this.props.carData.car_color,
                 engine_number: this.props.carData.engine_number,
-                manufacture: this.props.carData.manufacture != '' ? this.dateReversal(this.props.carData.manufacture + "000") : "",
                 pictures: this.props.carData.imgs,
                 purchase_price: this.props.carData.purchase_price,
                 status: this.props.carData.status,
-                vin: this.props.carData.vin,
                 model_name: this.props.carData.model_name
             };
         }
@@ -138,7 +136,7 @@ export default class StockManagementScene extends BaseComponent {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                                 <TextInput
-                                    style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(220),height:Pixel.getPixel(50)}]}
+                                    style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(220),height:Pixel.getPixel(30)}]}
                                     placeholder='请输入 '
                                     maxLength={8}
                                     underlineColorAndroid='transparent'

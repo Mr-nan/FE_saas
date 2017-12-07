@@ -203,7 +203,6 @@ export default class CarNewNumberListScene extends BaseComponent {
 
         }else {
 
-
             let carNumber = parseFloat(cellData.stock)-parseFloat(cellData.reserve_num);
             if(carNumber <=0)
             {
