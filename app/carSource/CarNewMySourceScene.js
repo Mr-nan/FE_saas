@@ -1586,7 +1586,8 @@ class EditCarPriceView extends Component {
                                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>修改在售车辆数</Text>
                                 <TextInput style={styles.textInput}
                                            ref={(ref)=>{this.carNumberInput = ref}}
-                                           keyboardType="number-pad"
+                                           underlineColorAndroid='transparent'
+                                           keyboardType="numeric"
                                            autoFocus={false}
                                            maxLength={5}
                                            onChangeText={(text)=>{
@@ -1605,6 +1606,7 @@ class EditCarPriceView extends Component {
                                     <TextInput style={[styles.textInput,{marginTop:0}]}
                                                ref={(ref)=>{this.carPriceInput = ref}}
                                                keyboardType="numeric"
+                                               underlineColorAndroid='transparent'
                                                maxLength={7}
                                                onChangeText={(text)=>{
                                                    if(text.length>4&&text.indexOf('.')==-1){
@@ -1619,7 +1621,7 @@ class EditCarPriceView extends Component {
                                                defaultValue={stringTransform.carMoneyChange(this.state.carData.dealer_price)}
                                     />
                                     <Text style={{color:fontAndColor.COLORA1,
-                                        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>万</Text>
+                                        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}> 万</Text>
                                 </View>
                             </View>
                             </TouchableOpacity>
