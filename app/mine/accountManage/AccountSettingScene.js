@@ -37,7 +37,8 @@ export  default class AccountSettingScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             protocolType:0,
             accountOpenType: this.props.accountOpenType,
-            trustAccountState: this.props.trustAccountState
+            trustAccountState: this.props.trustAccountState,
+            onlyTrustAccount: false
         };
     }
 
@@ -66,7 +67,7 @@ export  default class AccountSettingScene extends BaseComponent {
                 });
             },
             (error) => {
-                this.setState({renderPlaceholderOnly: 'error'});
+                this.setState({onlyTrustAccount: true, renderPlaceholderOnly: 'success'});
             });
     }
 
@@ -88,21 +89,32 @@ export  default class AccountSettingScene extends BaseComponent {
                             {/*<Switch/>*/}
                     {/*</View>*/}
                 {/*</View>*/}
-                <TouchableOpacity style={styles.cellView} onPress={this.pushDeductProtocol}>
-                    <View style={{justifyContent:'center'}}>
-                        <Text allowFontScaling={false}  style={{color:'#000',fontSize: Pixel.getFontPixel(14)}}>电子账户还款设置</Text>
-                        {
-                            this.state.protocolType == 1 && (
-                                <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA1,fontSize:Pixel.getFontPixel(12), marginTop:Pixel.getPixel(5)
-                                }}>查看《账户划扣授权委托书》</Text>
-                            )
-                        }
-                    </View>
-                    <View style={{justifyContent:'center',alignItems: 'center', flexDirection:'row'}}>
-                        <Text allowFontScaling={false}  style={[{color: fontAndColor.COLORB2,fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)},this.state.protocolType == 1 && {color:fontAndColor.COLORA1}]}>{this.state.protocolType == 1 ? '已开启':'未开启'}</Text>
-                        <Image style={{marginLeft:Pixel.getPixel(5)}} source={require('../../../images/mainImage/celljiantou.png')}/>
-                    </View>
-                </TouchableOpacity>
+                {
+                    !this.state.onlyTrustAccount && (
+                        <TouchableOpacity style={styles.cellView} onPress={this.pushDeductProtocol}>
+                            <View style={{justifyContent: 'center'}}>
+                                <Text allowFontScaling={false}
+                                      style={{color: '#000', fontSize: Pixel.getFontPixel(14)}}>电子账户还款设置</Text>
+                                {
+                                    this.state.protocolType == 1 && (
+                                        <Text allowFontScaling={false} style={{
+                                            color: fontAndColor.COLORA1,
+                                            fontSize: Pixel.getFontPixel(12),
+                                            marginTop: Pixel.getPixel(5)
+                                        }}>查看《账户划扣授权委托书》</Text>
+                                    )
+                                }
+                            </View>
+                            <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                                <Text allowFontScaling={false} style={[{
+                                    color: fontAndColor.COLORB2,
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+                                }, this.state.protocolType == 1 && {color: fontAndColor.COLORA1}]}>{this.state.protocolType == 1 ? '已开启' : '未开启'}</Text>
+                                <Image style={{marginLeft: Pixel.getPixel(5)}}
+                                       source={require('../../../images/mainImage/celljiantou.png')}/>
+                            </View>
+                        </TouchableOpacity>)
+                }
                 <View style={{height: Pixel.getPixel(5), backgroundColor: fontAndColor.COLORA3}}/>
                 {
                     this.state.accountOpenType == 2 && (<TouchableOpacity style={styles.cellView}
