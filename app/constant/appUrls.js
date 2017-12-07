@@ -126,22 +126,22 @@ export const CAR_DETAIL_RELATION = BASEURL + V + 'car/detailRelation';
 /**
  * 二手车分享测试
  */
-export const CAR_DETAIL_SHARE = '';
+export const CAR_USER_DETAIL_SHARE_TEST = '';
 
 /**
  * 二手车分享正式
  */
-export const CAR_DETAIL_SHARE = '';
+export const CAR_USER_DETAIL_SHARE = '';
 
 /**
  * 新车分享测试
  */
-export const CAR_DETAIL_SHARE = '';
+export const CAR_NEW_DETAIL_SHARE_TEST = '';
 
 /**
  * 新车分享正式
  */
-export const CAR_DETAIL_SHARE = '';
+export const CAR_NEW_DETAIL_SHARE = '';
 
 /**
  * 创建、修改库存
@@ -228,6 +228,7 @@ export const CAR_DELETE = BASEURL + V + 'car/delete';
  * 我的车源-已售操作
  */
 export const CAR_SALE = BASEURL + V + 'car/sale';
+
 
 // /**
 //  * 我的车源-创建已售消息
