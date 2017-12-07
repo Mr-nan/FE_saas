@@ -108,8 +108,6 @@ export const CAR_SEARCH_TOP = BASEURL + V + 'car/searchTop';
  */
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
 
-<<<<<<< HEAD
-=======
 /**
  * 新车详情推荐
  */
@@ -118,29 +116,28 @@ export const CAR_DETAIL_RELATION = BASEURL + V + 'car/detailRelation';
 /**
  * 二手车分享测试
  */
-export const CAR_DETAIL_SHARE = '';
+export const CAR_USER_DETAIL_SHARE_TEST = '';
 
 /**
  * 二手车分享正式
  */
-export const CAR_DETAIL_SHARE = '';
+export const CAR_USER_DETAIL_SHARE = '';
 
 /**
  * 新车分享测试
  */
-export const CAR_DETAIL_SHARE = '';
+export const CAR_NEW_DETAIL_SHARE_TEST = '';
 
 /**
  * 新车分享正式
  */
-export const CAR_DETAIL_SHARE = '';
+export const CAR_NEW_DETAIL_SHARE = '';
 
 /**
  * 创建、修改库存
  */
 export const CAR_STOCK_SAVE = BASEURL + V + 'car.stock/save';
 
->>>>>>> newCar
 
 /**
  * 获取车辆配置信息
