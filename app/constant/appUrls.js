@@ -42,14 +42,24 @@ export const V = "v1/";
 // export const V3 = "v3/";
 
 /**
- * 分享测试地址
+ *  分享二手车测试地址
  */
 export const FENXIANGTEST = 'http://test.bms.dycd.com/platform/car_detail.html';
 
 /**
- * 分享正式地址
+ * 分享二手正式地址
  */
 export const FENXIANGOPEN = 'http://m.dycd.com/platform/car_detail.html';
+
+/**
+ *  分享新手车测试地址
+ */
+export const CAR_NEW_SHARE_TEST = 'http://test.bms.dycd.com/platform/car_detail_share.html';
+
+/**
+ * 分享新手正式地址
+ */
+export const CAR_NEW_SHARE_OPEN = 'http://m.dycd.com/platform/car_detail_share.html';
 
 
 /**
@@ -123,25 +133,6 @@ export const CAR_DETAIL = BASEURL + V + 'car/detail';
  */
 export const CAR_DETAIL_RELATION = BASEURL + V + 'car/detailRelation';
 
-/**
- * 二手车分享测试
- */
-export const CAR_USER_DETAIL_SHARE_TEST = '';
-
-/**
- * 二手车分享正式
- */
-export const CAR_USER_DETAIL_SHARE = '';
-
-/**
- * 新车分享测试
- */
-export const CAR_NEW_DETAIL_SHARE_TEST = '';
-
-/**
- * 新车分享正式
- */
-export const CAR_NEW_DETAIL_SHARE = '';
 
 /**
  * 创建、修改库存

@@ -593,9 +593,9 @@ export default class CarNewMySourceScene extends BaceComponent {
 
                     let fenxiangUrl = '';
                     if (AppUrls.BASEURL == 'http://api-gateway.test.dycd.com/') {
-                        fenxiangUrl = AppUrls.FENXIANGTEST;
+                        fenxiangUrl = AppUrls.CAR_NEW_SHARE_TEST;
                     } else {
-                        fenxiangUrl = AppUrls.FENXIANGOPEN;
+                        fenxiangUrl = AppUrls.CAR_NEW_SHARE_OPEN;
                     }
                     let carImage = typeof carData.imgs[0].url == 'undefined' ? resolveAssetSource(imageResource).uri : carData.imgs[0].url;
                     weChat.shareToSession({
@@ -652,9 +652,9 @@ export default class CarNewMySourceScene extends BaceComponent {
 
                     let fenxiangUrl = '';
                     if (AppUrls.BASEURL == 'http://api-gateway.test.dycd.com/') {
-                        fenxiangUrl = AppUrls.FENXIANGTEST;
+                        fenxiangUrl = AppUrls.CAR_NEW_SHARE_TEST;
                     } else {
-                        fenxiangUrl = AppUrls.FENXIANGOPEN;
+                        fenxiangUrl = AppUrls.CAR_NEW_SHARE_OPEN;
                     }
                     let carImage = typeof carData.imgs[0].url == 'undefined' ? resolveAssetSource(imageResource).uri : carData.imgs[0].url;
                     weChat.shareToTimeline({

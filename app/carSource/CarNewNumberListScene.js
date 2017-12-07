@@ -944,4 +944,8 @@ const  styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORA3,
         marginBottom:Pixel.getPixel(44)
     },
+    loadView:{
+        flex:1,
+        backgroundColor:'white'
+    }
 });
