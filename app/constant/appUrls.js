@@ -1218,4 +1218,41 @@ export const UPDATE_CAR_WELFARE = BASEURL + "cheshang/tenure_customer/updateCarW
  */
 export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySearch";
 
+/**
+ * 获取功能认证信息
+ */
+export const USER_IDENTITY_GET_INFO = BASEURL + V + "user.identity/getInfo";
 
+/**
+ * 添加个人认证申请
+ */
+export const PERSONCERTIFICATE = BASEURL + V + "user.identity/applyAuthUserInfo";//添加个人认证申请
+
+
+/**
+ *
+ * 添加企业认证申请
+ */
+export const ENTERPRISECERTIFICATE = BASEURL + V + "user.identity/applyEnterpriseInfo";//添加企业认证申请
+
+/**
+ *
+ * 注册(新)
+ */
+export const ZHUCE = BASEURL +  "v2/auth/register";//注册(新)
+
+/**
+ *
+ * 通过用户base_id,企业base_id 查看审核状态
+ */
+export const GETCHECKSTATUS = BASEURL + V + "user.identity/getCheckStatus";//通过用户base_id,企业base_id 查看审核状态
+/**
+ *
+ * 重新申请个人认证获取用户信息
+ */
+export const GETAPPLYAUTHUSERINFO = BASEURL + V + "user.identity/getApplyAuthUserInfo";//重新申请个人认证获取用户信息
+/**
+ *
+ * 重新申请企业认证获取企业信息
+ */
+export const GETAPPLYENTERPRISEINFO = BASEURL + V + "user.identity/getApplyEnterpriseInfo";//重新申请企业认证获取企业信息
