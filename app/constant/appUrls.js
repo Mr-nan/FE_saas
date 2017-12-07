@@ -180,6 +180,21 @@ export const CAR_ORDER_SAVE = BASEURL + V + 'order/save';
 export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
 
 /**
+ * 获取库存车辆列表
+ */
+export const CAR_STOCK_LIST = BASEURL + V + 'car.stock/lists';
+
+/**
+ * 库存车辆出库
+ */
+export const CAR_STOCK_SOLD_OUT = BASEURL + V + 'car.stock/soldOut';
+
+/**
+ * 修改库存数量和价格
+ */
+export const CAR_MODIFY_QUANTITY_ORICE = BASEURL + V + 'car/modify_quantity_price';
+
+/**
  * 获取我的车源-已上架/下架
  */
 export const CAR_USER_CAR = BASEURL + V + 'user/car';
