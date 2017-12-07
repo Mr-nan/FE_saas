@@ -158,7 +158,7 @@ export default class StockManagementScene extends BaseComponent {
                 },
                 {
                     title: '出厂日期',
-                    isShowTag: true,
+                    isShowTag: false,
                     value: '请选择',
                     isShowTail: true,
                 }
@@ -166,7 +166,7 @@ export default class StockManagementScene extends BaseComponent {
             [{
                 title: '采购价',
                 subTitle: '仅供车商老板、采购、财务查看',
-                isShowTag: true,
+                isShowTag: false,
                 isShowTail: false,
                 tailView: () => {
                     return (
@@ -465,15 +465,15 @@ export default class StockManagementScene extends BaseComponent {
             this.carData.pictures = ""
         }
 
-        if (!this.carData.manufacture) {
-            this.props.showToast('选择出厂日期');
-            return;
-        }
-
-        if (!this.carData.purchase_price) {
-            this.props.showToast('请填写采购价');
-            return;
-        }
+        // if (!this.carData.manufacture) {
+        //     this.props.showToast('选择出厂日期');
+        //     return;
+        // }
+        //
+        // if (!this.carData.purchase_price) {
+        //     this.props.showToast('请填写采购价');
+        //     return;
+        // }
 
         // let navigatorParams = {
         //     name: "CarPublishSecondScene",
