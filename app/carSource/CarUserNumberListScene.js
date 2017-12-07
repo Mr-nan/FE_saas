@@ -126,7 +126,6 @@ export default class CarUserNumberListScene extends BaseComponent {
                 name: "CarPublishFirstScene",
                 component: CarPublishFirstScene,
                 params: {
-
                     carID: carData.id,
                 }
             };
