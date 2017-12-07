@@ -9,7 +9,6 @@
 
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
-
 /**
  * 测试地址2
  */
