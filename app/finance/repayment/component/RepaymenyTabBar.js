@@ -26,7 +26,6 @@ export default class RepaymenyTabBar extends Component {
 
         let tabChild = [];
         this.props.tabs.map((tab, i) => {
-            console.log('==============>',this.state.tabName);
             tabChild.push(
                 <ChildTabView key={tab}
                               goToPages={(i) => {this.goToPages(i);}}
@@ -35,7 +34,6 @@ export default class RepaymenyTabBar extends Component {
                               tabName={this.state.tabName}
                               activeTab={this.props.activeTab}/>);
         })
-        console.log(tabChild);
         return <View style={[styles.tabs, this.props.style]}>
             {tabChild}
         </View>;
