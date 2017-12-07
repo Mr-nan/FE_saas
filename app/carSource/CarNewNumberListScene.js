@@ -215,6 +215,11 @@ export default class CarNewNumberListScene extends BaseComponent {
         }
     }
 
+    loadHeadData=()=>{
+        this.refs.upperFrameView && this.refs.upperFrameView.initFinish();
+        this.refs.dropFrameView && this.refs.dropFrameView.initFinish();
+    }
+
 
 }
 
