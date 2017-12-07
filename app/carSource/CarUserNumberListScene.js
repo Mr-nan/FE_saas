@@ -150,6 +150,11 @@ export default class CarUserNumberListScene extends BaseComponent {
             this.props.toNextPage(navigatorParams);
         }
     }
+
+    loadHeadData=()=>{
+        this.refs.upperFrameView && this.refs.upperFrameView.initFinish();
+        this.refs.dropFrameView && this.refs.dropFrameView.initFinish();
+    }
 }
 
 class MyCarSourceUpperFrameView extends BaseComponent {
@@ -624,4 +629,8 @@ const  styles = StyleSheet.create({
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
         color:'white',
     },
+    loadView:{
+        flex:1,
+        backgroundColor:'white'
+    }
 });
