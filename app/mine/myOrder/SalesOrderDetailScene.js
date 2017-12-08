@@ -74,6 +74,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.bottomState = -1;
         this.contactData = {};
         this.carAmount = 0;
+        this.deposit = 0;
         this.carVin = '';
         this.leftTime = 0;
         this.closeOrder = 0;
@@ -121,6 +122,16 @@ export default class SalesOrderDetailScene extends BaseComponent {
     updateCarAmount = (newAmount) => {
         this.props.showModal(true);
         this.carAmount = newAmount;
+    };
+
+
+    /**
+     * 更新车辆订金
+     * @param newAmount
+     **/
+    updateDeposit = (newAmount) => {
+        this.props.showModal(true);
+        this.deposit = newAmount;
     };
 
     /**
@@ -1201,9 +1212,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
             //this.carAmount = this.orderDetail.orders_item_data[0].transaction_price;
             //console.log('this.carAmount', this.carAmount);
             return (
-                <TransactionPrice amount={this.carAmount} navigator={this.props.navigator}
+                <TransactionPrice amount={this.carAmount}
                                   updateCarAmount={this.updateCarAmount}
+                                  deposit={this.deposit}
+                                  updateDeposit={this.updateDeposit}
                                   isShowFinance={this.isShowFinance}
+                                  showToast={this.props.showToast}
                                   carId={this.orderDetail.orders_item_data[0].car_id}
                                   orderId={this.orderDetail.id}/>
 

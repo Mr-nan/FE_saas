@@ -31,6 +31,7 @@ export default class TransactionPrice extends BaseComponent {
 
     constructor(props) {
         super(props);
+        this.oldAmount = this.props.amount;
         this.state = {
             amount: this.props.amount,
             deposit: 0
@@ -49,7 +50,8 @@ export default class TransactionPrice extends BaseComponent {
     render() {
         return (
             <View style={styles.itemType4}>
-                <PriceInput title="成交价(元)" amount={this.state.amount}/>
+                <PriceInput title="成交价(元)" amount={this.state.amount}
+                            inputOnBlur={this.checkPrice(this.state.amount, this.state.deposit)}/>
                 <View style={styles.separatedLine}/>
                 <PriceInput title="应付订金(元)" amount={this.state.deposit}/>
                 <View style={styles.separatedLine}/>
@@ -67,35 +69,37 @@ export default class TransactionPrice extends BaseComponent {
 
     /**
      *  定价检查接口
-     * @param price
      **/
-    checkPrice = (price) => {
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    company_id: datas.company_base_id,
-                    car_id: this.props.carId,
-                    order_id: this.props.orderId,
-                    pricing_amount: price,
-
-                };
-                let url = AppUrls.ORDER_CHECK_PRICE;
-                request(url, 'post', maps).then((response) => {
-                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        this.props.showModal(false);
-                        this.props.isShowFinance(response.mjson.data);
-                    } else {
-                        this.props.showToast(response.mjson.msg);
-                    }
-                }, (error) => {
-                    //this.props.showToast('车辆定价检查失败');
-                    this.props.showToast(error.mjson.msg);
-                });
-            } else {
-                this.props.showToast('车辆定价检查失败');
-            }
-        });
+    checkPrice = (price, deposit) => {
+        if (this.oldAmount != price) {
+            this.oldAmount = price;
+            this.props.showModal(true);
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                if (data.code == 1 && data.result != null) {
+                    let datas = JSON.parse(data.result);
+                    let maps = {
+                        company_id: datas.company_base_id,
+                        car_id: this.props.carId,
+                        order_id: this.props.orderId,
+                        pricing_amount: price,
+                        deposit_amount: deposit
+                    };
+                    let url = AppUrls.ORDER_CHECK_PRICE;
+                    request(url, 'post', maps).then((response) => {
+                        if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                            this.props.showModal(false);
+                            this.props.isShowFinance(response.mjson.data);
+                        } else {
+                            this.props.showToast(response.mjson.msg);
+                        }
+                    }, (error) => {
+                        this.props.showToast(error.mjson.msg);
+                    });
+                } else {
+                    this.props.showToast('车辆定价检查失败');
+                }
+            });
+        }
     };
 
     updateAmount = (newAmount) => {
