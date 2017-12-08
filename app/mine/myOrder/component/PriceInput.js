@@ -13,7 +13,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
-export default class TransactionPriceInput extends PureComponent {
+export default class PriceInput extends PureComponent {
 
     /**
      *   constructor
@@ -42,7 +42,7 @@ export default class TransactionPriceInput extends PureComponent {
             <View style={{height: Pixel.getPixel(44), flexDirection: 'row',alignItems: 'center'}}>
                 <Text allowFontScaling={false}
                       style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), marginLeft: Pixel.getPixel(15)}}>
-                    成交价(元)</Text>
+                    {this.props.title}</Text>
                 <TextInput
                     ref='amountInput'
                     defaultValue={this.state.amount + ''}
@@ -50,6 +50,7 @@ export default class TransactionPriceInput extends PureComponent {
                     onChangeText={this.setNumber}
                     keyboardType='numeric'
                     //clearButtonMode="always"
+                    onBlur={this.props.inputOnBlur}
                     style={{
                         flex: 1,
                         textAlign: 'right',
