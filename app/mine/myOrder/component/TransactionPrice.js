@@ -34,7 +34,7 @@ export default class TransactionPrice extends BaseComponent {
         this.oldAmount = this.props.amount;
         this.state = {
             amount: this.props.amount,
-            deposit: 0
+            deposit: this.props.deposit
         }
     }
 
@@ -54,7 +54,8 @@ export default class TransactionPrice extends BaseComponent {
                             inputOnBlur={this.checkPrice(this.state.amount, this.state.deposit)}/>
                 <View style={styles.separatedLine}/>
                 <PriceInput title="应付订金(元)" amount={this.state.deposit}/>
-                <View style={styles.separatedLine}/>
+                {/*<View style={styles.separatedLine}/>*/}
+                <Image style={{marginTop: Pixel.getPixel(-3)}} source={require('../../../../images/transact/line.png')}/>
                 <DepositInputState depositInputState="请输入成交价"/>
             </View>
         )
@@ -64,6 +65,13 @@ export default class TransactionPrice extends BaseComponent {
      *  更新订单详情页面成交价
      **/
     updateTransactionPrice = (newPrice) => {
+
+    };
+
+    /**
+     *   成交价本地检查
+     **/
+    localCheckPrice = (price) => {
 
     };
 
@@ -115,7 +123,7 @@ const styles = StyleSheet.create({
     separatedLine: {
         marginRight: Pixel.getPixel(15),
         marginLeft: Pixel.getPixel(15),
-        height: 1,
+        height: 0.5,
         backgroundColor: fontAndColor.COLORA4
     },
     itemType4: {
