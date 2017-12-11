@@ -44,13 +44,15 @@ export default class PriceInput extends PureComponent {
                       style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), marginLeft: Pixel.getPixel(15)}}>
                     {this.props.title}</Text>
                 <TextInput
-                    ref='amountInput'
                     defaultValue={this.state.amount + ''}
                     underlineColorAndroid='transparent'
                     onChangeText={this.setNumber}
                     keyboardType='numeric'
                     //clearButtonMode="always"
-                    onBlur={this.props.inputOnBlur}
+                    onBlur={() => {
+                        this.props.updateAmount(this.state.amount);
+                        this.props.inputOnBlur();
+                    }}
                     style={{
                         flex: 1,
                         textAlign: 'right',
@@ -67,6 +69,7 @@ export default class PriceInput extends PureComponent {
      *   更新文字内容
      **/
     setNumber = (number) => {
+        //this.props.updateAmount(number);
         this.setState({amount: number});
     };
 

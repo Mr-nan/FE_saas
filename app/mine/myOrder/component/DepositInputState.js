@@ -22,6 +22,12 @@ export default class DepositInputState extends PureComponent {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            depositInputState: nextProps.depositInputState
+        });
+    }
+
     /**
      *   render
      **/

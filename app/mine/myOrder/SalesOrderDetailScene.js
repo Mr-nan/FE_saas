@@ -116,22 +116,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     /**
-     * 更新车辆定价
-     * @param newAmount
+     * 更新车辆定价、订金
      **/
-    updateCarAmount = (newAmount) => {
-        this.props.showModal(true);
+    updateDepositAmount = (newAmount, newDeposit) => {
+        //this.props.showModal(true);
+        console.log('updateDepositAmount===', newAmount +', '+ newDeposit);
         this.carAmount = newAmount;
-    };
-
-
-    /**
-     * 更新车辆订金
-     * @param newAmount
-     **/
-    updateDeposit = (newAmount) => {
-        this.props.showModal(true);
-        this.deposit = newAmount;
+        this.deposit = newDeposit;
     };
 
     /**
@@ -1209,19 +1200,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     showShopId={this.orderDetail.buyer_company_id}/>
             )
         } else if (rowData === '2') {
-            //this.carAmount = this.orderDetail.orders_item_data[0].transaction_price;
-            //console.log('this.carAmount', this.carAmount);
             return (
                 <TransactionPrice amount={this.carAmount}
-                                  updateCarAmount={this.updateCarAmount}
                                   deposit={this.deposit}
-                                  updateDeposit={this.updateDeposit}
+                                  updateDepositAmount={this.updateDepositAmount}
                                   isShowFinance={this.isShowFinance}
                                   showToast={this.props.showToast}
+                                  showModal={this.props.showModal}
                                   carId={this.orderDetail.orders_item_data[0].car_id}
                                   orderId={this.orderDetail.id}/>
 
             )
+            //this.carAmount = this.orderDetail.orders_item_data[0].transaction_price;
+            //console.log('this.carAmount', this.carAmount);
         } else if (rowData === '3') {
             return (
                 <View style={styles.itemType7}>

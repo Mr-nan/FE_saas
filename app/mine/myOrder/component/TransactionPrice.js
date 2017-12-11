@@ -32,9 +32,10 @@ export default class TransactionPrice extends BaseComponent {
     constructor(props) {
         super(props);
         this.oldAmount = this.props.amount;
+        this.amount = this.props.amount;
+        this.deposit = this.props.deposit;
         this.state = {
-            amount: this.props.amount,
-            deposit: this.props.deposit
+            depositInputState: '请输入成交价'
         }
     }
 
@@ -42,43 +43,52 @@ export default class TransactionPrice extends BaseComponent {
      this.props.isShowFinance(financeInfo);
      };*/
 
-
     componentWillReceiveProps(nextProps) {
-        this.setState({amount: nextProps.amount});
+        this.amount = nextProps.amount;
+        this.deposit = nextProps.deposit;
     }
 
     render() {
         return (
             <View style={styles.itemType4}>
-                <PriceInput title="成交价(元)" amount={this.state.amount}
-                            inputOnBlur={this.checkPrice(this.state.amount, this.state.deposit)}/>
+                <PriceInput title="成交价(元)"
+                            ref="amount"
+                            amount={this.amount}
+                            updateAmount={this.updateAmount}
+                            showModal={this.props.showModal}
+                            inputOnBlur={() => {this.localCheckPrice(this.amount, this.deposit)}}/>
                 <View style={styles.separatedLine}/>
-                <PriceInput title="应付订金(元)" amount={this.state.deposit}/>
+                <PriceInput title="应付订金(元)"
+                            ref="deposit"
+                            amount={this.deposit}
+                            updateAmount={this.updateDeposit}
+                            showModal={this.props.showModal}
+                            inputOnBlur={() => {}}/>
                 {/*<View style={styles.separatedLine}/>*/}
                 <Image style={{marginTop: Pixel.getPixel(-3)}} source={require('../../../../images/transact/line.png')}/>
-                <DepositInputState depositInputState="请输入成交价"/>
+                <DepositInputState depositInputState={this.state.depositInputState}/>
             </View>
         )
     }
 
     /**
-     *  更新订单详情页面成交价
-     **/
-    updateTransactionPrice = (newPrice) => {
-
-    };
-
-    /**
      *   成交价本地检查
      **/
-    localCheckPrice = (price) => {
-
+    localCheckPrice = (price, deposit) => {
+        if (this.isNumberByHundred(price)) {
+            this.checkPrice(price, deposit);
+        } else if (price == 0) {
+            this.props.showToast("金额不能为零");
+        } else {
+            this.props.showToast("请输入整百金额");
+        }
     };
 
     /**
      *  定价检查接口
      **/
     checkPrice = (price, deposit) => {
+        console.log('price', price+',  '+deposit+',  '+this.oldAmount);
         if (this.oldAmount != price) {
             this.oldAmount = price;
             this.props.showModal(true);
@@ -110,13 +120,33 @@ export default class TransactionPrice extends BaseComponent {
         }
     };
 
+    /**
+     *   整百判断
+     **/
+    isNumberByHundred = (number) => {
+        let re = /^[0-9]*[0-9]$/i;
+        if (re.test(number) && number % 100 === 0 && number !== 0) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     updateAmount = (newAmount) => {
-        this.props.updateCarAmount(newAmount);
-        this.setState({
-            amount: newAmount,
-            deposit: newAmount / 10
-        });
-    }
+        this.props.updateDepositAmount(newAmount, this.deposit);
+        this.amount = newAmount;
+    };
+
+    updateDeposit = (newDeposit) => {
+        this.props.updateDepositAmount(this.amount, newDeposit);
+        this.deposit = newDeposit;
+    };
+
+    updateDepositAmount = (newAmount, newDeposit) => {
+        this.props.updateDeposit(newAmount, newDeposit);
+        this.amount = newAmount;
+        this.deposit = newDeposit;
+    };
 }
 
 const styles = StyleSheet.create({
