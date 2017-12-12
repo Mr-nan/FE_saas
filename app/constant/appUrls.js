@@ -1278,6 +1278,11 @@ export const ENTERPRISECERTIFICATE = BASEURL + V + "user.identity/applyEnterpris
 export const ZHUCE = BASEURL +  "v2/auth/register";//注册(新)
 
 /**
+ * 注册邀请码分享接口
+ */
+export const INVITE_SHARE = BASEURL + V + "invite/share";// v1/index/captcha
+
+/**
  *
  * 通过用户base_id,企业base_id 查看审核状态
  */
