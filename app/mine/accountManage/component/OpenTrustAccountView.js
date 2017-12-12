@@ -109,10 +109,10 @@ export default class OpenTrustAccountView extends BaseComponent {
                     onPress={() => {this.openContractScene('合同', this.contractList[i].url)}}
                     style={{
                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                        color: fontAndColor.COLORA1,
+                        color: fontAndColor.COLORB4,
                         lineHeight: Pixel.getPixel(20)
                     }}>
-                    《{this.contractList[i].name}》
+                    《{this.contractList[i].name}》{i < this.contractList.length - 1 ? '、' : ''}
                 </Text>);
                 //contractList.push({title: this.contractList[i].name, webUrl: this.contractList[i].url});
             }
