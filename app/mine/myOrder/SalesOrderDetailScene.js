@@ -170,9 +170,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 let maps = {
                     company_id: datas.company_base_id,
                     car_id: this.orderDetail.orders_item_data[0].car_id,
-                    order_id: this.orderDetail.id,
+                    order_id: 0,
+                    //order_id: this.orderDetail.id,
                     pricing_amount: this.carAmount,
-                    //car_vin: this.carVin.length !== 17 ? this.orderDetail.orders_item_data[0].car_vin : this.carVin
+                    deposit_amount: this.deposit,
                     car_vin: this.orderDetail.orders_item_data[0].car_vin.length === 17 ?
                         this.orderDetail.orders_item_data[0].car_vin : this.carVin
                 };

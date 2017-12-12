@@ -57,7 +57,7 @@ export default class TransactionPrice extends BaseComponent {
                             updateAmount={this.updateAmount}
                             showModal={this.props.showModal}
                             inputOnBlur={() => {
-                                this.localCheckPrice(this.amount, this.deposit)
+                                this.localCheckPrice(this.amount, this.deposit, 1)
                             }}/>
                 <View style={styles.separatedLine}/>
                 <PriceInput title="应付订金(元)"
@@ -66,6 +66,7 @@ export default class TransactionPrice extends BaseComponent {
                             updateAmount={this.updateDeposit}
                             showModal={this.props.showModal}
                             inputOnBlur={() => {
+                                this.localCheckPrice(this.amount, this.deposit, 2)
                             }}/>
                 {/*<View style={styles.separatedLine}/>*/}
                 <Image style={{marginTop: Pixel.getPixel(-3)}}
@@ -79,8 +80,9 @@ export default class TransactionPrice extends BaseComponent {
      *   成交价本地检查
      *   price 成交价
      *   deposit 订金
+     *   type 1成交价  2订金
      **/
-    localCheckPrice = (price, deposit) => {
+    localCheckPrice = (price, deposit, type) => {
         if (price === 0) {
             //return '成交价不能为0';
             this.updatePrompting('成交价不能为0');
@@ -91,8 +93,11 @@ export default class TransactionPrice extends BaseComponent {
         } else if (deposit > (price * 0.2)) {
             this.updatePrompting('您设定的订金已超出最大金额');
         } else {
-            this.checkPrice(price, deposit);
-            //return '订金买家最多可付' + price * 0.2;
+            if (type === 1) {
+                this.checkPrice(price, deposit);
+            }
+            let pay = price * 0.2 >= 100 ? price * 0.2 : 0;
+            this.updatePrompting('订金买家最多可付' + pay + '元');
         }
     };
 
@@ -124,10 +129,8 @@ export default class TransactionPrice extends BaseComponent {
                     let url = AppUrls.ORDER_CHECK_PRICE;
                     request(url, 'post', maps).then((response) => {
                         if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                            let pay = price * 0.2 >= 100 ? price * 0.2 : 0;
                             this.props.showModal(false);
                             this.props.isShowFinance(response.mjson.data);
-                            this.updatePrompting('订金买家最多可付' + pay + '元');
                         } else {
                             this.props.showToast(response.mjson.msg);
                         }
