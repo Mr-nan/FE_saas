@@ -1570,7 +1570,7 @@ class EditCarPriceView extends Component {
 
     render(){
         return(
-                <Modal visible={this.state.modalOpen} transparent={true} animationType={'none'} onRequestClose={()=>{()=>{this.isShowView(false,{})}}}>
+                <Modal visible={this.state.modalOpen} transparent={true} animationType={'slide'} onRequestClose={()=>{()=>{this.isShowView(false,{})}}}>
                     <TouchableOpacity style={styles.editCarPriceContainer} onPress={()=>{this.isShowView(false,{})}}>
                         <View style={styles.editCarContentView}>
                             <View style={styles.editCarHeadView}>
@@ -1588,7 +1588,7 @@ class EditCarPriceView extends Component {
                                            ref={(ref)=>{this.carNumberInput = ref}}
                                            underlineColorAndroid='transparent'
                                            keyboardType="numeric"
-                                           autoFocus={false}
+                                           autoFocus={true}
                                            maxLength={5}
                                            onChangeText={(text)=>{
                                                let number = this.chkNumber(text);
