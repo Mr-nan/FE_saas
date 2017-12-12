@@ -56,16 +56,20 @@ export default class TransactionPrice extends BaseComponent {
                             amount={this.amount}
                             updateAmount={this.updateAmount}
                             showModal={this.props.showModal}
-                            inputOnBlur={() => {this.localCheckPrice(this.amount, this.deposit)}}/>
+                            inputOnBlur={() => {
+                                this.localCheckPrice(this.amount, this.deposit)
+                            }}/>
                 <View style={styles.separatedLine}/>
                 <PriceInput title="应付订金(元)"
                             ref="deposit"
                             amount={this.deposit}
                             updateAmount={this.updateDeposit}
                             showModal={this.props.showModal}
-                            inputOnBlur={() => {}}/>
+                            inputOnBlur={() => {
+                            }}/>
                 {/*<View style={styles.separatedLine}/>*/}
-                <Image style={{marginTop: Pixel.getPixel(-3)}} source={require('../../../../images/transact/line.png')}/>
+                <Image style={{marginTop: Pixel.getPixel(-3)}}
+                       source={require('../../../../images/transact/line.png')}/>
                 <DepositInputState depositInputState={this.state.depositInputState}/>
             </View>
         )
@@ -85,10 +89,17 @@ export default class TransactionPrice extends BaseComponent {
     };
 
     /**
+     *   提示文案更新
+     **/
+    updatePrompting = (text) => {
+        this.setState({depositInputState: text});
+    };
+
+    /**
      *  定价检查接口
      **/
     checkPrice = (price, deposit) => {
-        console.log('price', price+',  '+deposit+',  '+this.oldAmount);
+        console.log('price', price + ',  ' + deposit + ',  ' + this.oldAmount);
         if (this.oldAmount != price) {
             this.oldAmount = price;
             this.props.showModal(true);
@@ -107,6 +118,7 @@ export default class TransactionPrice extends BaseComponent {
                         if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                             this.props.showModal(false);
                             this.props.isShowFinance(response.mjson.data);
+                            this.updatePrompting('订金买家最多可付' + (price * 0.2) + '元');
                         } else {
                             this.props.showToast(response.mjson.msg);
                         }
