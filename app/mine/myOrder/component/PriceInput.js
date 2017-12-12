@@ -30,7 +30,7 @@ export default class PriceInput extends PureComponent {
      **/
     clearInputText = () => {
         this.setState({
-            value: ''
+            value: 0
         });
     };
 
