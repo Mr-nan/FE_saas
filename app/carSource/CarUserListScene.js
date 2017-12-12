@@ -190,9 +190,10 @@ export  default  class CarUserListScene extends BaseComponent {
 
             if(data.code == 1){
                 if(data.result == 'true'){
-                    isUserCarCheckRecommend = false
+                    isUserCarCheckRecommend = false;
                     APIParameter.type = 4;
                     APIParameter.prov_id = 0;
+                    currentCarCheckRecommend = isUserCarCheckRecommend;
 
                 }
             }

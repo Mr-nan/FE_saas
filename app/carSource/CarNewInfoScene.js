@@ -26,7 +26,7 @@ import AllNavigationView from '../component/AllNavigationView';
 import Gallery from 'react-native-gallery';
 import CarZoomImageScene from './CarZoomImagScene';
 import AutoConfig from  '../publish/AutoConfig';
-import {CarConfigurationView}   from './../carSource/znComponent/CarInfoAllComponent';
+import {CarConfigurationView}   from './znComponent/CarInfoAllComponent';
 import *as weChat from 'react-native-wechat';
 import PixelUtil from '../utils/PixelUtil';
 import StorageUtil from "../utils/StorageUtil";

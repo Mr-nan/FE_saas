@@ -21,8 +21,8 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../finance/repayment/component/RepaymenyTabBar';
 import NewCarCollectSourceScene from './NewCarCollectSourceScene'
 import OldCarCollectSourceScene from './OldCarCollectSourceScene'
-import CarInfoScene from '../../app/carSource/CarInfoScene'
-import CarNewInfoScene from '../../app/carSource/CarNewInfoScene'
+import CarInfoScene from './CarInfoScene'
+import CarNewInfoScene from './CarNewInfoScene'
 let index = 0;
 export  default class CarCollectsScene extends BaseComponent {
 

@@ -187,13 +187,11 @@ export  default  class CarNewListScene extends BaseComponent {
                     isNewCarCheckRecommend = false
                     APIParameter.type = 4;
                     APIParameter.prov_id = 0;
+                    currentCarCheckRecommend = isNewCarCheckRecommend;
 
                 }
             }
         });
-
-
-
         StorageUtil.mSetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,'false');
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
@@ -222,8 +220,6 @@ export  default  class CarNewListScene extends BaseComponent {
 
     // 筛选数据刷新
     filterData = () => {
-
-
         if(!currentCarCheckRecommend){
             if(APIParameter.order_type == 0&&
                 APIParameter.mileage == 0 &&
@@ -237,7 +233,8 @@ export  default  class CarNewListScene extends BaseComponent {
                 APIParameter.second_type =='' &&
                 APIParameter.car_color == 0 &&
                 APIParameter.nature_use == 0 &&
-                APIParameter.model_name ==''){
+                APIParameter.model_name =='')
+            {
                 APIParameter.type = 4;
             }else {
                 APIParameter.type = 0;

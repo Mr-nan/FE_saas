@@ -21,8 +21,8 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../finance/repayment/component/RepaymenyTabBar';
 import NewBrowsingHistoryScene from './NewBrowsingHistoryScene';
 import OldBrowsingHistoryScene from './OldBrowsingHistoryScene';
-import CarInfoScene from '../../app/carSource/CarInfoScene';
-import CarNewInfoScene from '../../app/carSource/CarNewInfoScene'
+import CarInfoScene from './CarInfoScene';
+import CarNewInfoScene from './CarNewInfoScene'
 import  AllLoading from '../component/AllLoading';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';

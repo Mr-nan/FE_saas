@@ -56,8 +56,7 @@ let Pixel = new PixelUtil();
     }
 
     setBtnType=(btnIndex)=>{
-        console.log('======ZNSwitchoverButton=====setBtnType');
-       console.log('==========**&&&&&&',this.buttonArray);
+
         for (let i=0;i<this.buttonArray.length;i++)
         {
             let tmpBtn = this.buttonArray[i];

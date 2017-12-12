@@ -150,7 +150,6 @@ export default class CarNewMySourceScene extends BaceComponent {
     }
 
     carPriceEditClick=(carData)=>{
-
         this.EditCarPriceView.isShowView(true,carData);
     }
 
