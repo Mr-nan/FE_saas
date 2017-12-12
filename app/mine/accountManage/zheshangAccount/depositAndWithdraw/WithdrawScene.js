@@ -271,7 +271,6 @@ export default class WithdrawScene extends ZSBaseComponent {
                     sub_acct_no: this.props.account.bank_card_no,
                     sms_code: sms_code,
                     sms_no: sms_no?sms_no:"000000"
-
                 }
 
                 request(AppUrls.ZS_WITHDRAW, 'POST', params).then((response) => {

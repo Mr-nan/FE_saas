@@ -463,7 +463,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                     <Text allowFontScaling={false}
                           style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已提供对公开户线上资料</Text>
                     <Text allowFontScaling={false}
-                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>请尽快联系客服 4008-365-111</Text>
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>线下资料请尽快联系客服4008365111</Text>
                 </View>
             }
         } else if (this.state.type === 2 || this.state.type === 3) {
