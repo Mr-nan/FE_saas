@@ -462,8 +462,7 @@ export default class CarNewInfoScene extends BaseComponent {
     // 下订单
     orderClick = (carData) => {
 
-        let carNumber = parseFloat(carData.stock?carData.stock:0)-parseFloat(carData.reserve_num?carData.reserve_num:0);
-        if (carNumber<=0) {
+        if (carData.show_order == 1) {
             this.props.showToast('该车辆已被订购');
 
         } else {
