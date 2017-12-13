@@ -672,9 +672,9 @@ export  default  class CarNewListScene extends BaseComponent {
 
         if(!this.refs.HeadView){
             isNewCarCheckRecommend = false;
+            currentCarCheckRecommend = isNewCarCheckRecommend;
             APIParameter.type = 4;
             APIParameter.prov_id = 0;
-            currentCarCheckRecommend = isNewCarCheckRecommend;
             this.loadData();
 
         }else {

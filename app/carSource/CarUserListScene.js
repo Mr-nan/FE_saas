@@ -608,10 +608,10 @@ export  default  class CarUserListScene extends BaseComponent {
             },
         });
         if(!this.refs.HeadView){
-            isNewCarCheckRecommend = false;
+            isUserCarCheckRecommend = false;
+            currentCarCheckRecommend = isUserCarCheckRecommend;
             APIParameter.type = 4;
             APIParameter.prov_id = 0;
-            currentCarCheckRecommend = isNewCarCheckRecommend;
             this.loadData();
 
         }else {
