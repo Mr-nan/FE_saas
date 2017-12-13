@@ -33,6 +33,7 @@ let selectData={
 
     city_name:'',
     provice_id:0,
+    provice_name:'',
     city_id:0,
 
 };
@@ -41,6 +42,7 @@ let selectData={
 
      componentWillMount() {
          selectData.provice_id = 0;
+         selectData.provice_name = 0;
          selectData.city_name='';
          selectData.city_id=0;
      }
@@ -152,6 +154,7 @@ let selectData={
 
                  selectData.city_name=rowData.title;
                  selectData.provice_id=rowData.ID;
+                 selectData.provice_name=rowData.title;
 
                  this.refs.cityList && this.refs.cityList.loadData();
              }}>
