@@ -637,6 +637,16 @@ export  default  class CarNewListScene extends BaseComponent {
 
     };
 
+    setHeadViewType =()=>{
+        if (this.refs.HeadView.state.isCheckRecommend) {
+            this.refs.HeadView.setCheckRecommend(false);
+
+        } else {
+
+            this.filterData();
+        }
+    }
+
     //  选择车型
     checkedCarClick = (carObject) => {
 
@@ -660,7 +670,17 @@ export  default  class CarNewListScene extends BaseComponent {
             },
         });
 
-        this.setHeadViewType();
+        if(!this.refs.HeadView){
+            isNewCarCheckRecommend = false;
+            APIParameter.type = 4;
+            APIParameter.prov_id = 0;
+            currentCarCheckRecommend = isNewCarCheckRecommend;
+            this.loadData();
+
+        }else {
+            this.setHeadViewType();
+
+        }
 
     };
 
@@ -884,16 +904,6 @@ export  default  class CarNewListScene extends BaseComponent {
 
 
     };
-
-    setHeadViewType =()=>{
-        if (this.refs.HeadView.state.isCheckRecommend) {
-            this.refs.HeadView.setCheckRecommend(false);
-
-        } else {
-
-            this.filterData();
-        }
-    }
 
     showSequencingView = () => {
 

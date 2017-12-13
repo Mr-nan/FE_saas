@@ -607,8 +607,17 @@ export  default  class CarUserListScene extends BaseComponent {
                 series_id: carObject.series_id,
             },
         });
+        if(!this.refs.HeadView){
+            isNewCarCheckRecommend = false;
+            APIParameter.type = 4;
+            APIParameter.prov_id = 0;
+            currentCarCheckRecommend = isNewCarCheckRecommend;
+            this.loadData();
 
-        this.setHeadViewType();
+        }else {
+            this.setHeadViewType();
+
+        }
 
     };
 
