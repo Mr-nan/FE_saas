@@ -21,7 +21,8 @@ export default class PriceInput extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            amount: this.props.amount
+            amount: this.props.amount,
+            textColor: fontAndColor.COLORA2,
         }
     }
 
@@ -35,6 +36,29 @@ export default class PriceInput extends PureComponent {
     };
 
     /**
+     *   更改字体颜色
+     **/
+    changeColor = (color) => {
+        this.setState({
+            textColor: color,
+        });
+    };
+
+    /**
+     *   TextInput获取焦点
+     **/
+    getFocus = () => {
+        this.refs.input.focus();
+    };
+
+    /**
+     *   获取输入的数字
+     **/
+    getAmount = () => {
+        return this.state.amount;
+    };
+
+    /**
      *   render
      **/
     render() {
@@ -44,11 +68,11 @@ export default class PriceInput extends PureComponent {
                       style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), marginLeft: Pixel.getPixel(15)}}>
                     {this.props.title}</Text>
                 <TextInput
+                    ref="input"
                     defaultValue={this.state.amount + ''}
                     underlineColorAndroid='transparent'
                     onChangeText={this.setNumber}
                     keyboardType='numeric'
-                    //clearButtonMode="always"
                     onBlur={() => {
                         this.props.updateAmount(this.state.amount);
                         this.props.inputOnBlur();
@@ -59,7 +83,7 @@ export default class PriceInput extends PureComponent {
                         //marginLeft: Pixel.getPixel(15),
                         marginRight: Pixel.getPixel(15),
                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                        color: fontAndColor.COLORA2
+                        color: this.state.textColor
                     }} placeholder='请输入金额'/>
             </View>
         );

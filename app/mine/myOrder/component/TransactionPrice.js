@@ -52,7 +52,7 @@ export default class TransactionPrice extends BaseComponent {
         return (
             <View style={styles.itemType4}>
                 <PriceInput title="成交价(元)"
-                            ref="amount"
+                            ref={(ref) => {this.amountInput = ref}}
                             amount={this.amount}
                             updateAmount={this.updateAmount}
                             showModal={this.props.showModal}
@@ -61,7 +61,7 @@ export default class TransactionPrice extends BaseComponent {
                             }}/>
                 <View style={styles.separatedLine}/>
                 <PriceInput title="应付订金(元)"
-                            ref="deposit"
+                            ref={(ref) => {this.depositInput = ref}}
                             amount={this.deposit}
                             updateAmount={this.updateDeposit}
                             showModal={this.props.showModal}
@@ -77,6 +77,22 @@ export default class TransactionPrice extends BaseComponent {
     }
 
     /**
+     *   获取输入的成交价
+     **/
+    getTransaction = () => {
+        let transaction = this.amountInput.getAmount();
+        this.oldAmount = transaction;
+        return transaction;
+    };
+
+    /**
+     *   获取输入的订金
+     **/
+    getDeposit = () => {
+        return this.depositInput.getAmount();
+    };
+
+    /**
      *   成交价本地检查
      *   price 成交价
      *   deposit 订金
@@ -86,6 +102,8 @@ export default class TransactionPrice extends BaseComponent {
         if (price === 0) {
             //return '成交价不能为0';
             this.updatePrompting('成交价不能为0');
+/*            this.amountInput.changeColor(fontAndColor.COLORB2);
+            this.depositInput.changeColor(fontAndColor.COLORA2);*/
         } else if (!this.isNumberByHundred(price)) {
             this.updatePrompting('成交价请输入整百金额');
         } else if (!this.isNumberByHundred(deposit) && deposit !== 0) {
@@ -99,6 +117,14 @@ export default class TransactionPrice extends BaseComponent {
             let pay = price * 0.2 >= 100 ? price * 0.2 : 0;
             this.updatePrompting('订金买家最多可付' + pay + '元');
         }
+    };
+
+    /**
+     *   刷新TextInput字体颜色
+     **/
+    refreshTextInputColor = () => {
+        this.depositInput.getFocus();
+        this.amountInput.getFocus();
     };
 
     /**
@@ -130,7 +156,7 @@ export default class TransactionPrice extends BaseComponent {
                     request(url, 'post', maps).then((response) => {
                         if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                             this.props.showModal(false);
-                            this.props.isShowFinance(response.mjson.data);
+                            this.props.isShowFinance(response.mjson.data, false);
                         } else {
                             this.props.showToast(response.mjson.msg);
                         }
@@ -166,11 +192,11 @@ export default class TransactionPrice extends BaseComponent {
         this.deposit = newDeposit;
     };
 
-    updateDepositAmount = (newAmount, newDeposit) => {
+/*    updateDepositAmount = (newAmount, newDeposit) => {
         this.props.updateDeposit(newAmount, newDeposit);
         this.amount = newAmount;
         this.deposit = newDeposit;
-    };
+    };*/
 }
 
 const styles = StyleSheet.create({
