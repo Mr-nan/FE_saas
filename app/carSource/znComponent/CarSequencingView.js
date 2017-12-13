@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORB1,
         justifyContent: 'center',
         alignItems: 'center',
-        bottom: Pixel.getBottomPixel(64),
+        bottom: Pixel.getBottomPixel(55),
     },
     sequencingText: {
 

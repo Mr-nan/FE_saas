@@ -566,8 +566,11 @@ export default class CarInfoScene extends BaseComponent {
                         enter_base_ids: datas.company_base_id,
                         child_type: '1'
                     };
+
+                    this.props.showModal(true);
                     request(AppUrls.USER_ACCOUNT_INFO, 'Post', maps)
                         .then((response) => {
+                                this.props.showModal(false);
                                 if (response.mjson.data.account.length == 0) {
                                     this.props.showToast('请您先开通平台账户');
                                 } else {
