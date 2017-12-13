@@ -163,10 +163,12 @@ export default class CarNewInfoScene extends BaseComponent {
                 }
             }
 
+            console.log(`========${carData.first_type}======${carData.second_type}====`);
+
             carData.infoData = [
                 {
                 title:'车规',
-                value: carData.first_type &&(carData.first_type+'('+carData.second_type+')'),
+                value: carData.first_type &&(carData.first_type+(carData.second_type?('('+carData.second_type+')'):'')),
                 },
                 {
                 title:'颜色(车身/内饰)',
