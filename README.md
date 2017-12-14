@@ -190,6 +190,10 @@ return [
         22=>'融资单质押车辆提前还款失败',  //--3
         23=>'融资单质押车辆提前还款成功',  //--3
         24=>'融资单确认验收失败',         //--3
+            200=>'待付全款',
+            201=>'全款支付中',
+            202=>'全款支付失败',
+            203=>'全款支付完成',
     ],
 
 
@@ -239,3 +243,18 @@ return [
                             "taskTenure",
                             "taskDC"
                             ]
+
+    'DEPOSIT_NONE' =>array('code'=>'6350139','msg'=>'订金金额不能为空！'),
+    'PRICING_AMOUNT_NONE' =>array('code'=>'6350140','msg'=>'成交金额不能为空！'),
+    'AMOUNT_EQUAL_LESS_0' =>array('code'=>'6350141','msg'=>'金额不能小于等于0！'),
+    'PRICING_AMOUNT_NOT_HUNDREDS' =>array('code'=>'6350142','msg'=>'交易金额必须为整百倍数！'),
+    'DEPOSIT_AMOUNT_NOT_HUNDREDS' =>array('code'=>'6350143','msg'=>'订金金额必须为整百倍数！'),
+    'DEPOSIT_AMOUNT_MORE' =>array('code'=>'6350144','msg'=>'订金已超出最大金额！'),
+
+    200=>'待付全款',
+    201=>'全款支付中',
+    202=>'全款支付失败',
+    203=>'全款支付完成',
+
+    无订金单子:
+    totalpay_amount>0

@@ -138,7 +138,7 @@ export default class TransactionPrice extends BaseComponent {
      *  定价检查接口
      **/
     checkPrice = (price, deposit) => {
-        console.log('price', price + ',  ' + deposit + ',  ' + this.oldAmount);
+        //console.log('price', price + ',  ' + deposit + ',  ' + this.oldAmount);
         if (this.oldAmount != price) {
             this.oldAmount = price;
             this.props.showModal(true);

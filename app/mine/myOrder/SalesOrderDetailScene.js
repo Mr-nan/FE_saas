@@ -55,6 +55,7 @@ import ContractScene from "./ContractScene";
 import RepaymentInfoScene from "../../finance/repayment/RepaymentCreditInfoScene";
 import InventoryPlanInfoScene from "../../finance/repayment/InventoryPlanInfoScene";
 import NewPurchaseRepaymentInfoScene from "../../finance/repayment/NewPurchaseRepaymentInfoScene";
+import SalesInfo from "./component/SalesInfo";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -132,7 +133,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
      **/
     updateDepositAmount = (newAmount, newDeposit) => {
         //this.props.showModal(true);
-        console.log('updateDepositAmount===', newAmount + ', ' + newDeposit);
         this.carAmount = newAmount;
         this.deposit = newDeposit;
     };
@@ -184,6 +184,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
      *   price 成交价
      *   deposit 订金
      *   type 1成交价  2订金
+     *   返回值 检查是否通过
      **/
     localCheckPrice = (price, deposit, type) => {
         if (price === 0) {
@@ -192,15 +193,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
             this.props.showToast('成交价不能为0');
             /*            this.amountInput.changeColor(fontAndColor.COLORB2);
              this.depositInput.changeColor(fontAndColor.COLORA2);*/
+            return false;
         } else if (!this.isNumberByHundred(price)) {
             this.transactionPrice.updatePrompting('成交价请输入整百金额');
             this.props.showToast('成交价请输入整百金额');
+            return false;
         } else if (!this.isNumberByHundred(deposit) && deposit !== 0) {
             this.transactionPrice.updatePrompting('订金请输入整百金额');
             this.props.showToast('订金请输入整百金额');
+            return false;
         } else if (deposit > (price * 0.2)) {
             this.transactionPrice.updatePrompting('您设定的订金已超出最大金额');
             this.props.showToast('您设定的订金已超出最大金额');
+            return false;
         } else {
             if (type === 1) {
                 this.checkPrice(price, deposit);
@@ -208,6 +213,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             let pay = price * 0.2 >= 100 ? price * 0.2 : 0;
             this.transactionPrice.updatePrompting('订金买家最多可付' + pay + '元');
             //this.props.showToast('订金买家最多可付' + pay + '元');
+            return true;
         }
     };
 
@@ -222,7 +228,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
         // 判断Input控件中的数额与此页面中数额比较
         // Input控件中成交价 == 此页面成交价 && Input控件中订金 == 此页面订金 直接走savePrice
         if (inputTransaction === this.carAmount && inputDeposit === this.deposit) {
-            this.savePrice();
+            if (this.localCheckPrice(this.carAmount, this.deposit, 2)) {
+                this.savePrice();
+            }
         }
         // Input控件中成交价 == 此页面成交价 && Input控件中订金 != 此页面订金 只走localCheckPrice & type = 2
         else if (inputTransaction === this.carAmount && inputDeposit !== this.deposit) {
@@ -274,7 +282,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
      *  定价提交
      **/
     savePrice = () => {
-        console.log('savePrice===savePrice');
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -283,8 +290,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 let maps = {
                     company_id: datas.company_base_id,
                     car_id: this.orderDetail.orders_item_data[0].car_id,
-                    order_id: 0,
-                    //order_id: this.orderDetail.id,
+                    order_id: this.orderDetail.id,
                     pricing_amount: this.carAmount,
                     deposit_amount: this.deposit,
                     car_vin: this.orderDetail.orders_item_data[0].car_vin.length === 17 ?
@@ -509,6 +515,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 22:  //
             case 23:  //
             case 24:  //
+            case 200:  //
+            case 201:  //
+            case 202:  //
                 if (cancelStatus === 0) {
                     this.orderState = 2;
                     if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
@@ -564,6 +573,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 10:
             case 90:
             case 91:
+            case 203:
                 if (cancelStatus === 0) {
                     this.orderState = 3;
                     if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
@@ -649,6 +659,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         }
                     }
                 }
+                break;
+            case 200:
+
                 break;
         }
     };
@@ -956,12 +969,18 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     MerchantNum: merchantNum,
                     CustomerServiceNum: customerServiceNum
                 };
-                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
-                this.items.push({title: '订金到账', nodeState: 1, isLast: false, isFirst: false});
-                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
-                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                if (this.orderDetail.totalpay_amount > 0) {
+                    this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+                    this.items.push({title: '全款到账', nodeState: 2, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                } else {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '订金到账', nodeState: 1, isLast: false, isFirst: false});
+                    this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                }
                 break;
-            case 3:  // 结清尾款
+            case 3:  // 结清尾款   全款单查看到账
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
@@ -973,10 +992,16 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     MerchantNum: merchantNum,
                     CustomerServiceNum: customerServiceNum
                 };
-                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
-                this.items.push({title: '订金到账', nodeState: 0, isLast: false, isFirst: false});
-                this.items.push({title: '结清尾款', nodeState: 1, isLast: false, isFirst: false});
-                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                if (this.orderDetail.totalpay_amount > 0) {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '全款到账', nodeState: 1, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                } else {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '订金到账', nodeState: 0, isLast: false, isFirst: false});
+                    this.items.push({title: '结清尾款', nodeState: 1, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                }
                 break;
             case 4: // 完成交易
                 this.mList = [];
@@ -1000,10 +1025,16 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         setPrompt: false
                     };
                 }
-                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
-                this.items.push({title: '订金到账', nodeState: 0, isLast: false, isFirst: false});
-                this.items.push({title: '结清尾款', nodeState: 0, isLast: false, isFirst: false});
-                this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                if (this.orderDetail.totalpay_amount > 0) {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '全款到账', nodeState: 0, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                } else {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '订金到账', nodeState: 0, isLast: false, isFirst: false});
+                    this.items.push({title: '结清尾款', nodeState: 0, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                }
                 break;
             default:
                 break;
@@ -1601,51 +1632,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 </View>
             )
         } else if (rowData === '7') {
-            let done_deposit_amount = 0;
-            let done_balance_amount = 0;
-            let done_total_amount = this.orderDetail.done_deposit_amount + this.orderDetail.done_balance_amount + '元';
-            if (this.refundJudgment(this.orderDetail.done_back_deposit_amount) === 0) {
-                done_deposit_amount = this.orderDetail.done_deposit_amount + '元';
-            } else {
-                done_deposit_amount = this.orderDetail.done_back_deposit_amount;
-            }
-            if (this.refundJudgment(this.orderDetail.done_back_balance_amount) === 0) {
-                done_balance_amount = this.orderDetail.done_balance_amount + '元';
-            } else {
-                done_balance_amount = this.orderDetail.done_back_balance_amount;
-            }
             return (
-                <View style={styles.itemType4}>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text allowFontScaling={false} style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            marginLeft: Pixel.getPixel(15)
-                        }}>销售信息</Text>
-                    </View>
-                    <View style={styles.separatedLine}/>
-                    <View style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(20),
-                        marginRight: Pixel.getPixel(15)
-                    }}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>到账订金</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>{this.orderDetail.done_deposit_amount}元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>到账尾款</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>{this.orderDetail.done_balance_amount}元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>到账总计</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false}
-                              style={styles.infoContent}>{this.orderDetail.done_total_amount}元</Text>
-                    </View>
-                </View>
+                <SalesInfo orderDetail={this.orderDetail} orderState={this.orderState}/>
             )
         } else if (rowData === '8') {
             return (
