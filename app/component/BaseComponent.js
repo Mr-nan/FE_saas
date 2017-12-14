@@ -19,6 +19,9 @@ const {width, height} = Dimensions.get('window');
 const Pixel = new PixelUtil();
 import ConsoleUtils from "../utils/ConsoleUtils";
 const Console = new ConsoleUtils();
+
+let dismissKeyboard = require('dismissKeyboard')
+
 export default class BaseComponent extends Component {
     /**
      * from @zhaojian
@@ -48,6 +51,10 @@ export default class BaseComponent extends Component {
 
     initFinish() {
 
+    }
+
+    dismissKeyboard = ()=>{
+        dismissKeyboard();
     }
 
     toNextPage = (mProps) => {

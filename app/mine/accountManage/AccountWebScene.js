@@ -113,7 +113,7 @@ export  default class AccountWebScene extends BaseComponent {
                                 const navigator = this.props.navigator;
                                 if (navigator) {
                                     for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
-                                        if (navigator.getCurrentRoutes()[i].name == 'MainPage') {
+                                        if (navigator.getCurrentRoutes()[i].name == 'MyAccountScene') {
                                             navigator.popToRoute(navigator.getCurrentRoutes()[i]);
                                             break;
                                         }
@@ -153,7 +153,7 @@ export  default class AccountWebScene extends BaseComponent {
                 const navigator = this.props.navigator;
                 if (navigator) {
                     for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
-                        if (navigator.getCurrentRoutes()[i].name == 'MainPage') {
+                        if (navigator.getCurrentRoutes()[i].name == 'MyAccountScene') {
                             navigator.popToRoute(navigator.getCurrentRoutes()[i]);
                             break;
                         }
