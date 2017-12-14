@@ -78,7 +78,6 @@ const APIParameter = {
     v_type:2,
     rows: 10,
     page: 1,
-    start: 0,
     type: 1,
     status: 1,
     no_cache:1,
@@ -239,6 +238,8 @@ export  default  class CarNewListScene extends BaseComponent {
             }else {
                 APIParameter.type = 0;
             }
+
+
         }
 
         carData = [];
@@ -264,12 +265,6 @@ export  default  class CarNewListScene extends BaseComponent {
                 this.props.showModal(false);
 
                 carData = response.mjson.data.list;
-                if (typeof(response.mjson.data.start) == "undefined") {
-                    APIParameter.start = 0;
-
-                } else {
-                    APIParameter.start = response.mjson.data.start;
-                }
                 APIParameter.status = response.mjson.data.status;
 
                 if (this.state.isFillData !== APIParameter.status) {
@@ -308,11 +303,6 @@ export  default  class CarNewListScene extends BaseComponent {
         })
             .then((response) => {
 
-                if (typeof(response.mjson.data.start) == "undefined") {
-                    APIParameter.start = 0;
-                } else {
-                    APIParameter.start = response.mjson.data.start;
-                }
                 APIParameter.status = response.mjson.data.status;
                 if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
@@ -1045,7 +1035,7 @@ export  default  class CarNewListScene extends BaseComponent {
                 }
                 {
                     !this.state.isHideCarSpecification && (
-                        <View style={{top: Pixel.getTitlePixel(87), backgroundColor:'rgba(0, 0, 0,0.3)', left: 0, right: 0, position: 'absolute', bottom:0,}}>
+                        <View style={{top: Pixel.getPixel(87), backgroundColor:'rgba(0, 0, 0,0.3)', left: 0, right: 0, position: 'absolute', bottom:0,}}>
                             <CarSpecificationView checkedSpecification={(specificationData)=>{
                                 this.refs.HeadView.checkSelect(currentCheckedIndex);
                                 this.setState({

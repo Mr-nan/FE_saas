@@ -73,7 +73,7 @@ export class CarSourceSelectHeadView extends Component{
         this.butArray = [];
         return(
             <View style={styles.container}>
-                <View style={{  flexDirection:'row', justifyContent:'space-between',width:screenWidth-Pixel.getPixel(100)}}>
+                <View style={{ flexDirection:'row', justifyContent:'space-between',width:screenWidth-Pixel.getPixel(100)}}>
                 {
                     this.props.titleArray.map((data,index)=>{
                         return(
@@ -213,12 +213,6 @@ const  styles = StyleSheet.create({
 
     },
 
-    selectView:{
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'space-between'
-    },
-
     lineView:{
 
         width:StyleSheet.hairlineWidth,
@@ -276,7 +270,7 @@ const  styles = StyleSheet.create({
 
     },
     selectView: {
-        top: Pixel.getTitlePixel(87),
+        top: Pixel.getPixel(87),
         backgroundColor:'rgba(0, 0, 0,0.3)',
         left: 0,
         right: 0,

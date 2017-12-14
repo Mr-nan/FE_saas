@@ -77,7 +77,6 @@ const APIParameter = {
     v_type:1,
     rows: 10,
     page: 1,
-    start: 0,
     type: 1,
     status: 1,
     no_cache:1,
@@ -268,12 +267,7 @@ export  default  class CarUserListScene extends BaseComponent {
                 this.props.showModal(false);
 
                 carData = response.mjson.data.list;
-                if (typeof(response.mjson.data.start) == "undefined") {
-                    APIParameter.start = 0;
 
-                } else {
-                    APIParameter.start = response.mjson.data.start;
-                }
                 APIParameter.status = response.mjson.data.status;
 
                 if (this.state.isFillData !== APIParameter.status) {
@@ -312,11 +306,7 @@ export  default  class CarUserListScene extends BaseComponent {
         })
             .then((response) => {
 
-                if (typeof(response.mjson.data.start) == "undefined") {
-                    APIParameter.start = 0;
-                } else {
-                    APIParameter.start = response.mjson.data.start;
-                }
+
                 APIParameter.status = response.mjson.data.status;
                 if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
