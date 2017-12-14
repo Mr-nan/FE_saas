@@ -755,7 +755,7 @@ export  default  class CarNewListScene extends BaseComponent {
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
         APIParameter.model_name = '';
-        this.setHeadViewType();
+        this.filterData();
     };
 
 
@@ -768,7 +768,7 @@ export  default  class CarNewListScene extends BaseComponent {
             },
         });
         APIParameter.v_type = 2;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carCityClick = () => {
@@ -781,7 +781,7 @@ export  default  class CarNewListScene extends BaseComponent {
         });
         APIParameter.provice_id =0;
         APIParameter.city_id = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carPriceClick = () => {
@@ -792,7 +792,7 @@ export  default  class CarNewListScene extends BaseComponent {
             },
         });
         APIParameter.dealer_price = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carDischargeClick = () => {
@@ -803,7 +803,7 @@ export  default  class CarNewListScene extends BaseComponent {
             },
         });
         APIParameter.emission_standards = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carColorClick = () => {
@@ -814,7 +814,7 @@ export  default  class CarNewListScene extends BaseComponent {
             },
         });
         APIParameter.car_color = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carNatureClick = () => {
@@ -825,7 +825,7 @@ export  default  class CarNewListScene extends BaseComponent {
             },
         });
         APIParameter.nature_use = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carSpecificationClick = () => {
@@ -838,7 +838,7 @@ export  default  class CarNewListScene extends BaseComponent {
         });
         APIParameter.first_type = '';
         APIParameter.second_type = '';
-        this.setHeadViewType();
+        this.filterData();
     };
 
     allDelectClick = () => {

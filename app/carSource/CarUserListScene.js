@@ -702,7 +702,7 @@ export  default  class CarUserListScene extends BaseComponent {
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
         APIParameter.model_name = '';
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carAgeClick = () => {
@@ -714,7 +714,7 @@ export  default  class CarUserListScene extends BaseComponent {
         });
 
         APIParameter.coty = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carKMClick = () => {
@@ -725,7 +725,7 @@ export  default  class CarUserListScene extends BaseComponent {
             },
         });
         APIParameter.mileage = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carGenreClick = () => {
@@ -736,7 +736,7 @@ export  default  class CarUserListScene extends BaseComponent {
             },
         });
         APIParameter.v_type = 1;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carCityClick = () => {
@@ -749,12 +749,8 @@ export  default  class CarUserListScene extends BaseComponent {
         });
         APIParameter.provice_id =0;
         APIParameter.city_id = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
-
-
-
-
 
     carPriceClick = () => {
         this.setState({
@@ -764,7 +760,7 @@ export  default  class CarUserListScene extends BaseComponent {
             },
         });
         APIParameter.dealer_price = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carDischargeClick = () => {
@@ -775,7 +771,7 @@ export  default  class CarUserListScene extends BaseComponent {
             },
         });
         APIParameter.emission_standards = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carColorClick = () => {
@@ -786,7 +782,7 @@ export  default  class CarUserListScene extends BaseComponent {
             },
         });
         APIParameter.car_color = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     carNatureClick = () => {
@@ -797,7 +793,7 @@ export  default  class CarUserListScene extends BaseComponent {
             },
         });
         APIParameter.nature_use = 0;
-        this.setHeadViewType();
+        this.filterData();
     };
 
     allDelectClick = () => {
