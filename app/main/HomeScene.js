@@ -582,7 +582,7 @@ export default class HomeScene extends BaseComponet {
                     <Text allowFontScaling={false} style={cellSheet.despritonStyle}
                           numberOfLines={2}>{DIDIAN + movie.model_name}</Text>
                     <Text allowFontScaling={false}
-                          style={cellSheet.timeStyle}>{movie.v_type==1?(this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'):((movie.car_color?(movie.car_color.split("|")[0]+'|'):'')+movie.stock+'辆')}</Text>
+                          style={cellSheet.timeStyle}>{movie.v_type==1?(this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'):((movie.car_color?(movie.car_color.split("|")[0]+' | '):'')+movie.stock+'辆')}</Text>
                     <Text style={{color:fontAndClolr.COLORB2, fontSize:Pixel.getFontPixel(fontAndClolr.LITTLEFONT28), marginBottom:Pixel.getPixel(15)}}>{movie.dealer_price>0 && (stringTransform.carMoneyChange(movie.dealer_price)+'万')}</Text>
                 </View>
             </TouchableOpacity>

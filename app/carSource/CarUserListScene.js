@@ -228,21 +228,23 @@ export  default  class CarUserListScene extends BaseComponent {
     // 筛选数据刷新
     filterData = () => {
         if(!currentCarCheckRecommend){
-            if(APIParameter.brand_id == 0 &&
-                APIParameter.series_id ==0 &&
-                APIParameter.model_id ==0 &&
-                APIParameter.provice_id == 0 &&
-                APIParameter.city_id == 0 &&
-                APIParameter.order_type ==0 &&
-                APIParameter.coty ==0 &&
-                APIParameter.mileage ==0 &&
-                APIParameter.dealer_price ==0 &&
-                APIParameter.emission_standards ==0 &&
-                APIParameter.nature_use ==0 && APIParameter.car_color==0 && APIParameter.model_name==''){
-                APIParameter.type = 4;
-            }else {
-                APIParameter.type = 0;
-            }
+            // if(APIParameter.brand_id == 0 &&
+            //     APIParameter.series_id ==0 &&
+            //     APIParameter.model_id ==0 &&
+            //     APIParameter.provice_id == 0 &&
+            //     APIParameter.city_id == 0 &&
+            //     APIParameter.order_type ==0 &&
+            //     APIParameter.coty ==0 &&
+            //     APIParameter.mileage ==0 &&
+            //     APIParameter.dealer_price ==0 &&
+            //     APIParameter.emission_standards ==0 &&
+            //     APIParameter.nature_use ==0 && APIParameter.car_color==0 && APIParameter.model_name==''){
+            //     APIParameter.type = 4;
+            // }else {
+            //     APIParameter.type = 0;
+            // }
+            APIParameter.type = 0;
+
         }
         carData = [];
         this.setState({dataSource:this.state.dataSource.cloneWithRows(carData)});

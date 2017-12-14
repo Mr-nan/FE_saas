@@ -220,25 +220,26 @@ export  default  class CarNewListScene extends BaseComponent {
     // 筛选数据刷新
     filterData = () => {
         if(!currentCarCheckRecommend){
-            if(APIParameter.order_type == 0&&
-                APIParameter.mileage == 0 &&
-                APIParameter.brand_id == 0 &&
-                APIParameter.series_id == 0 &&
-                APIParameter.provice_id == 0 &&
-                APIParameter.city_id==0 &&
-                APIParameter.dealer_price == 0 &&
-                APIParameter.emission_standards == 0 &&
-                APIParameter.first_type=='' &&
-                APIParameter.second_type =='' &&
-                APIParameter.car_color == 0 &&
-                APIParameter.nature_use == 0 &&
-                APIParameter.model_name =='')
-            {
-                APIParameter.type = 4;
-            }else {
-                APIParameter.type = 0;
-            }
+            // if(APIParameter.order_type == 0&&
+            //     APIParameter.mileage == 0 &&
+            //     APIParameter.brand_id == 0 &&
+            //     APIParameter.series_id == 0 &&
+            //     APIParameter.provice_id == 0 &&
+            //     APIParameter.city_id==0 &&
+            //     APIParameter.dealer_price == 0 &&
+            //     APIParameter.emission_standards == 0 &&
+            //     APIParameter.first_type=='' &&
+            //     APIParameter.second_type =='' &&
+            //     APIParameter.car_color == 0 &&
+            //     APIParameter.nature_use == 0 &&
+            //     APIParameter.model_name =='')
+            // {
+            //     APIParameter.type = 4;
+            // }else {
+            //     APIParameter.type = 0;
+            // }
 
+            APIParameter.type = 0;
 
         }
 
