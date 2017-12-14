@@ -1,13 +1,12 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
-
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
@@ -17,7 +16,7 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 正式地址
  */
-//export const BASEURL = 'https://gatewayapi.dycd.com/';
+export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -1225,30 +1224,140 @@ export const UPDATE_CAR_WELFARE = BASEURL + "cheshang/tenure_customer/updateCarW
  *  搜索保有客户数据
  */
 export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySearch";
+/**
+ *   商户是否在(浙商)白名单中查询
+ */
+export const IS_IN_WHITE_LIST = BASEURL + "v1/account.cz_bank/isInWhiteList";
+/**
+ *    from @dingnyonggang
+ *
+ *   生成资金账户
+ */
+export const ZS_GENERATE_E_ACCOUNT = BASEURL + "v1/account.cz_bank/accountBuild";
 
+/**
+ *    from @dingnyonggang
+ *
+ *   发送短信验证码
+ */
+export const ZS_SEND_SMS_CODE = BASEURL + "v1/account.cz_bank/sendSmsCode";
+/**
+ *    from @dingnyonggang
+ *
+ *   开户
+ */
+export const ZS_OPEN_ACCOUNT = BASEURL + "v1/account.cz_bank/customerAccountOpen";
+/**
+ *    from @dingnyonggang
+ *
+ *   根据银行卡号查询联行号
+ */
+export const ZS_PARSE_BANK = BASEURL + "v1/account.cz_bank/getBankNoByBankCard";
+/**
+ *    from @dingnyonggang
+ *
+ *   查询城市
+ */
+export const ZS_GET_CITY = BASEURL + "v1/bankRoute.query/findCity";
+
+/**
+ *  查询是否开启浙商银行可见
+ */
+export const ZS_BANK_IS_SHOW = BASEURL + "v1/account.cz_bank/zsBankIsShow";
+
+/**
+ *  from @dingnyonggang
+ *
+ *  浙商账户充值
+ */
+export const ZS_DEPOSIT = BASEURL + "v1/account.cz_bank/deposit";
+/**
+ *  from @dingnyonggang
+ *
+ *  浙商账户提现
+ */
+export const ZS_WITHDRAW = BASEURL + "v1/account.cz_bank/withdraw";
+/**
+ *  from @dingnyonggang
+ *
+ *  浙商账户流水
+ */
+export const ZS_WORTER_FLOW = BASEURL + "v2/user.account/payLog";
+/**
+ *  from @dingnyonggang
+ *
+ *  浙商账户修改银行预留手机号
+ */
+export const ZS_BANK_MODIFY_MOBILE = BASEURL + "v1/account.cz_bank/modifyMobile";
+/**
+ *  from @dingnyonggang
+ *
+ *   浙商账户修改绑定的银行卡号
+ */
+export const ZS_MODIFY_BANK_CARD = BASEURL + "v1/account.cz_bank/modifyAccountInfo";
+/**
+ *  from @dingnyonggang
+ *
+ *   浙商账户查询交易相关的限额信息，可取金额，可用金额
+ */
+export const ZS_QUOTA = BASEURL + "v1/account.cz_bank/getPaymentRelatedInfo";
+/**
+ *  from @dingnyonggang
+ *
+ *   浙商账户查询交易相关的限额信息，可取金额，可用金额
+ */
+export const ZS_FETCH_STATUS = BASEURL + "v1/user.account/getTransferRecordStatus";
+/**
+ *  from @dingnyonggang
+ *
+ *   判断当前时间是否在浙商银行的服务时间段内
+ */
+export const ZS_IN_SERVICE = BASEURL + "v1/account.cz_bank/isOutOfService";
+
+/**
+ *  from @dingnyonggang
+ *
+ *  查询大行信息（对公)
+ */
+export const ZS_HEAD_BANK = BASEURL + "v1/bankRoute.query/findSubBankNo";
+
+/**
+ *  from @dingnyonggang
+ *
+ *  查询支行信息（对公）
+ */
+export const ZS_SUB_BANK = BASEURL + "v1/bankRoute.query/findChildBankNo";
+
+/**
+ *   获取用户的账户详情(我的账户页面-卡片页  调用)
+ */
+export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccountDetail";
+/**
+ *   信托开户
+ */
+export const OPEN_PERSON_TRUST_ACCOUNT = BASEURL + "v1/account.zsyxt/openPersonAccount";
+/**
+ *   微众借据详情API(信托开户)
+ */
+export const AGREEMENT_LISTS = BASEURL + "v1/contract/agreementLists";
 /**
  * 获取功能认证信息
  */
 export const USER_IDENTITY_GET_INFO = BASEURL + V + "user.identity/getInfo";
-
 /**
  * 添加个人认证申请
  */
 export const PERSONCERTIFICATE = BASEURL + V + "user.identity/applyAuthUserInfo";//添加个人认证申请
-
-
 /**
  *
  * 添加企业认证申请
  */
 export const ENTERPRISECERTIFICATE = BASEURL + V + "user.identity/applyEnterpriseInfo";//添加企业认证申请
-
 /**
  *
  * 注册(新)
  */
 export const ZHUCE = BASEURL +  "v2/auth/register";//注册(新)
-
 /**
  *
  * 通过用户base_id,企业base_id 查看审核状态
