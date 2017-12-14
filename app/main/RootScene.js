@@ -30,7 +30,7 @@ import codePush from 'react-native-code-push'
 import SQLiteUtil from "../utils/SQLiteUtil";
 import PromotionScene from "./PromotionScene";
 const SQLite = new SQLiteUtil();
-const versionCode = 27.0;
+const versionCode = 28.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
@@ -121,7 +121,7 @@ export default class RootScene extends BaseComponent {
         //如果获取模拟器错误日志，需将下面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
 
 
-/*        ErrorUtils.setGlobalHandler((e) => {　//发生异常的处理方法,当然如果是打包好的话可能你找都找不到是哪段代码出问题了
+        ErrorUtils.setGlobalHandler((e) => {　//发生异常的处理方法,当然如果是打包好的话可能你找都找不到是哪段代码出问题了
             this.props.showToast('' + e);
             StorageUtil.mGetItem(KeyNames.PHONE, (data) => {
                 let maps = {
@@ -136,7 +136,7 @@ export default class RootScene extends BaseComponent {
                         });
             });
 
-        });*/
+        });
 
         //如果获取模拟器错误日志，需将上面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
 
