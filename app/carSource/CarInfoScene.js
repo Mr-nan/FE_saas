@@ -540,10 +540,10 @@ export default class CarInfoScene extends BaseComponent {
                     this.CallView = ref
                 }}/>
                 <AccountModal ref="accountmodal"/>
-                {/*<ExplainModal ref={(text) => this.expModal = text} title='说明' buttonStyle={styles.expButton}
+                <ExplainModal ref={(text) => this.expModal = text} title='说明' buttonStyle={styles.expButton}
                               textStyle={styles.expText}
                               text='知道了'
-                              content='此质押车暂不可下单请您稍待时日再订购'/>*/}
+                              content='此质押车暂不可下单请您稍待时日再订购'/>
             </View>
 
         )
@@ -572,7 +572,6 @@ export default class CarInfoScene extends BaseComponent {
 
         if (carData.show_order == 1) {
             this.props.showToast('该车辆已被订购');
-
         } else {
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code == 1) {
@@ -663,9 +662,13 @@ export default class CarInfoScene extends BaseComponent {
             }
 
         }, (error) => {
-
-            this.props.showModal(false);
-            this.props.showToast(error.mjson.msg);
+            if (error.mjson.code == '6350133') {
+                this.props.showModal(false);
+                this.expModal.changeShowType(true, '提示', '车辆已售出请查看其它车源', '确定');
+            } else {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+            }
         });
     }
 
