@@ -93,6 +93,8 @@ export default class HomeScene extends BaseComponet {
             '8':[true,'需创建此账号的主账号通过企业认证后进行操作','确定','','',()=>{}],
         };
 
+        this.isHomeJobItemLose = false;
+
     }
 
     //联系客服
@@ -128,7 +130,10 @@ export default class HomeScene extends BaseComponet {
 
     //认证功能验证
     _checkAuthen = (params)=>{
-        console.log('===============',params);
+
+
+        if(this.isHomeJobItemLose){return;}
+        this.isHomeJobItemLose = true;
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -138,6 +143,7 @@ export default class HomeScene extends BaseComponet {
                     type:'app'
                 };
                 request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                    this.isHomeJobItemLose = false;
                     this.orderListData = response.mjson.data.items;
                     if(response.mjson.data.auth == 0){
                         this.props.callBack(params);
@@ -145,9 +151,11 @@ export default class HomeScene extends BaseComponet {
                         this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth+'']);
                     }
                 }, (error) => {
+                    this.isHomeJobItemLose = false;
                     this.props.showToast(error.msg);
                 });
             } else {
+                this.isHomeJobItemLose = false;
                 this.props.showToast('获取企业信息失败');
             }
         });

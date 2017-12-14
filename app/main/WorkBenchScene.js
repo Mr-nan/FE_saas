@@ -40,6 +40,7 @@ export default class NonCreditScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             source: [],
         };
+        this.isWorkBenchItemLose = false;
 
         this.authenOptions = {
             '1':[true,'请先完成认证后再进行操作','取消','','个人认证',this._gerenrenzheng],
@@ -139,6 +140,9 @@ export default class NonCreditScene extends BaseComponent {
 
     //认证功能验证
     _checkAuthen = (params)=>{
+
+        if(this.isWorkBenchItemLose) {return;}
+        this.isWorkBenchItemLose = true;
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -148,15 +152,18 @@ export default class NonCreditScene extends BaseComponent {
                     type:'app'
                 };
                 request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                    this.isWorkBenchItemLose = false;
                     if(response.mjson.data.auth == 0){
                         this.props.callBack(params);
                     }else{
                         this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth+'']);
                     }
                 }, (error) => {
+                    this.isWorkBenchItemLose = false;
                     this.props.showToast(error.msg);
                 });
             } else {
+                this.isWorkBenchItemLose = false;
                 this.props.showToast('获取企业信息失败');
             }
         });
