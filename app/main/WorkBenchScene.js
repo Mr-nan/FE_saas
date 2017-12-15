@@ -134,14 +134,17 @@ export default class NonCreditScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <WorkBenchItem items={movie} callBack={(params)=>{this._checkAuthen(params)}}/>
+            <WorkBenchItem items={movie} callBack={(params)=>{
+                if(this.isWorkBenchItemLose) {return;}
+                this._checkAuthen(params)}
+            }/>
         )
     }
 
     //认证功能验证
     _checkAuthen = (params)=>{
 
-        if(this.isWorkBenchItemLose) {return;}
+
         this.isWorkBenchItemLose = true;
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {

@@ -1416,15 +1416,19 @@ class ManageView extends  Component {
                                 <Text allowFontScaling={false}  style={styles.sharedText}>上架</Text>
                             </TouchableOpacity>)
                         }
+                        {
+                            (this.props.carData.status==1&&this.props.carData.review_status==0)? (null): (
+                                <TouchableOpacity style={styles.sharedItemView} onPress={() => {
+                                    this.btnClick('编辑');
+                                }}>
+                                    <View style={styles.sharedImageBack}>
+                                        <Image source={require('../../images/carSourceImages/carBianJi.png')}/>
+                                    </View>
+                                    <Text allowFontScaling={false}  style={styles.sharedText}>编辑</Text>
+                                </TouchableOpacity>
+                            )
+                        }
 
-                        <TouchableOpacity style={styles.sharedItemView} onPress={() => {
-                            this.btnClick('编辑');
-                        }}>
-                            <View style={styles.sharedImageBack}>
-                                <Image source={require('../../images/carSourceImages/carBianJi.png')}/>
-                            </View>
-                            <Text allowFontScaling={false}  style={styles.sharedText}>编辑</Text>
-                        </TouchableOpacity>
                         {/*<TouchableOpacity style={styles.sharedItemView} onPress={() => {*/}
                             {/*this.btnClick('已售');*/}
                         {/*}}>*/}

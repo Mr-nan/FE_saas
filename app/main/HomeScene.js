@@ -132,7 +132,6 @@ export default class HomeScene extends BaseComponet {
     _checkAuthen = (params)=>{
 
 
-        if(this.isHomeJobItemLose){return;}
         this.isHomeJobItemLose = true;
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -210,7 +209,10 @@ export default class HomeScene extends BaseComponet {
                 </View>
 
                 <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}
-                             callBack={(params)=>{this._checkAuthen(params)}}/>
+                             callBack={(params)=>{
+                                 if(this.isHomeJobItemLose){return;}
+                                 this._checkAuthen(params)}
+                             }/>
                 {/*<HomeRowButton onPress={(id)=>{*/}
                 {/*this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});*/}
                 {/*}} list={this.carData}/>*/}

@@ -158,8 +158,8 @@ export default class MyCarCell extends Component {
                                     {
                                         (carType==1&&carCellData.review_status==2) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('查看退回原因',this.props.type,carCellData)}}>
-                                            <View style={[styles.cellFoot,{borderColor:fontAndColor.COLORB4}]}>
-                                                <Text allowFontScaling={false}  style={[styles.cellFootText,{color:fontAndColor.COLORB4}]}> 查看退回原因 </Text>
+                                            <View style={[styles.cellFoot,{borderColor:fontAndColor.COLORB0}]}>
+                                                <Text allowFontScaling={false}  style={[styles.cellFootText,{color:fontAndColor.COLORB0}]}> 查看退回原因 </Text>
                                             </View>
                                         </TouchableOpacity>
                                     }
@@ -204,7 +204,7 @@ export default class MyCarCell extends Component {
 
                                     }
                                     {
-                                        (carType == 1 || carType == 3) &&
+                                        ((carType==1&&carCellData.review_status==2) || carType == 3) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
                                             <View style={styles.cellFoot}>
                                                 <Text allowFontScaling={false}  style={styles.cellFootText}>  编辑  </Text>

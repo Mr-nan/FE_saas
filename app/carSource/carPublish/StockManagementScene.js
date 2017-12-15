@@ -65,7 +65,6 @@ export default class StockManagementScene extends BaseComponent {
         ];
         this.modelData = [];
         this.modelInfo = {};
-
         if (this.props.dataID) {
             this.carData = {
                 auto_pid: this.props.carData.id,
@@ -107,7 +106,7 @@ export default class StockManagementScene extends BaseComponent {
                                            underlineColorAndroid='transparent'
                                            defaultValue={this.carData.vin?this.carData.vin:''}
                                            maxLength={17}
-                                           editable={this.props.carID?false:true}
+                                           editable={this.props.dataID?false:true}
                                            onChangeText={this._onVinChange}
                                            onFocus={()=>{
                                                 this.setCurrentPy('vinInput');
@@ -117,7 +116,7 @@ export default class StockManagementScene extends BaseComponent {
                                            placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                 />
                                 {
-                                    !this.props.carID && (<TouchableOpacity onPress={this._onScanPress}
+                                    !this.props.dataID && (<TouchableOpacity onPress={this._onScanPress}
                                                                             style={{flexDirection:'row', alignItems:'center'}}>
                                         <Image style={styles.scanImage} source={scanImg}/>
                                         <Text allowFontScaling={false}

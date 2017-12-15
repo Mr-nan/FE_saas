@@ -136,8 +136,8 @@ export default class MyCarCell extends Component {
                                 {
                                     (carType==1&&carCellData.review_status==2) &&
                                     <TouchableOpacity onPress={()=>{this.footButtonClick('查看退回原因',this.props.type,carCellData)}}>
-                                        <View style={[styles.cellFoot,{borderColor:fontAndColor.COLORB4}]}>
-                                            <Text allowFontScaling={false}  style={[styles.cellFootText,{color:fontAndColor.COLORB4}]}> 查看退回原因 </Text>
+                                        <View style={[styles.cellFoot,{borderColor:fontAndColor.COLORB0}]}>
+                                            <Text allowFontScaling={false}  style={[styles.cellFootText,{color:fontAndColor.COLORB0}]}> 查看退回原因 </Text>
                                         </View>
                                     </TouchableOpacity>
                                 }
