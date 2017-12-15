@@ -636,6 +636,7 @@ export default class CarPublishSecondScene extends BaseComponent {
             params: {
                 carData: this.carData,
                 carConfigurationData:this.props.carConfigurationData,
+                carUserNumberListLoadAction:this.props.carUserNumberListLoadAction
             }
         };
         this.toNextPage(navigatorParams);

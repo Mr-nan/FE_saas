@@ -105,6 +105,7 @@ export default class CarUserNumberListScene extends BaseComponent {
         this.refs.upperFrameView && this.refs.upperFrameView.initFinish();
         this.refs.dropFrameView && this.refs.dropFrameView.initFinish();
     }
+
     pushCarScene=()=>{
         let navigatorParams = {
             name: "CarPublishFirstScene",
@@ -114,6 +115,7 @@ export default class CarUserNumberListScene extends BaseComponent {
         };
         this.props.toNextPage(navigatorParams);
     }
+
     cellFootBtnClick=(btnTitle,carData)=>{
         this.carData = carData;
         if(btnTitle=='编辑'){
@@ -122,11 +124,11 @@ export default class CarUserNumberListScene extends BaseComponent {
                 return;
             }
             let navigatorParams = {
-
                 name: "CarPublishFirstScene",
                 component: CarPublishFirstScene,
                 params: {
 
+                    carUserNumberListLoadAction:this.loadHeadData,
                     carID: carData.id,
                 }
             };

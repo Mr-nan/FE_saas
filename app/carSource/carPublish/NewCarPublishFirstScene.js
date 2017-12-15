@@ -99,7 +99,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 title: '车型',
                 isShowTag: true,
                 value: '请选择',
-                isShowTail: true,
+                isShowTail: this.props.carID?false:true,
             }, {
                 title: '车规',
                 isShowTag: true,
@@ -109,7 +109,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 title: '车身颜色',
                 isShowTag: true,
                 value: '请选择',
-                isShowTail: true,
+                isShowTail: this.props.carID?false:true,
             }, {
                 title: '内饰颜色',
                 isShowTag: false,
@@ -121,7 +121,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                 title: '车辆所在地',
                 isShowTag: true,
                 value: this.carData.city_name ? this.carData.city_name : '请选择',
-                isShowTail: true,
+                isShowTail: this.props.carID?false:true,
             }, {
                 title: '是否有现车',
                 isShowTag: true,
@@ -626,15 +626,15 @@ export default class NewCarPublishFirstScene extends BaseComponent {
 
     cellClick = (title) => {
 
-        if (title == '车型') {
+        if (title == '车型'&&!this.props.carID) {
             this.pushCarBrand();
         } else if (title == '车规') {
             this.pushCarSpecificationAction();
-        } else if (title == '车身颜色') {
+        } else if (title == '车身颜色'&&!this.props.carID) {
             this.pushCarBodyColorScene();
         } else if (title == '内饰颜色') {
             this.pushCarInwardColorScene();
-        } else if (title == '车辆所在地') {
+        } else if (title == '车辆所在地'&&!this.props.carID) {
             this.pushCityListScene();
         } else if (title == '配置改装说明') {
             this.pushCarAutoConfigScene();

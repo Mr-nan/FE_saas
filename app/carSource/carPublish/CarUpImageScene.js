@@ -332,14 +332,20 @@ export default class CarUpImageScene extends BaseComponent{
                 if(this.carData.show_shop_id){
                     StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
                 }
-                if(IS_ANDROID === true){
-                    this.successModal.openModal();
+
+                if(this.props.carUserNumberListLoadAction){
+                    this.navigationBack();
                 }else {
-                    this.timer = setTimeout(
-                        () => { this.successModal.openModal(); },
-                        500
-                    );
+                    if(IS_ANDROID === true){
+                        this.successModal.openModal();
+                    }else {
+                        this.timer = setTimeout(
+                            () => { this.successModal.openModal(); },
+                            500
+                        );
+                    }
                 }
+
             }else {
                 this.showToast('网络连接失败');
 
@@ -369,6 +375,20 @@ export default class CarUpImageScene extends BaseComponent{
                 this.showToast(error.mjson.msg);
             }
         });
+    }
+
+    navigationBack=()=>{
+        const navigator = this.props.navigator;
+        if (navigator) {
+            for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                if (navigator.getCurrentRoutes()[i].name == 'CarNumberScene')
+                {
+                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                    this.props.carUserNumberListLoadAction && this.props.carUserNumberListLoadAction();
+                    break;
+                }
+            }
+        }
     }
 
     showToast=(errorMsg)=>{
