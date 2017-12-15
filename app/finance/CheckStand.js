@@ -294,6 +294,38 @@ export default class CheckStand extends BaseComponent {
         }
     }
 
+    checkFullPay = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                    trans_serial_no: this.transSerialNo
+                };
+                let url = AppUrls.ORDER_CHECK_PAY_FULL;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        if (response.mjson.data.pay_status == 3) {
+                            this.props.showToast('支付成功');
+                            this.props.callBack();
+                            this.backPage();
+                        } else {
+                            this.props.showToast('支付失败');
+                        }
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('账户支付检查失败');
+            }
+        });
+    };
+
     checkPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -414,10 +446,53 @@ export default class CheckStand extends BaseComponent {
 
     goPay = () => {
         if (this.props.payType == 1 || this.props.payType == 2) {
-            this.goDepositPay();
+            if (this.props.payFull) {
+                this.goFullPay();
+            } else {
+                this.goDepositPay();
+            }
         } else {
             this.goInitialPay();
         }
+    };
+
+    goFullPay = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                    reback_url: webBackUrl.PAY
+                };
+                let url = AppUrls.ORDER_PAY_FULL;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
+                        this.transSerialNo = response.mjson.data.trans_serial_no;
+                        this.toNextPage({
+                            name: 'AccountWebScene',
+                            component: AccountWebScene,
+                            params: {
+                                title: '支付',
+                                webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
+                                callBack: () => {
+                                    this.checkFullPay()
+                                },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                                backUrl: webBackUrl.PAY
+                            }
+                        });
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('账户支付失败');
+            }
+        });
     };
 
     goInitialPay = () => {

@@ -73,7 +73,7 @@ export default class SalesInfo extends BaseComponent {
         let items = [];
         let layouts = [];
         if (this.state.orderDetail.totalpay_amount > 0) {
-            items = [{name: '到账金额', value: this.state.orderDetail.done_total_amount}];
+            items = [{name: '到账金额', value: this.state.orderDetail.done_totalpay_amount}];
         } else {
             items = [{name: '到账订金', value: this.state.orderDetail.done_deposit_amount},
                 {name: '到账尾款', value: this.state.orderDetail.done_balance_amount},

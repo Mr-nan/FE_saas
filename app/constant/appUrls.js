@@ -1067,6 +1067,14 @@ export const ORDER_DETAIL = BASEURL + V + 'order/detail';
  */
 export const ORDER_PAY = BASEURL + V + 'order/pay';
 /**
+ *  全款支付
+ */
+export const ORDER_PAY_FULL = BASEURL + 'v2/order.pay/full';
+/**
+ *  支付全款回调
+ */
+export const ORDER_CHECK_PAY_FULL = BASEURL + 'v2/order.pay/fullCallback';
+/**
  *  车辆成交价提交
  */
 export const ORDER_SAVE_PRICE = BASEURL + V + 'order/savePrice';
