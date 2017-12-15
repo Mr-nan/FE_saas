@@ -24,8 +24,8 @@ export class CellView extends Component {
 
     render() {
         const {cellData} =this.props;
-        return (
-            <View style={styles.cellType1}>
+        if(cellData.tailView){
+            this.contentView = (<View style={[styles.cellType1]}>
                 <View style={{flexDirection:'row'}}>
                     {
                         cellData.isShowTag ? <Text allowFontScaling={false}
@@ -42,17 +42,66 @@ export class CellView extends Component {
                     </View>
                 </View>
                 {
-                    cellData.tailView ? cellData.tailView() : (
-                            <View style={{flexDirection:'row', alignItems:'center'}}>
-                                <Text allowFontScaling={false} style={styles.cellValue}>{cellData.value}</Text>
-                                {
-                                    cellData.isShowTail &&
-                                    <Image style={{marginLeft:Pixel.getPixel(5)}}
-                                           source={require('../../../images/mainImage/celljiantou.png')}/>
-                                }
-                            </View>)
+                    cellData.tailView()
                 }
             </View>)
+        }else if(cellData.value.length>25){
+            this.contentView = (<View style={[styles.cellType1]}>
+                {
+                    cellData.isShowTag &&<Text allowFontScaling={false}
+                                               style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}>*</Text>
+
+                }
+                <View >
+                    <Text allowFontScaling={false} style={styles.cellTitle}>{cellData.title}</Text>
+                    {
+                        cellData.subTitle ? (<Text allowFontScaling={false}
+                                                   style={[styles.cellSubTitle,this.props.subTitleSytle,{marginTop:Pixel.getPixel(5)}]}>{cellData.subTitle}</Text>) : (null)
+                    }
+                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                        <Text allowFontScaling={false} style={[styles.cellValue,{marginTop:Pixel.getPixel(5)}]}>{cellData.value}</Text>
+                    </View>
+                </View>
+                {
+                    cellData.isShowTail &&
+                    <Image style={{marginLeft:Pixel.getPixel(5)}}
+                           source={require('../../../images/mainImage/celljiantou.png')}/>
+                }
+            </View>)
+        }else {
+            this.contentView = (<View style={[styles.cellType1]}>
+                <View style={{flexDirection:'row'}}>
+                    {
+                        cellData.isShowTag ? <Text allowFontScaling={false}
+                                                   style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}>*</Text>
+                            : <Text allowFontScaling={false}
+                                    style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}></Text>
+                    }
+                    <View >
+                        <Text allowFontScaling={false} style={styles.cellTitle}>{cellData.title}</Text>
+                        {
+                            cellData.subTitle ? (<Text allowFontScaling={false}
+                                                       style={[styles.cellSubTitle,this.props.subTitleSytle]}>{cellData.subTitle}</Text>) : (null)
+                        }
+                    </View>
+                </View>
+                <View style={{flexDirection:'row', alignItems:'center'}}>
+                    <Text allowFontScaling={false} style={styles.cellValue}>{cellData.value}</Text>
+                    {
+                        cellData.isShowTail &&
+                        <Image style={{marginLeft:Pixel.getPixel(5)}}
+                               source={require('../../../images/mainImage/celljiantou.png')}/>
+                    }
+                </View>
+            </View>)
+        }
+        return (
+            <View>
+            {
+                this.contentView
+            }
+            </View>
+            )
     }
 }
 

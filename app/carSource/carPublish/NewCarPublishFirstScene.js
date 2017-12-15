@@ -458,6 +458,16 @@ export default class NewCarPublishFirstScene extends BaseComponent {
         return (
             <ScrollView ref={(ref)=>{this.scrollView = ref}} keyboardDismissMode={IS_ANDROID?'none':'on-drag'}>
                 {
+                    this.props.carID && (
+                        <View style={{width:sceneWidth,backgroundColor:fontAndColor.COLORB6,marginBottom:Pixel.getPixel(5),
+                            paddingHorizontal:Pixel.getPixel(15),
+                            paddingVertical:Pixel.getPixel(10)
+                        }}>
+                            <Text style={{color:fontAndColor.COLORB2, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>车型名，车身颜色，车辆所在地作为唯一标识不可修改，建议发布新车源</Text>
+                        </View>
+                    )
+                }
+                {
                     this.state.titleData.map((data, index) => {
                         return (
                             <View style={{marginTop:10,backgroundColor:'white'}} key={index}>

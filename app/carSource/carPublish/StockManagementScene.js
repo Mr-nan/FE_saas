@@ -24,7 +24,6 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import BaseComponent from '../../component/BaseComponent';
 import AllNavigationView from '../../component/AllNavigationView';
 import {CellView, CellSelectView} from '../znComponent/CarPublishCell';
-import EnterpriseInfo from '../../publish/component/EnterpriseInfo';
 
 import *as fontAndColor from '../../constant/fontAndColor';
 import VinInfo from '../../publish/component/VinInfo';
@@ -33,6 +32,8 @@ import * as AppUrls from '../../constant/appUrls';
 import PixelUtil from '../../utils/PixelUtil';
 import CarUpImageCell from '../znComponent/MsgCarUpImageCell';
 import  AllLoading from '../../component/AllLoading';
+
+import SelectCarSourceView from '../znComponent/SelectCarSourceView';
 
 const Pixel = new PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
@@ -58,7 +59,6 @@ export default class StockManagementScene extends BaseComponent {
         super(props);
 
         this.results = [];
-        this.enterpriseList = [];
         this.scanType = [
             {model_name: '扫描前风挡'},
             {model_name: '扫描行驶证'}
@@ -93,6 +93,12 @@ export default class StockManagementScene extends BaseComponent {
         }
         this.titleData1 = [
             [
+                {
+                    title: '所属车型',
+                    isShowTag: false,
+                    value:this.carData.model_name+'  '+this.carData.car_color.split("|")[0],
+                    isShowTail: true,
+                },
                 {
                     title: '车辆信息',
                     isShowTag: true,
@@ -156,7 +162,7 @@ export default class StockManagementScene extends BaseComponent {
                 {
                     title: '出厂日期',
                     isShowTag: false,
-                    value: '请选择',
+                    value: this.carData.manufacture?this.carData.manufacture:'请选择',
                     isShowTail: true,
                 }
             ],
@@ -242,7 +248,6 @@ export default class StockManagementScene extends BaseComponent {
             renderPlaceholderOnly: 'loading',
             keyboardGap:-Pixel.getPixel(180),
         };
-        this.setCarData();
     }
 
     setCurrentPy = (ref) => {
@@ -324,9 +329,6 @@ export default class StockManagementScene extends BaseComponent {
                     onConfirm={this._handleDatePicked}
                     onCancel={this._hideDateTimePicker}
                 />
-                <EnterpriseInfo viewData={this.enterpriseList}
-                                enterpricePress={this._enterprisePress}
-                                ref={(modal) => {this.enterpriseModal = modal}}/>
 
                 <AllLoading callEsc={()=>{
                             this.carData['flag'] = '2';
@@ -335,6 +337,7 @@ export default class StockManagementScene extends BaseComponent {
                             this.carData['flag'] = '1';
                             this.saveStockData();
                 }}/>
+                <SelectCarSourceView ref={(ref)=>{this.SelectCarSourceView = ref}} selectCarAction={this.selectAction}/>
                 <AllNavigationView title="车辆信息" backIconClick={this.backPage}/>
             </View>
         )
@@ -352,9 +355,7 @@ export default class StockManagementScene extends BaseComponent {
                                         return (
                                             <TouchableOpacity
                                                 key={subIndex}
-                                                onPress={
-                                                        ()=>{this.cellClick(rowData.title)}
-                                                    }
+                                                onPress={()=>{this.cellClick(rowData.title)}}
                                                 activeOpacity={1}>
                                                 {rowData.type == '2' ?
                                                     <CarUpImageCell
@@ -369,7 +370,6 @@ export default class StockManagementScene extends BaseComponent {
                                                     />
                                                     :
                                                     <CellView cellData={rowData}/>}
-
                                             </TouchableOpacity>
                                         )
                                     })
@@ -424,34 +424,30 @@ export default class StockManagementScene extends BaseComponent {
 
     }
 
-    /**
-     * 设置默认数据
-     */
-    setCarData = () => {
-        // if (this.carData.vin) {
-        //     this.vinInput.setNativeProps({
-        //         text: this.carData.vin
-        //     });
-        //
-        //     if (this.props.carData) {
-        //         this._onVinChange(this.carData.vin);
-        //     }
-        // }
-        this.titleData1[0][2].value = this.carData.manufacture ? this.carData.manufacture : '请选择';//出厂日期
-    }
-
 
     cellClick = (title) => {
-        if (title == '出厂日期') {
+
+        if(title == '所属车型'){
+            this.SelectCarSourceView.setVisible(true);
+
+        }else if (title == '出厂日期') {
             this._labelPress('factory');
         }
+
+    }
+
+    selectAction=(carData)=>{
+        this.carData.auto_pid = carData.id;
+        this.carData.car_color = carData.car_color;
+        this.carData.model_name = carData.model_name;
+        this.titleData1[0][0].value = this.carData.model_name+'  '+this.carData.car_color.split("|")[0];
+        this.upTitleData();
 
     }
 
 
     footBtnClick = () => {
 
-        console.log(this.carData);
 
         if (!this.carData.vin || this.carData.vin == '') {
             this.props.showToast('请输入正确的车架号');
@@ -460,6 +456,16 @@ export default class StockManagementScene extends BaseComponent {
 
         if (!this.carData.pictures) {
             this.carData.pictures = ""
+        }
+
+        if(!this.props.dataID){
+            console.log('=======',this.currentModelName,'\n',this.carData.model_name);
+            if(this.currentModelName){
+                if(this.currentModelName!=this.carData.model_name){
+                    this.props.showToast('该车架号所匹配出的车型与所选车型不一致');
+                    return;
+                }
+            }
         }
 
         // if (!this.carData.manufacture) {
@@ -495,11 +501,11 @@ export default class StockManagementScene extends BaseComponent {
         let d = this.dateFormat(date, 'yyyy-MM-dd');
         if (this.type === 'factory') {
 
-            this.titleData1[0][2].value = d;
+            this.titleData1[0][3].value = d;
             this.carData['manufacture'] = d;
 
         } else {
-            this.titleData1[0][2].value = d;
+            this.titleData1[0][3].value = d;
             this.carData['init_reg'] = d;
         }
 
@@ -518,7 +524,6 @@ export default class StockManagementScene extends BaseComponent {
 
 
     _vinPress = (type, index) => {
-
         if (type == 1) {
             if (IS_ANDROID === true) {
                 NativeModules.VinScan.scan(parseInt(index)).then((vl) => {
@@ -544,8 +549,9 @@ export default class StockManagementScene extends BaseComponent {
             }
         } else if (type == 0) {
 
-            this.titleData1[0][2].value = this.modelData[index].model_year + '-06-01';
+            this.titleData1[0][3].value = this.modelData[index].model_year + '-06-01';
             this.carData['manufacture'] = this.modelData[index].model_year + '-06-01';
+            this.currentModelName  = this.modelData[index].model_name;
             this.upTitleData();
         }
 
@@ -560,10 +566,8 @@ export default class StockManagementScene extends BaseComponent {
             Net.request(AppUrls.VIN_CHECK, 'post', {vin: text}).then(
                 (response) => {
                     if (response.mycode === 1 && response.mjson.data.valid) {
-                        this.titleData1[0][2].value = '请选择';
-
+                        this.titleData1[0][3].value = '请选择';
                         this.carData['vin'] = text;
-
                         Net.request(AppUrls.VININFO, 'post', {vin: text}).then(
                             (response) => {
                                 this._closeLoading();
@@ -572,9 +576,9 @@ export default class StockManagementScene extends BaseComponent {
                                     if (rd.length === 1) {
 
 
-                                        this.titleData1[0][2].value = rd[0].model_year + '-06-01';
+                                        this.titleData1[0][3].value = rd[0].model_year + '-06-01';
                                         this.carData['manufacture'] = rd[0].model_year + '-06-01';
-
+                                        this.currentModelName = rd[0].model_name;
 
                                     } else if (rd.length > 1) {
 
@@ -596,14 +600,14 @@ export default class StockManagementScene extends BaseComponent {
 
                     } else {
                         this._closeLoading();
-                        this.titleData1[0][0].subTitle = '校验失败';
+                        this.titleData1[0][1].subTitle = '校验失败';
                         this.carData['vin'] = '';
                         this.upTitleData();
                     }
                 },
                 (error) => {
                     this._closeLoading();
-                    this.titleData1[0][0].subTitle = '校验失败';
+                    this.titleData1[0][1].subTitle = '校验失败';
                     this.carData['vin'] = '';
                     this.upTitleData();
                 }
@@ -619,11 +623,10 @@ export default class StockManagementScene extends BaseComponent {
         this.setState({
             titleData: this.titleData1,
         });
-
-        // this.saveCarData();
     };
 
     saveCarData = () => {
+
     }
 
     _showLoading = () => {
@@ -638,30 +641,6 @@ export default class StockManagementScene extends BaseComponent {
         this.props.showToast(hint);
     };
 
-    // 取商户ID
-    _enterprisePress = (rowID) => {
-
-        this.carData['show_shop_id'] = this.enterpriseList[rowID].enterprise_uid;
-        this.carData['city_id'] = this.enterpriseList[rowID].city_id;
-        this.carData['prov_id'] = this.enterpriseList[rowID].prov_id;
-        this.carData['city_name'] = this.enterpriseList[rowID].city_name;
-        this.getLocalityCarData();
-
-    };
-
-    _checkedCarClick = (carObject) => {
-
-
-        if (carObject.liter) {
-            this.carData['displacement'] = carObject.liter;
-        }
-
-        this.titleData1[1][0].value = carObject.model_year + '-06-01';
-        this.carData['manufacture'] = carObject.model_year + '-06-01';
-
-
-        this.upTitleData();
-    }
 
     dateFormat = (date, fmt) => {
         let o = {
