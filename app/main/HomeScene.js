@@ -406,12 +406,12 @@ export default class HomeScene extends BaseComponet {
 
                  if(type == 5 ){
 
-                     this.carArray.push({title:'新车订阅',subCarData:carList});
+                     this.carArray.push({title:'已订阅新车',subCarData:carList});
 
 
                  }else if(type == 7) {
 
-                     this.carArray.push({title:'二手车订阅',subCarData:carList});
+                     this.carArray.push({title:'已订阅二手车',subCarData:carList});
                  }
 
                  this.setCarData(this.carArray);
