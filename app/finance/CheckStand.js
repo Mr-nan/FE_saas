@@ -245,6 +245,16 @@ export default class CheckStand extends BaseComponent {
                               parentStyle={styles.loginBtnStyle}
                               childStyle={styles.loginButtonTextStyle}
                               mOnPress={this.goPay}/>
+                    <MyButton buttonType={MyButton.TEXTBUTTON}
+                              content={'鼎诚融资代付'}
+                              parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
+                              childStyle={styles.loginButtonTextStyle}
+                              mOnPress={this.goPay}/>
+                    <MyButton buttonType={MyButton.TEXTBUTTON}
+                              content={'线下支付'}
+                              parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
+                              childStyle={styles.loginButtonTextStyle}
+                              mOnPress={this.goPay}/>
                     {/*---订单融资---*/}
                     {this.isShowFinancing == 1 && this.props.payType == 2 &&
                     <View>
@@ -293,6 +303,11 @@ export default class CheckStand extends BaseComponent {
             )
         }
     }
+
+    /**
+     *
+     **/
+
 
     checkFullPay = () => {
         this.props.showModal(true);

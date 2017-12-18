@@ -643,6 +643,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 1:
                 let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
+                let balanceAmount = this.orderDetail.totalpay_amount > 0 ? this.orderDetail.totalpay_amount : this.orderDetail.balance_amount;
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -665,7 +666,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                         params: {
                                             payAmount: this.orderState === 1 ?
                                                 this.orderDetail.deposit_amount :
-                                                parseFloat(this.orderDetail.balance_amount - applyAmount +
+                                                parseFloat(balanceAmount - applyAmount +
                                                     parseFloat(this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0) +
                                                     parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0)).toFixed(2),
                                             orderId: this.props.orderId,
