@@ -148,7 +148,7 @@ export default class CarNewInfoScene extends BaseComponent {
             this.loadCarResidualsData(carData);
             this.loadCarConfigurationData(carData);
             this.loadCarDetailData(carData);
-
+            console.log('=====================',carData.imgs);
             if (carData.imgs.length <= 0) {
 
                 carData.imgs = [{require: require('../../images/carSourceImages/car_info_null.png')}];
