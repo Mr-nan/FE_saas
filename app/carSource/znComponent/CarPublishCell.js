@@ -63,9 +63,9 @@ export class CellView extends Component {
                     </View>
                 </View>
                 {
-                    cellData.isShowTail &&
-                    <Image style={{marginLeft:Pixel.getPixel(5)}}
-                           source={require('../../../images/mainImage/celljiantou.png')}/>
+                    cellData.isShowTail?( <Image style={{marginLeft:Pixel.getPixel(5)}}
+                                                 source={require('../../../images/mainImage/celljiantou.png')}/>):(<View/>)
+
                 }
             </View>)
         }else {
