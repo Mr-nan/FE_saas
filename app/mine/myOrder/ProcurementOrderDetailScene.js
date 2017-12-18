@@ -677,6 +677,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                             carId: this.orderDetail.orders_item_data[0].car_id,
                                             pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
                                             pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
+                                            isSellerFinance: this.orderDetail.is_seller_finance,
                                             applyLoanAmount: this.applyLoanAmount,
                                             financeNo: this.orderDetail.finance_no,
                                             callBack: this.payCallBack

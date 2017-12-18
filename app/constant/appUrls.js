@@ -1271,3 +1271,7 @@ export const GETAPPLYAUTHUSERINFO = BASEURL + V + "user.identity/getApplyAuthUse
  * 重新申请企业认证获取企业信息
  */
 export const GETAPPLYENTERPRISEINFO = BASEURL + V + "user.identity/getApplyEnterpriseInfo";//重新申请企业认证获取企业信息
+/**
+ *  用户是否"线下支付"白名单用户
+ */
+export const IS_CONFIG_USER_AUTH = BASEURL +  "v2/order.index/isConfigUserAuth";

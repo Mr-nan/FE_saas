@@ -53,18 +53,12 @@ export default class CheckStand extends BaseComponent {
         } catch (e) {
 
         } finally {
-            //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.initFinish();
-           // });
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
         }
     }
 
     initFinish = () => {
-        /*        this.setState({
-         dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
-         renderPlaceholderOnly: 'success'
-         });*/
         this.loadData();
     };
 
@@ -83,7 +77,7 @@ export default class CheckStand extends BaseComponent {
                     this.accountInfo = response.mjson.data.account;
                     if (this.accountInfo) {
                         if (this.props.payType == 2) {
-                            this.getMergeWhitePoStatus();
+                            this.getConfigUserAuth();
                         } else {
                             this.setState({
                                 isRefreshing: false,
@@ -111,7 +105,51 @@ export default class CheckStand extends BaseComponent {
     };
 
     /**
-     *  检查用户是否是白名单用户
+     *   检查用户是否是"线下支付"白名单用户
+     **/
+    getConfigUserAuth = () => {
+        // 车辆正在质押状态
+        if (this.props.isSellerFinance == 1) {
+            this.getMergeWhitePoStatus();
+        } else {
+            // "线下支付"白名单接口
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                if (data.code == 1 && data.result != null) {
+                    let datas = JSON.parse(data.result);
+                    let maps = {
+                        type: 1,
+                        //value: datas.company_base_id
+                        value: this.props.orderId
+                    }
+                    let url = AppUrls.IS_CONFIG_USER_AUTH;
+                    request(url, 'post', maps).then((response) => {
+                        this.isConfigUserAuth = 0;
+                    }, (error) => {
+                        this.props.showToast(error.mjson.msg);
+                    });
+                } else {
+                    this.props.showToast('账户检查失败');
+                }
+            });
+        }
+    };
+
+    /**
+     *   鼎诚支付
+     **/
+    dingChengPay = () => {
+
+    };
+
+    /**
+     *   线下支付
+     **/
+    dingOfflinePay = () => {
+
+    };
+
+    /**
+     *  检查用户是否是"订单融资"白名单用户
      */
     getMergeWhitePoStatus = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -249,12 +287,12 @@ export default class CheckStand extends BaseComponent {
                               content={'鼎诚融资代付'}
                               parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
                               childStyle={styles.loginButtonTextStyle}
-                              mOnPress={this.goPay}/>
+                              mOnPress={this.dingChengPay}/>
                     <MyButton buttonType={MyButton.TEXTBUTTON}
                               content={'线下支付'}
                               parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
                               childStyle={styles.loginButtonTextStyle}
-                              mOnPress={this.goPay}/>
+                              mOnPress={this.dingOfflinePay}/>
                     {/*---订单融资---*/}
                     {this.isShowFinancing == 1 && this.props.payType == 2 &&
                     <View>
@@ -305,10 +343,8 @@ export default class CheckStand extends BaseComponent {
     }
 
     /**
-     *
+     *   全款支付检查
      **/
-
-
     checkFullPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -341,6 +377,9 @@ export default class CheckStand extends BaseComponent {
         });
     };
 
+    /**
+     *  订金、尾款支付检查
+     */
     checkPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -375,6 +414,9 @@ export default class CheckStand extends BaseComponent {
         });
     };
 
+    /**
+     *  首付款支付检查
+     */
     checkInitialPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -459,6 +501,9 @@ export default class CheckStand extends BaseComponent {
         }
     };
 
+    /**
+     *  支付分发
+     */
     goPay = () => {
         if (this.props.payType == 1 || this.props.payType == 2) {
             if (this.props.payFull) {
@@ -471,6 +516,9 @@ export default class CheckStand extends BaseComponent {
         }
     };
 
+    /**
+     *  全款支付
+     */
     goFullPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -510,6 +558,9 @@ export default class CheckStand extends BaseComponent {
         });
     };
 
+    /**
+     *  首付款支付
+     */
     goInitialPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -554,6 +605,9 @@ export default class CheckStand extends BaseComponent {
         });
     };
 
+    /**
+     *  订金支付
+     */
     goDepositPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
