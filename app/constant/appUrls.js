@@ -8,7 +8,6 @@
  */
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
-//http://api-gateway.test.dycd.com/v1/h5.car/detail？device_code=dycd_platform_ios&id=299
 /**
  * 测试地址2
  */
