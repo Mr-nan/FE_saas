@@ -1275,3 +1275,7 @@ export const GETAPPLYENTERPRISEINFO = BASEURL + V + "user.identity/getApplyEnter
  *  用户是否"线下支付"白名单用户
  */
 export const IS_CONFIG_USER_AUTH = BASEURL +  "v2/order.index/isConfigUserAuth";
+/**
+ *  鼎城融资代付的方式付款
+ */
+export const DING_CHENG = BASEURL +  "v2/order.pay/dingCheng";

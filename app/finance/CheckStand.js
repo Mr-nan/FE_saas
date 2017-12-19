@@ -31,6 +31,7 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import * as webBackUrl from "../constant/webBackUrl";
 import AccountWebScene from "../mine/accountManage/AccountWebScene";
 import DDApplyLendScene from "./lend/DDApplyLendScene";
+import ChooseModal from "../mine/myOrder/component/ChooseModal";
 const Pixel = new PixelUtil();
 
 export default class CheckStand extends BaseComponent {
@@ -140,17 +141,84 @@ export default class CheckStand extends BaseComponent {
     };
 
     /**
+     *  鼎诚支付、 线下支付提示框
+     **/
+    payPrompting = (type) => {
+        let negativeText = '';
+        let positiveText = '';
+        let content = '';
+        let positiveOperation = '';
+        if (type === 0) {
+            negativeText = '取消';
+            positiveText = '确认';
+            content = '您确认选择鼎诚融资代付？';
+            positiveOperation = this.dingChengPay;
+            this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
+        } else {
+            negativeText = '取消';
+            positiveText = '确认';
+            content = '您确认选择线下支付？';
+            positiveOperation = this.dingOfflinePay;
+            this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
+        }
+    };
+
+    /**
      *   鼎诚支付
      **/
     dingChengPay = () => {
-
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId
+                };
+                let url = AppUrls.DING_CHENG;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.callBack();
+                        this.backPage();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('账户支付检查失败');
+            }
+        });
     };
 
     /**
      *   线下支付
      **/
     dingOfflinePay = () => {
-
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId
+                };
+                let url = AppUrls.DING_CHENG;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.callBack();
+                        this.backPage();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('账户支付检查失败');
+            }
+        });
     };
 
     /**
@@ -288,19 +356,19 @@ export default class CheckStand extends BaseComponent {
                               parentStyle={styles.loginBtnStyle}
                               childStyle={styles.loginButtonTextStyle}
                               mOnPress={this.goPay}/>
-                    {!this.props.isSellerFinance == 1 &&
+                    {this.props.isSellerFinance == 0 && this.props.payFull &&
                     (<MyButton buttonType={MyButton.TEXTBUTTON}
                                content={'鼎诚融资代付'}
                                parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
                                childStyle={styles.loginButtonTextStyle}
-                               mOnPress={this.dingChengPay}/>)
+                               mOnPress={() => {this.payPrompting(0)}}/>)
                     }
-                    {!this.props.isSellerFinance == 1 && this.isConfigUserAuth == 1 &&
+                    {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payFull &&
                         (<MyButton buttonType={MyButton.TEXTBUTTON}
                                 content={'线下支付'}
                                 parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
                                 childStyle={styles.loginButtonTextStyle}
-                                mOnPress={this.dingOfflinePay}/>)
+                                mOnPress={() => {this.payPrompting(1)}}/>)
                     }
                     {/*---订单融资---*/}
                     {this.isShowFinancing == 1 && this.props.payType == 2 &&
@@ -345,7 +413,15 @@ export default class CheckStand extends BaseComponent {
                     </View> }
                     <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
                                   text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
-
+                    <ChooseModal ref='chooseModal' title='提示'
+                                 negativeButtonStyle={styles.negativeButtonStyle}
+                                 negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                 positiveButtonStyle={styles.positiveButtonStyle}
+                                 positiveTextStyle={styles.positiveTextStyle} positiveText='确认'
+                                 buttonsMargin={Pixel.getPixel(20)}
+                                 positiveOperation={() => {}}
+                                 prompt="温馨提示: 选择后无法修改"
+                                 content=''/>
                 </View>
             )
         }
@@ -740,5 +816,33 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: Pixel.getPixel(70),
         backgroundColor: fontAndColor.COLORB6
-    }
+    },
+    negativeButtonStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    negativeTextStyle: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB0
+    },
+    positiveButtonStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: Pixel.getPixel(15),
+        backgroundColor: fontAndColor.COLORB0,
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    positiveTextStyle: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: '#ffffff'
+    },
 });

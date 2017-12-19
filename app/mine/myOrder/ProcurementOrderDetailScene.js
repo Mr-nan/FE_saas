@@ -672,7 +672,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                             orderId: this.props.orderId,
                                             orderNo: this.orderDetail.order_no,
                                             payType: this.orderState,
-                                            payFull: this.orderDetail.totalpay_amount > 0 ? true : false,
+                                            payFull: this.orderDetail.totalpay_amount > 0,
                                             sellerId: this.orderDetail.seller_id,
                                             carId: this.orderDetail.orders_item_data[0].car_id,
                                             pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
@@ -1072,11 +1072,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 200:  // 200=>'待付全款',
             case 201:  // 201=>'全款支付中',
             case 202:  // 202=>'全款支付失败',
+            case 50:  // 50=>'鼎城代付中',
+            case 51:  // 51=>'线下支付中',
                 if (cancelStatus === 0) {
                     this.orderState = 2;
                     this.topState = -1;
-                    if (status === 6 || status === 201) {
-                        this.bottomState = 1;
+                    if (status === 50 || status === 51) {
+                        this.bottomState = 12;
                     } else {
                         this.bottomState = 1;
                     }
@@ -1360,7 +1362,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 18:  //18=>'融资单确认验收失败',
             case 160:  //160=>'支付首付款完成',
-            case 50:  // 160=>'支付首付款完成',
                 if (cancelStatus === 0) {
                     this.orderState = 7;
                     this.topState = -1;

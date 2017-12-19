@@ -101,6 +101,14 @@ export default class ChooseModal extends Component {
                         }}>
                             {this.state.content}
                         </Text>
+                        {
+                            this.props.prompt && (<Text allowFontScaling={false}  style={{
+                                textAlign: 'center', fontSize: Pixel.getPixel(10),
+                                marginTop: Pixel.getPixel(7), color: fontAndColor.COLORB2
+                            }}>
+                                {this.props.prompt}
+                            </Text>)
+                        }
                         <View style={{
                             flexDirection: 'row',
                             marginBottom: Pixel.getPixel(20),

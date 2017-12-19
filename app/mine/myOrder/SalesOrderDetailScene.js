@@ -506,7 +506,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 15:
             case 16:
             case 160:
-            case 50:
             case 17:
             case 18:
             case 19:  //
@@ -518,6 +517,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 200:  //
             case 201:  //
             case 202:  //
+            case 50:  //
+            case 51:  //
                 if (cancelStatus === 0) {
                     this.orderState = 2;
                     if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
