@@ -570,25 +570,28 @@ export default class HomeScene extends BaseComponet {
                 }
             }} activeOpacity={0.8} style={{
                 width: width / 2,
-                backgroundColor: '#ffffff',
+                backgroundColor: 'white',
                 borderWidth: 0,
                 borderColor: 'black',
                 justifyContent: 'center',
                 alignItems: 'center',
             }}>
                 <View
-                    style={{width: Pixel.getPixel(166), backgroundColor: '#ffffff', justifyContent: 'center'}}>
+                    style={{width: Pixel.getPixel(166), backgroundColor:'white', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle}
                            source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 320 + ',h_' + 240} : require('../../images/carSourceImages/car_null_img.png')}/>
 
                     <Text allowFontScaling={false} style={cellSheet.despritonStyle}
                           numberOfLines={2}>{DIDIAN + movie.model_name}</Text>
-                    <Text allowFontScaling={false}
-                          style={cellSheet.timeStyle}>{movie.v_type==1?(this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'):((movie.car_color?(movie.car_color.split("|")[0]+' | '):'')+movie.stock+'辆')}</Text>
-                    <Text style={{color:fontAndClolr.COLORB2, fontSize:Pixel.getFontPixel(fontAndClolr.LITTLEFONT28), marginBottom:Pixel.getPixel(15)}}>{movie.dealer_price>0 && (stringTransform.carMoneyChange(movie.dealer_price)+'万')}</Text>
+                    <View>
+                        <Text allowFontScaling={false}
+                              style={cellSheet.timeStyle}>{movie.v_type==1?(this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'):((movie.car_color?(movie.car_color.split("|")[0]+' | '):'')+movie.stock+'辆')}</Text>
+                    </View>
+                    <View>
+                        <Text style={{color:fontAndClolr.COLORB2, fontSize:Pixel.getFontPixel(fontAndClolr.LITTLEFONT28), marginBottom:Pixel.getPixel(15)}}>{movie.dealer_price>0 && (stringTransform.carMoneyChange(movie.dealer_price)+'万')}</Text>
+                    </View>
                 </View>
             </TouchableOpacity>
-
         )
     }
 
