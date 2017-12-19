@@ -41,6 +41,7 @@ export default class CheckStand extends BaseComponent {
         this.transSerialNo = '';
         this.isShowFinancing = 0;
         this.creditBalanceMny = 0;
+        this.isConfigUserAuth = 0;
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -105,7 +106,7 @@ export default class CheckStand extends BaseComponent {
     };
 
     /**
-     *   检查用户是否是"线下支付"白名单用户
+     *   检查此订单卖家是否是"线下支付"白名单用户
      **/
     getConfigUserAuth = () => {
         // 车辆正在质押状态
@@ -119,16 +120,20 @@ export default class CheckStand extends BaseComponent {
                     let maps = {
                         type: 1,
                         //value: datas.company_base_id
-                        value: this.props.orderId
+                        value: this.props.orderId,
+                        company_id: datas.company_base_id
                     }
                     let url = AppUrls.IS_CONFIG_USER_AUTH;
                     request(url, 'post', maps).then((response) => {
-                        this.isConfigUserAuth = 0;
+                        this.isConfigUserAuth = response.mjson.data.status;
+                        this.getMergeWhitePoStatus();
                     }, (error) => {
-                        this.props.showToast(error.mjson.msg);
+                        //this.props.showToast(error.mjson.msg);
+                        this.getMergeWhitePoStatus();
                     });
                 } else {
-                    this.props.showToast('账户检查失败');
+                    //this.props.showToast('账户检查失败');
+                    this.getMergeWhitePoStatus();
                 }
             });
         }
@@ -283,16 +288,20 @@ export default class CheckStand extends BaseComponent {
                               parentStyle={styles.loginBtnStyle}
                               childStyle={styles.loginButtonTextStyle}
                               mOnPress={this.goPay}/>
-                    <MyButton buttonType={MyButton.TEXTBUTTON}
-                              content={'鼎诚融资代付'}
-                              parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
-                              childStyle={styles.loginButtonTextStyle}
-                              mOnPress={this.dingChengPay}/>
-                    <MyButton buttonType={MyButton.TEXTBUTTON}
-                              content={'线下支付'}
-                              parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
-                              childStyle={styles.loginButtonTextStyle}
-                              mOnPress={this.dingOfflinePay}/>
+                    {!this.props.isSellerFinance == 1 &&
+                    (<MyButton buttonType={MyButton.TEXTBUTTON}
+                               content={'鼎诚融资代付'}
+                               parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
+                               childStyle={styles.loginButtonTextStyle}
+                               mOnPress={this.dingChengPay}/>)
+                    }
+                    {!this.props.isSellerFinance == 1 && this.isConfigUserAuth == 1 &&
+                        (<MyButton buttonType={MyButton.TEXTBUTTON}
+                                content={'线下支付'}
+                                parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
+                                childStyle={styles.loginButtonTextStyle}
+                                mOnPress={this.dingOfflinePay}/>)
+                    }
                     {/*---订单融资---*/}
                     {this.isShowFinancing == 1 && this.props.payType == 2 &&
                     <View>
