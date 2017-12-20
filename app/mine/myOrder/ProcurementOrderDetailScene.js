@@ -1140,7 +1140,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     if (status === 9) {
                         this.bottomState = 8;
                     } else {
-                        this.bottomState = 2;
+                        if (this.orderDetail.pay_type == 'dingcheng' || this.orderDetail.pay_type == 'offline') {
+                            this.bottomState = 11;
+                        } else {
+                            this.bottomState = 2;
+                        }
                     }
                 } else if (cancelStatus === 1) {
                     this.orderState = 3;
