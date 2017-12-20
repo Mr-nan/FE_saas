@@ -169,6 +169,11 @@ export  default  class CarNewListScene extends BaseComponent {
                         {
                             this.refs.HeadView.setCheckRecommend(false);
                         }
+                    }else {
+                        isNewCarCheckRecommend = false
+                        APIParameter.type = 4;
+                        APIParameter.prov_id = 0;
+                        currentCarCheckRecommend = isNewCarCheckRecommend;
                     }
                 }
             }

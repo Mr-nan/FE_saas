@@ -368,7 +368,6 @@ export default class HomeScene extends BaseComponet {
                     }
                 },
                 (error) => {
-                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 }
             )
     }
@@ -418,7 +417,6 @@ export default class HomeScene extends BaseComponet {
 
                 },
                 (error) => {
-                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 }
             )
     }

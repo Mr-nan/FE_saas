@@ -173,6 +173,11 @@ export  default  class CarUserListScene extends BaseComponent {
                         {
                             this.refs.HeadView.setCheckRecommend(false);
                         }
+                    }else {
+                        isUserCarCheckRecommend = false;
+                        APIParameter.type = 4;
+                        APIParameter.prov_id = 0;
+                        currentCarCheckRecommend = isUserCarCheckRecommend;
                     }
                 }
             }
@@ -193,7 +198,6 @@ export  default  class CarUserListScene extends BaseComponent {
                     APIParameter.type = 4;
                     APIParameter.prov_id = 0;
                     currentCarCheckRecommend = isUserCarCheckRecommend;
-
                 }
             }
         });
