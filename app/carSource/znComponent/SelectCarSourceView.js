@@ -12,7 +12,8 @@ import {
     RefreshControl,
     Modal,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+    Image
 } from 'react-native'
 
 let carSelectViewData = [];

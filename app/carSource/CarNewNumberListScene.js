@@ -130,7 +130,6 @@ export default class CarNewNumberListScene extends BaseComponent {
                 params: {
                     carData:this.props.carData,
                     refreshingData:this.loadHeadData,
-
                 }
             };
             this.props.toNextPage(navigatorParams);
@@ -635,8 +634,7 @@ class CarSeekView extends Component {
             <View style={styles.carSeekView}>
                 <View>
                     <View style={styles.navigatorSousuoView}>
-                        <Image
-                               source={require('../../images/carSourceImages/sousuoicon.png')}/>
+                        <Image source={require('../../images/carSourceImages/sousuoicon.png')}/>
                         <TextInput
                             allowFontScaling={false}
                             underlineColorAndroid='transparent'
