@@ -10,8 +10,6 @@ import {
 
 import Root from './app/root';
 
-import CancelOrderReason from './app/mine/myOrder/CancelOrderReasonScene';
-
 AppRegistry.registerComponent('FE_Sass', () => Root);
 
-//AppRegistry.registerComponent('FE_Sass', () => CancelOrderReason);
+

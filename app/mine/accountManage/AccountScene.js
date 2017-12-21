@@ -35,6 +35,7 @@ import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as webBackUrl from "../../constant/webBackUrl";
 import AccountWebScene from './AccountWebScene';
+import OpenTrustAccountView from "./component/OpenTrustAccountView";
 export  default class AccountScene extends BaseComponent {
 
     constructor(props) {
@@ -44,8 +45,8 @@ export  default class AccountScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             source: [],
             info: {},
-            enter_id:'',
-            isRefreshing:false
+            enter_id: '',
+            isRefreshing: false
         };
     }
 
@@ -76,67 +77,138 @@ export  default class AccountScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                           this.getAccountData(datas.company_base_id,
-                               response.mjson.data.account.account_open_type)
+                            //this.getAccountData(datas.company_base_id, response.mjson.data.account.account_open_type)
+                            /*                            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                             this.setState({
+                             renderPlaceholderOnly: 'success',
+                             source: ds.cloneWithRows([1]),
+                             info: response.mjson.data.account,
+                             enter_id: datas.company_base_id,
+                             isRefreshing:false
+
+                             });*/
+                            this.getTrustAccountState(datas.company_base_id, response.mjson.data.account);
                         },
                         (error) => {
                             this.props.showToast('用户信息查询失败');
                             this.setState({
                                 renderPlaceholderOnly: 'error',
-                                isRefreshing:false
+                                isRefreshing: false
                             });
                         });
             } else {
                 this.props.showToast('用户信息查询失败');
                 this.setState({
                     renderPlaceholderOnly: 'error',
-                    isRefreshing:false
+                    isRefreshing: false
                 });
             }
         })
     }
 
-    getAccountData=(id,type)=>{
+    /**
+     *   获取信托账户状态
+     **/
+    getTrustAccountState = (enterBaseIds, info) => {
         let maps = {
-            enter_base_id:id,
+            enter_base_ids: enterBaseIds,
+            child_type: '1',
+            bank_id: 'zsyxt'
+        };
+        request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                //console.log('USER_ACCOUNT_INFO=====', response.mjson.data['zsyxt'].status);
+                this.trustAccountState = response.mjson.data['zsyxt'][0].status;
+                this.accountOpenType = info.account_open_type;
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    renderPlaceholderOnly: 'success',
+                    source: ds.cloneWithRows([1]),
+                    info: info,
+                    enter_id: enterBaseIds,
+                    isRefreshing: false
+                });
+/*                if (info.account_open_type == 2 && this.trustAccountState == 0) {
+                    this.refs.openAccount.changeState(true);
+                    this.getTrustContract();
+                }*/
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
+                });
+            });
+    };
+
+    /**
+     *   获取信托相关可供浏览的合同
+     **/
+    getTrustContract = () => {
+        this.props.showModal(true);
+        let maps = {
+            source_type: '3',
+            fund_channel: '信托'
+        };
+        request(Urls.AGREEMENT_LISTS, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                //console.log('USER_ACCOUNT_INFO=====', response.mjson.data['zsyxt'].status);
+                /*                this.toNextPage({
+                 name: 'AccountFlowScene',
+                 component: AccountFlowScene, params: {}
+                 })*/
+                this.contractList = response.mjson.data.list;
+                this.refs.openAccount.changeStateWithData(true, this.contractList);
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+            });
+    };
+
+    getAccountData = (id, type) => {
+        let maps = {
+            enter_base_id: id,
             user_type: type,
-            transfer_type:'0,3,4,104'
+            transfer_type: '0,3,4,104'
         };
         request(Urls.USER_ACCOUNT_INDEX, 'Post', maps)
             .then((response) => {
 
-                if(response.mjson.data.info.status!='3'){
-                    this.props.callBack();
-                    this.backPage();
-                }else{
-                    if (response.mjson.data.payLogs == null || response.mjson.data.payLogs.length <= 0) {
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        this.setState({
-                            renderPlaceholderOnly: 'success',
-                            source: ds.cloneWithRows([1]),
-                            info: response.mjson.data.info,
-                            enter_id:id,
-                            isRefreshing:false
-
-                        });
+                    if (response.mjson.data.info.status != '3') {
+                        this.props.callBack();
+                        this.backPage();
                     } else {
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        this.setState({
-                            renderPlaceholderOnly: 'success',
-                            // source: ds.cloneWithRows(response.mjson.data.payLogs),
-                            source: ds.cloneWithRows([1]),
-                            info: response.mjson.data.info,
-                            enter_id:id,
-                            isRefreshing:false
-                        });
+                        if (response.mjson.data.payLogs == null || response.mjson.data.payLogs.length <= 0) {
+                            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                            this.setState({
+                                renderPlaceholderOnly: 'success',
+                                source: ds.cloneWithRows([1]),
+                                info: response.mjson.data.info,
+                                enter_id: id,
+                                isRefreshing: false
+
+                            });
+                        } else {
+                            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                            this.setState({
+                                renderPlaceholderOnly: 'success',
+                                // source: ds.cloneWithRows(response.mjson.data.payLogs),
+                                source: ds.cloneWithRows([1]),
+                                info: response.mjson.data.info,
+                                enter_id: id,
+                                isRefreshing: false
+                            });
+                        }
                     }
-                }
                 },
                 (error) => {
                     this.props.showToast('用户信息查询失败');
                     this.setState({
                         renderPlaceholderOnly: 'error',
-                        isRefreshing:false
+                        isRefreshing: false
                     });
                 });
     }
@@ -150,48 +222,112 @@ export  default class AccountScene extends BaseComponent {
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
                     removeClippedSubviews={false}
-                    style={{marginTop: Pixel.getTitlePixel(64),marginBottom:Pixel.getPixel(45)}}
+                    style={{marginTop: Pixel.getTitlePixel(64)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderHeader={this._renderHeader}
-                    renderSeparator={this._renderSeparator}
+                    //renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                     refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={this.refreshingData}
-                                        tintColor={[fontAndColor.COLORB0]}
-                                        colors={[fontAndColor.COLORB0]}
-                                    />
-                                }
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshingData}
+                            tintColor={[fontAndColor.COLORB0]}
+                            colors={[fontAndColor.COLORB0]}
+                        />
+                    }
                 />
-                <View style={{width:width,height:Pixel.getPixel(44),backgroundColor: fontAndColor.COLORA3,
-                flexDirection:'row',position: 'absolute',bottom: 0}}>
-                    <TouchableOpacity onPress={()=>{
-                        this.toNextPage({name:'WithdrawalsScene',
-                        component:WithdrawalsScene,params:{callBack:()=>{
-                            this.allRefresh()
-                        } ,money:this.state.info.balance}})
+                <View style={{height: 1}}/>
+                <View style={{
+                    width: width, height: Pixel.getPixel(44), backgroundColor: fontAndColor.COLORA3,
+                    flexDirection: 'row',
+                }}>
+                    <TouchableOpacity onPress={() => {
+                        this.toNextPage({
+                            name: 'WithdrawalsScene',
+                            component: WithdrawalsScene, params: {
+                                callBack: () => {
+                                    this.allRefresh()
+                                }, money: this.state.info.balance
+                            }
+                        })
                     }} activeOpacity={0.8}
-                                      style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
-                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>提现</Text>
+                                      style={{
+                                          flex: 1,
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                          backgroundColor: '#fff'
+                                      }}>
+                        <Text allowFontScaling={false}
+                              style={{color: fontAndColor.COLORB0, fontSize: Pixel.getFontPixel(15)}}>提现</Text>
                     </TouchableOpacity>
-                    <View style={{width:1,justifyContent:'center',
-                    alignItems: 'center',height:Pixel.getPixel(44)}}></View>
-                    <TouchableOpacity onPress={()=>{
-                        this.toNextPage({name:'RechargeScene',component:RechargeScene,params:{}})
+                    <View style={{
+                        width: 1, justifyContent: 'center',
+                        alignItems: 'center', height: Pixel.getPixel(44)
+                    }}></View>
+                    <TouchableOpacity onPress={() => {
+                        this.toNextPage({name: 'RechargeScene', component: RechargeScene, params: {}})
                     }} activeOpacity={0.8}
-                                      style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
-                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>充值</Text>
+                                      style={{
+                                          flex: 1,
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                          backgroundColor: '#fff'
+                                      }}>
+                        <Text allowFontScaling={false}
+                              style={{color: fontAndColor.COLORB0, fontSize: Pixel.getFontPixel(15)}}>充值</Text>
                     </TouchableOpacity>
                 </View>
                 <NavigationView
                     title="账户管理"
                     backIconClick={this.backPage}
                 />
+{/*                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}
+                                      showModal={this.props.showModal}
+                                      navigator={this.props.navigator}/>*/}
             </View>
         );
     }
+
+    /**
+     *   变更信托账户开户状态
+     **/
+    changeTrustAccountState = (newState) => {
+        this.trustAccountState = newState;
+    };
+
+    /**
+     *   开通信托账户
+     **/
+    openTrustAccount = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_id: datas.company_base_id
+                    //enter_base_id: 8018
+                };
+                request(Urls.OPEN_PERSON_TRUST_ACCOUNT, 'Post', maps)
+                    .then((response) => {
+                        this.props.showModal(false);
+                        this.props.showToast('升级成功');
+                        this.trustAccountState = 3;
+                        // 此接口未返回开户成功后的账户状态，手动置为3，
+                        // 配合setState用以触发AccountTitle中componentWillReceiveProps生命周期方法
+                        this.setState({
+                            enter_id: datas.company_base_id
+                        });
+                    }, (error) => {
+                        this.props.showModal(false);
+                        this.props.showToast(error.mjson.msg);
+                    });
+            } else {
+                this.props.showModal(false);
+                this.props.showToast('升级失败');
+            }
+        });
+    };
 
     refreshingData = () => {
         this.setState({isRefreshing: true});
@@ -203,18 +339,21 @@ export  default class AccountScene extends BaseComponent {
             return (<View></View>);
         } else {
             return (
-                <View style={{width:width,height:Pixel.getPixel(72),backgroundColor: '#fff',flexDirection: 'row',
-            paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)}}>
-                    <View style={{flex:1,justifyContent:'center'}}>
-                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(14)}}>
+                <View style={{
+                    width: width, height: Pixel.getPixel(72), backgroundColor: '#fff', flexDirection: 'row',
+                    paddingRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(15)
+                }}>
+                    <View style={{flex: 1, justifyContent: 'center'}}>
+                        <Text allowFontScaling={false} style={{color: '#000', fontSize: Pixel.getPixel(14)}}>
                             {movie.operate_name}
                         </Text>
-                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(12)}}>
+                        <Text allowFontScaling={false}
+                              style={{color: fontAndColor.COLORA1, fontSize: Pixel.getPixel(12)}}>
                             {movie.create_time}
                         </Text>
                     </View>
-                    <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(20)}}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                        <Text allowFontScaling={false} style={{color: '#000', fontSize: Pixel.getPixel(20)}}>
                             {movie.amount}
                         </Text>
                     </View>
@@ -224,77 +363,105 @@ export  default class AccountScene extends BaseComponent {
     }
     _renderHeader = () => {
         return (
-            <AccountTitle info={this.state.info}
-                          bankCard={()=>{this.toNextPage({name:'BankCardScene',
-                          component:BankCardScene,params:{callBack:()=>{this.props.callBack()}}})}}
-                          flow={()=>{this.toNextPage({name:'AccountFlowScene',
-                          component:AccountFlowScene,params:{}})}}
-                          changePwd={()=>{
-                              let maps={
-                                  user_type:this.state.info.account_open_type,
-                                  reback_url:webBackUrl.CHANGEPWD,
-                                  enter_base_id:this.state.enter_id
-                              }
-                              this.getWebUrl(Urls.USER_ACCOUNT_EDITPAYPWD,maps,'修改交易密码',
-                              webBackUrl.CHANGEPWD);
-                          }}
-                          resetPwd={()=>{
-                              let maps={
-                                  user_type:this.state.info.account_open_type,
-                                  reback_url:webBackUrl.RESETPWD,
-                                  enter_base_id:this.state.enter_id
-                              }
-                              this.getWebUrl(Urls.USER_ACCOUNT_RESETPAYPWD,maps,'重置交易密码',
-                              webBackUrl.RESETPWD);
-                          }}
-                          changePhone={()=>{
-                              let maps={
-                                  user_type:this.state.info.account_open_type,
-                                  reback_url:webBackUrl.CHANGEPHONE,
-                                  enter_base_id:this.state.enter_id
-                              }
-                              this.getWebUrl(Urls.USER_BANK_EDITPHONE,maps,'修改手机号',
-                              webBackUrl.CHANGEPHONE);
-                          }}
-                          accountSetting={()=>{
-
-                              StorageUtil.mGetItem(StorageKeyNames.USER_INFO,((data)=>{
-                                  console.log(data);
-                                  if(data.code==1 && data.result)
-                                  {     let userInfo = JSON.parse(data.result);
-                                      if(userInfo.user_level!=2){
-                                          this.props.showToast('您的账户未授信，请先去授信');
-                                      }else {
-                                          this.toNextPage({
-                                              name:'AccountSettingScene',
-                                              component:AccountSettingScene,params:{
-                                                  protocolType:this.isOpenContract,
-                                              }})
+            <AccountTitle trustAccountState={this.trustAccountState}
+                          info={this.state.info}
+                          bankCard={() => {
+                              this.toNextPage({
+                                  name: 'BankCardScene',
+                                  component: BankCardScene, params: {
+                                      callBack: () => {
+                                          this.props.callBack()
                                       }
+                                  }
+                              })
+                          }}
+                          flow={() => {
+                              this.toNextPage({
+                                  name: 'AccountFlowScene',
+                                  component: AccountFlowScene, params: {}
+                              })
+                          }}
+                          changePwd={() => {
+                              let maps = {
+                                  user_type: this.state.info.account_open_type,
+                                  reback_url: webBackUrl.CHANGEPWD,
+                                  enter_base_id: this.state.enter_id
+                              }
+                              this.getWebUrl(Urls.USER_ACCOUNT_EDITPAYPWD, maps, '修改交易密码',
+                                  webBackUrl.CHANGEPWD);
+                          }}
+                          resetPwd={() => {
+                              let maps = {
+                                  user_type: this.state.info.account_open_type,
+                                  reback_url: webBackUrl.RESETPWD,
+                                  enter_base_id: this.state.enter_id
+                              }
+                              this.getWebUrl(Urls.USER_ACCOUNT_RESETPAYPWD, maps, '重置交易密码',
+                                  webBackUrl.RESETPWD);
+                          }}
+                          changePhone={() => {
+                              let maps = {
+                                  user_type: this.state.info.account_open_type,
+                                  reback_url: webBackUrl.CHANGEPHONE,
+                                  enter_base_id: this.state.enter_id
+                              }
+                              this.getWebUrl(Urls.USER_BANK_EDITPHONE, maps, '修改手机号',
+                                  webBackUrl.CHANGEPHONE);
+                          }}
+                          accountSetting={() => {
+
+                              StorageUtil.mGetItem(StorageKeyNames.USER_INFO, ((data) => {
+                                  console.log(data);
+                                  if (data.code == 1 && data.result) {
+                                      let userInfo = JSON.parse(data.result);
+                                          this.toNextPage({
+                                              name: 'AccountSettingScene',
+                                              component: AccountSettingScene, params: {
+                                                  protocolType: this.isOpenContract,
+                                                  accountOpenType: this.accountOpenType,
+                                                  trustAccountState: this.trustAccountState,
+                                                  changeState: this.changeTrustAccountState,
+                                                  userLevel: userInfo.user_level
+                                              }
+                                          })
                                   }
                               }));
 
 
                           }
                           }
-                          moreFlow={()=>{this.toNextPage({name:'AccountFlowScene',
-                          component:AccountFlowScene,params:{}})}}
-                          frozen={()=>{
-                              {/*this.toNextPage({name:'FrozenScene',component:FrozenScene,params:{}})*/}
+                          moreFlow={() => {
+                              this.toNextPage({
+                                  name: 'AccountFlowScene',
+                                  component: AccountFlowScene, params: {}
+                              })
                           }}
-                          copy={(number)=>{
+                          frozen={() => {
+                              {/*this.toNextPage({name:'FrozenScene',component:FrozenScene,params:{}})*/
+                              }
+                          }}
+                          copy={(number) => {
                               this.props.showToast(number);
                           }}
-                          transfer={()=>{this.toNextPage({name:'TransferScene',
-                          component:TransferScene,params:{money:this.state.info.balance,callBack:()=>{
-                              this.allRefresh()}}})}}
-
-
+                          transfer={() => {
+                              this.toNextPage({
+                                  name: 'TransferScene',
+                                  component: TransferScene, params: {
+                                      money: this.state.info.balance, callBack: () => {
+                                          this.allRefresh()
+                                      }
+                                  }
+                              })
+                          }}
+/*                          openTrustAccount={() => {
+                              this.refs.openAccount.changeState(true);
+                              this.getTrustContract();
+                          }}*/
             />
         )
     }
 
-    getWebUrl = (url, maps, title,backUrl) => {
+    getWebUrl = (url, maps, title, backUrl) => {
         this.props.showModal(true);
         request(url, 'Post', maps)
             .then((response) => {
@@ -304,9 +471,9 @@ export  default class AccountScene extends BaseComponent {
                             title: title,
                             webUrl: response.mjson.data.auth_url +
                             '?authTokenId=' + response.mjson.data.auth_token,
-                            callBack:()=>{
-                                    this.allRefresh()
-                            },backUrl:backUrl
+                            callBack: () => {
+                                this.allRefresh()
+                            }, backUrl: backUrl
                         }
                     });
                 },
@@ -330,7 +497,7 @@ export  default class AccountScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
+            <View style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
                     title="账户管理"
