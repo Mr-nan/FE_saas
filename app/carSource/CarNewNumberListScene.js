@@ -63,11 +63,13 @@ export default class CarNewNumberListScene extends BaseComponent {
                                                carData={this.props.carData}
                                                cellClick={this.cellClick}
                                                setHeadView={this.setHeadView}
-                    />
+                                               showToast={this.props.showToast}/>
+
                     <MyCarSourceDropFrameView  ref="dropFrameView"
                                                tabLabel="ios-paper2"
                                                carData={this.props.carData}
-                                               setHeadView={this.setHeadView}/>
+                                               setHeadView={this.setHeadView}
+                                               showToast={this.props.showToast}/>
                 </ScrollableTabView>
                 <TouchableOpacity style={styles.footBtn} onPress={this.pushNewCarScene}>
                     <Text style={styles.footBtnText}>车辆入库</Text>
@@ -229,6 +231,7 @@ class MyCarSourceUpperFrameView extends BaseComponent {
             isRefreshing: true,
             renderPlaceholderOnly: 'blank',
             carUpperFrameStatus: carUpperFrameStatus,
+            loadingMarginTop:Pixel.getPixel(64)
         };
     }
 
@@ -241,7 +244,10 @@ class MyCarSourceUpperFrameView extends BaseComponent {
         this.setState({renderPlaceholderOnly: 'loading'});
         this.loadData();
     };
-
+    allRefresh=()=>{
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.loadData();
+    }
     refreshingData = () => {
 
         this.setState({
@@ -287,11 +293,11 @@ class MyCarSourceUpperFrameView extends BaseComponent {
             }
 
         }, (error) => {
+            this.props.showToast(error.mjson.msg);
             this.setState({
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error',
             });
-            this.props.showToast(error.mjson.msg);
 
         });
 
@@ -431,7 +437,7 @@ class MyCarSourceDropFrameView extends BaseComponent {
             isRefreshing: true,
             carDropFrameStatus: carDropFrameStatus,
             renderPlaceholderOnly: 'blank',
-
+            loadingMarginTop:Pixel.getPixel(64)
 
         };
     }
@@ -448,7 +454,10 @@ class MyCarSourceDropFrameView extends BaseComponent {
         this.setState({renderPlaceholderOnly: 'loading'});
         this.loadData();
     };
-
+    allRefresh=()=>{
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.loadData();
+    }
     refreshingData = () => {
 
         this.setState({
@@ -503,6 +512,7 @@ class MyCarSourceDropFrameView extends BaseComponent {
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error',
             });
+            this.props.showToast(error.mjson.msg);
 
         });
 

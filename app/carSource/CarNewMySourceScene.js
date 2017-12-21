@@ -785,6 +785,8 @@ class MyCarSourceUpperFrameView extends BaceComponent {
             isRefreshing: true,
             renderPlaceholderOnly: 'blank',
             carUpperFrameStatus: carUpperFrameStatus,
+            loadingMarginTop:Pixel.getPixel(64)
+
         };
     }
 
@@ -1008,6 +1010,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
             isRefreshing: true,
             carDropFrameStatus: carDropFrameStatus,
             renderPlaceholderOnly: 'blank',
+            loadingMarginTop:Pixel.getPixel(64)
 
 
         };
@@ -1190,6 +1193,7 @@ class MyCarSourceAuditView extends BaceComponent {
             isRefreshing: true,
             carAuditStatus: carAuditStatus,
             renderPlaceholderOnly: 'blank',
+            loadingMarginTop:Pixel.getPixel(64)
 
         };
     }
