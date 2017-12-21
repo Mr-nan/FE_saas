@@ -26,8 +26,6 @@ import {CarConfigurationView}   from './../carSource/znComponent/CarInfoAllCompo
 
 const Pixel = new PixelUtil();
 
-import * as Net from '../utils/RequestUtil';
-import * as AppUrls from '../constant/appUrls';
 
 const config_no_data = require('../../images/noData.png');
 

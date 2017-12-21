@@ -18,6 +18,8 @@ var screenWidth = Dimensions.get('window').width;
 import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil';
 let     Pixel = new PixelUtil();
+import  StringTransformUtil from  "../../utils/StringTransformUtil";
+let stringTransform = new StringTransformUtil();
 
 export default class MyCarCell extends Component {
 
@@ -85,7 +87,7 @@ export default class MyCarCell extends Component {
                     <View style={styles.cellHeadView}>
                         <Text allowFontScaling={false} style={styles.mainText}>{carCellData.serial_num}</Text>
                         <Text allowFontScaling={false} style={{color:fontAndColor.COLORA1,
-                            fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT)}}>{this.dateReversal(carCellData.public_time+'000',true)}上架</Text>
+                            fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT)}}>{stringTransform.dateReversal(carCellData.public_time+'000',true)}上架</Text>
                     </View>
                     <View style={styles.cellContentView}>
                         <View style={styles.imageView} >
@@ -98,21 +100,23 @@ export default class MyCarCell extends Component {
                         </View>
                         <View style={[styles.textContainer]}>
                             <View style={{backgroundColor:'white'}}>
-                                <Text allowFontScaling={false} numberOfLines={1}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
-                                <Text allowFontScaling={false}  style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000',false)+'初登 | '+carCellData.mileage+'万公里'}</Text>
-                                {
-                                    (carCellData.dealer_price>0 && carCellData.low_price>0) &&
-                                    (<Text allowFontScaling={false}  style={styles.subTitleText}>{(this.carMoneyChange(carCellData.dealer_price)) +'万 | 低价：' +(this.carMoneyChange(carCellData.low_price))}万</Text>)
-                                }
-                                {
-                                    (carCellData.dealer_price>0 &&carCellData.low_price<=0) &&
-                                    (<Text allowFontScaling={false}  style={styles.subTitleText}>{(this.carMoneyChange(carCellData.dealer_price))}万</Text>)
-                                }
-                                {
-                                    (carCellData.low_price>0 && carCellData.dealer_price<=0) &&
-                                    (<Text allowFontScaling={false}  style={styles.subTitleText}>{ '低价：' +(this.carMoneyChange(carCellData.low_price))}万</Text>)
-                                }
 
+                                   <View>
+                                            <Text allowFontScaling={false} numberOfLines={1}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
+                                            <Text allowFontScaling={false}  style={styles.subTitleText}>{stringTransform.dateReversal(carCellData.manufacture+'000',false)+'初登 | '+carCellData.mileage+'万公里'}</Text>
+                                            {
+                                                (carCellData.dealer_price>0 && carCellData.low_price>0) &&
+                                                (<Text allowFontScaling={false}  style={styles.subTitleText}>{(stringTransform.carMoneyChange(carCellData.dealer_price)) +'万 | 低价：' +(stringTransform.carMoneyChange(carCellData.low_price))}万</Text>)
+                                            }
+                                            {
+                                                (carCellData.dealer_price>0 &&carCellData.low_price<=0) &&
+                                                (<Text allowFontScaling={false}  style={styles.subTitleText}>{(stringTransform.carMoneyChange(carCellData.dealer_price))}万</Text>)
+                                            }
+                                            {
+                                                (carCellData.low_price>0 && carCellData.dealer_price<=0) &&
+                                                (<Text allowFontScaling={false}  style={styles.subTitleText}>{ '低价：' +(stringTransform.carMoneyChange(carCellData.low_price))}万</Text>)
+                                            }
+                                        </View>
                             </View>
                             <View/>
                             {/*<Text allowFontScaling={false}  style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>*/}
@@ -138,11 +142,11 @@ export default class MyCarCell extends Component {
                                             <View style={{flexDirection:'row',alignItems:'center'}}>
                                                 {
                                                     carCellData.sale_time &&(
-                                                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售出:{this.dateReversal(carCellData.sale_time+'000',true)}</Text>)
+                                                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售出:{stringTransform.dateReversal(carCellData.sale_time+'000',true)}</Text>)
                                                 }
                                                 {
                                                     carCellData.current_rate &&(
-                                                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售价:{this.carMoneyChange(carCellData.current_rate)}万元</Text>
+                                                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售价:{stringTransform.carMoneyChange(carCellData.current_rate)}万元</Text>
                                                     )
                                                 }
                                             </View>
@@ -154,8 +158,8 @@ export default class MyCarCell extends Component {
                                     {
                                         (carType==1&&carCellData.review_status==2) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('查看退回原因',this.props.type,carCellData)}}>
-                                            <View style={[styles.cellFoot,{borderColor:fontAndColor.COLORB4}]}>
-                                                <Text allowFontScaling={false}  style={[styles.cellFootText,{color:fontAndColor.COLORB4}]}> 查看退回原因 </Text>
+                                            <View style={[styles.cellFoot,{borderColor:fontAndColor.COLORB0}]}>
+                                                <Text allowFontScaling={false}  style={[styles.cellFootText,{color:fontAndColor.COLORB0}]}> 查看退回原因 </Text>
                                             </View>
                                         </TouchableOpacity>
                                     }
@@ -173,14 +177,14 @@ export default class MyCarCell extends Component {
                                             {/*</View>*/}
                                         {/*</TouchableOpacity>*/}
                                     {/*}*/}
-                                    {/*{*/}
-                                        {/*((carType==1&&carCellData.review_status==1)||carType==3 ) &&*/}
-                                        {/*<TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>*/}
-                                            {/*<View style={styles.cellFoot}>*/}
-                                                {/*<Text allowFontScaling={false}  style={styles.cellFootText}> 申请上架 </Text>*/}
-                                            {/*</View>*/}
-                                        {/*</TouchableOpacity>*/}
-                                    {/*}*/}
+                                    {
+                                        ((carType==1&&carCellData.review_status==1)||carType==3 ) &&
+                                        <TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>
+                                            <View style={styles.cellFoot}>
+                                                <Text allowFontScaling={false}  style={styles.cellFootText}> 申请上架 </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    }
 
                                     {
                                         carType == 2 &&
@@ -200,7 +204,7 @@ export default class MyCarCell extends Component {
 
                                     }
                                     {
-                                        (carType == 1 || carType == 3) &&
+                                        ((carType==1&&carCellData.review_status==2) || carType == 3) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
                                             <View style={styles.cellFoot}>
                                                 <Text allowFontScaling={false}  style={styles.cellFootText}>  编辑  </Text>
@@ -326,7 +330,8 @@ const styles = StyleSheet.create({
     textContainer:{
         flex:1,
         // backgroundColor:'#FF0067',
-        justifyContent:'space-around',
+        justifyContent:'space-around'
+
     },
 
     mainText:{
@@ -347,8 +352,7 @@ const styles = StyleSheet.create({
     },
     carPriceText:{
         color:fontAndColor.COLORB2,
-        fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-        fontWeight:'bold',
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
     }
 
 });

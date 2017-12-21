@@ -54,6 +54,20 @@ export default class CarDischargeScene extends  BaseComponent{
         // });
 
         this.viewData = this.props.DischargeData;
+        let nodeNumber = 2; // 节点数
+        if(this.viewData){
+            let length = this.viewData.length;
+            if(length % nodeNumber!==0){
+                let number =(length % nodeNumber);
+                console.log('number:',number,'length',length,);
+                for(let i=0;i<number;i++){
+                    this.viewData.push({
+                        name:'',
+                        value:''
+                    });
+                }
+            }
+        }
         this.viewData.map((data,index)=>{
             data.index = index;
             if(data.name == this.props.currentChecked)
@@ -91,6 +105,14 @@ export default class CarDischargeScene extends  BaseComponent{
     }
 
     _renderItem = (data, i) => {
+
+        if(!data.name) {
+            return (
+                <View key={i}>
+
+                </View>
+            );
+        }
         if (data.selected === true) {
             return (
                 <TouchableOpacity
@@ -120,12 +142,6 @@ export default class CarDischargeScene extends  BaseComponent{
                         </Text>
                     </View>
                 </TouchableOpacity>
-            );
-        } else {
-            return (
-                <View key={i} style={styles.emptyItem}>
-
-                </View>
             );
         }
     };

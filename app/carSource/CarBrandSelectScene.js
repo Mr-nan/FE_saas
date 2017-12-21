@@ -47,6 +47,7 @@ let carObject = {
     series_name: '0',
     model_id: '0',
     model_name: '0',
+    model_price : '0',
     discharge_standard: '',
     model_year: '',
     liter: '',
@@ -89,6 +90,7 @@ export default class CarBrandSelectScene extends BaseComponent {
         carObject.series_name = '0';
         carObject.model_id = '0';
         carObject.model_name = '0';
+        carObject.model_price = '0'
         carObject.discharge_standard = '';
         carObject.model_year = '';
         carObject.liter = '';
@@ -539,6 +541,7 @@ class CarSeriesList extends BaseComponent {
 
                         carObject.model_id = rowData.model_id;
                         carObject.model_name = rowData.model_name;
+                        carObject.model_price = rowData.model_price;
                         this.props.checkedCarClick(carObject);
 
 
@@ -669,6 +672,7 @@ class CarModelList extends BaseComponent {
 
                 carObject.model_id = rowData.model_id;
                 carObject.model_name = rowData.model_name;
+                carObject.model_price = rowData.model_price;
                 carObject.discharge_standard = rowData.discharge_standard;
                 carObject.model_year = rowData.model_year;
                 carObject.config_value = rowData.config_value;

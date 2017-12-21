@@ -27,7 +27,7 @@ const request = (url, method, params, backToLogin) => {
             if (data.code === 1) {
                 token = data.result;
             }
-            console.log('token===' + token);
+            // console.log('token===' + token);
             let device_code = '';
 
             if (Platform.OS === 'android') {
@@ -36,12 +36,13 @@ const request = (url, method, params, backToLogin) => {
                 device_code = 'dycd_platform_ios';
             }
 
-            console.log(url + '?token=' + token + '&device_code=' + device_code+
-                '&version='+StorageKeyNames.VERSON_CODE+'&'+body);
 
-            fetch(url + '?token=' + token + '&device_code=' + device_code+'&version='+StorageKeyNames.VERSON_CODE+'&'+body, {
+            fetch(url + '?token=' + token + '&device_code=' + device_code+'&version='+StorageKeyNames.VERSON_CODE, {
                 method,
-                body
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body:body
             })
                 .then((response) => {
                     if (response.ok) {

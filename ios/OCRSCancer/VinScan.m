@@ -50,6 +50,8 @@ RCT_REMAP_METHOD(scan,
       
       onev.scaneResult=^(NSString*successInfo,NSError*errorInfo){
         
+        
+        
         if (successInfo) {
           resolve(successInfo);
         }else{

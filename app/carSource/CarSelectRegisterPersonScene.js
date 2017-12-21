@@ -29,15 +29,6 @@ const sceneWidth = Dimensions.get('window').width;
 const IS_ANDROID = Platform.OS === 'android';
 
 
-let data = [
-    '张一丰 1999900000',
-    '张二丰 1999900000',
-    '张三丰 1999900000',
-    '张四丰 1999900000',
-    '张五丰 1999900000',
-    '张六丰 1999900000',
-];
-
 export default class CarSelectRegisterPersonScene extends BaseComponent{
     initFinish=()=>{
         this.loadData();
@@ -49,7 +40,7 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
            rowHasChanged:(r1,r2)=>r1!==r2,
         });
         this.state = {
-            dataSource:dataSource.cloneWithRows(data),
+            dataSource:dataSource,
             renderPlaceholderOnly: 'blank',
 
         };
