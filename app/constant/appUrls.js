@@ -1389,3 +1389,7 @@ export const IS_CONFIG_USER_AUTH = BASEURL +  "v2/order.index/isConfigUserAuth";
  *  鼎城融资代付的方式付款
  */
 export const DING_CHENG = BASEURL +  "v2/order.pay/dingCheng";
+/**
+ *  线下支付方式付款
+ */
+export const OFFLINE_PAY = BASEURL +  "v2/order.pay/offline";

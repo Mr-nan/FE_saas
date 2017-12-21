@@ -204,7 +204,7 @@ export default class CheckStand extends BaseComponent {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId
                 };
-                let url = AppUrls.DING_CHENG;
+                let url = AppUrls.OFFLINE_PAY;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.callBack();
