@@ -356,14 +356,14 @@ export default class CheckStand extends BaseComponent {
                               parentStyle={styles.loginBtnStyle}
                               childStyle={styles.loginButtonTextStyle}
                               mOnPress={this.goPay}/>
-                    {this.props.isSellerFinance == 0 && this.props.payFull &&
+                    {this.props.isSellerFinance == 0 && this.props.payType == 2 &&
                     (<MyButton buttonType={MyButton.TEXTBUTTON}
                                content={'鼎诚融资代付'}
                                parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
                                childStyle={styles.loginButtonTextStyle}
                                mOnPress={() => {this.payPrompting(0)}}/>)
                     }
-                    {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payFull &&
+                    {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payType == 2 &&
                         (<MyButton buttonType={MyButton.TEXTBUTTON}
                                 content={'线下支付'}
                                 parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
