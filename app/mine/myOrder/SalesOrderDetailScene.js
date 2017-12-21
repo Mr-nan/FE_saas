@@ -56,6 +56,7 @@ import RepaymentInfoScene from "../../finance/repayment/RepaymentCreditInfoScene
 import InventoryPlanInfoScene from "../../finance/repayment/InventoryPlanInfoScene";
 import NewPurchaseRepaymentInfoScene from "../../finance/repayment/NewPurchaseRepaymentInfoScene";
 import SalesInfo from "./component/SalesInfo";
+import MyAccountScene from "../accountManage/MyAccountScene";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -311,8 +312,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 '您还未开通资金账户，为方便您使用金融产品及购物车，' +
                                 '请尽快开通！', '去开户', '看看再说', () => {
                                     this.toNextPage({
-                                        name: 'AccountManageScene',
-                                        component: AccountManageScene,
+                                        name: 'MyAccountScene',
+                                        component: MyAccountScene,
                                         params: {
                                             callBack: () => {
                                             }
@@ -324,8 +325,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
                                 , '去绑卡', '看看再说', () => {
                                     this.toNextPage({
-                                        name: 'BindCardScene',
-                                        component: BindCardScene,
+                                        name: 'MyAccountScene',
+                                        component: MyAccountScene,
                                         params: {
                                             callBack: () => {
                                             }
@@ -337,8 +338,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
                                 , '去激活', '看看再说', () => {
                                     this.toNextPage({
-                                        name: 'WaitActivationAccountScene',
-                                        component: WaitActivationAccountScene,
+                                        name: 'MyAccountScene',
+                                        component: MyAccountScene,
                                         params: {
                                             callBack: () => {
                                             }

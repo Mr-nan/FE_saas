@@ -39,6 +39,7 @@ import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailS
 import ExplainModal from "../mine/myOrder/component/ExplainModal";
 import CarMyListScene from "./CarMyListScene";
 import GetPermissionUtil from '../utils/GetRoleUtil';
+import MyAccountScene from "../mine/accountManage/MyAccountScene";
 let Platform = require('Platform');
 let getRole = new GetPermissionUtil();
 const Pixel = new PixelUtil();
@@ -595,8 +596,9 @@ export default class CarInfoScene extends BaseComponent {
                                     };
                                     if (lastType == '0') {
 
-                                        navigatorParams.name = 'AccountManageScene';
-                                        navigatorParams.component = AccountManageScene;
+                                        navigatorParams.name = 'MyAccountScene';
+                                        navigatorParams.component = MyAccountScene;
+                                        navigatorParams.params = {callBack: () => {}};
                                         this.refs.accountmodal.changeShowType(true,
                                             '您还未开通资金账户，为方便您使用金融产品及购物车，' +
                                             '请尽快开通！', '去开户', '看看再说', () => {
@@ -604,8 +606,9 @@ export default class CarInfoScene extends BaseComponent {
                                             });
 
                                     } else if (lastType == '1') {
-                                        navigatorParams.name = 'BindCardScene';
-                                        navigatorParams.component = BindCardScene;
+                                        navigatorParams.name = 'MyAccountScene';
+                                        navigatorParams.component = MyAccountScene;
+                                        navigatorParams.params = {callBack: () => {}};
                                         this.refs.accountmodal.changeShowType(true,
                                             '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
                                             , '去绑卡', '看看再说', () => {
@@ -613,8 +616,9 @@ export default class CarInfoScene extends BaseComponent {
                                             });
 
                                     } else if (lastType == '2') {
-                                        navigatorParams.name = 'WaitActivationAccountScene';
-                                        navigatorParams.component = WaitActivationAccountScene;
+                                        navigatorParams.name = 'MyAccountScene';
+                                        navigatorParams.component = MyAccountScene;
+                                        navigatorParams.params = {callBack: () => {}};
                                         this.refs.accountmodal.changeShowType(true,
                                             '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
                                             , '去激活', '看看再说', () => {

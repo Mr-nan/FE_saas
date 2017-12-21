@@ -24,6 +24,11 @@ export default class sendMmsCountDown extends Component {
         // leftIconShow: PropTypes.bool,
         // inputPlaceholder: PropTypes.string,
         // inputTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+        parentStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+        childStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+        pressParentStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+        pressChildStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+
 
         callBackSms: PropTypes.func,//发送短语验证码
     }
@@ -35,8 +40,8 @@ export default class sendMmsCountDown extends Component {
         return (
             <View>
                 <MyButton buttonType={MyButton.TEXTBUTTON} content={this.state.value}
-                          parentStyle={this.state.countDown ? styles.pressButtonStyle : styles.buttonStyle}
-                          childStyle={this.state.countDown ? styles.pressTextStyle : styles.textStyle}
+                          parentStyle={this.state.countDown ? [styles.pressButtonStyle, this.props.pressParentStyle]: [styles.buttonStyle,this.props.parentStyle]}
+                          childStyle={this.state.countDown ? [styles.pressTextStyle,this.props.pressChildStyle] : [styles.textStyle,this.props.childStyle]}
                           mOnPress={this.onSendPress}/>
             </View>
         );
@@ -47,7 +52,7 @@ export default class sendMmsCountDown extends Component {
         this.newTime = (new Date()).valueOf();
         if ((this.newTime - this.oldTime) > 2000) {
             this.oldTime = this.newTime;
-            if (this.countTime == TIME) {
+            if (this.countTime === TIME) {
                 this.props.callBackSms();
             }
         }
@@ -55,7 +60,7 @@ export default class sendMmsCountDown extends Component {
 
     //开始计算操作
     StartCountDown = () => {
-        if (!this.state.countDown && this.timer == null) {
+        if (!this.state.countDown && this.timer === null) {
             this.timer = setInterval(() => {
                 if (this.countTime <= 0) {
                     this.setState({
@@ -75,7 +80,7 @@ export default class sendMmsCountDown extends Component {
 
     //结束计算操作
     endCountDown = () => {
-        if (this.timer != null) {
+        if (this.timer !== null) {
             clearInterval(this.timer);
             this.timer = null;
         }
@@ -83,7 +88,7 @@ export default class sendMmsCountDown extends Component {
     }
 
     componentWillUnmount() {
-        if (this.timer != null) {
+        if (this.timer !== null) {
             clearInterval(this.timer);
             this.timer = null;
         }
@@ -101,7 +106,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(32),
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 1,
+
         borderColor: FontAndColor.COLORB0,
     },
     textStyle: {
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(32),
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 1,
+
         borderColor: FontAndColor.COLORA1,
     },
     pressTextStyle: {

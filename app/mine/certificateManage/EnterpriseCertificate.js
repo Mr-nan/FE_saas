@@ -290,10 +290,6 @@ export default class EnterpriseCertificate extends BaseComponent {
 			this._showHint('请填写注册人姓名');
 			return;
 		}
-		if (this.enterpriseData.zhuceren_name.length < 2 || this.enterpriseData.zhuceren_name.length > 5) {
-			this._showHint('请填写有效的注册人姓名');
-			return;
-		}
 		if (this.isEmpty(this.enterpriseData.zhuceren_IDNo) === true) {
 			this._showHint('请填写注册人身份证号');
 			return;

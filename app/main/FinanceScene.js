@@ -60,6 +60,7 @@ import ReceiptInfoScene from '../finance/page/ReceiptInfoScene';
 import AccountTypeSelectScene from '../mine/accountManage/AccountTypeSelectScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import BindCardScene from '../mine/accountManage/BindCardScene'
+import MyAccountScene from "../mine/accountManage/MyAccountScene";
 let firstType = '-1';
 let lastType = '-1';
 
@@ -235,12 +236,30 @@ export default class FinanceSence extends BaseComponet {
             }
         });
     }
+
+    /**
+     *   更新 lastType;
+     **/
+    updateType = (newLastType) => {
+        lastType = newLastType;
+        //firstType = newLastType;
+        //console.log('firstType=======',firstType);
+    };
+
     /**
      * from @zhaojian
      *
      * 判定账户开户绑卡激活跳转
      **/
     toPage = () => {
+        this.navigatorParams.name = 'MyAccountScene';
+        this.navigatorParams.component = MyAccountScene;
+        this.navigatorParams.params = {callBack: this.updateType};
+        this.refs.accountmodal.changeShowType(false);
+        //firstType = lastType;
+        this.props.callBack(this.navigatorParams);
+    };
+/*    toPage = () => {
         if (lastType == '0') {
             this.props.callBack({
                 name: 'AccountTypeSelectScene',
@@ -266,7 +285,7 @@ export default class FinanceSence extends BaseComponet {
                 }
             });
         }
-    }
+    }*/
 
     componentDidUpdate() {
 
