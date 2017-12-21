@@ -38,6 +38,8 @@ import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailS
 import CarMyListScene from "./CarMyListScene";
 import GetPermissionUtil from '../utils/GetRoleUtil';
 import MyAccountScene from "../mine/accountManage/MyAccountScene";
+import ExplainModal from "../mine/myOrder/component/ExplainModal";
+
 let Platform = require('Platform');
 let getRole = new GetPermissionUtil();
 const Pixel = new PixelUtil();

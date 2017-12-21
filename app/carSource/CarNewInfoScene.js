@@ -42,7 +42,7 @@ import CarCell from './znComponent/CarCell';
 let Platform = require('Platform');
 let getRole = new GetPermissionUtil();
 const Pixel = new PixelUtil();
-
+import ExplainModal from "../mine/myOrder/component/ExplainModal";
 import  StringTransformUtil from  "../utils/StringTransformUtil";
 let stringTransform = new StringTransformUtil();
 import {request} from "../utils/RequestUtil";
@@ -148,7 +148,6 @@ export default class CarNewInfoScene extends BaseComponent {
             this.loadCarResidualsData(carData);
             this.loadCarConfigurationData(carData);
             this.loadCarDetailData(carData);
-            console.log('=====================',carData.imgs);
             if (carData.imgs.length <= 0) {
 
                 carData.imgs = [{require: require('../../images/carSourceImages/car_info_null.png')}];
@@ -442,10 +441,10 @@ export default class CarNewInfoScene extends BaseComponent {
                     this.CallView = ref
                 }}/>
                 <AccountModal ref="accountmodal"/>
-                {/*<ExplainModal ref={(text) => this.expModal = text} title='说明' buttonStyle={styles.expButton}
-                 textStyle={styles.expText}
-                 text='知道了'
-                 content='此质押车暂不可下单请您稍待时日再订购'/>*/}
+                <ExplainModal ref={(text) => this.expModal = text} title='说明' buttonStyle={styles.expButton}
+                              textStyle={styles.expText}
+                              text='知道了'
+                              content='此质押车暂不可下单请您稍待时日再订购'/>
             </View>
 
         )
@@ -554,9 +553,13 @@ export default class CarNewInfoScene extends BaseComponent {
             }
 
         }, (error) => {
-
-            this.props.showModal(false);
-            this.props.showToast(error.mjson.msg);
+            if (error.mjson.code == '6350133') {
+                this.props.showModal(false);
+                this.expModal.changeShowType(true, '提示', '车辆已售出请查看其它车源', '确定');
+            } else {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+            }
         });
     }
 
