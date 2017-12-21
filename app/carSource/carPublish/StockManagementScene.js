@@ -75,7 +75,8 @@ export default class StockManagementScene extends BaseComponent {
                 purchase_price: this.props.carData.purchase_price,
                 status: this.props.carData.status,
                 vin: this.props.carData.vin,
-                model_name: this.props.carData.model_name
+                model_name: this.props.carData.model_name,
+                model_id: this.props.carData.model_id
             };
             this.carData.id = this.props.dataID;
             this.carData.auto_pid = this.props.carData.svi_id;
@@ -88,7 +89,8 @@ export default class StockManagementScene extends BaseComponent {
                 pictures: this.props.carData.imgs,
                 purchase_price: this.props.carData.purchase_price,
                 status: this.props.carData.status,
-                model_name: this.props.carData.model_name
+                model_name: this.props.carData.model_name,
+                model_id: this.props.carData.model_id
             };
         }
         this.titleData1 = [
@@ -440,6 +442,7 @@ export default class StockManagementScene extends BaseComponent {
         this.carData.auto_pid = carData.id;
         this.carData.car_color = carData.car_color;
         this.carData.model_name = carData.model_name;
+        this.carData.model_id = carData.model_id;
         this.titleData1[0][0].value = this.carData.model_name+'  '+this.carData.car_color.split("|")[0];
         this.upTitleData();
 
@@ -459,9 +462,9 @@ export default class StockManagementScene extends BaseComponent {
         }
 
         if(!this.props.dataID){
-            console.log('============',this.currentModelName,'============',this.carData.model_name);
+            console.log('============',this.currentModelName,'============',this.carData.model_id);
             if(this.currentModelName){
-                if(this.currentModelName!=this.carData.model_name){
+                if(this.currentModelName!=this.carData.model_id){
                     this.props.showToast('该车架号所匹配出的车型与所选车型不一致');
                     return;
                 }
@@ -551,7 +554,7 @@ export default class StockManagementScene extends BaseComponent {
 
             this.titleData1[0][3].value = this.modelData[index].model_year + '-06-01';
             this.carData['manufacture'] = this.modelData[index].model_year + '-06-01';
-            this.currentModelName  = this.modelData[index].model_name;
+            this.currentModelName  = this.modelData[index].model_id;
             this.upTitleData();
         }
 
@@ -578,7 +581,7 @@ export default class StockManagementScene extends BaseComponent {
 
                                         this.titleData1[0][3].value = rd[0].model_year + '-06-01';
                                         this.carData['manufacture'] = rd[0].model_year + '-06-01';
-                                        this.currentModelName = rd[0].model_name;
+                                        this.currentModelName = rd[0].model_id;
 
                                     } else if (rd.length > 1) {
 
