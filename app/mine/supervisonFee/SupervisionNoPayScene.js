@@ -289,7 +289,7 @@ export default class SupervisionNoPayScene extends BaseComponent {
                                     marginHorizontal: Pixel.getPixel(10)
                                 }}>待付合计:</Text>
                             <Text style={{color: '#FA5C48', fontSize: 18, flex: 1}}>{'￥' + this.payFee}</Text>
-                            <TouchableOpacity activeOpacity={0.8} style={{
+                            <TouchableOpacity activeOpacity={0.8} style={[{
                                 width: Pixel.getPixel(80),
                                 height: Pixel.getPixel(38),
                                 alignItems: 'center',
@@ -297,7 +297,7 @@ export default class SupervisionNoPayScene extends BaseComponent {
                                 backgroundColor: '#69dcda',
                                 borderRadius: 4,
                                 marginRight: Pixel.getPixel(10)
-                            }} onPress={() => {
+                            },this.state.isVisible?{backgroundColor:fontAndColor.COLORA1}:{}]} onPress={() => {this.state.isVisible? null:
                                 this.toNextPage({
                                     name: 'CheckStand',
                                     component: CheckStand,
