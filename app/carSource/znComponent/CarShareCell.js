@@ -18,6 +18,8 @@ var screenWidth = Dimensions.get('window').width;
 import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil';
 let     Pixel = new PixelUtil();
+import  StringTransformUtil from  "../../utils/StringTransformUtil";
+let stringTransform = new StringTransformUtil();
 
 export default class CarShareCell extends Component {
 
@@ -56,22 +58,6 @@ export default class CarShareCell extends Component {
         }
     };
 
-    dateReversal = (time,isDay) => {
-
-        const date = new Date();
-        date.setTime(time);
-        if(isDay){
-            return (date.getFullYear() + '-' + (this.PrefixInteger(date.getMonth() + 1, 2))+'-'+(this.PrefixInteger(date.getDate(), 2)));
-
-        }
-        return (date.getFullYear() + '-' + (this.PrefixInteger(date.getMonth() + 1, 2)));
-
-    };
-    PrefixInteger = (num, length) => {
-
-        return (Array(length).join('0') + num).slice(-length);
-
-    }
 
     render(){
         const {carCellData,index,cellSelectBtnclick} = this.props;
@@ -83,7 +69,7 @@ export default class CarShareCell extends Component {
                     <View style={styles.cellHeadView}>
                         <Text allowFontScaling={false} style={styles.mainText}>{carCellData.serial_num}</Text>
                         <Text allowFontScaling={false} style={{color:fontAndColor.COLORA1,
-                            fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT)}}>{this.dateReversal(carCellData.public_time+'000',true)}上架</Text>
+                            fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT)}}>{stringTransform.dateReversal(carCellData.public_time+'000',true)}上架</Text>
                     </View>
                     <TouchableOpacity onPress={()=>{this.cellClick(carCellData)}}>
                         <View style={styles.cellContentView}>
@@ -98,8 +84,8 @@ export default class CarShareCell extends Component {
                             <View style={[styles.textContainer]}>
                                 <View style={{backgroundColor:'white'}}>
                                     <Text allowFontScaling={false} numberOfLines={1}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
-                                    <Text allowFontScaling={false}  style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000',false)+'初登 | '+carCellData.mileage+'万公里'}</Text>
-                                    <Text allowFontScaling={false}  style={styles.subTitleText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>
+                                    <Text allowFontScaling={false}  style={styles.subTitleText}>{stringTransform.dateReversal(carCellData.manufacture+'000',false)+'初登 | '+carCellData.mileage+'万公里'}</Text>
+                                    <Text allowFontScaling={false}  style={styles.subTitleText}>{carCellData.dealer_price>0?(stringTransform.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>
                                 </View>
                                 <View/>
                                 {/*<Text allowFontScaling={false}  style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>*/}
@@ -126,11 +112,11 @@ export default class CarShareCell extends Component {
                                     <View style={{flexDirection:'row',alignItems:'center'}}>
                                         {
                                             carCellData.sale_time &&(
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售出:{this.dateReversal(carCellData.sale_time+'000',true)}</Text>)
+                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售出:{stringTransform.dateReversal(carCellData.sale_time+'000',true)}</Text>)
                                         }
                                         {
                                             carCellData.current_rate &&(
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售价:{this.carMoneyChange(carCellData.current_rate)}万元</Text>
+                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售价:{stringTransform.carMoneyChange(carCellData.current_rate)}万元</Text>
                                             )
                                         }
                                     </View>
@@ -142,29 +128,6 @@ export default class CarShareCell extends Component {
                 </View>
             </TouchableOpacity>
         )
-    }
-
-    carMoneyChange=(carMoney)=>{
-
-        let newCarMoney = parseFloat(carMoney);
-        let carMoneyStr = newCarMoney.toFixed(2);
-        let moneyArray = carMoneyStr.split(".");
-
-        if(moneyArray.length>1)
-        {
-            if(moneyArray[1]>0){
-
-                return moneyArray[0]+'.'+moneyArray[1];
-
-            }else {
-
-                return moneyArray[0];
-            }
-
-        }else {
-            return carMoneyStr;
-        }
-
     }
 }
 

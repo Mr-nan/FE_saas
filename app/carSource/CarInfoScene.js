@@ -20,7 +20,6 @@ import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/CarNavigationView';
 import AllNavigationView from '../component/AllNavigationView';
 import Gallery from 'react-native-gallery';
-import {CarDeploySwitchoverButton, CarConfigurationView}   from './znComponent/CarInfoAllComponent';
 import CarZoomImageScene from './CarZoomImagScene';
 import CarUpkeepScene from './CarUpkeepScene';
 import AutoConfig from  '../publish/AutoConfig';
@@ -36,17 +35,19 @@ import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import BindCardScene from '../mine/accountManage/BindCardScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailScene";
-import ExplainModal from "../mine/myOrder/component/ExplainModal";
 import CarMyListScene from "./CarMyListScene";
 import GetPermissionUtil from '../utils/GetRoleUtil';
 import MyAccountScene from "../mine/accountManage/MyAccountScene";
+import ExplainModal from "../mine/myOrder/component/ExplainModal";
+
 let Platform = require('Platform');
 let getRole = new GetPermissionUtil();
 const Pixel = new PixelUtil();
-
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 
+import  StringTransformUtil from  "../utils/StringTransformUtil";
+let stringTransform = new StringTransformUtil();
 var ScreenWidth = Dimensions.get('window').width;
 let resolveAssetSource = require('resolveAssetSource');
 const IS_ANDROID = Platform.OS === 'android';
@@ -102,7 +103,6 @@ const carIconsData = [
 ];
 
 let carConfigurationData = [];
-let carImageArray = [];
 
 export default class CarInfoScene extends BaseComponent {
 
@@ -126,7 +126,6 @@ export default class CarInfoScene extends BaseComponent {
         this.isUserBoss = false;
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-            console.log(data);
             if (data.code == 1 && data.result != '') {
                 let enters = JSON.parse(data.result);
                 for (let item of enters.enterprise_list[0].role_type){
@@ -137,7 +136,6 @@ export default class CarInfoScene extends BaseComponent {
                 }
             }
             getRole.getRoleList((data)=>{
-                console.log(data);
                 this.roleList = data;
                 this.loadData();
             });
@@ -195,9 +193,9 @@ export default class CarInfoScene extends BaseComponent {
             let carData = response.mjson.data;
             this.loadCarResidualsData(carData);
             carData.carIconsContentData = [
-                carData.manufacture != '' ? this.dateReversal(carData.manufacture + '000') : '',
-                carData.init_reg != '' ? this.dateReversal(carData.init_reg + '000') : '',
-                carData.mileage > 0 ? this.carMoneyChange(carData.mileage) + '万公里' : '',
+                carData.manufacture != '' ? stringTransform.dateReversal(carData.manufacture + '000') : '',
+                carData.init_reg != '' ? stringTransform.dateReversal(carData.init_reg + '000') : '',
+                carData.mileage > 0 ? stringTransform.carMoneyChange(carData.mileage) + '万公里' : '',
                 carData.transfer_times + '次',
                 carData.nature_str,
                 carData.car_color.split("|")[0] + '/' + carData.trim_color.split("|")[0],
@@ -234,7 +232,7 @@ export default class CarInfoScene extends BaseComponent {
             id: this.props.carID,
             mile: carData.mileage,
             modelId: carData.model_id,
-            regDate: this.dateReversal(carData.init_reg + '000'),
+            regDate: stringTransform.dateReversal(carData.init_reg + '000'),
             zone: carData.city_id,
 
         }).then((response) => {
@@ -283,12 +281,14 @@ export default class CarInfoScene extends BaseComponent {
                         renderPageIndicator={(index) => {
                             return (
                                 <View style={styles.imageFootView}>
+                                    {/*<View style={styles.carAgeView}>*/}
+                                        {/*<Text allowFontScaling={false} */}
+                                            {/*style={styles.carAgeText}>{carData.v_type == 1 ? '车龄 ' + carData.init_coty : carData.v_type_str}</Text>*/}
+                                    {/*</View>*/}
                                     <View style={styles.carAgeView}>
-                                        <Text allowFontScaling={false} 
-                                            style={styles.carAgeText}>{carData.v_type == 1 ? '车龄 ' + carData.init_coty : carData.v_type_str}</Text>
+                                        <Text allowFontScaling={false}
+                                              style={styles.imageIndexText}>{this.state.currentImageIndex + '/' + this.state.carData.imgs.length}</Text>
                                     </View>
-                                    <Text allowFontScaling={false} 
-                                        style={styles.imageIndexText}>{this.state.currentImageIndex + '/' + this.state.carData.imgs.length}</Text>
                                 </View>
                             )
                         }}
@@ -308,7 +308,7 @@ export default class CarInfoScene extends BaseComponent {
                                         carData.dealer_price > 0 && (
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                 <Text allowFontScaling={false} 
-                                                    style={styles.priceText}>{this.carMoneyChange(carData.dealer_price) + '万'}</Text>
+                                                    style={styles.priceText}>{stringTransform.carMoneyChange(carData.dealer_price) + '万'}</Text>
                                                 {
                                                     (carData.city_id != '0' && carData.model_id != '0' && carData.city_id != '' && carData.model_id != '') &&
                                                     <TouchableOpacity
@@ -549,18 +549,6 @@ export default class CarInfoScene extends BaseComponent {
         )
     }
 
-    dateReversal = (time) => {
-
-        const date = new Date();
-        date.setTime(time);
-        return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2)));
-
-    };
-    PrefixInteger = (num, length) => {
-
-        return (Array(length).join('0') + num).slice(-length);
-
-    }
 
     backIconClick = () => {
 
@@ -580,8 +568,11 @@ export default class CarInfoScene extends BaseComponent {
                         enter_base_ids: datas.company_base_id,
                         child_type: '1'
                     };
+
+                    this.props.showModal(true);
                     request(AppUrls.USER_ACCOUNT_INFO, 'Post', maps)
                         .then((response) => {
+                                this.props.showModal(false);
                                 if (response.mjson.data.account.length == 0) {
                                     this.props.showToast('请您先开通平台账户');
                                 } else {
@@ -772,7 +763,7 @@ export default class CarInfoScene extends BaseComponent {
                 city_id: carData.city_id,
                 mileage: carData.mileage,
                 model_id: carData.model_id,
-                init_reg: this.dateReversal(carData.init_reg + '000'),
+                init_reg: stringTransform.dateReversal(carData.init_reg + '000'),
                 from: 'CarInfoScene'
             }
         }
@@ -883,30 +874,6 @@ export default class CarInfoScene extends BaseComponent {
         );
     }
 
-    carMoneyChange = (carMoney) => {
-
-        let newCarMoney = parseFloat(carMoney);
-        let carMoneyStr = newCarMoney.toFixed(2);
-        let moneyArray = carMoneyStr.split(".");
-
-        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
-
-        if (moneyArray.length > 1) {
-            if (moneyArray[1] > 0) {
-
-                return moneyArray[0] + '.' + moneyArray[1];
-
-            } else {
-
-                return moneyArray[0];
-            }
-
-        } else {
-            return carMoneyStr;
-        }
-
-
-    }
 
 }
 

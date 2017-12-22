@@ -252,5 +252,6 @@ const styles = StyleSheet.create({
     listView: {
         backgroundColor: fontAndColor.COLORA3,
         marginTop: Pixel.getPixel(5),
+        marginBottom:Pixel.getPixel(44)
     }
 });

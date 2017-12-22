@@ -151,7 +151,7 @@ export  default class FlowAllPage extends BaseComponent {
         return (
             <ListView
                 removeClippedSubviews={false}
-                style={{marginTop:Pixel.getPixel(1),backgroundColor: fontAndColor.COLORA3, flex: 1}}
+                style={{marginTop:Pixel.getPixel(0),backgroundColor: fontAndColor.COLORA3, flex: 1}}
                 dataSource={this.state.source}
                 renderRow={this._renderRow}
                 renderSeparator={this._renderSeparator}

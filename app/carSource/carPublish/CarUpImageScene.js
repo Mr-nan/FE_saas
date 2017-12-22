@@ -134,6 +134,23 @@ export default class CarUpImageScene extends BaseComponent{
           this.titleData = [];
           this.results = [];
           this.carData = this.props.carData;
+
+          for(let carImageObject of this.props.carConfigurationData.used_car_pic){
+              carImageObject['imgArray'] = [];
+              if(carImageObject.title == '权属声明/买卖协议'){
+
+                  if(this.carData.registrant_actual == 0)
+                  {
+                      this.titleData.push(carImageObject);
+                  }
+
+              }else {
+                  this.titleData.push(carImageObject);
+              }
+          }
+
+          /*===========之前的逻辑============================*/
+          /*
           if(this.carData.v_type==1){
 
               for(let carImageObject of this.props.carConfigurationData.used_car_pic){
@@ -161,11 +178,11 @@ export default class CarUpImageScene extends BaseComponent{
           } else if(this.carData.v_type==3){
 
               for(let carImageObject of this.props.carConfigurationData.imported_car_pic){
-                  carImageObject.explain = 0;
                   carImageObject['imgArray'] = [];
                   this.titleData.push(carImageObject);
               }
           }
+          */
 
 
           if(this.carData.pictures){
@@ -293,7 +310,7 @@ export default class CarUpImageScene extends BaseComponent{
                 }
             }
         }
-        if(errorTitle!='' && this.carData.v_type!=3)
+        if(errorTitle!='')
         {
             this.props.showModal(false);
             this.props.showToast('请上传'+errorTitle+'图片');
@@ -315,14 +332,20 @@ export default class CarUpImageScene extends BaseComponent{
                 if(this.carData.show_shop_id){
                     StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
                 }
-                if(IS_ANDROID === true){
-                    this.successModal.openModal();
+
+                if(this.props.carUserNumberListLoadAction){
+                    this.navigationBack();
                 }else {
-                    this.timer = setTimeout(
-                        () => { this.successModal.openModal(); },
-                        500
-                    );
+                    if(IS_ANDROID === true){
+                        this.successModal.openModal();
+                    }else {
+                        this.timer = setTimeout(
+                            () => { this.successModal.openModal(); },
+                            500
+                        );
+                    }
                 }
+
             }else {
                 this.showToast('网络连接失败');
 
@@ -352,6 +375,20 @@ export default class CarUpImageScene extends BaseComponent{
                 this.showToast(error.mjson.msg);
             }
         });
+    }
+
+    navigationBack=()=>{
+        const navigator = this.props.navigator;
+        if (navigator) {
+            for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                if (navigator.getCurrentRoutes()[i].name == 'CarNumberScene')
+                {
+                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                    this.props.carUserNumberListLoadAction && this.props.carUserNumberListLoadAction();
+                    break;
+                }
+            }
+        }
     }
 
     showToast=(errorMsg)=>{

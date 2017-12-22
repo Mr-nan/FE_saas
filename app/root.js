@@ -8,7 +8,9 @@ import {
     Text,
     Platform,
     Alert,
-    AppState
+    AppState,
+    NetInfo,
+
 } from 'react-native';
 
 import MyNavigator  from './component/MyNavigator';
@@ -19,14 +21,16 @@ import * as weChat from 'react-native-wechat';
 
 export default class root extends Component {
 
+
+
     render() {
         return (
             <View style={{flex:1,backgroundColor:fontAndColor.COLORA3}}>
+                <StatusBar barStyle="light-content"/>
                 <MyNavigator showToast={(content)=>{
                     this.showToast(content)
                 }} showModal={(value)=>{this.showModal(value)}}/>
                 <ShowToast ref='toast' msg={''}></ShowToast>
-
             </View>
         );
     }
@@ -39,6 +43,18 @@ export default class root extends Component {
         global.phoneModel = this.props.phoneModel;
         global.appVersion = this.props.appVersion;
 
+        NetInfo.addEventListener('change',this.handleConnectionInfoChange);
+
+    }
+
+    componentWillUnMount() {
+        NetInfo.removeEventListener('change',this.handleConnectionInfoChange);
+    }
+
+    handleConnectionInfoChange(connectionInfo) {
+        if(connectionInfo=='none'){
+            this.showToast('当前网络状态不太好，请检测网络');
+        }
     }
 
 

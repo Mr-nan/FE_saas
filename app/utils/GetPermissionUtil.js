@@ -2,6 +2,7 @@ import React from 'react';
 import {
     PixelRatio,
     Platform,
+    DeviceEventEmitter,
 } from 'react-native';
 import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
 import KeepCustomerManageScene from "../crm/KeepCustomer/KeepCustomerManageScene";
@@ -10,7 +11,9 @@ import DailyReminderScene from "../message/dailyReminder/DailyReminderScene";
 import HeadLineListScene from "../message/headLine/HeadLineListScene";
 import Setting from "../mine/setting/Setting";
 import CarMySourceScene from "../carSource/CarMySourceScene";
+import CarNumberScene   from '../carSource/CarNumberScene';
 import CarPublishFirstScene from "../carSource/carPublish/CarPublishFirstScene";
+import NewCarPublishFirstScene from "../carSource/carPublish/NewCarPublishFirstScene";
 import CarTrimScene from "../carSource/carBuy/CarTrimScene";
 import CarBuyScene from "../carSource/carBuy/CarBuyScene";
 import CollectionIntent from "../collectionIntent/CollectionIntent";
@@ -110,21 +113,22 @@ const GetPermissionUtil = React.createClass({
         let names = '';
         let component = {};
         let componentName = '';
+        let pushAction =()=>{};
         if (id == 30) {
             image = require('../../images/workbench/fc.png');
             names = name;
-            component = CarPublishFirstScene;
-            componentName = 'carpublishfirstscene';
+            component = NewCarPublishFirstScene;
+            componentName = 'NewCarPublishFirstScene';
         } else if (id == 31 || id == 32 || id == 33 || id == 34 || id == 35) {
             image = require('../../images/workbench/zb.png');
             names = '二手车整备';
             component = CarTrimScene;
             componentName = 'CarTrimScene';
         } else if (id == 29) {
-            image = require('../../images/workbench/kcgl.png');
+            image = require('../../images/workbench/carNumber.png');
             names = name;
-            component = CarMySourceScene;
-            componentName = 'carmysourcescene';
+            component = CarNumberScene;
+            componentName = 'CarNumberScene';
         } else if (id == 36) {
             image = require('../../images/workbench/sc.png');
             names = name;
@@ -190,8 +194,30 @@ const GetPermissionUtil = React.createClass({
             names = name;
             component = YaoQingDeHaoLi;
             componentName = 'yaoqingdehaoli';
+        }else if(id == 62){
+            image = require('../../images/workbench/fUserCar.png');
+            names = name;
+            component = CarPublishFirstScene;
+            componentName = 'CarPublishFirstScene';
+        }else if(id == 63){
+            image = require('../../images/workbench/sNewCar.png');
+            names = name;
+            pushAction=()=>{
+                DeviceEventEmitter.emit('pushNewCarListScene');
+            }
+        }else if(id == 64){
+            image = require('../../images/workbench/sUserCar.png');
+            names = name;
+            pushAction=()=>{
+                DeviceEventEmitter.emit('pushUserCarListScene');
+            }
+        }else if(id == 65){
+            image = require('../../images/workbench/kcgl.png');
+            names = name;
+            component = CarMySourceScene;
+            componentName = 'CarMySourceScene';
         }
-        return {name: names, id: id, image: image, component: component, componentName: componentName}
+        return {name: names, id: id, image: image, component: component, componentName: componentName ,pushAction:pushAction}
     }, removal(array){
         let r = [];
         for (let i = 0, l = array.length; i < l; i++) {

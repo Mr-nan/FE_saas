@@ -83,6 +83,7 @@ export default class CollectionIntent extends BaseComponent {
                 mileages: mileArr.toString(),
                 cities:citiesArray.toString(),
                 provs:provsArray.toString(),
+                debug:1
 
 
             }).then((response) => {

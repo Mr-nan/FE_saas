@@ -1,5 +1,5 @@
-export const VERSON_NAME = "4.5.0"; // 版本名
-export const VERSON_CODE = "28"; // 版本号
+export const VERSON_NAME = "4.6.0"; // 版本名
+export const VERSON_CODE = "29"; // 版本号
 export const ISLOGIN = "islogin";//标识用户是否登录
 export const CAR_SEARCH = "car_search";
 export const CITY_SEARCH = "city_search";
@@ -25,7 +25,9 @@ export const NEED_GESTURE = "need_gesture"; //	是否需要手势解锁
 /* userinfo end */
 export const NEED_OPENBRAND = "need_openbrand"; //	需要打开车型列表
 export const NEED_CHECK_NEW_CAR = "checkNewCar";        // 选择新车列表
-export const NEED_CHECK_RECOMMEND = "checkRecommend";   // 取消推荐车源
+export const NEED_CHECK_USER_CAR = "checkUserCar";        // 选择二手车列表
+export const NEED_USER_CHECK_RECOMMEND = "userCarcheckRecommend";   // 取消二手车推荐车源
+export const NEED_NEW_CHECK_RECOMMEND = "newCarcheckRecommend";   // 取消新车推荐车源
 export const NEED_TOAST_ERROR = "need_toast_error";   // 登录界面是否需要弹出异常提示
 /* message start*/
 export const ADVERTISEMENT_LAST_MESSAGE_TIME = "advertisement_last_message_time"; //车市头条数据库中缓存的最近一条数据的时间

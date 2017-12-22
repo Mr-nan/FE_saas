@@ -9,7 +9,7 @@ import {
     BackAndroid,
     InteractionManager,
     Text,
-    AppState
+    AppState,
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -30,7 +30,7 @@ import codePush from 'react-native-code-push'
 import SQLiteUtil from "../utils/SQLiteUtil";
 import PromotionScene from "./PromotionScene";
 const SQLite = new SQLiteUtil();
-const versionCode = 28.0;
+const versionCode = 29.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';

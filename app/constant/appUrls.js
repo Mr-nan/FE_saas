@@ -8,6 +8,7 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
  */
 //export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
+
 /**
  * 测试地址2
  */
@@ -17,6 +18,7 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
  * 正式地址
  */
 //export const BASEURL = 'https://gatewayapi.dycd.com/';
+
 
 /**
  * 预发布地址
@@ -39,14 +41,24 @@ export const V = "v1/";
 // export const V3 = "v3/";
 
 /**
- * 分享测试地址
+ *  分享二手车测试地址
  */
 export const FENXIANGTEST = 'http://test.bms.dycd.com/platform/car_detail.html';
 
 /**
- * 分享正式地址
+ * 分享二手正式地址
  */
 export const FENXIANGOPEN = 'http://m.dycd.com/platform/car_detail.html';
+
+/**
+ *  分享新手车测试地址
+ */
+export const CAR_NEW_SHARE_TEST = 'http://test.bms.dycd.com/platform/car_detail_share.html';
+
+/**
+ * 分享新手正式地址
+ */
+export const CAR_NEW_SHARE_OPEN = 'http://m.dycd.com/platform/car_detail_share.html';
 
 
 /**
@@ -111,9 +123,20 @@ export const CAR_HiSTORY = BASEURL + V + 'car/searchHistory';
 export const CAR_SEARCH_TOP = BASEURL + V + 'car/searchTop';
 
 /**
- * 获取车辆详情
+ * 二手车辆详情
  */
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
+
+/**
+ * 新车详情推荐
+ */
+export const CAR_DETAIL_RELATION = BASEURL + V + 'car/detailRelation';
+
+
+/**
+ * 创建、修改库存
+ */
+export const CAR_STOCK_SAVE = BASEURL + V + 'car.stock/save';
 
 
 /**
@@ -162,6 +185,21 @@ export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
 export const CAR_USER_CAR = BASEURL + V + 'user/car';
 
 /**
+ * 获取库存车辆列表
+ */
+export const CAR_STOCK_LIST = BASEURL + V + 'car.stock/lists';
+
+/**
+ * 库存车辆出库
+ */
+export const CAR_STOCK_SOLD_OUT = BASEURL + V + 'car.stock/soldOut';
+
+/**
+ * 修改库存数量和价格
+ */
+export const CAR_MODIFY_QUANTITY_ORICE = BASEURL + V + 'car/modify_quantity_price';
+
+/**
  * 我的车源-已上架/下架-操作
  */
 export const CAR_STATUS = BASEURL + V + 'car/status';
@@ -180,6 +218,7 @@ export const CAR_DELETE = BASEURL + V + 'car/delete';
  * 我的车源-已售操作
  */
 export const CAR_SALE = BASEURL + V + 'car/sale';
+
 
 // /**
 //  * 我的车源-创建已售消息

@@ -50,15 +50,11 @@
 #ifdef DEBUG
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 #else
-
-
-
     jsCodeLocation = [CodePush bundleURL];
 #endif
   NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
   NSString  *idfaStr = [[ASIdentifierManager sharedManager]advertisingIdentifier].UUIDString;
   NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
-  
   NSString *appVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
   
@@ -67,7 +63,8 @@
                                                initialProperties:@{@"IDFA":idfaStr,
                                                                    @"phoneVersion":phoneVersion,
                                                                    @"phoneModel":[self getPhoneModel],
-                                                                   @"appVersion":appVersion}
+                                                                   @"appVersion":appVersion,
+                                                                   }
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
@@ -85,6 +82,8 @@
   struct utsname systemInfo;
   uname(&systemInfo);
   NSString  *deviceString = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+  if ([deviceString isEqualToString:@"iPhone10,1"])    return @"iPhone 8 Plus";
+  if ([deviceString isEqualToString:@"iPhone10,2"])    return @"iPhone 8";
   if ([deviceString isEqualToString:@"iPhone9,1"])    return @"iPhone 7 Plus";
   if ([deviceString isEqualToString:@"iPhone9,2"])    return @"iPhone 7";
   if ([deviceString isEqualToString:@"iPhone3,1"])    return @"iPhone 4";
@@ -102,8 +101,13 @@
   if ([deviceString isEqualToString:@"iPhone8,1"])    return @"iPhone 6s";
   if ([deviceString isEqualToString:@"iPhone8,2"])    return @"iPhone 6s Plus";
   if ([deviceString isEqualToString:@"iPhone8,4"])    return @"iPhone SE";
-  
   return deviceString;
+}
+
+-(NSString *)checkNetworkPermission{
+  CTCellularData *cellularData = [[CTCellularData alloc]init];
+  CTCellularDataRestrictedState state = cellularData.restrictedState;
+  return [NSString stringWithFormat:@"%lu",(unsigned long)state];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation

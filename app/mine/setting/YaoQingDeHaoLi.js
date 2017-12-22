@@ -137,9 +137,15 @@ export default class YaoQingDeHaoLi extends BaseComponent {
                         domStorageEnabled={true}
                         scalesPageToFit={false}
                         onLoadStart={()=>{
-                        {/*this.refs.webviewtitle.firstProgress();*/}
+                            this.setState({
+                                loading: true,
+                            });
                     }}
-                        onLoadEnd={()=>{
+                        onLoadEnd={
+                            ()=>{
+                            this.setState({
+                                loading: false,
+                            });
                          {/*this.refs.webviewtitle.lastProgress();*/}
                     }}
                         onNavigationStateChange={this.onNavigationStateChange.bind(this)}
@@ -163,6 +169,7 @@ export default class YaoQingDeHaoLi extends BaseComponent {
                 </View>
                 <View style={{flex: 1}}/>
                 <SharedView ref="sharedView" carData={this.state.carData}/>
+                {this.loadingView()}
             </View>
         );
     }
