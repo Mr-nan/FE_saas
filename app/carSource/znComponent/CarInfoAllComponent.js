@@ -78,14 +78,19 @@ export class CarConfigurationView extends BaseComponent{
             sectionHeaderHasChanged:(s1,s2) => s1!==s2,
         });
 
-
-
         // 初始状态
         this.state = {
             renderPlaceholderOnly: this.props.carConfigurationData.length>0?'success':'blank',
             dataSource:dataSource,
         };
       }
+
+    componentDidMount() {
+        //InteractionManager.runAfterInteractions(() => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.initFinish();
+        // });
+    }
 
       initFinish=()=>{
 
@@ -96,6 +101,7 @@ export class CarConfigurationView extends BaseComponent{
           }
 
       }
+
 
       loadData=()=>{
 
@@ -128,6 +134,7 @@ export class CarConfigurationView extends BaseComponent{
       }
 
       setData=(array)=>{
+
           var dataBlob = {}, sectionIDs = [], rowIDs = [], rows = [];
 
           for (var i = 0; i < array.length; i++) {
@@ -166,9 +173,9 @@ export class CarConfigurationView extends BaseComponent{
                 removeClippedSubviews={false}
                 dataSource={this.state.dataSource}
                 renderHeader={()=>{return(
-                    <View style={{paddingHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(10),backgroundColor:'white'}}>
-                        <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.carConfiguraInfo}</Text>
-                    </View>
+                    this.props.carConfiguraInfo?(<View style={{paddingHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(10),backgroundColor:'white'}}>
+                            <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.carConfiguraInfo}</Text>
+                        </View>):(null)
                 )}}
                 renderRow={(rowData, sectionID, rowID)=>{
                 return(<View  style={styles.carConfigurationViewItem}>

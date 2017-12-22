@@ -73,6 +73,23 @@
       "value": "4"
     }
   ],
+  "newCarSequencingDataSource": [
+    {
+      "title": " 上架时间由新到旧 ",
+      "value": "1"
+    },
+    {
+      "title": " 上架时间由旧到新 ",
+      "value": "5"
+    },
+    {
+      "title": " 价格由高到低 ",
+      "value": "8"
+    },{
+      "title": " 价格由低到高 ",
+      "value": "4"
+    }
+  ],
   "carAgeMaxSource": [
     {
       "title": " 1年以内 ",

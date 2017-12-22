@@ -19,6 +19,9 @@ const {width, height} = Dimensions.get('window');
 const Pixel = new PixelUtil();
 import ConsoleUtils from "../utils/ConsoleUtils";
 const Console = new ConsoleUtils();
+
+let dismissKeyboard = require('dismissKeyboard')
+
 export default class BaseComponent extends Component {
     /**
      * from @zhaojian
@@ -48,6 +51,10 @@ export default class BaseComponent extends Component {
 
     initFinish() {
 
+    }
+
+    dismissKeyboard = ()=>{
+        dismissKeyboard();
     }
 
     toNextPage = (mProps) => {
@@ -123,7 +130,7 @@ export default class BaseComponent extends Component {
         if (this.state.renderPlaceholderOnly == 'blank') {
             view = <View/>
         } else if (this.state.renderPlaceholderOnly == 'loading') {
-            view = <View style={{flex: 1, alignItems: 'center'}}>
+            view = <View style={{flex: 1, alignItems: 'center',}}>
                 <Image
                     style={{
                         width: Pixel.getPixel(150),

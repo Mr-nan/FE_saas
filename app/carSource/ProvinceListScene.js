@@ -30,9 +30,10 @@ const provinceData = (require('./carData/carFilterData.json')).provinceSource;
 const SceneWidth = Dimensions.get('window').width;
 
 let selectData={
-    province_name:'',
+
     city_name:'',
     provice_id:0,
+    provice_name:'',
     city_id:0,
 
 };
@@ -41,15 +42,16 @@ let selectData={
 
      componentWillMount() {
          selectData.provice_id = 0;
-         selectData.province_name='';
-	     selectData.city_name='';
-	     selectData.city_id=0;
+         selectData.provice_name = 0;
+         selectData.city_name='';
+         selectData.city_id=0;
      }
 
     // 构造
       constructor(props) {
         super(props);
         // 初始状态
+
 
           this.titleArray = [];
 
@@ -122,7 +124,7 @@ let selectData={
                     }}}/>
                 <ZNListIndexView indexTitleArray={this.titleArray} indexClick={this._indexAndScrollClick}/>
                 {
-                    this.state.isShowCityList && (<CityList ref="cityList" checkedCityClick={this._checkedCityClick} isSelectProvince = {this.props.isSelectProvince} showLoadModel={this.loadModel}/>)
+                    this.state.isShowCityList && (<CityList  isZs = {this.props.isZs} ref="cityList" checkedCityClick={this._checkedCityClick} isSelectProvince = {this.props.isSelectProvince} showLoadModel={this.loadModel}/>)
                 }
                 <AllNavigationView title="城市筛选" backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
         </View>)
@@ -237,7 +239,8 @@ class CityList extends  Component{
       loadData=()=>{
 
         this.props.showLoadModel(true);
-        request(appUrls.GET_PROVINCE,'post',{'prov_id':selectData.provice_id})
+
+        request(this.props.isZs?appUrls.ZS_GET_CITY:appUrls.GET_PROVINCE,'post',this.props.isZs?{province_name:selectData.city_name, payment_type:'ZS'}:{'prov_id':selectData.provice_id})
             .then((response) => {
 
                 this.props.showLoadModel(false);

@@ -113,7 +113,7 @@ export default class CarDealInfoScene extends BaseComponent{
                 businessIf:this.carDealData.insuranceValue,
             }).then((response) => {
                 this.props.showModal(false);
-                this.props.refreshDataAction();
+                this.props.refreshDataAction && this.props.refreshDataAction();
                 this.backPage();
 
             }, (error) => {

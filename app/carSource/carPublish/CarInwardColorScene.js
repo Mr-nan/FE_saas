@@ -113,6 +113,19 @@ export default class CarInwardColorScene extends  BaseComponent{
         // });
 
         this.viewShell = this.props.carInwardColor;
+        let nodeNumber = 4; // 节点数
+        if(this.viewShell){
+            let length = this.viewShell.length;
+            if(length % nodeNumber!==0){
+                let number =(length % nodeNumber);
+                for(let i=0;i<number;i++){
+                    this.viewShell.push({
+                        name:'',
+                        value:''
+                    });
+                }
+            }
+        }
         this.viewShell.map((data,index)=>{
             data.index = index;
             if(data.name == this.props.currentChecked)

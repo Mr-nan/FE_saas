@@ -55,6 +55,7 @@ import ContractScene from "./ContractScene";
 import RepaymentInfoScene from "../../finance/repayment/RepaymentCreditInfoScene";
 import InventoryPlanInfoScene from "../../finance/repayment/InventoryPlanInfoScene";
 import NewPurchaseRepaymentInfoScene from "../../finance/repayment/NewPurchaseRepaymentInfoScene";
+import MyAccountScene from "../accountManage/MyAccountScene";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -189,8 +190,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 '您还未开通资金账户，为方便您使用金融产品及购物车，' +
                                 '请尽快开通！', '去开户', '看看再说', () => {
                                     this.toNextPage({
-                                        name: 'AccountManageScene',
-                                        component: AccountManageScene,
+                                        name: 'MyAccountScene',
+                                        component: MyAccountScene,
                                         params: {
                                             callBack: () => {
                                             }
@@ -202,8 +203,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
                                 , '去绑卡', '看看再说', () => {
                                     this.toNextPage({
-                                        name: 'BindCardScene',
-                                        component: BindCardScene,
+                                        name: 'MyAccountScene',
+                                        component: MyAccountScene,
                                         params: {
                                             callBack: () => {
                                             }
@@ -215,8 +216,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
                                 , '去激活', '看看再说', () => {
                                     this.toNextPage({
-                                        name: 'WaitActivationAccountScene',
-                                        component: WaitActivationAccountScene,
+                                        name: 'MyAccountScene',
+                                        component: MyAccountScene,
                                         params: {
                                             callBack: () => {
                                             }
@@ -401,8 +402,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     } else {
                         this.topState = -1;
                     }
-                    if (status === 17 || status === 19 || status === 20 || status === 21 || status === 22 ||
-                        status === 23 || status === 24 ) {
+                    if (status === 21 && this.orderDetail.prepayment_status == 3) {
+                        this.bottomState = 8;
+                    } else if (status === 17 || status === 19 || status === 20 || status === 21 || status === 22 ||
+                        status === 23 || status === 24) {
                         this.bottomState = -1;
                     } else {
                         this.bottomState = 1;
@@ -454,7 +457,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     } else {
                         this.topState = -1;
                     }
-                    this.bottomState = 7;
+                    if (status === 9 && this.orderDetail.prepayment_status == 3) {
+                        this.bottomState = 8;
+                    } else {
+                        this.bottomState = 7;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 3;
                     this.topState = 0;
@@ -767,6 +774,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                       text='确定' content='订单尾款已结清联系客服取消订单'/>
                     </View>
                 )
+                break;
+            case 8:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <Text allowFontScaling={false} style={{
+                            textAlign: 'center',
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORB0
+                        }}>
+                            交易暂停，请撤销或完成发起的提前还款，之后可继续交易。如需取消订单请点击我要咨询拨打客服。
+                        </Text>
+                    </View>
+                );
                 break;
             default:
                 return null;

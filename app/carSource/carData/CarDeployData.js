@@ -7,6 +7,12 @@ import *as appUrls from '../../constant/appUrls';
 
 let DeployData = {};
 
+/**
+ * 获取商户信息
+ * @param showLoadAction
+ * @param showToastAction
+ * @param fetchDeployDataAction
+ */
 export const getCarDeployData =(showLoadAction,showToastAction,fetchDeployDataAction)=>{
 
     if(Object.keys(DeployData).length ){
