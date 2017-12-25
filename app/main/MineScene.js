@@ -667,6 +667,8 @@ export default class MineScene extends BaseComponent {
             case 67:
                 this.navigatorParams.name = 'SupervisionFeeScene'
                 this.navigatorParams.component = SupervisionFeeScene
+                this.navigatorParams.params = {callBack: this.updateType};
+
                 break;
         }
 

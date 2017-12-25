@@ -105,11 +105,13 @@ export default class SupervisionFeeScene extends BaseComponent {
                         freshData={this.firstFreshPayData}
                         navigator={this.props.navigator} tabNum={'0'}
                         closeLoading={this._closeLoadingModal}
+                        callBack={this.props.callBack}
                         showToast={this.showToast}
                         showLoading={this._showLoadingModal}/>
                     <SupervisionNoPayScene
                         freshData={this.freshNopayData}
                         tabLabel="no-pay"
+                        callBack={this.props.callBack}
                         navigator={this.props.navigator} tabNum={'1'}
                         closeLoading={this._closeLoadingModal}
                         showToast={this.showToast}

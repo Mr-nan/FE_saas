@@ -25,6 +25,7 @@ import WaitActivationAccountScene from '../../mine/accountManage/WaitActivationA
 import BindCardScene from '../../mine/accountManage/BindCardScene';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import MyAccountScene from "../../mine/accountManage/MyAccountScene";
 /*
  * 获取屏幕的宽和高
  **/
@@ -46,6 +47,7 @@ export default class SupervisionTotalScene extends BaseComponent {
         this.noPayNum = [];
         this.payNum = [];
         this.nums = [];
+        this.orderNums=[];
         this.accountStatus = '';
         this.payFee = 0.00;
         this.isVisible = false;
@@ -144,42 +146,54 @@ export default class SupervisionTotalScene extends BaseComponent {
                     .then((response) => {
                             this.props.closeLoading();
                             lastType = response.mjson.data.account.status;
-                            if (lastType == '0') {
-                                this.toNextPage({
-                                    name: 'AccountManageScene',
-                                    component: AccountManageScene,
-                                    params: {
-                                        callBack: () => {
-                                            this.props.showLoading();
-                                            this.checkAcountState();
-                                        }
-                                    }
-                                });
+                            if (lastType == '0' || lastType == '1' || lastType == '2') {
+                            this.toNextPage({
+                                name: 'MyAccountScene',
+                                component: MyAccountScene,
+                                params: {
+                                                callBack: () => {
+                                                    this.props.showLoading();
+                                                    this.checkAcountState();
+                                                }
+                                            }
+                            });  }
 
-                            } else if (lastType == '1') {
-                                this.toNextPage({
-                                    name: 'BindCardScene',
-                                    component: BindCardScene,
-                                    params: {
-                                        callBack: () => {
-                                            this.props.showLoading();
-                                            this.checkAcountState();
-                                        }
-                                    }
-                                });
-
-                            } else if (lastType == '2') {
-                                this.toNextPage({
-                                    name: 'WaitActivationAccountScene',
-                                    component: WaitActivationAccountScene,
-                                    params: {
-                                        callBack: () => {
-                                            this.props.showLoading();
-                                            this.checkAcountState();
-                                        }
-                                    }
-                                });
-                            }
+                            // if (lastType == '0') {
+                            //     this.toNextPage({
+                            //         name: 'AccountManageScene',
+                            //         component: AccountManageScene,
+                            //         params: {
+                            //             callBack: () => {
+                            //                 this.props.showLoading();
+                            //                 this.checkAcountState();
+                            //             }
+                            //         }
+                            //     });
+                            //
+                            // } else if (lastType == '1') {
+                            //     this.toNextPage({
+                            //         name: 'BindCardScene',
+                            //         component: BindCardScene,
+                            //         params: {
+                            //             callBack: () => {
+                            //                 this.props.showLoading();
+                            //                 this.checkAcountState();
+                            //             }
+                            //         }
+                            //     });
+                            //
+                            // } else if (lastType == '2') {
+                            //     this.toNextPage({
+                            //         name: 'WaitActivationAccountScene',
+                            //         component: WaitActivationAccountScene,
+                            //         params: {
+                            //             callBack: () => {
+                            //                 this.props.showLoading();
+                            //                 this.checkAcountState();
+                            //             }
+                            //         }
+                            //     });
+                            // }
                         },
                         (error) => {
                             this.props.showToast('用户信息查询失败');
@@ -190,6 +204,7 @@ export default class SupervisionTotalScene extends BaseComponent {
             }
         });
     }
+
     navigatorParams = {
 
         name: 'AccountManageScene',
@@ -201,6 +216,7 @@ export default class SupervisionTotalScene extends BaseComponent {
         this.noPayNum = [];
         this.payNum = [];
         this.nums = [];
+        this.orderNums=[];
         let maps = {
             api: Urls.SUPERVISE_LIST,
             status: '0',
@@ -222,6 +238,7 @@ export default class SupervisionTotalScene extends BaseComponent {
                                 this.payNum.push(data);
                             } else if (data.pay_status == '1') {
                                 this.noPayNum.push(data);
+                                this.orderNums.push(data.supervision_fee_order_number);
                             }
                         });
                         this.nums.push(this.payNum.length);
@@ -315,6 +332,7 @@ export default class SupervisionTotalScene extends BaseComponent {
                                     component: CheckStand,
                                     params: {
                                         payAmount: this.payFee,
+                                        orderNums:this.orderNums,
                                         callBack: () => {
                                             allSouce = [];
                                             this.setState({renderPlaceholderOnly: 'loading'});

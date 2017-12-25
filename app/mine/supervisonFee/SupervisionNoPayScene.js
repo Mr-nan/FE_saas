@@ -27,6 +27,8 @@ import AccountScene from '../../mine/accountManage/AccountScene';
 import BindCardScene from '../../mine/accountManage/BindCardScene';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import MyAccountScene from "../../mine/accountManage/MyAccountScene";
+
 /*
  * 获取屏幕的宽和高
  **/
@@ -50,6 +52,7 @@ export default class SupervisionNoPayScene extends BaseComponent {
         this.url = '';
         this.accountStatus = '';
         this.isVisible = false;
+        this.orderNums=[];
         this.payFee = 0;
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.accountStatus = '';
@@ -145,42 +148,18 @@ export default class SupervisionNoPayScene extends BaseComponent {
                             this.props.closeLoading();
                             haveOrder = response.mjson.data.order.tradeing_count;
                             lastType = response.mjson.data.account.status;
-                            if (lastType == '0') {
+                            lastType='0' ;
+                            if (lastType == '0' || lastType == '1' || lastType == '2') {
                                 this.toNextPage({
-                                    name: 'AccountManageScene',
-                                    component: AccountManageScene,
+                                    name: 'MyAccountScene',
+                                    component: MyAccountScene,
                                     params: {
                                         callBack: () => {
-                                            this.props.closeLoading();
-                                            this.checkAcountState();
-                                        }
+                                    this.props.showLoading();
+                                    this.checkAcountState();
+                                }
                                     }
-                                });
-
-                            } else if (lastType == '1') {
-                                this.toNextPage({
-                                    name: 'BindCardScene',
-                                    component: BindCardScene,
-                                    params: {
-                                        callBack: () => {
-                                            this.props.closeLoading();
-                                            this.checkAcountState();
-                                        }
-                                    }
-                                });
-
-                            } else if (lastType == '2') {
-                                this.toNextPage({
-                                    name: 'WaitActivationAccountScene',
-                                    component: WaitActivationAccountScene,
-                                    params: {
-                                        callBack: () => {
-                                            this.props.closeLoading();
-                                            this.checkAcountState();
-                                        }
-                                    }
-                                });
-                            }
+                                });  }
                         },
                         (error) => {
                             this.props.showToast('用户信息查询失败');
@@ -199,6 +178,7 @@ export default class SupervisionNoPayScene extends BaseComponent {
     }
 
     getData = () => {
+        this.orderNums=[];
         let maps = {
             api: Urls.SUPERVISE_LIST,
             status: '1',
@@ -215,6 +195,9 @@ export default class SupervisionNoPayScene extends BaseComponent {
                     } else {
                         listLength=data.order_list.length;
                         allSouce.push(...data.order_list);
+                        allSouce.map((data) => {
+                                this.orderNums.push(data.supervision_fee_order_number);
+                        });
                         this.payFee=parseFloat(data.supervision_fee_total).toFixed(2);
                         this.setState({
                             dataSource: this.ds.cloneWithRows(allSouce),
@@ -301,8 +284,10 @@ export default class SupervisionNoPayScene extends BaseComponent {
                                 this.toNextPage({
                                     name: 'CheckStand',
                                     component: CheckStand,
+                                    orderNums:this.orderNums,
                                     params: {
                                         payAmount: this.payFee,
+                                        orderNums:this.orderNums,
                                         callBack: () => {
                                             allSouce = [];
                                             this.setState({renderPlaceholderOnly: 'loading'});

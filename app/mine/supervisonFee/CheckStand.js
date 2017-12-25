@@ -67,6 +67,7 @@ export default class CheckStand extends BaseComponent {
     getData = () => {
         let maps = {
             api: Urls.CASHIER_TABLE,
+            supervise_order_num:this.props.orderNums
         };
         request(Urls.FINANCE, 'Post', maps)
 
@@ -148,7 +149,7 @@ export default class CheckStand extends BaseComponent {
                                 marginTop: Pixel.getPixel(6),
                                 //fontWeight: 'bold',
                                 fontSize: Pixel.getFontPixel(38)
-                            }}>{parseFloat(this.props.payAmount).toFixed(2)}元</Text>
+                            }}>{parseFloat(this.accountInfo.money_count).toFixed(2)}元</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>

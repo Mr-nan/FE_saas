@@ -90,6 +90,9 @@ export default class MyAccountScene extends BaseComponent {
     allRefresh = () => {
         this.props.showModal(true);
         this.loadData();
+        if(this.props.callBack){
+            this.props.callBack();
+        }
     };
 
     /**
