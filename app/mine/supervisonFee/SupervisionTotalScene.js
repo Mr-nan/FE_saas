@@ -151,7 +151,7 @@ export default class SupervisionTotalScene extends BaseComponent {
                                 name: 'MyAccountScene',
                                 component: MyAccountScene,
                                 params: {
-                                                callBack: () => {
+                                                callBackData: () => {
                                                     this.props.showLoading();
                                                     this.checkAcountState();
                                                 }

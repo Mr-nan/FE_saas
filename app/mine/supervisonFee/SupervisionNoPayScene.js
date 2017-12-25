@@ -154,7 +154,7 @@ export default class SupervisionNoPayScene extends BaseComponent {
                                     name: 'MyAccountScene',
                                     component: MyAccountScene,
                                     params: {
-                                        callBack: () => {
+                                        callBackData: () => {
                                     this.props.showLoading();
                                     this.checkAcountState();
                                 }
