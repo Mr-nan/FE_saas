@@ -228,18 +228,27 @@ export default class CheckStand extends BaseComponent {
         request(AppUrls.FINANCE, 'post', maps).then((response) => {
             this.props.showModal(false);
             if (response.mjson.code === 1) {
-                this.transSerialNo = response.mjson.data.trans_serial_no;
-                this.toNextPage({
-                    name: 'AccountWebScene',
-                    component: AccountWebScene,
-                    params: {
-                        title: '支付',
-                        webUrl: response.mjson.data.transfer_accounts_url,
-                        backUrl: webBackUrl.SUPERVICEPAY,
-                        callBack:
-                            ()=>{this.props.callBack()}
+                if (response.mjson.data == null  || response.mjson.data.length==0) {
+                    this.setState({renderPlaceholderOnly: 'null'});
+                    if(!this.isEmpty(response.mjson.msg)){
+                        this.props.showToast(response.mjson.msg);
+                        this.props.callBack();
                     }
-                });
+
+                }else{
+                    this.transSerialNo = response.mjson.data.trans_serial_no;
+                    this.toNextPage({
+                        name: 'AccountWebScene',
+                        component: AccountWebScene,
+                        params: {
+                            title: '支付',
+                            webUrl: response.mjson.data.transfer_accounts_url,
+                            backUrl: webBackUrl.SUPERVICEPAY,
+                            callBack:
+                                ()=>{this.props.callBack()}
+                        }
+                    });
+                }
             } else {
                 this.props.showToast(response.mjson.msg);
             }
