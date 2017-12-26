@@ -75,6 +75,7 @@ export default class CheckStand extends BaseComponent {
             .then((response) => {
                     if (response.mjson.data == null) {
                         this.setState({renderPlaceholderOnly: 'null'});
+                        this.props.showToast(response.mjson.msg);
 
                     } else {
                         let data=response.mjson.data;
