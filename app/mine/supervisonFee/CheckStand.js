@@ -38,6 +38,7 @@ export default class CheckStand extends BaseComponent {
     constructor(props) {
         super(props);
         this.balance='';
+        this.payMoney='';
         this.accountInfo=null;
         this.cashier_desk_trans_serial_no='';
         this.accountInfo = '';
@@ -79,6 +80,7 @@ export default class CheckStand extends BaseComponent {
                         let data=response.mjson.data;
                         this.cashier_desk_trans_serial_no=data.cashier_desk_trans_serial_no;
                         this.accountInfo=data.account_info;
+                        this.payMoney=data.money_count;
                         this.setState({
                             renderPlaceholderOnly: 'success',
 
@@ -149,7 +151,7 @@ export default class CheckStand extends BaseComponent {
                                 marginTop: Pixel.getPixel(6),
                                 //fontWeight: 'bold',
                                 fontSize: Pixel.getFontPixel(38)
-                            }}>{parseFloat(this.accountInfo.money_count).toFixed(2)}元</Text>
+                            }}>{parseFloat(this.payMoney).toFixed(2)+'元'}</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
