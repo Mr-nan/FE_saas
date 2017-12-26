@@ -172,7 +172,10 @@ export default class MyAccountScene extends BaseComponent {
                 if (response.mjson.data['315'][0]) {
                     this.hengFengInfo = response.mjson.data['315'][0];
                     this.lastType = response.mjson.data['315'][0].status;
-                    this.props.callBack(this.lastType);
+                    if(this.props.callBack){
+
+                        this.props.callBack(this.lastType);
+                    }
                 }
                 this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
                 let dataList = [];
