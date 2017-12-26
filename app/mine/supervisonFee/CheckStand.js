@@ -68,14 +68,16 @@ export default class CheckStand extends BaseComponent {
     getData = () => {
         let maps = {
             api: Urls.CASHIER_TABLE,
-            supervise_order_num:this.props.orderNums
+            supervise_order_num:['JGF2017122674']
         };
         request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
-                    if (response.mjson.data == null) {
+                    if (response.mjson.data == null  || response.mjson.data.length==0) {
                         this.setState({renderPlaceholderOnly: 'null'});
-                        this.props.showToast(response.mjson.msg);
+                        if(!this.isEmpty(response.mjson.msg)){
+                            this.props.showToast(response.mjson.msg);
+                        }
 
                     } else {
                         let data=response.mjson.data;
@@ -92,6 +94,14 @@ export default class CheckStand extends BaseComponent {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== null && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
