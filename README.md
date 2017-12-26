@@ -90,7 +90,6 @@ pledge_type   1库融 2单车 3采购贷4订单融资
   ],
 
 
-<<<<<<< HEAD
 return [
      'orders_status'=>[
          0=>'创建订单',
@@ -154,9 +153,7 @@ return [
         50=>'鼎城代付中',
         51=>'线下支付中',
     ],
-=======
 最大贷款额度  ['car_finance_data']['max_loanmny']
->>>>>>> 0d3a38de5797d521c5fe7e4085b282b2c8163380
 
 
     订单数据里：
@@ -179,7 +176,6 @@ return [
     退买家：  (cancel_is_agree == 0 || cancel_is_agree == 2) && refund_data.is_who == 1 && refund_data.status == 2
     退卖家：  (cancel_is_agree == 0 || cancel_is_agree == 2) && refund_data.is_who == 2 && refund_data.status == 2
     卖家不同意：cancel_is_agree == 2
-<<<<<<< HEAD
 
    {
        "roleList":[
@@ -220,5 +216,3 @@ return [
 
     无订金单子:
     totalpay_amount>0
-=======
->>>>>>> 0d3a38de5797d521c5fe7e4085b282b2c8163380

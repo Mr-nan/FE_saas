@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -1432,3 +1432,22 @@ export const DING_CHENG = BASEURL +  "v2/order.pay/dingCheng";
  *  线下支付方式付款
  */
 export const OFFLINE_PAY = BASEURL +  "v2/order.pay/offline";
+/**
+ * 监管费列表
+ */
+export const SUPERVISE_LIST = BASEURL + V + "finance/superviseList";
+/**
+ *
+ * 监管费收银台
+ */
+export const CASHIER_TABLE = BASEURL + V + "finance.supervise/cashierTable";
+/**
+ *
+ * 监管费支付
+ */
+export const SUPERVISE_PAY = BASEURL + V + "finance.supervise/pay";
+/**
+ *
+ * 监管费支付
+ */
+export const ACCOUNT_HOME = BASEURL  + "v2/account.home/index";

@@ -172,7 +172,7 @@ export default class BaseComponent extends Component {
                 </Text>
                 <MyButton {...this.allRefreshParams} />
             </View>
-        } else {
+        } else{
             view = <View style={{flex: 1, alignItems: 'center'}}>
                 <Image
                     style={{
@@ -194,6 +194,7 @@ export default class BaseComponent extends Component {
                         marginTop: Pixel.getPixel(10)
                     }}>
                 </Text>
+                {this.state.renderPlaceholderOnly == 'noData'?  <MyButton {...this.allRefreshParams}/>: null}
             </View>
         }
         return view;
