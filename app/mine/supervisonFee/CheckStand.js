@@ -68,7 +68,7 @@ export default class CheckStand extends BaseComponent {
     getData = () => {
         let maps = {
             api: Urls.CASHIER_TABLE,
-            supervise_order_num:['JGF2017122674']
+            supervise_order_num:this.props.orderNums
         };
         request(Urls.FINANCE, 'Post', maps)
 
