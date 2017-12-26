@@ -587,7 +587,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     if (status === 9 && this.orderDetail.prepayment_status == 3) {
                         this.bottomState = 8;
                     } else {
-                        this.bottomState = 7;
+                        if (this.orderDetail.pay_type == 'dingcheng' || this.orderDetail.pay_type == 'offline') {
+                            this.bottomState = -1;
+                        } else {
+                            this.bottomState = 7;
+                        }
                     }
                 } else if (cancelStatus === 1) {
                     this.orderState = 3;
