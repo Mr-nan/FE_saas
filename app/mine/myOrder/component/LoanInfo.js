@@ -145,7 +145,8 @@ export default class LoanInfo extends BaseComponent {
                           style={styles.infoContent}>{parseFloat(this.balanceAmount - (this.state.applyLoanAmount === '请输入申请贷款金额' ?
                         0 : parseFloat(this.state.applyLoanAmount)) +
                         parseFloat(this.state.financeInfo.fee_mny) +
-                        parseFloat(this.state.financeInfo.obd_mny)).toFixed(2)}元</Text>
+                        parseFloat(this.state.financeInfo.obd_mny) +
+                        parseFloat(this.state.financeInfo.supervision_fee)).toFixed(2)}元</Text>
                 </View>
             </View>
         )
