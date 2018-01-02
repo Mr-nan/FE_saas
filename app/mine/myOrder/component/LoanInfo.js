@@ -133,13 +133,20 @@ export default class LoanInfo extends BaseComponent {
                           style={styles.infoContent}>{this.state.financeInfo.obd_mny ? parseFloat(this.state.financeInfo.obd_mny).toFixed(2) : '0.00'}元</Text>
                 </View>
                 <View style={styles.infoItem}>
+                    <Text allowFontScaling={false} style={styles.orderInfo}>需支付监管费</Text>
+                    <View style={{flex: 1}}/>
+                    <Text allowFontScaling={false}
+                          style={styles.infoContent}>{this.state.financeInfo.supervision_fee ? parseFloat(this.state.financeInfo.supervision_fee).toFixed(2) : '0.00'}元</Text>
+                </View>
+                <View style={styles.infoItem}>
                     <Text allowFontScaling={false} style={styles.orderInfo}>应付首付款</Text>
                     <View style={{flex: 1}}/>
                     <Text allowFontScaling={false}
                           style={styles.infoContent}>{parseFloat(this.balanceAmount - (this.state.applyLoanAmount === '请输入申请贷款金额' ?
                         0 : parseFloat(this.state.applyLoanAmount)) +
                         parseFloat(this.state.financeInfo.fee_mny) +
-                        parseFloat(this.state.financeInfo.obd_mny)).toFixed(2)}元</Text>
+                        parseFloat(this.state.financeInfo.obd_mny) +
+                        parseFloat(this.state.financeInfo.supervision_fee)).toFixed(2)}元</Text>
                 </View>
             </View>
         )
@@ -181,7 +188,7 @@ const styles = StyleSheet.create({
     },
     itemType5: {
         backgroundColor: '#ffffff',
-        height: Pixel.getPixel(240)
+        height: Pixel.getPixel(255)
     },
     backIcon: {
         marginRight: Pixel.getPixel(15),

@@ -30,7 +30,7 @@ import codePush from 'react-native-code-push'
 import SQLiteUtil from "../utils/SQLiteUtil";
 import PromotionScene from "./PromotionScene";
 const SQLite = new SQLiteUtil();
-const versionCode = 29.0;
+const versionCode = 30.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
@@ -206,6 +206,7 @@ export default class RootScene extends BaseComponent {
                 },
                 (error) => {
                     this.toJump();
+
                 });
     }
 
