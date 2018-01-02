@@ -58,3 +58,7 @@ export const WITHDRAWALS = 'www.withdrawals.com';
  * 支付
  **/
 export const PAY = 'www.pay.com';
+/**
+ * 监管费支付
+ **/
+export const SUPERVICEPAY = 'www.supervicepay.com';

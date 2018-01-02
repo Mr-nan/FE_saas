@@ -1,24 +1,21 @@
-import  React, {Component, PropTypes} from  'react'
-import  {
-    View,
-    Text,
-    ListView,
-    StyleSheet,
+import React from 'react'
+import {
+    BackAndroid,
     Dimensions,
     Image,
-    TouchableOpacity,
+    Linking,
+    ListView,
     NativeModules,
-    BackAndroid,
-    InteractionManager,
     RefreshControl,
-    Linking
-} from  'react-native'
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
 import MycarScene from '../carSource/CarMySourceScene';
-import  PixelUtil from '../utils/PixelUtil'
-var Pixel = new PixelUtil();
-
+import PixelUtil from '../utils/PixelUtil'
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
 
 import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
@@ -28,13 +25,11 @@ import BindCardScene from '../mine/accountManage/BindCardScene'
 
 import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
-import EvaluateCarInfo from '../mine/setting/EvaluateCarInfo'
 import Setting from './../mine/setting/Setting'
-import  CarCollectSourceScene from '../carSource/CarCollectsScene';
-import  BrowsingHistoryScene from '../carSource/BrowsingHistorysScene';
+import CarCollectSourceScene from '../carSource/CarCollectSourceScene';
+import BrowsingHistoryScene from '../carSource/BrowsingHistoryScene';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
 import ImageSource from '../publish/component/ImageSource';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
@@ -47,14 +42,19 @@ import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionM
 import MyAccountScene from "../mine/accountManage/MyAccountScene";
 import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
 import PersonCertificate from "../mine/certificateManage/PersonCertificate";
+import ImagePicker from "react-native-image-picker";
+import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi';
+import SupervisionFeeScene from '../mine/supervisonFee/SupervisionFeeScene';
+import GetPermissionUtil from '../utils/GetPermissionUtil';
+import BaseComponent from '../component/BaseComponent';
+
+var Pixel = new PixelUtil();
 
 let Platform = require('Platform');
-import ImagePicker from "react-native-image-picker";
-import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi'
 let firstType = '-1';
 let lastType = '-1';
 let haveOrder = 0;
-import GetPermissionUtil from '../utils/GetPermissionUtil';
+let un_pay_count = 0;
 const GetPermission = new GetPermissionUtil();
 let componyname = '';
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
@@ -80,7 +80,6 @@ const options = {
         path: 'images',
     }
 }
-import BaseComponent from '../component/BaseComponent';
 
 export default class MineScene extends BaseComponent {
 
@@ -140,6 +139,7 @@ export default class MineScene extends BaseComponent {
             firstType = '-1';
             lastType = '-1';
             haveOrder = 0;
+            un_pay_count=0;
             componyname = '';
 
             this.renzhengData = {
@@ -164,394 +164,402 @@ export default class MineScene extends BaseComponent {
                 }],
             };
 
-			this.mColor = {
-				//0-> 未审核 1->审核中 2->通过  3->未通过
-				0: 'gray',
-				1: 'black',
-				2: 'black',
-				3: 'red'
-			}
-			this.getData();
-		});
+            this.mColor = {
+                //0-> 未审核 1->审核中 2->通过  3->未通过
+                0: 'gray',
+                1: 'black',
+                2: 'black',
+                3: 'red'
+            }
+            this.getData();
+        });
 
-	}
+    }
 
-	changeData = () => {
-		StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-			if (data.code == 1) {
-				let user_list = [];
-				let datas = JSON.parse(data.result);
-				user_list.push(...Car);
-				GetPermission.getMineList((minList) => {
-					for (let i = 0; i < minList.length; i++) {
-						this.initData(minList[i].id, minList[i].name);
-					}
-					let jsonData = user_list;
+    changeData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let user_list = [];
+                let datas = JSON.parse(data.result);
+                user_list.push(...Car);
+                GetPermission.getMineList((minList) => {
+                    for (let i = 0; i < minList.length; i++) {
+                        this.initData(minList[i].id, minList[i].name);
+                    }
+                    let jsonData = user_list;
 
-					//    定义变量
-					let dataBlob = {},
-						sectionIDs = [],
-						rowIDs = [];
-					for (let i = 0; i < jsonData.length; i++) {
-						//    1.拿到所有的sectionId
-						sectionIDs.push(i);
+                    //    定义变量
+                    let dataBlob = {},
+                        sectionIDs = [],
+                        rowIDs = [];
+                    for (let i = 0; i < jsonData.length; i++) {
+                        //    1.拿到所有的sectionId
+                        sectionIDs.push(i);
 
-						//    2.把组中的内容放入dataBlob内容中
-						dataBlob[i] = jsonData[i].title;
+                        //    2.把组中的内容放入dataBlob内容中
+                        dataBlob[i] = jsonData[i].title;
 
-						//    3.设置改组中每条数据的结构
-						rowIDs[i] = [];
+                        //    3.设置改组中每条数据的结构
+                        rowIDs[i] = [];
 
-						//    4.取出改组中所有的数据
-						let cars = jsonData[i].cars;
+                        //    4.取出改组中所有的数据
+                        let cars = jsonData[i].cars;
 
-						//    5.便利cars,设置每组的列表数据
-						for (let j = 0; j < cars.length; j++) {
-							//    改组中的每条对应的rowId
-							rowIDs[i].push(j);
+                        //    5.便利cars,设置每组的列表数据
+                        for (let j = 0; j < cars.length; j++) {
+                            //    改组中的每条对应的rowId
+                            rowIDs[i].push(j);
 
-							// 把每一行中的内容放入dataBlob对象中
-							dataBlob[i + ':' + j] = cars[j];
-						}
-					}
-					let getSectionData = (dataBlob, sectionID) => {
-						return dataBlob[sectionID];
-					};
+                            // 把每一行中的内容放入dataBlob对象中
+                            dataBlob[i + ':' + j] = cars[j];
+                        }
+                    }
+                    let getSectionData = (dataBlob, sectionID) => {
+                        return dataBlob[sectionID];
+                    };
 
-					let getRowData = (dataBlob, sectionID, rowID) => {
-						return dataBlob[sectionID + ":" + rowID];
-					};
-					let ds = new ListView.DataSource({
-							getSectionData: getSectionData,
-							getRowData: getRowData,
-							rowHasChanged: (r1, r2) => r1 !== r2,
-							sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-						}
-					);
-					this.setState({
-						source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
-						name: datas.real_name,
-						phone: datas.phone,
-						headUrl: datas.head_portrait_url,
-						renderPlaceholderOnly: 'success',
-						isRefreshing: false
-					});
-				});
+                    let getRowData = (dataBlob, sectionID, rowID) => {
+                        return dataBlob[sectionID + ":" + rowID];
+                    };
+                    let ds = new ListView.DataSource({
+                            getSectionData: getSectionData,
+                            getRowData: getRowData,
+                            rowHasChanged: (r1, r2) => r1 !== r2,
+                            sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+                        }
+                    );
+                    this.setState({
+                        source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+                        name: datas.real_name,
+                        phone: datas.phone,
+                        headUrl: datas.head_portrait_url,
+                        renderPlaceholderOnly: 'success',
+                        isRefreshing: false
+                    });
+                });
 
-			} else {
-				this.setState({
-					renderPlaceholderOnly: 'error',
-					isRefreshing: false
-				});
-			}
-		});
-	}
+            } else {
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
+                });
+            }
+        });
+    }
 
-	initData = (id, name) => {
+    initData = (id, name) => {
 
-		if (id == 47) {
-			Car[0].cars.push({
-				"icon": require('../../images/mainImage/zhanghuguanli.png'),
-				"name": name
-				, "id": id
-			},);
-		} else if (id == 48) {
-			Car[0].cars.push({
-				"icon": require('../../images/mainImage/yuangongguanli.png'),
-				"name": name
-				, "id": id
-			},);
-		} else if (id == 49) {
-			Car[0].cars.push({
-				"icon": require('../../images/mainImage/switchcompony.png'),
-				"name": name
-				, "id": id
-			},);
-		} else if (id == 52) {
-			Car[2].cars.push({
-				"icon": require('../../images/mainImage/my_order.png'),
-				"name": name
-				, "id": id
-			},);
-		} else if (id == 50) {
-			Car[1].cars.push({
-				"icon": require('../../images/mainImage/youhuiquanguanli.png'),
-				"name": name
-				, "id": id
-			},);
-		} else if (id == 51) {
-			Car[1].cars.push({
-				"icon": require('../../images/mainImage/hetongguanli.png'),
-				"name": name
-				, "id": id
-			},);
-		} else if (id == 53) {
-			Car[2].cars.push({
-				"icon": require('../../images/mainImage/shoucangjilu.png'),
-				"name": name
-				, "id": id
-			},);
-		} else if (id == 54) {
-			Car[2].cars.push({
-				"icon": require('../../images/mainImage/liulanlishi.png'),
-				"name": name
-				, "id": id
-			},);
-		} else if (id == 56) {
-			Car[3].cars.push({
-				"icon": require('../../images/mainImage/shezhi.png'),
-				"name": name
-				, "id": id
-			},);
-		} else if (id == 100) {
-			Car[2].cars.push({
-				"icon": require('../../images/mainImage/myCarSource.png'),
-				"name": name
-				, "id": id
-			},);
+        if (id == 47) {
+            Car[0].cars.push({
+                "icon": require('../../images/mainImage/zhanghuguanli.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 48) {
+            Car[0].cars.push({
+                "icon": require('../../images/mainImage/yuangongguanli.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 49) {
+            Car[0].cars.push({
+                "icon": require('../../images/mainImage/switchcompony.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 52) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/my_order.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 50) {
+            Car[1].cars.push({
+                "icon": require('../../images/mainImage/youhuiquanguanli.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 51) {
+            Car[1].cars.push({
+                "icon": require('../../images/mainImage/hetongguanli.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 53) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/shoucangjilu.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 54) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/liulanlishi.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 56) {
+            Car[3].cars.push({
+                "icon": require('../../images/mainImage/shezhi.png'),
+                "name": name
+                , "id": id
+            },);
+        } else if (id == 100) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/myCarSource.png'),
+                "name": name
+                , "id": id
+            },);
 
-		}
-		else if (id == 58) {
-			Car[2].cars.push({
-				"icon": require('../../images/mainImage/my_yqdhl.png'),
-				"name": name
-				, "id": id
-			},);
-		}
-	}
-	getData = () => {
-		Car = [
-			{
-				"cars": [
-					// {
-					//     "icon": require('../../images/mainImage/zhanghuguanli.png'),
-					//     "name": "账户管理"
-					// },
-					// {
-					//     "icon": require('../../images/mainImage/yuangongguanli.png'),
-					//     "name": "员工管理"
-					// },
-					// {
-					//     "icon": require('../../images/mainImage/switchcompony.png'),
-					//     "name": "切换公司"
-					// },
-				],
-				"title": "section0"
-			},
-			{
-				"cars": [
-					// {
-					//     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
-					//     "name": "优惠券管理"
-					// },
-					// {
-					//     "icon": require('../../images/mainImage/hetongguanli.png'),
-					//     "name": "合同管理"
-					// },
-				],
-				"title": "section1"
-			},
-			{
-				"cars": [
-					// {
-					//     "icon": require('../../images/mainImage/myCarSource.png'),
-					//     "name": "我的车源"
-					// },
-					// {
-					//     "icon": require('../../images/mainImage/my_order.png'),
-					//     "name": "我的订单"
-					// },
-					// {
-					//     "icon": require('../../images/mainImage/shoucangjilu.png'),
-					//     "name": "收藏记录"
-					// },
-					// {
-					//     "icon": require('../../images/mainImage/liulanlishi.png'),
-					//     "name": "浏览历史"
-					// },
+        }
+        else if (id == 58) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/my_yqdhl.png'),
+                "name": name
+                , "id": id
+            },);
+        }
+        else if (id == 67) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/supervision_fee.png'),
+                "name": name
+                , "id": id
+            },);
+        }
+    }
+    getData = () => {
+        Car = [
+            {
+                "cars": [
+                    // {
+                    //     "icon": require('../../images/mainImage/zhanghuguanli.png'),
+                    //     "name": "账户管理"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/yuangongguanli.png'),
+                    //     "name": "员工管理"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/switchcompony.png'),
+                    //     "name": "切换公司"
+                    // },
+                ],
+                "title": "section0"
+            },
+            {
+                "cars": [
+                    // {
+                    //     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
+                    //     "name": "优惠券管理"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/hetongguanli.png'),
+                    //     "name": "合同管理"
+                    // },
+                ],
+                "title": "section1"
+            },
+            {
+                "cars": [
+                    // {
+                    //     "icon": require('../../images/mainImage/myCarSource.png'),
+                    //     "name": "我的车源"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/my_order.png'),
+                    //     "name": "我的订单"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/shoucangjilu.png'),
+                    //     "name": "收藏记录"
+                    // },
+                    // {
+                    //     "icon": require('../../images/mainImage/liulanlishi.png'),
+                    //     "name": "浏览历史"
+                    // },
 
-				],
-				"title": "section2"
-			},
-			{
-				"cars": [
-					// {
-					//     "icon": require('../../images/mainImage/shezhi.png'),
-					//     "name": "设置"
-					// },
-				],
-				"title": "section3"
-			},
-			{
-				"cars": [
-					{
-						"icon": require('../../images/mainImage/shezhi.png'),
-						"name": "blank"
-					},
-				],
-				"title": "section3"
-			},
-		]
-
-
-		StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-			if (data.code == 1 && data.result != null) {
-				let datas = JSON.parse(data.result);
-				BASE_ID = [];
-				BASE_ID.push(datas.company_base_id);
-
-				StorageUtil.mGetItem(StorageKeyNames.BASE_USER_ID, (data2) => {
-
-					if (data2.code == 1 && data2.result != null) {
-						BASE_ID.push(data2.result)
-						let maps = {
-							base_id: BASE_ID,
-						};
-						request(Urls.GETCHECKSTATUS, 'post', maps).then((response) => {
+                ],
+                "title": "section2"
+            },
+            {
+                "cars": [
+                    // {
+                    //     "icon": require('../../images/mainImage/shezhi.png'),
+                    //     "name": "设置"
+                    // },
+                ],
+                "title": "section3"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/shezhi.png'),
+                        "name": "blank"
+                    },
+                ],
+                "title": "section3"
+            },
+        ]
 
 
-							if (response.mycode == "1") {
-								let dataResult = response.mjson.data;
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                BASE_ID = [];
+                BASE_ID.push(datas.company_base_id);
 
-								this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
-								this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
+                StorageUtil.mGetItem(StorageKeyNames.BASE_USER_ID, (data2) => {
 
-								this.toCompany();
-
-							} else {
-								this.setState({
-									renderPlaceholderOnly: 'error',
-									isRefreshing: false
-								});
-							}
-						}, (error) => {
-							this.props.showToast(error.msg);
-							this.setState({
-								renderPlaceholderOnly: 'error',
-								isRefreshing: false
-							});
-						});
-
-					} else {
-						this.props.showToast('获取个人信息失败');
-						this.setState({
-							renderPlaceholderOnly: 'error',
-							isRefreshing: false
-						});
-					}
-				});
-			} else {
-				this.props.showToast('获取企业信息失败');
-				this.setState({
-					renderPlaceholderOnly: 'error',
-					isRefreshing: false
-				});
-			}
-		});
-
-		// StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-		//     if (data.code == 1) {
-		//         let datas = JSON.parse(data.result);
-		//         if(datas.user_level=='0'){
-		//             this.noCompany();
-		//         }else{
-		// this.toCompany();
+                    if (data2.code == 1 && data2.result != null) {
+                        BASE_ID.push(data2.result)
+                        let maps = {
+                            base_id: BASE_ID,
+                        };
+                        request(Urls.GETCHECKSTATUS, 'post', maps).then((response) => {
 
 
-		//         }
-		//     }
-		// });
+                            if (response.mycode == "1") {
+                                let dataResult = response.mjson.data;
 
-	}
+                                this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
+                                this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
 
-	noCompany = () => {
-		lastType = 'error';
-		this.changeData();
-	}
+                                this.toCompany();
 
-	toCompany = () => {
-		StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-			if (data.code == 1) {
-				let datas = JSON.parse(data.result);
-				componyname = '';
-				if (datas.companyname == null || datas.companyname == '') {
-					componyname = datas.name;
-				} else {
-					componyname = datas.name + '(' + datas.companyname + ')';
-				}
-				let maps = {
-					enter_base_ids: datas.company_base_id,
-					child_type: '1'
-				};
-				request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-					.then((response) => {
-							haveOrder = response.mjson.data.order.tradeing_count;
-							if (response.mjson.data.account == null || response.mjson.data.account.length <= 0) {
-								lastType = 'error';
-							} else {
-								lastType = response.mjson.data.account.status;
-							}
-							// lastType = '3';、
-							this.changeData();
-						},
-						(error) => {
-							this.changeData();
-						});
-			}
-		});
-	}
-	allRefresh = () => {
-		firstType = '-1';
-		lastType = '-1';
-		this.setState({
-			renderPlaceholderOnly: 'loading',
-		});
-		this.getData();
-	}
+                            } else {
+                                this.setState({
+                                    renderPlaceholderOnly: 'error',
+                                    isRefreshing: false
+                                });
+                            }
+                        }, (error) => {
+                            this.props.showToast(error.msg);
+                            this.setState({
+                                renderPlaceholderOnly: 'error',
+                                isRefreshing: false
+                            });
+                        });
 
-	refreshingData = () => {
-		this.setState({isRefreshing: true});
-		this.getData();
-	};
+                    } else {
+                        this.props.showToast('获取个人信息失败');
+                        this.setState({
+                            renderPlaceholderOnly: 'error',
+                            isRefreshing: false
+                        });
+                    }
+                });
+            } else {
+                this.props.showToast('获取企业信息失败');
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
+                });
+            }
+        });
 
-	render() {
-		if (this.state.renderPlaceholderOnly !== 'success') {
-			return (
+        // StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+        //     if (data.code == 1) {
+        //         let datas = JSON.parse(data.result);
+        //         if(datas.user_level=='0'){
+        //             this.noCompany();
+        //         }else{
+        // this.toCompany();
+
+
+        //         }
+        //     }
+        // });
+
+    }
+
+    noCompany = () => {
+        lastType = 'error';
+        this.changeData();
+    }
+
+    toCompany = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                componyname = '';
+                if (datas.companyname == null || datas.companyname == '') {
+                    componyname = datas.name;
+                } else {
+                    componyname = datas.name + '(' + datas.companyname + ')';
+                }
+                let maps = {
+                    enter_base_ids: datas.company_base_id,
+                    child_type: '1'
+                };
+                request(Urls.ACCOUNT_HOME, 'Post', maps)
+                    .then((response) => {
+                            haveOrder = response.mjson.data.order.tradeing_count;
+                            un_pay_count = parseInt(response.mjson.data.supervise.un_pay_count);
+                            if (response.mjson.data.account == null || response.mjson.data.account.length <= 0) {
+                                lastType = 'error';
+                            } else {
+                                lastType = response.mjson.data.account.status;
+                            }
+                            // lastType = '3';、
+                            this.changeData();
+                        },
+                        (error) => {
+                            this.changeData();
+                        });
+            }
+        });
+    }
+    allRefresh = () => {
+        firstType = '-1';
+        lastType = '-1';
+        this.setState({
+            renderPlaceholderOnly: 'loading',
+        });
+        this.getData();
+    }
+
+    refreshingData = () => {
+        this.setState({isRefreshing: true});
+        this.getData();
+    };
+
+    render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
 
 				<View style={styles.container}>
 
-					{this.loadView()}
+                    {this.loadView()}
 
 				</View>
-			)
-		}
-		return (
+            )
+        }
+        return (
 
 			<View style={styles.container}>
 				<ImageSource galleryClick={this._galleryClick}
-				             cameraClick={this._cameraClick}
-				             ref={(modal) => {
+							 cameraClick={this._cameraClick}
+							 ref={(modal) => {
                                  this.imageSource = modal
                              }}/>
-                <ListView
-                    removeClippedSubviews={false}
-                    contentContainerStyle={styles.listStyle}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                    renderSectionHeader={this._renderSectionHeader}
-                    renderHeader={this._renderHeader}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={this.refreshingData}
-                            tintColor={[fontAndClolr.COLORB0]}
-                            colors={[fontAndClolr.COLORB0]}
-                        />
+				<ListView
+					removeClippedSubviews={false}
+					contentContainerStyle={styles.listStyle}
+					dataSource={this.state.source}
+					renderRow={this._renderRow}
+					renderSectionHeader={this._renderSectionHeader}
+					renderHeader={this._renderHeader}
+					refreshControl={
+						<RefreshControl
+							refreshing={this.state.isRefreshing}
+							onRefresh={this.refreshingData}
+							tintColor={[fontAndClolr.COLORB0]}
+							colors={[fontAndClolr.COLORB0]}
+						/>
                     }
-                />
-                <AccountModal ref="accountmodal"/>
-                <AuthenticationModal ref="authenmodal"/>
-            </View>
+				/>
+				<AccountModal ref="accountmodal"/>
+				<AuthenticationModal ref="authenmodal"/>
+			</View>
         )
     }
 
@@ -656,6 +664,12 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.name = 'YaoQingDeHaoLi'
                 this.navigatorParams.component = YaoQingDeHaoLi
                 break;
+            case 67:
+                this.navigatorParams.name = 'SupervisionFeeScene'
+                this.navigatorParams.component = SupervisionFeeScene
+                this.navigatorParams.params = {callBack: this.updateType};
+
+                break;
         }
 
         this.props.callBack(this.navigatorParams);
@@ -673,16 +687,16 @@ export default class MineScene extends BaseComponent {
          }*/
         if (rowData.name == 'blank') {
             return (
-                <View style={{width: width, height: Pixel.getPixel(2), backgroundColor: fontAndClolr.COLORA3}}></View>
+				<View style={{width: width, height: Pixel.getPixel(2), backgroundColor: fontAndClolr.COLORA3}}></View>
             );
         } else {
             return (
-                <TouchableOpacity style={styles.rowView} onPress={() => {
+				<TouchableOpacity style={styles.rowView} onPress={() => {
 
                     this._navigator(rowData)
                 }}>
 
-                    <Image source={rowData.icon} style={styles.rowLeftImage}/>
+					<Image source={rowData.icon} style={styles.rowLeftImage}/>
 
                     <Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
                     {rowData.id == 15 ? <Text allowFontScaling={false} style={{
@@ -693,20 +707,32 @@ export default class MineScene extends BaseComponent {
                     }}>{showName}</Text> :
                         <View/>}
                     {rowData.name == '我的订单' && haveOrder != 0 ?
-                        <View style={{
+						<View style={{
                             marginRight: Pixel.getPixel(15),
                             width: Pixel.getPixel(10),
                             height: Pixel.getPixel(10),
                             backgroundColor: fontAndClolr.COLORB2,
                             borderRadius: 10
                         }}
-                        /> : <View/>}
+						/> : <View/>}
+                    {rowData.name == '监管费' && un_pay_count >0 ?
+						<View style={{
+                            marginRight: Pixel.getPixel(15),
+                            width: Pixel.getPixel(65),
+                            height: Pixel.getPixel(25),
+                            backgroundColor: '#FDEEEB',
+                            alignItems:'center',
+                            justifyContent:'center',
+                            borderRadius: 14}}>
+							<Text style={{color:'#FC6855', fontSize:12}}> {un_pay_count+'笔待付'}</Text>
+						</View>: <View/>}
 
 
-                    <Image source={cellJianTou} style={styles.rowjiantouImage}/>
+
+					<Image source={cellJianTou} style={styles.rowjiantouImage}/>
 
 
-                </TouchableOpacity>
+				</TouchableOpacity>
             );
         }
 
@@ -774,105 +800,105 @@ export default class MineScene extends BaseComponent {
     // 每一组对应的数据
     _renderSectionHeader(sectionData, sectionId) {
         return (
-            <View style={styles.sectionView}>
-            </View>
+			<View style={styles.sectionView}>
+			</View>
         );
     }
 
     _renderHeader = () => {
         return (
-            <View style={{width:width}}>
-                <View style={styles.headerViewStyle}>
-                    <TouchableOpacity style={[styles.headerImageStyle]}>
-                        <Image
-                            source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
-                            style={{
-                            width: Pixel.getPixel(65),
-                            height: Pixel.getPixel(65), resizeMode: 'stretch'
-                        }}
-                        />
-                    </TouchableOpacity>
-                    <Text allowFontScaling={false} style={styles.headerNameStyle}>
+			<View style={{width:width}}>
+				<View style={styles.headerViewStyle}>
+					<TouchableOpacity style={[styles.headerImageStyle]}>
+						<Image
+							source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
+							style={{
+                                width: Pixel.getPixel(65),
+                                height: Pixel.getPixel(65), resizeMode: 'stretch'
+                            }}
+						/>
+					</TouchableOpacity>
+					<Text allowFontScaling={false} style={styles.headerNameStyle}>
                         {this.state.name}
-                    </Text>
-                    <Text allowFontScaling={false} style={styles.headerPhoneStyle}>
+					</Text>
+					<Text allowFontScaling={false} style={styles.headerPhoneStyle}>
                         {componyname}
-                    </Text>
+					</Text>
 
-                </View>
+				</View>
                 {this.renzhengData.RenZhengVisiable != true ? null : <View
-                        style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+					style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
 
-                        <TouchableOpacity onPress={() => {
-							if(this.renzhengData.personRenZheng == 2 || this.renzhengData.personRenZheng == 1){
-								//0-> 未审核 1->审核中 2->通过  3->未通过
+					<TouchableOpacity onPress={() => {
+                        if(this.renzhengData.personRenZheng == 2 || this.renzhengData.personRenZheng == 1){
+                            //0-> 未审核 1->审核中 2->通过  3->未通过
 
-							}else {
-                                this._gerenrenzheng();
-							}
-                            }} activeOpacity={0.8}
-                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-                            <Image
-                                source={this.renzhengData.personRenZheng == 2  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
-                                style={{
-                            width: Pixel.getPixel(27),
-                            height: Pixel.getPixel(20),
-                            resizeMode: 'stretch',
-                            marginLeft:Pixel.getPixel(37)
-                        }}
-                            />
-                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
+                        }else {
+                            this._gerenrenzheng();
+                        }
+                    }} activeOpacity={0.8}
+									  style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+						<Image
+							source={this.renzhengData.personRenZheng == 2  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
+							style={{
+                                width: Pixel.getPixel(27),
+                                height: Pixel.getPixel(20),
+                                resizeMode: 'stretch',
+                                marginLeft:Pixel.getPixel(37)
+                            }}
+						/>
+						<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
 
-                                <Text allowFontScaling={false}
-                                      style={{color:this.mColor[this.renzhengData.personRenZheng]}}
+							<Text allowFontScaling={false}
+								  style={{color:this.mColor[this.renzhengData.personRenZheng]}}
 
-                                >
-                                    {this._getRenZhengResult(this.renzhengData.personRenZheng)}
+							>
+                                {this._getRenZhengResult(this.renzhengData.personRenZheng)}
 
-                                </Text>
-                            </Text>
-                        </TouchableOpacity>
+							</Text>
+						</Text>
+					</TouchableOpacity>
 
-                        <Image source={require('../../images/login/xuxian.png')}
-                               style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
+					<Image source={require('../../images/login/xuxian.png')}
+						   style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
 
-                        <TouchableOpacity onPress={() => {
-							if(this.renzhengData.enterpriseRenZheng == 2  || this.renzhengData.enterpriseRenZheng == 1){
-							//0-> 未审核 1->审核中 2->通过  3->未通过
-
-
-							}else {
-								this._qiyerenzheng();
-							}
-                            }} activeOpacity={0.8}
-                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-                            <Image
-                                source={this.renzhengData.enterpriseRenZheng == 2  ? require('../../images/login/qiyeyirenzheng.png') : require('../../images/login/qiyeweirenzheng.png')}
-                                style={{
-                            width: Pixel.getPixel(27),
-                            height: Pixel.getPixel(20),
-                            resizeMode: 'stretch',
-                            marginLeft:Pixel.getPixel(37)
-                        }}
-                            />
-                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
-
-                                <Text allowFontScaling={false}
-
-                                      style={{color:this.mColor[this.renzhengData.enterpriseRenZheng]}}
-
-                                >
-                                    {this._getRenZhengResult(this.renzhengData.enterpriseRenZheng)}
-
-                                </Text>
-                            </Text>
-
-                        </TouchableOpacity>
-
-                    </View>}
+					<TouchableOpacity onPress={() => {
+                        if(this.renzhengData.enterpriseRenZheng == 2  || this.renzhengData.enterpriseRenZheng == 1){
+                            //0-> 未审核 1->审核中 2->通过  3->未通过
 
 
-            </View>
+                        }else {
+                            this._qiyerenzheng();
+                        }
+                    }} activeOpacity={0.8}
+									  style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+						<Image
+							source={this.renzhengData.enterpriseRenZheng == 2  ? require('../../images/login/qiyeyirenzheng.png') : require('../../images/login/qiyeweirenzheng.png')}
+							style={{
+                                width: Pixel.getPixel(27),
+                                height: Pixel.getPixel(20),
+                                resizeMode: 'stretch',
+                                marginLeft:Pixel.getPixel(37)
+                            }}
+						/>
+						<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
+
+							<Text allowFontScaling={false}
+
+								  style={{color:this.mColor[this.renzhengData.enterpriseRenZheng]}}
+
+							>
+                                {this._getRenZhengResult(this.renzhengData.enterpriseRenZheng)}
+
+							</Text>
+						</Text>
+
+					</TouchableOpacity>
+
+				</View>}
+
+
+			</View>
         )
     }
 

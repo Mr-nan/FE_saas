@@ -31,6 +31,7 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import * as webBackUrl from "../constant/webBackUrl";
 import AccountWebScene from "../mine/accountManage/AccountWebScene";
 import DDApplyLendScene from "./lend/DDApplyLendScene";
+import ChooseModal from "../mine/myOrder/component/ChooseModal";
 const Pixel = new PixelUtil();
 
 export default class CheckStand extends BaseComponent {
@@ -41,6 +42,7 @@ export default class CheckStand extends BaseComponent {
         this.transSerialNo = '';
         this.isShowFinancing = 0;
         this.creditBalanceMny = 0;
+        this.isConfigUserAuth = 0;
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -53,18 +55,12 @@ export default class CheckStand extends BaseComponent {
         } catch (e) {
 
         } finally {
-            //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.initFinish();
-           // });
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
         }
     }
 
     initFinish = () => {
-        /*        this.setState({
-         dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
-         renderPlaceholderOnly: 'success'
-         });*/
         this.loadData();
     };
 
@@ -83,7 +79,7 @@ export default class CheckStand extends BaseComponent {
                     this.accountInfo = response.mjson.data.account;
                     if (this.accountInfo) {
                         if (this.props.payType == 2) {
-                            this.getMergeWhitePoStatus();
+                            this.getConfigUserAuth();
                         } else {
                             this.setState({
                                 isRefreshing: false,
@@ -111,7 +107,122 @@ export default class CheckStand extends BaseComponent {
     };
 
     /**
-     *  检查用户是否是白名单用户
+     *   检查此订单卖家是否是"线下支付"白名单用户
+     **/
+    getConfigUserAuth = () => {
+        // 车辆正在质押状态
+        if (this.props.isSellerFinance == 1) {
+            this.getMergeWhitePoStatus();
+        } else {
+            // "线下支付"白名单接口
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                if (data.code == 1 && data.result != null) {
+                    let datas = JSON.parse(data.result);
+                    let maps = {
+                        type: 1,
+                        //value: datas.company_base_id
+                        value: this.props.orderId,
+                        company_id: datas.company_base_id
+                    }
+                    let url = AppUrls.IS_CONFIG_USER_AUTH;
+                    request(url, 'post', maps).then((response) => {
+                        this.isConfigUserAuth = response.mjson.data.status;
+                        this.getMergeWhitePoStatus();
+                    }, (error) => {
+                        //this.props.showToast(error.mjson.msg);
+                        this.getMergeWhitePoStatus();
+                    });
+                } else {
+                    //this.props.showToast('账户检查失败');
+                    this.getMergeWhitePoStatus();
+                }
+            });
+        }
+    };
+
+    /**
+     *  鼎诚支付、 线下支付提示框
+     **/
+    payPrompting = (type) => {
+        let negativeText = '';
+        let positiveText = '';
+        let content = '';
+        let positiveOperation = '';
+        if (type === 0) {
+            negativeText = '取消';
+            positiveText = '确认';
+            content = '您确认选择鼎诚融资代付？';
+            positiveOperation = this.dingChengPay;
+            this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
+        } else {
+            negativeText = '取消';
+            positiveText = '确认';
+            content = '您确认选择线下支付？';
+            positiveOperation = this.dingOfflinePay;
+            this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
+        }
+    };
+
+    /**
+     *   鼎诚支付
+     **/
+    dingChengPay = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId
+                };
+                let url = AppUrls.DING_CHENG;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.callBack();
+                        this.backPage();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('账户支付检查失败');
+            }
+        });
+    };
+
+    /**
+     *   线下支付
+     **/
+    dingOfflinePay = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId
+                };
+                let url = AppUrls.OFFLINE_PAY;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.callBack();
+                        this.backPage();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('账户支付检查失败');
+            }
+        });
+    };
+
+    /**
+     *  检查用户是否是"订单融资"白名单用户
      */
     getMergeWhitePoStatus = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -245,6 +356,20 @@ export default class CheckStand extends BaseComponent {
                               parentStyle={styles.loginBtnStyle}
                               childStyle={styles.loginButtonTextStyle}
                               mOnPress={this.goPay}/>
+                    {this.props.isSellerFinance == 0 && this.props.payType == 2 &&
+                    (<MyButton buttonType={MyButton.TEXTBUTTON}
+                               content={'鼎诚融资代付'}
+                               parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
+                               childStyle={styles.loginButtonTextStyle}
+                               mOnPress={() => {this.payPrompting(0)}}/>)
+                    }
+                    {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payType == 2 &&
+                        (<MyButton buttonType={MyButton.TEXTBUTTON}
+                                content={'线下支付'}
+                                parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
+                                childStyle={styles.loginButtonTextStyle}
+                                mOnPress={() => {this.payPrompting(1)}}/>)
+                    }
                     {/*---订单融资---*/}
                     {this.isShowFinancing == 1 && this.props.payType == 2 &&
                     <View>
@@ -288,12 +413,58 @@ export default class CheckStand extends BaseComponent {
                     </View> }
                     <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
                                   text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
-
+                    <ChooseModal ref='chooseModal' title='提示'
+                                 negativeButtonStyle={styles.negativeButtonStyle}
+                                 negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                 positiveButtonStyle={styles.positiveButtonStyle}
+                                 positiveTextStyle={styles.positiveTextStyle} positiveText='确认'
+                                 buttonsMargin={Pixel.getPixel(20)}
+                                 positiveOperation={() => {}}
+                                 prompt="温馨提示: 选择后无法修改"
+                                 content=''/>
                 </View>
             )
         }
     }
 
+    /**
+     *   全款支付检查
+     **/
+    checkFullPay = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                    trans_serial_no: this.transSerialNo
+                };
+                let url = AppUrls.ORDER_CHECK_PAY_FULL;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        if (response.mjson.data.pay_status == 3) {
+                            this.props.showToast('支付成功');
+                            this.props.callBack();
+                            this.backPage();
+                        } else {
+                            this.props.showToast('支付失败');
+                        }
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('账户支付检查失败');
+            }
+        });
+    };
+
+    /**
+     *  订金、尾款支付检查
+     */
     checkPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -328,6 +499,9 @@ export default class CheckStand extends BaseComponent {
         });
     };
 
+    /**
+     *  首付款支付检查
+     */
     checkInitialPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -412,14 +586,66 @@ export default class CheckStand extends BaseComponent {
         }
     };
 
+    /**
+     *  支付分发
+     */
     goPay = () => {
         if (this.props.payType == 1 || this.props.payType == 2) {
-            this.goDepositPay();
+            if (this.props.payFull) {
+                this.goFullPay();
+            } else {
+                this.goDepositPay();
+            }
         } else {
             this.goInitialPay();
         }
     };
 
+    /**
+     *  全款支付
+     */
+    goFullPay = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                    reback_url: webBackUrl.PAY
+                };
+                let url = AppUrls.ORDER_PAY_FULL;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
+                        this.transSerialNo = response.mjson.data.trans_serial_no;
+                        this.toNextPage({
+                            name: 'AccountWebScene',
+                            component: AccountWebScene,
+                            params: {
+                                title: '支付',
+                                webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
+                                callBack: () => {
+                                    this.checkFullPay()
+                                },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                                backUrl: webBackUrl.PAY
+                            }
+                        });
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('账户支付失败');
+            }
+        });
+    };
+
+    /**
+     *  首付款支付
+     */
     goInitialPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -464,6 +690,9 @@ export default class CheckStand extends BaseComponent {
         });
     };
 
+    /**
+     *  订金支付
+     */
     goDepositPay = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -587,5 +816,33 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: Pixel.getPixel(70),
         backgroundColor: fontAndColor.COLORB6
-    }
+    },
+    negativeButtonStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    negativeTextStyle: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB0
+    },
+    positiveButtonStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: Pixel.getPixel(15),
+        backgroundColor: fontAndColor.COLORB0,
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    positiveTextStyle: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: '#ffffff'
+    },
 });

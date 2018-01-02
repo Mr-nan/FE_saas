@@ -49,12 +49,10 @@ const Pixel = new PixelUtil();
 export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
-     * from @hanmeng
-     *
+     *   constructor
      **/
     constructor(props) {
         super(props);
-        //let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.items = [];
         this.mList = [];
         this.listViewStyle = Pixel.getPixel(0);
@@ -64,20 +62,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.bottomState = -1;
         this.contactData = {};
         this.leftTime = 0;
-
-        /*        this.financeInfo = {
-         order_id: '',
-
-         finance_no: '',
-         finance_amount: '0.00',
-         finance_service_amount: "0.00",
-         finance_obd_amount: "0.00"
-         };*/
         this.financeInfo = {};
-
         this.companyId = 0;
         this.applyLoanAmount = '请输入申请贷款金额';
-
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -86,33 +73,22 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     }
 
     /**
-     * from @hanmeng
-     *
      *
      **/
     componentDidMount() {
         try {
             BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         } catch (e) {
-
         } finally {
-            //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
-            //});
         }
     }
 
     /**
      * from @hanmeng
-     *
-     *
      **/
     initFinish = () => {
-        /*        this.setState({
-         dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
-         renderPlaceholderOnly: 'success'
-         });*/
         this.loadData();
     };
 
@@ -130,8 +106,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * from @hanmeng
-     *
-     *
      **/
     PrefixInteger = (num, length) => {
         return (Array(length).join('0') + num).slice(-length);
@@ -171,7 +145,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
-                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
                 break;
             case 1: // 待付订金
@@ -191,7 +164,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
-                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
                 break;
             case 2: // 已付订金(待付尾款)
@@ -199,18 +171,26 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '6'];
-                this.contactData = {
-                    layoutTitle: '付尾款',
-                    layoutContent: '支付后卖家可查看到账金额，但不可提现。',
-                    setPrompt: false,
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
-                };
-                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
-                this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
-                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
-                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
-                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                if (this.orderDetail.totalpay_amount > 0) {
+                    this.contactData = {
+                        layoutTitle: '付全款',
+                        layoutContent: '支付后卖家可查看到账金额，但不可提现。',
+                        setPrompt: false
+                    };
+                    this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+                    this.items.push({title: '已付全款', nodeState: 2, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                } else {
+                    this.contactData = {
+                        layoutTitle: '付尾款',
+                        layoutContent: '支付后卖家可查看到账金额，但不可提现。',
+                        setPrompt: false
+                    };
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
+                    this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                }
                 break;
             case 3: // 全款付清
                 this.mList = [];
@@ -224,11 +204,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     MerchantNum: merchantNum,
                     CustomerServiceNum: customerServiceNum
                 };
-                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
-                this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
-                this.items.push({title: '结清尾款', nodeState: 1, isLast: false, isFirst: false});
-                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
-                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                if (this.orderDetail.totalpay_amount > 0) {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '已付全款', nodeState: 1, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                } else {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
+                    this.items.push({title: '结清尾款', nodeState: 1, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                }
                 break;
             case 4: // 已完成
                 this.mList = [];
@@ -242,11 +227,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     MerchantNum: merchantNum,
                     CustomerServiceNum: customerServiceNum
                 };
-                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
-                this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
-                this.items.push({title: '结清尾款', nodeState: 0, isLast: false, isFirst: false});
-                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
-                this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                if (this.orderDetail.totalpay_amount > 0) {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '已付全款', nodeState: 0, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                } else {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
+                    this.items.push({title: '结清尾款', nodeState: 0, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                }
                 break;
             case 5: // 订单融资处理中
                 this.mList = [];
@@ -287,11 +277,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     promptTitle: '首付款说明',
                     promptContent: '车贷房贷前您需先支付首付款，卖家可查看到账金额，但不可提现。如交易最终未完成，首付款可退回。'
                 };
-                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
-                this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
-                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
-                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
-                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                if (this.orderDetail.totalpay_amount > 0) {
+                    this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+                    this.items.push({title: '已付全款', nodeState: 2, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                } else {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
+                    this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                }
                 break;
             case 7: // 融资单确认验收车辆
                 this.mList = [];
@@ -303,11 +298,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     layoutContent: '您确认车辆无误，点击"验收确认"后，24小时内即可为您结放贷款。',
                     setPrompt: false
                 };
-                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
-                this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
-                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
-                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
-                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                if (this.orderDetail.totalpay_amount > 0) {
+                    this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+                    this.items.push({title: '已付全款', nodeState: 2, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                } else {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
+                    this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                }
                 break;
             case 8: // 融资单完成交易
                 this.mList = [];
@@ -319,11 +319,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     layoutContent: '恭喜您交易已完成',
                     setPrompt: false
                 };
-                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
-                this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
-                this.items.push({title: '结清尾款', nodeState: 0, isLast: false, isFirst: false});
-                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
-                this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                if (this.orderDetail.totalpay_amount > 0) {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '已付全款', nodeState: 0, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                } else {
+                    this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                    this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
+                    this.items.push({title: '结清尾款', nodeState: 0, isLast: false, isFirst: false});
+                    this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                }
                 break;
             default:
                 break;
@@ -589,8 +594,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * from @hanmeng
-     *
-     *
      **/
     payCallBack = () => {
         this.props.showModal(true);
@@ -640,11 +643,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 1:
                 let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
-                //let obdAmount = this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0;
-                //let feeAmount = this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0;
-                //console.log('this.balance_amount===' + this.orderDetail.balance_amount);
-                //console.log('obdAmount==='+obdAmount,'   feeAmount==='+feeAmount);
-                //console.log('121d1k1lk2d1.d.1===');
+                let balanceAmount = this.orderDetail.totalpay_amount > 0 ? this.orderDetail.totalpay_amount : this.orderDetail.balance_amount;
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -667,16 +666,19 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                         params: {
                                             payAmount: this.orderState === 1 ?
                                                 this.orderDetail.deposit_amount :
-                                                parseFloat(this.orderDetail.balance_amount - applyAmount +
+                                                parseFloat(balanceAmount - applyAmount +
                                                     parseFloat(this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0) +
-                                                    parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0)).toFixed(2),
+                                                    parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) +
+                                                    parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
                                             orderId: this.props.orderId,
                                             orderNo: this.orderDetail.order_no,
                                             payType: this.orderState,
+                                            payFull: this.orderDetail.totalpay_amount > 0,
                                             sellerId: this.orderDetail.seller_id,
                                             carId: this.orderDetail.orders_item_data[0].car_id,
                                             pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
                                             pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
+                                            isSellerFinance: this.orderDetail.is_seller_finance,
                                             applyLoanAmount: this.applyLoanAmount,
                                             financeNo: this.orderDetail.finance_no,
                                             callBack: this.payCallBack
@@ -1068,11 +1070,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 5:  // 待付尾款  5=>'订金支付完成'
             case 6:  // 6=>'尾款支付中'
             case 7:  // 7=>'尾款支付失败'
+            case 200:  // 200=>'待付全款',
+            case 201:  // 201=>'全款支付中',
+            case 202:  // 202=>'全款支付失败',
+            case 50:  // 50=>'鼎城代付中',
+            case 51:  // 51=>'线下支付中',
                 if (cancelStatus === 0) {
                     this.orderState = 2;
                     this.topState = -1;
-                    if (status === 6) {
-                        this.bottomState = 1;
+                    if (status === 50 || status === 51) {
+                        this.bottomState = 12;
                     } else {
                         this.bottomState = 1;
                     }
@@ -1123,6 +1130,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 8: // 全款付清  8=>'尾款支付完成'
+            case 203: // 203=>'全款支付完成',
             case 9: // 9=>'确认验收中'
             case 10: // 10=>'确认验收失败'
             case 90: // 90=>'质押车辆提前还款失败',
@@ -1133,7 +1141,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     if (status === 9) {
                         this.bottomState = 8;
                     } else {
-                        this.bottomState = 2;
+                        if (this.orderDetail.pay_type == 'dingcheng' || this.orderDetail.pay_type == 'offline') {
+                            this.bottomState = 11;
+                        } else {
+                            this.bottomState = 2;
+                        }
                     }
                 } else if (cancelStatus === 1) {
                     this.orderState = 3;
@@ -1355,7 +1367,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 18:  //18=>'融资单确认验收失败',
             case 160:  //160=>'支付首付款完成',
-            case 50:  // 160=>'支付首付款完成',
                 if (cancelStatus === 0) {
                     this.orderState = 7;
                     this.topState = -1;
@@ -1406,49 +1417,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     }
                 }
                 break;
-            /*case 19:
-             if (cancelStatus === 0) {
-             this.orderState = 8;
-             this.topState = -1;
-             if (status === 6) {
-             this.bottomState = 1;
-             } else {
-             this.bottomState = 1;
-             }
-             } else if (cancelStatus === 1) {
-             this.orderState = 8;
-             this.topState = -1;
-             this.bottomState = 3;
-             } else if (cancelStatus === 2) {
-             this.orderState = 8;
-             this.topState = -1;
-             if (this.orderDetail.cancel_side == 3) {
-             this.bottomState = 9;
-             } else if (this.orderDetail.cancel_side == 2) {
-             this.bottomState = 5;
-             } else {
-             if (this.orderDetail.cancel_is_agree == 2) {
-             this.bottomState = 6;
-             } else {
-             this.bottomState = 5;
-             }
-             }
-             } else if (cancelStatus === 3) {
-             this.orderState = 8;
-             this.topState = -1;
-             if (this.orderDetail.cancel_side == 3) {
-             this.bottomState = 9;
-             } else if (this.orderDetail.cancel_side == 2) {
-             this.bottomState = 5;
-             } else {
-             if (this.orderDetail.cancel_is_agree == 2) {
-             this.bottomState = 6;
-             } else {
-             this.bottomState = 5;
-             }
-             }
-             }
-             break;*/
         }
     };
 

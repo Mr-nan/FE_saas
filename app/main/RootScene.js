@@ -117,7 +117,7 @@ export default class RootScene extends BaseComponent {
         // });
 
 
-        StorageUtil.mSetItem(KeyNames.NEED_TOAST_ERROR, '');
+/*        StorageUtil.mSetItem(KeyNames.NEED_TOAST_ERROR, '');
         //如果获取模拟器错误日志，需将下面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
 
 
@@ -136,7 +136,7 @@ export default class RootScene extends BaseComponent {
                         });
             });
 
-        });
+        });*/
 
         //如果获取模拟器错误日志，需将上面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
 
@@ -206,6 +206,7 @@ export default class RootScene extends BaseComponent {
                 },
                 (error) => {
                     this.toJump();
+
                 });
     }
 

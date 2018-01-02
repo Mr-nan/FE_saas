@@ -167,7 +167,6 @@ export default class YaoQingDeHaoLi extends BaseComponent {
                     </TouchableOpacity>
 
                 </View>
-                <View style={{flex: 1}}/>
                 <SharedView ref="sharedView" carData={this.state.carData}/>
                 {this.loadingView()}
             </View>
