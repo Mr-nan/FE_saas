@@ -33,10 +33,6 @@ const IS_ANDROID = Platform.OS === 'android';
 
 
 export default class FastCreditOne extends BaseComponent {
-	componentWillUnmount() {
-		this.timer && clearTimeout(this.timer);
-	}
-
 	constructor(props) {
 		super(props);
 		this.enterpriseData = {
