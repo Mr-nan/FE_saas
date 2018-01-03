@@ -14,6 +14,7 @@ import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
 import LoginScene from "./LoginScene";
+import FillWaybill from "../mine/myOrder/orderwuliu/FillWaybill";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
 import QuotaApplication from './QuotaApplication';
@@ -74,8 +75,8 @@ export default class LoginAndRegister extends BaseComponent {
                           parentStyle={[styles.buttonStyle, {marginTop: height / 3 * 2}]}
                           childStyle={styles.buttonTextStyle} mOnPress={() => {
                     this.toNextPage({
-                        name: 'LoginScene',
-                        component: LoginScene,
+                        name: 'FillWaybill',
+                        component: FillWaybill,
                         params: {},
                     })
                 }}/>
