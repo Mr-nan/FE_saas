@@ -24,7 +24,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import HomeSence  from './HomeScene'
 import CarSourceSence from '../carSource/CarSourceListScene'
 import MineSence from './MineScene'
-import FinanceSence from './FinanceScene'
+import FinanceSence from './NewFinanceScene'
 import PublishModal from './PublishModal'
 import  StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
