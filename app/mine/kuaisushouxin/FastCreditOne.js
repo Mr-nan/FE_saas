@@ -444,20 +444,9 @@ export default class FastCreditOne extends BaseComponent {
 			})
 	}
 	_changdiTypePress = (type) => {
-		// console.log('1233333333333333333'+type)
 		this.setState({
 			selectNO: type
 		})
-
-		// if(type == 'own'){
-		// 	this.setState({
-		// 		selectNO:'own'
-		// 	})
-		// }else {
-		// 	this.setState({
-		// 		selectNO:'rent'
-		// 	})
-		// }
 	}
 }
 const styles = StyleSheet.create({
