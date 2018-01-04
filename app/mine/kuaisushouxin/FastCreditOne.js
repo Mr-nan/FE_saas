@@ -25,6 +25,7 @@ import PixelUtil from '../../utils/PixelUtil';
 import * as AppUrls from "../../constant/appUrls";
 
 import {request} from '../../utils/RequestUtil';
+import SelectDJRScene from "../../finance/lend/SelectDJRScene";
 
 
 const Pixel = new PixelUtil();
@@ -39,14 +40,14 @@ export default class FastCreditOne extends BaseComponent {
 			qiyemingcheng: '',//企业名称
 			xinyongdaima: '',//统一社会信用代码
 			daikuanyue: '',//房屋贷款余额
-			fangwujiazhi: '',//房屋价值
+
 
 		};
 
 		this.state = {
-			selectNO:'own',//'rent'
+			selectNO: 'own',//'rent'
 			business_home: '请选择',//经营地址
-
+			fangwujiazhi: '请选择',//房屋价值
 			keyboardOffset: -Pixel.getPixel(64),
 			renderPlaceholderOnly: 'success'
 		};
@@ -79,6 +80,7 @@ export default class FastCreditOne extends BaseComponent {
 	 * 商户所在地点击
 	 * */
 	_onCityPress = () => {
+		alert('citypress')
 		// let navigatorParams = {
 		// 	name: "ProvinceListScene",
 		// 	component: ProvinceListScene,
@@ -327,54 +329,51 @@ export default class FastCreditOne extends BaseComponent {
 				<View style={{width:width,height:Pixel.getPixel(10),backgroundColor:fontAndColor.COLORA3}}/>
 
 
-
-
-
 				{/*经营场地view*/}
 				<View style={[styles.itemBackground,{height:Pixel.getPixel(60)}]}>
 					<Text allowFontScaling={false} style={styles.leftFont}>经营场地</Text>
 					<View style={styles.fillSpace}/>
-					<TouchableOpacity style={[styles.selectBtn,{borderColor:this.state.selectNO == 'own' ? fontAndColor.COLORB0:fontAndColor.COLORA2}]} activeOpacity={0.6}
-					                  onPress={() =>{this._changdiTypePress('own')}}>
-						<Text allowFontScaling={false} style={[styles.selectBtnFont,{color:this.state.selectNO == 'own' ? fontAndColor.COLORB0:fontAndColor.COLORA2}]}>自有</Text>
+					<TouchableOpacity
+						style={[styles.selectBtn,{borderColor:this.state.selectNO == 'own' ? fontAndColor.COLORB0:fontAndColor.COLORA2}]}
+						activeOpacity={0.6}
+						onPress={() =>{this._changdiTypePress('own')}}>
+						<Text allowFontScaling={false}
+						      style={[styles.selectBtnFont,{color:this.state.selectNO == 'own' ? fontAndColor.COLORB0:fontAndColor.COLORA2}]}>自有</Text>
 					</TouchableOpacity>
 
-					<TouchableOpacity style={[styles.selectBtn,{marginRight: Pixel.getPixel(0)},{borderColor:this.state.selectNO == 'rent' ? fontAndColor.COLORB0:fontAndColor.COLORA2}]} activeOpacity={0.6}
-					                  onPress={()=>{this._changdiTypePress('rent')}}>
-						<Text allowFontScaling={false} style={[styles.selectBtnFont,{color:this.state.selectNO == 'rent' ? fontAndColor.COLORB0:fontAndColor.COLORA2}]}>租赁</Text>
+					<TouchableOpacity
+						style={[styles.selectBtn,{marginRight: Pixel.getPixel(0)},{borderColor:this.state.selectNO == 'rent' ? fontAndColor.COLORB0:fontAndColor.COLORA2}]}
+						activeOpacity={0.6}
+						onPress={()=>{this._changdiTypePress('rent')}}>
+						<Text allowFontScaling={false}
+						      style={[styles.selectBtnFont,{color:this.state.selectNO == 'rent' ? fontAndColor.COLORB0:fontAndColor.COLORA2}]}>租赁</Text>
 					</TouchableOpacity>
 				</View>
 
 
+				<View
+					style={{width:width,height : this.state.selectNO == 'own'? Pixel.getPixel(10):Pixel.getPixel(0),backgroundColor:fontAndColor.COLORA3}}/>
 
-
-
-				<View style={{width:width,height : this.state.selectNO == 'own'? Pixel.getPixel(10):Pixel.getPixel(0),backgroundColor:fontAndColor.COLORA3}}/>
 				{/*房屋价值view*/}
-				<View style={[styles.itemBackground,{height : this.state.selectNO == 'own'? Pixel.getPixel(44):Pixel.getPixel(0)}]}>
-					<Text allowFontScaling={false} style={styles.leftFont}>房屋价值</Text>
-					<TextInput
-						ref={(input) => {
-                                this.fangwujiazhiInput = input
-                            }}
-						style={[styles.inputHintFont, styles.fillSpace]}
-						underlineColorAndroid='transparent'
-						onChangeText={this._fangwujiazhiChange}
-						placeholder='请输入'
-						defaultValue={this.enterpriseData.fangwujiazhi}
-						placeholderTextColor={fontAndColor.COLORA1}
-						onFocus={()=>{
-                                       this.setState({
-                                           keyboardOffset:-Pixel.getPixel(300)
-                                       });
-                                   }}
-						onBlur={()=>{
-                                       this.setState({
-                                           keyboardOffset:Pixel.getPixel(64)
-                                       });
-                                   }}
-					/>
-				</View>
+				{
+					this.state.selectNO == 'own'?
+						<View
+							style={[styles.itemBackground,{height : this.state.selectNO == 'own'? Pixel.getPixel(44):Pixel.getPixel(44)}]}>
+							<Text allowFontScaling={false} style={styles.leftFont}>房屋价值</Text>
+							<View style={styles.fillSpace}/>
+							<TouchableOpacity onPress={this._onJiaZhiPress}>
+								<View style={styles.rightContainer}>
+									<Text allowFontScaling={false}
+									      ref='business_home'
+									      style={styles.selectHintFont}>{this.state.fangwujiazhi}</Text>
+
+
+									<Image style={styles.selectImage} source={selectImg}/>
+								</View>
+							</TouchableOpacity>
+						</View>:null
+				}
+
 				<View style={{width:width,height:Pixel.getPixel(10),backgroundColor:fontAndColor.COLORA3}}/>
 				{/*房屋贷款余额view*/}
 				<View style={styles.itemBackground}>
@@ -427,10 +426,27 @@ export default class FastCreditOne extends BaseComponent {
 	_onCompletePress = () => {
 
 	}
-	_changdiTypePress = (type) =>{
+	_onJiaZhiPress = () => {
+		this.toNextPage(
+			{
+				name: 'SelectDJRScene',
+				component: SelectDJRScene,
+				params: {
+					regShowData: ['50万以下','50万 ~ 100万','100万 ~ 150万','150万 ~ 200万','200万 ~ 300万','300万 ~ 400万','400万 ~ 500万','500万以上'],
+					title: '选择房屋价值',
+					callBack: (name, index) => {
+						this.setState({
+							fangwujiazhi: name
+						})
+
+					}
+				}
+			})
+	}
+	_changdiTypePress = (type) => {
 		// console.log('1233333333333333333'+type)
 		this.setState({
-			selectNO:type
+			selectNO: type
 		})
 
 		// if(type == 'own'){
