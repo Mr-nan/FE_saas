@@ -12,6 +12,7 @@ import * as FontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import MyButton from "../../../component/MyButton";
 import CheckWaybill from './CheckWaybill';
+import SelectDestination from './SelectDestination';
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 
@@ -83,6 +84,12 @@ export default class InvoiceInfo extends BaseComponent {
                     color: FontAndColor.COLORA1
                 }}>邮件信息</Text>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                    this.toNextPage({
+                            name: 'SelectDestination',
+                            component: SelectDestination,
+                            params: {}
+                        }
+                    );
                 }}>
                     <View style={styles.content_base_wrap}>
                         <View style={styles.content_base_text_wrap}>
