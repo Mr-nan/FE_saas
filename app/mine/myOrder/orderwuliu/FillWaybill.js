@@ -48,7 +48,7 @@ let tagViews = [{
 let feeDatas = [{title: '物流费', value: '1000元'}, {title: '提验车费', value: '100元'}]
 let accoutInfo = [{title: '联系人', value: '刘威'}, {title: '联系方式', value: '15911111111'}, {
     title: '收车地址',
-    value: '湖北省武汉市武昌区'
+    value: '湖北省武汉市武昌区街坊邻居阿拉丁就附近阿斯蒂芬逻辑'
 }]
 export default class FillWaybill extends BaseComponent {
     constructor(props) {
@@ -154,7 +154,9 @@ export default class FillWaybill extends BaseComponent {
                             return (
                                 <View key={index + 'accoutInfo'} style={styles.content_title_text_wrap}>
                                     <Text style={styles.content_title_text}>{data.title}</Text>
-                                    <Text style={styles.content_base_Right}>{data.value}</Text>
+                                    <View style={{flexWrap:'wrap',height:Pixel.getPixel(51),width:width*3/4,justifyContent:'center'}}>
+                                        <Text style={[styles.content_base_Right]}>{data.value}</Text>
+                                    </View>
                                 </View>
                             )
                         })

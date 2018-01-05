@@ -18,7 +18,7 @@ import WaybillToStore from './WaybillToStore';
 import SelectPickUp from './SelectPickUp';
 
 const Pixel = new PixelUtil();
-let feeDatas = [{title: '发车地', value: '湖北省武汉市武昌区'}, {title: '收车地', value: '湖北省武汉市武昌区'}, {
+let feeDatas = [{title: '发车地', value: '湖北省武汉市武昌区'}, {title: '收车地', value: '湖北省武汉市武昌区街坊邻居阿拉丁就附近阿斯蒂芬逻辑'}, {
     title: '下单时间',
     value: '2017-12-12 18：00'
 }, {title: '物流费', value: '1000元'}, {title: '运输类型', value: '大板'}]
@@ -38,7 +38,7 @@ export default class CheckWaybill extends BaseComponent {
         this.title='查看运单';
         if(this.props.isShowPay){//运单信息
             this.isShowPay=true
-            accoutInfo = [{title: '仓库名称', value: '刘威'}, {title: '仓库地址', value: '湖北省武汉市武昌区'}]
+            accoutInfo = [{title: '仓库名称', value: '刘威'}, {title: '仓库地址', value: '湖北省武汉市武昌区街坊邻居阿拉丁就附近阿斯蒂芬逻辑'}]
             this.title='运单信息';
         }
         if(this.props.isShowToStore){//运单信息(到店)
@@ -88,7 +88,9 @@ export default class CheckWaybill extends BaseComponent {
                             return (
                                 <View key={index + 'fee'} style={styles.content_title_text_wrap}>
                                     <Text style={styles.content_title_text}>{data.title}</Text>
-                                    <Text style={styles.content_base_Right}>{data.value}</Text>
+                                    <View style={{flexWrap:'wrap',height:Pixel.getPixel(51),width:width*3/4,justifyContent:'center'}}>
+                                        <Text style={[styles.content_base_Right]}>{data.value}</Text>
+                                    </View>
                                 </View>
                             )
                         })
@@ -105,7 +107,9 @@ export default class CheckWaybill extends BaseComponent {
                             return (
                                 <View key={index + 'fee'} style={styles.content_title_text_wrap}>
                                     <Text style={styles.content_title_text}>{data.title}</Text>
-                                    <Text style={styles.content_base_Right}>{data.value}</Text>
+                                    <View style={{flexWrap:'wrap',height:Pixel.getPixel(51),width:width*3/4,justifyContent:'center'}}>
+                                        <Text style={[styles.content_base_Right]}>{data.value}</Text>
+                                    </View>
                                 </View>
                             )
                         })
