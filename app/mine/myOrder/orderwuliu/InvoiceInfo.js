@@ -11,6 +11,7 @@ const {width} = Dimensions.get('window');
 import * as FontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import MyButton from "../../../component/MyButton";
+import CheckWaybill from './CheckWaybill';
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 
@@ -20,7 +21,7 @@ let accoutInfo = [{title: '联系电话', value: '13000000001'}, {title: '收车
 export default class InvoiceInfo extends BaseComponent {
     constructor(props) {
         super(props);
-        this.num='';
+        this.num = '';
         this.state = {
             renderPlaceholderOnly: false
         }
@@ -39,33 +40,38 @@ export default class InvoiceInfo extends BaseComponent {
                 <Text style={{
                     marginLeft: Pixel.getPixel(15),
                     marginVertical: Pixel.getPixel(10),
-                    fontSize: Pixel.getPixel(12)
+                    fontSize: Pixel.getPixel(12),
+                    color: FontAndColor.COLORA1
+
                 }}>发票信息</Text>
                 <View style={{
                     backgroundColor: 'white',
-                    paddingHorizontal:Pixel.getPixel(15)
+                    paddingHorizontal: Pixel.getPixel(15)
                 }}>
-                {
-                    feeDatas.map((data, index) => {
-                        return (
-                            <View key={index + 'fee'} style={styles.content_title_text_wrap}>
-                                <Text style={styles.content_title_text}>{data.title}</Text>
-                                <Text style={styles.content_base_Right}>{data.value}</Text>
-                            </View>
-                        )
-                    })
-                }
+                    {
+                        feeDatas.map((data, index) => {
+                            return (
+                                <View key={index + 'fee'} style={styles.content_title_text_wrap}>
+                                    <Text style={styles.content_title_text}>{data.title}</Text>
+                                    <Text style={styles.content_base_Right}>{data.value}</Text>
+                                </View>
+                            )
+                        })
+                    }
                 </View>
 
                 <View style={styles.content_title_text_wrap}>
                     <Text style={[styles.content_title_text, {marginLeft: Pixel.getPixel(15)}]}>纳税人识别号</Text>
-                    <TextInput style={[styles.content_base_Right,{width:Pixel.getPixel(100),marginRight:Pixel.getPixel(15)}]}
+                    <TextInput style={[styles.content_base_Right, {
+                        width: Pixel.getPixel(100),
+                        marginRight: Pixel.getPixel(15)
+                    }]}
                                ref={(ref) => {
                                }}
                                editable={true}
                                placeholder={'请输入识别码'}
                                onChangeText={(text) => {
-                                   this.num=text
+                                   this.num = text
                                }}
                                underlineColorAndroid='transparent'/>
                 </View>
@@ -73,15 +79,20 @@ export default class InvoiceInfo extends BaseComponent {
                 <Text style={{
                     marginLeft: Pixel.getPixel(15),
                     marginVertical: Pixel.getPixel(10),
-                    fontSize: Pixel.getPixel(12)
+                    fontSize: Pixel.getPixel(12),
+                    color: FontAndColor.COLORA1
                 }}>邮件信息</Text>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
                 }}>
                     <View style={styles.content_base_wrap}>
                         <View style={styles.content_base_text_wrap}>
-                            <Text style={styles.content_base_left}>发票</Text>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={styles.content_base_Right}>{'刘威车行'}</Text>
+                            <Text style={{
+                                flex: 1,
+                                fontSize: Pixel.getFontPixel(14),
+                                color: FontAndColor.COLORA1
+                            }}>收件人</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{'刘威车行'}</Text>
                                 <Image source={cellJianTou} style={styles.image}></Image>
                             </View>
 
@@ -91,7 +102,7 @@ export default class InvoiceInfo extends BaseComponent {
 
                 <View style={{
                     backgroundColor: 'white',
-                    paddingHorizontal:Pixel.getPixel(15)
+                    paddingHorizontal: Pixel.getPixel(15)
                 }}>
                     {
                         accoutInfo.map((data, index) => {
@@ -110,7 +121,14 @@ export default class InvoiceInfo extends BaseComponent {
                           content={'确定'}
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
-                          mOnPress={this.goPay}/>
+                          mOnPress={() => {
+                              this.toNextPage({
+                                      name: 'CheckWaybill',
+                                      component: CheckWaybill,
+                                      params: {}
+                                  }
+                              );
+                          }}/>
             </View>
         );
 
@@ -135,18 +153,24 @@ export default class InvoiceInfo extends BaseComponent {
 
     }
 
-    renderRightView=()=>{
-            return(
-                <TouchableOpacity onPress={
-                    ()=>{}
-                }>
-                    <View style={{marginLeft:Pixel.getPixel(20),width:Pixel.getPixel(80),height:Pixel.getPixel(40),justifyContent:'center',
-                        alignItems:'center'}}>
-                        <Text allowFontScaling={false}  style={{color:'white', fontSize:Pixel.getFontPixel(FontAndColor.BUTTONFONT30)}}>不开发票</Text>
-                    </View>
-                </TouchableOpacity>
-            )
-
+    renderRightView = () => {
+        return (
+            <TouchableOpacity onPress={
+                () => {
+                }
+            }>
+                <View style={{
+                    marginLeft: Pixel.getPixel(20),
+                    width: Pixel.getPixel(80),
+                    height: Pixel.getPixel(40),
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Text allowFontScaling={false}
+                          style={{color: 'white', fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30)}}>不开发票</Text>
+                </View>
+            </TouchableOpacity>
+        )
 
 
     }
@@ -176,9 +200,9 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(42),
         alignItems: 'center',
         flexDirection: 'row',
-        borderBottomWidth:Pixel.getPixel(1),
-        borderColor:FontAndColor.COLORA4,
-        backgroundColor:'white'
+        borderBottomWidth: Pixel.getPixel(1),
+        borderColor: FontAndColor.COLORA4,
+        backgroundColor: 'white'
     },
     content_title_text: {
         flex: 1,
@@ -188,14 +212,15 @@ const styles = StyleSheet.create({
     content_base_wrap: {
         height: Pixel.getPixel(46),
         minHeight: Pixel.getPixel(46),
-        backgroundColor: 'white',
-        borderBottomWidth:Pixel.getPixel(1),
-        borderColor:FontAndColor.COLORA4
+        backgroundColor: 'white'
     },
     content_base_text_wrap: {
         flex: 1,
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderBottomWidth: Pixel.getPixel(1),
+        borderColor: FontAndColor.COLORA4,
+        marginHorizontal: Pixel.getPixel(15)
     },
     content_base_left: {
         flex: 1,
@@ -209,7 +234,7 @@ const styles = StyleSheet.create({
         textAlign: 'right'
     },
     image: {
-        marginRight: Pixel.getPixel(15),
+        marginLeft: Pixel.getPixel(10),
     },
     topText: {
         color: 'white',

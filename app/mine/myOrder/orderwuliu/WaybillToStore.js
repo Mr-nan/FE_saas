@@ -15,7 +15,6 @@ import TagSelectView from '../component/TagSelectView';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
 import InvoiceInfo from './InvoiceInfo';
-import AccountModal from './AccountModal';
 import CheckWaybill from './CheckWaybill';
 
 const agree_icon = require('../../../../images/agree_icon.png');
@@ -26,7 +25,6 @@ const imaginary_icon = require('../../../../images/imaginary_icon.png');
 const {width} = Dimensions.get('window');
 import * as FontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
-import MyButton from "../../../component/MyButton";
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 const white_jiantou = require('../../../../images/white_jiantou.png');
@@ -50,7 +48,7 @@ let accoutInfo = [{title: '联系人', value: '刘威'}, {title: '联系方式',
     title: '收车地址',
     value: '湖北省武汉市武昌区'
 }]
-export default class FillWaybill extends BaseComponent {
+export default class WaybillToStore extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -95,7 +93,7 @@ export default class FillWaybill extends BaseComponent {
                                 name: 'CheckWaybill',
                                 component: CheckWaybill,
                                 params: {
-                                    isShowToStore:true
+                                    isShowToStore: true
                                 }
                             }
                         );
@@ -163,6 +161,26 @@ export default class FillWaybill extends BaseComponent {
                 </View>
 
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                    // this.toNextPage({
+                    //         name: 'WaybillToStore',
+                    //         component: WaybillToStore,
+                    //         params: {}
+                    //     }
+                    // );
+                }}>
+                    <View style={[styles.content_base_wrap, {marginBottom: Pixel.getPixel(10)}]}>
+                        <View style={styles.content_base_text_wrap}>
+                            <Text style={[styles.content_base_left, {color: 'black'}]}>运单信息（到库）</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{'查看'}</Text>
+                                <Image source={cellJianTou} style={styles.image}></Image>
+                            </View>
+
+                        </View>
+                    </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity activeOpacity={0.8} onPress={() => {
                     this.toNextPage({
                             name: 'InvoiceInfo',
                             component: InvoiceInfo,
@@ -198,36 +216,16 @@ export default class FillWaybill extends BaseComponent {
                         <Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>我已同意签署物流协议</Text>
                     </View>
                 </TouchableOpacity>
-                <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'确定'}
-                          parentStyle={styles.loginBtnStyle}
-                          childStyle={styles.loginButtonTextStyle}
-                          mOnPress={() => {
-                              this.toNextPage({
-                                      name: 'CheckWaybill',
-                                      component: CheckWaybill,
-                                      params: {
-                                          isShowPay: true
-                                      }
-                                  }
-                              );
-                          }}/>
             </View>
         );
 
-    }
-    backPg = () => {
-        this.refs.accountModal.changeShowType(true,
-            '您确认选择放弃？', '确认', '取消', () => {
-                this.backPage();
-            });
     }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
                 {this.loadView()}
-                <NavigatorView title='填写运单' backIconClick={this.backPage}/>
+                <NavigatorView title={'运单信息（到店）'} backIconClick={this.backPage}/>
             </View>);
         } else {
             return (<View style={styles.container}>
@@ -236,8 +234,36 @@ export default class FillWaybill extends BaseComponent {
                         this._renderItem()
                     }
                 </View>
-                <AccountModal ref="accountModal"/>
-                <NavigatorView title='填写运单' backIconClick={this.backPg}/>
+                <View
+                    style={styles.footerStyle}>
+                    <Text
+                        style={{
+                            color: '#666666',
+                            fontSize: 13,
+                            marginHorizontal: Pixel.getPixel(10)
+                        }}>仓库费:</Text>
+                    <Text style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{50 + '元'}</Text>
+                    <TouchableOpacity activeOpacity={0.8} style={{
+                        width: Pixel.getPixel(80),
+                        height: Pixel.getPixel(38),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: FontAndColor.COLORB0,
+                        borderRadius: 4,
+                        marginRight: Pixel.getPixel(10)
+                    }} onPress={()=>{
+                        // this.toNextPage({
+                        //         name: 'SelectPickUp',
+                        //         component: SelectPickUp,
+                        //         params: {}
+                        //     }
+                        // );
+                    }}
+                    >
+                        <Text style={{color: 'white', fontSize: 18}}>支付</Text>
+                    </TouchableOpacity>
+                </View>
+                <NavigatorView title={'运单信息（到店）'} backIconClick={this.backPage}/>
             </View>)
         }
 
@@ -276,7 +302,7 @@ const styles = StyleSheet.create({
         backgroundColor: FontAndColor.all_background,
     },
     content_title_text_wrap: {
-        height: Pixel.getPixel(37),
+        height: Pixel.getPixel(35),
         alignItems: 'center',
         flexDirection: 'row'
     },
@@ -329,5 +355,15 @@ const styles = StyleSheet.create({
     loginButtonTextStyle: {
         color: FontAndColor.COLORA3,
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
+    },
+    footerStyle: {
+        height: Pixel.getPixel(50),
+        width: width,
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: Pixel.getPixel(0),
+
     },
 });

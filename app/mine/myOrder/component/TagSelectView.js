@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
     tagStyle:{
         height: Pixel.getPixel(32),
         backgroundColor: 'transparent',
-        marginRight: Pixel.getPixel(10),
-        paddingHorizontal: Pixel.getPixel(10),
+        marginLeft: Pixel.getPixel(10),
+        paddingHorizontal: Pixel.getPixel(15),
         borderRadius: Pixel.getPixel(2),
         borderWidth: Pixel.getPixel(1),
         borderColor: FontAndColor.COLORA4,
@@ -88,11 +88,11 @@ const styles = StyleSheet.create({
         borderColor: FontAndColor.COLORB0,
     },
     tag_default_text: {
-        fontSize: Pixel.getFontPixel(18),
+        fontSize: Pixel.getFontPixel(16),
         color: FontAndColor.COLORA1
     },
     tag_select_text: {
-        fontSize: Pixel.getFontPixel(18),
+        fontSize: Pixel.getFontPixel(16),
         color: FontAndColor.COLORB0
     }
 });
