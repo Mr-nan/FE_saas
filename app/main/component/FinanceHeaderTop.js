@@ -16,6 +16,7 @@ var Pixel = new PixelUtil();
 import HomeJobButton from './HomeJobButton';
 import GetPermissionUtil from '../../utils/GetPermissionUtil';
 const GetPermission = new GetPermissionUtil();
+import Switch from '../../mine/accountManage/component/Switch';
 export default class HomeJobItem extends PureComponent {
 
     constructor(props) {
@@ -29,14 +30,14 @@ export default class HomeJobItem extends PureComponent {
 
     }
 
-    changeType=(type)=>{
-        this.setState({type:type});
+    changeType = (type) => {
+        this.setState({type: type});
     }
 
     render() {
         if (this.state.type == 1) {
             return (
-                <View style={{flex:1,alignItems:'center'}}>
+                <View style={{alignItems:'center',flex:1}}>
                     <View style={{height:Pixel.getPixel(34),flexDirection: 'row'}}>
                         <View style={{paddingTop:Pixel.getPixel(12),flex:1,paddingLeft: Pixel.getPixel(20)}}>
                             <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(12)}}
@@ -94,7 +95,7 @@ export default class HomeJobItem extends PureComponent {
             return (
                 <View style={{flex:1,alignItems:'center'}}>
                     <Text style={{fontSize: Pixel.getFontPixel(11),color: '#fff',
-                backgroundColor:'#00000000'}}>新车订单额度 2000万</Text>
+                backgroundColor:'#00000000',marginTop:Pixel.getPixel(10)}}>新车订单额度 2000万</Text>
                 </View>
 
             );

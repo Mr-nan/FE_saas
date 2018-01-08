@@ -16,7 +16,6 @@ import  {
     RefreshControl,
     NativeModules,
     BackAndroid,
-    Animated,
     Platform,
     StatusBar
 } from  'react-native'
@@ -58,20 +57,20 @@ import CGDLendScenes from '../finance/lend/CGDLendScenes';
 import AccountModal from '../component/AccountModal';
 import MyAccountScene from "../mine/accountManage/MyAccountScene";
 import  FinanceHeader from './component/FinanceHeader';
+import  FinanceButton from './component/FinanceButton';
+import  FinanceScreen from './component/FinanceScreen';
 
 export default class FinanceSence extends BaseComponet {
 
     constructor(props) {
         super(props);
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
-            topWidth: new Animated.Value(330),
-            scale1: new Animated.Value(1),
-            scale2: new Animated.Value(1),
-            scale3: new Animated.Value(1),
-            scale4: new Animated.Value(1)
-        };
+            source: ds.cloneWithRows([1, 2, 3, 4, 5, 6, 7, 8, 9, 0,11,11,11,11,11,11])
+        }
+        ;
     }
 
     handleBack = () => {
@@ -132,12 +131,23 @@ export default class FinanceSence extends BaseComponet {
         }
         return (
             <View style={cellSheet.container}>
-                {IS_ANDROID ? null: <StatusBar barStyle={'default'} />}
-                <FinanceHeader/>
+                {IS_ANDROID ? null : <StatusBar barStyle={'default'}/>}
+                <ListView
+                    removeClippedSubviews={false}
+                    dataSource={this.state.source}
+                    renderRow={this._renderRow}
+                    refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={this.refreshingData}
+                                        tintColor={[fontAndColor.COLORB0]}
+                                        colors={[fontAndColor.COLORB0]}
+                                    />
+                                }
+                />
             </View>
         )
     }
-
 
 
     renderListFooter = () => {
@@ -149,6 +159,15 @@ export default class FinanceSence extends BaseComponet {
     }
 
     _renderRow = (movie) => {
+        if(movie==1){
+            return( <FinanceHeader/>);
+        }else if(movie==2){
+            return(<FinanceButton/>);
+        }else if(movie==3){
+            return(<FinanceScreen/>);
+        }else{
+            return(<View style={{width:width,height:50,backgroundColor: '#fff'}}></View>);
+        }
 
     }
 

@@ -25,6 +25,14 @@ export default class FinanceHeader extends PureComponent {
             scale2: new Animated.Value(1),
             scale3: new Animated.Value(1),
             scale4: new Animated.Value(1),
+            topWidth: new Animated.Value(Pixel.getPixel(330)),
+            topHeight: new Animated.Value(Pixel.getPixel(170)),
+            topLeft: new Animated.Value(Pixel.getPixel(22)),
+            topTop: new Animated.Value(Pixel.getPixel(20)),
+            bottomWidth: new Animated.Value(Pixel.getPixel(306)),
+            bottomHeight: new Animated.Value(Pixel.getPixel(35)),
+            bottomLeft: new Animated.Value(Pixel.getPixel(35)),
+            bottomTop: new Animated.Value(Pixel.getPixel(176))
         };
     }
 
@@ -34,51 +42,29 @@ export default class FinanceHeader extends PureComponent {
 
     render() {
         console.log('123');
-        let topView = {};
-        let bottomView = {};
+        console.log(this.state.topLeft);
         return (
             <View style={{backgroundColor:'#fff',width:width,height:Pixel.getTitlePixel(215)}}>
                 <TouchableOpacity activeOpacity={1} onPress={()=>{
                     this.changeBottom(1);
                 }}>
-                    <Animated.Image style={{width:Pixel.getPixel(330),
-                    height:Pixel.getPixel(170),resizeMode:'stretch',
-                position: 'absolute',
-                transform:[{scaleY: this.state.scale4},{
-                    scaleX: this.state.scale3
-                },{
-                    translateX: this.state.scale1.interpolate({
-                 inputRange: [1, 1.0785],
-                 outputRange: [Pixel.getPixel(22), Pixel.getPixel(22)]  // 0 : 150, 0.5 : 75, 1 : 0
-                })
-                },{
-                    translateY: this.state.scale1.interpolate({
-                 inputRange: [1, 1.0785],
-                 outputRange: [Pixel.getPixel(20), Pixel.getPixel(525)]  // 0 : 150, 0.5 : 75, 1 : 0
-                })
-                }]}}
+                    <Animated.Image style={{width:this.state.topWidth,
+                    height:this.state.topHeight,resizeMode:'stretch',
+                position: 'absolute',top:this.state.topTop,
+                left:this.state.topLeft}}
                                     source={require('../../../images/financeImages/jinrongbeijingqian.png')}
-                    ><FinanceHeaderTop ref="tops" type={1}/></Animated.Image>
+                    >
+                        <FinanceHeaderTop ref="tops" type={1}/>
+                    </Animated.Image>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={1} onPress={()=>{
                     this.changeBottom(2);
                 }}>
-                    <Animated.Image style={{width:Pixel.getPixel(306),
-                    height:Pixel.getPixel(35),resizeMode:'stretch',
+                    <Animated.Image style={{width:this.state.bottomWidth,
+                    height:this.state.bottomHeight,resizeMode:'stretch',
                 position: 'absolute',
-                transform:[{scaleY: this.state.scale2},{
-                    scaleX: this.state.scale1
-                },{
-                    translateX: this.state.scale1.interpolate({
-                 inputRange: [1, 1.0785],
-                 outputRange: [Pixel.getPixel(35), Pixel.getPixel(31)]  // 0 : 150, 0.5 : 75, 1 : 0
-                })
-                },{
-                    translateY: this.state.scale1.interpolate({
-                 inputRange: [1, 1.0785],
-                 outputRange: [Pixel.getPixel(176), Pixel.getPixel(18)]  // 0 : 150, 0.5 : 75, 1 : 0
-                })
-                }]}} source={require('../../../images/financeImages/jinrongbeijinghou.png')}>
+                top:this.state.bottomTop,left:this.state.bottomLeft}}
+                                    source={require('../../../images/financeImages/jinrongbeijinghou.png')}>
                         <FinanceHeaderTop ref="bottoms" type={2}/>
                     </Animated.Image>
                 </TouchableOpacity>
@@ -87,60 +73,110 @@ export default class FinanceHeader extends PureComponent {
     }
 
     changeBottom = (from) => {
-        if (this.state.scale1._value == 1.0785 && from == 1) {
+        if (this.state.topWidth._value==306 && from == 1) {
             Animated.parallel([
                 Animated.timing(          // Uses easing functions
-                    this.state.scale1,    // The value to drive
+                    this.state.topWidth,    // The value to drive
                     {
-                        toValue: 1,
+                        toValue: Pixel.getPixel(330),
                         duration: 800
                     },
                 ), Animated.timing(          // Uses easing functions
-                    this.state.scale2,    // The value to drive
+                    this.state.topHeight,    // The value to drive
                     {
-                        toValue: 1,
-                        duration: 800
-                    },
-                ), Animated.timing(          // Uses easing functions
-                    this.state.scale3,    // The value to drive
-                    {
-                        toValue: 1,
-                        duration: 800
-                    },
-                ), Animated.timing(          // Uses easing functions
-                    this.state.scale4,    // The value to drive
-                    {
-                        toValue: 1,
+                        toValue: Pixel.getPixel(170),
                         duration: 820
+                    },
+                ), Animated.timing(          // Uses easing functions
+                    this.state.topLeft,    // The value to drive
+                    {
+                        toValue: Pixel.getPixel(22),
+                        duration: 800
+                    },
+                ), Animated.timing(          // Uses easing functions
+                    this.state.topTop,    // The value to drive
+                    {
+                        toValue: Pixel.getPixel(20),
+                        duration: 800
+                    },
+                ),
+                Animated.timing(          // Uses easing functions
+                    this.state.bottomWidth,    // The value to drive
+                    {
+                        toValue: Pixel.getPixel(306),
+                        duration: 800
+                    },
+                ), Animated.timing(          // Uses easing functions
+                    this.state.bottomHeight,    // The value to drive
+                    {
+                        toValue: Pixel.getPixel(35),
+                        duration: 820
+                    },
+                ), Animated.timing(          // Uses easing functions
+                    this.state.bottomLeft,    // The value to drive
+                    {
+                        toValue: Pixel.getPixel(35),
+                        duration: 800
+                    },
+                ), Animated.timing(          // Uses easing functions
+                    this.state.bottomTop,    // The value to drive
+                    {
+                        toValue: Pixel.getPixel(176),
+                        duration: 800
                     },
                 )
             ]).start();
             this.refs.tops.changeType(1);
             this.refs.bottoms.changeType(2);
-        } else if (this.state.scale1._value == 1 && from == 2) {
+        } else if (this.state.topWidth._value==330 && from == 2) {
             Animated.parallel([
                 Animated.timing(          // Uses easing functions
-                    this.state.scale1,    // The value to drive
+                    this.state.topWidth,    // The value to drive
                     {
-                        toValue: 1.0785,
+                        toValue: Pixel.getPixel(306),
                         duration: 800
                     },
                 ), Animated.timing(          // Uses easing functions
-                    this.state.scale2,    // The value to drive
+                    this.state.topHeight,    // The value to drive
                     {
-                        toValue: 4.86,
+                        toValue: Pixel.getPixel(35),
                         duration: 820
                     },
                 ), Animated.timing(          // Uses easing functions
-                    this.state.scale3,    // The value to drive
+                    this.state.topLeft,    // The value to drive
                     {
-                        toValue: 0.93,
+                        toValue: Pixel.getPixel(35),
                         duration: 800
                     },
                 ), Animated.timing(          // Uses easing functions
-                    this.state.scale4,    // The value to drive
+                    this.state.topTop,    // The value to drive
                     {
-                        toValue: 0.21,
+                        toValue: Pixel.getPixel(176),
+                        duration: 800
+                    },
+                ),
+                Animated.timing(          // Uses easing functions
+                    this.state.bottomWidth,    // The value to drive
+                    {
+                        toValue: Pixel.getPixel(330),
+                        duration: 800
+                    },
+                ), Animated.timing(          // Uses easing functions
+                    this.state.bottomHeight,    // The value to drive
+                    {
+                        toValue: Pixel.getPixel(170),
+                        duration: 820
+                    },
+                ), Animated.timing(          // Uses easing functions
+                    this.state.bottomLeft,    // The value to drive
+                    {
+                        toValue: Pixel.getPixel(22),
+                        duration: 800
+                    },
+                ), Animated.timing(          // Uses easing functions
+                    this.state.bottomTop,    // The value to drive
+                    {
+                        toValue: Pixel.getPixel(20),
                         duration: 800
                     },
                 )
