@@ -17,14 +17,17 @@ import SelectDestination from './SelectDestination';
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 
 const Pixel = new PixelUtil();
-let feeDatas = [{title: '发票类型', value: '1000元'}, {title: '发票抬头', value: '100元'}]
-let accoutInfo = [{title: '联系电话', value: '13000000001'}, {title: '收车地址', value: '湖北省武汉市武昌区街坊邻居阿拉丁就附近阿斯蒂芬逻辑'}]
+let feeDatas = [{title: '发票类型', value: '1000元'}, {title: '发票抬头', value: '100元'}, {title: '纳税人识别号', value: ''}]
+let accoutInfo = [{title: '联系电话', value: '13000000001'}, {title: '收车地址', value: '湖北省武汉市武昌区街坊ADSL看风景拉就是的法律'}]
 export default class InvoiceInfo extends BaseComponent {
     constructor(props) {
         super(props);
-        this.num = '';
+        this.num = '';//识别号
+        this.riseText = '';//抬头
+        this.telText = '';
+        this.addressText = '';
         this.state = {
-            renderPlaceholderOnly: false
+            renderPlaceholderOnly: false,
         }
     }
 
@@ -54,27 +57,31 @@ export default class InvoiceInfo extends BaseComponent {
                             return (
                                 <View key={index + 'fee'} style={styles.content_title_text_wrap}>
                                     <Text style={styles.content_title_text}>{data.title}</Text>
-                                    <Text style={styles.content_base_Right}>{data.value}</Text>
+                                    {index !== 0 ?
+                                        <TextInput
+                                            style={{
+                                                height: Pixel.getPixel(55),
+                                                flex: 1,
+                                                flexWrap: 'wrap',
+                                                textAlign: 'right',
+                                                fontSize: Pixel.getPixel(14),
+                                            }}
+                                            underlineColorAndroid={"#00000000"}
+                                            defaultValue={data.value}
+                                            placeholder={'请输入' + data.title}
+                                            onChangeText={(text) => {
+                                                if (index == 1) {
+                                                    this.riseText = text;
+                                                } else {
+                                                    this.num = text
+                                                }
+                                            }}
+                                        /> :
+                                        <Text style={styles.content_base_Right}>{data.value}</Text>}
                                 </View>
                             )
                         })
                     }
-                </View>
-
-                <View style={styles.content_title_text_wrap}>
-                    <Text style={[styles.content_title_text, {marginLeft: Pixel.getPixel(15)}]}>纳税人识别号</Text>
-                    <TextInput style={[styles.content_base_Right, {
-                        width: Pixel.getPixel(100),
-                        marginRight: Pixel.getPixel(15)
-                    }]}
-                               ref={(ref) => {
-                               }}
-                               editable={true}
-                               placeholder={'请输入识别码'}
-                               onChangeText={(text) => {
-                                   this.num = text
-                               }}
-                               underlineColorAndroid='transparent'/>
                 </View>
 
                 <Text style={{
@@ -114,12 +121,17 @@ export default class InvoiceInfo extends BaseComponent {
                     {
                         accoutInfo.map((data, index) => {
                             return (
+
                                 <View key={index + 'accoutInfo'} style={styles.content_title_text_wrap}>
                                     <Text style={styles.content_title_text}>{data.title}</Text>
-                                    <View style={{flexWrap:'wrap',height:Pixel.getPixel(51),width:width*3/4,justifyContent:'center',paddingRight:Pixel.getPixel(10)}}>
-                                        <Text style={[styles.content_base_Right]}>{data.value}</Text>
+                                    <View style={{
+                                        flexWrap: 'wrap',
+                                        height: Pixel.getPixel(51),
+                                        width: width * 3 / 4,
+                                        justifyContent: 'center',
+                                    }}>
+                                        <Text style={[styles.content_base_Right, {marginRight:Pixel.getPixel(15)}]}>{data.value}</Text>
                                     </View>
-
                                 </View>
                             )
                         })
@@ -132,16 +144,29 @@ export default class InvoiceInfo extends BaseComponent {
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
-                              this.toNextPage({
-                                      name: 'CheckWaybill',
-                                      component: CheckWaybill,
-                                      params: {}
-                                  }
-                              );
+                              this.confirmBt();
                           }}/>
             </View>
         );
 
+    }
+    confirmBt=()=>{
+        if(this.isEmpty(this.riseText)){
+            this.props.showToast('请填写发票抬头');
+            return;
+        }
+        if(this.isEmpty(this.num)){
+            this.props.showToast('请填写纳税人识别号');
+            return;
+        }
+        this.toNextPage({
+                name: 'CheckWaybill',
+                component: CheckWaybill,
+                params: {
+                    isShowPay: true
+                }
+            }
+        );
     }
 
     render() {
@@ -207,18 +232,18 @@ const styles = StyleSheet.create({
         backgroundColor: FontAndColor.all_background,
     },
     content_title_text_wrap: {
-        height: Pixel.getPixel(50),
+        height: Pixel.getPixel(55),
         alignItems: 'center',
         flexDirection: 'row',
         borderBottomWidth: Pixel.getPixel(1),
         borderColor: FontAndColor.COLORA4,
         backgroundColor: 'white',
-        justifyContent:'space-between',
+        justifyContent: 'space-between',
     },
     content_title_text: {
         fontSize: Pixel.getFontPixel(14),
         color: FontAndColor.COLORA1,
-        marginRight:Pixel.getPixel(20),
+        marginRight: Pixel.getPixel(20),
     },
     content_base_wrap: {
         height: Pixel.getPixel(46),
@@ -243,7 +268,7 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(14),
         color: 'black',
         textAlign: 'right',
-        flexWrap:'wrap',
+        flexWrap: 'wrap',
     },
     image: {
         marginLeft: Pixel.getPixel(10),

@@ -16,6 +16,8 @@ import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
 import InvoiceInfo from './InvoiceInfo';
 import CheckWaybill from './CheckWaybill';
+import AccountModal from './AccountModal';
+
 
 const agree_icon = require('../../../../images/agree_icon.png');
 const disagree = require('../../../../images/disagree.png');
@@ -51,6 +53,8 @@ let accoutInfo = [{title: '联系人', value: '刘威'}, {title: '联系方式',
 export default class WaybillToStore extends BaseComponent {
     constructor(props) {
         super(props);
+        this.collectAdress='太原市锦江区';
+        this.startAdress='太原市锦江区';
         this.state = {
             isAgree: true,
             renderPlaceholderOnly: false
@@ -79,7 +83,7 @@ export default class WaybillToStore extends BaseComponent {
                             <Image source={collect_icon} style={{marginRight: Pixel.getPixel(3),}}></Image>
                             <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>发车地</Text>
                         </View>
-                        <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> 太原市锦江区</Text>
+                        <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> {this.startAdress}</Text>
                     </View>
                     <View style={{alignItems: 'center', marginBottom: Pixel.getPixel(5)}}>
                         <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>100公里</Text>
@@ -107,10 +111,10 @@ export default class WaybillToStore extends BaseComponent {
                             }}>
                                 <Image source={depart_icon} style={{marginRight: Pixel.getPixel(3)}}></Image>
 
-                                <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>发车地</Text>
+                                <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>收车地</Text>
                                 <Image source={white_jiantou} style={{marginLeft: Pixel.getPixel(5)}}></Image>
                             </View>
-                            <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> 太原市锦江区</Text>
+                            <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> {this.collectAdress}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -254,23 +258,44 @@ export default class WaybillToStore extends BaseComponent {
                         borderRadius: 4,
                         marginRight: Pixel.getPixel(10)
                     }} onPress={()=>{
-                        // this.toNextPage({
-                        //         name: 'SelectPickUp',
-                        //         component: SelectPickUp,
-                        //         params: {}
-                        //     }
-                        // );
+                        this.confirmBt();
                     }}
                     >
                         <Text style={{color: 'white', fontSize: 18}}>支付</Text>
                     </TouchableOpacity>
                 </View>
-                <NavigatorView title={'运单信息（到店）'} backIconClick={this.backPage}/>
+                <AccountModal ref="accountModal"/>
+                <NavigatorView title={'运单信息（到店）'} backIconClick={this.backPg}/>
             </View>)
         }
 
     }
 
+    backPg = () => {
+        this.refs.accountModal.changeShowType(true,
+            '您确认选择放弃？', '确认', '取消', () => {
+                this.backPage();
+            });
+    }
+
+    confirmBt=()=>{
+        if(!this.state.isAgree){
+            this.props.showToast('请勾选物流协议');
+            return;
+        }
+        if(this.isEmpty(this.collectAdress)){
+            this.props.showToast('请选择收车地');
+            return;
+        }
+        this.toNextPage({
+                name: 'CheckWaybill',
+                component: CheckWaybill,
+                params: {
+                    isShowPay: true
+                }
+            }
+        );
+    }
     onTagClick = (dt, index) => {
         //单选
         tagViews.map((data) => {

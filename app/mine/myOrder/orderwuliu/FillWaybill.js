@@ -48,11 +48,13 @@ let tagViews = [{
 let feeDatas = [{title: '物流费', value: '1000元'}, {title: '提验车费', value: '100元'}]
 let accoutInfo = [{title: '联系人', value: '刘威'}, {title: '联系方式', value: '15911111111'}, {
     title: '收车地址',
-    value: '湖北省武汉市武昌区街坊邻居阿拉丁就附近阿斯蒂芬逻辑'
+    value: '湖北省武汉市武昌区街坊邻居阿拉丁就附近阿斯蒂芬逻'
 }]
 export default class FillWaybill extends BaseComponent {
     constructor(props) {
         super(props);
+        this.collectAdress='太原市锦江区';
+        this.startAdress='太原市锦江区';
         this.state = {
             isAgree: true,
             renderPlaceholderOnly: false
@@ -81,7 +83,7 @@ export default class FillWaybill extends BaseComponent {
                             <Image source={collect_icon} style={{marginRight: Pixel.getPixel(3),}}></Image>
                             <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>发车地</Text>
                         </View>
-                        <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> 太原市锦江区</Text>
+                        <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> {this.startAdress}</Text>
                     </View>
                     <View style={{alignItems: 'center', marginBottom: Pixel.getPixel(5)}}>
                         <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>100公里</Text>
@@ -109,10 +111,10 @@ export default class FillWaybill extends BaseComponent {
                             }}>
                                 <Image source={depart_icon} style={{marginRight: Pixel.getPixel(3)}}></Image>
 
-                                <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>发车地</Text>
+                                <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>收车地</Text>
                                 <Image source={white_jiantou} style={{marginLeft: Pixel.getPixel(5)}}></Image>
                             </View>
-                            <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> 太原市锦江区</Text>
+                            <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> {this.startAdress}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -205,19 +207,32 @@ export default class FillWaybill extends BaseComponent {
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
-                              this.toNextPage({
-                                      name: 'CheckWaybill',
-                                      component: CheckWaybill,
-                                      params: {
-                                          isShowPay: true
-                                      }
-                                  }
-                              );
+                              this.confirmBt();
                           }}/>
             </View>
         );
 
     }
+
+    confirmBt=()=>{
+        if(!this.state.isAgree){
+            this.props.showToast('请勾选物流协议');
+            return;
+        }
+        if(this.isEmpty(this.collectAdress)){
+            this.props.showToast('请选择收车地');
+            return;
+        }
+        this.toNextPage({
+                name: 'CheckWaybill',
+                component: CheckWaybill,
+                params: {
+                    isShowPay: true
+                }
+            }
+        );
+    }
+
     backPg = () => {
         this.refs.accountModal.changeShowType(true,
             '您确认选择放弃？', '确认', '取消', () => {
