@@ -40,7 +40,7 @@ export default class TagSelectView extends Component {
             <View style={styles.container}>
                 {this.props.onTagClick ? this.state.cellData.map((dt, index) => {
                     return (
-                        <TouchableOpacity key={index}  style={[styles.tagStyle, dt.check ? styles.tag_select_wrap : styles.tag_default_wrap]} activeOpacity={1} onPress={() => {
+                        <TouchableOpacity key={index}  style={[styles.tagStyle, dt.check ? styles.tag_select_wrap : styles.tag_default_wrap, this.props.buttonWidth && {width: this.props.buttonWidth}]} activeOpacity={1} onPress={() => {
                         this.props.onTagClick(dt, index);
                     }}>
                             <View key={index}
@@ -53,7 +53,7 @@ export default class TagSelectView extends Component {
                 }):
                     this.state.cellData.map((dt, index) => {
                         return (
-                            <View key={index} style={[styles.tagStyle,dt.check ? styles.tag_select_wrap : styles.tag_default_wrap]}>
+                            <View key={index} style={[styles.tagStyle,dt.check ? styles.tag_select_wrap : styles.tag_default_wrap, this.props.buttonWidth && {width: this.props.buttonWidth}]}>
                                 <Text
                                     style={dt.check ? styles.tag_select_text : styles.tag_default_text}>{dt.name}</Text>
                             </View>

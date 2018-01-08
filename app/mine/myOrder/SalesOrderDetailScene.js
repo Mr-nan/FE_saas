@@ -1,9 +1,7 @@
 /**
  * Created by hanmeng on 2017/5/11.
  */
-
 import React, {Component, PropTypes} from 'react'
-
 import {
     StyleSheet,
     View,
@@ -15,21 +13,16 @@ import {
     Dimensions,
     NativeModules,
     BackAndroid,
-    InteractionManager,
     TextInput,
     RefreshControl
 } from  'react-native'
-
 const {width, height} = Dimensions.get('window');
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
-import InputAmountScene from "./InputAmountScene";
-import InputVinInfo from "./InputVinInfo";
 import StepView from "./component/StepView";
 import ExplainModal from "./component/ExplainModal";
-import MakePhoneModal from "./component/MakePhoneModal";
 import ChooseModal from "./component/ChooseModal";
 import TransactionPrice from "./component/TransactionPrice";
 import {request} from "../../utils/RequestUtil";
@@ -37,26 +30,16 @@ import * as AppUrls from "../../constant/appUrls";
 import ContactLayout from "./component/ContactLayout";
 import GetCarCountDown from "./component/GetCarCountDown";
 import DepositCountDown from "./component/DepositCountDown";
-import CheckStand from "../../finance/CheckStand";
 import * as Net from '../../utils/RequestUtil';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import AccountScene from "../accountManage/RechargeScene";
 import VinInfo from '../../publish/component/VinInfo';
-import AccountWebScene from "../accountManage/AccountWebScene";
-import ContractWebScene from "./ContractWebScene";
-import OrderSearchScene from "./OrderSearchScene";
-import AccountManageScene from "../accountManage/AccountTypeSelectScene";
-import BindCardScene from "../accountManage/BindCardScene";
-import WaitActivationAccountScene from "../accountManage/WaitActivationAccountScene";
-import AccountModal from "../../component/AccountModal";
 import AccountForOrderModal from "./component/AccountForOrderModal";
 import ContractScene from "./ContractScene";
-import RepaymentInfoScene from "../../finance/repayment/RepaymentCreditInfoScene";
-import InventoryPlanInfoScene from "../../finance/repayment/InventoryPlanInfoScene";
-import NewPurchaseRepaymentInfoScene from "../../finance/repayment/NewPurchaseRepaymentInfoScene";
 import SalesInfo from "./component/SalesInfo";
 import MyAccountScene from "../accountManage/MyAccountScene";
+import ChooseStart from "./component/ChooseStart";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -666,9 +649,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     }
                 }
                 break;
-            case 200:
-
-                break;
         }
     };
 
@@ -930,9 +910,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 this.items = [];
                 this.contactData = {};
                 if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                    this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+                    this.mList = ['0', '1', '2', '8', '4', '5', '7', '9'];
                 } else {
-                    this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+                    this.mList = ['0', '1', '2', '8', '4', '5', '6', '7', '9'];
                 }
                 this.contactData = {
                     layoutTitle: '确认成交价',
@@ -968,6 +948,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
+                //this.mList = ['0', '1', '5', '7', '8', '9'];
                 this.contactData = {
                     layoutTitle: '查看到账',
                     layoutContent: '您可以查看买家已支付到账的金额，但暂不可提现，请在交割车辆时要求买家点击"确认验收"按钮，否则将无法提现。',
@@ -1471,54 +1452,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 </View>
             )
         } else if (rowData === '5') {
-            //let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
-            //let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
             let initReg = this.orderDetail.orders_item_data[0].car_data.init_reg;
             let mileage = this.orderDetail.orders_item_data[0].car_data.mileage;
             let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
             let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
-            {/*return (*/
-            }
-            {/*<View style={styles.itemType3}>*/
-            }
-            {/*<View style={{*/
-            }
-            {/*height: Pixel.getPixel(40),*/
-            }
-            {/*marginLeft: Pixel.getPixel(15),*/
-            }
-            {/*justifyContent: 'center'*/
-            }
-            {/*}}>*/
-            }
-            {/*<Text style={styles.orderInfo}>订单号:{this.orderDetail.order_no}</Text>*/
-            }
-            //             <Text style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
-            //         </View>
-            //         <View style={styles.separatedLine}/>
-            //         <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
-            //             <Image style={styles.image}
-            //                    source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
-            //             <View style={{marginLeft: Pixel.getPixel(10)}}>
-            //                 <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
-            //                       numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_data.model_name}</Text>
-            //                 <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
-            //                     <Text style={styles.carDescribeTitle}>里程：</Text>
-            //                     <Text style={styles.carDescribe}>{mileage}万</Text>
-            //                 </View>
-            //                 <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-            //                     <Text style={styles.carDescribeTitle}>上牌：</Text>
-            //                     <Text style={styles.carDescribe}>{initRegDate}</Text>
-            //                 </View>
-            //                 {this.orderState !== 0 ? <View
-            //                     style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-            //                     <Text style={styles.carDescribeTitle}>成交价：</Text>
-            //                     <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
-            //                 </View> : null}
-            //             </View>
-            //         </View>
-            //     </View>
-            // )
             return (
                 <View style={styles.itemType3}>
                     <View style={{
@@ -1643,52 +1580,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '8') {
             return (
-                <View style={styles.itemType5}>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text allowFontScaling={false} style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            marginLeft: Pixel.getPixel(15)
-                        }}>单车融资还款</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>还款单号:</Text>
-                        <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>232222333</Text>
-                        <Image
-                            style={styles.backIcon}
-                            source={require('../../../images/mainImage/celljiantou.png')}/>
-                    </View>
-                    <View style={styles.separatedLine}/>
-                    <View style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(20),
-                        marginRight: Pixel.getPixel(15)
-                    }}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>本金</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>利息</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>居间费</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>还款总计</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>剩余总计</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>100000元</Text>
-                    </View>
-                </View>
+                <ChooseStart />
             )
         } else if (rowData === '9') {
             return (
