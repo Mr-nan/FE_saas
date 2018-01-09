@@ -1830,15 +1830,15 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '9') {
             return (
-                <LogisticsMode />
+                <LogisticsMode navigator={this.props.navigator}/>
             )
         } else if (rowData === '10') {
             return (
-                <LogisticsModeForFinancing />
+                <LogisticsModeForFinancing navigator={this.props.navigator}/>
             )
         } else if (rowData === '11') {
             return (
-                <ExtractCarPeople />
+                <ExtractCarPeople navigator={this.props.navigator}/>
             )
         }
     }

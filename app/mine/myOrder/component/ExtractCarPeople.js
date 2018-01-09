@@ -16,9 +16,10 @@ const {width, height} = Dimensions.get('window');
 import * as fontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import SelectPickUp from "../orderwuliu/SelectPickUp";
+import BaseComponent from "../../../component/BaseComponent";
 const Pixel = new PixelUtil();
 
-export default class ExtractCarPeople extends PureComponent {
+export default class ExtractCarPeople extends BaseComponent {
 
     /**
      *  初始化

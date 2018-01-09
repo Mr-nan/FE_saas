@@ -17,9 +17,10 @@ import * as fontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import TagSelectView from "./TagSelectView";
 import FillWaybill from "../orderwuliu/FillWaybill";
+import BaseComponent from "../../../component/BaseComponent";
 const Pixel = new PixelUtil();
 
-export default class LogisticsMode extends PureComponent {
+export default class LogisticsMode extends BaseComponent {
 
     /**
      *  初始化
