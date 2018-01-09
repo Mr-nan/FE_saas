@@ -59,16 +59,18 @@ import MyAccountScene from "../mine/accountManage/MyAccountScene";
 import  FinanceHeader from './component/FinanceHeader';
 import  FinanceButton from './component/FinanceButton';
 import  FinanceScreen from './component/FinanceScreen';
+import  FinanceScreenPop from './component/FinanceScreenPop';
 
 export default class FinanceSence extends BaseComponet {
 
     constructor(props) {
         super(props);
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.isShow = false;
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
-            source: ds.cloneWithRows([1, 2, 3, 4, 5, 6, 7, 8, 9, 0,11,11,11,11,11,11])
+            source: ds.cloneWithRows([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 11, 11, 11, 11, 11, 11])
         }
         ;
     }
@@ -133,9 +135,12 @@ export default class FinanceSence extends BaseComponet {
             <View style={cellSheet.container}>
                 {IS_ANDROID ? null : <StatusBar barStyle={'default'}/>}
                 <ListView
+                    ref="listview"
                     removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
+                    scrollEnabled={true}
+                    showsVerticalScrollIndicator={false}
                     refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
@@ -145,8 +150,20 @@ export default class FinanceSence extends BaseComponet {
                                     />
                                 }
                 />
+                <FinanceScreenPop ref="financescreenpop" hidden={(select)=>{
+                    if(select!='null'){
+
+                    }
+                    this.closePop();
+                }}/>
             </View>
         )
+    }
+
+    closePop = () => {
+        this.isShow = false;
+        this.refs.financescreenpop.changeTop(0, 0, 0);
+        this.refs.listview.setNativeProps({scrollEnabled: true});
     }
 
 
@@ -158,15 +175,27 @@ export default class FinanceSence extends BaseComponet {
         }
     }
 
-    _renderRow = (movie) => {
-        if(movie==1){
-            return( <FinanceHeader/>);
-        }else if(movie==2){
-            return(<FinanceButton/>);
-        }else if(movie==3){
-            return(<FinanceScreen/>);
-        }else{
-            return(<View style={{width:width,height:50,backgroundColor: '#fff'}}></View>);
+    _renderRow = (movie, sectionId, rowId) => {
+        if (rowId == 1) {
+            return ( <FinanceHeader/>);
+        } else if (rowId == 2) {
+            return (<FinanceButton/>);
+        } else if (rowId == 3) {
+            return (
+                <FinanceScreen  onPress={(y)=>{
+                    if(this.isShow){
+                        this.closePop();
+                    }else{
+                        this.isShow = !this.isShow;
+                        this.refs.listview.scrollTo({x:0,y:Pixel.getPixel(283),animated:false});
+                        this.refs.financescreenpop.changeTop(Pixel.getPixel(61),
+                        width,Pixel.getPixel(height));
+                        this.refs.listview.setNativeProps({scrollEnabled:false});
+                    }
+
+                }}/>);
+        } else {
+            return (<View style={{width:width,height:50,backgroundColor: '#fff'}}></View>);
         }
 
     }
