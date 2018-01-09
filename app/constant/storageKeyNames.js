@@ -34,3 +34,5 @@ export const ADVERTISEMENT_LAST_MESSAGE_TIME = "advertisement_last_message_time"
 export const SYSTEMS_LAST_MESSAGE_TIME = "systems_last_message_time"; //系统消息数据库中缓存的最近一条数据的时间
 /* message end */
 export const GET_USER_PERMISSION = "get_user_permission";   // 获取角色权限
+export const INVOICE_TITLE = "INVOICE_TITLE";   // 发票抬头
+export const TAXPAYER_IDENTIFICATION_NUMBER = "TAXPAYER_IDENTIFICATION_NUMBER";   // 纳税人识别号

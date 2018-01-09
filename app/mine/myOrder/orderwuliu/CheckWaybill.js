@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, ScrollView, Image,
+    View, TouchableOpacity, Dimensions, ScrollView, Image,Platform,NativeModules,Linking
 } from 'react-native';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
@@ -33,6 +33,7 @@ let carInfo = [{title: '2013款奔驰宝马', value: '配送中'}, {title: '2013
 export default class CheckWaybill extends BaseComponent {
     constructor(props) {
         super(props);
+        this.number='10086'
         this.isShowPay=false;
         this.isShowToStore=false;
         this.title='查看运单';
@@ -116,6 +117,7 @@ export default class CheckWaybill extends BaseComponent {
                     }
                 </View>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                    this.callUp();
                 }}>
                     <View style={styles.content_base_wrap}>
                         <View style={styles.content_base_text_wrap}>
@@ -125,7 +127,7 @@ export default class CheckWaybill extends BaseComponent {
                                 <Text style={[styles.content_base_Right, {
                                     marginRight: Pixel.getPixel(15),
                                     color: FontAndColor.COLORA1
-                                }]}>{'400888888'}</Text>
+                                }]}>{this.number}</Text>
 
                             </View>
 
@@ -194,6 +196,14 @@ export default class CheckWaybill extends BaseComponent {
             </View>
         );
 
+    }
+
+    callUp=()=>{
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.callPhone(this.number);
+        } else {
+            Linking.openURL('tel:' + this.number);
+        }
     }
 
     render() {

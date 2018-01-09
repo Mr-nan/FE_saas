@@ -28,17 +28,6 @@ export default class PickUpInfo extends BaseComponent {
         });
     }
 
-    itemClick = (index) => {
-        accountInfo.map((data) => {
-            data.isSelect = false;
-        })
-        accountInfo[index].isSelect = true;
-        this.setState({
-            accountInfo: accountInfo
-        });
-
-    }
-
     _renderItem = () => {
         return (
             <View style={{flex: 1}}>
@@ -47,16 +36,22 @@ export default class PickUpInfo extends BaseComponent {
                     backgroundColor: 'white',
                     paddingHorizontal: Pixel.getPixel(15)
                 }}>
-                    <Text style={{
-                        fontSize: Pixel.getFontPixel(15),
-                        marginVertical: Pixel.getPixel(15),
-                        color: 'black',
-                    }}>{'提车人'}</Text>
+                    <View style={{
+                        borderBottomWidth: 1,
+                        borderColor: FontAndColor.COLORA4,
+                    }}>
+                        <Text style={{
+                            fontSize: Pixel.getFontPixel(15),
+                            marginVertical: Pixel.getPixel(15),
+                            color: 'black',
+                            borderBottomWidth: 1,
+                            borderColor: FontAndColor.COLORA4,
+                        }}>{'提车人'}</Text>
+                    </View>
                     {
                         this.state.accountInfo.map((data, index) => {
                             return (
                                 <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
-                                    this.itemClick(index);
                                 }}>
                                     <View style={styles.content_title_text_wrap}>
                                         <Text style={styles.content_title_text}>{data.name}</Text>

@@ -13,11 +13,13 @@ import PixelUtil from '../../../utils/PixelUtil';
 import MyButton from "../../../component/MyButton";
 import CheckWaybill from './CheckWaybill';
 import SelectDestination from './SelectDestination';
+import StorageUtil from "../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../constant/storageKeyNames";
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 
 const Pixel = new PixelUtil();
-let feeDatas = [{title: '发票类型', value: '1000元'}, {title: '发票抬头', value: '100元'}, {title: '纳税人识别号', value: ''}]
+let feeDatas = [{title: '发票类型', value: '增值税普通发票'}, {title: '发票抬头', value: ''}, {title: '纳税人识别号', value: ''}]
 let accoutInfo = [{title: '联系电话', value: '13000000001'}, {title: '收车地址', value: '湖北省武汉市武昌区街坊ADSL看风景拉就是的法律'}]
 export default class InvoiceInfo extends BaseComponent {
     constructor(props) {
@@ -32,6 +34,22 @@ export default class InvoiceInfo extends BaseComponent {
     }
 
     initFinish() {
+        StorageUtil.mGetItem(StorageKeyNames.INVOICE_TITLE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                this.riseText = data.result;
+                this.riseInput.setNativeProps({
+                    text: this.riseText
+                });
+            }
+        })
+        StorageUtil.mGetItem(StorageKeyNames.TAXPAYER_IDENTIFICATION_NUMBER, (data) => {
+            if (data.code == 1 && data.result != null) {
+                this.num = data.result;
+                this.numInput.setNativeProps({
+                    text: this.num
+                });
+            }
+        })
         this.setState({
             renderPlaceholderOnly: 'success'
         });
@@ -66,8 +84,12 @@ export default class InvoiceInfo extends BaseComponent {
                                                 textAlign: 'right',
                                                 fontSize: Pixel.getPixel(14),
                                             }}
+                                            ref={(ref) => {
+
+                                                index == 1?this.riseInput=ref:this.numInput=ref
+                                                }
+                                            }
                                             underlineColorAndroid={"#00000000"}
-                                            defaultValue={data.value}
                                             placeholder={'请输入' + data.title}
                                             onChangeText={(text) => {
                                                 if (index == 1) {
@@ -130,7 +152,8 @@ export default class InvoiceInfo extends BaseComponent {
                                         width: width * 3 / 4,
                                         justifyContent: 'center',
                                     }}>
-                                        <Text style={[styles.content_base_Right, {marginRight:Pixel.getPixel(15)}]}>{data.value}</Text>
+                                        <Text
+                                            style={[styles.content_base_Right, {marginRight: Pixel.getPixel(15)}]}>{data.value}</Text>
                                     </View>
                                 </View>
                             )
@@ -150,15 +173,17 @@ export default class InvoiceInfo extends BaseComponent {
         );
 
     }
-    confirmBt=()=>{
-        if(this.isEmpty(this.riseText)){
+    confirmBt = () => {
+        if (this.isEmpty(this.riseText)) {
             this.props.showToast('请填写发票抬头');
             return;
         }
-        if(this.isEmpty(this.num)){
+        if (this.isEmpty(this.num)) {
             this.props.showToast('请填写纳税人识别号');
             return;
         }
+        StorageUtil.mSetItem(StorageKeyNames.INVOICE_TITLE, this.riseText);
+        StorageUtil.mSetItem(StorageKeyNames.TAXPAYER_IDENTIFICATION_NUMBER, this.num);
         this.toNextPage({
                 name: 'CheckWaybill',
                 component: CheckWaybill,
