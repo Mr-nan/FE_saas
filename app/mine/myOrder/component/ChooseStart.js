@@ -55,7 +55,7 @@ export default class ChooseStart extends PureComponent {
         this.tagSelect[index].check = !this.tagSelect[index].check;
 
         this.tagRef.refreshData(this.tagSelect);
-    }
+    };
 
     /**
      *  render
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     separatedLine: {
         marginRight: Pixel.getPixel(15),
         marginLeft: Pixel.getPixel(15),
-        height: 0.5,
+        height: 1,
         backgroundColor: fontAndColor.COLORA4
     }
 });

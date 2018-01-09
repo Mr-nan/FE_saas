@@ -19,6 +19,7 @@ export default class TagSelectView extends Component {
 
     constructor(props) {
         super(props);
+
         this.viewItems = this.props.cellData;
 
         this.state = {
@@ -40,22 +41,24 @@ export default class TagSelectView extends Component {
             <View style={styles.container}>
                 {this.props.onTagClick ? this.state.cellData.map((dt, index) => {
                     return (
-                        <TouchableOpacity key={index}  style={[styles.tagStyle, dt.check ? styles.tag_select_wrap : styles.tag_default_wrap, this.props.buttonWidth && {width: this.props.buttonWidth}]} activeOpacity={1} onPress={() => {
+                        <TouchableOpacity key={index}  style={[styles.tagStyle, dt.check ? styles.tag_select_wrap : styles.tag_default_wrap, this.props.buttonWidth && {width: this.props.buttonWidth},
+                            this.props.paddingHorizontal && {paddingHorizontal: this.props.paddingHorizontal}]} activeOpacity={1} onPress={() => {
                         this.props.onTagClick(dt, index);
                     }}>
                             <View key={index}
                                   style={{flex:1, justifyContent:'center',alignItems:'center'}}>
                                 <Text
-                                    style={dt.check ? styles.tag_select_text : styles.tag_default_text}>{dt.name}</Text>
+                                    style={[dt.check ? styles.tag_select_text : styles.tag_default_text, this.props.textSize && {fontSize: this.props.textSize}]}>{dt.name}</Text>
                             </View>
                         </TouchableOpacity>
                     )
                 }):
                     this.state.cellData.map((dt, index) => {
                         return (
-                            <View key={index} style={[styles.tagStyle,dt.check ? styles.tag_select_wrap : styles.tag_default_wrap, this.props.buttonWidth && {width: this.props.buttonWidth}]}>
+                            <View key={index} style={[styles.tagStyle,dt.check ? styles.tag_select_wrap : styles.tag_default_wrap, this.props.buttonWidth && {width: this.props.buttonWidth},
+                                this.props.paddingHorizontal && {paddingHorizontal: this.props.paddingHorizontal}]}>
                                 <Text
-                                    style={dt.check ? styles.tag_select_text : styles.tag_default_text}>{dt.name}</Text>
+                                    style={[dt.check ? styles.tag_select_text : styles.tag_default_text, this.props.textSize && {fontSize: this.props.textSize}]}>{dt.name}</Text>
                             </View>
                         )
                     })

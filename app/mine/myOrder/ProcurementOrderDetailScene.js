@@ -44,6 +44,9 @@ import DDDetailScene from "../../finance/lend/DDDetailScene";
 import ProcurementInfo from "./component/ProcurementInfo";
 import AccountScene from "../accountManage/AccountScene";
 import CancelOrderReasonScene from "./CancelOrderReasonScene";
+import LogisticsMode from "./component/LogisticsMode";
+import LogisticsModeForFinancing from "./component/LogisticsModeForFinancing";
+import ExtractCarPeople from "./component/ExtractCarPeople";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -170,7 +173,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '6'];
+                this.mList = ['0', '1', '3', '4', '6', '9', '10', '11'];
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.contactData = {
                         layoutTitle: '付全款',
@@ -409,6 +412,21 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 )
                 break;
+            case 4:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text allowFontScaling={false} style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB7
+                            }}>您的申请已被驳回，请选择使用物流服务</Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
             default:
                 this.listViewStyle = Pixel.getTitlePixel(65);
                 return null;
@@ -603,7 +621,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     /**
      * 根据订单状态初始化详情页悬浮底
      * @param orderState 页面悬浮底状态
-     * @returns {*}
+     * @returns 返回底部布局
      **/
     initDetailPageBottom = (orderState) => {
         switch (orderState) {
@@ -879,15 +897,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 11:
                 return (
                     <View style={styles.bottomBar}>
-                        {/*<TouchableOpacity
-                         onPress={() => {
-                         this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
-                         this.cancelOrder);
-                         }}>
-                         <View style={styles.buttonCancel}>
-                         <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
-                         </View>
-                         </TouchableOpacity>*/}
                         <TouchableOpacity
                             onPress={() => {
                                 if (this.orderState == 3) {
@@ -1004,6 +1013,28 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 退款处理中
                             </Text>
                         </View>
+                    </View>
+                );
+                break;
+            case 16:
+                return (
+                    <View style={[styles.bottomBar]}>
+                        <TouchableOpacity
+                            onPress={() => {
+
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>转单车</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请提车函</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 );
                 break;
@@ -1789,6 +1820,18 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                style={{marginRight: Pixel.getPixel(15)}}/>
                     </View>
                 </TouchableOpacity>
+            )
+        } else if (rowData === '9') {
+            return (
+                <LogisticsMode />
+            )
+        } else if (rowData === '10') {
+            return (
+                <LogisticsModeForFinancing />
+            )
+        } else if (rowData === '11') {
+            return (
+                <ExtractCarPeople />
             )
         }
     }
