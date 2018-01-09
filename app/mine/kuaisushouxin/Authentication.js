@@ -14,7 +14,6 @@ import {
 } from "react-native";
 import BaseComponent from "../../component/BaseComponent";
 import * as FontAndColor from "../../constant/fontAndColor";
-import LoginInputText from "../../login/component/LoginInputText";
 import LoginInputTextYU  from "../../login/component/LoginInputTextYU"
 
 
@@ -84,6 +83,7 @@ export default class Register extends BaseComponent {
 						leftTextShow={true}
 						leftText={""}
 						rightText={""}
+					    centerText={'身份验证'}
 					/>
 				</View>
 			</TouchableWithoutFeedback>);
@@ -97,6 +97,7 @@ export default class Register extends BaseComponent {
 					<NavigationBar
 						leftImageCallBack={this.backPage}
 						rightText={""}
+						centerText={'身份验证'}
 					/>
 					{
 						IS_ANDROID ? (this.loadScrollView()) : (
@@ -125,28 +126,28 @@ export default class Register extends BaseComponent {
 				<View style={styles.inputTextLine}/>
 				<View style={styles.inputTextsStyle}>
 					<LoginInputTextYU
-						ref="userName"
+						ref="BorrowerName"
 						leftText = {'借款人姓名'}
 						textPlaceholder={'请输入'}
 						viewStytle={styles.itemStyel}
 						inputTextStyle={styles.inputTextStyle}
 						leftIcon={false}
 						clearValue={true}
-						maxLength={11}
-						keyboardType={'phone-pad'}
 						import={false}
+						defaultValue={'zhangqilong'}
 						rightIcon={false}/>
 					<LoginInputTextYU
-						ref="password"
+						ref="BorrowerID"
 						leftText = {'借款人身份证号'}
 						textPlaceholder={'请输入'}
-						viewStytle={styles.itemStyel}
+						viewStytle={[styles.itemStyel, {borderBottomWidth: 0,}]}
 						inputTextStyle={styles.inputTextStyle}
-						secureTextEntry={true}
+						secureTextEntry={false}
 						clearValue={true}
 						leftIcon={false}
 						import={false}
-						maxLength={16}
+						defaultValue={'zhangqilong'}
+						maxLength={18}//身份证限制18位或者15位
 						rightIcon={false}/>
 
 				</View>
@@ -155,29 +156,29 @@ export default class Register extends BaseComponent {
 
 				<View style={styles.inputTextsStyle}>
 					<LoginInputTextYU
-						ref="passwoedAgain"
+						ref="BorrowerBankNO"
 						leftText = {'借款人银行卡号'}
 						textPlaceholder={'请输入'}
-						viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
+						viewStytle={styles.itemStyel}
 						inputTextStyle={styles.inputTextStyle}
-						secureTextEntry={true}
-						maxLength={16}
 						leftIcon={false}
 						clearValue={true}
 						import={false}
+						keyboardType={'phone-pad'}
 						rightIcon={false}/>
 					<LoginInputTextYU
-						ref="passwoedAgain"
+						ref="BankPhone"
 						leftText = {'银行预留手机号'}
 						textPlaceholder={'请输入'}
-						viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
+						viewStytle={styles.itemStyel}
 						inputTextStyle={styles.inputTextStyle}
-						secureTextEntry={true}
-						maxLength={16}
+						keyboardType={'phone-pad'}
+						maxLength={11}
 						leftIcon={false}
 						clearValue={true}
 						import={false}
-						rightIcon={false}/>
+						rightIcon={false}
+					/>
 					<LoginInputTextYU
 						ref="verifycode"
 						leftText = {'图形验证码'}
@@ -207,14 +208,17 @@ export default class Register extends BaseComponent {
 
 				<View style={styles.inputTextsStyle}>
 					<LoginInputTextYU
-						ref="name"
+						ref="BorrowerPhone"
 						leftText = {'借款人手机号'}
 						textPlaceholder={'请输入'}
-						viewStytle={styles.itemStyel}
+						viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
 						inputTextStyle={styles.inputTextStyle}
 						leftIcon={false}
 						import={false}
+						defaultValue={'zhangqilong'}
 						clearValue={true}
+						keyboardType={'phone-pad'}
+						maxLength={11}//手机号限制11位
 						rightIcon={false}/>
 				</View>
 				<View style={styles.inputTextLine}/>

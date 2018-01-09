@@ -17,7 +17,7 @@ import LoginScene from "./LoginScene";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
 import QuotaApplication from './QuotaApplication';
-import Authentication from '../mine/kuaisushouxin/Authentication'
+import FastCreditTwo from '../mine/kuaisushouxin/FastCreditTwo'
 import NonCreditScene from "../main/NonCreditScene";
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
@@ -75,8 +75,8 @@ export default class LoginAndRegister extends BaseComponent {
                           parentStyle={[styles.buttonStyle, {marginTop: height / 3 * 2}]}
                           childStyle={styles.buttonTextStyle} mOnPress={() => {
                     this.toNextPage({
-                        name: 'Authentication',
-                        component: Authentication,
+                        name: 'FastCreditTwo',
+                        component: FastCreditTwo,
                         params: {},
                     })
                 }}/>

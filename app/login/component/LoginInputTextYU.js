@@ -25,7 +25,7 @@ export default class LoginInputTextYU extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            values: "",//输入框输入内容
+            values: this.props.defaultValue,//输入框输入内容
             rightIconLodding: false,
         }
     }
@@ -47,6 +47,7 @@ export default class LoginInputTextYU extends Component {
         keyboardType: 'default',
         leftText: null,
         secureTextEntry: false,//设置是否为密码安全输入框	bool，默认为false
+	    defaultValue:''
     };
 
     static propTypes = {
@@ -55,9 +56,9 @@ export default class LoginInputTextYU extends Component {
         rightButton: PropTypes.bool,
         secureTextEntry: PropTypes.bool,
         clearValue: PropTypes.bool,//清除输入框内容
+	    defaultValue:PropTypes.string,
         import: PropTypes.bool,//是否为必填项
         editable: PropTypes.bool,
-
         leftIconUri: PropTypes.number,
         rightIconSource: PropTypes.object,
         maxLength: PropTypes.number,//限制文本输入框最大的输入字符长度
@@ -141,7 +142,7 @@ export default class LoginInputTextYU extends Component {
                         style={[styles.textInputStyle, this.props.inputTextStyle]}
                         maxLength={this.props.maxLength}
                         secureTextEntry={this.props.secureTextEntry}
-                        value={this.state.values}
+                        defaultValue={this.state.values}
                         onFocus={
                             this.props.foucsChange ? this.props.foucsChange : () => {}
 
@@ -198,7 +199,7 @@ export default class LoginInputTextYU extends Component {
 
     clearValue = () => {
         this.setState({
-            values: ""
+            values: '',
         });
     }
 
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
     leftTextStyle: {
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
         color: FontAndColor.COLORA0,
-        width: width/3,
+        width: width*0.4,
     }
 
 });
