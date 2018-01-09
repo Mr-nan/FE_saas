@@ -130,9 +130,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
             this.financeInfo = financeInfo;
             this.mList = [];
             if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
+                this.mList = ['0', '1', '2', '8', '3', '4', '5', '7', '9'];
             } else {
-                this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
+                this.mList = ['0', '1', '2', '8', '3', '4', '5', '6', '7', '9'];
             }
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
@@ -145,9 +145,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
         } else {
             this.mList = [];
             if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+                this.mList = ['0', '1', '2', '8', '4', '5', '7', '9'];
             } else {
-                this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+                this.mList = ['0', '1', '2', '8', '4', '5', '6', '7', '9'];
             }
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({

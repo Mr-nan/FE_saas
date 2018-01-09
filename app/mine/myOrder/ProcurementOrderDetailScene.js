@@ -35,18 +35,16 @@ import ContactLayout from "./component/ContactLayout";
 import ChooseModal from "./component/ChooseModal";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
-import AccountWebScene from "../accountManage/AccountWebScene";
-import WebScene from "../../main/WebScene";
-import ContractWebScene from "./ContractWebScene";
 import ContractScene from "./ContractScene";
 import LoanInfo from "./component/LoanInfo";
 import DDDetailScene from "../../finance/lend/DDDetailScene";
 import ProcurementInfo from "./component/ProcurementInfo";
-import AccountScene from "../accountManage/AccountScene";
 import CancelOrderReasonScene from "./CancelOrderReasonScene";
 import LogisticsMode from "./component/LogisticsMode";
 import LogisticsModeForFinancing from "./component/LogisticsModeForFinancing";
 import ExtractCarPeople from "./component/ExtractCarPeople";
+import AddressManage from "./orderwuliu/AddressManage";
+import WaybillToStore from "./orderwuliu/WaybillToStore";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -173,7 +171,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '6', '9', '10', '11'];
+                this.mList = ['0', '1', '3', '4', '9', '6'];
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.contactData = {
                         layoutTitle: '付全款',
@@ -199,7 +197,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '2', '3', '4', '6'];
+                // TODO 判断是否是物流单
+                this.mList = ['0', '1', '2', '3', '4', '9', '6'];
                 this.contactData = {
                     layoutTitle: '全款已付清',
                     layoutContent: '确认验收车辆后卖家可提款，手续齐全。',
@@ -222,7 +221,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '6'];
+                // TODO 判断是否是物流单
+                this.mList = ['0', '1', '3', '4', '9', '6'];
                 this.contactData = {
                     layoutTitle: '已完成',
                     layoutContent: '恭喜您交易已完成',
@@ -270,9 +270,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '5', '6'];
                 let amount = '  ';
-                /*                if (this.applyLoanAmount === '请输入申请贷款金额') {
-                 amount = '';
-                 }*/
                 this.contactData = {
                     layoutTitle: '付首付款',
                     layoutContent: '恭喜您的' + amount + '元贷款已经授权，请尽快支付首付款以便尽快完成融资。',
@@ -1021,7 +1018,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={[styles.bottomBar]}>
                         <TouchableOpacity
                             onPress={() => {
+                                this.toNextPage({
+                                    name: 'AddressManage',
+                                    component: AddressManage,
+                                    params: {}
 
+                                });
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>转单车</Text>
@@ -1029,7 +1031,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
+                                this.toNextPage({
+                                    name: 'WaybillToStore',
+                                    component: WaybillToStore,
+                                    params: {}
 
+                                });
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请提车函</Text>

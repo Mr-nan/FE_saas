@@ -16,6 +16,7 @@ const {width, height} = Dimensions.get('window');
 import * as fontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import TagSelectView from "./TagSelectView";
+import FillWaybill from "../orderwuliu/FillWaybill";
 const Pixel = new PixelUtil();
 
 export default class LogisticsMode extends PureComponent {
@@ -92,7 +93,14 @@ export default class LogisticsMode extends PureComponent {
                 {this.state.fillWaybill && (
                     <TouchableOpacity
                         onPress={() => {
-                            // TODO 跳转到填写运单
+                            this.toNextPage({
+                                name: 'FillWaybill',
+                                component: FillWaybill,
+                                params: {
+
+                                }
+
+                            });
                         }}>
                         <View style={{
                             height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',

@@ -15,6 +15,7 @@ import {
 const {width, height} = Dimensions.get('window');
 import * as fontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
+import SelectPickUp from "../orderwuliu/SelectPickUp";
 const Pixel = new PixelUtil();
 
 export default class ExtractCarPeople extends PureComponent {
@@ -25,9 +26,7 @@ export default class ExtractCarPeople extends PureComponent {
      **/
     constructor(props) {
         super(props);
-        this.state = {
-
-        }
+        this.state = {}
     }
 
     /**
@@ -43,7 +42,15 @@ export default class ExtractCarPeople extends PureComponent {
      **/
     render() {
         return (
-            <TouchableOpacity style={{backgroundColor: '#ffffff'}}>
+            <TouchableOpacity style={{backgroundColor: '#ffffff'}}
+                              onPress={() => {
+                                  this.toNextPage({
+                                      name: 'SelectPickUp',
+                                      component: SelectPickUp,
+                                      params: {}
+
+                                  });
+                              }}>
                 <View style={{
                     height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                     paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
