@@ -14,21 +14,23 @@ import {
 	TouchableOpacity,
 	NativeModules,
 	NativeAppEventEmitter,
+	Image,
+	TextInput
+
 } from "react-native";
 import BaseComponent from "../../component/BaseComponent";
 import * as FontAndColor from "../../constant/fontAndColor";
 import LoginInputTextYU  from "../../login/component/LoginInputTextYU"
 import MyButton from "../../component/MyButton";
 import CarUpImageCell from '../../../app/carSource/znComponent/CarUpImageCell';
-import ImagePicker from "react-native-image-picker";
-import ImageSource from "../../publish/component/ImageSource";
-import {request} from "../../utils/RequestUtil";
-import * as ImageUpload from "../../utils/ImageUpload";
 
+import ImagePicker from "react-native-image-picker";
 
 import NavigationBar from "../../component/NavigationBar";
 import PixelUtil from "../../utils/PixelUtil";
-
+import ImageSource from "../../publish/component/ImageSource";
+import * as ImageUpload from "../../utils/ImageUpload";
+import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
 import md5 from "react-native-md5";
 let Dimensions = require('Dimensions');
@@ -39,8 +41,6 @@ let uid: '';
 
 const dismissKeyboard = require('dismissKeyboard');
 
-var Platform = require('Platform');
-const IS_ANDROID = Platform.OS === 'android';
 
 let openAccountLicenseID;
 let idcardfront;
@@ -66,7 +66,10 @@ const options = {
 		path: 'images',
 	}
 };
-export default class FastCreditTwo extends BaseComponent {
+var Platform = require('Platform');
+const IS_ANDROID = Platform.OS === 'android';
+
+export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 	/*
 	 * 为了延迟调用
 	 * */
@@ -78,10 +81,11 @@ export default class FastCreditTwo extends BaseComponent {
 		this.results = [];
 		this.data = '';
 		this.state = {
-			selectNO: 'yes',//yes 代表同步  no 不同步
+			selectNO: 'GeRen',//GeRen 个人授信类型  QiYe 企业授信类型
 			businessLicense: null,
 			enterpriseFront: null,
 			enterpriseBack: null,
+			openAccountLicense:null,
 			renderPlaceholderOnly: true,
 			keyboardOffset: -Pixel.getPixel(0),
 
@@ -96,6 +100,12 @@ export default class FastCreditTwo extends BaseComponent {
 			province_name: '',
 			area_name: '',
 		}
+		this.enterpriseData = {
+
+			qiyemingcheng: '',//企业名称
+
+
+		};
 
 	}
 
@@ -130,7 +140,7 @@ export default class FastCreditTwo extends BaseComponent {
 				<NavigationBar
 					leftImageCallBack={this.backPage}
 					rightText={""}
-					centerText={'快速授信申请'}
+					centerText={'企业信息校验'}
 				/>
 				{
 					IS_ANDROID ? (this.loadScrollView()) : (
@@ -144,6 +154,7 @@ export default class FastCreditTwo extends BaseComponent {
 				}
 
 				{this.loadingView()}
+				{/*拍照选择modal  view*/}
 				<ImageSource
 
 					galleryClick={this._photoClick}
@@ -162,128 +173,67 @@ export default class FastCreditTwo extends BaseComponent {
 		return (
 			<ScrollView keyboardShouldPersistTaps={'handled'} style={{height:height- Pixel.getPixel(64)}}>
 
-				{/*实际控制人Header*/}
-				<View style={styles.inputHeader}>
-					<Text style={styles.inputHeaderText}>
-						实际控制人信息
-					</Text>
-				</View>
-				{/*实际控制人View*/}
-				<View style={styles.inputTextsStyle}>
-					{/*实际控制人姓名*/}
-					<LoginInputTextYU
-						ref="controllerName"
-						leftText={'实际控制人姓名'}
-						textPlaceholder={'请输入'}
-						viewStytle={styles.itemStyel}
-						inputTextStyle={styles.inputTextStyle}
-						leftIcon={false}
-						clearValue={true}
-						import={false}
-						defaultValue={'zhangqilong'}
-						rightIcon={false}/>
-					<LoginInputTextYU
-						ref="controllerID"
-						leftText={'实际控制人身份证'}
-						textPlaceholder={'请输入'}
-						viewStytle={styles.itemStyel}
-						inputTextStyle={styles.inputTextStyle}
-						leftIcon={false}
-						clearValue={true}
-						import={false}
-						defaultValue={'zhangqilong'}
-						maxLength={18}//身份证限制18位或者15位
-						rightIcon={false}/>
-					<LoginInputTextYU
-						ref="controllerPhone"
-						leftText={'实际控制人联系方式'}
-						textPlaceholder={'请输入'}
-						viewStytle={[styles.itemStyel, {borderBottomWidth: 0,}]}
-						inputTextStyle={styles.inputTextStyle}
-						secureTextEntry={false}
-						clearValue={true}
-						leftIcon={false}
-						import={false}
-						defaultValue={'zhangqilong'}
-						maxLength={11}
-						rightIcon={false}/>
+				{/*===============================提示语header===========================*/}
+				<View style={{backgroundColor: '#FFF8EA',height: Pixel.getPixel(58),width: width,flexDirection:'row'}}>
+					<Image style={{height:Pixel.getPixel(13),width:Pixel.getPixel(13),marginTop:Pixel.getPixel(13),marginLeft:Pixel.getPixel(13)}}
+					       source={require('./kuaisushouxin_images/tishixiaolaba.png')}/>
+					<View  style={{marginTop:Pixel.getPixel(12),flex:1}}>
+						<Text style={{color: '#FA5741',fontSize: Pixel.getPixel(12),marginLeft: Pixel.getPixel(5),lineHeight:Pixel.getPixel(17)}}>
+							授信类型一旦选择不可修改，选择个人借款\企业借款，则授信主体和借款主体均为个人\企业
+						</Text>
+					</View>
 
 				</View>
-				{/*法人Header*/}
-				<View style={styles.inputHeader}>
-					<Text style={styles.inputHeaderText}>
-						法人信息
-					</Text>
-				</View>
-				{/*法人信息同实际控制人view*/}
+				{/*===============================授信类型 View===========================*/}
 				<View style={[styles.itemBackground,{height:Pixel.getPixel(60)}]}>
-					<Text allowFontScaling={false} style={styles.leftFont}>法人信息同实际控制人</Text>
+					<Text allowFontScaling={false} style={styles.leftFont}>授信类型</Text>
 					<View style={styles.fillSpace}/>
 					<TouchableOpacity
-						style={[styles.selectBtn,{borderColor:this.state.selectNO == 'yes' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}
+						style={[styles.selectBtn,{borderColor:this.state.selectNO == 'GeRen' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}
 						activeOpacity={0.6}
-						onPress={() =>{this._changdiTypePress('yes')}}>
+						onPress={() =>{this._changdiTypePress('GeRen')}}>
 						<Text allowFontScaling={false}
-						      style={[styles.selectBtnFont,{color:this.state.selectNO == 'yes' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}>同步</Text>
+						      style={[styles.selectBtnFont,{color:this.state.selectNO == 'GeRen' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}>个人借款</Text>
 					</TouchableOpacity>
 
 					<TouchableOpacity
-						style={[styles.selectBtn,{marginRight: Pixel.getPixel(0)},{borderColor:this.state.selectNO == 'no' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}
+						style={[styles.selectBtn,{marginRight: Pixel.getPixel(0)},{borderColor:this.state.selectNO == 'QiYe' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}
 						activeOpacity={0.6}
-						onPress={()=>{this._changdiTypePress('no')}}>
+						onPress={()=>{this._changdiTypePress('QiYe')}}>
 						<Text allowFontScaling={false}
-						      style={[styles.selectBtnFont,{color:this.state.selectNO == 'no' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}>不同步</Text>
+						      style={[styles.selectBtnFont,{color:this.state.selectNO == 'QiYe' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}>企业借款</Text>
 					</TouchableOpacity>
 				</View>
 				<View style={styles.inputTextLine}/>
+				{/*===============================企业名称 View===========================*/}
+				<View style={styles.itemBackground}>
+					<Text allowFontScaling={false} style={styles.leftFont}>企业名称</Text>
+					<TextInput
+						ref={(input) => {
+                                this.qiyemingchengInput = input
+                            }}
+						style={[styles.inputHintFont, styles.fillSpace]}
+						underlineColorAndroid='transparent'
+						onChangeText={this._qiyemingchengChange}
+						placeholder='请输入'
+						defaultValue={this.enterpriseData.qiyemingcheng}
+						placeholderTextColor={FontAndColor.COLORA1}
+						onFocus={()=>{
+                                       this.setState({
+                                           keyboardOffset:-Pixel.getPixel(300)
+                                       });
+                                   }}
+						onBlur={()=>{
+                                       this.setState({
+                                           keyboardOffset:Pixel.getPixel(64)
+                                       });
+                                   }}
+					/>
+				</View>
+				<View style={styles.inputTextLine}/>
 
-				<View style={styles.inputTextsStyle}>
-					{/*法人姓名*/}
-					<LoginInputTextYU
-						ref="legalPersonName"
-						leftText={'法人姓名'}
-						textPlaceholder={'请输入'}
-						viewStytle={styles.itemStyel}
-						inputTextStyle={styles.inputTextStyle}
-						leftIcon={false}
-						clearValue={true}
-						import={false}
-						defaultValue={'zhangqilong'}
-						rightIcon={false}/>
-					<LoginInputTextYU
-						ref="legalPersonID"
-						leftText={'法人身份证'}
-						textPlaceholder={'请输入'}
-						viewStytle={styles.itemStyel}
-						inputTextStyle={styles.inputTextStyle}
-						leftIcon={false}
-						clearValue={true}
-						import={false}
-						defaultValue={'zhangqilong'}
-						maxLength={18}//身份证限制18位或者15位
-						rightIcon={false}/>
-					<LoginInputTextYU
-						ref="legalPersonPhone"
-						leftText={'法人联系方式'}
-						textPlaceholder={'请输入'}
-						viewStytle={[styles.itemStyel, {borderBottomWidth: 0,}]}
-						inputTextStyle={styles.inputTextStyle}
-						secureTextEntry={false}
-						clearValue={true}
-						leftIcon={false}
-						import={false}
-						defaultValue={'zhangqilong'}
-						maxLength={11}
-						rightIcon={false}/>
-				</View>
-				{/*上传附件Header*/}
-				<View style={styles.inputHeader}>
-					<Text style={styles.inputHeaderText}>
-						上传附件
-					</Text>
-				</View>
-				{/*法人身份证view*/}
-				<TouchableWithoutFeedback onPress={() => dismissKeyboard() }>
+				{/*===============================上传借款人身份证 View===========================*/}
+				<TouchableWithoutFeedback>
 					<View style={{width: width,height: Pixel.getPixel(88),flexDirection: 'row',alignItems: 'center',
 							backgroundColor: '#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15), }}>
 
@@ -292,7 +242,7 @@ export default class FastCreditTwo extends BaseComponent {
                                     color: 'black',
                                     fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
                                 }}>
-							上传法人身份证
+							上传借款人身份证
 						</Text>
 						<View>
 							<MyButton buttonType={MyButton.IMAGEBUTTON}
@@ -350,8 +300,8 @@ export default class FastCreditTwo extends BaseComponent {
 				</TouchableWithoutFeedback>
 				<View style={styles.inputTextLine}/>
 
-				{/*营业执照view*/}
-				<TouchableWithoutFeedback onPress={() => dismissKeyboard() }>
+				{/*===============================营业执照 View===========================*/}
+				<TouchableWithoutFeedback>
 					<View style={{width: width,height: Pixel.getPixel(88),flexDirection: 'row',alignItems: 'center',
 							backgroundColor: '#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15), }}>
 
@@ -360,7 +310,7 @@ export default class FastCreditTwo extends BaseComponent {
                                     color: 'black',
                                     fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
                                 }}>
-							上传营业执照
+							营业执照
 						</Text>
 						<View>
 							<MyButton buttonType={MyButton.IMAGEBUTTON}
@@ -391,36 +341,53 @@ export default class FastCreditTwo extends BaseComponent {
 					</View>
 				</TouchableWithoutFeedback>
 				<View style={styles.inputTextLine}/>
+				{/*===============================上传开户许可 View===========================*/}
+				<TouchableWithoutFeedback>
+					<View style={{width: width,height: Pixel.getPixel(88),flexDirection: 'row',alignItems: 'center',
+							backgroundColor: '#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15), }}>
 
-				{/*===============================多张照片===========================*/}
-				<CarUpImageCell
-					results={this.results}
-					retureSaveAction={()=>{
-                    {/*this.carData['pictures']=JSON.stringify(this.results);*/}
+						<Text allowFontScaling={false} style={{
+                                    flex: 1,
+                                    color: 'black',
+                                    fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
+                                }}>
+							上传开户许可
+						</Text>
+						<View>
+							<MyButton buttonType={MyButton.IMAGEBUTTON}
+							          content={this.state.openAccountLicense === null ?
+                                                  require('../../../images/login/add.png') : this.state.openAccountLicense
+                                              }
+							          parentStyle={{ marginTop: Pixel.getPixel(10),marginBottom: Pixel.getPixel(10),marginLeft: Pixel.getPixel(10),}}
+							          childStyle={{width: Pixel.getPixel(80),height: Pixel.getPixel(60),resizeMode: 'contain'}}
+							          mOnPress={()=>{this.selectPhotoTapped('openAccountLicense')}}/>
+							{this.state.openAccountLicense ?
+								<MyButton buttonType={MyButton.IMAGEBUTTON}
+								          content={require('../../../images/login/clear.png')}
+								          parentStyle={{
+                                                      position: 'absolute',
+                                                      marginTop: Pixel.getPixel(2),
+                                                      marginLeft: Pixel.getPixel(2),
+                                                  }}
+								          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
+								          mOnPress={() => {
+								          	openAccountLicenseID = '';
+								          	this.setState({
+								          		openAccountLicense: null
+								          	});
+                                                  }}/>
+								: null}
 
-                    {/*if(this.carData.show_shop_id && !this.carData.id){*/}
-                        {/*StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));*/}
-                    {/*}*/}
-                }}
-					showModal={(value)=>{this.props.showModal(value)}}
-					showToast={(value)=>{this.props.showToast(value)}}
-					items={{
-						"name": "ownership_sale",
-						"isShowTag": true,
-						"title": "权属声明/买卖协议",
-						"subTitle": "至多8张",
-						 "number": 12,
-						 "explain":1,}}
-					childList={[]}
-				/>
+						</View>
+					</View>
+				</TouchableWithoutFeedback>
+
 				{/*===============================提交按钮===========================*/}
 
 				{/*提交按钮*/}
 				<View style={styles.imagebuttonok}>
 
-					<TouchableOpacity onPress={() => {
-                                this.register();
-                            }} activeOpacity={0.8} style={{
+					<TouchableOpacity onPress={this._onCompletePress} activeOpacity={0.8} style={{
                                 marginTop: Pixel.getPixel(7),
                                 width: width - Pixel.getPixel(30),
                                 height: Pixel.getPixel(44),
@@ -442,6 +409,9 @@ export default class FastCreditTwo extends BaseComponent {
 			selectNO: type
 		})
 	}
+	_qiyemingchengChange = (text) => {
+		this.enterpriseData.qiyemingcheng = text;
+	};
 	isEmpty = (str) => {
 		if (typeof(str) != 'undefined' && str !== '' && str !== null) {
 			return false;
@@ -538,6 +508,15 @@ export default class FastCreditTwo extends BaseComponent {
 						} else {
 							this.props.showToast("id 为空 图片上传失败");
 						}
+					} else if (id === 'openAccountLicense') {
+						openAccountLicenseID = response.mjson.data.file_id;
+						if (openAccountLicenseID != "") {
+							this.setState({
+								openAccountLicense: source
+							});
+						} else {
+							this.props.showToast("id 为空 图片上传失败");
+						}
 					} else if (id === 'businessLicense') {
 						businessid = response.mjson.data.file_id;
 						if (businessid != "") {
@@ -556,90 +535,29 @@ export default class FastCreditTwo extends BaseComponent {
 				this.props.showToast("图片上传失败");
 			});
 	}
-	register = () => {
-
-		let userName = this.refs.userName.getInputTextValue();
-		let smsCode = this.refs.smsCode.getInputTextValue();
-		let password = this.refs.password.getInputTextValue();
-		let passwoedAgain = this.refs.passwoedAgain.getInputTextValue();
-		let name = this.refs.name.getInputTextValue();
-		let businessName = this.refs.businessName.getInputTextValue();
-		if (typeof(userName) == "undefined" || userName == "") {
-			this.props.showToast("手机号码不能为空");
-		} else if (userName.length != 11) {
-			this.props.showToast("请输入正确的手机号");
-		} else if (typeof(smsCode) == "undefined" || smsCode == "") {
-			this.props.showToast("验证码不能为空");
-		} else if (typeof(password) == "undefined" || password == "") {
-			this.props.showToast("密码不能为空");
-		} else if (typeof(password) == "undefined" || password == "") {
-			this.props.showToast("密码不能为空");
-		} else if (passwoedAgain.length < 6) {
-			this.props.showToast("密码必须为6~16位");
-		} else if (typeof(name) == "undefined" || name == "") {
-			this.props.showToast("用户名不能为空");
-		} else if (typeof(businessName) == "undefined" || businessName == "") {
-			this.props.showToast("商家名称不能为空");
-		} else if (password !== passwoedAgain) {
-			this.props.showToast("两次密码输入不一致");
+	_onCompletePress = () =>{
+		if (this.isEmpty(this.enterpriseData.qiyemingcheng) === true) {
+			this._showHint('请填写企业名称');
+			return;
 		}
 
-		else {
-			let device_code = '';
-			if (Platform.OS === 'android') {
-				device_code = 'dycd_platform_android';
-			} else {
-				device_code = 'dycd_platform_ios';
-			}
-
-
-			let maps = {
-				device_code: device_code,
-				user_name: name,
-				phone: userName,
-				pwd: md5.hex_md5(password),
-				confirm_pwd: md5.hex_md5(passwoedAgain),
-				merchant_name: businessName,
-				code: smsCode,
-
-				address: this.locateDate.address,
-				city_id: this.locateDate.city_id,
-				city_name: this.locateDate.city_name,
-				street_name: this.locateDate.street_name,
-				province_name: this.locateDate.province_name,
-				area_name: this.locateDate.area_name,
-			};
-			this.setState({
-				loading: true,
-			});
-			request(AppUrls.ZHUCE, 'Post', maps)
-				.then((response) => {
-					this.setState({
-						loading: false,
-					});
-					if (response.mycode == "1") {
-						uid = response.mjson.data.uid;
-						this.props.showToast("注册成功");
-						// this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
-					} else {
-						this.props.showToast(response.mjson.msg + "");
-					}
-				}, (error) => {
-					this.setState({
-						loading: false,
-					});
-					if (error.mycode == -300 || error.mycode == -500) {
-						this.props.showToast("注册失败");
-					} else if (error.mycode == 7040004) {
-						this.Verifycode();
-						this.props.showToast(error.mjson.msg + "");
-					} else {
-						this.props.showToast(error.mjson.msg + "");
-					}
-				});
+		if (this.isEmpty(idcardfront) === true) {
+			this._showHint('请上传借款人身份证正面');
+			return;
+		}
+		if (this.isEmpty(idcardback) === true) {
+			this._showHint('请上传借款人身份证反面');
+			return;
+		}
+		if (this.isEmpty(businessid) === true) {
+			this._showHint('请上传营业执照');
+			return;
+		}
+		if (this.isEmpty(openAccountLicenseID) === true) {
+			this._showHint('请上传开户许可');
+			return;
 		}
 	}
-
 }
 
 const styles = StyleSheet.create({
@@ -690,6 +608,11 @@ const styles = StyleSheet.create({
 		paddingRight: Pixel.getPixel(15),
 
 	},
+	inputHintFont: {
+		fontSize: Pixel.getFontPixel(14),
+		color: 'black',
+		textAlign: 'right'
+	},
 	imageButtonStyle: {
 		width: Pixel.getPixel(80),
 		height: Pixel.getPixel(60),
@@ -723,7 +646,7 @@ const styles = StyleSheet.create({
 	},
 	selectBtn: {
 		height: Pixel.getPixel(30),
-		width: Pixel.getPixel(68),
+		width: Pixel.getPixel(78),
 		justifyContent: 'center',
 		alignItems: 'center',
 		borderRadius: Pixel.getFontPixel(2),
@@ -733,7 +656,7 @@ const styles = StyleSheet.create({
 
 	},
 	selectBtnFont: {
-		fontSize: Pixel.getFontPixel(15),
+		fontSize: Pixel.getFontPixel(14),
 		color: FontAndColor.COLORB0,
 	}
 });

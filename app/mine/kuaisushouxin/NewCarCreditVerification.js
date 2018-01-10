@@ -34,7 +34,7 @@ const selectImg = require('../../../images/financeImages/celljiantou.png');
 const IS_ANDROID = Platform.OS === 'android';
 
 
-export default class FastCreditOne extends BaseComponent {
+export default class NewCarCreditVerification extends BaseComponent {
 	constructor(props) {
 		super(props);
 

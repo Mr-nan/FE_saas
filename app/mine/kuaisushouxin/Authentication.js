@@ -36,7 +36,7 @@ const dismissKeyboard = require('dismissKeyboard');
 var Platform = require('Platform');
 const IS_ANDROID = Platform.OS === 'android';
 
-export default class Register extends BaseComponent {
+export default class Authentication extends BaseComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
