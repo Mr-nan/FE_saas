@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -12,12 +12,12 @@
 /**
  * 测试地址2
  */
-//export const BASEURL = 'http://10.3.11.99:80/';
+// export const BASEURL = 'http://10.3.11.99:80/';
 
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
 /**
