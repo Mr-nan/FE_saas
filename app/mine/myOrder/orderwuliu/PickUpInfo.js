@@ -6,6 +6,8 @@ import {
 } from 'react-native';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
+import {request} from '../../../utils/RequestUtil';
+import * as Urls from '../../../constant/appUrls';
 
 const {width} = Dimensions.get('window');
 import * as FontAndColor from '../../../constant/fontAndColor';

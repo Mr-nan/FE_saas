@@ -30,6 +30,8 @@ import MyButton from "../../../component/MyButton";
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 const white_jiantou = require('../../../../images/white_jiantou.png');
+import {request} from '../../../utils/RequestUtil';
+import * as Urls from '../../../constant/appUrls';
 
 const Pixel = new PixelUtil();
 let tagViews = [{
@@ -57,7 +59,7 @@ export default class FillWaybill extends BaseComponent {
         this.startAdress='太原市锦江区';
         this.state = {
             isAgree: true,
-            renderPlaceholderOnly: false
+            renderPlaceholderOnly: 'blank'
         }
     }
 
@@ -65,6 +67,30 @@ export default class FillWaybill extends BaseComponent {
         this.setState({
             renderPlaceholderOnly: 'success'
         });
+    }
+
+    getData = () => {
+        let maps = {
+            company_id: '111',
+            logistics_type: '111',//物流类型
+            order_id:'111'
+        };
+        request(Urls.WAYBILL, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data != null) {
+                    }
+                    this.setState({renderPlaceholderOnly: 'success'});
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error',});
+                });
+    }
+
+    allRefresh = () => {
+        this.setState({
+            renderPlaceholderOnly: 'loading',
+        });
+        this.getData();
     }
 
     _renderItem = () => {

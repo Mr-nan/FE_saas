@@ -10,7 +10,8 @@ import NavigatorView from '../../../component/AllNavigationView';
 const {width} = Dimensions.get('window');
 import * as FontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
-
+import {request} from '../../../utils/RequestUtil';
+import * as Urls from '../../../constant/appUrls';
 const signed_icon = require('../../../../images/signed_icon.png');
 const no_sign_icon = require('../../../../images/no_sign_icon.png');
 

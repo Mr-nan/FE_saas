@@ -12,6 +12,8 @@ import * as FontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import MyButton from "../../../component/MyButton";
 import AddressManage from './AddressManage';
+import {request} from '../../../utils/RequestUtil';
+import * as Urls from '../../../constant/appUrls';
 
 const selected_icon = require('../../../../images/selected_icon.png');
 const no_select_icon = require('../../../../images/no_select_icon.png');

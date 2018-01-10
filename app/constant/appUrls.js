@@ -1451,3 +1451,13 @@ export const SUPERVISE_PAY = BASEURL + V + "finance.supervise/pay";
  * 监管费支付
  */
 export const ACCOUNT_HOME = BASEURL  + "v2/account.home/index";
+/**
+ *
+ * 物流填写订单
+ */
+export const WAYBILL = BASEURL  + "v2/order.logistics/waybill";
+/**
+ *
+ * 物流运单订单
+ */
+export const WAYBILL_DETAIL = BASEURL  + " v2/order.logistics/detail";

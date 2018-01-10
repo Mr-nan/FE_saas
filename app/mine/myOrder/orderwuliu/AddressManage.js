@@ -16,6 +16,8 @@ import PickUpInfo from './PickUpInfo';
 const selected_icon = require('../../../../images/selected_icon.png');
 const no_select_icon = require('../../../../images/no_select_icon.png');
 const Pixel = new PixelUtil();
+import {request} from '../../../utils/RequestUtil';
+import * as Urls from '../../../constant/appUrls';
 let accountInfo = [{name: '张大大', tel: '13000000001', isSelect: true, address: '湖北省武汉市武昌区安静了的空间发垃圾时代峰峻阿施蒂利克据了解'}, {
     name: '李小小',
     tel: '13000000001',

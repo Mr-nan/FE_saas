@@ -17,7 +17,8 @@ import StorageUtil from "../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../constant/storageKeyNames";
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
-
+import {request} from '../../../utils/RequestUtil';
+import * as Urls from '../../../constant/appUrls';
 const Pixel = new PixelUtil();
 let feeDatas = [{title: '发票类型', value: '增值税普通发票'}, {title: '发票抬头', value: ''}, {title: '纳税人识别号', value: ''}]
 let accoutInfo = [{title: '联系电话', value: '13000000001'}, {title: '收车地址', value: '湖北省武汉市武昌区街坊ADSL看风景拉就是的法律'}]

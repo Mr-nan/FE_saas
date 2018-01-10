@@ -16,6 +16,8 @@ const service_icon = require('../../../../images/service_icon.png');
 import TransitInformation from './TransitInformation';
 import WaybillToStore from './WaybillToStore';
 import SelectPickUp from './SelectPickUp';
+import {request} from '../../../utils/RequestUtil';
+import * as Urls from '../../../constant/appUrls';
 
 const Pixel = new PixelUtil();
 let feeDatas = [{title: '发车地', value: '湖北省武汉市武昌区'}, {title: '收车地', value: '湖北省武汉市武昌区街坊邻居阿拉丁就附近阿斯蒂芬逻辑'}, {
@@ -58,6 +60,24 @@ export default class CheckWaybill extends BaseComponent {
             renderPlaceholderOnly: 'success'
         });
     }
+
+    getData = () => {
+        let maps = {
+            company_id: '111',
+            order_id:'111',
+            trans_id:'111'
+        };
+        request(Urls.WAYBILL_DETAIL, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data != null) {
+                    }
+                    this.setState({renderPlaceholderOnly: 'success'});
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error',});
+                });
+    }
+
 
     rowView = () => {
         return (
