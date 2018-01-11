@@ -19,7 +19,7 @@ import BaseComponent from "../../component/BaseComponent";
 import * as FontAndColor from "../../constant/fontAndColor";
 import LoginInputTextYU  from "../../login/component/LoginInputTextYU"
 import MyButton from "../../component/MyButton";
-import CarUpImageCell from '../../../app/carSource/znComponent/CarUpImageCell';
+import CarUpImageCellYU from '../../../app/carSource/znComponent/CarUpImageCellYU';
 import ImagePicker from "react-native-image-picker";
 import ImageSource from "../../publish/component/ImageSource";
 import {request} from "../../utils/RequestUtil";
@@ -393,9 +393,10 @@ export default class FastCreditTwo extends BaseComponent {
 				<View style={styles.inputTextLine}/>
 
 				{/*===============================多张照片===========================*/}
-				<CarUpImageCell
+				<CarUpImageCellYU
 					results={this.results}
 					retureSaveAction={()=>{
+						console.log('1111111111111111' , this.results)
                     {/*this.carData['pictures']=JSON.stringify(this.results);*/}
 
                     {/*if(this.carData.show_shop_id && !this.carData.id){*/}
@@ -410,7 +411,7 @@ export default class FastCreditTwo extends BaseComponent {
 						"title": "权属声明/买卖协议",
 						"subTitle": "至多8张",
 						 "number": 12,
-						 "explain":1,}}
+						 "explain":0,}}
 					childList={[]}
 				/>
 				{/*===============================提交按钮===========================*/}
@@ -519,6 +520,7 @@ export default class FastCreditTwo extends BaseComponent {
 				this.props.showModal(false);
 
 				if (response.mycode == 1) {
+					this.props.showToast('上传成功')
 					let source = {uri: response.mjson.data.url};
 					if (id === 'enterpriseFront') {
 						idcardfront = response.mjson.data.file_id;
