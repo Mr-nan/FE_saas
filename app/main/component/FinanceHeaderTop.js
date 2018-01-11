@@ -93,10 +93,12 @@ export default class HomeJobItem extends PureComponent {
             );
         } else {
             return (
-                <View style={{flex:1,alignItems:'center'}}>
+                <TouchableOpacity onPress={()=>{
+                    this.props.onPress();
+                }} activeOpacity={0.8} style={{flex:1,alignItems:'center'}}>
                     <Text style={{fontSize: Pixel.getFontPixel(11),color: '#fff',
                 backgroundColor:'#00000000',marginTop:Pixel.getPixel(10)}}>新车订单额度 2000万</Text>
-                </View>
+                </TouchableOpacity>
 
             );
         }

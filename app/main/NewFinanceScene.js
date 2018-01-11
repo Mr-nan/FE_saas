@@ -60,6 +60,8 @@ import  FinanceHeader from './component/FinanceHeader';
 import  FinanceButton from './component/FinanceButton';
 import  FinanceScreen from './component/FinanceScreen';
 import  FinanceScreenPop from './component/FinanceScreenPop';
+import  FinanceItem from './component/FinanceItem';
+import  FinanceGuide from './component/FinanceGuide';
 
 export default class FinanceSence extends BaseComponet {
 
@@ -70,7 +72,7 @@ export default class FinanceSence extends BaseComponet {
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
-            source: ds.cloneWithRows([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 11, 11, 11, 11, 11, 11])
+            source: ds.cloneWithRows([1, 2, 0, 4, 5, 6, 7, 8, 9, 0, 11, 11, 11, 11, 11, 11])
         }
         ;
     }
@@ -152,10 +154,12 @@ export default class FinanceSence extends BaseComponet {
                 />
                 <FinanceScreenPop ref="financescreenpop" hidden={(select)=>{
                     if(select!='null'){
-
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({source: ds.cloneWithRows([1, 2, select, 4, 5, 6, 7, 8, 9, 0, 11, 11, 11, 11, 11, 11])});
                     }
                     this.closePop();
                 }}/>
+                {/*<FinanceGuide/>*/}
             </View>
         )
     }
@@ -176,26 +180,33 @@ export default class FinanceSence extends BaseComponet {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
-        if (rowId == 1) {
+        if (rowId == 0) {
             return ( <FinanceHeader/>);
-        } else if (rowId == 2) {
+        } else if (rowId == 1) {
             return (<FinanceButton/>);
-        } else if (rowId == 3) {
+        } else if (rowId == 2) {
             return (
-                <FinanceScreen  onPress={(y)=>{
+                <FinanceScreen onCheck={(select)=>{
+                    this.refs.financescreenpop.changeSelect(select);
+                    this.closePop();
+                }} select={movie} onPress={(y)=>{
                     if(this.isShow){
                         this.closePop();
                     }else{
+                        let heights = 303;
+                        if(Platform.OS === 'android'){
+                            heights = 323;
+                        }
                         this.isShow = !this.isShow;
-                        this.refs.listview.scrollTo({x:0,y:Pixel.getPixel(283),animated:false});
-                        this.refs.financescreenpop.changeTop(Pixel.getPixel(61),
+                        this.refs.listview.scrollTo({x:0,y:Pixel.getTitlePixel(heights),animated:false});
+                        this.refs.financescreenpop.changeTop(Pixel.getTitlePixel(61),
                         width,Pixel.getPixel(height));
                         this.refs.listview.setNativeProps({scrollEnabled:false});
                     }
 
                 }}/>);
         } else {
-            return (<View style={{width:width,height:50,backgroundColor: '#fff'}}></View>);
+            return (<FinanceItem/>);
         }
 
     }

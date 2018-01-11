@@ -17,9 +17,10 @@ export default class FinanceScreen extends PureComponent {
 
     constructor(props) {
         super(props);
+        this.selects = ["全部", "单车融资", "库存融资"]
         this.state = {
             isTop: true,
-            selectId: 0
+            selectId: this.props.select
         }
 
     }
@@ -28,46 +29,42 @@ export default class FinanceScreen extends PureComponent {
 
     }
 
-    changeSelect = (select) => {
-        this.setState({selectId: select});
+    componentWillReceiveProps(nextProps) {
+        this.setState({selectId: nextProps.select});
     }
 
     render() {
+        console.log('--------------');
+        console.log(this.state.selectId+'--------------');
+        console.log('--------------');
+        let viewList = [];
+        for (let i = 0; i < this.selects.length; i++) {
+            let flex = 3;
+            if(i==1||i==2){
+                flex=4;
+            }
+            viewList.push(<TouchableOpacity key={i} onPress={()=>{
+                    this.setState({selectId:i});
+                    this.props.onCheck(i);
+                }} activeOpacity={0.8}
+                                            style={{flex:flex,justifyContent:'center',alignItems:'center'}}>
+                <Text style={{fontSize: Pixel.getFontPixel(14),color:
+                    this.state.selectId==i?fontAndColor.COLORB0:'#999999'}}>
+                    {this.selects[i]}
+                </Text>
+            </TouchableOpacity>);
+        }
         return (
             <View ref="screen" style={{width:width,height:Pixel.getPixel(45),marginTop:Pixel.getPixel(10),
             marginBottom:Pixel.getPixel(1),backgroundColor:'#fff',flexDirection: 'row',overflow:'visible'}}>
-                <TouchableOpacity onPress={()=>{
-                    this.setState({selectId:0});
-                }} activeOpacity={0.8}
-                                  style={{flex:3,justifyContent:'center',alignItems:'center'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(14),color:
-                    this.state.selectId==0?fontAndColor.COLORB0:'#999999'}}>
-                        全部
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{
-                    this.setState({selectId:1});
-                }} activeOpacity={0.8} style={{flex:4,justifyContent:'center',alignItems:'center'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(14),color:
-                    this.state.selectId==1?fontAndColor.COLORB0:'#999999'}}>
-                        单车融资
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{
-                    this.setState({selectId:2});
-                }} activeOpacity={0.8} style={{flex:4,justifyContent:'center',alignItems:'center'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(14),color:
-                    this.state.selectId==2?fontAndColor.COLORB0:'#999999'}}>
-                        订单融资
-                    </Text>
-                </TouchableOpacity>
+                {viewList}
                 <TouchableOpacity onPress={()=>{
                     this.refs.screen.measure((frameX, frameY, frameWidth, frameHeight, pageX, pageY) => {
                         console.log(pageX+'-------'+pageY);
                         this.props.onPress(pageY);
                     });
                 }} activeOpacity={0.8} style={{flex:3,justifyContent:'center',alignItems:'center'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(14),color: '#999999'}}>
+                    <Text style={{fontSize: Pixel.getFontPixel(14),color:this.state.selectId>2?fontAndColor.COLORB0: '#999999'}}>
                         更多
                     </Text>
                 </TouchableOpacity>
