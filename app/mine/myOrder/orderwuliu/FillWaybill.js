@@ -242,22 +242,22 @@ export default class FillWaybill extends BaseComponent {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                    this.setState({
-                        isAgree: !this.state.isAgree
-                    });
-                }}>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginTop: Pixel.getPixel(10),
-                        alignItems: 'center',
-                        marginLeft: Pixel.getPixel(15)
-                    }}>
-                        <Image source={this.state.isAgree ? agree_icon : disagree}
-                               style={{marginRight: Pixel.getPixel(3)}}></Image>
-                        <Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>我已同意签署物流协议</Text>
-                    </View>
-                </TouchableOpacity>
+                {/*<TouchableOpacity activeOpacity={0.8} onPress={() => {*/}
+                    {/*this.setState({*/}
+                        {/*isAgree: !this.state.isAgree*/}
+                    {/*});*/}
+                {/*}}>*/}
+                    {/*<View style={{*/}
+                        {/*flexDirection: 'row',*/}
+                        {/*marginTop: Pixel.getPixel(10),*/}
+                        {/*alignItems: 'center',*/}
+                        {/*marginLeft: Pixel.getPixel(15)*/}
+                    {/*}}>*/}
+                        {/*<Image source={this.state.isAgree ? agree_icon : disagree}*/}
+                               {/*style={{marginRight: Pixel.getPixel(3)}}></Image>*/}
+                        {/*<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>我已同意签署物流协议</Text>*/}
+                    {/*</View>*/}
+                {/*</TouchableOpacity>*/}
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'确定'}
                           parentStyle={styles.loginBtnStyle}
