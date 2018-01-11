@@ -57,6 +57,15 @@ export default class FillWaybill extends BaseComponent {
         super(props);
         this.collectAdress='太原市锦江区';
         this.startAdress='太原市锦江区';
+        this.toStore=false;
+        this.toStore=this.props.toStore;//运单信息到店
+        if(this.toStore){
+            this.title ='运单信息（到店）';
+            this.toStore=this.props.toStore;//运单信息到店
+            feeDatas = [{title: '物流费', value: '1000元'}, {title: '仓储费', value: '100元'}]
+        }else{
+            this.title ='填写运单'
+        }
         this.state = {
             isAgree: true,
             renderPlaceholderOnly: 'blank'
@@ -192,6 +201,27 @@ export default class FillWaybill extends BaseComponent {
 
                 </View>
 
+                {this.toStore&&<TouchableOpacity activeOpacity={0.8} onPress={() => {
+                    // this.toNextPage({
+                    //         name: 'WaybillToStore',
+                    //         component: WaybillToStore,
+                    //         params: {}
+                    //     }
+                    // );
+                }}>
+                    <View style={[styles.content_base_wrap, {marginBottom: Pixel.getPixel(10)}]}>
+                        <View style={styles.content_base_text_wrap}>
+                            <Text style={[styles.content_base_left, {color: 'black'}]}>运单信息（到库）</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{'查看'}</Text>
+                                <Image source={cellJianTou} style={styles.image}></Image>
+                            </View>
+
+                        </View>
+                    </View>
+                </TouchableOpacity>}
+
+
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
                     this.toNextPage({
                             name: 'InvoiceInfo',
@@ -270,7 +300,7 @@ export default class FillWaybill extends BaseComponent {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
                 {this.loadView()}
-                <NavigatorView title='填写运单' backIconClick={this.backPage}/>
+                <NavigatorView title={this.title} backIconClick={this.backPage}/>
             </View>);
         } else {
             return (<View style={styles.container}>
@@ -279,8 +309,32 @@ export default class FillWaybill extends BaseComponent {
                         this._renderItem()
                     }
                 </View>
+                {this.toStore && <View
+                    style={styles.footerStyle}>
+                    <Text
+                        style={{
+                            color: '#666666',
+                            fontSize: 13,
+                            marginHorizontal: Pixel.getPixel(10)
+                        }}>仓库费:</Text>
+                    <Text style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{50 + '元'}</Text>
+                    <TouchableOpacity activeOpacity={0.8} style={{
+                        width: Pixel.getPixel(80),
+                        height: Pixel.getPixel(38),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: FontAndColor.COLORB0,
+                        borderRadius: 4,
+                        marginRight: Pixel.getPixel(10)
+                    }} onPress={()=>{
+                        this.confirmBt();
+                    }}
+                    >
+                        <Text style={{color: 'white', fontSize: 18}}>支付</Text>
+                    </TouchableOpacity>
+                </View>}
                 <AccountModal ref="accountModal"/>
-                <NavigatorView title='填写运单' backIconClick={this.backPg}/>
+                <NavigatorView title={this.title} backIconClick={this.backPg}/>
             </View>)
         }
 
@@ -372,5 +426,15 @@ const styles = StyleSheet.create({
     loginButtonTextStyle: {
         color: FontAndColor.COLORA3,
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
+    },
+    footerStyle: {
+        height: Pixel.getPixel(50),
+        width: width,
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: Pixel.getPixel(0),
+
     },
 });

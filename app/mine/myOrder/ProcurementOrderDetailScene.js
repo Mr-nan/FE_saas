@@ -45,6 +45,7 @@ import LogisticsModeForFinancing from "./component/LogisticsModeForFinancing";
 import ExtractCarPeople from "./component/ExtractCarPeople";
 import AddressManage from "./orderwuliu/AddressManage";
 import WaybillToStore from "./orderwuliu/WaybillToStore";
+import FillWaybill from "./orderwuliu/FillWaybill";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -1032,9 +1033,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         <TouchableOpacity
                             onPress={() => {
                                 this.toNextPage({
-                                    name: 'WaybillToStore',
-                                    component: WaybillToStore,
-                                    params: {}
+                                    name: 'FillWaybill',
+                                    component: FillWaybill,
+                                    params: {
+                                        toStore:true
+                                    }
 
                                 });
                             }}>
