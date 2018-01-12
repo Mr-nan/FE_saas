@@ -25,6 +25,8 @@ const collect_icon = require('../../../../images/collect_icon.png');
 const depart_icon = require('../../../../images/depart_icon.png');
 const imaginary_icon = require('../../../../images/imaginary_icon.png');
 const {width} = Dimensions.get('window');
+import {request} from '../../../utils/RequestUtil';
+import * as Urls from '../../../constant/appUrls';
 import * as FontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 
