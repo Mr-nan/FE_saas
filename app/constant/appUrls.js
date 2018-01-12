@@ -1451,3 +1451,58 @@ export const SUPERVISE_PAY = BASEURL + V + "finance.supervise/pay";
  * 监管费支付
  */
 export const ACCOUNT_HOME = BASEURL  + "v2/account.home/index";
+/**
+ *
+ * 提车人列表
+ */
+export const GET_GETER_LIST = BASEURL + V + "order/flowsother/getGeterList";
+/**
+ *
+ * 新增提车人
+ */
+export const ADD_GETER = BASEURL + V + "/order/flowsother/addGeter";
+/**
+ *
+ * 编辑提车人
+ */
+export const PUT_GETER = BASEURL + V + "/order/flowsother/putGeter";
+/**
+ *
+ * 设置默认提车人
+ */
+export const SET_DEFAULT_GETER = BASEURL + V + "/order/flowsother/setDefaultGeter";
+/**
+ *
+ * 删除提车人
+ */
+export const DEL_GETER = BASEURL + V + "/order/flowsother/delGeter";
+/**
+ *
+ * 地址列表
+ */
+export const GET_FLOWSOTHER_LIST = BASEURL + V + "/order/flowsother/getLIst";
+/**
+ *
+ * 新增收发车地址
+ */
+export const ADD_ADDRESS = BASEURL + V + "/order/flowsother/addAddress";
+/**
+ *
+ * 编辑地址
+ */
+export const PUT_ADDRESS = BASEURL + V + "/order/flowsother/putAddress";
+/**
+ *
+ * 设置默认地址
+ */
+export const SET_DEFAULT_ADDRESS = BASEURL + V + "/order/flowsother/setDefaultAddress";
+/**
+ *
+ * 删除地址
+ */
+export const DEL_ADDRESS = BASEURL + V + "order/flowsother/delAddress";
+/**
+ *
+ * 获取城市下区域列表
+ */
+export const GET_DIST_LIST = BASEURL + "v2/home.index/getDistList";
