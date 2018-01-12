@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -12,12 +12,12 @@
 /**
  * 测试地址2
  */
-//export const BASEURL = 'http://10.3.11.99:80/';
+// export const BASEURL = 'http://10.3.11.99:80/';
 
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
 /**
@@ -1506,3 +1506,13 @@ export const DEL_ADDRESS = BASEURL + V + "order/flowsother/delAddress";
  * 获取城市下区域列表
  */
 export const GET_DIST_LIST = BASEURL + "v2/home.index/getDistList";
+/**
+ *
+ * 物流填写订单
+ */
+export const WAYBILL = BASEURL  + "v2/order.logistics/waybill";
+/**
+ *
+ * 物流运单订单
+ */
+export const WAYBILL_DETAIL = BASEURL  + " v2/order.logistics/detail";

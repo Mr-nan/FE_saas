@@ -11,7 +11,7 @@ import {
     Text,
     BackAndroid,
     TouchableOpacity,
-    InteractionManager,
+    ScrollView,
     Dimensions,
     TextInput
 } from 'react-native'
@@ -275,6 +275,133 @@ export default class CheckStand extends BaseComponent {
         });
     };
 
+    /**
+     *   物流支付返回的View
+     **/
+    logisticsPay = () => {
+        return (
+            <View style={{backgroundColor: 'white'}}>
+                <View style={styles.needPayBar}>
+                    <Text allowFontScaling={false} style={{
+                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        marginTop: Pixel.getPixel(25)
+                    }}>需支付金额</Text>
+                    <Text allowFontScaling={false} style={{
+                        marginTop: Pixel.getPixel(6),
+                        //fontWeight: 'bold',
+                        fontSize: Pixel.getFontPixel(38)
+                    }}>{parseFloat(this.props.payAmount).toFixed(2)}元</Text>
+                </View>
+                <View style={styles.separatedLine}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>尾款金额：</Text>
+                    <Text allowFontScaling={false}
+                          style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
+                </View>
+                <View style={styles.separatedLine}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>运单费用：</Text>
+                    <Text allowFontScaling={false} style={styles.content}>{this.accountInfo.balance}元</Text>
+                </View>
+                <View style={{height: Pixel.getPixel(10),
+                    backgroundColor: fontAndColor.COLORA3}}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>账户：</Text>
+                    <Text allowFontScaling={false}
+                          style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
+                </View>
+                <View style={styles.separatedLine}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>账户可用金额：</Text>
+                    <Text allowFontScaling={false} style={styles.content}>{this.accountInfo.balance}元</Text>
+                    <View style={{flex: 1}}/>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.toNextPage({
+                                name: 'AccountScene',
+                                component: AccountScene,
+                                params: {}
+                            });
+                        }}>
+                        <View style={{
+                            height: Pixel.getPixel(27),
+                            width: Pixel.getPixel(70),
+                            borderRadius: Pixel.getPixel(2),
+                            borderWidth: Pixel.getPixel(1),
+                            borderColor: fontAndColor.COLORB0,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginRight: Pixel.getPixel(15)
+                        }}>
+                            <Text allowFontScaling={false} style={{
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                color: fontAndColor.COLORB0
+                            }}>充值</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    };
+
+    /**
+     *   非物流支付返回的View
+     **/
+    normalPay = () => {
+        return (
+            <View style={{backgroundColor: 'white'}}>
+                <View style={styles.needPayBar}>
+                    <Text allowFontScaling={false} style={{
+                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        marginTop: Pixel.getPixel(25)
+                    }}>需支付金额</Text>
+                    <Text allowFontScaling={false} style={{
+                        marginTop: Pixel.getPixel(6),
+                        //fontWeight: 'bold',
+                        fontSize: Pixel.getFontPixel(38)
+                    }}>{parseFloat(this.props.payAmount).toFixed(2)}元</Text>
+                </View>
+                <View style={styles.separatedLine}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>账户：</Text>
+                    <Text allowFontScaling={false}
+                          style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
+                </View>
+                <View style={styles.separatedLine}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>账户可用金额：</Text>
+                    <Text allowFontScaling={false} style={styles.content}>{this.accountInfo.balance}元</Text>
+                    <View style={{flex: 1}}/>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.toNextPage({
+                                name: 'AccountScene',
+                                component: AccountScene,
+                                params: {}
+                            });
+                        }}>
+                        <View style={{
+                            height: Pixel.getPixel(27),
+                            width: Pixel.getPixel(70),
+                            borderRadius: Pixel.getPixel(2),
+                            borderWidth: Pixel.getPixel(1),
+                            borderColor: fontAndColor.COLORB0,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginRight: Pixel.getPixel(15)
+                        }}>
+                            <Text allowFontScaling={false} style={{
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                color: fontAndColor.COLORB0
+                            }}>充值</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    };
+
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
@@ -285,143 +412,86 @@ export default class CheckStand extends BaseComponent {
             return (
                 <View style={styles.container}>
                     <NavigatorView title='收银台' backIconClick={this.backPage}/>
-                    {/*                    <View style={styles.tradingCountdown}>
-                     <Text allowFontScaling={false}  style={{marginRight: Pixel.getPixel(15), marginLeft: Pixel.getPixel(15)}}>
-                     <Text allowFontScaling={false}  style={{
-                     marginLeft: Pixel.getPixel(15),
-                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                     color: fontAndColor.COLORB2,
-                     fontWeight: 'bold'
-                     }}>重要提示：</Text>
-                     <Text allowFontScaling={false}  style={{
-                     lineHeight: Pixel.getPixel(20),
-                     marginLeft: Pixel.getPixel(15),
-                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                     color: fontAndColor.COLORB2
-                     }}>您申请的订单融资贷款已到账，请向卖家支付，支付后卖家可提现到账资金。</Text>
-                     </Text>
-                     </View>
-                     <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>*/}
-                    <View style={{backgroundColor: 'white', marginTop: Pixel.getTitlePixel(65)}}>
-                        <View style={styles.needPayBar}>
-                            <Text allowFontScaling={false} style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                marginTop: Pixel.getPixel(25)
-                            }}>需支付金额</Text>
-                            <Text allowFontScaling={false} style={{
-                                marginTop: Pixel.getPixel(6),
-                                //fontWeight: 'bold',
-                                fontSize: Pixel.getFontPixel(38)
-                            }}>{parseFloat(this.props.payAmount).toFixed(2)}元</Text>
-                        </View>
-                        <View style={styles.separatedLine}/>
-                        <View style={styles.accountBar}>
-                            <Text allowFontScaling={false} style={styles.title}>账户：</Text>
-                            <Text allowFontScaling={false}
-                                  style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
-                        </View>
-                        <View style={styles.separatedLine}/>
-                        <View style={styles.accountBar}>
-                            <Text allowFontScaling={false} style={styles.title}>账户可用金额：</Text>
-                            <Text allowFontScaling={false} style={styles.content}>{this.accountInfo.balance}元</Text>
-                            <View style={{flex: 1}}/>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.toNextPage({
-                                        name: 'AccountScene',
-                                        component: AccountScene,
-                                        params: {}
-                                    });
-                                }}>
-                                <View style={{
-                                    height: Pixel.getPixel(27),
-                                    width: Pixel.getPixel(70),
-                                    borderRadius: Pixel.getPixel(2),
-                                    borderWidth: Pixel.getPixel(1),
-                                    borderColor: fontAndColor.COLORB0,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    marginRight: Pixel.getPixel(15)
-                                }}>
-                                    <Text allowFontScaling={false} style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                        color: fontAndColor.COLORB0
-                                    }}>充值</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <MyButton buttonType={MyButton.TEXTBUTTON}
-                              content={'账户支付'}
-                              parentStyle={styles.loginBtnStyle}
-                              childStyle={styles.loginButtonTextStyle}
-                              mOnPress={this.goPay}/>
-                    {this.props.isSellerFinance == 0 && this.props.payType == 2 &&
-                    (<MyButton buttonType={MyButton.TEXTBUTTON}
-                               content={'鼎诚融资代付'}
-                               parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
-                               childStyle={styles.loginButtonTextStyle}
-                               mOnPress={() => {this.payPrompting(0)}}/>)
-                    }
-                    {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payType == 2 &&
+                    <ScrollView style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        {this.logisticsPay()}
+                        <MyButton buttonType={MyButton.TEXTBUTTON}
+                                  content={'账户支付'}
+                                  parentStyle={styles.loginBtnStyle}
+                                  childStyle={styles.loginButtonTextStyle}
+                                  mOnPress={this.goPay}/>
+                        {this.props.isSellerFinance == 0 && this.props.payType == 2 &&
                         (<MyButton buttonType={MyButton.TEXTBUTTON}
-                                content={'线下支付'}
-                                parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
-                                childStyle={styles.loginButtonTextStyle}
-                                mOnPress={() => {this.payPrompting(1)}}/>)
-                    }
-                    {/*---订单融资---*/}
-                    {this.isShowFinancing == 1 && this.props.payType == 2 &&
-                    <View>
-                        <View style={{
-                            alignItems: 'center',
-                            flexDirection: 'row',
-                            //marginTop: Pixel.getPixel(35)
-                        }}>
+                                   content={'鼎诚融资代付'}
+                                   parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
+                                   childStyle={styles.loginButtonTextStyle}
+                                   mOnPress={() => {
+                                       this.payPrompting(0)
+                                   }}/>)
+                        }
+                        {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payType == 2 &&
+                        (<MyButton buttonType={MyButton.TEXTBUTTON}
+                                   content={'线下支付'}
+                                   parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
+                                   childStyle={styles.loginButtonTextStyle}
+                                   mOnPress={() => {
+                                       this.payPrompting(1)
+                                   }}/>)
+                        }
+                        {/*---订单融资---*/}
+                        {this.isShowFinancing == 1 && this.props.payType == 2 &&
+                        <View>
                             <View style={{
-                                marginRight: Pixel.getPixel(15),
-                                marginLeft: Pixel.getPixel(15),
-                                backgroundColor: fontAndColor.COLORA1,
-                                height: 1,
-                                flex: 1
-                            }}/>
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                //marginTop: Pixel.getPixel(35)
+                            }}>
+                                <View style={{
+                                    marginRight: Pixel.getPixel(15),
+                                    marginLeft: Pixel.getPixel(15),
+                                    backgroundColor: fontAndColor.COLORA1,
+                                    height: 1,
+                                    flex: 1
+                                }}/>
+                                <Text allowFontScaling={false} style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: fontAndColor.COLORA1
+                                }}>可选融资方案</Text>
+                                <View style={{
+                                    marginRight: Pixel.getPixel(15),
+                                    marginLeft: Pixel.getPixel(15),
+                                    backgroundColor: fontAndColor.COLORA1,
+                                    height: 1,
+                                    flex: 1
+                                }}/>
+                            </View>
+                            <MyButton
+                                mOnPress={this.goApplyLoan}
+                                buttonType={MyButton.TEXTBUTTON}
+                                content={'订单融资'}
+                                parentStyle={styles.loginBtnStyle1}
+                                childStyle={styles.loginButtonTextStyle}/>
                             <Text allowFontScaling={false} style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                color: fontAndColor.COLORA1
-                            }}>可选融资方案</Text>
-                            <View style={{
-                                marginRight: Pixel.getPixel(15),
                                 marginLeft: Pixel.getPixel(15),
-                                backgroundColor: fontAndColor.COLORA1,
-                                height: 1,
-                                flex: 1
-                            }}/>
-                        </View>
-                        <MyButton
-                            mOnPress={this.goApplyLoan}
-                            buttonType={MyButton.TEXTBUTTON}
-                            content={'订单融资'}
-                            parentStyle={styles.loginBtnStyle1}
-                            childStyle={styles.loginButtonTextStyle}/>
-                        <Text allowFontScaling={false} style={{
-                            marginLeft: Pixel.getPixel(15),
-                            marginRight: Pixel.getPixel(15),
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            color: fontAndColor.COLORA1,
-                            marginTop: Pixel.getPixel(10)
-                        }}>车辆交易背景下的，基于车辆买卖订单的，对买车人购车的融资业务。</Text>
-                    </View> }
-                    <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
-                                  text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
-                    <ChooseModal ref='chooseModal' title='提示'
-                                 negativeButtonStyle={styles.negativeButtonStyle}
-                                 negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
-                                 positiveButtonStyle={styles.positiveButtonStyle}
-                                 positiveTextStyle={styles.positiveTextStyle} positiveText='确认'
-                                 buttonsMargin={Pixel.getPixel(20)}
-                                 positiveOperation={() => {}}
-                                 prompt="温馨提示: 选择后无法修改"
-                                 content=''/>
+                                marginRight: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORA1,
+                                marginTop: Pixel.getPixel(10)
+                            }}>车辆交易背景下的，基于车辆买卖订单的，对买车人购车的融资业务。</Text>
+                        </View> }
+                        <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton}
+                                      textStyle={styles.expText}
+                                      text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
+                        <ChooseModal ref='chooseModal' title='提示'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确认'
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={() => {
+                                     }}
+                                     prompt="温馨提示: 选择后无法修改"
+                                     content=''/>
+                    </ScrollView>
                 </View>
             )
         }

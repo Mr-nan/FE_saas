@@ -462,7 +462,6 @@ export default class StockManagementScene extends BaseComponent {
         }
 
         if(!this.props.dataID){
-            console.log('============',this.currentModelName,'============',this.carData.model_id);
             if(this.currentModelName){
                 if(this.currentModelName!=this.carData.model_id){
                     this.props.showToast('该车架号所匹配出的车型与所选车型不一致');
