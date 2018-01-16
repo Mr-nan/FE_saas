@@ -570,20 +570,16 @@ export default class MineScene extends BaseComponent {
         params: {}
     }
 
-    // toPage = () => {
-    //     this.navigatorParams.name = 'MyAccountScene';
-    //     this.navigatorParams.component = MyAccountScene;
-    //     this.navigatorParams.params = {callBack: this.updateType};
-    //     this.refs.accountmodal.changeShowType(false);
-    //     //firstType = lastType;
-    //     this.props.callBack(this.navigatorParams);
-    // };
+    toPage = () => {
+        this.navigatorParams.name = 'MyAccountScene';
+        this.navigatorParams.component = MyAccountScene;
+        this.navigatorParams.params = {callBack: this.updateType};
+        this.refs.accountmodal.changeShowType(false);
+        //firstType = lastType;
+        this.props.callBack(this.navigatorParams);
+    };
 
-    toPage=()=>{
-        NativeModules.ZNMapManger.cityName('南宁市','江南区二手车市场',null,(error,data)=>{
-            console.log(data);
-        });
-    }
+
 
     /**
      *   更新 lastType;

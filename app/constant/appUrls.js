@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -1451,13 +1451,3 @@ export const SUPERVISE_PAY = BASEURL + V + "finance.supervise/pay";
  * 监管费支付
  */
 export const ACCOUNT_HOME = BASEURL  + "v2/account.home/index";
-/**
- *
- * 物流填写订单
- */
-export const WAYBILL = BASEURL  + "v2/order.logistics/waybill";
-/**
- *
- * 物流运单订单
- */
-export const WAYBILL_DETAIL = BASEURL  + " v2/order.logistics/detail";
