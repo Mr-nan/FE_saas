@@ -425,6 +425,21 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 )
                 break;
+            case 5:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text allowFontScaling={false} style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB7
+                            }}>财务放款时间(工作日): 9:00到16:30</Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
             default:
                 this.listViewStyle = Pixel.getTitlePixel(65);
                 return null;
@@ -683,7 +698,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                             payAmount: this.orderState === 1 ?
                                                 this.orderDetail.deposit_amount :
                                                 parseFloat(balanceAmount - applyAmount +
-                                                    parseFloat(this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0) +
                                                     parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) +
                                                     parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
                                             orderId: this.props.orderId,

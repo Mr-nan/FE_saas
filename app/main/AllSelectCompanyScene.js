@@ -64,6 +64,8 @@ export  default class AllSelectCompanyScene extends BaseComponent {
                         this.setState({
                             renderPlaceholderOnly: 'null',
                         });
+                    }else if(response.mjson.data.length==1){
+                        this.setLoanOne(response.mjson.data[0]);
                     }else{
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -110,6 +112,63 @@ export  default class AllSelectCompanyScene extends BaseComponent {
                 />
             </View>
         );
+    }
+
+    setLoanOne = (movie) => {
+
+        global.companyBaseID = movie.company_base_id;
+        request(Urls.USER_GET_SELECT_ENTERPRISE_INFO, 'Post', {
+            enterprise_id:movie.company_base_id
+        })
+            .then((response) => {
+                    if (movie.is_done_credit == '1') {
+                        let maps = {
+                            api: Urls.OPT_LOAN_SUBJECT,
+                            opt_merge_id: movie.merge_id,
+                            opt_user_id: movie.user_id,
+                        };
+                        request(Urls.FINANCE, 'Post', maps)
+                            .then((response) => {
+                                    StorageUtil.mSetItem(StorageKeyNames.LOAN_SUBJECT, JSON.stringify(movie) + "");
+                                    this.loginPage({name:'MainPage',component:MainPage,params:{}});
+                                },
+                                (error) => {
+                                    // if (error.mycode == -300 || error.mycode == -500) {
+                                    //     this.props.showToast('网络连接失败');
+                                    // } else {
+                                    //     this.props.showToast(error.mjson.msg);
+                                    // }
+                                    this.setState({renderPlaceholderOnly: 'error'});
+                                });
+                    } else {
+                        let maps = {
+
+                        };
+                        request(Urls.CONTRACT_APPLYPLSEAL, 'Post', maps)
+                            .then((response) => {
+                                    StorageUtil.mSetItem(StorageKeyNames.LOAN_SUBJECT, JSON.stringify(movie) + "");
+                                    this.loginPage({name:'MainPage',component:MainPage,params:{}});
+                                },
+                                (error) => {
+                                    this.setState({renderPlaceholderOnly: 'error'});
+                                    // if (error.mycode == -300 || error.mycode == -500) {
+                                    //     this.props.showToast('网络连接失败');
+                                    // } else {
+                                    //     this.props.showToast(error.mjson.msg);
+                                    // }
+                                });
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                    // if (error.mycode == -300 || error.mycode == -500) {
+                    //     this.props.showToast('网络连接失败');
+                    // } else {
+                    //     this.props.showToast(error.mjson.msg);
+                    // }
+                });
+
+
     }
 
     setLoan = (movie) => {

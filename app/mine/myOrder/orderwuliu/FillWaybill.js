@@ -55,16 +55,16 @@ let accoutInfo = [{title: '联系人', value: '刘威'}, {title: '联系方式',
 export default class FillWaybill extends BaseComponent {
     constructor(props) {
         super(props);
-        this.collectAdress='太原市锦江区';
-        this.startAdress='太原市锦江区';
-        this.toStore=false;
-        this.toStore=this.props.toStore;//运单信息到店
-        if(this.toStore){
-            this.title ='运单信息（到店）';
-            this.toStore=this.props.toStore;//运单信息到店
+        this.collectAdress = '太原市锦江区';
+        this.startAdress = '太原市锦江区';
+        this.toStore = false;
+        this.toStore = this.props.toStore;//运单信息到店
+        if (this.toStore) {
+            this.title = '运单信息（到店）';
+            this.toStore = this.props.toStore;//运单信息到店
             feeDatas = [{title: '物流费', value: '1000元'}, {title: '仓储费', value: '100元'}]
-        }else{
-            this.title ='填写运单'
+        } else {
+            this.title = '填写运单'
         }
         this.state = {
             isAgree: true,
@@ -82,7 +82,7 @@ export default class FillWaybill extends BaseComponent {
         let maps = {
             company_id: '111',
             logistics_type: '111',//物流类型
-            order_id:'111'
+            order_id: '111'
         };
         request(Urls.WAYBILL, 'Post', maps)
             .then((response) => {
@@ -132,7 +132,7 @@ export default class FillWaybill extends BaseComponent {
                                 name: 'CheckWaybill',
                                 component: CheckWaybill,
                                 params: {
-                                    isShowToStore:true
+                                    isShowToStore: true
                                 }
                             }
                         );
@@ -191,7 +191,12 @@ export default class FillWaybill extends BaseComponent {
                             return (
                                 <View key={index + 'accoutInfo'} style={styles.content_title_text_wrap}>
                                     <Text style={styles.content_title_text}>{data.title}</Text>
-                                    <View style={{flexWrap:'wrap',height:Pixel.getPixel(51),width:width*3/4,justifyContent:'center'}}>
+                                    <View style={{
+                                        flexWrap: 'wrap',
+                                        height: Pixel.getPixel(51),
+                                        width: width * 3 / 4,
+                                        justifyContent: 'center'
+                                    }}>
                                         <Text style={[styles.content_base_Right]}>{data.value}</Text>
                                     </View>
                                 </View>
@@ -201,7 +206,7 @@ export default class FillWaybill extends BaseComponent {
 
                 </View>
 
-                {this.toStore&&<TouchableOpacity activeOpacity={0.8} onPress={() => {
+                {this.toStore && <TouchableOpacity activeOpacity={0.8} onPress={() => {
                     // this.toNextPage({
                     //         name: 'WaybillToStore',
                     //         component: WaybillToStore,
@@ -242,22 +247,29 @@ export default class FillWaybill extends BaseComponent {
                     </View>
                 </TouchableOpacity>
 
-                {/*<TouchableOpacity activeOpacity={0.8} onPress={() => {*/}
-                    {/*this.setState({*/}
-                        {/*isAgree: !this.state.isAgree*/}
-                    {/*});*/}
-                {/*}}>*/}
-                    {/*<View style={{*/}
-                        {/*flexDirection: 'row',*/}
-                        {/*marginTop: Pixel.getPixel(10),*/}
-                        {/*alignItems: 'center',*/}
-                        {/*marginLeft: Pixel.getPixel(15)*/}
+                {/*<View style={{alignItems: 'center', flexDirection: 'row',marginTop: Pixel.getPixel(10),}}>*/}
+                    {/*<TouchableOpacity activeOpacity={0.8} onPress={() => {*/}
+                        {/*this.setState({*/}
+                            {/*isAgree: !this.state.isAgree*/}
+                        {/*});*/}
                     {/*}}>*/}
-                        {/*<Image source={this.state.isAgree ? agree_icon : disagree}*/}
-                               {/*style={{marginRight: Pixel.getPixel(3)}}></Image>*/}
-                        {/*<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>我已同意签署物流协议</Text>*/}
-                    {/*</View>*/}
-                {/*</TouchableOpacity>*/}
+                        {/*<View style={{*/}
+                            {/*flexDirection: 'row',*/}
+                            {/*alignItems: 'center',*/}
+                            {/*marginLeft: Pixel.getPixel(15)*/}
+                        {/*}}>*/}
+                            {/*<Image source={this.state.isAgree ? agree_icon : disagree}*/}
+                                   {/*style={{marginRight: Pixel.getPixel(3)}}></Image>*/}
+                            {/*<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>我已同意签署物流协议</Text>*/}
+                        {/*</View>*/}
+                    {/*</TouchableOpacity>*/}
+                    {/*<TouchableOpacity activeOpacity={0.8} onPress={() => {*/}
+                        {/*alert('1111')*/}
+                    {/*}}>*/}
+                        {/*<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14),}}>《物流协议》</Text>*/}
+                    {/*</TouchableOpacity>*/}
+                {/*</View>*/}
+
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'确定'}
                           parentStyle={styles.loginBtnStyle}
@@ -270,12 +282,12 @@ export default class FillWaybill extends BaseComponent {
 
     }
 
-    confirmBt=()=>{
-        if(!this.state.isAgree){
+    confirmBt = () => {
+        if (!this.state.isAgree) {
             this.props.showToast('请勾选物流协议');
             return;
         }
-        if(this.isEmpty(this.collectAdress)){
+        if (this.isEmpty(this.collectAdress)) {
             this.props.showToast('请选择收车地');
             return;
         }
@@ -326,7 +338,7 @@ export default class FillWaybill extends BaseComponent {
                         backgroundColor: FontAndColor.COLORB0,
                         borderRadius: 4,
                         marginRight: Pixel.getPixel(10)
-                    }} onPress={()=>{
+                    }} onPress={() => {
                         this.confirmBt();
                     }}
                     >
