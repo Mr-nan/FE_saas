@@ -36,13 +36,15 @@ export default class AddressManageListScene extends BaseComponent {
         };
         request(Urls.GET_FLOWSOTHER_LIST, 'Post', maps)
             .then((response) => {
-                    allSouce.push(...response.mjson.data);
-                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        dataSource: ds.cloneWithRows(allSouce),
-                        isRefreshing: false
-                    });
-                    this.setState({renderPlaceholderOnly: 'success'});
+                    if(response.mycode == 1){
+                        allSouce.push(...response.mjson.data);
+                        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(allSouce),
+                            isRefreshing: false
+                        });
+                        this.setState({renderPlaceholderOnly: 'success'});
+                    }
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
@@ -76,13 +78,13 @@ export default class AddressManageListScene extends BaseComponent {
     _onDelete = (item)=>{
         let maps = {
             company_id:global.companyBaseID,
-            id:item.id
+            address_id:item.id
         };
         request(Urls.DEL_ADDRESS, 'Post', maps)
             .then(
                 (response) => {
-                    if(response.code == 1){
-                        this.props.refreshData();
+                    if(response.mycode === 1){
+                        this.refreshingData();
                     }
                 },
                 (error) => {
@@ -102,19 +104,25 @@ export default class AddressManageListScene extends BaseComponent {
     _setDefault = (item)=>{
         let maps = {
             company_id:global.companyBaseID,
-            id:item.id
+            address_id:item.id
         };
         request(Urls.SET_DEFAULT_ADDRESS, 'Post', maps)
             .then(
                 (response) => {
-                    if(response.code == 1){
-                        this.props.refreshData();
+                    if(response.mycode == 1){
+                        this.refreshingData();
                     }
                 },
                 (error) => {
                     this.props.showToast(error.msg);
                 }
             );
+    };
+
+    _renderSeparator =(sectionID,rowID)=>{
+        return(
+            <View key={rowID} style={styles.rowSeparator} />
+        );
     };
 
     render() {
@@ -127,9 +135,10 @@ export default class AddressManageListScene extends BaseComponent {
         } else {
             return (<View style={styles.container}>
                     <NavigatorView title='地址管理' backIconClick={this.backPage}/>
-                    <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(74)}}
+                    <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64),marginBottom:Pixel.getTitlePixel(80)}}
                               dataSource={this.state.dataSource}
                               renderRow={this._renderRow}
+                              renderSeparator={this._renderSeparator}
                               enableEmptySections={true}
                               removeClippedSubviews={false}
                               refreshControl={
@@ -196,6 +205,9 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
 
     },
+    rowSeparator:{
+        height:Pixel.getPixel(10),
+    },
     image: {
         marginRight: Pixel.getPixel(15),
     },
@@ -209,7 +221,8 @@ const styles = StyleSheet.create({
         alignItems:'center',
         position:'absolute',
         left:0,
-        bottom:0
+        bottom:Pixel.getPixel(10),
+        right:0
     },
     btnText:{
         fontSize:Pixel.getFontPixel(15),

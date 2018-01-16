@@ -24,20 +24,20 @@ export default class GetCarerManageEditScene extends BaseComponent {
 
     _onTextChange = (type,text)=>{
         if(type === '1'){
-            this.item.contact_name = text;
+            this.item.name = text;
         }else if(type === '2'){
-            this.item.contact_phone = text;
+            this.item.phone = text;
         }else if(type === '3'){
             this.item.id_card = text;
         }
     };
 
     _onSave = ()=>{
-        if(this._isEmpty(this.item.contact_name)){
+        if(this._isEmpty(this.item.name)){
             this.props.showToast('请填写提车人');
             return;
         }
-        if(this._isEmpty(this.item.contact_phone)){
+        if(this._isEmpty(this.item.phone)){
             this.props.showToast('请填写手机号');
             return;
         }
@@ -49,25 +49,28 @@ export default class GetCarerManageEditScene extends BaseComponent {
         this.props.showModal(true);
         let maps = {
             company_id:global.companyBaseID,
-            contact_name:this.item.contact_name,
-            contact_phone:this.item.contact_phone,
-            id_card:this.item.id_card
+            name:this.item.name,
+            phone:this.item.phone,
+            id_card:this.item.id_card,
+            is_default:'0'
         };
         let url = Urls.ADD_GETER;
         if(this.props.isEdit){
             url = Urls.PUT_GETER;
-            maps.id = this.item.id;
+            maps.geter_id = this.item.id;
+            maps.is_default=this.item.is_default;
         }
         request(url, 'Post', maps)
             .then(
                 (response) => {
                     this.props.showModal(false);
-                    if(response.code == 1){
+                    if(response.mycode === 1){
+                        this.backPage();
                         this.props.refreshData();
                     }
                 },
                 (error) => {
-                    this.props.showToast(error.msg);
+                    this.props.showToast(error.mjson.msg);
                 });
 
     };
@@ -85,7 +88,7 @@ export default class GetCarerManageEditScene extends BaseComponent {
                         style={styles.itemRightText}
                         underlineColorAndroid='transparent'
                         placeholder={'请输入'}
-                        defaultValue={this.item.contact_name}
+                        defaultValue={this.item.name}
                         onChangeText={(text)=>{this._onTextChange('1',text)}}
                     />
                 </View>
@@ -96,7 +99,7 @@ export default class GetCarerManageEditScene extends BaseComponent {
                         style={styles.itemRightText}
                         underlineColorAndroid='transparent'
                         placeholder={'请输入'}
-                        defaultValue={this.item.contact_phone}
+                        defaultValue={this.item.phone}
                         onChangeText={(text)=>{this._onTextChange('2',text)}}
                         keyboardType={'numeric'}
                     />

@@ -27,11 +27,11 @@ export default class GetCarerManageItem extends BaseComponent {
             <View style={styles.container}>
                 <View style={styles.itemView}>
                     <Text style={styles.itemLeftText}>{'提车人'}</Text>
-                    <Text style={styles.itemRightText}>{this.props.item.contact_name}</Text>
+                    <Text style={styles.itemRightText}>{this.props.item.name}</Text>
                 </View>
                 <View style={styles.itemView}>
                     <Text style={styles.itemLeftText}>{'联系方式'}</Text>
-                    <Text style={styles.itemRightText}>{this.props.item.contact_phone}</Text>
+                    <Text style={styles.itemRightText}>{this.props.item.phone}</Text>
                 </View>
                 <View style={styles.itemView}>
                     <Text style={styles.itemLeftText}>{'身份证号'}</Text>
@@ -85,7 +85,7 @@ export default class GetCarerManageItem extends BaseComponent {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: Pixel.getPixel(0),
+        marginBottom: Pixel.getPixel(0),
         backgroundColor: 'white',
     },
     itemView:{

@@ -45,6 +45,8 @@ import PersonCertificate from "../mine/certificateManage/PersonCertificate";
 import ImagePicker from "react-native-image-picker";
 import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi';
 import SupervisionFeeScene from '../mine/supervisonFee/SupervisionFeeScene';
+import AddressManageListScene from '../mine/addressManage/AddressManageListScene';
+import GetCarerManageListScene from '../mine/getCarerManage/GetCarerManageListScene';
 import GetPermissionUtil from '../utils/GetPermissionUtil';
 import BaseComponent from '../component/BaseComponent';
 
@@ -270,6 +272,18 @@ export default class MineScene extends BaseComponent {
         } else if (id == 52) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/my_order.png'),
+                "name": name
+                , "id": id
+            },);
+        }else if (id == 69) {
+            Car[2].cars.push({
+                "icon": require('../../images/mine/adderss_manage.png'),
+                "name": name
+                , "id": id
+            },);
+        }else if (id == 71) {
+            Car[2].cars.push({
+                "icon": require('../../images/mine/geter_manage.png'),
                 "name": name
                 , "id": id
             },);
@@ -653,6 +667,14 @@ export default class MineScene extends BaseComponent {
             case 52:
                 this.navigatorParams.name = 'OrderTypeSelectScene'
                 this.navigatorParams.component = OrderTypeSelectScene
+                break;
+            case 69:
+                this.navigatorParams.name = 'AddressManageListScene'
+                this.navigatorParams.component = AddressManageListScene
+                break;
+            case 71:
+                this.navigatorParams.name = 'GetCarerManageListScene'
+                this.navigatorParams.component = GetCarerManageListScene
                 break;
             case 53:
                 this.navigatorParams.name = 'CarCollectSourceScene'
@@ -1056,6 +1078,7 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(26),
         height: Pixel.getPixel(26),
         marginLeft: Pixel.getPixel(15),
+        resizeMode:'contain'
     },
     rowjiantouImage: {
         width: Pixel.getPixel(15),
