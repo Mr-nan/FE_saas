@@ -73,12 +73,12 @@ export default  class ShowToast extends PureComponent {
             return (<View></View>);
         }
         return (
-            <View style={{width:width,height:this.state.height,position:'absolute',overflow:'hidden'}}>
+            <TouchableOpacity activeOpacity={1} style={{width:width,height:this.state.height,position:'absolute',overflow:'hidden'}}>
                 <Toast hide={()=>{this.setState({height: 0}); }} ref='toast' msg={this.state.msg}></Toast>
                 <Confirm ref='confirm' leftFunc={this.props.leftCallBack} rightFunc={this.props.rightCallBack}
                          btnLeftText={this.props.leftText}
                          btnRightText={this.props.rightText} title={this.props.title} msg={this.props.msg}></Confirm>
-            </View>
+            </TouchableOpacity>
         )
     }
 }
