@@ -208,8 +208,8 @@
 
   if(error == BMK_SEARCH_NO_ERROR){
     _pt = result.location;
-    [self.mapView setCenterCoordinate:_pt animated:YES];
     [self reverseGeoCodeAction:_pt];
+    [self.mapView setCenterCoordinate:_pt animated:YES];
   }else{
     NSLog(@"未找到结果");
   }
