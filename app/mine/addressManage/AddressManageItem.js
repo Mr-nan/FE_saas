@@ -30,7 +30,7 @@ export default class AddressManageItem extends BaseComponent {
                     <Text style={styles.itemRightText}>{this.props.item.contact_phone}</Text>
                 </View>
                 <View style={styles.itemView}>
-                    <Text style={styles.itemLeftText}>{this.props.item.address}</Text>
+                    <Text style={styles.itemLeftText}>{this.props.item.full_address}</Text>
                 </View>
                 <View style={styles.itemSeparator}/>
                 <View style={styles.bottomContainer}>

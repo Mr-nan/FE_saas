@@ -18,6 +18,7 @@ import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import GetCarerManageItem from './GetCarerManageItem';
 import GetCarerManageEditScene from './GetCarerManageEditScene';
+import AccountModal from '../../component/AccountModal';
 
 let allSouce = [];
 export default class GetCarerManageListScene extends BaseComponent {
@@ -36,19 +37,21 @@ export default class GetCarerManageListScene extends BaseComponent {
         };
         request(Urls.GET_GETER_LIST, 'Post', maps)
             .then((response) => {
+                    this.props.showModal(false);
                     if(response.mycode === 1){
                         allSouce.push(...response.mjson.data);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             dataSource: ds.cloneWithRows(allSouce),
-                            isRefreshing: false
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
                         });
-                        this.setState({renderPlaceholderOnly: 'success'});
                     }else {
                         this.setState({renderPlaceholderOnly: 'error'});
                     }
                 },
                 (error) => {
+                    this.props.showModal(false);
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     };
@@ -78,23 +81,35 @@ export default class GetCarerManageListScene extends BaseComponent {
         });
     };
 
+    _refreshData = () => {
+        allSouce = [];
+        this.getData();
+    };
 
     _onDelete = (item)=>{
-        let maps = {
-            company_id:global.companyBaseID,
-            geter_id:item.id
-        };
-        request(Urls.DEL_GETER, 'Post', maps)
-            .then(
-                (response) => {
-                    if(response.mycode === 1){
-                        this.refreshingData();
-                    }
-                },
-                (error) => {
-                    this.props.showToast(error.mjson.msg);
-                }
-            );
+        this.defModal.changeShowType(true,
+            '确定删除地址？'
+            , '确认', '取消', () => {
+
+                this.props.showModal(true);
+                let maps = {
+                    company_id:global.companyBaseID,
+                    geter_id:item.id
+                };
+                request(Urls.DEL_GETER, 'Post', maps)
+                    .then(
+                        (response) => {
+                            if(response.mycode === 1){
+                                this._refreshData();
+                            }else{
+                                this.props.showModal(false);
+                            }
+                        },
+                        (error) => {
+                            this.props.showToast(error.mjson.msg);
+                        }
+                    );
+            });
     };
 
     _onEdit = (item)=>{
@@ -110,11 +125,14 @@ export default class GetCarerManageListScene extends BaseComponent {
             company_id:global.companyBaseID,
             geter_id:item.id
         };
+        this.props.showModal(true);
         request(Urls.SET_DEFAULT_GETER, 'Post', maps)
             .then(
                 (response) => {
                     if(response.mycode === 1){
-                        this.refreshingData();
+                        this._refreshData();
+                    }else{
+                        this.props.showModal(false);
                     }
                 },
                 (error) => {
@@ -161,6 +179,7 @@ export default class GetCarerManageListScene extends BaseComponent {
                     >
                         <Text style={styles.btnText}>新增</Text>
                     </TouchableOpacity>
+                    <AccountModal ref={(ref)=>{this.defModal = ref}}/>
             </View>
             );
         }

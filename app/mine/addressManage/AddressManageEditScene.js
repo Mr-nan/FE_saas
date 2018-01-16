@@ -20,6 +20,7 @@ import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import CityRegionScene from './CityRegionScene';
 const IS_ANDROID = Platform.OS === 'android';
+const dismissKeyboard = require('dismissKeyboard');
 
 
 export default class AddressManageEditScene extends BaseComponent {
@@ -134,7 +135,12 @@ export default class AddressManageEditScene extends BaseComponent {
             };
 
             NativeModules.ZNMapManger.cityName(this.item.city,adr,ll,(error,data)=>{
-                console.log(data);
+                this.item.address = data.address;
+                this.item.latitude = data.location.latitude;
+                this.item.longitude = data.location.longitude;
+                this.mAddress.setNativeProps({
+                    text:data.address
+                })
             });
         }
 
@@ -142,6 +148,7 @@ export default class AddressManageEditScene extends BaseComponent {
     };
 
     _toProvince = ()=>{
+        dismissKeyboard();
         this.setState({cityStatus:true});
     };
 
