@@ -61,6 +61,13 @@ export  default class ZheShangAccountTitle extends PureComponent {
             marginLeft:Pixel.getPixel(15)}}>账户功能</Text>
         </View>);
         for (let i = 0; i < list.length; i++) {
+
+            if(i === list.length-1){
+                if(this.props.info.bind_bank_card_type === 1){  //本行对公对私、不显示解绑及修改手机号功能；（属后期优化）
+                    break;
+                }
+            }
+
             itemList.push(<TouchableOpacity onPress={()=>{
                 list[i].click();
             }} activeOpacity={0.8} key={i+'11'} style={{width:width,height:Pixel.getPixel(44),backgroundColor:'#fff',
