@@ -1138,14 +1138,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
         if (text.length === 17) {
             this.props.showModal(true);
             this.vinInput.blur();
-            Net.request(AppUrls.VININFO, 'post', {vin: text}).then(
+            Net.request(AppUrls.VIN_CHECK, 'post', {vin: text}).then(
                 (response) => {
                     this.props.showModal(false);
-                    if (response.mycode === 1) {
-                        let rd = response.mjson.data;
+                    if (response.mycode === 1 && response.mjson.data.valid) {
+                        /*let rd = response.mjson.data;
                         if (rd.length === 0) {
                             this.props.showToast('车架号校验失败');
-                        }
+                        }*/
                     } else {
                         this.props.showToast('车架号校验失败');
                     }
