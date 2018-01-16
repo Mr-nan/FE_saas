@@ -18,6 +18,7 @@ import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import GetCarerManageItem from './GetCarerManageItem';
 import GetCarerManageEditScene from './GetCarerManageEditScene';
+import AccountModal from '../../component/AccountModal';
 
 let allSouce = [];
 export default class GetCarerManageListScene extends BaseComponent {
@@ -36,24 +37,31 @@ export default class GetCarerManageListScene extends BaseComponent {
         };
         request(Urls.GET_GETER_LIST, 'Post', maps)
             .then((response) => {
-                    allSouce.push(...response.mjson.data);
-                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        dataSource: ds.cloneWithRows(allSouce),
-                        isRefreshing: false
-                    });
-                    this.setState({renderPlaceholderOnly: 'success'});
+                    this.props.showModal(false);
+                    if(response.mycode === 1){
+                        allSouce.push(...response.mjson.data);
+                        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(allSouce),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    }else {
+                        this.setState({renderPlaceholderOnly: 'error'});
+                    }
                 },
                 (error) => {
+                    this.props.showModal(false);
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     };
     // 构造
     constructor(props) {
         super(props);
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: {},
-            renderPlaceholderOnly: 'blank',
+            dataSource: ds.cloneWithRows([]),
+            renderPlaceholderOnly: 'loading',
             isRefreshing: false
         };
 
@@ -73,23 +81,35 @@ export default class GetCarerManageListScene extends BaseComponent {
         });
     };
 
+    _refreshData = () => {
+        allSouce = [];
+        this.getData();
+    };
 
     _onDelete = (item)=>{
-        let maps = {
-            company_id:global.companyBaseID,
-            id:item.id
-        };
-        request(Urls.DEL_GETER, 'Post', maps)
-            .then(
-                (response) => {
-                    if(response.code == 1){
-                        this.props.refreshData();
-                    }
-                },
-                (error) => {
-                    this.props.showToast(error.msg);
-                }
-            );
+        this.defModal.changeShowType(true,
+            '确定删除地址？'
+            , '确认', '取消', () => {
+
+                this.props.showModal(true);
+                let maps = {
+                    company_id:global.companyBaseID,
+                    geter_id:item.id
+                };
+                request(Urls.DEL_GETER, 'Post', maps)
+                    .then(
+                        (response) => {
+                            if(response.mycode === 1){
+                                this._refreshData();
+                            }else{
+                                this.props.showModal(false);
+                            }
+                        },
+                        (error) => {
+                            this.props.showToast(error.mjson.msg);
+                        }
+                    );
+            });
     };
 
     _onEdit = (item)=>{
@@ -103,19 +123,28 @@ export default class GetCarerManageListScene extends BaseComponent {
     _setDefault = (item)=>{
         let maps = {
             company_id:global.companyBaseID,
-            id:item.id
+            geter_id:item.id
         };
+        this.props.showModal(true);
         request(Urls.SET_DEFAULT_GETER, 'Post', maps)
             .then(
                 (response) => {
-                    if(response.code == 1){
-                        this.props.refreshData();
+                    if(response.mycode === 1){
+                        this._refreshData();
+                    }else{
+                        this.props.showModal(false);
                     }
                 },
                 (error) => {
-                    this.props.showToast(error.msg);
+                    this.props.showToast(error.mjson.msg);
                 }
             );
+    };
+
+    _renderSeparator =(sectionID,rowID)=>{
+        return(
+            <View key={rowID} style={styles.rowSeparator} />
+        );
     };
 
     render() {
@@ -123,14 +152,16 @@ export default class GetCarerManageListScene extends BaseComponent {
             return (
                 <View style={styles.container}>
                     <NavigatorView title='提车人' backIconClick={this.backPage}/>
+                    {this.loadView()}
                 </View>
             );
         } else {
             return (<View style={styles.container}>
                 <NavigatorView title='提车人' backIconClick={this.backPage}/>
-                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(74)}}
+                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64),marginBottom:Pixel.getTitlePixel(80)}}
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
+                          renderSeparator={this._renderSeparator}
                           enableEmptySections={true}
                           removeClippedSubviews={false}
                           refreshControl={
@@ -148,6 +179,7 @@ export default class GetCarerManageListScene extends BaseComponent {
                     >
                         <Text style={styles.btnText}>新增</Text>
                     </TouchableOpacity>
+                    <AccountModal ref={(ref)=>{this.defModal = ref}}/>
             </View>
             );
         }
@@ -164,7 +196,6 @@ export default class GetCarerManageListScene extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
-
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
         backgroundColor: fontAndColor.COLORA3,
@@ -197,6 +228,9 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
 
     },
+    rowSeparator:{
+        height:Pixel.getPixel(10),
+    },
     image: {
         marginRight: Pixel.getPixel(15),
     },
@@ -210,7 +244,8 @@ const styles = StyleSheet.create({
         alignItems:'center',
         position:'absolute',
         left:0,
-        bottom:0
+        bottom:Pixel.getPixel(10),
+        right:0
     },
     btnText:{
         fontSize:Pixel.getFontPixel(15),

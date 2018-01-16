@@ -18,6 +18,8 @@ import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import AddressManageItem from './AddressManageItem';
 import AddressManageEditScene from './AddressManageEditScene';
+import AccountModal from '../../component/AccountModal';
+
 
 let allSouce = [];
 export default class AddressManageListScene extends BaseComponent {
@@ -36,15 +38,21 @@ export default class AddressManageListScene extends BaseComponent {
         };
         request(Urls.GET_FLOWSOTHER_LIST, 'Post', maps)
             .then((response) => {
-                    allSouce.push(...response.mjson.data);
-                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        dataSource: ds.cloneWithRows(allSouce),
-                        isRefreshing: false
-                    });
-                    this.setState({renderPlaceholderOnly: 'success'});
+                    this.props.showModal(false);
+                    if(response.mycode == 1){
+                        allSouce.push(...response.mjson.data);
+                        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(allSouce),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    }else{
+                        this.setState({renderPlaceholderOnly: 'error'});
+                    }
                 },
                 (error) => {
+                    this.props.showModal(false);
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     };
@@ -73,22 +81,35 @@ export default class AddressManageListScene extends BaseComponent {
         });
     };
 
+    _refreshData = () => {
+        allSouce = [];
+        this.getData();
+    };
+
     _onDelete = (item)=>{
-        let maps = {
-            company_id:global.companyBaseID,
-            id:item.id
-        };
-        request(Urls.DEL_ADDRESS, 'Post', maps)
-            .then(
-                (response) => {
-                    if(response.code == 1){
-                        this.props.refreshData();
-                    }
-                },
-                (error) => {
-                    this.props.showToast(error.msg);
-                }
-            );
+        this.defModal.changeShowType(true,
+            '确定删除地址？'
+            , '确认', '取消', () => {
+
+                this.props.showModal(true);
+                let maps = {
+                    company_id:global.companyBaseID,
+                    address_id:item.id
+                };
+                request(Urls.DEL_ADDRESS, 'Post', maps)
+                    .then(
+                        (response) => {
+                            if(response.mycode === 1){
+                                this._refreshData();
+                            }else{
+                                this.props.showModal(false);
+                            }
+                        },
+                        (error) => {
+                            this.props.showToast(error.mjson.msg);
+                        }
+                    );
+            });
     };
 
     _onEdit = (item)=>{
@@ -102,13 +123,16 @@ export default class AddressManageListScene extends BaseComponent {
     _setDefault = (item)=>{
         let maps = {
             company_id:global.companyBaseID,
-            id:item.id
+            address_id:item.id
         };
+        this.props.showModal(true);
         request(Urls.SET_DEFAULT_ADDRESS, 'Post', maps)
             .then(
                 (response) => {
-                    if(response.code == 1){
-                        this.props.refreshData();
+                    if(response.mycode == 1){
+                        this._refreshData();
+                    }else{
+                        this.props.showModal(false);
                     }
                 },
                 (error) => {
@@ -117,19 +141,27 @@ export default class AddressManageListScene extends BaseComponent {
             );
     };
 
+    _renderSeparator =(sectionID,rowID)=>{
+        return(
+            <View key={rowID} style={styles.rowSeparator} />
+        );
+    };
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={styles.container}>
                     <NavigatorView title='地址管理' backIconClick={this.backPage}/>
+                    {this.loadView()}
                 </View>
             );
         } else {
             return (<View style={styles.container}>
                     <NavigatorView title='地址管理' backIconClick={this.backPage}/>
-                    <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(74)}}
+                    <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64),marginBottom:Pixel.getTitlePixel(80)}}
                               dataSource={this.state.dataSource}
                               renderRow={this._renderRow}
+                              renderSeparator={this._renderSeparator}
                               enableEmptySections={true}
                               removeClippedSubviews={false}
                               refreshControl={
@@ -147,6 +179,7 @@ export default class AddressManageListScene extends BaseComponent {
                     >
                         <Text style={styles.btnText}>新增</Text>
                     </TouchableOpacity>
+                    <AccountModal ref={(ref)=>{this.defModal = ref}}/>
                 </View>
             );
         }
@@ -196,6 +229,9 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
 
     },
+    rowSeparator:{
+        height:Pixel.getPixel(10),
+    },
     image: {
         marginRight: Pixel.getPixel(15),
     },
@@ -209,7 +245,8 @@ const styles = StyleSheet.create({
         alignItems:'center',
         position:'absolute',
         left:0,
-        bottom:0
+        bottom:Pixel.getPixel(10),
+        right:0
     },
     btnText:{
         fontSize:Pixel.getFontPixel(15),
