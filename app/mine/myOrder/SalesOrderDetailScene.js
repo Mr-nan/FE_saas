@@ -64,7 +64,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.leftTime = 0;
         this.closeOrder = 0;
         this.financeInfo = {};
-
+        this.isPort = 1;
         this.modelData = [];
         this.modelInfo = {};
         this.carData = {'v_type': 1};
@@ -263,6 +263,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     /**
+     *   更改是否港口提车标志
+     **/
+    updateIsPort = (newIsPort) => {
+        this.isPort = newIsPort;
+    };
+
+    /**
      *  定价提交
      **/
     savePrice = () => {
@@ -270,7 +277,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
-                //console.log('this.vinInput.value======',this.vinInput.value);
+                console.log('.is_port.value======',this.isPort);
                 let maps = {
                     company_id: datas.company_base_id,
                     car_id: this.orderDetail.orders_item_data[0].car_id,
@@ -278,7 +285,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     pricing_amount: this.carAmount,
                     deposit_amount: this.deposit,
                     car_vin: this.orderDetail.orders_item_data[0].car_vin.length === 17 ?
-                        this.orderDetail.orders_item_data[0].car_vin : this.carVin
+                        this.orderDetail.orders_item_data[0].car_vin : this.carVin,
+                    is_port: this.isPort,
+                    //strat_id: ''
                 };
                 let url = AppUrls.ORDER_SAVE_PRICE;
                 request(url, 'post', maps).then((response) => {
@@ -1138,14 +1147,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
         if (text.length === 17) {
             this.props.showModal(true);
             this.vinInput.blur();
-            Net.request(AppUrls.VININFO, 'post', {vin: text}).then(
+            Net.request(AppUrls.VIN_CHECK, 'post', {vin: text}).then(
                 (response) => {
                     this.props.showModal(false);
-                    if (response.mycode === 1) {
-                        let rd = response.mjson.data;
+                    if (response.mycode === 1 && response.mjson.data.valid) {
+                        /*let rd = response.mjson.data;
                         if (rd.length === 0) {
                             this.props.showToast('车架号校验失败');
-                        }
+                        }*/
                     } else {
                         this.props.showToast('车架号校验失败');
                     }
@@ -1580,7 +1589,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '8') {
             return (
-                <ChooseStart />
+                <ChooseStart isPort={this.isPort} updateIsPort={this.updateIsPort}/>
             )
         } else if (rowData === '9') {
             return (
