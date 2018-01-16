@@ -52,11 +52,13 @@
   self.mapView.delegate = self;
   self.geoSearch.delegate = self;
   self.sugSearch.delegate = self;
-  if(_pt.longitude == 0){
-    [self geoCodeActionCity:self.cityName Address:self.addressName];
-  }else{
-    [self.mapView setCenterCoordinate:_pt animated:YES];
-  }
+  [self geoCodeActionCity:self.cityName Address:self.addressName];
+
+//  if(_pt.longitude == 0){
+//    [self geoCodeActionCity:self.cityName Address:self.addressName];
+//  }else{
+////    [self.mapView setCenterCoordinate:_pt animated:YES];
+//  }
   
   
 }
