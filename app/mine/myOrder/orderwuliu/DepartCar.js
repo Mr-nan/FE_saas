@@ -106,7 +106,7 @@ export default class DepartCar extends BaseComponent {
                             this.jump(data.title);
                         }}>
                             <View style={styles.content_base_wrap}>
-                                <View style={[styles.content_base_text_wrap, index == 1 && {borderBottomWidth: 0}]}>
+                                <View style={[styles.content_base_text_wrap, index == datas.length-1 && {borderBottomWidth: 0}]}>
                                     <Text style={{
                                         fontSize: Pixel.getFontPixel(14),
                                         color: 'black',
@@ -142,7 +142,7 @@ export default class DepartCar extends BaseComponent {
                                                 marginLeft: Pixel.getPixel(10),
                                                 color: FontAndColor.COLORA1,
                                                 fontSize: 15
-                                            }}>{data.title == '车辆数' ? '  台' : '万元'}</Text>
+                                            }}>{data.title == '车辆数' ? '   台' : '万元'}</Text>
                                         </View>}
 
                                 </View>
