@@ -28,11 +28,11 @@ export default class ChooseStart extends PureComponent {
         this.tagSelect = [{
             name: '是',
             check: true,
-            id: 0
+            id: 1
         }, {
             name: '否',
             check: false,
-            id: 1
+            id: 0
         }];
         this.state = {
 
@@ -53,7 +53,7 @@ export default class ChooseStart extends PureComponent {
             data.check = false;
         });
         this.tagSelect[index].check = !this.tagSelect[index].check;
-
+        this.props.updateIsPort(this.tagSelect[index].id);
         this.tagRef.refreshData(this.tagSelect);
     };
 

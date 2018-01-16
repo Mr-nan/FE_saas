@@ -71,16 +71,16 @@ export default class AccountModal extends Component {
                               justifyContent:'center',alignItems:'center'}}>
                                 <Text allowFontScaling={false}  style={{fontSize:Pixel.getPixel(14),color:'#fff'}}>{this.state.leftText}</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>{
+                            {this.state.rightText!==''&&<TouchableOpacity onPress={()=>{
                                  this.setState({
                                     isShow: false
                                     });
                               }} activeOpacity={0.9} style={{flex:1,marginLeft:Pixel.getPixel(10),
                               backgroundColor:'#fff',borderRadius:3,
                              justifyContent:'center',alignItems:'center',borderWidth:1,borderColor:fontAndColor.COLORB0}}>
-                                <Text allowFontScaling={false} 
+                                <Text allowFontScaling={false}
                                     style={{fontSize:Pixel.getPixel(14),color:fontAndColor.COLORB0}}>{this.state.rightText}</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity>}
                         </View>
                     </View>
                 </TouchableOpacity>
