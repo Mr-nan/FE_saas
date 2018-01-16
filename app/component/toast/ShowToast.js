@@ -4,7 +4,8 @@ import {
     StyleSheet,
     Text,
     View,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 import Toast from './Toast';
 import Confirm from './Confirm';
