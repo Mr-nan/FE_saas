@@ -140,7 +140,8 @@ const styles = StyleSheet.create({
     bottomRightBtn:{
         flexDirection:'row',
         alignItems:'center',
-        marginLeft:Pixel.getPixel(40)
+        marginLeft:Pixel.getPixel(30),
+        padding:Pixel.getPixel(5)
     },
     bottomRightText:{
         fontSize:Pixel.getFontPixel(15),
