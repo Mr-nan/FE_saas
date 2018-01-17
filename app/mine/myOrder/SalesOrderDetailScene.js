@@ -68,6 +68,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.addressId = -1;
         this.modelData = [];
         this.modelInfo = {};
+        this.isCheckPrice = -1;
         this.carData = {'v_type': 1};
 
         this.modelData = [];
@@ -212,13 +213,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
         //console.log('prepareSavePrice==inputDeposit==', inputDeposit);
         // 判断Input控件中的数额与此页面中数额比较
         // Input控件中成交价 == 此页面成交价 && Input控件中订金 == 此页面订金 直接走savePrice
-        if (inputTransaction === this.carAmount && inputDeposit === this.deposit) {
+        if (inputTransaction === this.carAmount && inputDeposit === this.deposit && this.isCheckPrice === 1) {
             if (this.localCheckPrice(this.carAmount, this.deposit, 2)) {
                 this.savePrice();
             }
         }
         // Input控件中成交价 == 此页面成交价 && Input控件中订金 != 此页面订金 只走localCheckPrice & type = 2
-        else if (inputTransaction === this.carAmount && inputDeposit !== this.deposit) {
+        else if (inputTransaction === this.carAmount && inputDeposit !== this.deposit && this.isCheckPrice === 1) {
             this.deposit = inputDeposit;
             this.localCheckPrice(this.carAmount, this.deposit, 2);
         }
@@ -250,6 +251,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.showModal(false);
+                        this.isCheckPrice = 1;
                         this.isShowFinance(response.mjson.data, true);
                     } else {
                         this.props.showToast(response.mjson.msg);
