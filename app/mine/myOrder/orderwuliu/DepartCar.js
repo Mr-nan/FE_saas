@@ -25,7 +25,7 @@ import MyButton from "../../../component/MyButton";
 
 const agree_icon = require('../../../../images/agree_icon.png');
 const disagree = require('../../../../images/disagree.png');
-
+import CheckTransferFee from "./CheckTransferFee";
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
@@ -114,14 +114,20 @@ export default class DepartCar extends BaseComponent {
                                     }}>{data.title}</Text>
                                     {data.value == '' ?
                                         <View style={{flexDirection: 'row', alignItems: 'center',}}>
-                                            <Text
-                                                style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{'请选择'}</Text>
+                                            <View style={{
+                                                flexWrap: 'wrap',
+                                                height: Pixel.getPixel(50),
+                                                width: (width * 3 / 4)-20,
+                                                justifyContent: 'center'
+                                            }}>
+                                                <Text style={[styles.content_base_Right,{color: FontAndColor.COLORA1}]}>{'请选择'}</Text>
+                                            </View>
                                             <Image source={cellJianTou} style={styles.image}></Image>
                                         </View> :
                                         <View style={{flexDirection: 'row', alignItems: 'center',}}>
                                             <TextInput
                                                 style={{
-                                                    height: Pixel.getPixel(55),
+                                                    height: Pixel.getPixel(44),
                                                     width: Pixel.getPixel(150),
                                                     flexWrap: 'wrap',
                                                     textAlign: 'right',
@@ -176,6 +182,7 @@ export default class DepartCar extends BaseComponent {
                 paddingVertical: Pixel.getPixel(15),
                 backgroundColor: 'white',
                 justifyContent: 'space-between',
+                paddingHorizontal:Pixel.getPixel(5),
                 flexDirection:'row'
             }}>
                 {this.state.cellDatas.map((data, index) => {
@@ -183,7 +190,7 @@ export default class DepartCar extends BaseComponent {
                         <TouchableOpacity key={index + 'cellDatas'} activeOpacity={0.8} onPress={()=>{this.onTagClick(data,index)}}>
                         <View  style={[{
                             flexDirection: 'row', marginHorizontal: Pixel.getPixel(8),
-                            height: Pixel.getPixel(80), width: (width - 50) / 2, alignItems: 'center'
+                            height: Pixel.getPixel(70), width: (width - 50) / 2, alignItems: 'center'
                         },data.check?{backgroundColor:FontAndColor.COLORA4}:{backgroundColor:FontAndColor.COLORB9}]}>
                             <Image source={data.img} style={{marginLeft:Pixel.getPixel(8)}}/>
                             <Text style={{
@@ -240,10 +247,9 @@ export default class DepartCar extends BaseComponent {
 
     confirmBt = () => {
         this.toNextPage({
-                name: 'CheckWaybill',
-                component: CheckWaybill,
+                name: 'CheckTransferFee',
+                component: CheckTransferFee,
                 params: {
-                    isShowPay: true
                 }
             }
         );
@@ -307,14 +313,6 @@ const styles = StyleSheet.create({
         backgroundColor: FontAndColor.all_background,
         flex: 1,
     },
-    content_tag_wrap: {
-        height: Pixel.getPixel(49),
-        marginHorizontal: Pixel.getPixel(15),
-        borderBottomWidth: Pixel.getPixel(1),
-        borderColor: FontAndColor.COLORA4,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
     content_base_text_wrap: {
         flex: 1,
         alignItems: 'center',
@@ -335,7 +333,7 @@ const styles = StyleSheet.create({
         textAlign: 'right'
     },
     content_base_wrap: {
-        height: Pixel.getPixel(50),
+        height: Pixel.getPixel(45),
         backgroundColor: 'white',
         paddingHorizontal: Pixel.getPixel(15)
     },

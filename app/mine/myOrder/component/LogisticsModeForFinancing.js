@@ -38,7 +38,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
             id: 1
         }];
         this.state = {
-            useLogistics: 'logistics'
+            useLogistics: 'al'
         }
     }
 
@@ -105,13 +105,29 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                 </TouchableOpacity>
         } else {  // 选择 车已在店
             views =
-                <View style={{
-                    height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
-                    paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
-                }}>
-                    <Text >车已在店</Text>
-                    <View style={{flex: 1}}/>
-                    <Text style={{color: fontAndColor.COLORB0}}>审核中</Text>
+                <View>
+                    <View style={{
+                        height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
+                        paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
+                    }}>
+                        <Text >车已在店</Text>
+                        <View style={{flex: 1}}/>
+                        <Text style={{color: fontAndColor.COLORB2}}>审核中</Text>
+                    </View>
+                    <View style={styles.separatedLine}/>
+                    <View style={{
+                        flexDirection: 'row', alignItems: 'center',
+                    }}>
+                        <View style={{flexDirection: 'row', alignItems: 'flex-start',margin: Pixel.getPixel(15)}}>
+                            <Text style={{color: fontAndColor.COLORA1,
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>审核地址</Text>
+                            <View style={{flex: 1}}/>
+                            <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                textAlign: 'right', width: Pixel.getPixel(250)}}>
+                                审核中审核中审核中审核中审核中审核中审核中审核中审核中审核中审核中
+                            </Text>
+                        </View>
+                    </View>
                 </View>
         }
         return (

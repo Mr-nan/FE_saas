@@ -1589,7 +1589,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '8') {
             return (
-                <ChooseStart isPort={this.isPort} updateIsPort={this.updateIsPort}/>
+                <ChooseStart isPort={this.isPort}
+                             updateIsPort={this.updateIsPort}
+                             orderDetail={this.orderDetail}
+                             navigator={this.props.navigator}
+                             showToast={this.props.showToast}
+                             showModal={this.props.showModal}/>
             )
         } else if (rowData === '9') {
             return (
