@@ -128,13 +128,13 @@ export default class AddressManageEditScene extends BaseComponent {
                 (error)=>{}
             );
         }else{
-            let adr = this._isEmpty(this.item.address)?'':this.item.address;
-            let ll = {
-                longitude:this._isEmpty(this.item.longitude)?'':this.item.longitude,
-                latitude:this._isEmpty(this.item.latitude)?'':this.item.latitude,
-            };
+            // let adr = this._isEmpty(this.item.address)?'':this.item.address;
+            // let ll = {
+            //     longitude:this._isEmpty(this.item.longitude)?'':this.item.longitude,
+            //     latitude:this._isEmpty(this.item.latitude)?'':this.item.latitude,
+            // };
 
-            NativeModules.ZNMapManger.cityName(this.item.city,adr,ll,(error,data)=>{
+            NativeModules.ZNMapManger.cityName(this.item.city,this.item.district,(error,data)=>{
                 this.item.address = data.address;
                 this.item.latitude = data.location.latitude;
                 this.item.longitude = data.location.longitude;

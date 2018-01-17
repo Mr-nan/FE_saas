@@ -65,22 +65,23 @@ public class BaiduLocationActivity extends Activity implements
         public void run() {
             // handler自带方法实现定时器
             try {
-                if(longitude.equals("")){
-                    mSearch.geocode(new GeoCodeOption().city(city).address(district));
-                }else{
-                    LatLng poi = new LatLng(Double.parseDouble(latitude),Double.parseDouble(longitude));
-                    mBaiduMap.clear();
-                    mBaiduMap.addOverlay(new MarkerOptions().position(poi)
-                            .icon(BitmapDescriptorFactory
-                                    .fromResource(R.drawable.icon_gcoding)));
-                    mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(poi));
-
-                    /**
-                     * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
-                     */
-                    mSearch.reverseGeoCode(new ReverseGeoCodeOption()
-                            .location(poi));
-                }
+                mSearch.geocode(new GeoCodeOption().city(city).address(district));
+//                if(longitude.equals("")){
+//                    mSearch.geocode(new GeoCodeOption().city(city).address(district));
+//                }else{
+//                    LatLng poi = new LatLng(Double.parseDouble(latitude),Double.parseDouble(longitude));
+//                    mBaiduMap.clear();
+//                    mBaiduMap.addOverlay(new MarkerOptions().position(poi)
+//                            .icon(BitmapDescriptorFactory
+//                                    .fromResource(R.drawable.icon_gcoding)));
+//                    mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(poi));
+//
+//                    /**
+//                     * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
+//                     */
+//                    mSearch.reverseGeoCode(new ReverseGeoCodeOption()
+//                            .location(poi));
+//                }
 
             } catch (Exception e) {
 
@@ -175,7 +176,7 @@ public class BaiduLocationActivity extends Activity implements
                     return;
                 }
                 Intent rIntent = new Intent();
-                rIntent.putExtra("address", sItem.getPoiInfo().name);
+                rIntent.putExtra("address", sItem.getPoiInfo().address);
                 rIntent.putExtra("longitude", sItem.getPoiInfo().location.longitude+"");
                 rIntent.putExtra("latitude", sItem.getPoiInfo().location.latitude+"");
                 BaiduLocationActivity.this.setResult(RESULT_OK, rIntent);
