@@ -63,8 +63,9 @@ export default class ChooseStart extends BaseComponent {
      *   地址回传
      **/
     updateAddress = (newAddress) => {
+        console.log('newAddress',newAddress)
         this.setState({
-            address: newAddress
+            address: newAddress.full_address
         })
     };
 

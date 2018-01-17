@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, Image,ListView
+    View, TouchableOpacity, Dimensions, Image,ListView,RefreshControl
 } from 'react-native';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
+import AddressManageEditScene from '../../addressManage/AddressManageEditScene';
 
 const {width} = Dimensions.get('window');
 import * as FontAndColor from '../../../constant/fontAndColor';
@@ -18,12 +19,9 @@ const no_select_icon = require('../../../../images/no_select_icon.png');
 const Pixel = new PixelUtil();
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
-let accountInfo = [{name: '张大大', tel: '13000000001', isSelect: true, address: '湖北省武汉市武昌区安静了的空间发垃圾时代峰峻阿施蒂利克据了解'}, {
-    name: '李小小',
-    tel: '13000000001',
-    isSelect: false,
-    address: '湖北省武汉市武昌区网生路129号'
-}]
+let allSouce=[];
+let accountInfo = [];
+let callBackInfo={};
 export default class AddressManage extends BaseComponent {
     constructor(props) {
         super(props);
@@ -31,22 +29,72 @@ export default class AddressManage extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: false,
             accountInfo: accountInfo,
-            dataSource: this.ds.cloneWithRows(accountInfo),
+            dataSource: this.ds.cloneWithRows(allSouce),
             isRefreshing: false,
         }
     }
 
     initFinish() {
-        this.setState({
-            renderPlaceholderOnly: 'success'
-        });
+        allSouce=[]
+        this.getData();
     }
+
+    getData = () => {
+        let maps = {
+            company_id:global.companyBaseID,
+        };
+        request(Urls.GET_FLOWSOTHER_LIST, 'Post', maps)
+            .then((response) => {
+                    accountInfo=[];
+                    this.props.showModal(false);
+                    if(response.mycode == 1){
+                        allSouce.push(...response.mjson.data);
+                        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        allSouce.map((data)=>{
+                            accountInfo.push({
+                                contact_name:data.contact_name,
+                                contact_phone:data.contact_phone,
+                                full_address:data.full_address,
+                                is_default:data.is_default
+                            })
+                            callBackInfo={
+                                full_address:data.full_address,
+                                id:data.id
+                            }
+                        })
+                        this.setState({
+                            dataSource: ds.cloneWithRows(allSouce),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    }else{
+                        this.setState({renderPlaceholderOnly: 'error'});
+                    }
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                });
+    };
+    refreshingData = () => {
+        allSouce = [];
+        this.setState({isRefreshing: true});
+        this.getData();
+    };
+
+    allRefresh = () => {
+        this.setState({
+            renderPlaceholderOnly: 'loading',
+        });
+        this.getData();
+    }
+
 
     itemClick = (index) => {
         accountInfo.map((data) => {
-            data.isSelect = false;
+            data.is_default = 0;
         })
-        accountInfo[index].isSelect = true;
+        accountInfo[index].is_default = 1;
         this.setState({
             dataSource: this.ds.cloneWithRows(accountInfo),
         });
@@ -64,12 +112,12 @@ export default class AddressManage extends BaseComponent {
                     paddingBottom:Pixel.getPixel(15)
                 }]}>
                     <View style={styles.content_title_text_wrap}>
-                        <Image source={data.isSelect ? selected_icon : no_select_icon}
+                        <Image source={data.is_default==1 ? selected_icon : no_select_icon}
                                style={{marginRight: Pixel.getPixel(15)}}/>
-                        <Text style={styles.content_title_text}>{data.name}</Text>
-                        <Text style={styles.content_base_Right}>{data.tel}</Text>
+                        <Text style={styles.content_title_text}>{data.contact_name}</Text>
+                        <Text style={styles.content_base_Right}>{data.contact_phone}</Text>
                     </View>
-                    <Text style={styles.address_text}>{data.address}</Text>
+                    <Text style={styles.address_text}>{data.full_address}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -88,21 +136,28 @@ export default class AddressManage extends BaseComponent {
                         removeClippedSubviews={false}
                         renderRow={this._renderRow}
                         enableEmptySections={true}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this.refreshingData}
+                                tintColor={[FontAndColor.COLORB0]}
+                                colors={[FontAndColor.COLORB0]}
+                            />
+                        }
                     />
 
                 </View>
 
                 <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'地址管理'}
+                          content={'新增管理'}
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
                               this.toNextPage({
-                                      name: 'PickUpInfo',
-                                      component: PickUpInfo,
-                                      params: {}
-                                  }
-                              );
+                                  component:AddressManageEditScene,
+                                  name:'AddressManageEditScene',
+                                  params:{item:{},refreshData:this.refreshingData}
+                              });
                           }}/>
             </View>
         );
@@ -113,7 +168,7 @@ export default class AddressManage extends BaseComponent {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
                 {this.loadView()}
-                <NavigatorView title='地址管理' backIconClick={this.backPage}/>
+                <NavigatorView title='地址管理' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
             </View>);
         } else {
             return (<View style={styles.container}>
@@ -122,11 +177,36 @@ export default class AddressManage extends BaseComponent {
                         this._renderItem()
                     }
                 </View>
-                <NavigatorView title='地址管理' backIconClick={this.backPage}/>
+                <NavigatorView title='地址管理' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
             </View>)
         }
 
     }
+
+    renderRightView = () => {
+        return (
+            <TouchableOpacity onPress={
+                () => {
+                    this.backPage();
+                    this.props.callBack(callBackInfo);
+                }
+            }>
+                <View style={{
+                    marginLeft: Pixel.getPixel(20),
+                    width: Pixel.getPixel(80),
+                    height: Pixel.getPixel(40),
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Text allowFontScaling={false}
+                          style={{color: 'white', fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30)}}>完成</Text>
+                </View>
+            </TouchableOpacity>
+        )
+
+
+    }
+
 
 }
 
