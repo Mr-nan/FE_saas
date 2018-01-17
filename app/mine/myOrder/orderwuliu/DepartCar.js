@@ -114,8 +114,14 @@ export default class DepartCar extends BaseComponent {
                                     }}>{data.title}</Text>
                                     {data.value == '' ?
                                         <View style={{flexDirection: 'row', alignItems: 'center',}}>
-                                            <Text
-                                                style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{'请选择'}</Text>
+                                            <View style={{
+                                                flexWrap: 'wrap',
+                                                height: Pixel.getPixel(50),
+                                                width: (width * 3 / 4)-20,
+                                                justifyContent: 'center'
+                                            }}>
+                                                <Text style={[styles.content_base_Right,{color: FontAndColor.COLORA1}]}>{'请选择'}</Text>
+                                            </View>
                                             <Image source={cellJianTou} style={styles.image}></Image>
                                         </View> :
                                         <View style={{flexDirection: 'row', alignItems: 'center',}}>
@@ -176,6 +182,7 @@ export default class DepartCar extends BaseComponent {
                 paddingVertical: Pixel.getPixel(15),
                 backgroundColor: 'white',
                 justifyContent: 'space-between',
+                paddingHorizontal:Pixel.getPixel(5),
                 flexDirection:'row'
             }}>
                 {this.state.cellDatas.map((data, index) => {

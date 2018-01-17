@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, Image,
+    View, TouchableOpacity, Dimensions, Image, ListView
 } from 'react-native';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
@@ -18,13 +18,20 @@ import * as Urls from '../../../constant/appUrls';
 const selected_icon = require('../../../../images/selected_icon.png');
 const no_select_icon = require('../../../../images/no_select_icon.png');
 const Pixel = new PixelUtil();
-let accountInfo = [{name: '张大大', tel: '13000000001', isSelect: true}, {name: '李小小', tel: '13000000001', isSelect: false}]
+let accountInfo = [{name: '张大大', tel: '13000000001', isSelect: true}, {
+    name: '李小小',
+    tel: '13000000001',
+    isSelect: false
+}]
 export default class SelectPickUp extends BaseComponent {
     constructor(props) {
         super(props);
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: false,
-            accountInfo:accountInfo
+            accountInfo: accountInfo,
+            dataSource: this.ds.cloneWithRows(accountInfo),
+            isRefreshing: false,
         }
     }
 
@@ -34,15 +41,29 @@ export default class SelectPickUp extends BaseComponent {
         });
     }
 
-    itemClick=(index)=>{
-        accountInfo.map((data)=>{
-            data.isSelect=false;
+    itemClick = (index) => {
+        accountInfo.map((data) => {
+            data.isSelect = false;
         })
-        accountInfo[index].isSelect=true;
+        accountInfo[index].isSelect = true;
         this.setState({
-            accountInfo:accountInfo
+            dataSource: this.ds.cloneWithRows(accountInfo),
         });
 
+    }
+    _renderRow = (data, s,index) => {
+        return (
+            <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
+                this.itemClick(index);
+            }}>
+                <View style={styles.content_title_text_wrap}>
+                    <Image source={data.isSelect ? selected_icon : no_select_icon}
+                           style={{marginRight: Pixel.getPixel(15)}}/>
+                    <Text style={styles.content_title_text}>{data.name}</Text>
+                    <Text style={styles.content_base_Right}>{data.tel}</Text>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
     _renderItem = () => {
@@ -53,21 +74,12 @@ export default class SelectPickUp extends BaseComponent {
                     backgroundColor: 'white',
                     paddingHorizontal: Pixel.getPixel(15)
                 }}>
-                    {
-                        this.state.accountInfo.map((data, index) => {
-                            return (
-                                <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
-                                    this.itemClick(index);
-                                }}>
-                                    <View style={styles.content_title_text_wrap}>
-                                        <Image source={data.isSelect ? selected_icon : no_select_icon} style={{marginRight:Pixel.getPixel(15)}}/>
-                                        <Text style={styles.content_title_text}>{data.name}</Text>
-                                        <Text style={styles.content_base_Right}>{data.tel}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
+                    <ListView
+                        dataSource={this.state.dataSource}
+                        removeClippedSubviews={false}
+                        renderRow={this._renderRow}
+                        enableEmptySections={true}
+                    />
 
                 </View>
 

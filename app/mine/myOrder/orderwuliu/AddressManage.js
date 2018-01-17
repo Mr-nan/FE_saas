@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, Image,
+    View, TouchableOpacity, Dimensions, Image,ListView
 } from 'react-native';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
@@ -27,9 +27,12 @@ let accountInfo = [{name: '张大大', tel: '13000000001', isSelect: true, addre
 export default class AddressManage extends BaseComponent {
     constructor(props) {
         super(props);
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: false,
-            accountInfo: accountInfo
+            accountInfo: accountInfo,
+            dataSource: this.ds.cloneWithRows(accountInfo),
+            isRefreshing: false,
         }
     }
 
@@ -45,9 +48,31 @@ export default class AddressManage extends BaseComponent {
         })
         accountInfo[index].isSelect = true;
         this.setState({
-            accountInfo: accountInfo
+            dataSource: this.ds.cloneWithRows(accountInfo),
         });
 
+    }
+    _renderRow=(data,s,index)=>{
+        return (
+            <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
+                this.itemClick(index);
+            }}>
+                <View style={{
+                    justifyContent: 'center', borderBottomWidth: Pixel.getPixel(1),
+                    borderColor: FontAndColor.COLORA4,
+                    backgroundColor: 'white',
+                    paddingBottom:Pixel.getPixel(15)
+                }}>
+                    <View style={styles.content_title_text_wrap}>
+                        <Image source={data.isSelect ? selected_icon : no_select_icon}
+                               style={{marginRight: Pixel.getPixel(15)}}/>
+                        <Text style={styles.content_title_text}>{data.name}</Text>
+                        <Text style={styles.content_base_Right}>{data.tel}</Text>
+                    </View>
+                    <Text style={styles.address_text}>{data.address}</Text>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
     _renderItem = () => {
@@ -58,30 +83,12 @@ export default class AddressManage extends BaseComponent {
                     backgroundColor: 'white',
                     paddingHorizontal: Pixel.getPixel(15)
                 }}>
-                    {
-                        this.state.accountInfo.map((data, index) => {
-                            return (
-                                <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
-                                    this.itemClick(index);
-                                }}>
-                                    <View style={{
-                                        justifyContent: 'center', borderBottomWidth: Pixel.getPixel(1),
-                                        borderColor: FontAndColor.COLORA4,
-                                        backgroundColor: 'white',
-                                        paddingBottom:Pixel.getPixel(15)
-                                    }}>
-                                        <View style={styles.content_title_text_wrap}>
-                                            <Image source={data.isSelect ? selected_icon : no_select_icon}
-                                                   style={{marginRight: Pixel.getPixel(15)}}/>
-                                            <Text style={styles.content_title_text}>{data.name}</Text>
-                                            <Text style={styles.content_base_Right}>{data.tel}</Text>
-                                        </View>
-                                        <Text style={styles.address_text}>{data.address}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
+                    <ListView
+                        dataSource={this.state.dataSource}
+                        removeClippedSubviews={false}
+                        renderRow={this._renderRow}
+                        enableEmptySections={true}
+                    />
 
                 </View>
 
