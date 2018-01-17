@@ -401,6 +401,18 @@ export default class CheckStand extends BaseComponent {
         )
     };
 
+    /**
+     *    todo 物流单判断
+     * */
+    pageRouting = (payType) => {
+        //console.log('this.props.payType====', this.props.payType);
+        if (payType === 1) {
+            return this.normalPay();
+        } else {
+            return this.logisticsPay();
+        }
+    };
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -413,7 +425,7 @@ export default class CheckStand extends BaseComponent {
                 <View style={styles.container}>
                     <NavigatorView title='收银台' backIconClick={this.backPage}/>
                     <ScrollView style={{marginTop: Pixel.getTitlePixel(65)}}>
-                        {this.logisticsPay()}
+                        {this.pageRouting(this.props.payType)}
                         <MyButton buttonType={MyButton.TEXTBUTTON}
                                   content={'账户支付'}
                                   parentStyle={styles.loginBtnStyle}
