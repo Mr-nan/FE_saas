@@ -128,13 +128,13 @@ export default class AddressManageEditScene extends BaseComponent {
                 (error)=>{}
             );
         }else{
-            // let adr = this._isEmpty(this.item.address)?'':this.item.address;
-            // let ll = {
-            //     longitude:this._isEmpty(this.item.longitude)?'':this.item.longitude,
-            //     latitude:this._isEmpty(this.item.latitude)?'':this.item.latitude,
-            // };
+            let adr = this.item.district;
+            let ll = {
+                longitude:this._isEmpty(this.item.longitude)?'':this.item.longitude,
+                latitude:this._isEmpty(this.item.latitude)?'':this.item.latitude,
+            };
 
-            NativeModules.ZNMapManger.cityName(this.item.city,this.item.district,(error,data)=>{
+            NativeModules.ZNMapManger.cityName(this.item.city,adr,ll,(error,data)=>{
                 this.item.address = data.address;
                 this.item.latitude = data.location.latitude;
                 this.item.longitude = data.location.longitude;
@@ -221,19 +221,22 @@ export default class AddressManageEditScene extends BaseComponent {
                 </View>
                 <View style={styles.itemSeparator}/>
                 <View style={styles.itemView}>
-                    <Text style={styles.itemLeftText}>{'详细地址'}</Text>
+                    <Text style={styles.itemLeftText2}>{'详细地址'}</Text>
                     <TouchableOpacity
                         activeOpacity={0.6}
-                        style={styles.itemRightSelect}
+                        style={styles.itemRightSelect2}
                         onPress={this._toAddress}
                     >
                         <TextInput
                             ref={(ref)=>{this.mAddress = ref;}}
-                            style={styles.itemRightText}
+                            style={styles.itemRightText2}
                             underlineColorAndroid='transparent'
                             placeholder={'请选择'}
                             defaultValue={this.item.address}
                             editable = {false}
+                            multiline={true}
+                            numberOfLines={2}
+                            onContentSizeChange={this._onContentSizeChange}
                         />
                         <Image style={styles.arrowStyle} source={arrow_img}/>
                     </TouchableOpacity>
@@ -253,6 +256,16 @@ export default class AddressManageEditScene extends BaseComponent {
         );
     }
 
+    _onContentSizeChange = (event)=>{
+        let {width, height} = event.nativeEvent.contentSize;
+        if(height > Pixel.getPixel(23)){
+            this.mAddress.setNativeProps({
+                textAlign:'left',
+            })
+        }
+
+    };
+
     _isEmpty = (str)=>{
         if(typeof(str) != 'undefined' && str !== ''){
             return false;
@@ -267,8 +280,6 @@ const styles = StyleSheet.create({
         flex:1,
         marginTop: Pixel.getPixel(0),
         backgroundColor: fontAndColor.COLORA3,
-
-
     },
     hintStyle:{
         backgroundColor:fontAndColor.COLORB8,
@@ -298,6 +309,23 @@ const styles = StyleSheet.create({
         flex:2,
         flexDirection:'row',
         alignItems:'center'
+    },
+    itemLeftText2:{
+        fontSize:Pixel.getFontPixel(15),
+        color:fontAndColor.COLORA1,
+        width:Pixel.getPixel(70)
+    },
+    itemRightSelect2:{
+        flex:1,
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    itemRightText2:{
+        color:'black',
+        fontSize:Pixel.getFontPixel(15),
+        textAlign:'right',
+        padding:0,
+        flex:1
     },
     itemRightText:{
         color:'black',

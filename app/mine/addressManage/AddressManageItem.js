@@ -39,7 +39,7 @@ export default class AddressManageItem extends BaseComponent {
                             ?
                             <View style={styles.bottomLeft}>
                                 <Image source={select_img} style={styles.bottomLeftImg}/>
-                                <Text style={styles.bottomLeftText}>{'默认提车人'}</Text>
+                                <Text style={styles.bottomLeftText}>{'默认地址'}</Text>
                             </View>
                             :
                             <TouchableOpacity
