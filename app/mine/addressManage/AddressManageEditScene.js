@@ -28,15 +28,19 @@ export default class AddressManageEditScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.item = this.props.item;
-        this.state ={
-            cityStatus:false
-        };
-
         this.pro_city = '';
         if(!this._isEmpty(this.item.province)){
             this.pro_city = this.item.province + this.item.city + this.item.district;
         }
+        this.state ={
+            cityStatus:false,
+            region_city:this.pro_city,
+            region_address:this.item.address
+        };
+
+
     }
+
 
     _onTextChange = (type,text)=>{
         if(type === '1'){
@@ -120,9 +124,9 @@ export default class AddressManageEditScene extends BaseComponent {
                     this.item.address = suc.address;
                     this.item.latitude = suc.latitude;
                     this.item.longitude = suc.longitude;
-                    this.mAddress.setNativeProps({
-                        text:suc.address
-                    })
+                    this.setState({
+                        region_address:this.item.address
+                    });
 
                 },
                 (error)=>{}
@@ -215,6 +219,7 @@ export default class AddressManageEditScene extends BaseComponent {
                             placeholder={'请选择'}
                             defaultValue={this.pro_city}
                             editable = {false}
+                            placeholderTextColor={fontAndColor.COLORA1}
                         />
                         <Image style={styles.arrowStyle} source={arrow_img}/>
                     </TouchableOpacity>
@@ -227,17 +232,9 @@ export default class AddressManageEditScene extends BaseComponent {
                         style={styles.itemRightSelect2}
                         onPress={this._toAddress}
                     >
-                        <TextInput
-                            ref={(ref)=>{this.mAddress = ref;}}
-                            style={styles.itemRightText2}
-                            underlineColorAndroid='transparent'
-                            placeholder={'请选择'}
-                            defaultValue={this.item.address}
-                            editable = {false}
-                            multiline={true}
-                            numberOfLines={2}
-                            onContentSizeChange={this._onContentSizeChange}
-                        />
+                        <Text ref = {(ref)=>{this.mAddress = ref}}
+                              onContentSizeChange={this._onContentSizeChange}
+                              style={this.state.region_address ? styles.itemRightText : styles.itemRightText2}>{this.state.region_address ? this.state.region_address : '请选择'}</Text>
                         <Image style={styles.arrowStyle} source={arrow_img}/>
                     </TouchableOpacity>
                 </View>
@@ -257,6 +254,7 @@ export default class AddressManageEditScene extends BaseComponent {
     }
 
     _onContentSizeChange = (event)=>{
+        console.log('111111111343');
         let {width, height} = event.nativeEvent.contentSize;
         if(height > Pixel.getPixel(23)){
             this.mAddress.setNativeProps({
@@ -321,17 +319,17 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     itemRightText2:{
-        color:'black',
+        color:fontAndColor.COLORA1,
         fontSize:Pixel.getFontPixel(15),
         textAlign:'right',
-        padding:0,
         flex:1
     },
     itemRightText:{
         color:'black',
         fontSize:Pixel.getFontPixel(15),
         flex:1,
-        textAlign:'right'
+        textAlign:'right',
+        paddingHorizontal:0
     },
     itemSeparator:{
         borderColor:fontAndColor.COLORA3,
