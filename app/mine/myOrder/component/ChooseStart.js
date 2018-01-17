@@ -8,7 +8,8 @@ import {
     View,
     Text,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -18,6 +19,7 @@ import BaseComponent from "../../../component/BaseComponent";
 import TagSelectView from "./TagSelectView";
 import AddressManage from "../orderwuliu/AddressManage";
 const Pixel = new PixelUtil();
+const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
 
 export default class ChooseStart extends BaseComponent {
 
@@ -37,7 +39,8 @@ export default class ChooseStart extends BaseComponent {
             id: 0
         }];
         this.state = {
-            address: this.props.orderDetail.address.full_address
+            address: this.props.orderDetail.address.full_address,
+            addressId: this.props.orderDetail.address.id
         }
     }
 
@@ -63,9 +66,11 @@ export default class ChooseStart extends BaseComponent {
      *   地址回传
      **/
     updateAddress = (newAddress) => {
-        console.log('newAddress',newAddress)
+        console.log('newAddress',newAddress);
+        this.props.updateAddressId(newAddress.id);
         this.setState({
-            address: newAddress.full_address
+            address: newAddress.full_address,
+            addressId: newAddress.id
         })
     };
 
@@ -82,7 +87,8 @@ export default class ChooseStart extends BaseComponent {
                             name: 'AddressManage',
                             component: AddressManage,
                             params: {
-                                callBack: this.updateAddress
+                                callBack: this.updateAddress,
+                                addressId: this.state.addressId
                             }
                         });
                     }}>
@@ -93,6 +99,7 @@ export default class ChooseStart extends BaseComponent {
                         <Text >发车地</Text>
                         <View style={{flex: 1}}/>
                         <Text >{address}</Text>
+                        <Image source={cellJianTou} />
                     </View>
                 </TouchableOpacity>
                 <View style={styles.separatedLine}/>
