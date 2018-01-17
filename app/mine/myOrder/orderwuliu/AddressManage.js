@@ -65,7 +65,7 @@ export default class AddressManage extends BaseComponent {
                             }
                         })
                         this.setState({
-                            dataSource: ds.cloneWithRows(allSouce),
+                            dataSource: ds.cloneWithRows(accountInfo),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });

@@ -11,7 +11,7 @@ const {width} = Dimensions.get('window');
 import * as FontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import MyButton from "../../../component/MyButton";
-import GetCarerManageEditScene from '../../GetCarerManageEditScene';
+import GetCarerManageEditScene from '../../getCarerManage/GetCarerManageEditScene';
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
 
