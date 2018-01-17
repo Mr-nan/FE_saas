@@ -54,11 +54,12 @@ export default class SelectPickUp extends BaseComponent {
                         allSouce.map((data)=>{
                             accountInfo.push({
                                 name:data.name,
-                                phone:data.phone
+                                phone:data.phone,
+                                isSelect:false
                             });
                         });
                         this.setState({
-                            dataSource: ds.cloneWithRows(allSouce),
+                            dataSource: ds.cloneWithRows(accountInfo),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });
