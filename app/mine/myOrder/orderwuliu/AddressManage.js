@@ -57,12 +57,12 @@ export default class AddressManage extends BaseComponent {
             <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
                 this.itemClick(index);
             }}>
-                <View style={{
+                <View style={[{
                     justifyContent: 'center', borderBottomWidth: Pixel.getPixel(1),
                     borderColor: FontAndColor.COLORA4,
                     backgroundColor: 'white',
                     paddingBottom:Pixel.getPixel(15)
-                }}>
+                }]}>
                     <View style={styles.content_title_text_wrap}>
                         <Image source={data.isSelect ? selected_icon : no_select_icon}
                                style={{marginRight: Pixel.getPixel(15)}}/>
