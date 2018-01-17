@@ -174,7 +174,7 @@ export default class AddressManage extends BaseComponent {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
                 {this.loadView()}
-                <NavigatorView title='地址管理' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
+                <NavigatorView title='地址管理' backIconClick={this.backPage}/>
             </View>);
         } else {
             return (<View style={styles.container}>
@@ -252,8 +252,9 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         width: width - Pixel.getPixel(30),
         backgroundColor: FontAndColor.COLORB0,
-        marginTop: Pixel.getPixel(30),
-        marginBottom: Pixel.getPixel(30),
+        marginTop: Pixel.getPixel(10),
+        position:'absolute',
+        bottom:Pixel.getPixel(10),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),

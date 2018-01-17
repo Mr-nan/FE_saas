@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, Image, ListView
+    View, TouchableOpacity, Dimensions, Image, ListView,RefreshControl
 } from 'react-native';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
@@ -11,7 +11,7 @@ const {width} = Dimensions.get('window');
 import * as FontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import MyButton from "../../../component/MyButton";
-import AddressManage from './AddressManage';
+import GetCarerManageEditScene from '../../getCarerManage/GetCarerManageEditScene';
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
 
@@ -23,6 +23,7 @@ let accountInfo = [{name: '张大大', tel: '13000000001', isSelect: true}, {
     tel: '13000000001',
     isSelect: false
 }]
+let allSouce=[];
 export default class SelectPickUp extends BaseComponent {
     constructor(props) {
         super(props);
@@ -36,15 +37,62 @@ export default class SelectPickUp extends BaseComponent {
     }
 
     initFinish() {
+        allSouce=[];
+        // this.getData();
+    }
+    getData = () => {
+        allSouce=[];
+        let maps = {
+            company_id:global.companyBaseID,
+        };
+        request(Urls.GET_GETER_LIST, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    if(response.mycode === 1){
+                        allSouce.push(...response.mjson.data);
+                        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        allSouce.map((data)=>{
+                            accountInfo.push({
+                                name:data.name,
+                                phone:data.phone
+                            });
+                        });
+                        this.setState({
+                            dataSource: ds.cloneWithRows(allSouce),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    }else {
+                        this.setState({renderPlaceholderOnly: 'error'});
+                    }
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                });
+    };
+
+    refreshingData = () => {
+        allSouce = [];
+        this.setState({isRefreshing: true});
+        this.getData();
+    };
+
+    allRefresh = () => {
         this.setState({
-            renderPlaceholderOnly: 'success'
+            renderPlaceholderOnly: 'loading',
         });
+        this.getData();
     }
 
     itemClick = (index) => {
         accountInfo.map((data) => {
             data.isSelect = false;
         })
+        accountInfo.push({
+            name:accountInfo[index].name,
+            phone:accountInfo[index].phone
+        });
         accountInfo[index].isSelect = true;
         this.setState({
             dataSource: this.ds.cloneWithRows(accountInfo),
@@ -60,7 +108,7 @@ export default class SelectPickUp extends BaseComponent {
                     <Image source={data.isSelect ? selected_icon : no_select_icon}
                            style={{marginRight: Pixel.getPixel(15)}}/>
                     <Text style={styles.content_title_text}>{data.name}</Text>
-                    <Text style={styles.content_base_Right}>{data.tel}</Text>
+                    <Text style={styles.content_base_Right}>{data.phone}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -79,6 +127,14 @@ export default class SelectPickUp extends BaseComponent {
                         removeClippedSubviews={false}
                         renderRow={this._renderRow}
                         enableEmptySections={true}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this.refreshingData}
+                                tintColor={[FontAndColor.COLORB0]}
+                                colors={[FontAndColor.COLORB0]}
+                            />
+                        }
                     />
 
                 </View>
@@ -89,11 +145,10 @@ export default class SelectPickUp extends BaseComponent {
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
                               this.toNextPage({
-                                      name: 'AddressManage',
-                                      component: AddressManage,
-                                      params: {}
-                                  }
-                              );
+                                  component:GetCarerManageEditScene,
+                                  name:'GetCarerManageEditScene',
+                                  params:{item:{},refreshData:this.refreshingData}
+                              });
                           }}/>
             </View>
         );
@@ -113,9 +168,33 @@ export default class SelectPickUp extends BaseComponent {
                         this._renderItem()
                     }
                 </View>
-                <NavigatorView title='选择提车人' backIconClick={this.backPage}/>
+                <NavigatorView title='选择提车人' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
             </View>)
         }
+
+    }
+
+    renderRightView = () => {
+        return (
+            <TouchableOpacity onPress={
+                () => {
+                    this.backPage();
+                    this.props.callBack(callBackInfo);
+                }
+            }>
+                <View style={{
+                    marginLeft: Pixel.getPixel(20),
+                    width: Pixel.getPixel(80),
+                    height: Pixel.getPixel(40),
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Text allowFontScaling={false}
+                          style={{color: 'white', fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30)}}>完成</Text>
+                </View>
+            </TouchableOpacity>
+        )
+
 
     }
 
@@ -168,8 +247,9 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         width: width - Pixel.getPixel(30),
         backgroundColor: FontAndColor.COLORB0,
-        marginTop: Pixel.getPixel(30),
-        marginBottom: Pixel.getPixel(30),
+        marginTop: Pixel.getPixel(10),
+        position:'absolute',
+        bottom:Pixel.getPixel(10),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),

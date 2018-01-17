@@ -1,4 +1,4 @@
-import  React from  'react'
+import  React,{Component} from  'react'
 import  {
     StyleSheet,
     View,
@@ -10,13 +10,12 @@ import  {
 import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
 let Pixel = new PixelUtil();
-import BaseComponent from "../../component/BaseComponent";
 const select_img = require('../../../images/mine/get_carer_selected.png');
 const unselect_img = require('../../../images/mine/get_carer_unselect.png');
 const delete_img = require('../../../images/mine/get_carer_delete.png');
 const edit_img = require('../../../images/mine/get_carer_edit.png');
 
-export default class GetCarerManageItem extends BaseComponent {
+export default class GetCarerManageItem extends Component {
 
     constructor(props) {
         super(props);
