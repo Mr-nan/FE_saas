@@ -216,3 +216,6 @@ return [
 
     无订金单子:
     totalpay_amount>0
+
+
+    logistics_type  0自提1全款到店2融资到店3融资到库4库到店

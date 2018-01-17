@@ -71,6 +71,15 @@ export default class LogisticsMode extends BaseComponent {
     };
 
     /**
+     *  0自提1全款到店2融资到店3融资到库4库到店
+     **/
+    logisticsTypeRouting = (orderState) => {
+        if (orderState === 2) {
+            return 1;
+        }
+    };
+
+    /**
      *  render
      **/
     render() {
@@ -98,7 +107,8 @@ export default class LogisticsMode extends BaseComponent {
                                 name: 'FillWaybill',
                                 component: FillWaybill,
                                 params: {
-
+                                    orderId: this.props.orderDetail.id,
+                                    logisticsType: this.logisticsTypeRouting(this.props.orderState)
                                 }
 
                             });
