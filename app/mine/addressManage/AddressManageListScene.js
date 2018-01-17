@@ -151,13 +151,12 @@ export default class AddressManageListScene extends BaseComponent {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={styles.container}>
-                    <NavigatorView title='地址管理' backIconClick={this.backPage}/>
                     {this.loadView()}
+                    <NavigatorView title='地址管理' backIconClick={this.backPage}/>
                 </View>
             );
         } else {
             return (<View style={styles.container}>
-                    <NavigatorView title='地址管理' backIconClick={this.backPage}/>
                     <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64),marginBottom:Pixel.getTitlePixel(80)}}
                               dataSource={this.state.dataSource}
                               renderRow={this._renderRow}
@@ -179,6 +178,7 @@ export default class AddressManageListScene extends BaseComponent {
                     >
                         <Text style={styles.btnText}>新增</Text>
                     </TouchableOpacity>
+                    <NavigatorView title='地址管理' backIconClick={this.backPage}/>
                     <AccountModal ref={(ref)=>{this.defModal = ref}}/>
                 </View>
             );
@@ -196,7 +196,6 @@ export default class AddressManageListScene extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
-
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
         backgroundColor: fontAndColor.COLORA3,
