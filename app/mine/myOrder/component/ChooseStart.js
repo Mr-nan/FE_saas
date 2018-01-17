@@ -8,6 +8,7 @@ import {
     View,
     Text,
     Dimensions,
+    TouchableOpacity
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -15,9 +16,10 @@ import * as fontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import BaseComponent from "../../../component/BaseComponent";
 import TagSelectView from "./TagSelectView";
+import AddressManage from "../orderwuliu/AddressManage";
 const Pixel = new PixelUtil();
 
-export default class ChooseStart extends PureComponent {
+export default class ChooseStart extends BaseComponent {
 
     /**
      *  初始化
@@ -35,7 +37,7 @@ export default class ChooseStart extends PureComponent {
             id: 0
         }];
         this.state = {
-
+            address: this.props.orderDetail.address.full_address
         }
     }
 
@@ -58,27 +60,52 @@ export default class ChooseStart extends PureComponent {
     };
 
     /**
+     *   地址回传
+     **/
+    updateAddress = (newAddress) => {
+        this.setState({
+            address: newAddress
+        })
+    };
+
+    /**
      *  render
      **/
     render() {
+        let address = this.state.address ? this.state.address : '请选择';
         return (
             <View style={{height: Pixel.getPixel(89), backgroundColor: '#ffffff'}}>
-                <View style={{height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
-                paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)}}>
-                    <Text >发车地</Text>
-                    <View style={{flex: 1}}/>
-                    <Text >请选择</Text>
-                </View>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.toNextPage({
+                            name: 'AddressManage',
+                            component: AddressManage,
+                            params: {
+                                callBack: this.updateAddress
+                            }
+                        });
+                    }}>
+                    <View style={{
+                        height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
+                        paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
+                    }}>
+                        <Text >发车地</Text>
+                        <View style={{flex: 1}}/>
+                        <Text >{address}</Text>
+                    </View>
+                </TouchableOpacity>
                 <View style={styles.separatedLine}/>
-                <View style={{height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
-                    paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)}}>
+                <View style={{
+                    height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
+                    paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
+                }}>
                     <Text >是否港口提车</Text>
                     <View style={{flex: 1}}/>
                     <TagSelectView
                         buttonWidth={Pixel.getPixel(80)}
                         ref={(ref) => {
-                        this.tagRef = ref;
-                    }} onTagClick={this.onTagClick} cellData={this.tagSelect}/>
+                            this.tagRef = ref;
+                        }} onTagClick={this.onTagClick} cellData={this.tagSelect}/>
                 </View>
             </View>
         )
