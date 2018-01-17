@@ -65,6 +65,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.closeOrder = 0;
         this.financeInfo = {};
         this.isPort = 1;
+        this.addressId = -1;
         this.modelData = [];
         this.modelInfo = {};
         this.carData = {'v_type': 1};
@@ -269,6 +270,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.isPort = newIsPort;
     };
 
+    updateAddressId = (newAddressId) => {
+        this.addressId = newAddressId;
+    };
+
     /**
      *  定价提交
      **/
@@ -278,6 +283,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
                 console.log('.is_port.value======',this.isPort);
+                console.log('.addressId.value======',this.addressId);
                 let maps = {
                     company_id: datas.company_base_id,
                     car_id: this.orderDetail.orders_item_data[0].car_id,
@@ -379,6 +385,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.orderDetail = response.mjson.data;
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
+                        this.addressId = this.orderDetail.address.id;
                         this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.cancel_time);
                         this.closeOrder = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.pricing_time);
                         this.carAmount = 0;
@@ -1590,7 +1597,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
         } else if (rowData === '8') {
             return (
                 <ChooseStart isPort={this.isPort}
+                             addressId={this.addressId}
                              updateIsPort={this.updateIsPort}
+                             updateAddressId={this.updateAddressId}
                              orderDetail={this.orderDetail}
                              navigator={this.props.navigator}
                              showToast={this.props.showToast}
