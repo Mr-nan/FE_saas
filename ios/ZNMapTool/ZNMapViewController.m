@@ -52,11 +52,13 @@
   self.mapView.delegate = self;
   self.geoSearch.delegate = self;
   self.sugSearch.delegate = self;
-  if(_pt.longitude == 0){
-    [self geoCodeActionCity:self.cityName Address:self.addressName];
-  }else{
-    [self.mapView setCenterCoordinate:_pt animated:YES];
-  }
+  [self geoCodeActionCity:self.cityName Address:self.addressName];
+
+//  if(_pt.longitude == 0){
+//    [self geoCodeActionCity:self.cityName Address:self.addressName];
+//  }else{
+////    [self.mapView setCenterCoordinate:_pt animated:YES];
+//  }
   
   
 }
@@ -208,8 +210,8 @@
 
   if(error == BMK_SEARCH_NO_ERROR){
     _pt = result.location;
-    [self.mapView setCenterCoordinate:_pt animated:YES];
     [self reverseGeoCodeAction:_pt];
+    [self.mapView setCenterCoordinate:_pt animated:YES];
   }else{
     NSLog(@"未找到结果");
   }
