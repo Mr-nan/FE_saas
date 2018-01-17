@@ -51,17 +51,25 @@ export default class AddressManage extends BaseComponent {
                         allSouce.push(...response.mjson.data);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         allSouce.map((data)=>{
-                            console.log('----1',data.id+'---'+this.props.addressId);
+                            //console.log('----1',data.id+'---'+this.props.addressId);
                             accountInfo.push({
                                 contact_name:data.contact_name,
                                 contact_phone:data.contact_phone,
                                 full_address:data.full_address,
                                 id:data.id,
-                                is_default:data.id==this.props.addressId?1:0
+                                is_default:data.id==this.props.addressId?1:0,
+                                province: data.province,
+                                city: data.city,
+                                district: data.district,
+                                is_port: data.is_port
                             })
                             callBackInfo={
                                 full_address:data.full_address,
-                                id:data.id
+                                id:data.id,
+                                province: data.province,
+                                city: data.city,
+                                district: data.district,
+                                is_port: data.is_port
                             }
                         })
                         this.setState({
@@ -98,7 +106,11 @@ export default class AddressManage extends BaseComponent {
         })
         callBackInfo={
             full_address:accountInfo[index].full_address,
-            id:accountInfo[index].id
+            id:accountInfo[index].id,
+            province: accountInfo[index].province,
+            city: accountInfo[index].city,
+            district: accountInfo[index].district,
+            is_port: accountInfo[index].is_port
         }
         accountInfo[index].is_default = 1;
         this.setState({

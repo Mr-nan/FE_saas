@@ -39,8 +39,9 @@ export default class ChooseStart extends BaseComponent {
             id: 0
         }];
         this.state = {
-            address: this.props.orderDetail.address.full_address,
-            addressId: this.props.orderDetail.address.id
+            address: this.props.orderDetail.address.province + this.props.orderDetail.address.city + this.props.orderDetail.address.district,
+            addressId: this.props.orderDetail.address.id,
+            isPort: this.props.orderDetail.address.is_port
         }
     }
 
@@ -69,8 +70,9 @@ export default class ChooseStart extends BaseComponent {
         console.log('newAddress',newAddress);
         this.props.updateAddressId(newAddress.id);
         this.setState({
-            address: newAddress.full_address,
-            addressId: newAddress.id
+            address: newAddress.province + newAddress.city + newAddress.district,
+            addressId: newAddress.id,
+            isPort: newAddress.is_port
         })
     };
 
@@ -102,8 +104,8 @@ export default class ChooseStart extends BaseComponent {
                         <Image source={cellJianTou} />
                     </View>
                 </TouchableOpacity>
-                <View style={styles.separatedLine}/>
-                <View style={{
+                {(<View style={styles.separatedLine}/>)}
+                {(<View style={{
                     height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                     paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                 }}>
@@ -114,7 +116,7 @@ export default class ChooseStart extends BaseComponent {
                         ref={(ref) => {
                             this.tagRef = ref;
                         }} onTagClick={this.onTagClick} cellData={this.tagSelect}/>
-                </View>
+                </View>)}
             </View>
         )
     }

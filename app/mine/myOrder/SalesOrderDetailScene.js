@@ -71,7 +71,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.isCheckPrice = -1;
         this.carData = {'v_type': 1};
 
-        this.modelData = [];
         this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}];
 
         this.state = {
@@ -284,8 +283,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
-                console.log('.is_port.value======',this.isPort);
-                console.log('.addressId.value======',this.addressId);
+                //console.log('.is_port.value======',this.isPort);
+                //console.log('.addressId.value======',this.addressId);
                 let maps = {
                     company_id: datas.company_base_id,
                     car_id: this.orderDetail.orders_item_data[0].car_id,
@@ -295,7 +294,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     car_vin: this.orderDetail.orders_item_data[0].car_vin.length === 17 ?
                         this.orderDetail.orders_item_data[0].car_vin : this.carVin,
                     is_port: this.isPort,
-                    //strat_id: ''
+                    start_id: this.addressId
                 };
                 let url = AppUrls.ORDER_SAVE_PRICE;
                 request(url, 'post', maps).then((response) => {
