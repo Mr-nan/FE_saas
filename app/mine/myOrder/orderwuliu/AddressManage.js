@@ -51,11 +51,13 @@ export default class AddressManage extends BaseComponent {
                         allSouce.push(...response.mjson.data);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         allSouce.map((data)=>{
+                            console.log('----1',data.id+'---'+this.props.addressId);
                             accountInfo.push({
                                 contact_name:data.contact_name,
                                 contact_phone:data.contact_phone,
                                 full_address:data.full_address,
-                                is_default:data.is_default
+                                id:data.id,
+                                is_default:data.id==this.props.addressId?1:0
                             })
                             callBackInfo={
                                 full_address:data.full_address,
