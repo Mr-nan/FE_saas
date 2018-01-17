@@ -94,6 +94,10 @@ export default class AddressManage extends BaseComponent {
         accountInfo.map((data) => {
             data.is_default = 0;
         })
+        callBackInfo={
+            full_address:accountInfo[index].full_address,
+            id:accountInfo[index].id
+        }
         accountInfo[index].is_default = 1;
         this.setState({
             dataSource: this.ds.cloneWithRows(accountInfo),
