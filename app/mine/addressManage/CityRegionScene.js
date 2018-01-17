@@ -105,7 +105,6 @@ export default class CityRegionScene extends Component{
         this.props.closePress();
     };
 
-
     loadModel=(type)=>{
         this.props.showModal(type);
     };
@@ -362,9 +361,9 @@ class DistrictList extends  Component{
             <TouchableOpacity style={styles.rowCell} onPress={()=>{
                 selectData.district_name=rowData.county_name;
                 selectData.district_id=rowData.county_id;
-                this.props._checkDistrictClick();
+                this.props.checkDistrictClick();
             }}>
-                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.city_name}</Text>
+                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.county_name}</Text>
             </TouchableOpacity>
         )
     };

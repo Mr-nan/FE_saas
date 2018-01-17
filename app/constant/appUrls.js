@@ -1455,52 +1455,52 @@ export const ACCOUNT_HOME = BASEURL  + "v2/account.home/index";
  *
  * 提车人列表
  */
-export const GET_GETER_LIST = BASEURL + V + "order/flowsother/getGeterList";
+export const GET_GETER_LIST = BASEURL + "v2/order.car_picker/lists";
 /**
  *
  * 新增提车人
  */
-export const ADD_GETER = BASEURL + V + "/order/flowsother/addGeter";
+export const ADD_GETER = BASEURL + "v2/order.car_picker/save";
 /**
  *
  * 编辑提车人
  */
-export const PUT_GETER = BASEURL + V + "/order/flowsother/putGeter";
+export const PUT_GETER = BASEURL + "v2/order.car_picker/save";
 /**
  *
  * 设置默认提车人
  */
-export const SET_DEFAULT_GETER = BASEURL + V + "/order/flowsother/setDefaultGeter";
+export const SET_DEFAULT_GETER = BASEURL + "v2/order.car_picker/setDefault";
 /**
  *
  * 删除提车人
  */
-export const DEL_GETER = BASEURL + V + "/order/flowsother/delGeter";
+export const DEL_GETER = BASEURL + "v2/order.car_picker/delete";
 /**
  *
  * 地址列表
  */
-export const GET_FLOWSOTHER_LIST = BASEURL + V + "/order/flowsother/getLIst";
+export const GET_FLOWSOTHER_LIST = BASEURL + "v2/order.address/lists";
 /**
  *
  * 新增收发车地址
  */
-export const ADD_ADDRESS = BASEURL + V + "/order/flowsother/addAddress";
+export const ADD_ADDRESS = BASEURL + "v2/order.address/save";
 /**
  *
  * 编辑地址
  */
-export const PUT_ADDRESS = BASEURL + V + "/order/flowsother/putAddress";
+export const PUT_ADDRESS = BASEURL+ "v2/order.address/save";
 /**
  *
  * 设置默认地址
  */
-export const SET_DEFAULT_ADDRESS = BASEURL + V + "/order/flowsother/setDefaultAddress";
+export const SET_DEFAULT_ADDRESS = BASEURL + "v2/order.address/setDefault";
 /**
  *
  * 删除地址
  */
-export const DEL_ADDRESS = BASEURL + V + "order/flowsother/delAddress";
+export const DEL_ADDRESS = BASEURL + "v2/order.address/delete";
 /**
  *
  * 获取城市下区域列表
@@ -1515,4 +1515,4 @@ export const WAYBILL = BASEURL  + "v2/order.logistics/waybill";
  *
  * 物流运单订单
  */
-export const WAYBILL_DETAIL = BASEURL  + " v2/order.logistics/detail";
+export const WAYBILL_DETAIL = BASEURL  + "v2/order.logistics/detail";

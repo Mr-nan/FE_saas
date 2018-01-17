@@ -6,7 +6,8 @@ import  {
     Text,
     TextInput,
     Image,
-    NativeModules
+    NativeModules,
+    Platform
 } from  'react-native'
 
 import * as fontAndColor from '../../constant/fontAndColor';
@@ -18,6 +19,8 @@ const arrow_img = require('../../../images/mine/celljiantou.png');
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import CityRegionScene from './CityRegionScene';
+const IS_ANDROID = Platform.OS === 'android';
+const dismissKeyboard = require('dismissKeyboard');
 
 
 export default class AddressManageEditScene extends BaseComponent {
@@ -74,22 +77,25 @@ export default class AddressManageEditScene extends BaseComponent {
             address:this.item.address,
             latitude:this.item.latitude,
             longitude:this.item.longitude,
+            is_default:'0'
         };
         let url = Urls.ADD_ADDRESS;
         if(this.props.isEdit){
             url = Urls.PUT_ADDRESS;
-            maps.id = this.item.id;
+            maps.address_id = this.item.id;
+            maps.is_default=this.item.is_default;
         }
         request(url, 'Post', maps)
             .then(
                 (response) => {
                     this.props.showModal(false);
-                    if(response.code == 1){
+                    if(response.mycode === 1){
+                        this.backPage();
                         this.props.refreshData();
                     }
                 },
                 (error) => {
-                    this.props.showToast(error.msg);
+                    this.props.showToast(error.mjson.msg);
                 });
     };
 
@@ -98,21 +104,51 @@ export default class AddressManageEditScene extends BaseComponent {
             this.props.showToast('请先选择区域');
             return;
         }
-        let cRegion ={
-            provinceName:this.item.province,
-            cityName:this.item.city,
-            districtName:this.item.district,
-            addressName:this._isEmpty(this.item.address)?'':this.item.address,
-            longitude:this._isEmpty(this.item.longitude)?'':this.item.longitude,
-            longitude:this._isEmpty(this.item.latitude)?'':this.item.latitude,
-        };
-        NativeModules.QrScan.bdAddress(cRegion).then(
-            (suc)=>{},
-            (error)=>{}
+
+        if(IS_ANDROID){
+            let cRegion ={
+                provinceName:this.item.province,
+                cityName:this.item.city,
+                districtName:this.item.district,
+                addressName:this._isEmpty(this.item.address)?'':this.item.address,
+                longitude:this._isEmpty(this.item.longitude)?'':this.item.longitude,
+                latitude:this._isEmpty(this.item.latitude)?'':this.item.latitude,
+            };
+            NativeModules.QrScan.bdAddress(cRegion).then(
+                (suc)=>{
+                    console.log('11111',suc);
+                    this.item.address = suc.address;
+                    this.item.latitude = suc.latitude;
+                    this.item.longitude = suc.longitude;
+                    this.mAddress.setNativeProps({
+                        text:suc.address
+                    })
+
+                },
+                (error)=>{}
             );
+        }else{
+            let adr = this.item.district;
+            let ll = {
+                longitude:this._isEmpty(this.item.longitude)?'':this.item.longitude,
+                latitude:this._isEmpty(this.item.latitude)?'':this.item.latitude,
+            };
+
+            NativeModules.ZNMapManger.cityName(this.item.city,adr,ll,(error,data)=>{
+                this.item.address = data.address;
+                this.item.latitude = data.location.latitude;
+                this.item.longitude = data.location.longitude;
+                this.mAddress.setNativeProps({
+                    text:data.address
+                })
+            });
+        }
+
+
     };
 
     _toProvince = ()=>{
+        dismissKeyboard();
         this.setState({cityStatus:true});
     };
 
@@ -125,14 +161,14 @@ export default class AddressManageEditScene extends BaseComponent {
     };
 
     checkAreaClick = (cityRegion)=>{
-        this.item.province = cityRegion.province_name;
-        this.item.province_code = cityRegion.province_id;
+        this.item.province = cityRegion.provice_name;
+        this.item.province_code = cityRegion.provice_id;
         this.item.city = cityRegion.city_name;
         this.item.city_code = cityRegion.city_id;
         this.item.district = cityRegion.district_name;
         this.item.district_code = cityRegion.district_id;
         this.aRegion.setNativeProps({
-            text:cityRegion.province_name + ' ' + cityRegion.city_name + ' ' + cityRegion.district_name
+            text:cityRegion.provice_name + ' ' + cityRegion.city_name + ' ' + cityRegion.district_name
         })
     };
 
@@ -160,6 +196,7 @@ export default class AddressManageEditScene extends BaseComponent {
                         underlineColorAndroid='transparent'
                         placeholder={'请输入'}
                         defaultValue={this.item.contact_phone}
+                        keyboardType={'numeric'}
                         onChangeText={(text)=>{this._onTextChange('2',text)}}
                     />
                 </View>
@@ -184,18 +221,22 @@ export default class AddressManageEditScene extends BaseComponent {
                 </View>
                 <View style={styles.itemSeparator}/>
                 <View style={styles.itemView}>
-                    <Text style={styles.itemLeftText}>{'详细地址'}</Text>
+                    <Text style={styles.itemLeftText2}>{'详细地址'}</Text>
                     <TouchableOpacity
                         activeOpacity={0.6}
-                        style={styles.itemRightSelect}
+                        style={styles.itemRightSelect2}
                         onPress={this._toAddress}
                     >
                         <TextInput
-                            style={styles.itemRightText}
+                            ref={(ref)=>{this.mAddress = ref;}}
+                            style={styles.itemRightText2}
                             underlineColorAndroid='transparent'
                             placeholder={'请选择'}
                             defaultValue={this.item.address}
                             editable = {false}
+                            multiline={true}
+                            numberOfLines={2}
+                            onContentSizeChange={this._onContentSizeChange}
                         />
                         <Image style={styles.arrowStyle} source={arrow_img}/>
                     </TouchableOpacity>
@@ -215,6 +256,16 @@ export default class AddressManageEditScene extends BaseComponent {
         );
     }
 
+    _onContentSizeChange = (event)=>{
+        let {width, height} = event.nativeEvent.contentSize;
+        if(height > Pixel.getPixel(23)){
+            this.mAddress.setNativeProps({
+                textAlign:'left',
+            })
+        }
+
+    };
+
     _isEmpty = (str)=>{
         if(typeof(str) != 'undefined' && str !== ''){
             return false;
@@ -229,8 +280,6 @@ const styles = StyleSheet.create({
         flex:1,
         marginTop: Pixel.getPixel(0),
         backgroundColor: fontAndColor.COLORA3,
-
-
     },
     hintStyle:{
         backgroundColor:fontAndColor.COLORB8,
@@ -260,6 +309,23 @@ const styles = StyleSheet.create({
         flex:2,
         flexDirection:'row',
         alignItems:'center'
+    },
+    itemLeftText2:{
+        fontSize:Pixel.getFontPixel(15),
+        color:fontAndColor.COLORA1,
+        width:Pixel.getPixel(70)
+    },
+    itemRightSelect2:{
+        flex:1,
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    itemRightText2:{
+        color:'black',
+        fontSize:Pixel.getFontPixel(15),
+        textAlign:'right',
+        padding:0,
+        flex:1
     },
     itemRightText:{
         color:'black',

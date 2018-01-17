@@ -30,7 +30,7 @@ export default class AddressManageItem extends BaseComponent {
                     <Text style={styles.itemRightText}>{this.props.item.contact_phone}</Text>
                 </View>
                 <View style={styles.itemView}>
-                    <Text style={styles.itemLeftText}>{this.props.item.address}</Text>
+                    <Text style={styles.itemLeftText}>{this.props.item.full_address}</Text>
                 </View>
                 <View style={styles.itemSeparator}/>
                 <View style={styles.bottomContainer}>
@@ -39,7 +39,7 @@ export default class AddressManageItem extends BaseComponent {
                             ?
                             <View style={styles.bottomLeft}>
                                 <Image source={select_img} style={styles.bottomLeftImg}/>
-                                <Text style={styles.bottomLeftText}>{'默认提车人'}</Text>
+                                <Text style={styles.bottomLeftText}>{'默认地址'}</Text>
                             </View>
                             :
                             <TouchableOpacity
@@ -140,7 +140,8 @@ const styles = StyleSheet.create({
     bottomRightBtn:{
         flexDirection:'row',
         alignItems:'center',
-        marginLeft:Pixel.getPixel(40)
+        marginLeft:Pixel.getPixel(30),
+        padding:Pixel.getPixel(5)
     },
     bottomRightText:{
         fontSize:Pixel.getFontPixel(15),
