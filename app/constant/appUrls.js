@@ -1516,3 +1516,7 @@ export const WAYBILL = BASEURL  + "v2/order.logistics/waybill";
  * 物流运单订单
  */
 export const WAYBILL_DETAIL = BASEURL  + "v2/order.logistics/detail";
+/**
+ *  支付尾款跳转
+ */
+export const PAY_BALANCE = BASEURL  + "v2/order.pay/balance";
