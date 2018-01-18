@@ -94,8 +94,8 @@ export default class NameAndIdScene extends ZSBaseComponent {
 
                         <TextInputItem
                             ref = 'id'
-                            title={type === 1?'组织机构':'证件号码'}
-                            textPlaceholder={type===1?'请输入企业组织机构代码':'请输入身份证号码'}
+                            title={type === 1?'社会信用代码':'证件号码'}
+                            textPlaceholder={type===1?'请输入企业社会信用代码':'请输入身份证号码'}
                             separator={false}
                         />
                     </View>
@@ -121,17 +121,79 @@ export default class NameAndIdScene extends ZSBaseComponent {
             this.props.showToast(type === 1?'请输入企业名称':'请输入真实姓名'); return;
         }
         if(id === '' || id === null){
-            this.props.showToast(type === 1?'请输入企业组织机构代码':'请输入身份证号码'); return;
+            this.props.showToast(type === 1?'请输入企业社会信用代码':'请输入身份证号码'); return;
         }
-        if(id.length!==18&&type === 2){
-            this.props.showToast('身份证号格式有误'); return;
+        if(id.length!==18){
+            this.props.showToast(type===1?'社会信用代码格式有误':'身份证号格式有误'); return;
+        }
+        if(type ===1&& !this.CheckEnterpriseCode(id)){
+            this.props.showToast('社会信用代码格式有误'); return;
         }
 
         this.generateAccount(name, id);
 
-
     }
 
+    CheckEnterpriseCode = (str)=>{
+
+        let contain_puctuation = false
+        let contain_numeric = false
+        let contain_alphabet = false
+
+        for(let i = 0; i<str.length; i++){
+            let c = str[i];
+
+            if(this.isPuctuation(c)){
+                contain_puctuation = true;
+            }else if(this.isNumeric(c)){
+                contain_numeric = true;
+            }else if(this.isAlphabet(c)){
+                contain_alphabet = true;
+            }else {
+               return false;
+            }
+        }
+
+        if(contain_puctuation === true && contain_alphabet === false && contain_numeric === false){
+            return false;  //纯标点符号
+        }
+        if(contain_puctuation === false && contain_alphabet === true && contain_numeric === false){
+            return false; // 纯字母
+        }
+
+        return true
+    }
+
+    // 是否为标点符号
+    isPuctuation = (c)=>{
+        let re = /[.,\/#!$%\^&\*;:{}=\-_`~()]/;
+        if (re.test(c)) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    //是否为数字
+    isNumeric = (c)=>{
+        let re = /[0-9]/;
+        if (re.test(c)) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    //是否为字母
+    isAlphabet = (c)=>{
+        let re = /[a-zA-Z]/;
+        if (re.test(c)) {
+            return true;
+        }else {
+            return false;
+        }
+
+    }
 
     // 用姓名和身份证号，生成资金账号，下一步开户的时候会用到  产品原型和UI里都没有体现
     generateAccount = (name, id)=>{
@@ -152,7 +214,7 @@ export default class NameAndIdScene extends ZSBaseComponent {
                 let params = {
                     user_type:type,
                     cert_no:id,
-                    cert_type:1,
+                    cert_type:type === 1?2:1,
                     enter_base_id:result.company_base_id,
                     cust_name:name,
 
