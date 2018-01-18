@@ -109,7 +109,8 @@ export default class LogisticsMode extends BaseComponent {
                                 params: {
                                     orderId: this.props.orderDetail.id,
                                     logisticsType: this.logisticsTypeRouting(this.props.orderState),
-                                    transId: this.props.orderDetail.orders_item_data[0].trans_id
+                                    transId: this.props.orderDetail.orders_item_data[0].trans_id,
+                                    vType: this.props.orderDetail.orders_item_data[0].car_data.v_type
                                 }
 
                             });
