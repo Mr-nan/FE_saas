@@ -386,6 +386,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.orderDetail = response.mjson.data;
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
+                        this.isPort = this.orderDetail.address.is_port;
                         this.addressId = this.orderDetail.address.id;
                         this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.cancel_time);
                         this.closeOrder = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.pricing_time);

@@ -67,7 +67,7 @@ export default class ChooseStart extends BaseComponent {
      *   地址回传
      **/
     updateAddress = (newAddress) => {
-        console.log('newAddress',newAddress);
+        //console.log('newAddress',newAddress);
         this.props.updateAddressId(newAddress.id);
         this.setState({
             address: newAddress.province + newAddress.city + newAddress.district,
@@ -82,7 +82,7 @@ export default class ChooseStart extends BaseComponent {
     render() {
         let address = this.state.address ? this.state.address : '请选择';
         return (
-            <View style={{height: Pixel.getPixel(89), backgroundColor: '#ffffff'}}>
+            <View style={{height: this.state.isPort === 1 ? Pixel.getPixel(89) : Pixel.getPixel(44), backgroundColor: '#ffffff'}}>
                 <TouchableOpacity
                     onPress={() => {
                         this.toNextPage({
@@ -104,8 +104,8 @@ export default class ChooseStart extends BaseComponent {
                         <Image source={cellJianTou} />
                     </View>
                 </TouchableOpacity>
-                {(<View style={styles.separatedLine}/>)}
-                {(<View style={{
+                {this.state.isPort === 1 && (<View style={styles.separatedLine}/>)}
+                {this.state.isPort === 1 && (<View style={{
                     height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                     paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                 }}>
