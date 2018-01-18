@@ -31,11 +31,11 @@ export default class LogisticsMode extends BaseComponent {
         this.tagSelect = [{
             name: '物流',
             check: true,
-            id: 0
+            id: 1
         }, {
             name: '自提',
             check: false,
-            id: 1
+            id: 0
         }];
         this.state = {
             fillWaybill: true,
@@ -58,6 +58,7 @@ export default class LogisticsMode extends BaseComponent {
             data.check = false;
         });
         this.tagSelect[index].check = !this.tagSelect[index].check;
+        this.props.updateLogisticsType(this.tagSelect[index].id);
         this.tagRef.refreshData(this.tagSelect);
         if (index === 0) {
             this.setState({

@@ -66,6 +66,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.leftTime = 0;
         this.financeInfo = {};
         this.companyId = 0;
+        this.logisticsType = 1;
         this.applyLoanAmount = '请输入申请贷款金额';
         this.state = {
             dataSource: [],
@@ -711,7 +712,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                             isSellerFinance: this.orderDetail.is_seller_finance,
                                             applyLoanAmount: this.applyLoanAmount,
                                             financeNo: this.orderDetail.finance_no,
-                                            callBack: this.payCallBack
+                                            callBack: this.payCallBack,
+                                            logisticsType: this.logisticsType
                                         }
                                     });
                                 }
@@ -1541,6 +1543,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     };
 
     /**
+     *
+     */
+    updateLogisticsType = (newLogisticsType) => {
+        this.logisticsType = newLogisticsType;
+    };
+
+
+    /**
      * from @hanmeng
      * 根据输入数字更新贷款金额
      **/
@@ -1847,7 +1857,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '9') {
             return (
-                <LogisticsMode navigator={this.props.navigator} orderDetail={this.orderDetail} orderState={this.orderState}/>
+                <LogisticsMode navigator={this.props.navigator}
+                               orderDetail={this.orderDetail}
+                               orderState={this.orderState}
+                               updateLogisticsType={this.updateLogisticsType}/>
             )
         } else if (rowData === '10') {
             return (

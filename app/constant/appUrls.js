@@ -1526,3 +1526,7 @@ export const CHECKTRANSTYPE = BASEURL  + "v2/order.logistics/check";
  *获取发票信息
  */
 export const GETINVOICEINFO = BASEURL  + "v2/order.invoice/info";
+/**
+ *  支付尾款跳转
+ */
+export const PAY_BALANCE = BASEURL  + "v2/order.pay/balance";
