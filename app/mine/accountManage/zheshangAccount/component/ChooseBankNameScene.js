@@ -46,6 +46,7 @@ let total = 0
 let banks = []
 let old_t = ''  //查询过的关键字
 let old_p = 1  //查询过的页数
+let loadType = 0;
 
 
 export default class ChooseBankNameScene extends BaseComponent {
@@ -64,12 +65,17 @@ export default class ChooseBankNameScene extends BaseComponent {
 
     componentWillUnmount() {
 
-        selectedBank = {}
-        selectedCity = {}
-        selectedHeadBank = {}
-        page = 0;
-        totalPage = 1
-        banks = []
+
+         selectedBank = {}
+         selectedCity = {}
+         selectedHeadBank = {}
+         page = 0;
+         totalPage = 1
+         total = 0
+         banks = []
+         old_t = ''  //查询过的关键字
+         old_p = 1  //查询过的页数
+         loadType = 0;
 
     }
 
@@ -213,6 +219,8 @@ export default class ChooseBankNameScene extends BaseComponent {
     // p:page
     loadHeadBank = (t, p) => {
 
+        loadType = 0;
+
         if (!this.isChinese(t)) {
             this.setState({
                 isRefreshing: false,
@@ -333,7 +341,7 @@ export default class ChooseBankNameScene extends BaseComponent {
             })
             return
         }
-        if (this.props.bank_card_no == '') {
+        if (this.props.bank_card_no == ''&&loadType == 0) {
             this.loadHeadBank(this.state.headValue, page)
         } else {
             if (this.props.bank_card_no == '') {
@@ -382,6 +390,7 @@ export default class ChooseBankNameScene extends BaseComponent {
 
         if (this.props.bank_card_no == '') {
             banks = []
+            page = 1
             this.loadChildBank(1)
         } else {
             this.refreshing()
@@ -391,6 +400,8 @@ export default class ChooseBankNameScene extends BaseComponent {
 
 
     loadChildBank = (p) => {
+
+        loadType = 1;
 
         request(AppUrls.ZS_SUB_BANK, 'post', {
             page: p,

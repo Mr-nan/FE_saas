@@ -770,7 +770,7 @@ export default class FinanceSence extends BaseComponet {
 
                             </View>
                             {
-                                (this.state.mnyData.is_microchinese_mny == 3 || this.state.mnyData.is_microchinese_mny == 5) && (
+                                false && (
                                     <View style={{flex: 1, alignItems: 'center',}}>
                                         <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1}
                                                           onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
