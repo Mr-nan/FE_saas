@@ -32,7 +32,8 @@ let selectData={
     provice_name:'',
     city_id:0,
     district_id:0,
-    district_name:''
+    district_name:'',
+    district_code:''
 };
 
 export default class CityRegionScene extends Component{
@@ -44,6 +45,7 @@ export default class CityRegionScene extends Component{
         selectData.city_id=0;
         selectData.district_name='';
         selectData.district_id=0;
+        selectData.district_code='';
     }
 
     // 构造
@@ -361,6 +363,7 @@ class DistrictList extends  Component{
             <TouchableOpacity style={styles.rowCell} onPress={()=>{
                 selectData.district_name=rowData.county_name;
                 selectData.district_id=rowData.county_id;
+                selectData.district_code=rowData.county_code;
                 this.props.checkDistrictClick();
             }}>
                 <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.county_name}</Text>

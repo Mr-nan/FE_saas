@@ -170,7 +170,7 @@ export default class AddressManageEditScene extends BaseComponent {
         this.item.city = cityRegion.city_name;
         this.item.city_code = cityRegion.city_id;
         this.item.district = cityRegion.district_name;
-        this.item.district_code = cityRegion.district_id;
+        this.item.district_code = cityRegion.district_code;
         this.aRegion.setNativeProps({
             text:cityRegion.provice_name + ' ' + cityRegion.city_name + ' ' + cityRegion.district_name
         })
