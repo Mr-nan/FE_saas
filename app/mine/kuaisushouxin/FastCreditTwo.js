@@ -42,12 +42,10 @@ const dismissKeyboard = require('dismissKeyboard');
 var Platform = require('Platform');
 const IS_ANDROID = Platform.OS === 'android';
 
-let openAccountLicenseID;
 let idcardfront;
 let idcardback;
 let businessid;
-let city_ID;
-let prov_ID;
+
 
 //===============================相机参数设置================================
 const options = {
@@ -73,6 +71,7 @@ export default class FastCreditTwo extends BaseComponent {
 	componentWillUnmount() {
 		this.timer && clearTimeout(this.timer);
 	}
+
 	constructor(props) {
 		super(props);
 		this.results = [];
@@ -191,7 +190,7 @@ export default class FastCreditTwo extends BaseComponent {
 						leftIcon={false}
 						clearValue={true}
 						import={false}
-						defaultValue={'zhangqilong'}
+						defaultValue={'shenfenzhenghaoma'}
 						maxLength={18}//身份证限制18位或者15位
 						rightIcon={false}/>
 					<LoginInputTextYU
@@ -204,7 +203,7 @@ export default class FastCreditTwo extends BaseComponent {
 						clearValue={true}
 						leftIcon={false}
 						import={false}
-						defaultValue={'zhangqilong'}
+						defaultValue={'dianhuahaoma'}
 						maxLength={11}
 						rightIcon={false}/>
 
@@ -312,7 +311,7 @@ export default class FastCreditTwo extends BaseComponent {
                                                   }}
 								          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
 								          mOnPress={() => {
-								          	businessid = '';
+								          	idcardfront = '';
 								          	this.setState({
 								          		enterpriseFront: null
 								          	});
@@ -338,7 +337,7 @@ export default class FastCreditTwo extends BaseComponent {
                                                   }}
 								          childStyle={{width: Pixel.getPixel(17),height: Pixel.getPixel(17),}}
 								          mOnPress={() => {
-								          	businessid = '';
+								          	idcardback = '';
 								          	this.setState({
 								          		enterpriseBack: null
 								          	});
@@ -395,28 +394,23 @@ export default class FastCreditTwo extends BaseComponent {
 				{/*===============================多张照片===========================*/}
 				<CarUpImageCellYU
 					results={this.results}
-					retureSaveAction={()=>{
-						console.log('1111111111111111' , this.results)
-                    {/*this.carData['pictures']=JSON.stringify(this.results);*/}
+					retureSaveAction={()=>{//---------------回调函数，获取到上传照片成功后，对应的照片的fileid,  this.results 是个数组，保存了全部的照片
+						{/*console.log('1111111111111111' , this.results)*/}
 
-                    {/*if(this.carData.show_shop_id && !this.carData.id){*/}
-                        {/*StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));*/}
-                    {/*}*/}
                 }}
 					showModal={(value)=>{this.props.showModal(value)}}
 					showToast={(value)=>{this.props.showToast(value)}}
 					items={{
 						"name": "ownership_sale",
 						"isShowTag": true,
-						"title": "权属声明/买卖协议",
-						"subTitle": "至多8张",
-						 "number": 12,
-						 "explain":0,}}
+						"title": "上传场地合同",
+						"subTitle": "可上传多页",
+						 "number": 12, //---------------限定上传照片的最大数量
+						 "explain":0,//-----------------0表示前面的红*不显示    1 可显示
+						 }}
 					childList={[]}
 				/>
 				{/*===============================提交按钮===========================*/}
-
-				{/*提交按钮*/}
 				<View style={styles.imagebuttonok}>
 
 					<TouchableOpacity onPress={() => {
@@ -560,86 +554,113 @@ export default class FastCreditTwo extends BaseComponent {
 	}
 	register = () => {
 
-		let userName = this.refs.userName.getInputTextValue();
-		let smsCode = this.refs.smsCode.getInputTextValue();
-		let password = this.refs.password.getInputTextValue();
-		let passwoedAgain = this.refs.passwoedAgain.getInputTextValue();
-		let name = this.refs.name.getInputTextValue();
-		let businessName = this.refs.businessName.getInputTextValue();
-		if (typeof(userName) == "undefined" || userName == "") {
-			this.props.showToast("手机号码不能为空");
-		} else if (userName.length != 11) {
-			this.props.showToast("请输入正确的手机号");
-		} else if (typeof(smsCode) == "undefined" || smsCode == "") {
-			this.props.showToast("验证码不能为空");
-		} else if (typeof(password) == "undefined" || password == "") {
-			this.props.showToast("密码不能为空");
-		} else if (typeof(password) == "undefined" || password == "") {
-			this.props.showToast("密码不能为空");
-		} else if (passwoedAgain.length < 6) {
-			this.props.showToast("密码必须为6~16位");
-		} else if (typeof(name) == "undefined" || name == "") {
-			this.props.showToast("用户名不能为空");
-		} else if (typeof(businessName) == "undefined" || businessName == "") {
-			this.props.showToast("商家名称不能为空");
-		} else if (password !== passwoedAgain) {
-			this.props.showToast("两次密码输入不一致");
+		let controllerName = this.refs.controllerName.getInputTextValue();
+		let controllerID = this.refs.controllerID.getInputTextValue();
+		let controllerPhone = this.refs.controllerPhone.getInputTextValue();
+		let legalPersonName = this.refs.legalPersonName.getInputTextValue();
+		let legalPersonID = this.refs.legalPersonID.getInputTextValue();
+		let legalPersonPhone = this.refs.legalPersonPhone.getInputTextValue();
+		if (this.isEmpty(controllerName) === true) {
+			this._showHint('请填写实际控制人姓名');
+			return;
+		}
+		if (this.isEmpty(controllerID) === true) {
+			this._showHint('请填写实际控制人身份证');
+			return;
+		}
+		if (controllerID.length != 18 && controllerID.length != 15) {
+			this._showHint('请填写有效的控制人身份证');
+			return;
+		}
+		if (this.isEmpty(controllerPhone) === true) {
+			this._showHint('请填写实际控制人联系方式');
+			return;
+		}
+		if (controllerPhone.length != 11) {
+			this._showHint('请填写有效的控制人联系方式');
+			return;
+		}
+		if (this.isEmpty(legalPersonName) === true) {
+			this._showHint('请填写法人姓名');
+			return;
+		}
+		if (this.isEmpty(legalPersonID) === true) {
+			this._showHint('请填写法人身份证');
+			return;
+		}
+		if (legalPersonID.length != 18 && legalPersonID.length != 15) {
+			this._showHint('请填写有效的法人身份证');
+			return;
+		}
+		if (this.isEmpty(legalPersonPhone) === true) {
+			this._showHint('请填写法人联系方式');
+			return;
+		}
+		if (legalPersonPhone.length != 11) {
+			this._showHint('请填写有效的法人联系方式');
+			return;
+		}
+		if (this.isEmpty(idcardfront) === true) {
+			this._showHint('请上传法人身份证正面');
+			return;
+		}
+		if (this.isEmpty(idcardback) === true) {
+			this._showHint('请上传法人身份证反面');
+			return;
 		}
 
-		else {
-			let device_code = '';
-			if (Platform.OS === 'android') {
-				device_code = 'dycd_platform_android';
-			} else {
-				device_code = 'dycd_platform_ios';
-			}
+		if (this.isEmpty(businessid) === true) {
+			this._showHint('请上传营业执照');
+			return;
+		}
+
+		if (this.results.length <= 0) {
+			this._showHint('请上传场地合同照片');
+			return;
+		}
+		// console.log('1111111111111111' , this.results)
 
 
-			let maps = {
-				device_code: device_code,
-				user_name: name,
-				phone: userName,
-				pwd: md5.hex_md5(password),
-				confirm_pwd: md5.hex_md5(passwoedAgain),
-				merchant_name: businessName,
-				code: smsCode,
+		let device_code = '';
+		if (Platform.OS === 'android') {
+			device_code = 'dycd_platform_android';
+		} else {
+			device_code = 'dycd_platform_ios';
+		}
 
-				address: this.locateDate.address,
-				city_id: this.locateDate.city_id,
-				city_name: this.locateDate.city_name,
-				street_name: this.locateDate.street_name,
-				province_name: this.locateDate.province_name,
-				area_name: this.locateDate.area_name,
-			};
-			this.setState({
-				loading: true,
-			});
-			request(AppUrls.ZHUCE, 'Post', maps)
-				.then((response) => {
-					this.setState({
-						loading: false,
-					});
-					if (response.mycode == "1") {
-						uid = response.mjson.data.uid;
-						this.props.showToast("注册成功");
-						// this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
-					} else {
-						this.props.showToast(response.mjson.msg + "");
-					}
-				}, (error) => {
-					this.setState({
-						loading: false,
-					});
-					if (error.mycode == -300 || error.mycode == -500) {
-						this.props.showToast("注册失败");
-					} else if (error.mycode == 7040004) {
-						this.Verifycode();
-						this.props.showToast(error.mjson.msg + "");
-					} else {
-						this.props.showToast(error.mjson.msg + "");
-					}
+
+		let maps = {
+			device_code: device_code,
+
+		};
+		this.setState({
+			loading: true,
+		});
+		request(AppUrls.ZHUCE, 'Post', maps)
+			.then((response) => {
+				this.setState({
+					loading: false,
 				});
-		}
+				if (response.mycode == "1") {
+					uid = response.mjson.data.uid;
+					this.props.showToast("注册成功");
+					// this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
+				} else {
+					this.props.showToast(response.mjson.msg + "");
+				}
+			}, (error) => {
+				this.setState({
+					loading: false,
+				});
+				if (error.mycode == -300 || error.mycode == -500) {
+					this.props.showToast("注册失败");
+				} else if (error.mycode == 7040004) {
+					this.props.showToast(error.mjson.msg + "");
+				} else {
+					this.props.showToast(error.mjson.msg + "");
+				}
+			});
+
 	}
 
 }

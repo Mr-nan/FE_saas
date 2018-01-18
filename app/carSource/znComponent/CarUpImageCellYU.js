@@ -20,7 +20,7 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as ImageUpload from '../../utils/ImageUpload';
 import * as fontAndColor from '../../constant/fontAndColor';
-import  CarImagePickerItem from './CarImagePickerItem';
+import  CarImagePickerItemYU from './CarUPImagePickerItemYU';
 import ImagePicker from "react-native-image-picker";
 import ImageSource from '../../publish/component/ImageSource'
 import * as MyUrl from '../../constant/appUrls';
@@ -56,7 +56,7 @@ export  default class CarUpImageCellYU extends PureComponent {
             for (let i = 0; i < length; i++) {
 
                 movieItems.push(
-                    <CarImagePickerItem
+                    <CarImagePickerItemYU
                         fileId={this.state.childMovie[i]}
                         imgUrl={this.state.childMovie[i]}
                         showOnPress={() => {}}
@@ -75,6 +75,7 @@ export  default class CarUpImageCellYU extends PureComponent {
                             this.props.retureSaveAction();
                             this.setState({childMovie: news});
                         }}
+                        imageNumber = {imageNumber}//imageNumber是限制最大传的照片数
                         allLength={this.state.childMovie.length} key={i} index={i}
                         mOnPress={(index) => {
                             if (this.state.childMovie.length < imageNumber)
@@ -84,10 +85,11 @@ export  default class CarUpImageCellYU extends PureComponent {
                         }}/>)
             }
         } else {
-            movieItems.push(<CarImagePickerItem allLength={this.state.childMovie.length} key={0} index={0}
-                                                     mOnPress={(index) => {
-                                                         this.selectPhotoTapped(movie.code)
-                                                     }}/>)
+            movieItems.push(<CarImagePickerItemYU
+	            imageNumber = {imageNumber}//imageNumber是限制最大传的照片数
+	            allLength={this.state.childMovie.length}
+	            key={0} index={0}
+	            mOnPress={(index) => {this.selectPhotoTapped(movie.code)}}/>)
         }
 
         return (

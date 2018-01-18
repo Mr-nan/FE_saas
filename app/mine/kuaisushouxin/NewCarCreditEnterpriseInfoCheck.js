@@ -33,6 +33,7 @@ import * as ImageUpload from "../../utils/ImageUpload";
 import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
 import md5 from "react-native-md5";
+import WebScene from "../../main/WebScene";
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
@@ -40,7 +41,8 @@ let Pixel = new PixelUtil();
 let uid: '';
 
 const dismissKeyboard = require('dismissKeyboard');
-
+const agree_icon = require('../kuaisushouxin/kuaisushouxin_images/agree_icon.png');
+const disagree = require('../kuaisushouxin/kuaisushouxin_images/disagree.png');
 
 let openAccountLicenseID;
 let idcardfront;
@@ -76,6 +78,7 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 	componentWillUnmount() {
 		this.timer && clearTimeout(this.timer);
 	}
+
 	constructor(props) {
 		super(props);
 		this.results = [];
@@ -85,7 +88,8 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 			businessLicense: null,
 			enterpriseFront: null,
 			enterpriseBack: null,
-			openAccountLicense:null,
+			openAccountLicense: null,
+			isAgree: false,
 			renderPlaceholderOnly: true,
 			keyboardOffset: -Pixel.getPixel(0),
 
@@ -175,10 +179,12 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 
 				{/*===============================提示语header===========================*/}
 				<View style={{backgroundColor: '#FFF8EA',height: Pixel.getPixel(58),width: width,flexDirection:'row'}}>
-					<Image style={{height:Pixel.getPixel(13),width:Pixel.getPixel(13),marginTop:Pixel.getPixel(13),marginLeft:Pixel.getPixel(13)}}
-					       source={require('./kuaisushouxin_images/tishixiaolaba.png')}/>
-					<View  style={{marginTop:Pixel.getPixel(12),flex:1}}>
-						<Text style={{color: '#FA5741',fontSize: Pixel.getPixel(12),marginLeft: Pixel.getPixel(5),lineHeight:Pixel.getPixel(17)}}>
+					<Image
+						style={{height:Pixel.getPixel(13),width:Pixel.getPixel(13),marginTop:Pixel.getPixel(13),marginLeft:Pixel.getPixel(13)}}
+						source={require('./kuaisushouxin_images/tishixiaolaba.png')}/>
+					<View style={{marginTop:Pixel.getPixel(12),flex:1}}>
+						<Text
+							style={{color: '#FA5741',fontSize: Pixel.getPixel(12),marginLeft: Pixel.getPixel(5),lineHeight:Pixel.getPixel(17)}}>
 							授信类型一旦选择不可修改，选择个人借款\企业借款，则授信主体和借款主体均为个人\企业
 						</Text>
 					</View>
@@ -342,6 +348,7 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 				</TouchableWithoutFeedback>
 				<View style={styles.inputTextLine}/>
 				{/*===============================上传开户许可 View===========================*/}
+
 				<TouchableWithoutFeedback>
 					<View style={{width: width,height: Pixel.getPixel(88),flexDirection: 'row',alignItems: 'center',
 							backgroundColor: '#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15), }}>
@@ -382,16 +389,48 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 					</View>
 				</TouchableWithoutFeedback>
 
+
+				{/*===============================物流协议===========================*/}
+				<View style={{alignItems: 'center', flexDirection: 'row',marginTop: Pixel.getPixel(10),}}>
+					<TouchableOpacity activeOpacity={1} onPress={() => {
+                        this.setState({
+                            isAgree: !this.state.isAgree
+                        });
+                    }}>
+						<View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginLeft: Pixel.getPixel(15)
+                        }}>
+							<Image source={this.state.isAgree ? agree_icon : disagree}
+							       style={{marginRight: Pixel.getPixel(3)}}>
+
+							</Image>
+							<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(12)}}>我已授权三方征信查询</Text>
+						</View>
+					</TouchableOpacity>
+					<TouchableOpacity activeOpacity={0.8} onPress={() => {
+                        this.toNextPage({
+                                         name: 'WebScene',
+                                         component: WebScene,
+                                         params: {webUrl: 'http://www.dycd.com'}
+                            })
+                    }}>
+						<Text style={{color: FontAndColor.COLORB4, fontSize: Pixel.getPixel(12),}}>《三方征信授权书》</Text>
+					</TouchableOpacity>
+				</View>
+
+
 				{/*===============================提交按钮===========================*/}
 
-				{/*提交按钮*/}
+
 				<View style={styles.imagebuttonok}>
 
-					<TouchableOpacity onPress={this._onCompletePress} activeOpacity={0.8} style={{
+					<TouchableOpacity onPress={this._onCompletePress} activeOpacity={this.state.isAgree? 0.7 : 1}  style={{
                                 marginTop: Pixel.getPixel(7),
                                 width: width - Pixel.getPixel(30),
                                 height: Pixel.getPixel(44),
-                                backgroundColor: FontAndColor.COLORB0,
+                                backgroundColor: this.state.isAgree? FontAndColor.COLORB0 : FontAndColor.COLORA4,
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
@@ -535,7 +574,10 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 				this.props.showToast("图片上传失败");
 			});
 	}
-	_onCompletePress = () =>{
+	_onCompletePress = () => {
+		if(!this.state.isAgree){
+			return;
+		}
 		if (this.isEmpty(this.enterpriseData.qiyemingcheng) === true) {
 			this._showHint('请填写企业名称');
 			return;

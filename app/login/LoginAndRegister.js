@@ -17,7 +17,7 @@ import LoginScene from "./LoginScene";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
 import QuotaApplication from './QuotaApplication';
-import FastCreditTwo from '../mine/kuaisushouxin/FastCreditTwo'
+import FastCreditTwo from '../mine/kuaisushouxin/NewCarCreditEnterpriseInfoCheck'
 import NonCreditScene from "../main/NonCreditScene";
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
