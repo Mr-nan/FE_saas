@@ -237,7 +237,7 @@ export default class CardPhoneSmsScene extends ZSBaseComponent {
             return;
         }
 
-        if (text.length >= 10 && this.state.bankName === '') {
+        if ((text.length >= 10 && this.state.bankName === '')||text.length>=19) {
 
             let params = {
                 bankCardNo: text,
