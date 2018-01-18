@@ -108,7 +108,8 @@ export default class LogisticsMode extends BaseComponent {
                                 component: FillWaybill,
                                 params: {
                                     orderId: this.props.orderDetail.id,
-                                    logisticsType: this.logisticsTypeRouting(this.props.orderState)
+                                    logisticsType: this.logisticsTypeRouting(this.props.orderState),
+                                    transId: this.props.orderDetail.orders_item_data[0].trans_id
                                 }
 
                             });
