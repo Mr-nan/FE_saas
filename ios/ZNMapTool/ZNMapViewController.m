@@ -57,8 +57,12 @@
 //  if(_pt.longitude == 0){
 //    [self geoCodeActionCity:self.cityName Address:self.addressName];
 //  }else{
-////    [self.mapView setCenterCoordinate:_pt animated:YES];
+//    [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(12.12300000, 123.44400000) animated:YES];
 //  }
+  
+//      [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(38.38851506, 115.33146813) animated:YES];
+
+
   
   
 }
