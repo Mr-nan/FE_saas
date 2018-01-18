@@ -1513,6 +1513,16 @@ export const GET_DIST_LIST = BASEURL + "v2/home.index/getDistList";
 export const WAYBILL = BASEURL  + "v2/order.logistics/waybill";
 /**
  *
- * 物流运单订单
+ * 物流运单订单(运单详情)
  */
 export const WAYBILL_DETAIL = BASEURL  + "v2/order.logistics/detail";
+/**
+ *
+ *物流运价数据检查（获取运输类型对应的费）
+ */
+export const CHECKTRANSTYPE = BASEURL  + "v2/order.logistics/check";
+/**
+ *
+ *获取发票信息
+ */
+export const GETINVOICEINFO = BASEURL  + "v2/order.invoice/info";

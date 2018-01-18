@@ -16,8 +16,7 @@ import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
 import InvoiceInfo from './InvoiceInfo';
 import AccountModal from './AccountModal';
-import CheckWaybill from './CheckWaybill';
-
+import AddressManage from './AddressManage';
 const agree_icon = require('../../../../images/agree_icon.png');
 const disagree = require('../../../../images/disagree.png');
 const collect_icon = require('../../../../images/collect_icon.png');
@@ -27,7 +26,6 @@ const {width} = Dimensions.get('window');
 import * as FontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import MyButton from "../../../component/MyButton";
-
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 const white_jiantou = require('../../../../images/white_jiantou.png');
 import {request} from '../../../utils/RequestUtil';
@@ -48,16 +46,18 @@ let tagViews = [{
     id: 2
 }];
 let feeDatas = [{title: '物流费', value: '1000元'}, {title: '提验车费', value: '100元'}]
-let accoutInfo = [{title: '联系人', value: '刘威'}, {title: '联系方式', value: '15911111111'}, {
-    title: '收车地址',
-    value: '湖北省武汉市武昌区街坊邻居阿拉丁就附近阿斯蒂芬逻'
-}]
+let accoutInfo = [{title: '联系人', value: ''}, {title: '联系方式', value: ''}, {title: '收车地址', value: ''}]
 export default class FillWaybill extends BaseComponent {
     constructor(props) {
         super(props);
-        this.collectAdress = '太原市锦江区';
-        this.startAdress = '太原市锦江区';
-        this.toStore = false;
+        this.collectAddress = '';
+        this.startAdress = '';
+        this.distance='';
+        this.companyName='';
+        this.endId='';
+        this.startId='';
+        this.toStore = false
+        this.vType=this.props.vType;//1:二手车 2:新车
         this.toStore = this.props.toStore;//运单信息到店
         if (this.toStore) {
             this.title = '运单信息（到店）';
@@ -68,25 +68,66 @@ export default class FillWaybill extends BaseComponent {
         }
         this.state = {
             isAgree: true,
-            renderPlaceholderOnly: 'blank'
+            renderPlaceholderOnly: 'blank',
+            endId:this.endId,
+            collectAddress:''
         }
     }
 
     initFinish() {
-        this.setState({
-            renderPlaceholderOnly: 'success'
-        });
+        this.getData();
     }
 
     getData = () => {
         let maps = {
-            company_id: '111',
-            logistics_type: '111',//物流类型
-            order_id: '111'
+            company_id: global.companyBaseID,
+            logistics_type: this.props.logisticsType,//物流类型
+            order_id: this.props.orderId
         };
         request(Urls.WAYBILL, 'Post', maps)
             .then((response) => {
                     if (response.mjson.data != null) {
+                        accoutInfo=[];
+                        let data=response.mjson.data;
+                        let end_address=data.end_address;
+                        this.startAdress=data.start_address.city+data.start_address.district;
+                        this.collectAddress=end_address.city+end_address.district;
+                        this.endId=end_address.id;
+                        this.startId=data.start_address.id;
+                        this.companyName=end_address.company_name;
+                        this.distance=data.distance;
+                        accoutInfo.push({title: '联系人', value: end_address.contact_name});
+                        accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
+                        accoutInfo.push({title: '收车地址', value: end_address.full_address});
+
+
+                    }
+                    this.setState({
+                        renderPlaceholderOnly: 'success',
+                        endId:this.endId,
+                        collectAddress:this.collectAddress
+
+                    });
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error',});
+                });
+    }
+    //获取运单费
+    getTransFee = () => {
+        let maps = {
+            company_id: global.companyBaseID,
+            end_id: this.state.endId,
+            order_id: this.props.orderId,
+            start_id: this.startId,
+            logistics_type: this.props.logisticsType,//物流类型
+            trans_type:1
+        };
+        request(Urls.CHECKTRANSTYPE, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data != null) {
+                        let data=response.mjson.data;
+
                     }
                     this.setState({renderPlaceholderOnly: 'success'});
                 },
@@ -94,6 +135,17 @@ export default class FillWaybill extends BaseComponent {
                     this.setState({renderPlaceholderOnly: 'error',});
                 });
     }
+
+    /**
+     *   地址回传
+     **/
+    updateAddress = (newAddress) => {
+        console.log('newAddress',newAddress);
+        this.setState({
+            collectAddress: newAddress.city + newAddress.district,
+            endId: newAddress.id,
+        })
+    };
 
     allRefresh = () => {
         this.setState({
@@ -121,7 +173,7 @@ export default class FillWaybill extends BaseComponent {
                         <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> {this.startAdress}</Text>
                     </View>
                     <View style={{alignItems: 'center', marginBottom: Pixel.getPixel(5)}}>
-                        <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>100公里</Text>
+                        <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>{this.distance+"公里"}</Text>
                         <Image source={imaginary_icon} style={{
                             width: Pixel.getPixel(120),
                             marginTop: Pixel.getPixel(5)
@@ -129,10 +181,11 @@ export default class FillWaybill extends BaseComponent {
                     </View>
                     <TouchableOpacity activeOpacity={0.8} onPress={() => {
                         this.toNextPage({
-                                name: 'CheckWaybill',
-                                component: CheckWaybill,
+                                name: 'AddressManage',
+                                component: AddressManage,
                                 params: {
-                                    isShowToStore: true
+                                    addressId:this.state.endId,
+                                    callBack:this.updateAddress
                                 }
                             }
                         );
@@ -149,7 +202,7 @@ export default class FillWaybill extends BaseComponent {
                                 <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>收车地</Text>
                                 <Image source={white_jiantou} style={{marginLeft: Pixel.getPixel(5)}}></Image>
                             </View>
-                            <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> {this.startAdress}</Text>
+                            <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> {this.state.collectAddress}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -227,11 +280,14 @@ export default class FillWaybill extends BaseComponent {
                 </TouchableOpacity>}
 
 
-                <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                {this.vType==2&&<TouchableOpacity activeOpacity={0.8} onPress={() => {
                     this.toNextPage({
                             name: 'InvoiceInfo',
                             component: InvoiceInfo,
-                            params: {}
+                            params: {
+                                orderId:this.props.order_id,
+                                endId:this.state.endId
+                            }
                         }
                     );
                 }}>
@@ -239,13 +295,13 @@ export default class FillWaybill extends BaseComponent {
                         <View style={styles.content_base_text_wrap}>
                             <Text style={[styles.content_base_left, {color: 'black'}]}>发票</Text>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{'刘威车行'}</Text>
+                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{this.company_name}</Text>
                                 <Image source={cellJianTou} style={styles.image}></Image>
                             </View>
 
                         </View>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity>}
 
                 {/*<View style={{alignItems: 'center', flexDirection: 'row',marginTop: Pixel.getPixel(10),}}>*/}
                     {/*<TouchableOpacity activeOpacity={0.8} onPress={() => {*/}
