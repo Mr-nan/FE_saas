@@ -73,6 +73,46 @@ export default class InvoiceInfo extends BaseComponent {
                 });
     }
 
+    //获取运单费
+    saveData = () => {
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.orderId,
+            address:accoutInfo[1].value,
+            address_id:this.state.addressId,
+            contact_name:this.contractName,
+            contact_phone:accoutInfo[0].value,
+            invoice_code:feeDatas[2].value,
+            invoice_title:feeDatas[1].value,
+            invoice_type:feeDatas[0].value
+
+        };
+        request(Urls.SAVEINVOICE, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data != null) {
+                        let data=response.mjson.data;
+                        accoutInfo=[];
+                        feeDatas=[];
+                        feeDatas.push({title: '发票类型', value: data.invoice_type})
+                        feeDatas.push({title: '发票抬头', value: data.invoice_title})
+                        feeDatas.push({title: '纳税人识别号', value: data.invoice_code})
+                        accoutInfo.push({title: '联系电话', value: data.contact_phone})
+                        accoutInfo.push({title: '收车地址', value: data.address})
+                        this.contractName=data.contact_name;
+
+                    }
+                    this.setState({
+                        renderPlaceholderOnly: 'success',
+                        contractName:this.contractName,
+                        accoutInfo:accoutInfo
+                    });
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error',});
+                });
+    }
+
+
     /**
      *   地址回传
      **/

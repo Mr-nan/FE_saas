@@ -49,7 +49,7 @@ export default class FillWaybill extends BaseComponent {
         super(props);
         this.collectAddress = '';
         this.startAdress = '';
-        this.transType=0;
+        this.transType=1;
         this.distance='';
         this.companyName='';
         this.endId='';
@@ -70,6 +70,7 @@ export default class FillWaybill extends BaseComponent {
             collectAddress:'',
             feeDatas:feeDatas,
             tagViews:tagViews,
+            invoiceTitle:''
         }
     }
 
@@ -112,6 +113,9 @@ export default class FillWaybill extends BaseComponent {
                                 
                             });
                         }
+                        if(data.trans_invoice.length>0){
+                            
+                        }
                     }
                     this.setState({
                         renderPlaceholderOnly: 'success',
@@ -152,7 +156,11 @@ export default class FillWaybill extends BaseComponent {
                 },
                 (error) => {
                     // this.setState({renderPlaceholderOnly: 'error',});
-                    this.props.showToast(error.mjson.msg);
+                    if(error.mjson.msg==''){
+                        this.props.showToast('网络请求错误');
+                    }else{
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
     }
     //获取运单费
@@ -169,12 +177,18 @@ export default class FillWaybill extends BaseComponent {
             .then((response) => {
                     if (response.mjson.data != null) {
                         let data=response.mjson.data;
+                        this.backPage();
+                        this.props.callBack(data);
                     }
                     this.setState({renderPlaceholderOnly: 'success'});
                 },
                 (error) => {
                     // this.setState({renderPlaceholderOnly: 'error',});
-                    this.props.showToast(error.mjson.msg);
+                    if(error.mjson.msg==''){
+                        this.props.showToast('网络请求错误');
+                    }else{
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
     }
 
@@ -328,7 +342,12 @@ export default class FillWaybill extends BaseComponent {
                             component: InvoiceInfo,
                             params: {
                                 orderId:this.props.order_id,
-                                endId:this.endId
+                                endId:this.endId,
+                                callBack: (text)=>{
+                                    this.setState({
+                                        invoiceTitle: text,
+                                    });
+                                }
                             }
                         }
                     );
@@ -337,7 +356,7 @@ export default class FillWaybill extends BaseComponent {
                         <View style={styles.content_base_text_wrap}>
                             <Text style={[styles.content_base_left, {color: 'black'}]}>发票</Text>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{this.company_name}</Text>
+                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{this.state.invoiceTitle}</Text>
                                 <Image source={cellJianTou} style={styles.image}></Image>
                             </View>
 
@@ -381,10 +400,11 @@ export default class FillWaybill extends BaseComponent {
     }
 
     confirmBt = () => {
-        if (this.isEmpty(this.state.collectAdress)) {
+        if (this.isEmpty(this.state.collectAddress)) {
             this.props.showToast('请选择收车地');
             return;
         }
+        this.submitTransFee();
         // this.toNextPage({
         //         name: 'CheckWaybill',
         //         component: CheckWaybill,
