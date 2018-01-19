@@ -714,7 +714,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                             applyLoanAmount: this.applyLoanAmount,
                                             financeNo: this.orderDetail.finance_no,
                                             callBack: this.payCallBack,
-                                            logisticsType: this.logisticsType
+                                            logisticsType: (this.logisticsType === 1 && this.ordersTrans.status),
+                                            transAmount: this.ordersTrans.total_amount
                                         }
                                     });
                                 }
@@ -1516,7 +1517,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         }
                         this.stateMapping(status, cancelStatus);
                         this.financeInfo = this.orderDetail.finance_data;
-                        this.ordersTrans = this.orderDetail.orders_trans;
+                        this.ordersTrans = this.orderDetail.orders_trans[0];
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({

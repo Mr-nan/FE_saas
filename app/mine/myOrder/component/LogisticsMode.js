@@ -18,6 +18,7 @@ import PixelUtil from '../../../utils/PixelUtil';
 import TagSelectView from "./TagSelectView";
 import FillWaybill from "../orderwuliu/FillWaybill";
 import BaseComponent from "../../../component/BaseComponent";
+import CheckWaybill from "../orderwuliu/CheckWaybill";
 const Pixel = new PixelUtil();
 
 export default class LogisticsMode extends BaseComponent {
@@ -28,7 +29,9 @@ export default class LogisticsMode extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        //console.log('ordersTrans====',this.props.ordersTrans);
         this.ordersTrans = this.props.ordersTrans;
+        this.transState = this.transStateMapping(this.ordersTrans.status ? this.ordersTrans.status : 0);
         this.tagSelect = [{
             name: '物流',
             check: true,
@@ -38,12 +41,49 @@ export default class LogisticsMode extends BaseComponent {
             check: false,
             id: 0
         }];
+/*        this.state = {
+            fillWaybill: true,
+            alreadyChoose: this.transState !== 0 && this.transState !== 1,
+            waybillState: ''
+        }*/
         this.state = {
             fillWaybill: true,
-            alreadyChoose: false,
-            waybillState: ''
+            ordersTrans: this.props.ordersTrans
         }
     }
+
+    /**
+     *    运单状态映射
+     **/
+    transStateMapping = (status) => {
+        switch (status) {
+            case 0:
+                return 0;
+                break;
+            case 1:
+            case 100:
+            case 101:
+                return 1;
+                break;
+            case 2:
+            case 200:
+            case 3:
+                return 2;
+                break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 11:
+            case 10:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+        }
+    };
 
     /**
      *  页面 Receive
@@ -86,16 +126,22 @@ export default class LogisticsMode extends BaseComponent {
      **/
     updateOrdersTrans = (newOrdersTrans) => {
         this.props.updateOrdersTrans(newOrdersTrans);
-        this.ordersTrans = newOrdersTrans;
+        //this.ordersTrans = newOrdersTrans;
+        this.setState({
+            ordersTrans: newOrdersTrans
+        });
     };
 
     /**
      *  render
      **/
     render() {
+        let alreadyChoose = this.transStateMapping(this.state.ordersTrans.status);
+        let waybillState = '运费' + this.state.ordersTrans.total_amount + '元';
+        //console.log('alreadyChoose===', alreadyChoose);
         return (
             <View style={{backgroundColor: '#ffffff'}}>
-                {!this.state.alreadyChoose && (<View style={{
+                {(alreadyChoose === 0 || alreadyChoose === 1) && (<View style={{
                     height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                     paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                 }}>
@@ -113,26 +159,38 @@ export default class LogisticsMode extends BaseComponent {
                 {this.state.fillWaybill && (
                     <TouchableOpacity
                         onPress={() => {
-                            this.toNextPage({
-                                name: 'FillWaybill',
-                                component: FillWaybill,
-                                params: {
-                                    orderId: this.props.orderDetail.id,
-                                    logisticsType: this.logisticsTypeRouting(this.props.orderState),
-                                    transId: this.props.orderDetail.orders_item_data[0].trans_id,
-                                    vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
-                                    callBack: this.updateOrdersTrans
-                                }
+                            if (alreadyChoose > 1) {
+                                this.toNextPage({
+                                    name: 'FillWaybill',
+                                    component: FillWaybill,
+                                    params: {
+                                        orderId: this.props.orderDetail.id,
+                                        logisticsType: this.logisticsTypeRouting(this.props.orderState),
+                                        //transId: this.props.orderDetail.orders_item_data[0].trans_id,
+                                        vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
+                                        callBack: this.updateOrdersTrans
+                                    }
 
-                            });
+                                });
+                            } else {
+                                this.toNextPage({
+                                    name: 'CheckWaybill',
+                                    component: CheckWaybill,
+                                    params: {
+                                        orderId: this.props.orderDetail.id,
+                                        transId: this.props.orderDetail.orders_trans[0].id,
+                                    }
+
+                                });
+                            }
                         }}>
                         <View style={{
                             height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                             paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                         }}>
-                            <Text >填写运单</Text>
+                            <Text >{1 !== 0 ? '运单信息' : '填写运单'}</Text>
                             <View style={{flex: 1}}/>
-                            <Text style={{color: fontAndColor.COLORB0}}>{this.state.waybillState}</Text>
+                            <Text style={{color: fontAndColor.COLORB0}}>{waybillState}</Text>
                             <Image source={require('../../../../images/mainImage/celljiantou.png')}/>
                         </View>
                     </TouchableOpacity>

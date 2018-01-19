@@ -296,18 +296,18 @@ export default class CheckStand extends BaseComponent {
                         marginTop: Pixel.getPixel(6),
                         //fontWeight: 'bold',
                         fontSize: Pixel.getFontPixel(38)
-                    }}>{parseFloat(this.props.payAmount).toFixed(2)}元</Text>
+                    }}>{(parseFloat(this.props.payAmount) + parseFloat(this.props.transAmount)).toFixed(2)}元</Text>
                 </View>
                 <View style={styles.separatedLine}/>
                 <View style={styles.accountBar}>
                     <Text allowFontScaling={false} style={styles.title}>尾款金额：</Text>
                     <Text allowFontScaling={false}
-                          style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
+                          style={styles.content}>{parseFloat(this.props.payAmount)}元</Text>
                 </View>
                 <View style={styles.separatedLine}/>
                 <View style={styles.accountBar}>
                     <Text allowFontScaling={false} style={styles.title}>运单费用：</Text>
-                    <Text allowFontScaling={false} style={styles.content}>{this.accountInfo.balance}元</Text>
+                    <Text allowFontScaling={false} style={styles.content}>{this.props.transAmount}元</Text>
                 </View>
                 <View style={{height: Pixel.getPixel(10),
                     backgroundColor: fontAndColor.COLORA3}}/>
@@ -408,16 +408,16 @@ export default class CheckStand extends BaseComponent {
     };
 
     /**
-     *    todo 物流单判断
+     *
      * */
-    pageRouting = (payType) => {
+    pageRouting = (logisticsType) => {
         //console.log('this.props.payType====', this.props.payType);
-/*        if (payType === 1) {
-            return this.normalPay();
-        } else {
+        if (logisticsType && this.props.payType == 2) {
             return this.logisticsPay();
-        }*/
-        return this.normalPay();
+        } else {
+            return this.normalPay();
+        }
+        //return this.normalPay();
     };
 
 
@@ -432,13 +432,13 @@ export default class CheckStand extends BaseComponent {
                 <View style={styles.container}>
                     <NavigatorView title='收银台' backIconClick={this.backPage}/>
                     <ScrollView style={{marginTop: Pixel.getTitlePixel(65)}}>
-                        {this.pageRouting(this.props.payType)}
+                        {this.pageRouting(this.props.logisticsType)}
                         <MyButton buttonType={MyButton.TEXTBUTTON}
                                   content={'账户支付'}
                                   parentStyle={styles.loginBtnStyle}
                                   childStyle={styles.loginButtonTextStyle}
                                   mOnPress={this.goPay}/>
-                        {this.props.isSellerFinance == 0 && this.props.payType == 2 &&
+                        {this.props.isSellerFinance == 0 && this.props.payType == 2 && !this.props.logisticsType &&
                         (<MyButton buttonType={MyButton.TEXTBUTTON}
                                    content={'鼎诚融资代付'}
                                    parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
@@ -447,7 +447,8 @@ export default class CheckStand extends BaseComponent {
                                        this.payPrompting(0)
                                    }}/>)
                         }
-                        {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payType == 2 &&
+                        {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payType == 2
+                        && !this.props.logisticsType &&
                         (<MyButton buttonType={MyButton.TEXTBUTTON}
                                    content={'线下支付'}
                                    parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
@@ -843,7 +844,7 @@ export default class CheckStand extends BaseComponent {
                 let maps = {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
-                    logistics_type: this.props.logisticsType,
+                    logistics_type: this.props.logisticsType ? 1 : 0,
                     reback_url: webBackUrl.PAY,
                     pay_type: 0
                 };
