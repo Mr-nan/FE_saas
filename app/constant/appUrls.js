@@ -1530,3 +1530,8 @@ export const GETINVOICEINFO = BASEURL  + "v2/order.invoice/info";
  *  支付尾款跳转
  */
 export const PAY_BALANCE = BASEURL  + "v2/order.pay/balance";
+/**
+ *  物流提交数据
+ */
+export const SUBMITTRANFERINFO = BASEURL  + "v2/order.logistics/submit";
+

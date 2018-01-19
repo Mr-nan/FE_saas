@@ -35,23 +35,21 @@ const Pixel = new PixelUtil();
 let tagViews = [{
     name: '大板',
     check: true,
-    id: 0
 }, {
     name: '救援',
     check: false,
-    id: 1
 }, {
     name: '代驾',
     check: false,
-    id: 2
 }];
-let feeDatas = [{title: '物流费', value: '1000元'}, {title: '提验车费', value: '100元'}]
+let feeDatas = [{title: '物流费', value: '元'}, {title: '提验车费', value: '元'}]
 let accoutInfo = [{title: '联系人', value: ''}, {title: '联系方式', value: ''}, {title: '收车地址', value: ''}]
 export default class FillWaybill extends BaseComponent {
     constructor(props) {
         super(props);
         this.collectAddress = '';
         this.startAdress = '';
+        this.transType=0;
         this.distance='';
         this.companyName='';
         this.endId='';
@@ -69,8 +67,9 @@ export default class FillWaybill extends BaseComponent {
         this.state = {
             isAgree: true,
             renderPlaceholderOnly: 'blank',
-            endId:this.endId,
-            collectAddress:''
+            collectAddress:'',
+            feeDatas:feeDatas,
+            tagViews:tagViews,
         }
     }
 
@@ -88,6 +87,8 @@ export default class FillWaybill extends BaseComponent {
             .then((response) => {
                     if (response.mjson.data != null) {
                         accoutInfo=[];
+                        feeDatas=[];
+                        tagViews=[];
                         let data=response.mjson.data;
                         let end_address=data.end_address;
                         this.startAdress=data.start_address.city+data.start_address.district;
@@ -99,13 +100,24 @@ export default class FillWaybill extends BaseComponent {
                         accoutInfo.push({title: '联系人', value: end_address.contact_name});
                         accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
                         accoutInfo.push({title: '收车地址', value: end_address.full_address});
-
-
+                        feeDatas.push({title: '物流费', value: data.trans_amount.freight+'元'});
+                        feeDatas.push({title: '提验车费', value: data.trans_amount.checkCarFee+'元'});
+                        if(this.isEmpty(data.trans_type)|| data.trans_type.length>0){
+                            data.trans_type.map((data)=>{
+                                    tagViews.push({
+                                        name: data.transportTypeName,
+                                        check: data.transportTypeCode==1?true:false,
+                                        transportTypeCode: data.transportTypeCode
+                                    })
+                                
+                            });
+                        }
                     }
                     this.setState({
                         renderPlaceholderOnly: 'success',
-                        endId:this.endId,
-                        collectAddress:this.collectAddress
+                        collectAddress:this.collectAddress,
+                        feeDatas:feeDatas,
+                        tagViews:tagViews
 
                     });
                 },
@@ -117,22 +129,52 @@ export default class FillWaybill extends BaseComponent {
     getTransFee = () => {
         let maps = {
             company_id: global.companyBaseID,
-            end_id: this.state.endId,
+            end_id: this.endId,
             order_id: this.props.orderId,
             start_id: this.startId,
             logistics_type: this.props.logisticsType,//物流类型
-            trans_type:1
+            trans_type:this.transType
         };
         request(Urls.CHECKTRANSTYPE, 'Post', maps)
             .then((response) => {
                     if (response.mjson.data != null) {
                         let data=response.mjson.data;
+                        feeDatas=[];
+                        feeDatas.push({title: '物流费', value: data.freight+'元'});
+                        feeDatas.push({title: '提验车费', value: data.checkCarFee+'元'});
+                        this.setState({
+                            feeDatas:feeDatas
+                        });
+
 
                     }
                     this.setState({renderPlaceholderOnly: 'success'});
                 },
                 (error) => {
-                    this.setState({renderPlaceholderOnly: 'error',});
+                    // this.setState({renderPlaceholderOnly: 'error',});
+                    this.props.showToast(error.mjson.msg);
+                });
+    }
+    //获取运单费
+    submitTransFee = () => {
+        let maps = {
+            company_id: global.companyBaseID,
+            end_id: this.endId,
+            order_id: this.props.orderId,
+            start_id: this.startId,
+            logistics_type: this.props.logisticsType,//物流类型
+            trans_type:this.transType
+        };
+        request(Urls.SUBMITTRANFERINFO, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data != null) {
+                        let data=response.mjson.data;
+                    }
+                    this.setState({renderPlaceholderOnly: 'success'});
+                },
+                (error) => {
+                    // this.setState({renderPlaceholderOnly: 'error',});
+                    this.props.showToast(error.mjson.msg);
                 });
     }
 
@@ -141,9 +183,9 @@ export default class FillWaybill extends BaseComponent {
      **/
     updateAddress = (newAddress) => {
         console.log('newAddress',newAddress);
+        this.endId=newAddress.id;
         this.setState({
             collectAddress: newAddress.city + newAddress.district,
-            endId: newAddress.id,
         })
     };
 
@@ -184,7 +226,7 @@ export default class FillWaybill extends BaseComponent {
                                 name: 'AddressManage',
                                 component: AddressManage,
                                 params: {
-                                    addressId:this.state.endId,
+                                    addressId:this.endId,
                                     callBack:this.updateAddress
                                 }
                             }
@@ -217,12 +259,12 @@ export default class FillWaybill extends BaseComponent {
                         }}>
                             <TagSelectView ref={(ref) => {
                                 this.tagRef = ref;
-                            }} onTagClick={this.onTagClick} cellData={tagViews}/>
+                            }} onTagClick={this.onTagClick} cellData={this.state.tagViews}/>
                         </View>
                     </View>
 
                     {
-                        feeDatas.map((data, index) => {
+                        this.state.feeDatas.map((data, index) => {
                             return (
                                 <View key={index + 'fee'} style={styles.content_title_text_wrap}>
                                     <Text style={styles.content_title_text}>{data.title}</Text>
@@ -286,7 +328,7 @@ export default class FillWaybill extends BaseComponent {
                             component: InvoiceInfo,
                             params: {
                                 orderId:this.props.order_id,
-                                endId:this.state.endId
+                                endId:this.endId
                             }
                         }
                     );
@@ -339,22 +381,18 @@ export default class FillWaybill extends BaseComponent {
     }
 
     confirmBt = () => {
-        if (!this.state.isAgree) {
-            this.props.showToast('请勾选物流协议');
-            return;
-        }
-        if (this.isEmpty(this.collectAdress)) {
+        if (this.isEmpty(this.state.collectAdress)) {
             this.props.showToast('请选择收车地');
             return;
         }
-        this.toNextPage({
-                name: 'CheckWaybill',
-                component: CheckWaybill,
-                params: {
-                    isShowPay: true
-                }
-            }
-        );
+        // this.toNextPage({
+        //         name: 'CheckWaybill',
+        //         component: CheckWaybill,
+        //         params: {
+        //             isShowPay: true
+        //         }
+        //     }
+        // );
     }
 
     backPg = () => {
@@ -410,13 +448,14 @@ export default class FillWaybill extends BaseComponent {
 
     onTagClick = (dt, index) => {
         //单选
-        tagViews.map((data) => {
+        this.state.tagViews.map((data) => {
             data.check = false;
         });
+        this.state.tagViews[index].check = !this.state.tagViews[index].check;
+        this.transType=this.state.tagViews[index].transportTypeCode;
 
-        tagViews[index].check = !tagViews[index].check;
-
-        this.tagRef.refreshData(tagViews);
+        this.tagRef.refreshData(this.state.tagViews);
+        this.getTransFee();
     }
 
 
