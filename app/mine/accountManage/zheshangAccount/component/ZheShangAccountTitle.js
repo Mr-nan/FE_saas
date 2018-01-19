@@ -61,6 +61,13 @@ export  default class ZheShangAccountTitle extends PureComponent {
             marginLeft:Pixel.getPixel(15)}}>账户功能</Text>
         </View>);
         for (let i = 0; i < list.length; i++) {
+
+            if(i === list.length-1){
+                if(this.props.info.bind_bank_card_type === 1){  //本行对公对私、不显示解绑及修改手机号功能；（属后期优化）
+                    break;
+                }
+            }
+
             itemList.push(<TouchableOpacity onPress={()=>{
                 list[i].click();
             }} activeOpacity={0.8} key={i+'11'} style={{width:width,height:Pixel.getPixel(44),backgroundColor:'#fff',
@@ -104,7 +111,7 @@ export  default class ZheShangAccountTitle extends PureComponent {
                     flexDirection: 'row',alignItems:'center'}}>
                         <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(20),color: '#fff',
                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
-                            账户号码：{this.props.info.cz_elec_account}
+                            账户号码：{( this.props.info.bind_bank_card_type === 1&& this.props.info.account_open_type ===1)? this.props.info.bank_card_no: this.props.info.cz_elec_account}
                         </Text>
                         <View style={{flex:1}}></View>
                         <TouchableOpacity

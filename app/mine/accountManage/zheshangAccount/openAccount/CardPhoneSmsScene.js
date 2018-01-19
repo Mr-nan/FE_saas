@@ -237,7 +237,7 @@ export default class CardPhoneSmsScene extends ZSBaseComponent {
             return;
         }
 
-        if (text.length >= 10 && this.state.bankName === '') {
+        if ((text.length >= 10 && this.state.bankName === '')||text.length>=19) {
 
             let params = {
                 bankCardNo: text,
@@ -304,7 +304,7 @@ export default class CardPhoneSmsScene extends ZSBaseComponent {
                     acct_type: type,
                     bank_no: bank_no,
                     cert_no: this.props.account.cert_no,
-                    cert_type: 1,
+                    cert_type: type === 1?2:1,
                     sms_code: sms_code,
                     sms_no: sms_no,
                     user_type: type,
@@ -445,7 +445,7 @@ export default class CardPhoneSmsScene extends ZSBaseComponent {
             }
 
             if (!this.state.isChecked) {
-                this.props.showToast('请同意三方存管协议')
+                this.props.showToast('按照银行要求，开户需要同意签署')
                 return false
             }
         }
