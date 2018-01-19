@@ -207,7 +207,10 @@ export default class MyAccountItem extends BaseComponent {
             back = require('../../../../images/account/zheshangback.png');
             bank = require('../../../../images/account/zheshangbank.png');
             bankName = '浙商银行';
-            bankNo = this.state.data.cz_elec_account && this.state.data.status != 0 ? this.state.data.cz_elec_account :
+
+            let b =  (this.state.data.bind_bank_card_type === 1&&this.state.data.account_open_type ===1)?this.state.data.bank_card_no:this.state.data.cz_elec_account
+
+            bankNo = b && this.state.data.status != 0 ? b :
                 '***** ***** ***** ***** *****';
         }
         if (this.state.data.status === 0 || !this.state.data.status) {
