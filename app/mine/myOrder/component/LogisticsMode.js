@@ -28,6 +28,7 @@ export default class LogisticsMode extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.ordersTrans = this.props.ordersTrans;
         this.tagSelect = [{
             name: '物流',
             check: true,
@@ -81,6 +82,14 @@ export default class LogisticsMode extends BaseComponent {
     };
 
     /**
+     *
+     **/
+    updateOrdersTrans = (newOrdersTrans) => {
+        this.props.updateOrdersTrans(newOrdersTrans);
+        this.ordersTrans = newOrdersTrans;
+    };
+
+    /**
      *  render
      **/
     render() {
@@ -111,7 +120,8 @@ export default class LogisticsMode extends BaseComponent {
                                     orderId: this.props.orderDetail.id,
                                     logisticsType: this.logisticsTypeRouting(this.props.orderState),
                                     transId: this.props.orderDetail.orders_item_data[0].trans_id,
-                                    vType: this.props.orderDetail.orders_item_data[0].car_data.v_type
+                                    vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
+                                    callBack: this.updateOrdersTrans
                                 }
 
                             });

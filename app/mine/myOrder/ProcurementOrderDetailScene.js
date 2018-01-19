@@ -67,6 +67,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.financeInfo = {};
         this.companyId = 0;
         this.logisticsType = 1;
+        this.ordersTrans = {};
         this.applyLoanAmount = '请输入申请贷款金额';
         this.state = {
             dataSource: [],
@@ -734,6 +735,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 )
                 break;
             case 2:
+                let confirmText = '确认验收';
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -765,7 +767,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 //this.confirmCar();
                             }}>
                             <View style={styles.buttonConfirm}>
-                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>确认验收</Text>
+                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>{confirmText}</Text>
                             </View>
                         </TouchableOpacity>
                         <ChooseModal ref='chooseModal' title='注意'
@@ -1514,6 +1516,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         }
                         this.stateMapping(status, cancelStatus);
                         this.financeInfo = this.orderDetail.finance_data;
+                        this.ordersTrans = this.orderDetail.orders_trans;
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -1549,6 +1552,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.logisticsType = newLogisticsType;
     };
 
+    /**
+     *
+     **/
+    updateOrdersTrans = (newOrdersTrans) => {
+        this.ordersTrans = newOrdersTrans;
+    };
 
     /**
      * from @hanmeng
@@ -1860,6 +1869,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 <LogisticsMode navigator={this.props.navigator}
                                orderDetail={this.orderDetail}
                                orderState={this.orderState}
+                               ordersTrans={this.ordersTrans}
+                               updateOrdersTrans={this.updateOrdersTrans}
                                updateLogisticsType={this.updateLogisticsType}/>
             )
         } else if (rowData === '10') {
