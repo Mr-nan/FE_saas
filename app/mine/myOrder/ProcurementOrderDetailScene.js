@@ -634,16 +634,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.loadData();
     };
 
-    /**
+/*    /!**
      *   判断订单是否生成了运单(dms订单)
-     **/
+     **!/
     existTransOrder = (ordersTrans) => {
         if (ordersTrans.length() === 0) {
             return false;
         } else {
             return true;
         }
-    };
+    };*/
 
 
     /**
@@ -690,7 +690,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 1:
                 let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
                 let balanceAmount = this.orderDetail.totalpay_amount > 0 ? this.orderDetail.totalpay_amount : this.orderDetail.balance_amount;
-                let transOrder = this.existTransOrder(this.ordersTrans);
+                //let transOrder = this.existTransOrder(this.ordersTrans);
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
