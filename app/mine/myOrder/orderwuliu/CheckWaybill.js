@@ -39,6 +39,7 @@ export default class CheckWaybill extends BaseComponent {
         this.number='400888888';
         this.isShowPay=false;
         this.isShowToStore=false;
+        this.trans_code='';
         this.title='查看运单';
         if(this.props.isShowPay){//运单信息
             this.isShowPay=true
@@ -83,6 +84,7 @@ export default class CheckWaybill extends BaseComponent {
                             trans_type='代驾'
                         }
                         let end_address=data.end_address;
+                        trans_code=data.trans_code;
                         feeDatas.push({title: '发车地', value: data.start_address.address});
                         feeDatas.push({title: '收车地', value: data.end_address.address});
                         feeDatas.push({title: '下单时间', value: data.created_time});
@@ -126,9 +128,9 @@ export default class CheckWaybill extends BaseComponent {
                         borderBottomWidth: 1, borderColor: FontAndColor.COLORA4,
                         height: Pixel.getPixel(40)
                     }]}>
-                        <Text style={[styles.content_title_text, {color: 'black'}]}>{'运单编号' + 20171212100}</Text>
+                        <Text style={[styles.content_title_text, {color: 'black'}]}>{'运单编号' + this.trans_code}</Text>
                         <Text
-                            style={[styles.content_base_Right, this.state.payStatus ? {color: FontAndColor.COLORB2} : {}]}>{'已支付'}</Text>
+                            style={[styles.content_base_Right, this.state.payStatus ? {color: FontAndColor.COLORB2} : {}]}>{this.props.waybillState}</Text>
                     </View>
                     {
                         feeDatas.map((data, index) => {
