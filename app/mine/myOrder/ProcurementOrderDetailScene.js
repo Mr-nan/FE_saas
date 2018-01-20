@@ -634,16 +634,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.loadData();
     };
 
-/*    /!**
+    /**
      *   判断订单是否生成了运单(dms订单)
-     **!/
+     **/
     existTransOrder = (ordersTrans) => {
-        if (ordersTrans.length() === 0) {
+        if (typeof(ordersTrans) == "undefined") {
             return false;
         } else {
             return true;
         }
-    };*/
+    };
 
 
     /**
@@ -685,12 +685,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                       textStyle={styles.expText}
                                       text='确定' content='请咨询卖家，确认成交价'/>
                     </View>
-                )
+                );
                 break;
             case 1:
                 let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
                 let balanceAmount = this.orderDetail.totalpay_amount > 0 ? this.orderDetail.totalpay_amount : this.orderDetail.balance_amount;
-                //let transOrder = this.existTransOrder(this.ordersTrans);
+                let transOrder = this.existTransOrder(this.ordersTrans);
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -728,8 +728,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                             applyLoanAmount: this.applyLoanAmount,
                                             financeNo: this.orderDetail.finance_no,
                                             callBack: this.payCallBack,
-                                            /*logisticsType: (this.logisticsType === 1 && transOrder),
-                                            transAmount: transOrder ? this.ordersTrans.total_amount : 0*/
+                                            logisticsType: this.logisticsType === 1 && transOrder,
+                                            transAmount: transOrder ? this.ordersTrans.total_amount : 0
                                         }
                                     });
                                 }
@@ -1088,6 +1088,39 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     };
 
     /**
+     *    运单状态映射
+     *    ordersTrans
+     **/
+    transStateMapping = (ordersTrans) => {
+        switch (ordersTrans.status) {
+            case 0:    // 0 是前端自己定义的状态 说明未生成运单
+                return {'state': 0, 'waybillState': ''};
+            case 1: //1 =>'填写完',
+            case 100: // 100 =>'支付运单中',
+            case 101: // 101 =>'支付运单失败',
+            case 200: // 200 =>'支付运单成功生成运单失败',
+                return {'state': 1, 'waybillState': '运费' + ordersTrans.total_amount + '元'};
+            case 2:   // 2 =>'支付运单成功生成运单',
+                return {'state': 2, 'waybillState': '已支付'};
+            case 3:  //  3 =>'发运',
+                return {'state': 3, 'waybillState': '已支付'};
+            case 4:  // 4 =>'到店',
+            case 5:  // 5 =>'到库',
+                return {'state': 4, 'waybillState': '已交车'};
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 11:
+            case 10:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+        }
+    };
+
+    /**
      *  根据订单详情接口的 status 和 cancel_status 字段组合判断页面渲染
      *  orderState为详情内容渲染
      *  topState为吸顶渲染 （倒计时）
@@ -1269,9 +1302,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 11:  // 订单完成 11=>'确认验收完成'
                 if (cancelStatus === 0) {
-                    this.orderState = 4;
-                    this.topState = -1;
-                    this.bottomState = -1;
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state !== 4) {
+                        this.orderState = 3;
+                        this.topState = -1;
+                        this.bottomState = -1;
+                    } else {  // 非物流单或物流单已经交车
+                        this.orderState = 4;
+                        this.topState = -1;
+                        this.bottomState = -1;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 4;
                     this.topState = -1;
@@ -1532,6 +1572,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.stateMapping(status, cancelStatus);
                         this.financeInfo = this.orderDetail.finance_data;
                         this.ordersTrans = this.orderDetail.orders_trans[0];
+                        //console.log(this.ordersTrans);
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -1880,11 +1921,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 </TouchableOpacity>
             )
         } else if (rowData === '9') {
+            let transOrder = this.existTransOrder(this.ordersTrans);
             return (
-                <LogisticsMode1 navigator={this.props.navigator}
+                <LogisticsMode navigator={this.props.navigator}
                                orderDetail={this.orderDetail}
                                orderState={this.orderState}
-                               ordersTrans={this.ordersTrans}
+                               ordersTrans={transOrder ? this.ordersTrans : {'id' : -1, 'status': 0, total_amount : '0'}}
                                updateOrdersTrans={this.updateOrdersTrans}
                                updateLogisticsType={this.updateLogisticsType}/>
             )
