@@ -30,8 +30,6 @@ export default class LogisticsMode extends BaseComponent {
     constructor(props) {
         super(props);
         //console.log('ordersTrans====',this.props.ordersTrans);
-        this.ordersTrans = this.props.ordersTrans;
-        this.transState = this.transStateMapping(this.ordersTrans.status ? this.ordersTrans.status : 0);
         this.tagSelect = [{
             name: '物流',
             check: true,
@@ -41,11 +39,6 @@ export default class LogisticsMode extends BaseComponent {
             check: false,
             id: 0
         }];
-/*        this.state = {
-            fillWaybill: true,
-            alreadyChoose: this.transState !== 0 && this.transState !== 1,
-            waybillState: ''
-        }*/
         this.state = {
             fillWaybill: true,
             ordersTrans: this.props.ordersTrans
@@ -55,23 +48,22 @@ export default class LogisticsMode extends BaseComponent {
     /**
      *    运单状态映射
      **/
-    transStateMapping = (status) => {
-        switch (status) {
-            case 0:
-                return 0;
-                break;
-            case 1:
-            case 100:
-            case 101:
-                return 1;
-                break;
-            case 2:
-            case 200:
-            case 3:
-                return 2;
-                break;
-            case 4:
-            case 5:
+    transStateMapping = (ordersTrans) => {
+        switch (ordersTrans.status) {
+            case 0:    // 0 是前端自己定义的状态 说明未生成运单
+                return {'state': 0, 'waybillState': ''};
+            case 1: //1 =>'填写完',
+            case 100: // 100 =>'支付运单中',
+            case 101: // 101 =>'支付运单失败',
+            case 200: // 200 =>'支付运单成功生成运单失败',
+                return {'state': 1, 'waybillState': '运费' + ordersTrans.total_amount + '元'};
+            case 2:   // 2 =>'支付运单成功生成运单',
+                return {'state': 2, 'waybillState': '已支付'};
+            case 3:  //  3 =>'发运',
+                return {'state': 3, 'waybillState': '已支付'};
+            case 4:  // 4 =>'到店',
+            case 5:  // 5 =>'到库',
+                return {'state': 4, 'waybillState': '已交车'};
             case 6:
             case 7:
             case 8:
@@ -136,12 +128,12 @@ export default class LogisticsMode extends BaseComponent {
      *  render
      **/
     render() {
-        let alreadyChoose = this.transStateMapping(this.state.ordersTrans.status);
-        let waybillState = '运费' + this.state.ordersTrans.total_amount + '元';
+        let alreadyChoose = this.transStateMapping(this.state.ordersTrans);  // 是否已经生成运单并支付完成
+        //let waybillState = '运费' + this.state.ordersTrans.total_amount + '元';
         //console.log('alreadyChoose===', alreadyChoose);
         return (
             <View style={{backgroundColor: '#ffffff'}}>
-                {(alreadyChoose === 0 || alreadyChoose === 1) && (<View style={{
+                {alreadyChoose.state < 2 && (<View style={{
                     height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                     paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                 }}>
@@ -159,7 +151,7 @@ export default class LogisticsMode extends BaseComponent {
                 {this.state.fillWaybill && (
                     <TouchableOpacity
                         onPress={() => {
-                            if (alreadyChoose > 1) {
+                            if (alreadyChoose.state < 2) {
                                 this.toNextPage({
                                     name: 'FillWaybill',
                                     component: FillWaybill,
@@ -178,7 +170,8 @@ export default class LogisticsMode extends BaseComponent {
                                     component: CheckWaybill,
                                     params: {
                                         orderId: this.props.orderDetail.id,
-                                        transId: this.props.orderDetail.orders_trans[0].id,
+                                        transId: this.state.ordersTrans.id,
+                                        waybillState: alreadyChoose.waybillState
                                     }
 
                                 });
@@ -190,7 +183,7 @@ export default class LogisticsMode extends BaseComponent {
                         }}>
                             <Text >{1 !== 0 ? '运单信息' : '填写运单'}</Text>
                             <View style={{flex: 1}}/>
-                            <Text style={{color: fontAndColor.COLORB0}}>{waybillState}</Text>
+                            <Text style={{color: fontAndColor.COLORB0}}>{alreadyChoose.waybillState}</Text>
                             <Image source={require('../../../../images/mainImage/celljiantou.png')}/>
                         </View>
                     </TouchableOpacity>
