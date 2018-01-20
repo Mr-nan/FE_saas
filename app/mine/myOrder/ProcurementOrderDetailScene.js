@@ -46,6 +46,7 @@ import ExtractCarPeople from "./component/ExtractCarPeople";
 import AddressManage from "./orderwuliu/AddressManage";
 import WaybillToStore from "./orderwuliu/WaybillToStore";
 import FillWaybill from "./orderwuliu/FillWaybill";
+import LogisticsMode1 from "./component/LogisticsMode1";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -634,6 +635,18 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     };
 
     /**
+     *   判断订单是否生成了运单(dms订单)
+     **/
+    existTransOrder = (ordersTrans) => {
+        if (ordersTrans.length() === 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+
+    /**
      * 根据订单状态初始化详情页悬浮底
      * @param orderState 页面悬浮底状态
      * @returns 返回底部布局
@@ -677,6 +690,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 1:
                 let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
                 let balanceAmount = this.orderDetail.totalpay_amount > 0 ? this.orderDetail.totalpay_amount : this.orderDetail.balance_amount;
+                let transOrder = this.existTransOrder(this.ordersTrans);
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -714,8 +728,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                             applyLoanAmount: this.applyLoanAmount,
                                             financeNo: this.orderDetail.finance_no,
                                             callBack: this.payCallBack,
-                                            logisticsType: (this.logisticsType === 1 && this.ordersTrans.status),
-                                            transAmount: this.ordersTrans.total_amount
+                                            /*logisticsType: (this.logisticsType === 1 && transOrder),
+                                            transAmount: transOrder ? this.ordersTrans.total_amount : 0*/
                                         }
                                     });
                                 }
@@ -1867,7 +1881,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '9') {
             return (
-                <LogisticsMode navigator={this.props.navigator}
+                <LogisticsMode1 navigator={this.props.navigator}
                                orderDetail={this.orderDetail}
                                orderState={this.orderState}
                                ordersTrans={this.ordersTrans}
