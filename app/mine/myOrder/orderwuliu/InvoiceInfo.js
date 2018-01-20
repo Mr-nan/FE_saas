@@ -22,27 +22,28 @@ let accoutInfo = [{title: '联系电话', value: ''}, {title: '收车地址', va
 export default class InvoiceInfo extends BaseComponent {
     constructor(props) {
         super(props);
+        this.accoutInfo=this.props.accoutInfo;
         this.num = '';//识别号
         this.riseText = '';//抬头
-        this.telText = '';
-        this.contractName='';
+        this.flag=false;
+        this.contractName=this.accoutInfo[0].value;
+        accoutInfo[0].value=this.accoutInfo[1].value;
+        accoutInfo[1].value=this.accoutInfo[2].value;
         this.invoice_title='';
         this.invoice_code='';
         this.state = {
             renderPlaceholderOnly: false,
             accoutInfo:accoutInfo,
-            contractName:contractName,
+            contractName:this.contractName,
             addressId:this.props.endId
         }
     }
 
     initFinish() {
-        this.setState({
-            renderPlaceholderOnly: 'success'
-        });
+        this.getData();
     }
 
-    //获取运单费
+    //获取发票
     getData = () => {
         let maps = {
             company_id: global.companyBaseID,
@@ -50,16 +51,19 @@ export default class InvoiceInfo extends BaseComponent {
         };
         request(Urls.GETINVOICEINFO, 'Post', maps)
             .then((response) => {
-                    if (response.mjson.data != null) {
+                    if (response.mjson.data !== null && response.mjson.data!==[]) {
                         let data=response.mjson.data;
                         accoutInfo=[];
                         feeDatas=[];
-                        feeDatas.push({title: '发票类型', value: data.invoice_type})
+                        this.riseText = data.invoice_title;//抬头
+                        this.num = data.invoice_code;
+                        feeDatas.push({title: '发票类型', value: '增值税普通发票'})
                         feeDatas.push({title: '发票抬头', value: data.invoice_title})
                         feeDatas.push({title: '纳税人识别号', value: data.invoice_code})
                         accoutInfo.push({title: '联系电话', value: data.contact_phone})
                         accoutInfo.push({title: '收车地址', value: data.address})
                         this.contractName=data.contact_name;
+
 
                     }
                     this.setState({
@@ -82,30 +86,22 @@ export default class InvoiceInfo extends BaseComponent {
             address_id:this.state.addressId,
             contact_name:this.contractName,
             contact_phone:accoutInfo[0].value,
-            invoice_code:feeDatas[2].value,
-            invoice_title:feeDatas[1].value,
-            invoice_type:feeDatas[0].value
+            invoice_title:this.riseText,
+            invoice_code:this.num,
+            invoice_type:0
 
         };
         request(Urls.SAVEINVOICE, 'Post', maps)
             .then((response) => {
                     if (response.mjson.data != null) {
                         let data=response.mjson.data;
-                        accoutInfo=[];
-                        feeDatas=[];
-                        feeDatas.push({title: '发票类型', value: data.invoice_type})
-                        feeDatas.push({title: '发票抬头', value: data.invoice_title})
-                        feeDatas.push({title: '纳税人识别号', value: data.invoice_code})
-                        accoutInfo.push({title: '联系电话', value: data.contact_phone})
-                        accoutInfo.push({title: '收车地址', value: data.address})
-                        this.contractName=data.contact_name;
+                        this.props.callBack({
+                            invoice_title:this.riseText,
+                            id:data.id,
+                        });
+                        this.backPage()
 
                     }
-                    this.setState({
-                        renderPlaceholderOnly: 'success',
-                        contractName:this.contractName,
-                        accoutInfo:accoutInfo
-                    });
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error',});
@@ -174,6 +170,7 @@ export default class InvoiceInfo extends BaseComponent {
                                                 } else {
                                                     this.num = text
                                                 }
+                                                this.flag=true;
                                             }}
                                         /> :
                                         <Text style={styles.content_base_Right}>{data.value}</Text>}
@@ -208,7 +205,7 @@ export default class InvoiceInfo extends BaseComponent {
                                 color: FontAndColor.COLORA1
                             }}>收件人</Text>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{contractName}</Text>
+                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{this.state.contractName}</Text>
                                 <Image source={cellJianTou} style={styles.image}></Image>
                             </View>
 
@@ -262,14 +259,7 @@ export default class InvoiceInfo extends BaseComponent {
             this.props.showToast('请填写纳税人识别号');
             return;
         }
-        this.toNextPage({
-                name: 'CheckWaybill',
-                component: CheckWaybill,
-                params: {
-                    isShowPay: true
-                }
-            }
-        );
+        this.saveData();
     }
 
     render() {
@@ -295,6 +285,7 @@ export default class InvoiceInfo extends BaseComponent {
         return (
             <TouchableOpacity onPress={
                 () => {
+                    this.backPage();
                 }
             }>
                 <View style={{

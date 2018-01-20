@@ -52,6 +52,7 @@ export default class FillWaybill extends BaseComponent {
         this.transType=1;
         this.distance='';
         this.companyName='';
+        this.invoiceId='';
         this.endId='';
         this.startId='';
         this.toStore = false
@@ -113,7 +114,7 @@ export default class FillWaybill extends BaseComponent {
                                 
                             });
                         }
-                        if(data.trans_invoice.length>0){
+                        if(data.trans_invoice!==null){
                             
                         }
                     }
@@ -171,7 +172,8 @@ export default class FillWaybill extends BaseComponent {
             order_id: this.props.orderId,
             start_id: this.startId,
             logistics_type: this.props.logisticsType,//物流类型
-            trans_type:this.transType
+            trans_type:this.transType,
+            invoice_id:this.invoiceId
         };
         request(Urls.SUBMITTRANFERINFO, 'Post', maps)
             .then((response) => {
@@ -341,11 +343,13 @@ export default class FillWaybill extends BaseComponent {
                             name: 'InvoiceInfo',
                             component: InvoiceInfo,
                             params: {
-                                orderId:this.props.order_id,
+                                orderId:this.props.orderId,
                                 endId:this.endId,
-                                callBack: (text)=>{
+                                accoutInfo:accoutInfo,
+                                callBack: (data)=>{
+                                    this.invoiceId=data.id;
                                     this.setState({
-                                        invoiceTitle: text,
+                                        invoiceTitle: data.invoice_title,
                                     });
                                 }
                             }

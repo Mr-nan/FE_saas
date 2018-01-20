@@ -20,22 +20,23 @@ import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
 
 const Pixel = new PixelUtil();
-let feeDatas = [{title: '发车地', value: '湖北省武汉市武昌区'}, {title: '收车地', value: '湖北省武汉市武昌区街坊邻居阿拉丁就附近阿斯蒂芬逻辑'}, {
+let feeDatas = [{title: '发车地', value: ''}, {title: '收车地', value: ''}, {
     title: '下单时间',
-    value: '2017-12-12 18：00'
-}, {title: '物流费', value: '1000元'}, {title: '运输类型', value: '大板'}]
-let accoutInfo = [{title: '联系人', value: '刘威'}, {title: '联系方式', value: '13000000001'}, {
+    value: ''
+}, {title: '物流费', value: ''}, {title: '运输类型', value: ''}]
+let accoutInfo = [{title: '联系人', value: ''}, {title: '联系方式', value: ''}, {
     title: '收车地址',
-    value: '湖北省武汉市武昌区'
+    value: ''
 }]
 let carInfo = [{title: '2013款奔驰宝马', value: '配送中'}, {title: '2013款奔驰宝马', value: '已签收'}, {
     title: '2013款奔驰宝马',
     value: '已签收'
 }, {title: '2013款奔驰宝马', value: '已签收'}, {title: '2013款奔驰宝马', value: '已签收'}, {title: '2013款奔驰宝马', value: '已签收'}]
+
 export default class CheckWaybill extends BaseComponent {
     constructor(props) {
         super(props);
-        this.number='10086'
+        this.number='400888888';
         this.isShowPay=false;
         this.isShowToStore=false;
         this.title='查看运单';
@@ -51,27 +52,52 @@ export default class CheckWaybill extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: false,
             payStatus: true,
+            feeDatas:feeDatas,
+            accoutInfo:accoutInfo
 
         }
     }
 
     initFinish() {
-        this.setState({
-            renderPlaceholderOnly: 'success'
-        });
+        this.getData();
     }
 
     getData = () => {
         let maps = {
-            company_id: '111',
-            order_id:'111',
-            trans_id:'111'
+            company_id: global.companyBaseID,
+            trans_id: this.props.transId,//物流类型
+            order_id: this.props.orderId
         };
         request(Urls.WAYBILL_DETAIL, 'Post', maps)
             .then((response) => {
                     if (response.mjson.data != null) {
+                        let data=response.mjson.data;
+                        feeDatas=[];
+                        accoutInfo=[];
+                        let trans_type='大板';
+                        if(data.trans_type==1){
+                            trans_type='大板';
+                        }else if(data.trans_type=='2'){
+                            trans_type='救援'
+                        }else if(data.trans_type=='3'){
+                            trans_type='代驾'
+                        }
+                        let end_address=data.end_address;
+                        feeDatas.push({title: '发车地', value: data.start_address.address});
+                        feeDatas.push({title: '收车地', value: data.end_address.address});
+                        feeDatas.push({title: '下单时间', value: data.created_time});
+                        feeDatas.push({title: '物流费', value: data.trans_amount+'元'});
+                        feeDatas.push({title: '运输类型', value: trans_type});
+
+                        accoutInfo.push({title: '联系人', value:end_address.contact_name });
+                        accoutInfo.push({title: '联系方式', value:end_address.contact_phone });
+                        accoutInfo.push({title: '收车地址', value:end_address.full_address });
+
                     }
-                    this.setState({renderPlaceholderOnly: 'success'});
+                    this.setState({
+                        renderPlaceholderOnly: 'success',
+                        feeDatas:feeDatas,
+                        accoutInfo:accoutInfo});
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error',});
