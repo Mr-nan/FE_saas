@@ -1920,7 +1920,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 </TouchableOpacity>
             )
-        } else if (rowData === '9') {
+        } else if (rowData === '9') {   // 非订单融资运单填写以及信息组件
             let transOrder = this.existTransOrder(this.ordersTrans);
             return (
                 <LogisticsMode navigator={this.props.navigator}
@@ -1930,9 +1930,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                updateOrdersTrans={this.updateOrdersTrans}
                                updateLogisticsType={this.updateLogisticsType}/>
             )
-        } else if (rowData === '10') {
+        } else if (rowData === '10') {  // 订单融资运单填写以及信息组件
+            let transOrder = this.existTransOrder(this.ordersTrans);
             return (
-                <LogisticsModeForFinancing navigator={this.props.navigator}/>
+                <LogisticsModeForFinancing navigator={this.props.navigator}
+                                           financeInfo={this.financeInfo}
+                                           orderDetail={this.orderDetail}
+                                           orderState={this.orderState}
+                                           ordersTrans={transOrder ? this.ordersTrans : {'id' : -1, 'status': 0, total_amount : '0'}}
+                                           updateOrdersTrans={this.updateOrdersTrans}
+                                           updateLogisticsType={this.updateLogisticsType}/>
             )
         } else if (rowData === '11') {
             return (

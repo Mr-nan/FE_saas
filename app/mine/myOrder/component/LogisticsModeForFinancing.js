@@ -18,6 +18,7 @@ import PixelUtil from '../../../utils/PixelUtil';
 import TagSelectView from "./TagSelectView";
 import ChooseModal from "./ChooseModal";
 import BaseComponent from "../../../component/BaseComponent";
+import SelectDestination from "../orderwuliu/SelectDestination";
 const Pixel = new PixelUtil();
 
 export default class LogisticsModeForFinancing extends BaseComponent {
@@ -38,7 +39,8 @@ export default class LogisticsModeForFinancing extends BaseComponent {
             id: 1
         }];
         this.state = {
-            useLogistics: 'al'
+            //useLogistics: 'al'
+            ordersTrans: this.props.ordersTrans
         }
     }
 
@@ -59,6 +61,17 @@ export default class LogisticsModeForFinancing extends BaseComponent {
          this.tagRef.refreshData(this.tagSelect);*/
         if (index === 0) {
             // 使用物流  跳转到选择目的地页
+            this.toNextPage({
+                name: 'SelectDestination',
+                component: SelectDestination,
+                params: {
+                    orderId: this.props.orderDetail.id,
+                    vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
+                    callBack: this.updateOrdersTrans,
+                    maxLoanmny: this.props.financeInfo.max_loanmny  // 订单融资最大可贷额度
+                }
+
+            });
         } else {
             // 车已在店
             this.refs.chooseModal.changeShowType(true, '取消', '确定', '选择车已在店需要风控人员后台审核确认，是否继续？',
@@ -67,11 +80,56 @@ export default class LogisticsModeForFinancing extends BaseComponent {
     };
 
     /**
+     *    运单状态映射
+     **/
+    transStateMapping = (ordersTrans) => {
+        switch (ordersTrans.status) {
+            case 0:    // 0 是前端自己定义的状态 说明未生成运单
+                return {'state': 0, 'waybillState': ''};
+            case 1: //1 =>'填写完',
+            case 100: // 100 =>'支付运单中',
+            case 101: // 101 =>'支付运单失败',
+            case 200: // 200 =>'支付运单成功生成运单失败',
+                return {'state': 1, 'waybillState': '运费' + ordersTrans.total_amount + '元'};
+            case 2:   // 2 =>'支付运单成功生成运单',
+                return {'state': 2, 'waybillState': '已支付'};
+            case 3:  //  3 =>'发运',
+                return {'state': 3, 'waybillState': '已支付'};
+            case 4:  // 4 =>'到店',
+            case 5:  // 5 =>'到库',
+                return {'state': 4, 'waybillState': '已交车'};
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 11:
+            case 10:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+        }
+    };
+
+    /**
+     *
+     **/
+    updateOrdersTrans = (newOrdersTrans) => {
+        newOrdersTrans.status = newOrdersTrans.trans_status;
+        this.props.updateOrdersTrans(newOrdersTrans);
+        //this.ordersTrans = newOrdersTrans;
+        this.setState({
+            ordersTrans: newOrdersTrans
+        });
+    };
+
+    /**
      *  render
      **/
     render() {
         let views = '';
-        if (this.state.useLogistics === 'unknown') {  // 未选择
+        let alreadyChoose = this.transStateMapping(this.state.ordersTrans);  // 是否已经生成运单并支付完成
+        if (alreadyChoose < 1) {  // 未选择
             views =
                 <View style={{
                     height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
@@ -87,7 +145,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                             this.tagRef = ref;
                         }} onTagClick={this.onTagClick} cellData={this.tagSelect}/>
                 </View>
-        } else if (this.state.useLogistics === 'logistics') {  // 选择物流
+        } else if (alreadyChoose > 0) {  // 选择物流
             views =
                 <TouchableOpacity
                     onPress={() => {
