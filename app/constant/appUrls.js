@@ -1538,5 +1538,7 @@ export const SUBMITTRANFERINFO = BASEURL  + "v2/order.logistics/submit";
  *  保存发票信息
  */
 export const SAVEINVOICE = BASEURL  + "v2/order.invoice/add";
-
-
+/**
+ *   车是否在店审核
+ **/
+export const is_Car_Store_Check = BASEURL  + "v2/order.invoice/add";

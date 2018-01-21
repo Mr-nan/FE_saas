@@ -108,6 +108,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
             case 13:
             case 14:
             case 15:
+                return {'state': 5, 'waybillState': '测试'};
         }
     };
 
@@ -129,7 +130,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
     render() {
         let views = '';
         let alreadyChoose = this.transStateMapping(this.state.ordersTrans);  // 是否已经生成运单并支付完成
-        if (alreadyChoose < 1) {  // 未选择
+        if (alreadyChoose.state < 1) {  // 未选择
             views =
                 <View style={{
                     height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
@@ -145,7 +146,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                             this.tagRef = ref;
                         }} onTagClick={this.onTagClick} cellData={this.tagSelect}/>
                 </View>
-        } else if (alreadyChoose > 0) {  // 选择物流
+        } else if (alreadyChoose.state > 0) {  // 选择物流
             views =
                 <TouchableOpacity
                     onPress={() => {

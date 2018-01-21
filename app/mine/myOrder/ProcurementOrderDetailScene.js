@@ -272,7 +272,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '5', '6'];
+                this.mList = ['0', '1', '3', '4', '5', '10', '6'];
                 let amount = '  ';
                 this.contactData = {
                     layoutTitle: '付首付款',
