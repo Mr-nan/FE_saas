@@ -117,6 +117,7 @@ export default class LogisticsMode extends BaseComponent {
      *
      **/
     updateOrdersTrans = (newOrdersTrans) => {
+        newOrdersTrans.status = newOrdersTrans.trans_status;
         this.props.updateOrdersTrans(newOrdersTrans);
         //this.ordersTrans = newOrdersTrans;
         this.setState({
