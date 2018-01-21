@@ -1571,7 +1571,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         }
                         this.stateMapping(status, cancelStatus);
                         this.financeInfo = this.orderDetail.finance_data;
-                        this.ordersTrans = this.orderDetail.orders_trans[0];
+                        this.ordersTrans = this.orderDetail.orders_trans_data[0];
                         //console.log(this.ordersTrans);
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
