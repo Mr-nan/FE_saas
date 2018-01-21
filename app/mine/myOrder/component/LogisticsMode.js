@@ -182,7 +182,7 @@ export default class LogisticsMode extends BaseComponent {
                             height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                             paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                         }}>
-                            <Text >{1 !== 0 ? '运单信息' : '填写运单'}</Text>
+                            <Text >{alreadyChoose > 1 ? '运单信息' : '填写运单'}</Text>
                             <View style={{flex: 1}}/>
                             <Text style={{color: fontAndColor.COLORB0}}>{alreadyChoose.waybillState}</Text>
                             <Image source={require('../../../../images/mainImage/celljiantou.png')}/>
