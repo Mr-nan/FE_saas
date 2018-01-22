@@ -175,7 +175,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '9', '6'];
+                this.mList = ['0', '1', '3', '4', '9', '6', '11'];
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.contactData = {
                         layoutTitle: '付全款',
@@ -1934,6 +1934,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let transOrder = this.existTransOrder(this.ordersTrans);
             return (
                 <LogisticsModeForFinancing navigator={this.props.navigator}
+                                           showModal={this.props.showModal}
+                                           showToast={this.props.showToast}
                                            financeInfo={this.financeInfo}
                                            orderDetail={this.orderDetail}
                                            orderState={this.orderState}
@@ -1943,7 +1945,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '11') {
             return (
-                <ExtractCarPeople navigator={this.props.navigator}/>
+                <ExtractCarPeople navigator={this.props.navigator} orderDetail={this.orderDetail}/>
             )
         }
     }

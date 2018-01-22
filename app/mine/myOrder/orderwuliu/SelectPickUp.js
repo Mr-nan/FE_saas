@@ -37,8 +37,8 @@ export default class SelectPickUp extends BaseComponent {
     }
 
     initFinish() {
-        allSouce=[];
-        // this.getData();
+        //allSouce=[];
+        this.getData();
     }
     getData = () => {
         allSouce=[];
@@ -49,6 +49,7 @@ export default class SelectPickUp extends BaseComponent {
             .then((response) => {
                     this.props.showModal(false);
                     if(response.mycode === 1){
+                        accountInfo = [];
                         allSouce.push(...response.mjson.data);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         allSouce.map((data)=>{
@@ -90,10 +91,10 @@ export default class SelectPickUp extends BaseComponent {
         accountInfo.map((data) => {
             data.isSelect = false;
         })
-        accountInfo.push({
+/*        accountInfo.push({
             name:accountInfo[index].name,
             phone:accountInfo[index].phone
-        });
+        });*/
         accountInfo[index].isSelect = true;
         this.setState({
             dataSource: this.ds.cloneWithRows(accountInfo),
