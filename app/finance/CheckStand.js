@@ -412,7 +412,7 @@ export default class CheckStand extends BaseComponent {
      * */
     pageRouting = (logisticsType) => {
         //console.log('this.props.payType====', this.props.payType);
-        if (logisticsType && this.props.payType == 2) {
+        if (logisticsType && (this.props.payType == 2 || this.props.payType == 6)) {
             return this.logisticsPay();
         } else {
             return this.normalPay();

@@ -421,7 +421,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             <Text allowFontScaling={false} style={{
                                 marginLeft: Pixel.getPixel(15),
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                                color: fontAndColor.COLORB7
+                                color: fontAndColor.COLORB2
                             }}>您的申请已被驳回，请选择使用物流服务</Text>
                         </View>
                         <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
@@ -436,7 +436,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             <Text allowFontScaling={false} style={{
                                 marginLeft: Pixel.getPixel(15),
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                                color: fontAndColor.COLORB7
+                                color: fontAndColor.COLORB2
                             }}>财务放款时间(工作日): 9:00到16:30</Text>
                         </View>
                         <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
@@ -1171,8 +1171,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 3:  //  3 =>'发运',
                 return {'state': 3, 'waybillState': '已支付'};
             case 4:  // 4 =>'到店',
-            case 5:  // 5 =>'到库',
                 return {'state': 4, 'waybillState': '已交车'};
+            case 5:  // 5 =>'到库',
+                return {'state': 5, 'waybillState': '已入库'};
             case 6:
             case 7:
             case 8:
@@ -1371,19 +1372,27 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     if (this.existTransOrder(this.ordersTrans) &&
                         this.transStateMapping(this.ordersTrans).state !== 4) {
                         this.orderState = 3;
-                        this.topState = -1;
-                        this.bottomState = -1;
                     } else {  // 非物流单或物流单已经交车
                         this.orderState = 4;
-                        this.topState = -1;
-                        this.bottomState = -1;
                     }
+                    this.topState = -1;
+                    this.bottomState = -1;
                 } else if (cancelStatus === 1) {
-                    this.orderState = 4;
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state !== 4) {
+                        this.orderState = 3;
+                    } else {  // 非物流单或物流单已经交车
+                        this.orderState = 4;
+                    }
                     this.topState = -1;
                     this.bottomState = 3;
                 } else if (cancelStatus === 2) {
-                    this.orderState = 4;
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state !== 4) {
+                        this.orderState = 3;
+                    } else {  // 非物流单或物流单已经交车
+                        this.orderState = 4;
+                    }
                     this.topState = -1;
                     if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
@@ -1403,7 +1412,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 4;
                     }
                 } else if (cancelStatus === 3) {
-                    this.orderState = 4;
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state !== 4) {
+                        this.orderState = 3;
+                    } else {  // 非物流单或物流单已经交车
+                        this.orderState = 4;
+                    }
                     this.topState = -1;
                     if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
@@ -1493,7 +1507,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 15:  //15=>'支付首付款失败',
                 if (cancelStatus === 0) {
                     this.orderState = 6;
-                    this.topState = -1;
+                    if (this.orderDetail.orders_item_data[0].is_store == 2) {
+                        this.topState = 4;
+                    } else {
+                        this.topState = -1;
+                    }
                     if (status === 6) {
                         this.bottomState = 1;
                     } else {

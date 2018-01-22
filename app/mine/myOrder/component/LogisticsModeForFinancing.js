@@ -24,6 +24,7 @@ import {request} from "../../../utils/RequestUtil";
 import * as StorageKeyNames from "../../../constant/storageKeyNames";
 import * as AppUrls from "../../../constant/appUrls";
 import AddressManage from "../orderwuliu/AddressManage";
+import CheckWaybill from "../orderwuliu/CheckWaybill";
 const Pixel = new PixelUtil();
 
 export default class LogisticsModeForFinancing extends BaseComponent {
@@ -142,8 +143,9 @@ export default class LogisticsModeForFinancing extends BaseComponent {
             case 3:  //  3 =>'发运',
                 return {'state': 3, 'waybillState': '已支付'};
             case 4:  // 4 =>'到店',
-            case 5:  // 5 =>'到库',
                 return {'state': 4, 'waybillState': '已交车'};
+            case 5:  // 5 =>'到库',
+                return {'state': 5, 'waybillState': '已入库'};
             case 6:
             case 7:
             case 8:
@@ -153,8 +155,9 @@ export default class LogisticsModeForFinancing extends BaseComponent {
             case 12:
             case 13:
             case 14:
+                return {'state': 6, 'waybillState': '测试'};
             case 15:
-                return {'state': 5, 'waybillState': '测试'};
+                return {'state': 7, 'waybillState': '已交车'};
         }
     };
 
@@ -197,6 +200,16 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                 <TouchableOpacity
                     onPress={() => {
                         // TODO 跳转到运单信息
+                        this.toNextPage({
+                            name: 'CheckWaybill',
+                            component: CheckWaybill,
+                            params: {
+                                orderId: this.props.orderDetail.id,
+                                transId: this.state.ordersTrans.id,
+                                waybillState: alreadyChoose.waybillState
+                            }
+
+                        });
                     }}>
                     <View style={{
                         height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
@@ -229,7 +242,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                             <View style={{flex: 1}}/>
                             <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                 textAlign: 'right', width: Pixel.getPixel(250)}}>
-                                审核中审核中审核中审核中审核中审核中审核中审核中审核中审核中审核中
+                                {this.props.orderDetail.orders_item_data[0].store_address}
                             </Text>
                         </View>
                     </View>
