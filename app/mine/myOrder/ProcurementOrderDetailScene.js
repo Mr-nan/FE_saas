@@ -47,6 +47,7 @@ import AddressManage from "./orderwuliu/AddressManage";
 import WaybillToStore from "./orderwuliu/WaybillToStore";
 import FillWaybill from "./orderwuliu/FillWaybill";
 import LogisticsMode1 from "./component/LogisticsMode1";
+import CheckWaybill from "./orderwuliu/CheckWaybill";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -632,6 +633,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      **/
     applyGetCarLetter = () => {
         this.props.showModal(true);
+        let alreadyChoose = this.transStateMapping(this.ordersTrans);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -644,10 +646,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.props.showModal(false);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.toNextPage({
-                            name: 'FillWaybill',
-                            component: FillWaybill,
+                            name: 'CheckWaybill',
+                            component: CheckWaybill,
                             params: {
-
+                                orderId: this.orderDetail.id,
+                                transId: this.ordersTrans.id,
+                                waybillState: alreadyChoose.waybillState,
+                                isShowPay: true
                             }
                         });
                     } else {
