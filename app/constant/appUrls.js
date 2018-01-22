@@ -1542,3 +1542,15 @@ export const SAVEINVOICE = BASEURL  + "v2/order.invoice/add";
  *   车是否在店审核
  **/
 export const IS_CAR_STORE_CHECK = BASEURL  + "v2/order.home/isCarStoreCheck";
+/**
+ *  支付库到店的物流和仓储费
+ */
+export const PAY_WAREHOUSE_TO_STORE_AMOUNT = BASEURL  + "v2/order.home/payWarehouseToStoreAmount";
+/**
+ *  申请提车函后支付仓储费
+ */
+export const PAY_STORE_AMOUNT = BASEURL  + "v2/order.home/payStoreAmount";
+/**
+ *  申请提车函后支付仓储费回调
+ */
+export const PAY_STORE_AMOUNT_CALLBACK = BASEURL  + "v2/order.home/payStoreAmount";
