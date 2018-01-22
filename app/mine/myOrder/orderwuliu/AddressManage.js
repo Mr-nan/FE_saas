@@ -69,7 +69,9 @@ export default class AddressManage extends BaseComponent {
                                 province: data.province,
                                 city: data.city,
                                 district: data.district,
-                                is_port: data.is_port
+                                is_port: data.is_port,
+                                contact_name:data.contact_name,
+                                contact_phone:data.contact_phone,
                             }
                         })
                         this.setState({
@@ -110,7 +112,9 @@ export default class AddressManage extends BaseComponent {
             province: accountInfo[index].province,
             city: accountInfo[index].city,
             district: accountInfo[index].district,
-            is_port: accountInfo[index].is_port
+            is_port: accountInfo[index].is_port,
+            contact_name:accountInfo[index].contact_name,
+            contact_phone:accountInfo[index].contact_phone,
         }
         accountInfo[index].is_default = 1;
         this.setState({

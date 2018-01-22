@@ -12,49 +12,120 @@ import * as FontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import MyButton from "../../../component/MyButton";
 import CheckWaybill from './CheckWaybill';
-import SelectDestination from './SelectDestination';
-import StorageUtil from "../../../utils/StorageUtil";
-import * as StorageKeyNames from "../../../constant/storageKeyNames";
-
+import AddressManage from './AddressManage';
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
 const Pixel = new PixelUtil();
 let feeDatas = [{title: '发票类型', value: '增值税普通发票'}, {title: '发票抬头', value: ''}, {title: '纳税人识别号', value: ''}]
-let accoutInfo = [{title: '联系电话', value: '13000000001'}, {title: '收车地址', value: '湖北省武汉市武昌区街坊ADSL看风景拉就是的法律'}]
+let accoutInfo = [{title: '联系电话', value: ''}, {title: '收车地址', value: ''}]
 export default class InvoiceInfo extends BaseComponent {
     constructor(props) {
         super(props);
+        this.accoutInfo=this.props.accoutInfo;
         this.num = '';//识别号
         this.riseText = '';//抬头
-        this.telText = '';
-        this.addressText = '';
+        this.flag=false;
+        this.contractName=this.accoutInfo[0].value;
+        accoutInfo[0].value=this.accoutInfo[1].value;
+        accoutInfo[1].value=this.accoutInfo[2].value;
+        this.invoice_title='';
+        this.invoice_code='';
         this.state = {
             renderPlaceholderOnly: false,
+            accoutInfo:accoutInfo,
+            contractName:this.contractName,
+            addressId:this.props.endId
         }
     }
 
     initFinish() {
-        StorageUtil.mGetItem(StorageKeyNames.INVOICE_TITLE, (data) => {
-            if (data.code == 1 && data.result != null) {
-                this.riseText = data.result;
-                this.riseInput.setNativeProps({
-                    text: this.riseText
-                });
-            }
-        })
-        StorageUtil.mGetItem(StorageKeyNames.TAXPAYER_IDENTIFICATION_NUMBER, (data) => {
-            if (data.code == 1 && data.result != null) {
-                this.num = data.result;
-                this.numInput.setNativeProps({
-                    text: this.num
-                });
-            }
-        })
-        this.setState({
-            renderPlaceholderOnly: 'success'
-        });
+        this.getData();
     }
+
+    //获取发票
+    getData = () => {
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.orderId,
+        };
+        request(Urls.GETINVOICEINFO, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data !== null && response.mjson.data!==[]) {
+                        let data=response.mjson.data;
+                        accoutInfo=[];
+                        feeDatas=[];
+                        this.riseText = data.invoice_title;//抬头
+                        this.num = data.invoice_code;
+                        feeDatas.push({title: '发票类型', value: '增值税普通发票'})
+                        feeDatas.push({title: '发票抬头', value: data.invoice_title})
+                        feeDatas.push({title: '纳税人识别号', value: data.invoice_code})
+                        accoutInfo.push({title: '联系电话', value: data.contact_phone})
+                        accoutInfo.push({title: '收车地址', value: data.address})
+                        this.contractName=data.contact_name;
+
+
+                    }
+                    this.setState({
+                        renderPlaceholderOnly: 'success',
+                        contractName:this.contractName,
+                        accoutInfo:accoutInfo
+                    });
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error',});
+                });
+    }
+
+    //获取运单费
+    saveData = () => {
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.orderId,
+            address:accoutInfo[1].value,
+            address_id:this.state.addressId,
+            contact_name:this.contractName,
+            contact_phone:accoutInfo[0].value,
+            invoice_title:this.riseText,
+            invoice_code:this.num,
+            invoice_type:0
+
+        };
+        request(Urls.SAVEINVOICE, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data != null) {
+                        let data=response.mjson.data;
+                        this.props.callBack({
+                            invoice_title:this.riseText,
+                            id:data.id,
+                        });
+                        this.backPage()
+
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error',});
+                });
+    }
+
+
+    /**
+     *   地址回传
+     **/
+    updateAddress = (newAddress) => {
+        console.log('newAddress',newAddress);
+        accoutInfo=[];
+        accoutInfo.push({title: '联系电话', value: newAddress.contact_phone})
+        accoutInfo.push({title: '收车地址', value: newAddress.full_address})
+        this.contractName=newAddress.contact_name;
+
+        this.setState({
+            accoutInfo:accoutInfo,
+            addressId: newAddress.id,
+            contractName:this.contractName
+        })
+    };
+
 
     _renderItem = () => {
         return (
@@ -91,6 +162,7 @@ export default class InvoiceInfo extends BaseComponent {
                                                 }
                                             }
                                             underlineColorAndroid={"#00000000"}
+                                            defaultValue={data.value}
                                             placeholder={'请输入' + data.title}
                                             onChangeText={(text) => {
                                                 if (index == 1) {
@@ -98,6 +170,7 @@ export default class InvoiceInfo extends BaseComponent {
                                                 } else {
                                                     this.num = text
                                                 }
+                                                this.flag=true;
                                             }}
                                         /> :
                                         <Text style={styles.content_base_Right}>{data.value}</Text>}
@@ -115,9 +188,12 @@ export default class InvoiceInfo extends BaseComponent {
                 }}>邮件信息</Text>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
                     this.toNextPage({
-                            name: 'SelectDestination',
-                            component: SelectDestination,
-                            params: {}
+                        name: 'AddressManage',
+                        component: AddressManage,
+                        params: {
+                            addressId:this.state.addressId,
+                            callBack:this.updateAddress
+                        }
                         }
                     );
                 }}>
@@ -129,7 +205,7 @@ export default class InvoiceInfo extends BaseComponent {
                                 color: FontAndColor.COLORA1
                             }}>收件人</Text>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{'刘威车行'}</Text>
+                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{this.state.contractName}</Text>
                                 <Image source={cellJianTou} style={styles.image}></Image>
                             </View>
 
@@ -183,16 +259,7 @@ export default class InvoiceInfo extends BaseComponent {
             this.props.showToast('请填写纳税人识别号');
             return;
         }
-        StorageUtil.mSetItem(StorageKeyNames.INVOICE_TITLE, this.riseText);
-        StorageUtil.mSetItem(StorageKeyNames.TAXPAYER_IDENTIFICATION_NUMBER, this.num);
-        this.toNextPage({
-                name: 'CheckWaybill',
-                component: CheckWaybill,
-                params: {
-                    isShowPay: true
-                }
-            }
-        );
+        this.saveData();
     }
 
     render() {
@@ -218,6 +285,7 @@ export default class InvoiceInfo extends BaseComponent {
         return (
             <TouchableOpacity onPress={
                 () => {
+                    this.backPage();
                 }
             }>
                 <View style={{
