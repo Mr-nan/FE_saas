@@ -22,16 +22,18 @@ const Pixel = new PixelUtil();
 import *as appUrls from '../../constant/appUrls';
 import {request} from "../../utils/RequestUtil";
 
-const provinceData = (require('../../carSource/carData/carFilterData.json')).provinceSource;
+const provinceData = (require('../../carSource/carData/carFilterData.json')).provinceSource2;
 const SceneWidth = Dimensions.get('window').width;
 const delImage = require('../../../images/deleteIcon2x.png');
 
 let selectData={
-    city_name:'',
-    provice_id:0,
+    provice_id:'',
+    provice_code:'',
     provice_name:'',
-    city_id:0,
-    district_id:0,
+    city_name:'',
+    city_id:'',
+    city_code:'',
+    district_id:'',
     district_name:'',
     district_code:''
 };
@@ -39,12 +41,14 @@ let selectData={
 export default class CityRegionScene extends Component{
 
     componentWillMount() {
-        selectData.provice_id = 0;
+        selectData.provice_id = '';
         selectData.provice_name = '';
+        selectData.provice_code = '';
         selectData.city_name='';
-        selectData.city_id=0;
+        selectData.city_id='';
+        selectData.city_code='';
         selectData.district_name='';
-        selectData.district_id=0;
+        selectData.district_id='';
         selectData.district_code='';
     }
 
@@ -165,16 +169,17 @@ export default class CityRegionScene extends Component{
                 onPress={()=>{
                 this.setState({isShowCityList:true});
 
-                if(selectData.provinceID == rowData.ID){return;}
+                if(selectData.provice_id == rowData.provId){return;}
 
-                selectData.city_name=rowData.title;
-                selectData.provice_id=rowData.ID;
-                selectData.provice_name=rowData.title;
+                selectData.city_name=rowData.provName;
+                selectData.provice_id=rowData.provId;
+                selectData.provice_name=rowData.provName;
+                selectData.provice_code=rowData.provCode;
 
                 this.refs.cityList && this.refs.cityList.loadData();
             }}>
                 <View style={styles.rowCell}>
-                    <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.title}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.provName}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -228,7 +233,7 @@ class CityList extends  Component{
 
         this.props.showLoadModel(true);
 
-        request(this.props.isZs?appUrls.ZS_GET_CITY:appUrls.GET_PROVINCE,'post',this.props.isZs?{province_name:selectData.city_name, payment_type:'ZS'}:{'prov_id':selectData.provice_id})
+        request(appUrls.REGION_CITY,'post',{provId:selectData.provice_id,provCode:selectData.provice_code})
             .then((response) => {
 
                 this.props.showLoadModel(false);
@@ -262,7 +267,7 @@ class CityList extends  Component{
                                           this.props.checkedCityClick();
                                       }
                                   }} activeOpacity={1}>
-                                      <Text allowFontScaling={false}  style={styles.sectionText}>{selectData.city_name}</Text>
+                                      <Text allowFontScaling={false}  style={styles.sectionText}>{selectData.provice_name}</Text>
                                   </TouchableOpacity>
                               )}}/>
             </Animated.View>
@@ -273,11 +278,12 @@ class CityList extends  Component{
         return (
 
             <TouchableOpacity style={styles.rowCell} onPress={()=>{
-                selectData.city_name=rowData.city_name;
-                selectData.city_id=rowData.city_id;
+                selectData.city_name=rowData.cityName;
+                selectData.city_id=rowData.cityId;
+                selectData.city_code=rowData.cityCode;
                 this.props.checkedCityClick();
             }}>
-                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.city_name}</Text>
+                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.cityName}</Text>
             </TouchableOpacity>
         )
     };
@@ -318,7 +324,8 @@ class DistrictList extends  Component{
 
         this.props.showLoadModel(true);
 
-        request(appUrls.GET_DIST_LIST,'post',{prov_id:selectData.provice_id, city_id:selectData.city_id})
+        request(appUrls.REGION_COUNTY,'post',{provId:selectData.provice_id,provCode:selectData.provice_code,
+            cityId:selectData.city_id,cityCode:selectData.city_code})
             .then((response) => {
 
                 this.props.showLoadModel(false);
@@ -361,12 +368,12 @@ class DistrictList extends  Component{
         return (
 
             <TouchableOpacity style={styles.rowCell} onPress={()=>{
-                selectData.district_name=rowData.county_name;
-                selectData.district_id=rowData.county_id;
-                selectData.district_code=rowData.county_code;
+                selectData.district_name=rowData.countyName;
+                selectData.district_id=rowData.id;
+                selectData.district_code=rowData.countyCode;
                 this.props.checkDistrictClick();
             }}>
-                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.county_name}</Text>
+                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.countyName}</Text>
             </TouchableOpacity>
         )
     };

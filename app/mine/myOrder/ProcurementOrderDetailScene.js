@@ -175,7 +175,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '9', '6'];
+                this.mList = ['0', '1', '3', '4', '9', '6', '11'];
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.contactData = {
                         layoutTitle: '付全款',
@@ -584,6 +584,84 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 });
             } else {
                 this.props.showToast('恢复订单失败');
+            }
+        });
+    };
+
+    /**
+     *   转单车
+     **/
+    changeCarSingle = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.CHANGE_CAR_SINGLE_FINANCE;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.toNextPage({
+                            name: 'AddressManage',
+                            component: AddressManage,
+                            params: {
+
+                            }
+                        });
+                    } else {
+                        this.props.showModal(false);
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('恢复订单失败');
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showModal(false);
+                this.props.showToast('转单车申请失败');
+            }
+        });
+    };
+
+    /**
+     *   申请提车函
+     **/
+    applyGetCarLetter = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.APPLY_GET_CAR_LETTER;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.toNextPage({
+                            name: 'FillWaybill',
+                            component: FillWaybill,
+                            params: {
+
+                            }
+                        });
+                    } else {
+                        this.props.showModal(false);
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('恢复订单失败');
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showModal(false);
+                this.props.showToast('转单车申请失败');
             }
         });
     };
@@ -1052,12 +1130,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={[styles.bottomBar]}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'AddressManage',
-                                    component: AddressManage,
-                                    params: {}
-
-                                });
+                                this.changeCarSingle();
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>转单车</Text>
@@ -1065,14 +1138,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'FillWaybill',
-                                    component: FillWaybill,
-                                    params: {
-                                        toStore:true
-                                    }
-
-                                });
+                                this.applyGetCarLetter();
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请提车函</Text>
@@ -1934,6 +2000,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let transOrder = this.existTransOrder(this.ordersTrans);
             return (
                 <LogisticsModeForFinancing navigator={this.props.navigator}
+                                           showModal={this.props.showModal}
+                                           showToast={this.props.showToast}
                                            financeInfo={this.financeInfo}
                                            orderDetail={this.orderDetail}
                                            orderState={this.orderState}
@@ -1943,7 +2011,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '11') {
             return (
-                <ExtractCarPeople navigator={this.props.navigator}/>
+                <ExtractCarPeople navigator={this.props.navigator} orderDetail={this.orderDetail}/>
             )
         }
     }

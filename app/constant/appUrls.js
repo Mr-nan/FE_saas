@@ -1531,6 +1531,18 @@ export const GETINVOICEINFO = BASEURL  + "v2/order.invoice/info";
  */
 export const PAY_BALANCE = BASEURL  + "v2/order.pay/balance";
 /**
+ *  微服务获取区县
+ */
+export const REGION_COUNTY = BASEURL  + "v2/api.region/county";
+/**
+ *  微服务获取区县
+ */
+export const REGION_CITY = BASEURL  + "v2/api.region/city";
+/**
+ *  微服务获取区县
+ */
+export const REGION_PROVINCE = BASEURL  + "v2/api.region/province";
+/**
  *  物流提交数据
  */
 export const SUBMITTRANFERINFO = BASEURL  + "v2/order.logistics/submit";
@@ -1547,3 +1559,28 @@ export const is_Car_Store_Check = BASEURL  + "v2/order.invoice/add";
  **/
 export const GETWAREHOUSEINFO = BASEURL  + "v2/order.home/getWarehouseInfo";
 
+export const IS_CAR_STORE_CHECK = BASEURL  + "v2/order.home/isCarStoreCheck";
+/**
+ *  支付库到店的物流和仓储费
+ */
+export const PAY_WAREHOUSE_TO_STORE_AMOUNT = BASEURL  + "v2/order.home/payWarehouseToStoreAmount";
+/**
+ *  申请提车函后支付仓储费
+ */
+export const PAY_STORE_AMOUNT = BASEURL  + "v2/order.home/payStoreAmount";
+/**
+ *  申请提车函后支付仓储费回调
+ */
+export const PAY_STORE_AMOUNT_CALLBACK = BASEURL  + "v2/order.home/payStoreAmount";
+/**
+ *  支付库到店的物流和仓储费回调
+ */
+export const PAY_WAREHOUSE_TO_STORE_AMOUNT_CALLBACK = BASEURL  + "v2/order.home/payWarehouseToStoreAmountCallback";
+/**
+ *  转单车
+ */
+export const CHANGE_CAR_SINGLE_FINANCE = BASEURL  + "v2/order.home/changeCarSingleFinance";
+/**
+ *  申请提车函
+ */
+export const APPLY_GET_CAR_LETTER = BASEURL  + "v2/order.home/applyGetCarLetter";
