@@ -310,7 +310,7 @@ export default class DepartCar extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: FontAndColor.all_background,
+        backgroundColor: FontAndColor.COLORA3,
         flex: 1,
     },
     content_base_text_wrap: {

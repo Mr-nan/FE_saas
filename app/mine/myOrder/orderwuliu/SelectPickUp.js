@@ -203,12 +203,12 @@ export default class SelectPickUp extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: FontAndColor.all_background,
+        backgroundColor: FontAndColor.COLORA3,
         flex: 1,
     },
     content_title_wrap: {
         height: Pixel.getPixel(51),
-        backgroundColor: FontAndColor.all_background,
+        backgroundColor: FontAndColor.COLORA3,
     },
     content_title_text_wrap: {
         height: Pixel.getPixel(45),

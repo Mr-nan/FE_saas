@@ -1542,3 +1542,8 @@ export const SAVEINVOICE = BASEURL  + "v2/order.invoice/add";
  *   车是否在店审核
  **/
 export const is_Car_Store_Check = BASEURL  + "v2/order.invoice/add";
+/**
+ *   获取仓库所在地址
+ **/
+export const GETWAREHOUSEINFO = BASEURL  + "v2/order.home/getWarehouseInfo";
+
