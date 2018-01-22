@@ -1558,3 +1558,11 @@ export const PAY_STORE_AMOUNT_CALLBACK = BASEURL  + "v2/order.home/payStoreAmoun
  *  支付库到店的物流和仓储费回调
  */
 export const PAY_WAREHOUSE_TO_STORE_AMOUNT_CALLBACK = BASEURL  + "v2/order.home/payWarehouseToStoreAmountCallback";
+/**
+ *  转单车
+ */
+export const CHANGE_CAR_SINGLE_FINANCE = BASEURL  + "v2/order.home/changeCarSingleFinance";
+/**
+ *  申请提车函
+ */
+export const APPLY_GET_CAR_LETTER = BASEURL  + "v2/order.home/applyGetCarLetter";

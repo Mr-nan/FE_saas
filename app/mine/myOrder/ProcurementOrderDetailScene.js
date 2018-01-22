@@ -589,6 +589,84 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     };
 
     /**
+     *   转单车
+     **/
+    changeCarSingle = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.CHANGE_CAR_SINGLE_FINANCE;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.toNextPage({
+                            name: 'AddressManage',
+                            component: AddressManage,
+                            params: {
+
+                            }
+                        });
+                    } else {
+                        this.props.showModal(false);
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('恢复订单失败');
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showModal(false);
+                this.props.showToast('转单车申请失败');
+            }
+        });
+    };
+
+    /**
+     *   申请提车函
+     **/
+    applyGetCarLetter = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.APPLY_GET_CAR_LETTER;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.toNextPage({
+                            name: 'FillWaybill',
+                            component: FillWaybill,
+                            params: {
+
+                            }
+                        });
+                    } else {
+                        this.props.showModal(false);
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('恢复订单失败');
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showModal(false);
+                this.props.showToast('转单车申请失败');
+            }
+        });
+    };
+
+    /**
      * from @hanmeng
      * 合同预览页加载
      **/
@@ -1052,12 +1130,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={[styles.bottomBar]}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'AddressManage',
-                                    component: AddressManage,
-                                    params: {}
-
-                                });
+                                this.changeCarSingle();
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>转单车</Text>
@@ -1065,14 +1138,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'FillWaybill',
-                                    component: FillWaybill,
-                                    params: {
-                                        toStore:true
-                                    }
-
-                                });
+                                this.applyGetCarLetter();
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请提车函</Text>
