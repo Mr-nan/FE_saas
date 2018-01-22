@@ -1520,3 +1520,15 @@ export const WAYBILL_DETAIL = BASEURL  + "v2/order.logistics/detail";
  *  支付尾款跳转
  */
 export const PAY_BALANCE = BASEURL  + "v2/order.pay/balance";
+/**
+ *  微服务获取区县
+ */
+export const REGION_COUNTY = BASEURL  + "v2/api.region/county";
+/**
+ *  微服务获取区县
+ */
+export const REGION_CITY = BASEURL  + "v2/api.region/city";
+/**
+ *  微服务获取区县
+ */
+export const REGION_PROVINCE = BASEURL  + "v2/api.region/province";

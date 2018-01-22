@@ -166,9 +166,9 @@ export default class AddressManageEditScene extends BaseComponent {
 
     checkAreaClick = (cityRegion)=>{
         this.item.province = cityRegion.provice_name;
-        this.item.province_code = cityRegion.provice_id;
+        this.item.province_code = cityRegion.provice_code;
         this.item.city = cityRegion.city_name;
-        this.item.city_code = cityRegion.city_id;
+        this.item.city_code = cityRegion.city_code;
         this.item.district = cityRegion.district_name;
         this.item.district_code = cityRegion.district_code;
         this.aRegion.setNativeProps({
