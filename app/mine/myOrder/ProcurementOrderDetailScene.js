@@ -176,7 +176,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '9', '6', '11'];
+                this.mList = ['0', '1', '3', '4', '9', '6'];
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.contactData = {
                         layoutTitle: '付全款',
@@ -202,8 +202,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                // TODO 判断是否是物流单
-                this.mList = ['0', '1', '2', '3', '4', '9', '6'];
+                // 物流单
+                if (this.existTransOrder(this.ordersTrans) &&
+                    this.transStateMapping(this.ordersTrans).state >= 2) {
+                    this.mList = ['0', '1', '2', '3', '4', '9', '6'];
+                } else {
+                    this.mList = ['0', '1', '2', '3', '4', '6'];
+                }
+
                 this.contactData = {
                     layoutTitle: '全款已付清',
                     layoutContent: '确认验收车辆后卖家可提款，手续齐全。',
@@ -223,11 +229,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 4: // 已完成
+                // TODO 提车人判断
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                // TODO 判断是否是物流单
-                this.mList = ['0', '1', '3', '4', '9', '6'];
+                // 物流单
+                if (this.existTransOrder(this.ordersTrans) &&
+                    this.transStateMapping(this.ordersTrans).state >= 2) {
+                    this.mList = ['0', '1', '3', '4', '9', '6'];
+                } else {
+                    this.mList = ['0', '1', '3', '4', '6'];
+                }
                 this.contactData = {
                     layoutTitle: '已完成',
                     layoutContent: '恭喜您交易已完成',
@@ -247,10 +259,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 5: // 订单融资处理中
+                // TODO 提车人判断
                 this.mList = [];
                 if (this.orderDetail.status === 16) {
                     this.contactData = {};
-                    this.mList = ['1', '3', '7'];
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state >= 2) {
+                        this.mList = ['1', '3', '7'];
+                    } else {
+                        this.mList = ['1', '3', '7', '9'];
+                    }
                     this.contactData = {
                         layoutTitle: '订单融资处理中',
                         layoutContent: '恭喜您首付已经支付成功，预计10分钟内生成合同，之后请您签署',
@@ -259,7 +277,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (this.orderDetail.status === 17 || this.orderDetail.status === 19 || this.orderDetail.status === 20 || this.orderDetail.status === 21 || this.orderDetail.status === 22 ||
                     this.orderDetail.status === 23 || this.orderDetail.status === 24) {
                     this.contactData = {};
-                    this.mList = ['1', '3', '7'];
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state >= 2) {
+                        this.mList = ['1', '3', '7'];
+                    } else {
+                        this.mList = ['1', '3', '7', '9'];
+                    }
                     this.contactData = {
                         layoutTitle: '订单融资处理中',
                         layoutContent: '您确认车辆无误，点击“验收确认”后，24小时内即可为您结放贷款。',
@@ -294,10 +317,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 7: // 融资单确认验收车辆
+                // TODO 提车人判断
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '2', '3', '4', '7', '6'];
+                if (this.existTransOrder(this.ordersTrans) &&
+                    this.transStateMapping(this.ordersTrans).state >= 2) {
+                    this.mList = ['0', '1', '2', '3', '4', '7', '10', '6'];
+                } else {
+                    this.mList = ['0', '1', '2', '3', '4', '7', '6'];
+                }
+
                 this.contactData = {
                     layoutTitle: '确认验收车辆',
                     layoutContent: '您确认车辆无误，点击"验收确认"后，24小时内即可为您结放贷款。',
@@ -314,7 +344,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
                 }
                 break;
-            case 8: // 融资单完成交易
+            case 8: // 融资单完成交易  没有使用
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
@@ -1381,30 +1411,15 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 11:  // 订单完成 11=>'确认验收完成'
                 if (cancelStatus === 0) {
-                    if (this.existTransOrder(this.ordersTrans) &&
-                        this.transStateMapping(this.ordersTrans).state !== 4) {
-                        this.orderState = 3;
-                    } else {  // 非物流单或物流单已经交车
-                        this.orderState = 4;
-                    }
+                    this.orderState = 4;
                     this.topState = -1;
                     this.bottomState = -1;
                 } else if (cancelStatus === 1) {
-                    if (this.existTransOrder(this.ordersTrans) &&
-                        this.transStateMapping(this.ordersTrans).state !== 4) {
-                        this.orderState = 3;
-                    } else {  // 非物流单或物流单已经交车
-                        this.orderState = 4;
-                    }
+                    this.orderState = 4;
                     this.topState = -1;
                     this.bottomState = 3;
                 } else if (cancelStatus === 2) {
-                    if (this.existTransOrder(this.ordersTrans) &&
-                        this.transStateMapping(this.ordersTrans).state !== 4) {
-                        this.orderState = 3;
-                    } else {  // 非物流单或物流单已经交车
-                        this.orderState = 4;
-                    }
+                    this.orderState = 4;
                     this.topState = -1;
                     if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
@@ -1424,12 +1439,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 4;
                     }
                 } else if (cancelStatus === 3) {
-                    if (this.existTransOrder(this.ordersTrans) &&
-                        this.transStateMapping(this.ordersTrans).state !== 4) {
-                        this.orderState = 3;
-                    } else {  // 非物流单或物流单已经交车
-                        this.orderState = 4;
-                    }
+                    this.orderState = 4;
                     this.topState = -1;
                     if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
