@@ -606,10 +606,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.props.showModal(false);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.toNextPage({
-                            name: 'AddressManage',
-                            component: AddressManage,
+                            name: 'FillWaybill',
+                            component: FillWaybill,
                             params: {
-
+                                orderId: this.orderDetail.id,
+                                logisticsType: 4,
+                                vType: this.orderDetail.orders_item_data[0].car_data.v_type,
+                                callBack: this.payCallBack
                             }
                         });
                     } else {
