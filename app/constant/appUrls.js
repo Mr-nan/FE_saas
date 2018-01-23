@@ -1584,3 +1584,8 @@ export const CHANGE_CAR_SINGLE_FINANCE = BASEURL  + "v2/order.home/changeCarSing
  *  申请提车函
  */
 export const APPLY_GET_CAR_LETTER = BASEURL  + "v2/order.home/applyGetCarLetter";
+/**
+ *  获取运输类型
+ */
+export const GETTRANSTYPE = BASEURL  + "v2/order.home/getTransType";
+

@@ -33,6 +33,7 @@ const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 const white_jiantou = require('../../../../images/white_jiantou.png');
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
+import LogisticsCheckStand from "../../../finance/LogisticsCheckStand";
 
 const Pixel = new PixelUtil();
 let tagViews = [{
@@ -66,15 +67,17 @@ export default class FillWaybill extends BaseComponent {
         this.addressDatas = [];
         this.vType = this.props.vType;//1:二手车 2:新车
         this.toStore = this.props.toStore;//0到店，1到库，非融资
+        this.fromAddress=false;//来自地址管理
+        this.totalMoney=0;
         if (this.toStore == '0') {
-            this.title = '运单信息（到店）';
+            this.title = '填写运单（到店）';
             this.toStore = this.props.toStore;//运单信息到店
-            feeDatas = [{title: '物流费', value: '1000元'}, {title: '仓储费', value: '100元'}]
         } else if (this.toStore == '1') {//到库
             this.title = '填写运单（到库）';
             this.toStore = this.props.toStore;//运单信息到库
-            feeDatas = [{title: '物流费', value: '1000元'},]
-        } else {
+        } else if(this.props.fromAddress){
+            this.fromAddress=this.props.fromAddress
+        }else{
             this.title = '填写运单'
         }
         this.state = {
@@ -118,8 +121,10 @@ export default class FillWaybill extends BaseComponent {
                         this.province = end_address.province_code;
                         this.city = end_address.city_code;
                         this.country = end_address.district_code;
+                        this.transFee=parseFloat(data.trans_amount.checkCarFee).toFixed(2);
+                        this.storeFee=parseFloat(data.store_amount).toFixed(2);
                         if (this.toStore == '1') {
-                            if (this.isEmpty(data.warehouse_id)) {
+                            if (this.isEmpty(data.warehouse_id)&&this.toStore=='1') {
                                 this.collectAddress = '请选择'
                             } else {
                                 this.warehouse_id = data.warehouse_id;
@@ -128,8 +133,14 @@ export default class FillWaybill extends BaseComponent {
                         accoutInfo.push({title: '联系人', value: end_address.contact_name});
                         accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
                         accoutInfo.push({title: '收车地址', value: end_address.full_address});
-                        feeDatas.push({title: '物流费', value: data.trans_amount.freight + '元'});
-                        this.toStore !== '1' && feeDatas.push({title: '提验车费', value: data.trans_amount.checkCarFee + '元'});
+                        if(!this.isEmpty(data.trans_amount)){
+                            feeDatas.push({title: '物流费', value: data.trans_amount.freight + '元'});
+                            this.toStore !== '1' && feeDatas.push({title: '提验车费', value: data.trans_amount.checkCarFee + '元'});
+                        }
+                        this.fromAddress && feeDatas.push({title: '仓储费', value: data.store_amount + '元'});
+                        if(this.fromAddress){
+                            this.totalMoney=parseFloat(data.store_amount).toFixed(2)+parseFloat(data.trans_amount.freight).toFixed(2);
+                        }
                         if (!this.isEmpty(data.trans_type) &&data.trans_type.length > 0) {
                             data.trans_type.map((data) => {
                                 tagViews.push({
@@ -176,7 +187,11 @@ export default class FillWaybill extends BaseComponent {
                         let data = response.mjson.data;
                         feeDatas = [];
                         feeDatas.push({title: '物流费', value: data.freight + '元'});
-                        feeDatas.push({title: '提验车费', value: data.checkCarFee + '元'});
+                        if(this.fromAddress){
+                            this.storeFee=parseFloat(data.store_amount).toFixed(2);
+                            feeDatas.push({title: '仓储费', value: data.store_amount + '元'});
+                        }
+                        this.toStore !== '1' && feeDatas.push({title: '提验车费', value: data.checkCarFee + '元'});
                         this.distance = data.distance;
                         this.setState({
                             feeDatas: feeDatas,
@@ -271,6 +286,34 @@ export default class FillWaybill extends BaseComponent {
                 });
     }
 
+    //获取运输类型
+    getTransType = () => {
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.orderId,
+            end_id: this.endId,
+            logistics_type: this.props.logisticsType,//物流类型
+        };
+        request(Urls.GETTRANSTYPE, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data != null) {
+                        let data = response.mjson.data;
+                        
+
+                    }
+                    this.setState({
+                        renderPlaceholderOnly: 'success',
+                    });
+                },
+                (error) => {
+                    if (error.mjson.msg == '') {
+                        this.props.showToast('网络请求错误');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
+    }
+
     /**
      *   地址回传
      **/
@@ -282,7 +325,7 @@ export default class FillWaybill extends BaseComponent {
             collectAddress: newAddress.city + newAddress.district,
             accoutInfo: this.state.accoutInfo
         }, () => {
-            this.getTransFee();
+            this.getTransType();
         })
 
     };
@@ -292,6 +335,33 @@ export default class FillWaybill extends BaseComponent {
             renderPlaceholderOnly: 'loading',
         });
         this.getData();
+    }
+
+    confirm=(repoId,index)=>{
+        this.warehouse_id=repoId;
+        this.state.accoutInfo[2].value=this.addressDatas[index].address;
+        this.setState({
+            isShow:false,
+            collectAddress:this.addressDatas[index].city+this.addressDatas[index].country,
+            accoutInfo: this.state.accoutInfo
+        });
+    }
+    closeModal=()=>{
+        this.setState({
+            isShow:false
+        });
+    }
+
+    onTagClick = (dt, index) => {
+        //单选
+        this.state.tagViews.map((data) => {
+            data.check = false;
+        });
+        this.state.tagViews[index].check = !this.state.tagViews[index].check;
+        this.transType = this.state.tagViews[index].transportTypeCode;
+
+        this.tagRef.refreshData(this.state.tagViews);
+        this.getTransFee();
     }
 
     _renderItem = () => {
@@ -406,7 +476,7 @@ export default class FillWaybill extends BaseComponent {
 
                 </View>
 
-                {false && <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                {this.fromAddress && <TouchableOpacity activeOpacity={0.8} onPress={() => {
                     // this.toNextPage({
                     //         name: 'WaybillToStore',
                     //         component: WaybillToStore,
@@ -499,14 +569,6 @@ export default class FillWaybill extends BaseComponent {
             return;
         }
         this.submitTransFee();
-        // this.toNextPage({
-        //         name: 'CheckWaybill',
-        //         component: CheckWaybill,
-        //         params: {
-        //             isShowPay: true
-        //         }
-        //     }
-        // );
     }
 
     backPg = () => {
@@ -529,15 +591,15 @@ export default class FillWaybill extends BaseComponent {
                         this._renderItem()
                     }
                 </View>
-                {this.toStore == '0' && <View
+                {this.fromAddress && <View
                     style={styles.footerStyle}>
                     <Text
                         style={{
                             color: '#666666',
                             fontSize: 13,
                             marginHorizontal: Pixel.getPixel(10)
-                        }}>仓库费:</Text>
-                    <Text style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{50 + '元'}</Text>
+                        }}>共计:</Text>
+                    <Text style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{this.totalMoney + '元'}</Text>
                     <TouchableOpacity activeOpacity={0.8} style={{
                         width: Pixel.getPixel(80),
                         height: Pixel.getPixel(38),
@@ -547,7 +609,17 @@ export default class FillWaybill extends BaseComponent {
                         borderRadius: 4,
                         marginRight: Pixel.getPixel(10)
                     }} onPress={() => {
-                        this.confirmBt();
+                        this.toNextPage({
+                                    name: 'LogisticsCheckStand',
+                                    component: LogisticsCheckStand,
+                                    params: {
+                                        totalMoney: 100,
+                                        storeFee: 50,
+                                        transFee:50
+                                        
+                                    }
+                                }
+                            );
                     }}
                     >
                         <Text style={{color: 'white', fontSize: 18}}>支付</Text>
@@ -560,33 +632,6 @@ export default class FillWaybill extends BaseComponent {
         }
 
     }
-    confirm=(repoId,index)=>{
-        this.warehouse_id=repoId;
-        this.state.accoutInfo[2].value=this.addressDatas[index].address;
-        this.setState({
-            isShow:false,
-            collectAddress:this.addressDatas[index].city+this.addressDatas[index].country,
-            accoutInfo: this.state.accoutInfo
-        });
-    }
-    closeModal=()=>{
-        this.setState({
-            isShow:false
-        });
-    }
-
-    onTagClick = (dt, index) => {
-        //单选
-        this.state.tagViews.map((data) => {
-            data.check = false;
-        });
-        this.state.tagViews[index].check = !this.state.tagViews[index].check;
-        this.transType = this.state.tagViews[index].transportTypeCode;
-
-        this.tagRef.refreshData(this.state.tagViews);
-        this.getTransFee();
-    }
-
 
 }
 
