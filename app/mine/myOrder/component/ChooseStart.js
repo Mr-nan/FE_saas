@@ -38,7 +38,7 @@ export default class ChooseStart extends BaseComponent {
             check: true,
             id: 0
         }];
-        console.log('this.props.orderDetail.address===', this.props.orderDetail.address);
+        //console.log('this.props.orderDetail.address===', this.props.orderDetail.address);
         this.state = {
             address: this.props.orderDetail.address === null ?
                 '请选择' :

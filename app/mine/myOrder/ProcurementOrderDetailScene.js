@@ -1261,23 +1261,40 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 3: // 3=>'订金支付中'
             case 4:  // 4=>'订金支付失败'
                 if (cancelStatus === 0) {
-                    this.orderState = 1;
-                    this.topState = 0;
+                    if (this.orderDetail.set_deposit_amount == 0) {
+                        this.orderState = 2;
+                        this.topState = -1;
+                    } else {
+                        this.orderState = 1;
+                        this.topState = 0;
+                    }
                     if (status === 3) {
                         this.bottomState = 1;
                     } else {
                         this.bottomState = 1;
                     }
                 } else if (cancelStatus === 1) {
-                    this.orderState = 1;
+                    if (this.orderDetail.set_deposit_amount == 0) {
+                        this.orderState = 2;
+                    } else {
+                        this.orderState = 1;
+                    }
                     this.topState = -1;
                     this.bottomState = 3;
                 } else if (cancelStatus === 2) {
-                    this.orderState = 1;
+                    if (this.orderDetail.set_deposit_amount == 0) {
+                        this.orderState = 2;
+                    } else {
+                        this.orderState = 1;
+                    }
                     this.topState = -1;
                     this.bottomState = 4;
                 } else if (cancelStatus === 3) {
-                    this.orderState = 1;
+                    if (this.orderDetail.set_deposit_amount == 0) {
+                        this.orderState = 2;
+                    } else {
+                        this.orderState = 1;
+                    }
                     this.topState = -1;
                     this.bottomState = 4;
                 }
