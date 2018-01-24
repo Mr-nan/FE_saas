@@ -31,17 +31,22 @@ export default class ChooseStart extends BaseComponent {
         super(props);
         this.tagSelect = [{
             name: '是',
-            check: true,
+            check: false,
             id: 1
         }, {
             name: '否',
-            check: false,
+            check: true,
             id: 0
         }];
+        console.log('this.props.orderDetail.address===', this.props.orderDetail.address);
         this.state = {
-            address: this.props.orderDetail.address.province + this.props.orderDetail.address.city + this.props.orderDetail.address.district,
-            addressId: this.props.orderDetail.address.id,
-            isPort: this.props.orderDetail.address.is_port
+            address: this.props.orderDetail.address === null ?
+                '请选择' :
+                this.props.orderDetail.address.province +
+                this.props.orderDetail.address.city +
+                this.props.orderDetail.address.district,
+            addressId: this.props.orderDetail.address === null ? -1 : this.props.orderDetail.address.id,
+            isPort: this.props.orderDetail.address === null ? 0 : this.props.orderDetail.address.is_port
         }
     }
 
