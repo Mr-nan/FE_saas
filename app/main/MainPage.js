@@ -86,8 +86,8 @@ export default class MainPage extends BaseComponent {
             // selectedTab: tabArray[0].ref,
             renderPlaceholderOnly: 'blank',
             openSelectBranch: false,
-            mb_one: true,
-            mb_tow: false,
+            mb_one: false,
+            mb_tow: true,
             mb_three: false,
             mbShow: false,
 
