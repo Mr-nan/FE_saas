@@ -65,11 +65,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.closeOrder = 0;
         this.financeInfo = {};
         this.isPort = 1;
+        this.addressId = -1;
         this.modelData = [];
         this.modelInfo = {};
+        this.isCheckPrice = -1;
         this.carData = {'v_type': 1};
 
-        this.modelData = [];
         this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}];
 
         this.state = {
@@ -211,13 +212,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
         //console.log('prepareSavePrice==inputDeposit==', inputDeposit);
         // 判断Input控件中的数额与此页面中数额比较
         // Input控件中成交价 == 此页面成交价 && Input控件中订金 == 此页面订金 直接走savePrice
-        if (inputTransaction === this.carAmount && inputDeposit === this.deposit) {
+        if (inputTransaction === this.carAmount && inputDeposit === this.deposit && this.isCheckPrice === 1) {
             if (this.localCheckPrice(this.carAmount, this.deposit, 2)) {
                 this.savePrice();
             }
         }
         // Input控件中成交价 == 此页面成交价 && Input控件中订金 != 此页面订金 只走localCheckPrice & type = 2
-        else if (inputTransaction === this.carAmount && inputDeposit !== this.deposit) {
+        else if (inputTransaction === this.carAmount && inputDeposit !== this.deposit && this.isCheckPrice === 1) {
             this.deposit = inputDeposit;
             this.localCheckPrice(this.carAmount, this.deposit, 2);
         }
@@ -249,6 +250,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.showModal(false);
+                        this.isCheckPrice = 1;
                         this.isShowFinance(response.mjson.data, true);
                     } else {
                         this.props.showToast(response.mjson.msg);
@@ -269,6 +271,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.isPort = newIsPort;
     };
 
+    updateAddressId = (newAddressId) => {
+        this.addressId = newAddressId;
+    };
+
     /**
      *  定价提交
      **/
@@ -277,7 +283,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
-                console.log('.is_port.value======',this.isPort);
+                //console.log('.is_port.value======',this.isPort);
+                //console.log('.addressId.value======',this.addressId);
                 let maps = {
                     company_id: datas.company_base_id,
                     car_id: this.orderDetail.orders_item_data[0].car_id,
@@ -287,7 +294,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     car_vin: this.orderDetail.orders_item_data[0].car_vin.length === 17 ?
                         this.orderDetail.orders_item_data[0].car_vin : this.carVin,
                     is_port: this.isPort,
-                    //strat_id: ''
+                    start_id: this.addressId
                 };
                 let url = AppUrls.ORDER_SAVE_PRICE;
                 request(url, 'post', maps).then((response) => {
@@ -379,6 +386,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.orderDetail = response.mjson.data;
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
+                        this.isPort = this.orderDetail.address.is_port;
+                        this.addressId = this.orderDetail.address.id;
                         this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.cancel_time);
                         this.closeOrder = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.pricing_time);
                         this.carAmount = 0;
@@ -1589,7 +1598,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '8') {
             return (
-                <ChooseStart isPort={this.isPort} updateIsPort={this.updateIsPort}/>
+                <ChooseStart isPort={this.isPort}
+                             addressId={this.addressId}
+                             updateIsPort={this.updateIsPort}
+                             updateAddressId={this.updateAddressId}
+                             orderDetail={this.orderDetail}
+                             navigator={this.props.navigator}
+                             showToast={this.props.showToast}
+                             showModal={this.props.showModal}/>
             )
         } else if (rowData === '9') {
             return (

@@ -18,6 +18,13 @@ import PixelUtil from '../../../utils/PixelUtil';
 import TagSelectView from "./TagSelectView";
 import ChooseModal from "./ChooseModal";
 import BaseComponent from "../../../component/BaseComponent";
+import SelectDestination from "../orderwuliu/SelectDestination";
+import StorageUtil from "../../../utils/StorageUtil";
+import {request} from "../../../utils/RequestUtil";
+import * as StorageKeyNames from "../../../constant/storageKeyNames";
+import * as AppUrls from "../../../constant/appUrls";
+import AddressManage from "../orderwuliu/AddressManage";
+import CheckWaybill from "../orderwuliu/CheckWaybill";
 const Pixel = new PixelUtil();
 
 export default class LogisticsModeForFinancing extends BaseComponent {
@@ -28,6 +35,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.addressId = '';
         this.tagSelect = [{
             name: '使用物流',
             check: false,
@@ -38,7 +46,9 @@ export default class LogisticsModeForFinancing extends BaseComponent {
             id: 1
         }];
         this.state = {
-            useLogistics: 'al'
+            //useLogistics: 'al'
+            isStore: this.props.orderDetail.orders_item_data[0].is_store,  // 是否在店 0没有申请 1申请中 2驳回 3同意
+            ordersTrans: this.props.ordersTrans
         }
     }
 
@@ -59,11 +69,110 @@ export default class LogisticsModeForFinancing extends BaseComponent {
          this.tagRef.refreshData(this.tagSelect);*/
         if (index === 0) {
             // 使用物流  跳转到选择目的地页
+            this.toNextPage({
+                name: 'SelectDestination',
+                component: SelectDestination,
+                params: {
+                    orderId: this.props.orderDetail.id,
+                    vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
+                    callBack: this.updateOrdersTrans,
+                    maxLoanmny: this.props.financeInfo.max_loanmny  // 订单融资最大可贷额度
+                }
+
+            });
         } else {
             // 车已在店
             this.refs.chooseModal.changeShowType(true, '取消', '确定', '选择车已在店需要风控人员后台审核确认，是否继续？',
-                null);
+                () => {
+                    this.toNextPage({
+                            name: 'AddressManage',
+                            component: AddressManage,
+                            params: {
+                                callBack: this.isCarStoreCheck
+                            }
+                        }
+                    );
+                });
         }
+    };
+
+    /**
+     * 车已在店
+     **/
+    isCarStoreCheck = (callBackInfo) => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderDetail.id,
+                    address_id: callBackInfo.id
+                };
+                let url = AppUrls.IS_CAR_STORE_CHECK;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showModal(false);
+                this.props.showToast('车已在店审核发起失败');
+            }
+        });
+    };
+
+    /**
+     *    运单状态映射
+     **/
+    transStateMapping = (ordersTrans) => {
+        switch (ordersTrans.status) {
+            case 0:    // 0 是前端自己定义的状态 说明未生成运单
+                return {'state': 0, 'waybillState': ''};
+            case 1: //1 =>'填写完',
+            case 100: // 100 =>'支付运单中',
+            case 101: // 101 =>'支付运单失败',
+            case 200: // 200 =>'支付运单成功生成运单失败',
+                return {'state': 1, 'waybillState': '运费' + ordersTrans.total_amount + '元'};
+            case 2:   // 2 =>'支付运单成功生成运单',
+                return {'state': 2, 'waybillState': '已支付'};
+            case 3:  //  3 =>'发运',
+                return {'state': 3, 'waybillState': '已支付'};
+            case 4:  // 4 =>'到店',
+                return {'state': 4, 'waybillState': '已到店'};
+            case 5:  // 5 =>'到库',
+                return {'state': 5, 'waybillState': '已到库'};
+            case 6:  // 6 =>'申请提车函',
+            case 7: // 7 =>'申请提车函支付中',
+            case 8: // 8 =>'申请提车函支付失败',
+                return {'state': 5, 'waybillState': '已到库'};
+            case 9:    // 9 =>'申请提车函支付完成',
+                return {'state': 6, 'waybillState': '仓储费已支付'};
+            case 10:  // 10 =>'申请转单车',
+            case 12:  // 12 =>'申请转单车支付中',
+            case 13:  // 13 =>'申请转单车支付失败',
+            case 14:  // 14 =>'申请转单车支付成功生成运单',
+            case 15: //  15 =>'申请转单车支付成功生成运单失败',
+                return {'state': 7, 'waybillState': '已到库'};
+            case 11: // 11 =>'终结',
+                return {'state': 8, 'waybillState': '已交车'};
+        }
+    };
+
+    /**
+     *
+     **/
+    updateOrdersTrans = (newOrdersTrans) => {
+        newOrdersTrans.status = newOrdersTrans.trans_status;
+        this.props.updateOrdersTrans(newOrdersTrans);
+        //this.ordersTrans = newOrdersTrans;
+        this.setState({
+            ordersTrans: newOrdersTrans
+        });
     };
 
     /**
@@ -71,7 +180,8 @@ export default class LogisticsModeForFinancing extends BaseComponent {
      **/
     render() {
         let views = '';
-        if (this.state.useLogistics === 'unknown') {  // 未选择
+        let alreadyChoose = this.transStateMapping(this.state.ordersTrans);  // 是否已经生成运单并支付完成
+        if (alreadyChoose.state < 1 && (this.state.isStore === 0 || this.state.isStore === 2)) {  // 未选择
             views =
                 <View style={{
                     height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
@@ -87,11 +197,21 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                             this.tagRef = ref;
                         }} onTagClick={this.onTagClick} cellData={this.tagSelect}/>
                 </View>
-        } else if (this.state.useLogistics === 'logistics') {  // 选择物流
+        } else if (alreadyChoose.state > 0 && (this.state.isStore === 0 || this.state.isStore === 2)) {  // 选择物流
             views =
                 <TouchableOpacity
                     onPress={() => {
-                        // TODO 跳转到填写运单
+                        // TODO 跳转到运单信息
+                        this.toNextPage({
+                            name: 'CheckWaybill',
+                            component: CheckWaybill,
+                            params: {
+                                orderId: this.props.orderDetail.id,
+                                transId: this.state.ordersTrans.id,
+                                waybillState: alreadyChoose.waybillState
+                            }
+
+                        });
                     }}>
                     <View style={{
                         height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
@@ -103,7 +223,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                         <Image source={require('../../../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </TouchableOpacity>
-        } else {  // 选择 车已在店
+        } else if (this.state.isStore === 1) {  // 选择 车已在店
             views =
                 <View>
                     <View style={{
@@ -124,10 +244,26 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                             <View style={{flex: 1}}/>
                             <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                 textAlign: 'right', width: Pixel.getPixel(250)}}>
-                                审核中审核中审核中审核中审核中审核中审核中审核中审核中审核中审核中
+                                {this.props.orderDetail.orders_item_data[0].store_address}
                             </Text>
                         </View>
                     </View>
+                </View>
+        } else if (this.state.isStore === 3) {  // 选择 车已在店
+            views =
+                <View>
+                    <View style={{
+                        height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
+                        paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
+                    }}>
+                        <Text >车已在店</Text>
+                        <View style={{flex: 1}}/>
+                        <Text style={{color: fontAndColor.COLORB2}}>已同意</Text>
+                    </View>
+                </View>
+        } else {
+            views =
+                <View>
                 </View>
         }
         return (

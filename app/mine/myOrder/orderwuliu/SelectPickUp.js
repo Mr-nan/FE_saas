@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, Image,
+    View, TouchableOpacity, Dimensions, Image, ListView,RefreshControl
 } from 'react-native';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
@@ -11,38 +11,109 @@ const {width} = Dimensions.get('window');
 import * as FontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import MyButton from "../../../component/MyButton";
-import AddressManage from './AddressManage';
+import GetCarerManageEditScene from '../../getCarerManage/GetCarerManageEditScene';
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
 
 const selected_icon = require('../../../../images/selected_icon.png');
 const no_select_icon = require('../../../../images/no_select_icon.png');
 const Pixel = new PixelUtil();
-let accountInfo = [{name: '张大大', tel: '13000000001', isSelect: true}, {name: '李小小', tel: '13000000001', isSelect: false}]
+let accountInfo = [{name: '张大大', tel: '13000000001', isSelect: true}, {
+    name: '李小小',
+    tel: '13000000001',
+    isSelect: false
+}]
+let allSouce=[];
 export default class SelectPickUp extends BaseComponent {
     constructor(props) {
         super(props);
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: false,
-            accountInfo:accountInfo
+            accountInfo: accountInfo,
+            dataSource: this.ds.cloneWithRows(accountInfo),
+            isRefreshing: false,
         }
     }
 
     initFinish() {
+        //allSouce=[];
+        this.getData();
+    }
+    getData = () => {
+        allSouce=[];
+        let maps = {
+            company_id:global.companyBaseID,
+        };
+        request(Urls.GET_GETER_LIST, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    if(response.mycode === 1){
+                        accountInfo = [];
+                        allSouce.push(...response.mjson.data);
+                        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        allSouce.map((data)=>{
+                            accountInfo.push({
+                                name:data.name,
+                                phone:data.phone,
+                                isSelect:false
+                            });
+                        });
+                        this.setState({
+                            dataSource: ds.cloneWithRows(accountInfo),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    }else {
+                        this.setState({renderPlaceholderOnly: 'error'});
+                    }
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                });
+    };
+
+    refreshingData = () => {
+        allSouce = [];
+        this.setState({isRefreshing: true});
+        this.getData();
+    };
+
+    allRefresh = () => {
         this.setState({
-            renderPlaceholderOnly: 'success'
+            renderPlaceholderOnly: 'loading',
         });
+        this.getData();
     }
 
-    itemClick=(index)=>{
-        accountInfo.map((data)=>{
-            data.isSelect=false;
+    itemClick = (index) => {
+        accountInfo.map((data) => {
+            data.isSelect = false;
         })
-        accountInfo[index].isSelect=true;
+/*        accountInfo.push({
+            name:accountInfo[index].name,
+            phone:accountInfo[index].phone
+        });*/
+        accountInfo[index].isSelect = true;
         this.setState({
-            accountInfo:accountInfo
+            dataSource: this.ds.cloneWithRows(accountInfo),
         });
 
+    }
+    _renderRow = (data, s,index) => {
+        return (
+            <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
+                this.itemClick(index);
+            }}>
+                <View style={styles.content_title_text_wrap}>
+                    <Image source={data.isSelect ? selected_icon : no_select_icon}
+                           style={{marginRight: Pixel.getPixel(15)}}/>
+                    <Text style={styles.content_title_text}>{data.name}</Text>
+                    <Text style={styles.content_base_Right}>{data.phone}</Text>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
     _renderItem = () => {
@@ -53,35 +124,33 @@ export default class SelectPickUp extends BaseComponent {
                     backgroundColor: 'white',
                     paddingHorizontal: Pixel.getPixel(15)
                 }}>
-                    {
-                        this.state.accountInfo.map((data, index) => {
-                            return (
-                                <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
-                                    this.itemClick(index);
-                                }}>
-                                    <View style={styles.content_title_text_wrap}>
-                                        <Image source={data.isSelect ? selected_icon : no_select_icon} style={{marginRight:Pixel.getPixel(15)}}/>
-                                        <Text style={styles.content_title_text}>{data.name}</Text>
-                                        <Text style={styles.content_base_Right}>{data.tel}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
+                    <ListView
+                        dataSource={this.state.dataSource}
+                        removeClippedSubviews={false}
+                        renderRow={this._renderRow}
+                        enableEmptySections={true}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this.refreshingData}
+                                tintColor={[FontAndColor.COLORB0]}
+                                colors={[FontAndColor.COLORB0]}
+                            />
+                        }
+                    />
 
                 </View>
 
                 <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'确定'}
+                          content={'编辑提车人'}
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
                               this.toNextPage({
-                                      name: 'AddressManage',
-                                      component: AddressManage,
-                                      params: {}
-                                  }
-                              );
+                                  component:GetCarerManageEditScene,
+                                  name:'GetCarerManageEditScene',
+                                  params:{item:{},refreshData:this.refreshingData}
+                              });
                           }}/>
             </View>
         );
@@ -101,9 +170,33 @@ export default class SelectPickUp extends BaseComponent {
                         this._renderItem()
                     }
                 </View>
-                <NavigatorView title='选择提车人' backIconClick={this.backPage}/>
+                <NavigatorView title='选择提车人' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
             </View>)
         }
+
+    }
+
+    renderRightView = () => {
+        return (
+            <TouchableOpacity onPress={
+                () => {
+                    this.backPage();
+                    this.props.callBack(callBackInfo);
+                }
+            }>
+                <View style={{
+                    marginLeft: Pixel.getPixel(20),
+                    width: Pixel.getPixel(80),
+                    height: Pixel.getPixel(40),
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Text allowFontScaling={false}
+                          style={{color: 'white', fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30)}}>完成</Text>
+                </View>
+            </TouchableOpacity>
+        )
+
 
     }
 
@@ -111,12 +204,12 @@ export default class SelectPickUp extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: FontAndColor.all_background,
+        backgroundColor: FontAndColor.COLORA3,
         flex: 1,
     },
     content_title_wrap: {
         height: Pixel.getPixel(51),
-        backgroundColor: FontAndColor.all_background,
+        backgroundColor: FontAndColor.COLORA3,
     },
     content_title_text_wrap: {
         height: Pixel.getPixel(45),
@@ -156,8 +249,9 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         width: width - Pixel.getPixel(30),
         backgroundColor: FontAndColor.COLORB0,
-        marginTop: Pixel.getPixel(30),
-        marginBottom: Pixel.getPixel(30),
+        marginTop: Pixel.getPixel(10),
+        position:'absolute',
+        bottom:Pixel.getPixel(10),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),

@@ -18,60 +18,95 @@ import WaybillToStore from './WaybillToStore';
 import SelectPickUp from './SelectPickUp';
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
+import StorageCheckStand from "../../../finance/StorageCheckStand";
 
 const Pixel = new PixelUtil();
-let feeDatas = [{title: '发车地', value: '湖北省武汉市武昌区'}, {title: '收车地', value: '湖北省武汉市武昌区街坊邻居阿拉丁就附近阿斯蒂芬逻辑'}, {
+let feeDatas = [{title: '发车地', value: ''}, {title: '收车地', value: ''}, {
     title: '下单时间',
-    value: '2017-12-12 18：00'
-}, {title: '物流费', value: '1000元'}, {title: '运输类型', value: '大板'}]
-let accoutInfo = [{title: '联系人', value: '刘威'}, {title: '联系方式', value: '13000000001'}, {
+    value: ''
+}, {title: '物流费', value: ''}, {title: '运输类型', value: ''}]
+let accoutInfo = [{title: '联系人', value: ''}, {title: '联系方式', value: ''}, {
     title: '收车地址',
-    value: '湖北省武汉市武昌区'
+    value: ''
 }]
 let carInfo = [{title: '2013款奔驰宝马', value: '配送中'}, {title: '2013款奔驰宝马', value: '已签收'}, {
     title: '2013款奔驰宝马',
     value: '已签收'
 }, {title: '2013款奔驰宝马', value: '已签收'}, {title: '2013款奔驰宝马', value: '已签收'}, {title: '2013款奔驰宝马', value: '已签收'}]
+
 export default class CheckWaybill extends BaseComponent {
     constructor(props) {
         super(props);
-        this.number='10086'
+        this.number='400888888';
         this.isShowPay=false;
-        this.isShowToStore=false;
+        this.trans_code='';
         this.title='查看运单';
         if(this.props.isShowPay){//运单信息
             this.isShowPay=true
-            accoutInfo = [{title: '仓库名称', value: '刘威'}, {title: '仓库地址', value: '湖北省武汉市武昌区街坊邻居阿拉丁就附近阿斯蒂芬逻辑'}]
+            accoutInfo = [{title: '仓库名称', value: '刘威'}, {title: '仓库地址', value: ''}]
             this.title='运单信息';
         }
-        if(this.props.isShowToStore){//运单信息(到店)
-            this.isShowToStore=true
-            this.title='运单信息(到店)';
+        if(this.props.fromDetail){
+            this.title='运单信息（到店）';
         }
         this.state = {
             renderPlaceholderOnly: false,
             payStatus: true,
+            feeDatas:feeDatas,
+            accoutInfo:accoutInfo
 
         }
     }
 
     initFinish() {
-        this.setState({
-            renderPlaceholderOnly: 'success'
-        });
+        this.getData();
     }
 
     getData = () => {
         let maps = {
-            company_id: '111',
-            order_id:'111',
-            trans_id:'111'
+            company_id: global.companyBaseID,
+            trans_id: this.props.transId,//物流类型
+            order_id: this.props.orderId
         };
         request(Urls.WAYBILL_DETAIL, 'Post', maps)
             .then((response) => {
                     if (response.mjson.data != null) {
+                        let data=response.mjson.data;
+                        feeDatas=[];
+                        accoutInfo=[];
+                        let trans_type='大板';
+                        if(data.trans_type==1){
+                            trans_type='大板';
+                        }else if(data.trans_type=='2'){
+                            trans_type='救援'
+                        }else if(data.trans_type=='3'){
+                            trans_type='代驾'
+                        }
+                        let end_address=data.end_address_data;
+                        if(end_address!==null){
+                            this.trans_code=data.trans_code;
+                            feeDatas.push({title: '发车地', value: data.start_address_data.address});
+                            feeDatas.push({title: '收车地', value: end_address.address});
+                            feeDatas.push({title: '下单时间', value: data.created_time});
+                            feeDatas.push({title: '物流费', value: data.trans_amount+'元'});
+                            feeDatas.push({title: '运输类型', value: trans_type});
+
+                            if(this.isShowPay){
+                                accoutInfo.push({title: '仓库名称', value:end_address.contact_name });
+                                accoutInfo.push({title: '仓库地址', value:end_address.contact_phone });
+                            }else{
+                                accoutInfo.push({title: '联系人', value:end_address.contact_name });
+                                accoutInfo.push({title: '联系方式', value:end_address.contact_phone });
+                            }
+                            accoutInfo.push({title: '收车地址', value:end_address.full_address });
+
+                        }
+
                     }
-                    this.setState({renderPlaceholderOnly: 'success'});
+                    this.setState({
+                        renderPlaceholderOnly: 'success',
+                        feeDatas:feeDatas,
+                        accoutInfo:accoutInfo});
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error',});
@@ -100,9 +135,9 @@ export default class CheckWaybill extends BaseComponent {
                         borderBottomWidth: 1, borderColor: FontAndColor.COLORA4,
                         height: Pixel.getPixel(40)
                     }]}>
-                        <Text style={[styles.content_title_text, {color: 'black'}]}>{'运单编号' + 20171212100}</Text>
+                        <Text style={[styles.content_title_text, {color: 'black'}]}>{'运单编号' + this.trans_code}</Text>
                         <Text
-                            style={[styles.content_base_Right, this.state.payStatus ? {color: FontAndColor.COLORB2} : {}]}>{'已支付'}</Text>
+                            style={[styles.content_base_Right, this.state.payStatus ? {color: FontAndColor.COLORB2} : {}]}>{this.props.waybillState}</Text>
                     </View>
                     {
                         feeDatas.map((data, index) => {
@@ -155,25 +190,26 @@ export default class CheckWaybill extends BaseComponent {
                     </View>
                 </TouchableOpacity>
 
-                {this.isShowToStore ? <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                    this.toNextPage({
-                            name: 'WaybillToStore',
-                            component: WaybillToStore,
-                            params: {}
-                        }
-                    );
+                {this.props.fromDetail && <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                    // this.toNextPage({
+                    //         name: 'WaybillToStore',
+                    //         component: WaybillToStore,
+                    //         params: {}
+                    //     }
+                    // );
                 }}>
-                    <View style={[styles.content_base_wrap,{marginVertical:Pixel.getPixel(10)}]}>
+                    <View style={[styles.content_base_wrap, {marginBottom: Pixel.getPixel(10)}]}>
                         <View style={styles.content_base_text_wrap}>
-                            <Text style={[styles.content_base_left,{color:'black'}]}>运单信息（到库）</Text>
-                            <View style={{flexDirection: 'row',alignItems:'center'}}>
-                                <Text style={[styles.content_base_Right,{color:FontAndColor.COLORA1}]}>{'查看'}</Text>
+                            <Text style={[styles.content_base_left, {color: 'black'}]}>运单信息（到库）</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{'查看'}</Text>
                                 <Image source={cellJianTou} style={styles.image}></Image>
                             </View>
 
                         </View>
                     </View>
-                </TouchableOpacity>:null}
+                </TouchableOpacity>}
+
 
                 <View style={{
                     backgroundColor: 'white',
@@ -261,9 +297,11 @@ export default class CheckWaybill extends BaseComponent {
                         marginRight: Pixel.getPixel(10)
                     }} onPress={()=>{
                         this.toNextPage({
-                                name: 'SelectPickUp',
-                                component: SelectPickUp,
-                                params: {}
+                                name: 'StorageCheckStand',
+                                component: StorageCheckStand,
+                                params: {
+                                    storeFee: 50,
+                                }
                             }
                         );
                     }}
@@ -282,7 +320,7 @@ export default class CheckWaybill extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: FontAndColor.all_background,
+        backgroundColor: FontAndColor.COLORA3,
         flex: 1,
     },
     content_tag_wrap: {
@@ -296,7 +334,7 @@ const styles = StyleSheet.create({
     },
     content_title_wrap: {
         height: Pixel.getPixel(51),
-        backgroundColor: FontAndColor.all_background,
+        backgroundColor: FontAndColor.COLORA3,
     },
     content_title_text_wrap: {
         height: Pixel.getPixel(35),

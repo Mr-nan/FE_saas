@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     },
     itemType5: {
         backgroundColor: '#ffffff',
-        height: Pixel.getPixel(255)
+        height: Pixel.getPixel(230)
     },
     backIcon: {
         marginRight: Pixel.getPixel(15),

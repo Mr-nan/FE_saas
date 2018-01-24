@@ -27,7 +27,9 @@ export default class ExtractCarPeople extends BaseComponent {
      **/
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+
+        }
     }
 
     /**
@@ -48,7 +50,9 @@ export default class ExtractCarPeople extends BaseComponent {
                                   this.toNextPage({
                                       name: 'SelectPickUp',
                                       component: SelectPickUp,
-                                      params: {}
+                                      params: {
+                                          orderId: this.props.orderDetail.id
+                                      }
 
                                   });
                               }}>

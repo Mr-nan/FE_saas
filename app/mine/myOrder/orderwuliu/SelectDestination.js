@@ -16,10 +16,16 @@ const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 const to_factory_icon = require('../../../../images/to_factory_icon.png');
 const to_store_icon = require('../../../../images/to_store_icon.png');
 const destination_bg = require('../../../../images/destination_bg.png');
+import FillWaybill from "./FillWaybill";
+
 let destinationInfo = [{name: '到库', image: to_factory_icon}, {name: '到店', image: to_store_icon}];
 export default class SelectDestination extends BaseComponent {
     constructor(props) {
         super(props);
+        this.orderId = this.props.orderId,
+            this.vType = this.props.vType,
+            this.callBack = this.props.callBack,
+            this.maxLoanmny = this.props.maxLoanmny
         this.state = {
             renderPlaceholderOnly: false,
         }
@@ -31,24 +37,52 @@ export default class SelectDestination extends BaseComponent {
         });
     }
 
+    toPage = (index) => {
+        if (index == 0) {//到库
+            this.logisticsType='3';
+            this.toStore='1'
+        }else {//到店
+            this.logisticsType='2';
+            this.toStore='0';
+        }
+        this.toNextPage({
+            name: 'FillWaybill',
+            component: FillWaybill,
+            params: {
+                toStore: this.toStore,
+                orderId: this.orderId,
+                vType: this.vType,
+                callBack: this.callBack,
+                maxLoanmny: this.maxLoanmny,
+                logisticsType:this.logisticsType
+            }
+
+        });
+
+    }
+
     _renderItem = () => {
         return (
             <View style={{flex: 1}}>
 
                 <View style={{
-                    marginTop:Pixel.getPixel(20),
-                    marginHorizontal:Pixel.getPixel(20)
+                    marginTop: Pixel.getPixel(20),
+                    marginHorizontal: Pixel.getPixel(20)
                 }}>
                     {
                         destinationInfo.map((data, index) => {
                             return (
                                 <TouchableOpacity key={index + 'destinationInfo'} activeOpacity={0.8} onPress={() => {
+                                    this.toPage(index);
                                 }}>
                                     <View style={styles.content_title_text_wrap}>
-                                        <Image source={data.image} style={{marginLeft:Pixel.getPixel(20)}}/>
+                                        <Image source={data.image} style={{marginLeft: Pixel.getPixel(20)}}/>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                             <Text style={[styles.content_base_Right]}>{data.name}</Text>
-                                            <Image source={cellJianTou} style={{marginRight:Pixel.getPixel(30),marginLeft:Pixel.getPixel(15)}}></Image>
+                                            <Image source={cellJianTou} style={{
+                                                marginRight: Pixel.getPixel(30),
+                                                marginLeft: Pixel.getPixel(15)
+                                            }}></Image>
                                         </View>
                                     </View>
                                 </TouchableOpacity>
@@ -75,7 +109,7 @@ export default class SelectDestination extends BaseComponent {
                         this._renderItem()
                     }
                 </View>
-                <Image source={destination_bg} style={{width:width, position:'absolute',bottom:0}}/>
+                <Image source={destination_bg} style={{width: width, position: 'absolute', bottom: 0}}/>
                 <NavigatorView title='选择目的地' backIconClick={this.backPage}/>
             </View>)
         }
@@ -91,13 +125,13 @@ const styles = StyleSheet.create({
     },
     content_title_text_wrap: {
         height: Pixel.getPixel(160),
-        backgroundColor:'white',
+        backgroundColor: 'white',
         alignItems: 'center',
         flexDirection: 'row',
-        borderRadius:3,
-        borderColor:'white',
-        justifyContent:'space-between',
-        marginTop:Pixel.getPixel(20),
+        borderRadius: 3,
+        borderColor: 'white',
+        justifyContent: 'space-between',
+        marginTop: Pixel.getPixel(20),
     },
     content_base_Right: {
         fontSize: Pixel.getFontPixel(20),

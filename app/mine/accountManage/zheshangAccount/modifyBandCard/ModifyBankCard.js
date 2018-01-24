@@ -107,7 +107,7 @@ export default class ModifyBankCard extends ZSBaseComponent {
 
                                 <TextInputItem
                                     title={'资金账号'}
-                                    value={this.props.account.bank_card_no}
+                                    value={(this.props.account.bind_bank_card_type === 1&&this.props.account.account_open_type ===1)?this.props.account.bank_card_no:this.props.account.cz_elec_account}
                                     keyboardType={'numeric'}
                                     editable={false}
                                 />

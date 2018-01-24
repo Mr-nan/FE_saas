@@ -173,9 +173,12 @@ export default class CheckStand extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 let maps = {
                     company_id: datas.company_base_id,
-                    order_id: this.props.orderId
+                    order_id: this.props.orderId,
+                    logistics_type: this.props.logisticsType,
+                    reback_url: webBackUrl.PAY,
+                    pay_type: 1
                 };
-                let url = AppUrls.DING_CHENG;
+                let url = AppUrls.PAY_BALANCE;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.callBack();
@@ -202,9 +205,12 @@ export default class CheckStand extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 let maps = {
                     company_id: datas.company_base_id,
-                    order_id: this.props.orderId
+                    order_id: this.props.orderId,
+                    logistics_type: this.props.logisticsType,
+                    reback_url: webBackUrl.PAY,
+                    pay_type: 2
                 };
-                let url = AppUrls.OFFLINE_PAY;
+                let url = AppUrls.PAY_BALANCE;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.callBack();
@@ -290,18 +296,18 @@ export default class CheckStand extends BaseComponent {
                         marginTop: Pixel.getPixel(6),
                         //fontWeight: 'bold',
                         fontSize: Pixel.getFontPixel(38)
-                    }}>{parseFloat(this.props.payAmount).toFixed(2)}元</Text>
+                    }}>{(parseFloat(this.props.payAmount) + parseFloat(this.props.transAmount)).toFixed(2)}元</Text>
                 </View>
                 <View style={styles.separatedLine}/>
                 <View style={styles.accountBar}>
                     <Text allowFontScaling={false} style={styles.title}>尾款金额：</Text>
                     <Text allowFontScaling={false}
-                          style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
+                          style={styles.content}>{parseFloat(this.props.payAmount)}元</Text>
                 </View>
                 <View style={styles.separatedLine}/>
                 <View style={styles.accountBar}>
                     <Text allowFontScaling={false} style={styles.title}>运单费用：</Text>
-                    <Text allowFontScaling={false} style={styles.content}>{this.accountInfo.balance}元</Text>
+                    <Text allowFontScaling={false} style={styles.content}>{this.props.transAmount}元</Text>
                 </View>
                 <View style={{height: Pixel.getPixel(10),
                     backgroundColor: fontAndColor.COLORA3}}/>
@@ -401,6 +407,19 @@ export default class CheckStand extends BaseComponent {
         )
     };
 
+    /**
+     *
+     * */
+    pageRouting = (logisticsType) => {
+        //console.log('this.props.payType====', this.props.payType);
+        if (logisticsType && (this.props.payType == 2 || this.props.payType == 6)) {
+            return this.logisticsPay();
+        } else {
+            return this.normalPay();
+        }
+        //return this.normalPay();
+    };
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -413,13 +432,13 @@ export default class CheckStand extends BaseComponent {
                 <View style={styles.container}>
                     <NavigatorView title='收银台' backIconClick={this.backPage}/>
                     <ScrollView style={{marginTop: Pixel.getTitlePixel(65)}}>
-                        {this.logisticsPay()}
+                        {this.pageRouting(this.props.logisticsType)}
                         <MyButton buttonType={MyButton.TEXTBUTTON}
                                   content={'账户支付'}
                                   parentStyle={styles.loginBtnStyle}
                                   childStyle={styles.loginButtonTextStyle}
                                   mOnPress={this.goPay}/>
-                        {this.props.isSellerFinance == 0 && this.props.payType == 2 &&
+                        {this.props.isSellerFinance == 0 && this.props.payType == 2 && !this.props.logisticsType &&
                         (<MyButton buttonType={MyButton.TEXTBUTTON}
                                    content={'鼎诚融资代付'}
                                    parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
@@ -428,7 +447,8 @@ export default class CheckStand extends BaseComponent {
                                        this.payPrompting(0)
                                    }}/>)
                         }
-                        {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payType == 2 &&
+                        {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payType == 2
+                        && !this.props.logisticsType &&
                         (<MyButton buttonType={MyButton.TEXTBUTTON}
                                    content={'线下支付'}
                                    parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
@@ -549,7 +569,7 @@ export default class CheckStand extends BaseComponent {
                 let url = AppUrls.ORDER_CHECK_PAY;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        if (response.mjson.data.pay_status == 3) {
+                        if (response.mjson.data.pay_status == 1) {
                             this.props.showToast('支付成功');
                             this.props.callBack();
                             this.backPage();
@@ -660,12 +680,19 @@ export default class CheckStand extends BaseComponent {
      *  支付分发
      */
     goPay = () => {
-        if (this.props.payType == 1 || this.props.payType == 2) {
+/*        if (this.props.payType == 1 || this.props.payType == 2) {
             if (this.props.payFull) {
                 this.goFullPay();
             } else {
                 this.goDepositPay();
             }
+        } else {
+            this.goInitialPay();
+        }*/
+        if (this.props.payType == 1) {
+            this.goDepositPay();
+        } else if (this.props.payType == 2) {
+            this.goBalancePay();
         } else {
             this.goInitialPay();
         }
@@ -775,6 +802,53 @@ export default class CheckStand extends BaseComponent {
                     reback_url: webBackUrl.PAY
                 };
                 let url = AppUrls.ORDER_PAY;
+                request(url, 'post', maps).then((response) => {
+                    //this.loadData();
+                    //this.props.showToast('支付成功');
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
+                        this.transSerialNo = response.mjson.data.trans_serial_no;
+                        this.toNextPage({
+                            name: 'AccountWebScene',
+                            component: AccountWebScene,
+                            params: {
+                                title: '支付',
+                                webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
+                                callBack: () => {
+                                    this.checkPay()
+                                },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                                backUrl: webBackUrl.PAY
+                            }
+                        });
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('账户支付失败');
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('账户支付失败');
+            }
+        });
+    }
+
+    /**
+     *  尾款、全款支付
+     */
+    goBalancePay = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                    logistics_type: this.props.logisticsType ? 1 : 0,
+                    reback_url: webBackUrl.PAY,
+                    pay_type: 0
+                };
+                let url = AppUrls.PAY_BALANCE;
                 request(url, 'post', maps).then((response) => {
                     //this.loadData();
                     //this.props.showToast('支付成功');

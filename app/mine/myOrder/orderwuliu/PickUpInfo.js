@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, Image,
+    View, TouchableOpacity, Dimensions, Image,ListView
 } from 'react-native';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
@@ -18,9 +18,12 @@ let accountInfo = [{name: '张大大', tel: '13000000001'}, {name: '李小小', 
 export default class PickUpInfo extends BaseComponent {
     constructor(props) {
         super(props);
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: false,
-            accountInfo: accountInfo
+            accountInfo: accountInfo,
+            dataSource: this.ds.cloneWithRows(accountInfo),
+            isRefreshing: false,
         }
     }
 
@@ -28,6 +31,17 @@ export default class PickUpInfo extends BaseComponent {
         this.setState({
             renderPlaceholderOnly: 'success'
         });
+    }
+    _renderRow=(data,s,index)=>{
+        return (
+            <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
+            }}>
+                <View style={styles.content_title_text_wrap}>
+                    <Text style={styles.content_title_text}>{data.name}</Text>
+                    <Text style={styles.content_base_Right}>{data.tel}</Text>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
     _renderItem = () => {
@@ -50,19 +64,13 @@ export default class PickUpInfo extends BaseComponent {
                             borderColor: FontAndColor.COLORA4,
                         }}>{'提车人'}</Text>
                     </View>
-                    {
-                        this.state.accountInfo.map((data, index) => {
-                            return (
-                                <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
-                                }}>
-                                    <View style={styles.content_title_text_wrap}>
-                                        <Text style={styles.content_title_text}>{data.name}</Text>
-                                        <Text style={styles.content_base_Right}>{data.tel}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
+
+                    <ListView
+                        dataSource={this.state.dataSource}
+                        removeClippedSubviews={false}
+                        renderRow={this._renderRow}
+                        enableEmptySections={true}
+                    />
 
                 </View>
             </View>
