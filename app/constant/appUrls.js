@@ -1551,14 +1551,12 @@ export const SUBMITTRANFERINFO = BASEURL  + "v2/order.logistics/submit";
  */
 export const SAVEINVOICE = BASEURL  + "v2/order.invoice/add";
 /**
- *   车是否在店审核
- **/
-export const is_Car_Store_Check = BASEURL  + "v2/order.invoice/add";
-/**
  *   获取仓库所在地址
  **/
 export const GETWAREHOUSEINFO = BASEURL  + "v2/order.home/getWarehouseInfo";
-
+/**
+ *   车是否在店审核
+ **/
 export const IS_CAR_STORE_CHECK = BASEURL  + "v2/order.home/isCarStoreCheck";
 /**
  *  支付库到店的物流和仓储费
@@ -1588,4 +1586,7 @@ export const APPLY_GET_CAR_LETTER = BASEURL  + "v2/order.home/applyGetCarLetter"
  *  获取运输类型
  */
 export const GETTRANSTYPE = BASEURL  + "v2/order.home/getTransType";
-
+/**
+ *   2月8日物流项目入口开关
+ */
+export const LOGISTICS_SWITCH = BASEURL  + "v2/index/status";
