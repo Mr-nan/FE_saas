@@ -4,6 +4,7 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
+    Platform,
     Text,
     View,
     Image,
@@ -42,6 +43,7 @@ export  default class AccountScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
+        this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(10) : height;
         this.state = {
             renderPlaceholderOnly: 'blank',
             source: [],
@@ -306,12 +308,12 @@ export  default class AccountScene extends BaseComponent {
                  navigator={this.props.navigator}/>*/}
                 {
                     this.state.mbZhShow != false ?
-                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                        <View style={{position: 'absolute',flex:1}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_ZZ,'false',()=>{this.setState({mbZhShow: false,})})}}>
                                 <Image
-                                    style={{flex:1,width:width,resizeMode:'stretch',paddingBottom:0,marginBottom:0}}
-                                    source={require('../../../images/tishimengban/zhgl_zhuanzhang.png')}/>
+                                    style={{width:width,height:this.hight,resizeMode:'stretch'}}
+                                    source={Platform.OS === 'android'?require('../../../images/tishimengban/zhgl_zhuanzhang.png'):require('../../../images/tishimengban/zhgl_zhuanzhang.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }

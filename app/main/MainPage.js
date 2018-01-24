@@ -6,6 +6,7 @@ import {
     AppRegistry,
     View,
     Text,
+    Platform,
     Image,
     StyleSheet,
     Dimensions,
@@ -91,6 +92,7 @@ export default class MainPage extends BaseComponent {
             mbShow: false,
 
         }
+        this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(12) : height;
         this.emitterNewCarPage = DeviceEventEmitter.addListener('pushNewCarListScene', () => {
             StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR, 'true');
             this.setState({selectedTab: 'carpage'});
@@ -231,30 +233,31 @@ export default class MainPage extends BaseComponent {
                 {/*<CustomerServiceButton ref='customerservicebutton'/>*/}
                 {
                     this.state.mb_one != false && this.state.selectedTab == 'mypage' && this.state.mbShow ?
-                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                        <View style={{position: 'absolute',flex:1}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_WKHWBD,'false',()=>{this.setState({mb_one: false,})})}}>
-                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
-                                       source={require('../../images/tishimengban/zhgl_wkhwbk.png')}/>
+                                <Image
+                                    style={{width:width,height:this.hight,resizeMode:'stretch'}}
+                                    source={require('../../images/tishimengban/zhgl_wkhwbk.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
                     this.state.mb_tow != false && this.state.selectedTab == 'mypage' && this.state.mbShow ?
-                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                        <View style={{position: 'absolute',flex:1}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_YKHWBD,'false',()=>{this.setState({mb_tow: false,})})}}>
-                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
+                                <Image style={{width:width,height:this.hight,resizeMode:'stretch'}}
                                        source={require('../../images/tishimengban/zhgl_ykhwbk.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
                     this.state.mb_three != false && this.state.selectedTab == 'mypage' && this.state.mbShow ?
-                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                        <View style={{position: 'absolute',flex:1}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_YKHYBD,'false',()=>{this.setState({mb_three: false,})})}}>
-                                <Image style={{flex:1,resizeMode:'stretch',width:width}}
+                                <Image style={{resizeMode:'stretch',width:width,height:this.hight}}
                                        source={require('../../images/tishimengban/ykhybk.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
