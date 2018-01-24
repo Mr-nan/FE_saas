@@ -142,9 +142,9 @@ export default class AddressManageEditScene extends BaseComponent {
                 this.item.address = data.address;
                 this.item.latitude = data.location.latitude;
                 this.item.longitude = data.location.longitude;
-                this.mAddress.setNativeProps({
-                    text:data.address
-                })
+                this.setState({
+                    region_address:this.item.address
+                });
             });
         }
 
