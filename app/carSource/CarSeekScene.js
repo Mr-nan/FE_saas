@@ -303,6 +303,16 @@ export default class CarSeekScene extends BaseComponent {
             return;
         }
         this.current = content;
+
+        this.getSeekDatabase(content);
+
+    }
+
+    /**
+     * 本地数据库获取匹配信息
+     * @param content
+     */
+    getSeekDatabase=(content)=>{
         SQLite.selectData('SELECT * FROM carTypeList where car_name LIKE ? ',['%'+content+'%'],
             (data) => {
                 let cont = data.result.rows.length;
@@ -312,7 +322,7 @@ export default class CarSeekScene extends BaseComponent {
                 this.seekArray = [];
                 for (let i=0;i<cont;i++){
                     console.log(data.result.rows.item(i));
-                   this.seekArray.push(data.result.rows.item(i).car_name);
+                    this.seekArray.push(data.result.rows.item(i).car_name);
                 }
 
                 this.setState({
@@ -321,7 +331,11 @@ export default class CarSeekScene extends BaseComponent {
 
             });
     }
+
+
 }
+
+
 
 const styles = StyleSheet.create({
     rootContainer:{
@@ -372,7 +386,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         paddingVertical:Pixel.getPixel(10),
         marginTop:Pixel.getPixel(1),
-        paddingHorizontal:Pixel.getPixel(15),
+        paddingLeft:Pixel.getPixel(15),
 
     },carBrandHeadText: {
 
@@ -387,7 +401,6 @@ const styles = StyleSheet.create({
     },
 
     footprintView: {
-
         marginRight: Pixel.getPixel(5),
         paddingHorizontal: Pixel.getPixel(10),
         height: Pixel.getPixel(20),

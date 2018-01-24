@@ -40,6 +40,7 @@ import * as storageKeyNames from '../constant/storageKeyNames';
 import StorageUtil from '../utils/StorageUtil';
 import * as CarDeployData from './carData/CarDeployData';
 import ZNSwitchoverButton from './znComponent/ZNSwitchoverButton';
+import CarNewInfoScene from "./CarNewInfoScene";
 
 
 let Pixel = new PixelUtil();
@@ -72,7 +73,7 @@ const APIParameter = {
     emission_standards:0,
     nature_use:0,
     car_color:0,
-    model_name:'',
+    keyword:'',
     prov_id:0,
     v_type:1,
     rows: 10,
@@ -343,6 +344,51 @@ export  default  class CarUserListScene extends BaseComponent {
 
     };
 
+    //获取车源编号数据
+    loadCarInfo=()=>{
+        this.props.showModal(true);
+
+        let url = AppUrls.CAR_INDEX;
+        request(url, 'post', APIParameter,()=>{
+            this.props.backToLogin();
+        })
+            .then((response) => {
+                this.props.showModal(false);
+
+                let list = response.mjson.data.list;
+                if(list.length>0){
+                    let carData = list[0];
+                    let navigatorParams = {
+                        name: "CarNewInfoScene",
+                        component: CarNewInfoScene,
+                        params: {
+                            carID: carData.id,
+                        }
+                    };
+
+                    if(carData.v_type == 1){
+                        navigatorParams = {
+                            name: "CarInfoScene",
+                            component: CarInfoScene,
+                            params: {
+                                carID: carData.id,
+                            }
+                        }
+                    }
+
+                    this.props.callBack(navigatorParams);
+                }
+
+
+
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.message);
+
+            });
+
+    }
+
 
     // 获取筛选数据
     loadCarConfigData=(succeedAction)=>{
@@ -582,18 +628,18 @@ export  default  class CarUserListScene extends BaseComponent {
     };
 
     //  选择车型
-    checkedCarClick = (carObject) => {
+    checkedCarClick = (carObject,isOpenCarInfo) => {
 
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
 
         if(carObject.brand_id == 0 && carObject.series_id ==0)
         {
-            APIParameter.model_name = carObject.brand_name;
+            APIParameter.keyword = carObject.brand_name;
 
         }else {
 
-            APIParameter.model_name = '';
+            APIParameter.keyword = '';
 
         }
         this.setState({
@@ -613,6 +659,10 @@ export  default  class CarUserListScene extends BaseComponent {
         }else {
             this.setHeadViewType();
 
+        }
+
+        if(/^\d+$/.test(carObject.brand_name) && carObject.brand_name.length== 12 && !isOpenCarInfo){
+            this.loadCarInfo();
         }
 
     };
@@ -697,7 +747,7 @@ export  default  class CarUserListScene extends BaseComponent {
         });
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
-        APIParameter.model_name = '';
+        APIParameter.keyword = '';
         this.filterData();
     };
 
@@ -851,7 +901,7 @@ export  default  class CarUserListScene extends BaseComponent {
         APIParameter.emission_standards = 0;
         APIParameter.car_color = 0;
         APIParameter.nature_use = 0;
-        APIParameter.model_name = '';
+        APIParameter.keyword = '';
         this.setHeadViewType();
 
 
