@@ -1260,45 +1260,83 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 2: // 待付订金  2=>'订单定价完成'
             case 3: // 3=>'订金支付中'
             case 4:  // 4=>'订金支付失败'
-                if (cancelStatus === 0) {
-                    if (this.orderDetail.set_deposit_amount == 0) {
+                if (this.orderDetail.set_deposit_amount == 0) {
+                    if (cancelStatus === 0) {
                         this.orderState = 2;
                         this.topState = -1;
-                    } else {
+                        if (status === 50 || status === 51) {
+                            this.bottomState = 12;
+                        } else {
+                            this.bottomState = 1;
+                        }
+                    } else if (cancelStatus === 1) {
+                        this.orderState = 2;
+                        this.topState = -1;
+                        this.bottomState = 3;
+                    } else if (cancelStatus === 2) {
+                        this.orderState = 2;
+                        this.topState = -1;
+                        if (this.orderDetail.cancel_is_agree == 1) {
+                            this.bottomState = 5;
+                        } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                            this.orderDetail.refund_data.is_who == 1 &&
+                            this.orderDetail.refund_data.status == 2) {
+                            this.bottomState = 13;
+                        } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                            this.orderDetail.refund_data.is_who == 2 &&
+                            this.orderDetail.refund_data.status == 2) {
+                            this.bottomState = 14;
+                        } else if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                            this.bottomState = 15;
+                        } else {
+                            this.bottomState = 4;
+                        }
+                    } else if (cancelStatus === 3) {
+                        this.orderState = 2;
+                        this.topState = -1;
+                        if (this.orderDetail.cancel_is_agree == 1) {
+                            this.bottomState = 5;
+                        } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                            this.orderDetail.refund_data.is_who == 1 &&
+                            this.orderDetail.refund_data.status == 2) {
+                            this.bottomState = 13;
+                        } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                            this.orderDetail.refund_data.is_who == 2 &&
+                            this.orderDetail.refund_data.status == 2) {
+                            this.bottomState = 14;
+                        } else if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                            this.bottomState = 15;
+                        } else {
+                            this.bottomState = 4;
+                        }
+                    }
+                } else {
+                    if (cancelStatus === 0) {
                         this.orderState = 1;
                         this.topState = 0;
-                    }
-                    if (status === 3) {
-                        this.bottomState = 1;
-                    } else {
-                        this.bottomState = 1;
-                    }
-                } else if (cancelStatus === 1) {
-                    if (this.orderDetail.set_deposit_amount == 0) {
-                        this.orderState = 2;
-                    } else {
+                        if (status === 3) {
+                            this.bottomState = 1;
+                        } else {
+                            this.bottomState = 1;
+                        }
+                    } else if (cancelStatus === 1) {
                         this.orderState = 1;
-                    }
-                    this.topState = -1;
-                    this.bottomState = 3;
-                } else if (cancelStatus === 2) {
-                    if (this.orderDetail.set_deposit_amount == 0) {
-                        this.orderState = 2;
-                    } else {
+                        this.topState = -1;
+                        this.bottomState = 3;
+                    } else if (cancelStatus === 2) {
                         this.orderState = 1;
-                    }
-                    this.topState = -1;
-                    this.bottomState = 4;
-                } else if (cancelStatus === 3) {
-                    if (this.orderDetail.set_deposit_amount == 0) {
-                        this.orderState = 2;
-                    } else {
+                        this.topState = -1;
+                        this.bottomState = 4;
+                    } else if (cancelStatus === 3) {
                         this.orderState = 1;
+                        this.topState = -1;
+                        this.bottomState = 4;
                     }
-                    this.topState = -1;
-                    this.bottomState = 4;
                 }
-
                 break;
             case 5:  // 待付尾款  5=>'订金支付完成'
             case 6:  // 6=>'尾款支付中'
