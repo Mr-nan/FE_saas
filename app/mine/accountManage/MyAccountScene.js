@@ -54,8 +54,8 @@ export default class MyAccountScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             backColor: fontAndColor.COLORA3,
-            mbWKHShow: true,
-            mbWBKShow: true,
+            mbWKHShow: false,
+            mbWBKShow: false,
             mbKTShow: true,
         };
     }

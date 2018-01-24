@@ -172,20 +172,20 @@ export  default class WithdrawalsScene extends BaseComponent {
                 />
                 {
                     this.state.mbtxShow == true ?
-                        <View style={{position:'absolute',flex:1}}>
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_TX,'false',()=>{this.setState({mbtxShow: false,})})}}>
-                                <Image style={{resizeMode:'stretch',width:width,height:height}}
+                                <Image style={{resizeMode:'stretch',flex:1,width:width}}
                                        source={require('../../../images/tishimengban/tixian.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
                     this.state.mbslsjShow == true && this.state.mbtxShow != true ?
-                        < View style={{position: 'absolute',flex:1}}>
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_SLSJ,'false',()=>{this.setState({mbslsjShow: false,})})}}>
-                                <Image style={{resizeMode:'stretch',width:width,height:height}}
+                                <Image style={{resizeMode:'stretch',flex:1,width:width}}
                                        source={require('../../../images/tishimengban/shoulitime.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null

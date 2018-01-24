@@ -306,21 +306,21 @@ export  default class AccountScene extends BaseComponent {
                  navigator={this.props.navigator}/>*/}
                 {
                     this.state.mbZhShow != false ?
-                        < View style={{position: 'absolute',flex:1,paddingBottom:0}}>
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_ZZ,'false',()=>{this.setState({mbZhShow: false,})})}}>
                                 <Image
-                                    style={{width:width,height:height,resizeMode:'stretch',paddingBottom:0,marginBottom:0}}
+                                    style={{flex:1,width:width,resizeMode:'stretch',paddingBottom:0,marginBottom:0}}
                                     source={require('../../../images/tishimengban/zhgl_zhuanzhang.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
                     this.state.mbTxShow != false && this.state.mbZhShow == false ?
-                        < View style={{position: 'absolute',flex:1}}>
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_TX,'false',()=>{this.setState({mbTxShow: false,})})}}>
-                                <Image style={{width:width,height:height,resizeMode:'stretch'}}
+                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
                                        source={require('../../../images/tishimengban/zhgl_tx.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
