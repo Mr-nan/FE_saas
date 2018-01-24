@@ -64,7 +64,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.leftTime = 0;
         this.closeOrder = 0;
         this.financeInfo = {};
-        this.isPort = 1;
+        this.isPort = 0;   // 是否港口提车
         this.addressId = -1;
         this.modelData = [];
         this.modelInfo = {};
@@ -369,6 +369,17 @@ export default class SalesOrderDetailScene extends BaseComponent {
         return parseFloat(currentTime) - parseFloat(oldTime);
     };
 
+    /**
+     *   判断订单是否有默认地址
+     **/
+    existAddress = (address) => {
+        if (typeof(address.id) == "undefined" || address == null) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -386,8 +397,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.orderDetail = response.mjson.data;
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
-                        this.isPort = this.orderDetail.address.is_port;
-                        this.addressId = this.orderDetail.address.id;
+                        //this.isPort = this.existAddress(this.orderDetail.address) ? this.orderDetail.address.is_port : 0;
+                        this.addressId = this.orderDetail.address === null ? -1 : this.orderDetail.address.id;
                         this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.cancel_time);
                         this.closeOrder = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.pricing_time);
                         this.carAmount = 0;
@@ -1598,8 +1609,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '8') {
             return (
-                <ChooseStart isPort={this.isPort}
-                             addressId={this.addressId}
+                <ChooseStart //isPort={this.isPort}
+                             //addressId={this.addressId}
                              updateIsPort={this.updateIsPort}
                              updateAddressId={this.updateAddressId}
                              orderDetail={this.orderDetail}
