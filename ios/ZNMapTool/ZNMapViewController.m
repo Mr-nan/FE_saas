@@ -63,7 +63,31 @@
 //      [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(38.38851506, 115.33146813) animated:YES];
 
 
-  
+  // 判读定位是否开启
+  if([CLLocationManager locationServicesEnabled]){
+    // 判读是否允许程序获取位置权限
+    if([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways){
+      
+      UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"打开 定位服务权限 来允许 第1车贷 确定您的位置" message:@"请在系统设置中开启定位服务(设置>隐私>定位服务>第1车贷>始终)" preferredStyle:UIAlertControllerStyleAlert];
+      [alert addAction:[UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        if([[UIApplication sharedApplication] canOpenURL:url]){
+          [[UIApplication sharedApplication] openURL:url];
+        }
+      }]];
+      [[UIApplication sharedApplication].delegate.window.rootViewController presentViewController:alert animated:YES completion:nil];
+    }
+  }else{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"打开 定位服务 来允许 第1车贷 确定您的位置" message:@"请在系统设置中开启定位服务(设置>隐私>定位服务>第1车贷>始终)" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+      NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+      if([[UIApplication sharedApplication] canOpenURL:url]){
+        [[UIApplication sharedApplication] openURL:url];
+      }
+    }]];
+    [[[UIApplication sharedApplication] delegate].window.rootViewController presentViewController:alert animated:YES completion:nil];
+  }
   
 }
 
