@@ -424,11 +424,11 @@ export default class MineScene extends BaseComponent {
 
                                 this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
                                 this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
-                                if (this._getRenZhengResult(this.renzhengData.enterpriseRenZheng) == '(未认证)') {
+                                if (this._getRenZhengResult(this.renzhengData.personRenZheng) == '(未认证)') {
                                     DeviceEventEmitter.emit('mb_show', '未认证');
-                                } else if (this._getRenZhengResult(this.renzhengData.enterpriseRenZheng) == '(已认证)') {
+                                } else if (this._getRenZhengResult(this.renzhengData.personRenZheng) == '(已认证)') {
                                     DeviceEventEmitter.emit('mb_show', '已认证');
-                                } else if (this._getRenZhengResult(this.renzhengData.enterpriseRenZheng) == '(未通过)') {
+                                } else if (this._getRenZhengResult(this.renzhengData.personRenZheng) == '(未通过)') {
                                     DeviceEventEmitter.emit('mb_show', '未通过');
                                 }
                                 this.toCompany();

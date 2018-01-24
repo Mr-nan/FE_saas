@@ -35,8 +35,8 @@ export const SYSTEMS_LAST_MESSAGE_TIME = "systems_last_message_time"; //系统�
 /* message end */
 export const GET_USER_PERMISSION = "get_user_permission";   // 获取角色权限
 
-export const MB_TX = "mb_tx";   // 提现
-export const MB_SLSJ = "mb_slsj";   // 受理时间
+export const MB_TX = "mb_txq";   // 提现
+export const MB_SLSJ = "mb_slsjq";   // 受理时间
 
 export const MB_ZHGL_ZZ = "mb_zhgl_zz";   // 账户管理 转账
 export const MB_ZHGL_TX = "mb_zhgl_tx";   // 账户管理 提现
@@ -47,7 +47,7 @@ export const MB_ZHGL_WKHWBD_YHK = "mb_zhgl_wkhwbd_yhk";   // 账号管理 未开
 export const MB_ZHGL_YKHWBD = "mb_zhgl_ykhwbd";   // 账号管理 已开户未绑定
 export const MB_ZHGL_BKJM = "mb_zhgl_bkjm";   // 账号管理 绑卡界面
 export const MB_YKHYBD = "mb_ykhybd";   // 已开户已绑卡
-export const MB_ZHGL_YKHYBD = "mb_zhgl_ykhybdxxx";   // 账号管理 已开户已绑卡
+export const MB_ZHGL_YKHYBD = "mb_zhgl_ykhybd";   // 账号管理 已开户已绑卡
 
 
 

@@ -43,7 +43,7 @@ export  default class AccountScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
-        this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(10) : height;
+        this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(25) : height;
         this.state = {
             renderPlaceholderOnly: 'blank',
             source: [],
@@ -308,12 +308,12 @@ export  default class AccountScene extends BaseComponent {
                  navigator={this.props.navigator}/>*/}
                 {
                     this.state.mbZhShow != false ?
-                        <View style={{position: 'absolute',flex:1}}>
+                        <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_ZZ,'false',()=>{this.setState({mbZhShow: false,})})}}>
                                 <Image
-                                    style={{width:width,height:this.hight,resizeMode:'stretch'}}
-                                    source={Platform.OS === 'android'?require('../../../images/tishimengban/zhgl_zhuanzhang.png'):require('../../../images/tishimengban/zhgl_zhuanzhang.png')}/>
+                                    style={{width:width,flex:1,resizeMode:'stretch'}}
+                                    source={Platform.OS === 'android'?require('../../../images/tishimengban/zhgl_zz_android.png'):require('../../../images/tishimengban/zhgl_zhuanzhang.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }

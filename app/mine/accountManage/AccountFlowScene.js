@@ -11,6 +11,7 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
+    Platform,
     InteractionManager,
     TouchableWithoutFeedback
 } from 'react-native';
@@ -39,9 +40,10 @@ export  default class AccountFlowScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
+        this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(25) : height;
         this.state = {
             renderPlaceholderOnly: 'blank',
-            mbTimeShow: true,
+            mbTimeShow: false,
         };
     }
 
@@ -122,11 +124,11 @@ export  default class AccountFlowScene extends BaseComponent {
                 />
                 {
                     this.state.mbTimeShow != false ?
-                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                        <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_LSSJ,'false',()=>{this.setState({mbTimeShow: false,})})}}>
-                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
-                                       source={require('../../../images/tishimengban/lssj.png')}/>
+                                <Image style={{width:width,resizeMode:'stretch',flex:1}}
+                                       source={Platform.OS === 'android'?require('../../../images/tishimengban/lssj_android.png'):require('../../../images/tishimengban/lssj.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
