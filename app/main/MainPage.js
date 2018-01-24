@@ -14,6 +14,7 @@ import {
     NativeModules,
     InteractionManager,
     DeviceEventEmitter,
+    TouchableWithoutFeedback,
 } from 'react-native';
 
 const {width, height} = Dimensions.get('window');
@@ -41,6 +42,7 @@ import GetPermissionUtil from '../utils/GetPermissionUtil';
 const GetPermission = new GetPermissionUtil();
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
+import * as StorageKeyNames from "../constant/storageKeyNames";
 export class tableItemInfo {
     constructor(ref, key, title, selectedImg, defaultImg, topView) {
 
@@ -67,12 +69,11 @@ export default class MainPage extends BaseComponent {
     };
 
 
-
-
     componentWillUnmount() {
         tabArray = [];
         this.emitterNewCarPage.remove();
         this.emitterUserCarPage.remove();
+        this.mbShow.remove();
     }
 
     /**
@@ -83,16 +84,43 @@ export default class MainPage extends BaseComponent {
         this.state = {
             // selectedTab: tabArray[0].ref,
             renderPlaceholderOnly: 'blank',
-            openSelectBranch: false
+            openSelectBranch: false,
+            mb_one: false,
+            mb_tow: false,
+            mb_three: true,
+            mbShow: false,
 
         }
-        this.emitterNewCarPage = DeviceEventEmitter.addListener('pushNewCarListScene',()=>{
-            StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'true');
+        this.emitterNewCarPage = DeviceEventEmitter.addListener('pushNewCarListScene', () => {
+            StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR, 'true');
             this.setState({selectedTab: 'carpage'});
         });
-        this.emitterUserCarPage = DeviceEventEmitter.addListener('pushUserCarListScene',()=>{
-            StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_USER_CAR,'true');
+        this.emitterUserCarPage = DeviceEventEmitter.addListener('pushUserCarListScene', () => {
+            StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_USER_CAR, 'true');
             this.setState({selectedTab: 'carpage'});
+        })
+        this.mbShow = DeviceEventEmitter.addListener('mb_show', (data) => {
+            if (data == '未认证') {
+                StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_WKHWBD, (data) => {
+                    if (data.result != 'false') {
+                        this.setState({mb_one: true,})
+                    }
+                })
+            } else if (data == '已认证') {
+                StorageUtil.mGetItem(StorageKeyNames.MB_YKHYBD, (data) => {
+                    if (data.result != 'false') {
+                        this.setState({mb_three: true,})
+                    }
+                })
+            } else if (data == '未通过') {
+                StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_YKHWBD, (data) => {
+                    if (data.result != 'false') {
+                        this.setState({mb_tow: true,})
+                    }
+                })
+            } else if (data == '完成') {
+                this.setState({mbShow: true});
+            }
         })
         tabArray = [];
     }
@@ -201,6 +229,36 @@ export default class MainPage extends BaseComponent {
                 <View
                     style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
                 {/*<CustomerServiceButton ref='customerservicebutton'/>*/}
+                {
+                    this.state.mb_one != false && this.state.selectedTab == 'mypage' && this.state.mbShow ?
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_WKHWBD,'false',()=>{this.setState({mb_one: false,})})}}>
+                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
+                                       source={require('../../images/tishimengban/zhgl_wkhwbk.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
+                {
+                    this.state.mb_tow != false && this.state.selectedTab == 'mypage' && this.state.mbShow ?
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_YKHWBD,'false',()=>{this.setState({mb_tow: false,})})}}>
+                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
+                                       source={require('../../images/tishimengban/zhgl_ykhwbk.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
+                {
+                    this.state.mb_three != false && this.state.selectedTab == 'mypage' && this.state.mbShow ?
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_YKHYBD,'false',()=>{this.setState({mb_three: false,})})}}>
+                                <Image style={{flex:1,resizeMode:'stretch',width:width}}
+                                       source={require('../../images/tishimengban/ykhybk.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
             </View>
         );
     }
@@ -318,6 +376,8 @@ const styles = StyleSheet.create({
     flex: {
         flex: 1,
         backgroundColor: '#fff',
+        width: width, height: height,
+        paddingBottom: 0,
     },
     img: {
 

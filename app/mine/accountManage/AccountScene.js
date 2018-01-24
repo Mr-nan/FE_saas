@@ -12,6 +12,7 @@ import {
     TouchableOpacity,
     ListView,
     InteractionManager,
+    TouchableWithoutFeedback,
     RefreshControl
 } from 'react-native';
 //图片加文字
@@ -46,11 +47,29 @@ export  default class AccountScene extends BaseComponent {
             source: [],
             info: {},
             enter_id: '',
-            isRefreshing: false
+            isRefreshing: false,
+            mbCzShow: true,
+            mbTxShow: true,
+            mbZhShow: true,
         };
     }
 
     initFinish = () => {
+        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_ZZ, (data) => {
+            if (data.result != 'false') {
+                this.setState({mbZhShow: true,})
+            }
+        })
+        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_TX, (data) => {
+            if (data.result != 'false') {
+                this.setState({mbTxShow: true,})
+            }
+        })
+        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_CZ, (data) => {
+            if (data.result != 'false') {
+                this.setState({mbCzShow: true,})
+            }
+        })
         this.getData()
         // let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         // this.setState({
@@ -129,10 +148,10 @@ export  default class AccountScene extends BaseComponent {
                     enter_id: enterBaseIds,
                     isRefreshing: false
                 });
-/*                if (info.account_open_type == 2 && this.trustAccountState == 0) {
-                    this.refs.openAccount.changeState(true);
-                    this.getTrustContract();
-                }*/
+                /*                if (info.account_open_type == 2 && this.trustAccountState == 0) {
+                 this.refs.openAccount.changeState(true);
+                 this.getTrustContract();
+                 }*/
             }, (error) => {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
@@ -282,9 +301,40 @@ export  default class AccountScene extends BaseComponent {
                     title="账户管理"
                     backIconClick={this.backPage}
                 />
-{/*                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}
-                                      showModal={this.props.showModal}
-                                      navigator={this.props.navigator}/>*/}
+                {/*                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}
+                 showModal={this.props.showModal}
+                 navigator={this.props.navigator}/>*/}
+                {
+                    this.state.mbZhShow != false ?
+                        < View style={{position: 'absolute',flex:1,paddingBottom:0}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_ZZ,'false',()=>{this.setState({mbZhShow: false,})})}}>
+                                <Image
+                                    style={{width:width,height:height,resizeMode:'stretch',paddingBottom:0,marginBottom:0}}
+                                    source={require('../../../images/tishimengban/zhgl_zhuanzhang.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
+                {
+                    this.state.mbTxShow != false && this.state.mbZhShow == false ?
+                        < View style={{position: 'absolute',flex:1}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_TX,'false',()=>{this.setState({mbTxShow: false,})})}}>
+                                <Image style={{width:width,height:height,resizeMode:'stretch'}}
+                                       source={require('../../../images/tishimengban/zhgl_tx.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
+                {
+                    this.state.mbCzShow != false && this.state.mbZhShow == false && this.state.mbTxShow == false ?
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_CZ,'false',()=>{this.setState({mbCzShow: false,})})}}>
+                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
+                                       source={require('../../../images/tishimengban/zhgl_cz.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
             </View>
         );
     }
@@ -453,10 +503,10 @@ export  default class AccountScene extends BaseComponent {
                                   }
                               })
                           }}
-/*                          openTrustAccount={() => {
-                              this.refs.openAccount.changeState(true);
-                              this.getTrustContract();
-                          }}*/
+                /*                          openTrustAccount={() => {
+                 this.refs.openAccount.changeState(true);
+                 this.getTrustContract();
+                 }}*/
             />
         )
     }

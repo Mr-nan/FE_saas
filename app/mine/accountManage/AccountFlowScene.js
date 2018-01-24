@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
-    InteractionManager
+    InteractionManager,
+    TouchableWithoutFeedback
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -29,6 +30,8 @@ import FlowAllPage from './pager/FlowAllPage';
 import FlowRechargePage from './pager/FlowRechargePage';
 import FlowWithdrawalsPage from './pager/FlowWithdrawalsPage';
 import FlowTransactionPage from './pager/FlowTransactionPage';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 import SelectDate from './component/SelectDate';
 let index = 0;
 export  default class AccountFlowScene extends BaseComponent {
@@ -38,10 +41,16 @@ export  default class AccountFlowScene extends BaseComponent {
         // 初始状态
         this.state = {
             renderPlaceholderOnly: 'blank',
+            mbTimeShow: true,
         };
     }
 
     initFinish = () => {
+        StorageUtil.mGetItem(StorageKeyNames.MB_LSSJ, (data) => {
+            if (data.result != 'false') {
+                this.setState({mbTimeShow: true,})
+            }
+        })
         this.setState({
             renderPlaceholderOnly: 'success',
         });
@@ -111,6 +120,16 @@ export  default class AccountFlowScene extends BaseComponent {
                     backIconClick={this.backPage}
                     renderRihtFootView={this._navigatorRightView}
                 />
+                {
+                    this.state.mbTimeShow != false ?
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_LSSJ,'false',()=>{this.setState({mbTimeShow: false,})})}}>
+                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
+                                       source={require('../../../images/tishimengban/lssj.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
             </View>
         );
     }

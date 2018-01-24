@@ -17,7 +17,8 @@ import {
     Image,
     BackAndroid,
     RefreshControl,
-    Dimensions
+    Dimensions,
+    TouchableWithoutFeedback
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -52,7 +53,10 @@ export default class MyAccountScene extends BaseComponent {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
-            backColor: fontAndColor.COLORA3
+            backColor: fontAndColor.COLORA3,
+            mbWKHShow: true,
+            mbWBKShow: true,
+            mbKTShow: true,
         };
     }
 
@@ -90,7 +94,7 @@ export default class MyAccountScene extends BaseComponent {
     allRefresh = () => {
         this.props.showModal(true);
         this.loadData();
-        if(this.props.callBackData){
+        if (this.props.callBackData) {
             this.props.callBackData();
         }
     };
@@ -171,8 +175,27 @@ export default class MyAccountScene extends BaseComponent {
                 //this.hengFengInfo = response.mjson.data['315'][0] ? response.mjson.data['315'][0] : {};
                 if (response.mjson.data['315'][0]) {
                     this.hengFengInfo = response.mjson.data['315'][0];
+                    if (this.hengFengInfo.status == '1') {
+                        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_WKHWBD_YHK, (data) => {
+                            if (data.result != 'false') {
+                                this.setState({mbWKHShow: true,})
+                            }
+                        })
+                    } else if (this.hengFengInfo.status == '2') {
+                        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_BKJM, (data) => {
+                            if (data.result != 'false') {
+                                this.setState({mbWBKShow: true,})
+                            }
+                        })
+                    } else if (this.hengFengInfo.status == '3') {
+                        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_YKHYBD, (data) => {
+                            if (data.result != 'false') {
+                                this.setState({mbKTShow: true,})
+                            }
+                        })
+                    }
                     this.lastType = response.mjson.data['315'][0].status;
-                    if(this.props.callBack){
+                    if (this.props.callBack) {
 
                         this.props.callBack(this.lastType);
                     }
@@ -233,6 +256,36 @@ export default class MyAccountScene extends BaseComponent {
                                   colors={[fontAndColor.COLORA3]}
                               />
                           }/>
+                {
+                    this.state.mbWKHShow != false ?
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_WKHWBD_YHK,'false',()=>{this.setState({mbWKHShow: false,})})}}>
+                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
+                                       source={require('../../../images/tishimengban/zhgl_wkhwbkyhk.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
+                {
+                    this.state.mbWBKShow != false ?
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_BKJM,'false',()=>{this.setState({mbWBKShow: false,})})}}>
+                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
+                                       source={require('../../../images/tishimengban/zhgl_bky.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
+                {
+                    this.state.mbKTShow != false ?
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_YKHYBD,'false',()=>{this.setState({mbKTShow: false,})})}}>
+                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
+                                       source={require('../../../images/tishimengban/zhgl_ykhybk.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
             </View>);
         }
     }
