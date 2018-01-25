@@ -57,7 +57,10 @@ export default class LogisticsModeForFinancing extends BaseComponent {
      * @param nextProps new Props
      **/
     componentWillReceiveProps(nextProps) {
-
+        this.setState({
+            isStore: nextProps.orderDetail.orders_item_data[0].is_store,
+            ordersTrans: nextProps.ordersTrans
+        });
     }
 
     onTagClick = (dt, index) => {
