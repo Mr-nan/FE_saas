@@ -44,7 +44,6 @@ import LogisticsMode from "./component/LogisticsMode";
 import LogisticsModeForFinancing from "./component/LogisticsModeForFinancing";
 import ExtractCarPeople from "./component/ExtractCarPeople";
 import AddressManage from "./orderwuliu/AddressManage";
-import WaybillToStore from "./orderwuliu/WaybillToStore";
 import FillWaybill from "./orderwuliu/FillWaybill";
 import LogisticsMode1 from "./component/LogisticsMode1";
 import CheckWaybill from "./orderwuliu/CheckWaybill";

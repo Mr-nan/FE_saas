@@ -24,7 +24,6 @@ RCT_EXPORT_METHOD(cityName:(NSString *)cityName AddressName:(NSString *)addressN
   
   dispatch_async(dispatch_get_main_queue(), ^{
     
-    
     ZNMapViewController *mapVC = [[ZNMapViewController alloc]init];
     mapVC.mapPoiInfoBlock = ^(NSDictionary *poiInfo) {
       callback(@[[NSNull null],poiInfo]);

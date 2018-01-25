@@ -14,7 +14,6 @@ import PixelUtil from '../../../utils/PixelUtil';
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
 const service_icon = require('../../../../images/service_icon.png');
 import TransitInformation from './TransitInformation';
-import WaybillToStore from './WaybillToStore';
 import SelectPickUp from './SelectPickUp';
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';

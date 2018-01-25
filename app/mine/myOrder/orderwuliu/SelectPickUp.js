@@ -142,7 +142,7 @@ export default class SelectPickUp extends BaseComponent {
                 </View>
 
                 <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'编辑提车人'}
+                          content={'确定'}
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {

@@ -31,11 +31,11 @@ export default class InvoiceInfo extends BaseComponent {
         accoutInfo[1].value=this.accoutInfo[2].value;
         this.invoice_title='';
         this.invoice_code='';
+        this.addressId=this.props.endId;
         this.state = {
             renderPlaceholderOnly: false,
             accoutInfo:accoutInfo,
             contractName:this.contractName,
-            addressId:this.props.endId
         }
     }
 
@@ -57,6 +57,7 @@ export default class InvoiceInfo extends BaseComponent {
                         feeDatas=[];
                         this.riseText = data.invoice_title;//抬头
                         this.num = data.invoice_code;
+                        this.addressId=data.address_id;
                         feeDatas.push({title: '发票类型', value: '增值税普通发票'})
                         feeDatas.push({title: '发票抬头', value: data.invoice_title})
                         feeDatas.push({title: '纳税人识别号', value: data.invoice_code})
@@ -83,7 +84,7 @@ export default class InvoiceInfo extends BaseComponent {
             company_id: global.companyBaseID,
             order_id: this.props.orderId,
             address:accoutInfo[1].value,
-            address_id:this.state.addressId,
+            address_id:this.addressId,
             contact_name:this.contractName,
             contact_phone:accoutInfo[0].value,
             invoice_title:this.riseText,
@@ -118,10 +119,9 @@ export default class InvoiceInfo extends BaseComponent {
         accoutInfo.push({title: '联系电话', value: newAddress.contact_phone})
         accoutInfo.push({title: '收车地址', value: newAddress.full_address})
         this.contractName=newAddress.contact_name;
-
+        this.addressId=newAddress.id;
         this.setState({
             accoutInfo:accoutInfo,
-            addressId: newAddress.id,
             contractName:this.contractName
         })
     };
@@ -191,7 +191,7 @@ export default class InvoiceInfo extends BaseComponent {
                         name: 'AddressManage',
                         component: AddressManage,
                         params: {
-                            addressId:this.state.addressId,
+                            addressId:this.addressId,
                             callBack:this.updateAddress
                         }
                         }
@@ -286,6 +286,10 @@ export default class InvoiceInfo extends BaseComponent {
             <TouchableOpacity onPress={
                 () => {
                     this.backPage();
+                    this.props.callBack({
+                        invoice_title:'',
+                        id:'',
+                    });
                 }
             }>
                 <View style={{

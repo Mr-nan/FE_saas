@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(32),
         backgroundColor: 'transparent',
         marginLeft: Pixel.getPixel(10),
-        paddingHorizontal: Pixel.getPixel(15),
         borderRadius: Pixel.getPixel(2),
         borderWidth: Pixel.getPixel(1),
         borderColor: FontAndColor.COLORA4,
