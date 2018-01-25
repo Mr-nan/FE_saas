@@ -760,6 +760,7 @@ export default class MineScene extends BaseComponent {
                                                     .then((response) => {
                                                             haveOrder = response.mjson.data.order.tradeing_count;
                                                             lastType = response.mjson.data.account.status;
+                                                            alert('x ' + lastType)
                                                             if (lastType == '0') {
                                                                 DeviceEventEmitter.emit('mb_show', '未开通');
                                                                 // this.refs.accountmodal.changeShowType(true,
@@ -780,8 +781,6 @@ export default class MineScene extends BaseComponent {
                                                                 //     , '去激活', '看看再说', () => {
                                                                 //         this.toPage();
                                                                 //     });
-                                                            } else {
-                                                                DeviceEventEmitter.emit('mb_show', '已激活');
                                                             }
                                                             firstType = lastType;
                                                         },
@@ -797,6 +796,8 @@ export default class MineScene extends BaseComponent {
                         }
                     });
                 }
+            } else {
+                DeviceEventEmitter.emit('mb_show', '已激活');
             }
         }
     }

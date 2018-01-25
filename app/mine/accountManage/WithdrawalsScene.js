@@ -173,7 +173,7 @@ export  default class WithdrawalsScene extends BaseComponent {
                     backIconClick={this.backPage}
                 />
                 {
-                    this.state.mbtxShow == true ?
+                    this.state.mbtxShow != false ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_TX,'false',()=>{this.setState({mbtxShow: false,})})}}>
@@ -183,7 +183,7 @@ export  default class WithdrawalsScene extends BaseComponent {
                         </View> : null
                 }
                 {
-                    this.state.mbslsjShow == true && this.state.mbtxShow != true ?
+                    this.state.mbslsjShow != false && this.state.mbtxShow == false ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_SLSJ,'false',()=>{this.setState({mbslsjShow: false,})})}}>
