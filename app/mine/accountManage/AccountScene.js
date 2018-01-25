@@ -50,9 +50,9 @@ export  default class AccountScene extends BaseComponent {
             info: {},
             enter_id: '',
             isRefreshing: false,
-            mbCzShow: true,
-            mbTxShow: true,
-            mbZhShow: true,
+            mbCzShow: false,
+            mbTxShow: false,
+            mbZhShow: false,
         };
     }
 

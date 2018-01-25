@@ -58,7 +58,7 @@ export default class MyAccountScene extends BaseComponent {
             backColor: fontAndColor.COLORA3,
             mbWKHShow: false,
             mbWBKShow: false,
-            mbKTShow: true,
+            mbKTShow: false,
         };
     }
 

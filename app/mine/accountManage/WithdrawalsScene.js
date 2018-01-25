@@ -42,8 +42,8 @@ export  default class WithdrawalsScene extends BaseComponent {
             id: '',
             type: '',
             cardNumber: '',
-            mbtxShow: true,
-            mbslsjShow: true,
+            mbtxShow: false,
+            mbslsjShow: false,
         };
     }
 

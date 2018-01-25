@@ -87,7 +87,7 @@ export default class MainPage extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             openSelectBranch: false,
             mb_one: false,
-            mb_tow: true,
+            mb_tow: false,
             mb_three: false,
             mbShow: false,
 
@@ -102,19 +102,19 @@ export default class MainPage extends BaseComponent {
             this.setState({selectedTab: 'carpage'});
         })
         this.mbShow = DeviceEventEmitter.addListener('mb_show', (data) => {
-            if (data == '未认证') {
+            if (data == '未开通') {
                 StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_WKHWBD, (data) => {
                     if (data.result != 'false') {
                         this.setState({mb_one: true,})
                     }
                 })
-            } else if (data == '已认证') {
+            } else if (data == '已激活') {
                 StorageUtil.mGetItem(StorageKeyNames.MB_YKHYBD, (data) => {
                     if (data.result != 'false') {
                         this.setState({mb_three: true,})
                     }
                 })
-            } else if (data == '未通过') {
+            } else if (data == '未绑卡') {
                 StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_YKHWBD, (data) => {
                     if (data.result != 'false') {
                         this.setState({mb_tow: true,})
