@@ -43,6 +43,10 @@ export default class LoanInfo extends BaseComponent {
     }
 
     render() {
+        console.log('balanceAmount==', this.balanceAmount);
+        console.log('applyLoanAmount==', this.state.applyLoanAmount);
+        console.log('fee_mny==', this.state.financeInfo.fee_mny);
+        console.log('supervision_fee==', this.state.financeInfo.supervision_fee);
         return (
             <View style={styles.itemType5}>
                 <TouchableOpacity
@@ -145,7 +149,7 @@ export default class LoanInfo extends BaseComponent {
                           style={styles.infoContent}>{parseFloat(this.balanceAmount - (this.state.applyLoanAmount === '请输入申请贷款金额' ?
                         0 : parseFloat(this.state.applyLoanAmount)) +
                         parseFloat(this.state.financeInfo.fee_mny) +
-                        parseFloat(this.state.financeInfo.supervision_fee)).toFixed(2)}元</Text>
+                        parseFloat(this.state.financeInfo.supervision_fee ? parseFloat(this.state.financeInfo.supervision_fee).toFixed(2) : '0.00')).toFixed(2)}元</Text>
                 </View>
             </View>
         )
