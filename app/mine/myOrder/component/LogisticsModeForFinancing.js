@@ -113,7 +113,8 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                 request(url, 'post', maps).then((response) => {
                     this.props.showModal(false);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        this.props.showToast(response.mjson.msg);
+                        //this.props.showToast(response.mjson.msg);
+                        this.props.refresh();
                     }
                 }, (error) => {
                     this.props.showModal(false);
