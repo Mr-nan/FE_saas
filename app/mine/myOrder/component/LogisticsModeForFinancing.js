@@ -244,7 +244,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                             <View style={{flex: 1}}/>
                             <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                 textAlign: 'right', width: Pixel.getPixel(250)}}>
-                                {this.props.orderDetail.orders_item_data[0].store_address}
+                                {this.props.orderDetail.orders_item_data[0].store_address.full_address}
                             </Text>
                         </View>
                     </View>
