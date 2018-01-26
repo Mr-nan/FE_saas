@@ -51,7 +51,7 @@ export default class SelectProvinceCityModal extends BaseComponent {
                 alignItems: 'center',
                 backgroundColor:fontAndColor.COLORA3,
                 borderBottomWidth:1,
-                paddingHorizontal:Pixel.getPixel(15),
+                paddingHorizontal:Pixel.getPixel(35),
                 justifyContent: 'space-between',
                 borderColor:fontAndColor.COLORA4
             },data.check&&{backgroundColor:'white',},index==this.datas.length-1&&{marginBottom:40}]}>
