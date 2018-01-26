@@ -13,7 +13,8 @@ import {
     ListView,
     InteractionManager,
     KeyboardAvoidingView,
-    Linking
+    Linking,
+    TouchableWithoutFeedback
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -36,10 +37,16 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         // 初始状态
         this.state = {
             renderPlaceholderOnly: 'blank',
+            mbXzKtgrzh: false,
         };
     }
 
     initFinish = () => {
+        StorageUtil.mGetItem(StorageKeyNames.MB_KTGRZH, (data) => {
+            if (data.result != 'false') {
+                this.setState({mbXzKtgrzh: true,})
+            }
+        })
         this.setState({
             renderPlaceholderOnly: 'success',
         });
@@ -47,9 +54,9 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
 
     backPage = () => {
         let navigator = this.props.navigator;
-        if (navigator){
-            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
-                if(navigator.getCurrentRoutes()[i].name=='MyAccountScene'){
+        if (navigator) {
+            for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                if (navigator.getCurrentRoutes()[i].name == 'MyAccountScene') {
                     navigator.popToRoute(navigator.getCurrentRoutes()[i]);
                     break;
                 }
@@ -87,7 +94,7 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                     </View>
                 </KeyboardAvoidingView>
 
-                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                 marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15)}}>
                     请确认您的姓名与身份证信息填写准确
                 </Text>
@@ -97,15 +104,16 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                 }} activeOpacity={0.8} style={{backgroundColor:fontAndColor.COLORB0,marginTop:Pixel.getPixel(15),
                 width:width-Pixel.getPixel(30),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),
                 height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
-                    <Text allowFontScaling={false}  style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.buttonText}</Text>
+                    <Text allowFontScaling={false}
+                          style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.buttonText}</Text>
                 </TouchableOpacity>
 
-                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                 marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:18}}>
                     每天
                     <Text style={{color: fontAndColor.COLORB2,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                 }}>
-                    9:00～17:00
+                        9:00～17:00
                     </Text>
                     为实时注册时间，其他时间银行会先记录下信息，在工作时间处理后返回给您处理结果。
 
@@ -114,6 +122,16 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                     title={this.props.title}
                     backIconClick={this.backPage}
                 />
+                {
+                    this.state.mbXzKtgrzh != false ?
+                        <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_KTGRZH,'false',()=>{this.setState({mbXzKtgrzh: false,})})}}>
+                                <Image style={{width:width,flex:1,resizeMode:'stretch'}}
+                                       source={require('../../../images/tishimengban/mb_ktgrzh.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
             </View>
         );
     }
@@ -121,10 +139,10 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
     checkEmpty = () => {
         let name = this.refs.name.getInputTextValue();
         let number = this.refs.number.getInputTextValue();
-        if (name == ''||name==null) {
+        if (name == '' || name == null) {
             this.props.showToast('请输入真实姓名');
             return;
-        } else if (number == ''||number==null) {
+        } else if (number == '' || number == null) {
             this.props.showToast('请输入身份证号码');
             return;
         }
@@ -141,11 +159,11 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
     getBase_Id = (name, number, phone) => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
-                let datas=JSON.parse(data.result);
-                if(this.props.isChange=='true'){
-                    this.getAccountData(name,number,phone,datas.company_base_id);
-                }else{
-                    this.openIndividual(name,number,phone,datas.company_base_id);
+                let datas = JSON.parse(data.result);
+                if (this.props.isChange == 'true') {
+                    this.getAccountData(name, number, phone, datas.company_base_id);
+                } else {
+                    this.openIndividual(name, number, phone, datas.company_base_id);
                 }
             } else {
                 this.props.showToast('用户信息查询失败');
@@ -153,38 +171,40 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         })
     }
 
-    openIndividual = (name, number, phone,base_id) => {
+    openIndividual = (name, number, phone, base_id) => {
         this.props.showModal(true);
         let maps = {
             cert_no: number,
             cert_type: '1',
             cust_name: name,
             mobile_no: phone,
-            enter_base_id:base_id,
-            reback_url:webBackUrl.OPENINDIVIDUALACCOUNT
+            enter_base_id: base_id,
+            reback_url: webBackUrl.OPENINDIVIDUALACCOUNT
         };
 
         request(Urls.USER_OPEN_ACCOUNT_PERSONAL, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
-                   this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
-                       title:'个人开户',webUrl:response.mjson.data.auth_url+
-                       '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
-                           this.props.callBack();
-                       },backUrl:webBackUrl.OPENINDIVIDUALACCOUNT
-                   }});
-                   //  Linking.openURL(response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token);
+                    this.toNextPage({
+                        name: 'AccountWebScene', component: AccountWebScene, params: {
+                            title: '个人开户', webUrl: response.mjson.data.auth_url +
+                            '?authTokenId=' + response.mjson.data.auth_token, callBack: () => {
+                                this.props.callBack();
+                            }, backUrl: webBackUrl.OPENINDIVIDUALACCOUNT
+                        }
+                    });
+                    //  Linking.openURL(response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token);
                 },
                 (error) => {
-	                if (error.mycode == -300 || error.mycode == -500) {
-		                this.props.showToast('开户失败');
-	                } else {
-		                this.props.showToast(error.mjson.msg);
-	                }
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('开户失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
     }
 
-    getAccountData=(name, number, phone,base_id)=>{
+    getAccountData = (name, number, phone, base_id) => {
         this.props.showModal(true);
         let maps = {
             enter_base_ids: base_id,
@@ -192,22 +212,22 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         };
         request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
             .then((response) => {
-                    this.changeIndividual(name, number, phone,base_id,response.mjson.data.account.bank_card_no)
+                    this.changeIndividual(name, number, phone, base_id, response.mjson.data.account.bank_card_no)
                 },
                 (error) => {
                     this.props.showToast('用户信息查询失败');
                 });
     }
-    changeIndividual = (name, number, phone,base_id,sub_acct_no) => {
+    changeIndividual = (name, number, phone, base_id, sub_acct_no) => {
         this.props.showModal(true);
         let maps = {
             cert_no: number,
             cert_type: '1',
             cust_name: name,
             mobile_no: phone,
-            enter_base_id:base_id,
-            reback_url:webBackUrl.OPENINDIVIDUALACCOUNT,
-            sub_acct_no:sub_acct_no
+            enter_base_id: base_id,
+            reback_url: webBackUrl.OPENINDIVIDUALACCOUNT,
+            sub_acct_no: sub_acct_no
         };
 
         request(Urls.USER_ACCOUNT_SAVEPERSONAL, 'Post', maps)

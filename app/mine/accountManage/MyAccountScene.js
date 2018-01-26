@@ -177,7 +177,7 @@ export default class MyAccountScene extends BaseComponent {
                 //this.hengFengInfo = response.mjson.data['315'][0] ? response.mjson.data['315'][0] : {};
                 if (response.mjson.data['315'][0]) {
                     this.hengFengInfo = response.mjson.data['315'][0];
-                    if (this.hengFengInfo.status == '1') {
+                    if (this.hengFengInfo.status == '0') {
                         StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_WKHWBD_YHK, (data) => {
                             if (data.result != 'false') {
                                 this.setState({mbWKHShow: true,})

@@ -47,6 +47,11 @@ export const MB_ZHGL_YKHWBD = "mb_zhgl_ykhwbd2";   // 账号管理 已开户未�
 export const MB_ZHGL_BKJM = "mb_zhgl_bkjm2";   // 账号管理 绑卡界面
 export const MB_YKHYBD = "mb_ykhybd2";   // 已开户已绑卡
 export const MB_ZHGL_YKHYBD = "mb_zhgl_ykhybd2";   // 账号管理 已开户已绑卡
+export const MB_XZ_KTGRZH = "mb_xz_ktgrzh";   // 选择  开通个人账户
+export const MB_XZ_KTQYZH = "mb_xz_ktqyzh";   // 选择 开通企业账户
+
+export const MB_KTGRZH = "mb_ktgrzh";   //  开通企业账户
+export const MB_KTQYZH = "mb_ktqyzh";   //  开通企业账户
 
 
 
