@@ -35,23 +35,23 @@ export const SYSTEMS_LAST_MESSAGE_TIME = "systems_last_message_time"; //系统�
 /* message end */
 export const GET_USER_PERMISSION = "get_user_permission";   // 获取角色权限
 
-export const MB_TX = "mb_txq9";   // 提现
-export const MB_SLSJ = "mb_slsjq9";   // 受理时间
-export const MB_ZHGL_ZZ = "mb_zhgl_zz9";   // 账户管理 转账
-export const MB_ZHGL_TX = "mb_zhgl_tx9";   // 账户管理 提现
-export const MB_ZHGL_CZ = "mb_zhgl_cz9";   // 账户管理 充值
-export const MB_LSSJ = "mb_lssj9";   // 流水时间
-export const MB_ZHGL_WKHWBD = "mb_zhgl_wkhwbd9";   // 账号管理 未开户未绑定
-export const MB_ZHGL_WKHWBD_YHK = "mb_zhgl_wkhwbd_yhk9";   // 账号管理 未开户未绑定 银行卡
-export const MB_ZHGL_YKHWBD = "mb_zhgl_ykhwbd9";   // 账号管理 已开户未绑定
-export const MB_ZHGL_BKJM = "mb_zhgl_bkjm9";   // 账号管理 绑卡界面
-export const MB_YKHYBD = "mb_ykhybd9";   // 已开户已绑卡
-export const MB_ZHGL_YKHYBD = "mb_zhgl_ykhybd9";   // 账号管理 已开户已绑卡
-export const MB_XZ_KTGRZH = "mb_xz_ktgrzh9";   // 选择  开通个人账户
-export const MB_XZ_KTQYZH = "mb_xz_ktqyzh9";   // 选择 开通企业账户
+export const MB_TX = "mb_txq";   // 提现
+export const MB_SLSJ = "mb_slsjq";   // 受理时间
+export const MB_ZHGL_ZZ = "mb_zhgl_zz";   // 账户管理 转账
+export const MB_ZHGL_TX = "mb_zhgl_tx";   // 账户管理 提现
+export const MB_ZHGL_CZ = "mb_zhgl_cz";   // 账户管理 充值
+export const MB_LSSJ = "mb_lssj";   // 流水时间
+export const MB_ZHGL_WKHWBD = "mb_zhgl_wkhwbd";   // 账号管理 未开户未绑定
+export const MB_ZHGL_WKHWBD_YHK = "mb_zhgl_wkhwbd_yhk";   // 账号管理 未开户未绑定 银行卡
+export const MB_ZHGL_YKHWBD = "mb_zhgl_ykhwbd";   // 账号管理 已开户未绑定
+export const MB_ZHGL_BKJM = "mb_zhgl_bkjm";   // 账号管理 绑卡界面
+export const MB_YKHYBD = "mb_ykhybd";   // 已开户已绑卡
+export const MB_ZHGL_YKHYBD = "mb_zhgl_ykhybd";   // 账号管理 已开户已绑卡
+export const MB_XZ_KTGRZH = "mb_xz_ktgrzh";   // 选择  开通个人账户
+export const MB_XZ_KTQYZH = "mb_xz_ktqyzh";   // 选择 开通企业账户
 
-export const MB_KTGRZH = "mb_ktgrzh9";   //  开通企业账户
-export const MB_KTQYZH = "mb_ktqyzh9";   //  开通企业账户
+export const MB_KTGRZH = "mb_ktgrzh";   //  开通企业账户
+export const MB_KTQYZH = "mb_ktqyzh";   //  开通企业账户
 
 
 
