@@ -508,18 +508,26 @@ export default class CarInfoScene extends BaseComponent {
                                     <TouchableOpacity onPress={() => {
                                         this.callClick(carData.show_shop_id)
                                     }}>
-                                        <View style={[styles.callView, carData.show_order == 2 && {width: ScreenWidth / 2}]}>
+                                        <View style={[styles.callView, carData.show_order == 2 && {width: ScreenWidth / 2,flexDirection:'row'}]}>
                                             <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
-                                            <Text allowFontScaling={false}  style={styles.callText}>电话咨询</Text>
+                                            <Text allowFontScaling={false}  style={styles.callText}>咨询</Text>
                                         </View>
                                     </TouchableOpacity>
                                     {
                                         carData.show_order !== 2 && (
+                                        <View style={{flexDirection:'row'}}>
+                                            <TouchableOpacity style={styles.shoppingView} onPress={() => {
+                                                this.orderClick(carData)
+                                            }}>
+                                                <Text allowFontScaling={false}  style={styles.orderText}>加入购物车</Text>
+                                            </TouchableOpacity>
                                             <TouchableOpacity style={styles.orderView} onPress={() => {
                                                 this.orderClick(carData)
                                             }}>
-                                                <Text allowFontScaling={false}  style={styles.orderText}>订购</Text>
+                                                <Text allowFontScaling={false}  style={styles.orderText}>立即订购</Text>
                                             </TouchableOpacity>
+                                        </View>
+
                                         )
                                     }
                                 </View>
@@ -1486,14 +1494,12 @@ const styles = StyleSheet.create({
         borderTopWidth: StyleSheet.hairlineWidth,
     },
     callView: {
-        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         borderLeftWidth: StyleSheet.hairlineWidth,
         borderLeftColor: fontAndColor.COLORA4,
-        paddingHorizontal: Pixel.getPixel(15),
         height: Pixel.getPixel(44),
-        width: ScreenWidth / 3,
+        width: ScreenWidth *0.2,
     },
 
     callText: {
@@ -1505,19 +1511,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: Pixel.getPixel(44),
-        paddingHorizontal: Pixel.getPixel(15),
-        width: ScreenWidth / 3
+        width: ScreenWidth*0.3
     },
     carNumberText: {
         color: fontAndColor.COLORA0,
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT),
+    },
+    shoppingView:{
+        backgroundColor: fontAndColor.COLORA2,
+        height: Pixel.getPixel(44),
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: ScreenWidth*0.25
     },
     orderView: {
         backgroundColor: fontAndColor.COLORB0,
         height: Pixel.getPixel(44),
         justifyContent: 'center',
         alignItems: 'center',
-        width: ScreenWidth / 3
+        width: ScreenWidth*0.25
     },
     orderText: {
         color: 'white',
