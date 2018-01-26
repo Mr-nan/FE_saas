@@ -61,9 +61,9 @@ export default class FillWaybill extends BaseComponent {
         this.startId = '';
         this.toStore = false;
         this.warehouse_id = '';//仓库id
-        this.province;
-        this.city;
-        this.country;
+        this.province='';
+        this.city='';
+        this.country='';
         this.addressDatas = [];
         this.vType = this.props.vType;//1:二手车 2:新车
         this.toStore = this.props.toStore;//0到店，1到库，非融资
