@@ -742,62 +742,59 @@ export default class MineScene extends BaseComponent {
     componentDidUpdate() {
         if (this.state.renderPlaceholderOnly == 'success') {
             if (firstType != lastType) {
-                if (lastType != '3') {
-                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                        if (data.code == 1) {
-                            let datas = JSON.parse(data.result);
-                            GetPermission.getMineList((mineList) => {
-                                for (let i = 0; i < mineList.length; i++) {
-                                    if (mineList[i].id == 47) {
-                                        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
-                                            if (datac.code == 1) {
-                                                let datasc = JSON.parse(datac.result);
-                                                let maps = {
-                                                    enter_base_ids: datasc.company_base_id,
-                                                    child_type: '1'
-                                                };
-                                                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                                                    .then((response) => {
-                                                            haveOrder = response.mjson.data.order.tradeing_count;
-                                                            lastType = response.mjson.data.account.status;
-                                                            alert('x ' + lastType)
-                                                            if (lastType == '0') {
-                                                                DeviceEventEmitter.emit('mb_show', '未开通');
-                                                                // this.refs.accountmodal.changeShowType(true,
-                                                                //     '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                                                //     '请尽快开通！', '去开户', '看看再说', () => {
-                                                                //         this.toPage();
-                                                                //     });
-                                                            } else if (lastType == '1') {
-                                                                DeviceEventEmitter.emit('mb_show', '未绑卡');
-                                                                // this.refs.accountmodal.changeShowType(true,
-                                                                //     '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                                                //     , '去绑卡', '看看再说', () => {
-                                                                //         this.toPage();
-                                                                //     });
-                                                            } else if (lastType == '2') {
-                                                                // this.refs.accountmodal.changeShowType(true,
-                                                                //     '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                                                //     , '去激活', '看看再说', () => {
-                                                                //         this.toPage();
-                                                                //     });
-                                                            }
-                                                            firstType = lastType;
-                                                        },
-                                                        (error) => {
+                StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                    if (data.code == 1) {
+                        let datas = JSON.parse(data.result);
+                        GetPermission.getMineList((mineList) => {
+                            for (let i = 0; i < mineList.length; i++) {
+                                if (mineList[i].id == 47) {
+                                    StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
+                                        if (datac.code == 1) {
+                                            let datasc = JSON.parse(datac.result);
+                                            let maps = {
+                                                enter_base_ids: datasc.company_base_id,
+                                                child_type: '1'
+                                            };
+                                            request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                                .then((response) => {
+                                                        haveOrder = response.mjson.data.order.tradeing_count;
+                                                        lastType = response.mjson.data.account.status;
+                                                        if (lastType == '0') {
+                                                            DeviceEventEmitter.emit('mb_show', '未开通');
+                                                            // this.refs.accountmodal.changeShowType(true,
+                                                            //     '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                                            //     '请尽快开通！', '去开户', '看看再说', () => {
+                                                            //         this.toPage();
+                                                            //     });
+                                                        } else if (lastType == '1') {
+                                                            DeviceEventEmitter.emit('mb_show', '未绑卡');
+                                                            // this.refs.accountmodal.changeShowType(true,
+                                                            //     '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                                            //     , '去绑卡', '看看再说', () => {
+                                                            //         this.toPage();
+                                                            //     });
+                                                        } else if (lastType == '2') {
+                                                            // this.refs.accountmodal.changeShowType(true,
+                                                            //     '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                                            //     , '去激活', '看看再说', () => {
+                                                            //         this.toPage();
+                                                            //     });
+                                                        } else if (lastType == '3') {
+                                                            DeviceEventEmitter.emit('mb_show', '已激活');
+                                                        }
+                                                        firstType = lastType;
+                                                    },
+                                                    (error) => {
 
-                                                        });
-                                            }
-                                        });
-                                    }
+                                                    });
+                                        }
+                                    });
                                 }
-                            });
+                            }
+                        });
 
-                        }
-                    });
-                }
-            } else {
-                DeviceEventEmitter.emit('mb_show', '已激活');
+                    }
+                });
             }
         }
     }
