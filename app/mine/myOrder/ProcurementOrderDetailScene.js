@@ -264,9 +264,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.contactData = {};
                     if (this.existTransOrder(this.ordersTrans) &&
                         this.transStateMapping(this.ordersTrans).state >= 2) {
-                        this.mList = ['1', '3', '7'];
-                    } else {
                         this.mList = ['1', '3', '7', '9'];
+                    } else {
+                        this.mList = ['1', '3', '7'];
                     }
                     this.contactData = {
                         layoutTitle: '订单融资处理中',
@@ -278,9 +278,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.contactData = {};
                     if (this.existTransOrder(this.ordersTrans) &&
                         this.transStateMapping(this.ordersTrans).state >= 2) {
-                        this.mList = ['1', '3', '7'];
-                    } else {
                         this.mList = ['1', '3', '7', '9'];
+                    } else {
+                        this.mList = ['1', '3', '7'];
                     }
                     this.contactData = {
                         layoutTitle: '订单融资处理中',
@@ -288,7 +288,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         setPrompt: false
                     };
                 } else {
-                    this.mList = ['3', '7'];
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state >= 2) {
+                        this.mList = ['3', '7', '9'];
+                    } else {
+                        this.mList = ['3', '7'];
+                    }
                 }
                 break;
             case 6: // 待付首付款
