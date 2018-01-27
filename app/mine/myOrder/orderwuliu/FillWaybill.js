@@ -9,7 +9,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, ScrollView, Image,
+    View, TouchableOpacity, Dimensions, ScrollView, Image,RefreshControl
 } from 'react-native';
 import TagSelectView from '../component/TagSelectView';
 import BaseComponent from '../../../component/BaseComponent';
@@ -91,6 +91,7 @@ export default class FillWaybill extends BaseComponent {
             accoutInfo: accoutInfo,
             isShow: false,//底部选择框
             addressDatas: this.addressDatas,
+            isRefreshing:false,
         }
     }
 
@@ -163,7 +164,8 @@ export default class FillWaybill extends BaseComponent {
                         feeDatas: feeDatas,
                         tagViews: tagViews,
                         accoutInfo: accoutInfo,
-                        distance: this.distance
+                        distance: this.distance,
+                        isRefreshing:false
 
                     });
                 },
@@ -171,6 +173,11 @@ export default class FillWaybill extends BaseComponent {
                     this.setState({renderPlaceholderOnly: 'error',});
                 });
     }
+
+    refreshingData = () => {
+        this.setState({isRefreshing: true});
+        this.getData();
+    };
     //获取运单费
     getTransFee = () => {
         this.props.showModal(true);
@@ -426,7 +433,14 @@ export default class FillWaybill extends BaseComponent {
 
     _renderItem = () => {
         return (
-            <ScrollView style={{flex: 1}}>
+            <ScrollView style={{flex: 1}} refreshControl={
+                <RefreshControl
+                    refreshing={this.state.isRefreshing}
+                    onRefresh={this.refreshingData}
+                    tintColor={[FontAndColor.COLORB0]}
+                    colors={[FontAndColor.COLORB0]}
+                />
+            }>
                 <View style={{flex: 1}}>
 
                     <View style={{

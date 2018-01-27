@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, ScrollView, Image,Platform,NativeModules,Linking
+    View, TouchableOpacity, Dimensions, ScrollView, Image,Platform,NativeModules,Linking,RefreshControl
 } from 'react-native';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
@@ -52,7 +52,8 @@ export default class CheckWaybill extends BaseComponent {
             renderPlaceholderOnly: false,
             payStatus: true,
             feeDatas:feeDatas,
-            accoutInfo:accoutInfo
+            accoutInfo:accoutInfo,
+            isRefreshing:false
 
         }
     }
@@ -105,7 +106,9 @@ export default class CheckWaybill extends BaseComponent {
                     this.setState({
                         renderPlaceholderOnly: 'success',
                         feeDatas:feeDatas,
-                        accoutInfo:accoutInfo});
+                        accoutInfo:accoutInfo,
+                        isRefreshing:false
+                    });
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error',});
@@ -253,6 +256,11 @@ export default class CheckWaybill extends BaseComponent {
 
     }
 
+    refreshingData = () => {
+        this.setState({isRefreshing: true});
+        this.getData();
+    };
+
     callUp=()=>{
         if (Platform.OS === 'android') {
             NativeModules.VinScan.callPhone(this.number);
@@ -270,7 +278,14 @@ export default class CheckWaybill extends BaseComponent {
         } else {
             return (<View style={styles.container}>
 
-                <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+                <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false} refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.isRefreshing}
+                        onRefresh={this.refreshingData}
+                        tintColor={[FontAndColor.COLORB0]}
+                        colors={[FontAndColor.COLORB0]}
+                    />
+                }>
                     <View style={{flex: 1, marginTop: Pixel.getTitlePixel(65),}}>
                         {
                             this._renderItem()
