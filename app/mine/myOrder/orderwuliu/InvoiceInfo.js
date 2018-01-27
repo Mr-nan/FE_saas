@@ -38,6 +38,7 @@ export default class InvoiceInfo extends BaseComponent {
             renderPlaceholderOnly: false,
             accoutInfo: accoutInfo,
             contractName: this.contractName,
+            feeDatas:feeDatas,
         }
     }
 
@@ -53,8 +54,7 @@ export default class InvoiceInfo extends BaseComponent {
         };
         request(Urls.GETINVOICEINFO, 'Post', maps)
             .then((response) => {
-                    console.log('-----', accoutInfo);
-                    if (response.mjson.data !== null && response.mjson.data.length > 0) {
+                    if (response.mjson.data !== null && response.mjson.data!==[]) {
                         let data = response.mjson.data;
                         accoutInfo = [];
                         feeDatas = [];
@@ -68,12 +68,12 @@ export default class InvoiceInfo extends BaseComponent {
                         accoutInfo.push({title: '收车地址', value: data.address})
                         this.contractName = data.contact_name;
 
-
                     }
                     this.setState({
                         renderPlaceholderOnly: 'success',
                         contractName: this.contractName,
-                        accoutInfo: accoutInfo
+                        accoutInfo: accoutInfo,
+                        feeDatas:feeDatas
                     });
                 },
                 (error) => {
@@ -149,7 +149,8 @@ export default class InvoiceInfo extends BaseComponent {
                     paddingHorizontal: Pixel.getPixel(15)
                 }}>
                     {
-                        feeDatas.map((data, index) => {
+                        this.state.feeDatas.map((data, index) => {
+                            console.log('-------',data);
                             return (
                                 <View key={index + 'fee'} style={styles.content_title_text_wrap}>
                                     <Text style={styles.content_title_text}>{data.title}</Text>
