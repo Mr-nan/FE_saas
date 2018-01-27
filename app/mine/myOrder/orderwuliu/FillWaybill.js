@@ -61,23 +61,23 @@ export default class FillWaybill extends BaseComponent {
         this.startId = '';
         this.toStore = false;
         this.warehouse_id = '';//仓库id
-        this.province='';
-        this.city='';
-        this.country='';
+        this.province = '';
+        this.city = '';
+        this.country = '';
         this.addressDatas = [];
         this.vType = this.props.vType;//1:二手车 2:新车
         this.toStore = this.props.toStore;//0到店，1到库，非融资
-        this.fromAddress=false;//来自地址管理
-        this.totalMoney=0;
+        this.fromAddress = false;//来自地址管理
+        this.totalMoney = 0;
         if (this.toStore == '0') {
             this.title = '填写运单（到店）';
             this.toStore = this.props.toStore;//运单信息到店
         } else if (this.toStore == '1') {//到库
             this.title = '填写运单（到库）';
             this.toStore = this.props.toStore;//运单信息到库
-        } else if(this.props.fromAddress){
-            this.fromAddress=this.props.fromAddress
-        }else{
+        } else if (this.props.fromAddress) {
+            this.fromAddress = this.props.fromAddress
+        } else {
             this.title = '填写运单'
         }
         this.state = {
@@ -90,7 +90,7 @@ export default class FillWaybill extends BaseComponent {
             distance: this.distance,
             accoutInfo: accoutInfo,
             isShow: false,//底部选择框
-            addressDatas:this.addressDatas,
+            addressDatas: this.addressDatas,
         }
     }
 
@@ -121,10 +121,10 @@ export default class FillWaybill extends BaseComponent {
                         this.province = end_address.province_code;
                         this.city = end_address.city_code;
                         this.country = end_address.district_code;
-                        this.transFee=parseFloat(data.trans_amount.checkCarFee).toFixed(2);
-                        this.storeFee=parseFloat(data.store_amount).toFixed(2);
+                        this.transFee = parseFloat(data.trans_amount.checkCarFee).toFixed(2);
+                        this.storeFee = parseFloat(data.store_amount).toFixed(2);
                         if (this.toStore == '1') {
-                            if (this.isEmpty(data.warehouse_id)&&this.toStore=='1') {
+                            if (this.isEmpty(data.warehouse_id) && this.toStore == '1') {
                                 this.collectAddress = '请选择'
                             } else {
                                 this.warehouse_id = data.warehouse_id;
@@ -133,15 +133,17 @@ export default class FillWaybill extends BaseComponent {
                         accoutInfo.push({title: '联系人', value: end_address.contact_name});
                         accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
                         accoutInfo.push({title: '收车地址', value: end_address.full_address});
-                        if(!this.isEmpty(data.all_amount)&& data.all_amount.length>0){
-                            data.all_amount.map((data)=>{
-                                feeDatas.push({title: data.amount_name, value: data.amount + '元'});
+                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0) {
+                            data.all_amount.map((data) => {
+                                if(parseFloat(data.amount)>0){
+                                    feeDatas.push({title: data.amount_name, value: data.amount + '元'});
+                                }
                             })
                         }
-                        if(this.fromAddress){
-                            this.totalMoney=parseFloat(data.store_amount).toFixed(2)+parseFloat(data.trans_amount.freight).toFixed(2);
+                        if (this.fromAddress) {
+                            this.totalMoney = parseFloat(data.store_amount).toFixed(2) + parseFloat(data.trans_amount.freight).toFixed(2);
                         }
-                        if (!this.isEmpty(data.trans_type) &&data.trans_type.length > 0) {
+                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0) {
                             data.trans_type.map((data) => {
                                 tagViews.push({
                                     name: data.transportType,
@@ -188,8 +190,8 @@ export default class FillWaybill extends BaseComponent {
                     if (response.mjson.data != null) {
                         let data = response.mjson.data;
                         feeDatas = [];
-                        if(!this.isEmpty(data.all_amount)&& data.all_amount.length>0){
-                            data.all_amount.map((data)=>{
+                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0) {
+                            data.all_amount.map((data) => {
                                 feeDatas.push({title: data.amount_name, value: data.amount + '元'});
                             })
                         }
@@ -269,8 +271,8 @@ export default class FillWaybill extends BaseComponent {
                                 province: data.provinceName,
                                 city: data.cityName,
                                 country: data.countyName,
-                                repoId:data.repoId,
-                                address:data.address,
+                                repoId: data.repoId,
+                                address: data.address,
                                 isCheck: false,
                             })
                         });
@@ -279,7 +281,7 @@ export default class FillWaybill extends BaseComponent {
                     this.setState({
                         renderPlaceholderOnly: 'success',
                         isShow: true,
-                        addressDatas:this.addressDatas
+                        addressDatas: this.addressDatas
                     });
                 },
                 (error) => {
@@ -320,27 +322,29 @@ export default class FillWaybill extends BaseComponent {
                         this.province = end_address.province_code;
                         this.city = end_address.city_code;
                         this.country = end_address.district_code;
-                        this.transFee=parseFloat(data.trans_amount.checkCarFee).toFixed(2);
-                        this.storeFee=parseFloat(data.store_amount).toFixed(2);
+                        this.transFee = parseFloat(data.trans_amount.checkCarFee).toFixed(2);
+                        this.storeFee = parseFloat(data.store_amount).toFixed(2);
                         if (this.toStore == '1') {
-                            if (this.isEmpty(data.warehouse_id)&&this.toStore=='1') {
+                            if (this.isEmpty(data.warehouse_id) && this.toStore == '1') {
                                 this.collectAddress = '请选择'
                             } else {
                                 this.warehouse_id = data.warehouse_id;
                             }
                         }
-                        accoutInfo.push({title: '联系人', value: end_address.contact_name});
+                        accoutInfo.push({title: '联系', value: end_address.contact_name});
                         accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
                         accoutInfo.push({title: '收车地址', value: end_address.full_address});
-                        if(!this.isEmpty(data.all_amount)&& data.all_amount.length>0){
-                            data.all_amount.map((data)=>{
-                                feeDatas.push({title: data.amount_name, value: data.amount + '元'});
+                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0) {
+                            data.all_amount.map((data) => {
+                                if(parseFloat(data.amount)>0){
+                                    feeDatas.push({title: data.amount_name, value: data.amount + '元'});
+                                }
                             })
                         }
-                        if(this.fromAddress){
-                            this.totalMoney=parseFloat(data.store_amount).toFixed(2)+parseFloat(data.trans_amount.freight).toFixed(2);
+                        if (this.fromAddress) {
+                            this.totalMoney = parseFloat(data.store_amount).toFixed(2) + parseFloat(data.trans_amount.freight).toFixed(2);
                         }
-                        if (!this.isEmpty(data.trans_type) &&data.trans_type.length > 0) {
+                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0) {
                             data.trans_type.map((data) => {
                                 tagViews.push({
                                     name: data.transportType,
@@ -391,18 +395,18 @@ export default class FillWaybill extends BaseComponent {
         this.getData();
     }
 
-    confirm=(repoId,index)=>{
-        this.warehouse_id=repoId;
-        this.state.accoutInfo[2].value=this.addressDatas[index].address;
+    confirm = (repoId, index) => {
+        this.warehouse_id = repoId;
+        this.state.accoutInfo[2].value = this.addressDatas[index].address;
         this.setState({
-            isShow:false,
-            collectAddress:this.addressDatas[index].city+this.addressDatas[index].country,
+            isShow: false,
+            collectAddress: this.addressDatas[index].city + this.addressDatas[index].country,
             accoutInfo: this.state.accoutInfo
         });
     }
-    closeModal=()=>{
+    closeModal = () => {
         this.setState({
-            isShow:false
+            isShow: false
         });
     }
 
@@ -420,200 +424,211 @@ export default class FillWaybill extends BaseComponent {
 
     _renderItem = () => {
         return (
-            <View style={{flex: 1}}>
-                <View style={{
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    height: Pixel.getPixel(120),
-                    backgroundColor: FontAndColor.COLORB0,
-                    paddingTop: Pixel.getPixel(30),
-                    marginBottom: Pixel.getPixel(10)
-                }}>
-                    <View style={{marginLeft: Pixel.getPixel(15)}}>
-                        <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: Pixel.getPixel(7)}}>
-                            <Image source={collect_icon} style={{marginRight: Pixel.getPixel(3),}}></Image>
-                            <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>发车地</Text>
-                        </View>
-                        <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> {this.startAdress}</Text>
-                    </View>
-                    <View style={{alignItems: 'center', marginBottom: Pixel.getPixel(5)}}>
-                        <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>{this.state.distance + "公里"}</Text>
-                        <Image source={imaginary_icon} style={{
-                            width: Pixel.getPixel(120),
-                            marginTop: Pixel.getPixel(5)
-                        }}></Image>
-                    </View>
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                        if (this.collectAddress == '请选择') {
-                            this.getWarehouse()
-                        } else {
-                            this.toNextPage({
-                                    name: 'AddressManage',
-                                    component: AddressManage,
-                                    params: {
-                                        addressId: this.endId,
-                                        callBack: this.updateAddress
-                                    }
-                                }
-                            );
-                        }
+            <ScrollView style={{flex: 1}}>
+                <View style={{flex: 1}}>
+
+                    <View style={{
+                        justifyContent: 'space-between',
+                        flexDirection: 'row',
+                        height: Pixel.getPixel(120),
+                        backgroundColor: FontAndColor.COLORB0,
+                        paddingTop: Pixel.getPixel(30),
+                        marginBottom: Pixel.getPixel(10)
                     }}>
-                        <View style={{marginRight: Pixel.getPixel(15)}}>
+                        <View style={{marginLeft: Pixel.getPixel(15)}}>
                             <View style={{
                                 flexDirection: 'row',
-                                marginBottom: Pixel.getPixel(7),
-                                justifyContent: 'flex-end',
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                marginBottom: Pixel.getPixel(7)
                             }}>
-                                <Image source={depart_icon} style={{marginRight: Pixel.getPixel(3)}}></Image>
-
-                                <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>收车地</Text>
-                                <Image source={white_jiantou} style={{marginLeft: Pixel.getPixel(5)}}></Image>
+                                <Image source={collect_icon} style={{marginRight: Pixel.getPixel(3),}}></Image>
+                                <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>发车地</Text>
                             </View>
+                            <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}> {this.startAdress}</Text>
+                        </View>
+                        <View style={{alignItems: 'center', marginBottom: Pixel.getPixel(5)}}>
                             <Text style={{
                                 color: 'white',
                                 fontSize: Pixel.getPixel(15)
-                            }}> {this.state.collectAddress}</Text>
+                            }}>{this.state.distance + "公里"}</Text>
+                            <Image source={imaginary_icon} style={{
+                                width: Pixel.getPixel(120),
+                                marginTop: Pixel.getPixel(5)
+                            }}></Image>
                         </View>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{backgroundColor: 'white', marginBottom: Pixel.getPixel(10)}}>
-                    <View style={styles.content_tag_wrap}>
-                        <Text style={{color: 'black'}}> 运输类型</Text>
-                        
-                        <View style={{
-                            height: Pixel.getPixel(49),
-                            justifyContent: 'center',
-                            marginRight: Pixel.getPixel(5),
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                            if (this.collectAddress == '请选择') {
+                                this.getWarehouse()
+                            } else {
+                                this.toNextPage({
+                                        name: 'AddressManage',
+                                        component: AddressManage,
+                                        params: {
+                                            addressId: this.endId,
+                                            callBack: this.updateAddress
+                                        }
+                                    }
+                                );
+                            }
                         }}>
-                            <TagSelectView ref={(ref) => {
-                                this.tagRef = ref;
-                            }} onTagClick={this.onTagClick} cellData={this.state.tagViews} buttonWidth={Pixel.getPixel(80)}/>
-                        </View>
-                    </View>
+                            <View style={{marginRight: Pixel.getPixel(15)}}>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    marginBottom: Pixel.getPixel(7),
+                                    justifyContent: 'flex-end',
+                                    alignItems: 'center'
+                                }}>
+                                    <Image source={depart_icon} style={{marginRight: Pixel.getPixel(3)}}></Image>
 
-                    {
-                        this.state.feeDatas.map((data, index) => {
-                            return (
-                                <View key={index + 'fee'} style={styles.content_title_text_wrap}>
-                                    <Text style={styles.content_title_text}>{data.title}</Text>
-                                    <Text style={styles.content_base_Right}>{data.value}</Text>
+                                    <Text style={{color: 'white', fontSize: Pixel.getPixel(15)}}>收车地</Text>
+                                    <Image source={white_jiantou} style={{marginLeft: Pixel.getPixel(5)}}></Image>
                                 </View>
-                            )
-                        })
-                    }
-
-                </View>
-
-                <View style={{
-                    backgroundColor: 'white',
-                    marginBottom: Pixel.getPixel(10),
-                    paddingVertical: Pixel.getPixel(10)
-                }}>
-                    {
-                        this.state.accoutInfo.map((data, index) => {
-                            return (
-                                <View key={index + 'accoutInfo'} style={styles.content_title_text_wrap}>
-                                    <Text style={styles.content_title_text}>{data.title}</Text>
-                                    <View style={{
-                                        flexWrap: 'wrap',
-                                        height: Pixel.getPixel(51),
-                                        width: width * 3 / 4,
-                                        justifyContent: 'center'
-                                    }}>
-                                        <Text style={[styles.content_base_Right]}>{data.value}</Text>
-                                    </View>
-                                </View>
-                            )
-                        })
-                    }
-
-                </View>
-
-                {this.fromAddress && <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                    // this.toNextPage({
-                    //         name: 'WaybillToStore',
-                    //         component: WaybillToStore,
-                    //         params: {}
-                    //     }
-                    // );
-                }}>
-                    <View style={[styles.content_base_wrap, {marginBottom: Pixel.getPixel(10)}]}>
-                        <View style={styles.content_base_text_wrap}>
-                            <Text style={[styles.content_base_left, {color: 'black'}]}>运单信息（到库）</Text>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{'查看'}</Text>
-                                <Image source={cellJianTou} style={styles.image}></Image>
+                                <Text style={{
+                                    color: 'white',
+                                    fontSize: Pixel.getPixel(15)
+                                }}> {this.state.collectAddress}</Text>
                             </View>
-
-                        </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>}
+
+                    <View style={{backgroundColor: 'white', marginBottom: Pixel.getPixel(10)}}>
+                        <View style={styles.content_tag_wrap}>
+                            <Text style={{color: 'black'}}> 运输类型</Text>
+
+                            <View style={{
+                                height: Pixel.getPixel(49),
+                                justifyContent: 'center',
+                                marginRight: Pixel.getPixel(5),
+                            }}>
+                                <TagSelectView ref={(ref) => {
+                                    this.tagRef = ref;
+                                }} onTagClick={this.onTagClick} cellData={this.state.tagViews}
+                                               buttonWidth={Pixel.getPixel(80)}/>
+                            </View>
+                        </View>
+
+                        {
+                            this.state.feeDatas.map((data, index) => {
+                                return (
+                                    <View key={index + 'fee'} style={styles.content_title_text_wrap}>
+                                        <Text style={styles.content_title_text}>{data.title}</Text>
+                                        <Text style={styles.content_base_Right}>{data.value}</Text>
+                                    </View>
+                                )
+                            })
+                        }
+
+                    </View>
+
+                    <View style={{
+                        backgroundColor: 'white',
+                        marginBottom: Pixel.getPixel(10),
+                        paddingVertical: Pixel.getPixel(10)
+                    }}>
+                        {
+                            this.state.accoutInfo.map((data, index) => {
+                                return (
+                                    <View key={index + 'accoutInfo'} style={styles.content_title_text_wrap}>
+                                        <Text style={styles.content_title_text}>{data.title}</Text>
+                                        <View style={{
+                                            flexWrap: 'wrap',
+                                            height: Pixel.getPixel(51),
+                                            width: width * 3 / 4,
+                                            justifyContent: 'center'
+                                        }}>
+                                            <Text style={[styles.content_base_Right]}>{data.value}</Text>
+                                        </View>
+                                    </View>
+                                )
+                            })
+                        }
+
+                    </View>
+
+                    {this.fromAddress && <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                        // this.toNextPage({
+                        //         name: 'WaybillToStore',
+                        //         component: WaybillToStore,
+                        //         params: {}
+                        //     }
+                        // );
+                    }}>
+                        <View style={[styles.content_base_wrap, {marginBottom: Pixel.getPixel(10)}]}>
+                            <View style={styles.content_base_text_wrap}>
+                                <Text style={[styles.content_base_left, {color: 'black'}]}>运单信息（到库）</Text>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text
+                                        style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{'查看'}</Text>
+                                    <Image source={cellJianTou} style={styles.image}></Image>
+                                </View>
+
+                            </View>
+                        </View>
+                    </TouchableOpacity>}
 
 
-                {this.vType == 2 && <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                    this.toNextPage({
-                            name: 'InvoiceInfo',
-                            component: InvoiceInfo,
-                            params: {
-                                orderId: this.props.orderId,
-                                endId: this.endId,
-                                accoutInfo: this.state.accoutInfo,
-                                callBack: (data) => {
-                                    this.invoiceId = data.id;
-                                    this.setState({
-                                        invoiceTitle: data.invoice_title,
-                                    });
+                    {this.vType == 2 && <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                        this.toNextPage({
+                                name: 'InvoiceInfo',
+                                component: InvoiceInfo,
+                                params: {
+                                    orderId: this.props.orderId,
+                                    endId: this.endId,
+                                    accoutInfo: this.state.accoutInfo,
+                                    callBack: (data) => {
+                                        this.invoiceId = data.id;
+                                        this.setState({
+                                            invoiceTitle: data.invoice_title,
+                                        });
+                                    }
                                 }
                             }
-                        }
-                    );
-                }}>
-                    <View style={styles.content_base_wrap}>
-                        <View style={styles.content_base_text_wrap}>
-                            <Text style={[styles.content_base_left, {color: 'black'}]}>发票</Text>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text
-                                    style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{this.state.invoiceTitle}</Text>
-                                <Image source={cellJianTou} style={styles.image}></Image>
+                        );
+                    }}>
+                        <View style={styles.content_base_wrap}>
+                            <View style={styles.content_base_text_wrap}>
+                                <Text style={[styles.content_base_left, {color: 'black'}]}>发票</Text>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text
+                                        style={[styles.content_base_Right, {color: FontAndColor.COLORA1}]}>{this.state.invoiceTitle}</Text>
+                                    <Image source={cellJianTou} style={styles.image}></Image>
+                                </View>
+
                             </View>
-
                         </View>
-                    </View>
-                </TouchableOpacity>}
+                    </TouchableOpacity>}
 
-                {/*<View style={{alignItems: 'center', flexDirection: 'row',marginTop: Pixel.getPixel(10),}}>*/}
-                {/*<TouchableOpacity activeOpacity={0.8} onPress={() => {*/}
-                {/*this.setState({*/}
-                {/*isAgree: !this.state.isAgree*/}
-                {/*});*/}
-                {/*}}>*/}
-                {/*<View style={{*/}
-                {/*flexDirection: 'row',*/}
-                {/*alignItems: 'center',*/}
-                {/*marginLeft: Pixel.getPixel(15)*/}
-                {/*}}>*/}
-                {/*<Image source={this.state.isAgree ? agree_icon : disagree}*/}
-                {/*style={{marginRight: Pixel.getPixel(3)}}></Image>*/}
-                {/*<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>我已同意签署物流协议</Text>*/}
-                {/*</View>*/}
-                {/*</TouchableOpacity>*/}
-                {/*<TouchableOpacity activeOpacity={0.8} onPress={() => {*/}
-                {/*alert('1111')*/}
-                {/*}}>*/}
-                {/*<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14),}}>《物流协议》</Text>*/}
-                {/*</TouchableOpacity>*/}
-                {/*</View>*/}
-
-                <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'确定'}
-                          parentStyle={styles.loginBtnStyle}
-                          childStyle={styles.loginButtonTextStyle}
-                          mOnPress={() => {
-                              this.confirmBt();
-                          }}/>
-            </View>
+                    {/*<View style={{alignItems: 'center', flexDirection: 'row',marginTop: Pixel.getPixel(10),}}>*/}
+                    {/*<TouchableOpacity activeOpacity={0.8} onPress={() => {*/}
+                    {/*this.setState({*/}
+                    {/*isAgree: !this.state.isAgree*/}
+                    {/*});*/}
+                    {/*}}>*/}
+                    {/*<View style={{*/}
+                    {/*flexDirection: 'row',*/}
+                    {/*alignItems: 'center',*/}
+                    {/*marginLeft: Pixel.getPixel(15)*/}
+                    {/*}}>*/}
+                    {/*<Image source={this.state.isAgree ? agree_icon : disagree}*/}
+                    {/*style={{marginRight: Pixel.getPixel(3)}}></Image>*/}
+                    {/*<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>我已同意签署物流协议</Text>*/}
+                    {/*</View>*/}
+                    {/*</TouchableOpacity>*/}
+                    {/*<TouchableOpacity activeOpacity={0.8} onPress={() => {*/}
+                    {/*alert('1111')*/}
+                    {/*}}>*/}
+                    {/*<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14),}}>《物流协议》</Text>*/}
+                    {/*</TouchableOpacity>*/}
+                    {/*</View>*/}
+                    {!this.fromAddress && <MyButton buttonType={MyButton.TEXTBUTTON}
+                                                    content={'确定'}
+                                                    parentStyle={styles.loginBtnStyle}
+                                                    childStyle={styles.loginButtonTextStyle}
+                                                    mOnPress={() => {
+                                                        this.confirmBt();
+                                                    }}/>}
+                </View>
+            </ScrollView>
         );
 
     }
@@ -665,23 +680,25 @@ export default class FillWaybill extends BaseComponent {
                         marginRight: Pixel.getPixel(10)
                     }} onPress={() => {
                         this.toNextPage({
-                                    name: 'LogisticsCheckStand',
-                                    component: LogisticsCheckStand,
-                                    params: {
-                                        totalMoney: 100,
-                                        storeFee: 50,
-                                        transFee:50
-                                        
-                                    }
+                                name: 'LogisticsCheckStand',
+                                component: LogisticsCheckStand,
+                                params: {
+                                    totalMoney: 100,
+                                    storeFee: 50,
+                                    transFee: 50
+
                                 }
-                            );
+                            }
+                        );
                     }}
                     >
                         <Text style={{color: 'white', fontSize: 18}}>支付</Text>
                     </TouchableOpacity>
                 </View>}
                 <AccountModal ref="accountModal"/>
-                {this.state.isShow && < SelectProvinceCityModal ref='selectProvinceCityModal' datas={this.state.addressDatas} confirm={this.confirm} closeModal={this.closeModal}/>}
+                {this.state.isShow &&
+                < SelectProvinceCityModal ref='selectProvinceCityModal' datas={this.state.addressDatas}
+                                          confirm={this.confirm} closeModal={this.closeModal}/>}
                 <NavigatorView title={this.title} backIconClick={this.backPg}/>
             </View>)
         }
@@ -752,9 +769,8 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         width: width - Pixel.getPixel(30),
         backgroundColor: FontAndColor.COLORB0,
-        marginTop: Pixel.getPixel(10),
-        bottom: Pixel.getPixel(10),
-        position: 'absolute',
+        marginTop: Pixel.getPixel(15),
+        marginBottom:Pixel.getPixel(10),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),
