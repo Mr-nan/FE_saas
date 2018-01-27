@@ -144,10 +144,10 @@ export default class FillWaybill extends BaseComponent {
                             this.totalMoney = parseFloat(data.store_amount).toFixed(2) + parseFloat(data.trans_amount.freight).toFixed(2);
                         }
                         if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0) {
-                            data.trans_type.map((data) => {
+                            data.trans_type.map((data,index) => {
                                 tagViews.push({
                                     name: data.transportType,
-                                    check: data.transportTypeCode == 1 ? true : false,
+                                    check: index == 0 ? true : false,
                                     transportTypeCode: data.transportTypeCode
                                 })
 
@@ -192,13 +192,17 @@ export default class FillWaybill extends BaseComponent {
                         feeDatas = [];
                         if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0) {
                             data.all_amount.map((data) => {
-                                feeDatas.push({title: data.amount_name, value: data.amount + '元'});
+                                if(parseFloat(data.amount)>0){
+                                feeDatas.push({title: data.amount_name, value: data.amount + '元'});}
                             })
                         }
                         this.setState({
                             feeDatas: feeDatas,
                             distance: this.distance
-                        });
+                        },()=>{
+                            this.tagRef.refreshData(tagViews);
+                            }
+                        );
 
 
                     }
@@ -345,10 +349,10 @@ export default class FillWaybill extends BaseComponent {
                             this.totalMoney = parseFloat(data.store_amount).toFixed(2) + parseFloat(data.trans_amount.freight).toFixed(2);
                         }
                         if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0) {
-                            data.trans_type.map((data) => {
+                            data.trans_type.map((data,index) => {
                                 tagViews.push({
                                     name: data.transportType,
-                                    check: data.transportTypeCode == 1 ? true : false,
+                                    check:  index== 0 ? true : false,
                                     transportTypeCode: data.transportTypeCode
                                 })
 
@@ -358,11 +362,11 @@ export default class FillWaybill extends BaseComponent {
 
                         }
                     }
+                    this.tagRef.refreshData(tagViews);
                     this.setState({
                         renderPlaceholderOnly: 'success',
                         collectAddress: this.collectAddress,
                         feeDatas: feeDatas,
-                        tagViews: tagViews,
                         accoutInfo: accoutInfo,
                         distance: this.distance
 
@@ -412,13 +416,11 @@ export default class FillWaybill extends BaseComponent {
 
     onTagClick = (dt, index) => {
         //单选
-        this.state.tagViews.map((data) => {
+        tagViews.map((data) => {
             data.check = false;
         });
-        this.state.tagViews[index].check = !this.state.tagViews[index].check;
-        this.transType = this.state.tagViews[index].transportTypeCode;
-
-        this.tagRef.refreshData(this.state.tagViews);
+        tagViews[index].check = !tagViews[index].check;
+        this.transType = tagViews[index].transportTypeCode;
         this.getTransFee();
     }
 
@@ -568,6 +570,7 @@ export default class FillWaybill extends BaseComponent {
 
 
                     {this.vType == 2 && <TouchableOpacity activeOpacity={0.8} onPress={() => {
+
                         this.toNextPage({
                                 name: 'InvoiceInfo',
                                 component: InvoiceInfo,
