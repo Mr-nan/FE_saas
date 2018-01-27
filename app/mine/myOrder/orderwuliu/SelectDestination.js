@@ -24,7 +24,6 @@ export default class SelectDestination extends BaseComponent {
         super(props);
         this.orderId = this.props.orderId,
             this.vType = this.props.vType,
-            this.callBack = this.props.callBack,
             this.maxLoanmny = this.props.maxLoanmny
         this.state = {
             renderPlaceholderOnly: false,
@@ -52,7 +51,10 @@ export default class SelectDestination extends BaseComponent {
                 toStore: this.toStore,
                 orderId: this.orderId,
                 vType: this.vType,
-                callBack: this.callBack,
+                callBack: (data)=>{
+                    this.backPage();
+                    this.props.callBack(data);
+                },
                 maxLoanmny: this.maxLoanmny,
                 logisticsType:this.logisticsType
             }
