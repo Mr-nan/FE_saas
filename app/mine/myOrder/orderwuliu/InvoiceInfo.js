@@ -38,7 +38,7 @@ export default class InvoiceInfo extends BaseComponent {
             renderPlaceholderOnly: false,
             accoutInfo: accoutInfo,
             contractName: this.contractName,
-            feeDatas:feeDatas,
+            feeDatas: feeDatas,
         }
     }
 
@@ -54,26 +54,28 @@ export default class InvoiceInfo extends BaseComponent {
         };
         request(Urls.GETINVOICEINFO, 'Post', maps)
             .then((response) => {
-                    if (response.mjson.data !== null && response.mjson.data!==[]) {
+                    if (response.mjson.data !== null && response.mjson.data !== []) {
                         let data = response.mjson.data;
-                        accoutInfo = [];
-                        feeDatas = [];
-                        this.riseText = data.invoice_title;//抬头
-                        this.num = data.invoice_code;
-                        this.addressId = data.address_id;
-                        feeDatas.push({title: '发票类型', value: '增值税普通发票'})
-                        feeDatas.push({title: '发票抬头', value: data.invoice_title})
-                        feeDatas.push({title: '纳税人识别号', value: data.invoice_code})
-                        accoutInfo.push({title: '联系电话', value: data.contact_phone})
-                        accoutInfo.push({title: '收车地址', value: data.address})
-                        this.contractName = data.contact_name;
+                        if (!this.isEmpty(data.contact_phone)) {
+                            accoutInfo = [];
+                            feeDatas = [];
+                            this.riseText = data.invoice_title;//抬头
+                            this.num = data.invoice_code;
+                            this.addressId = data.address_id;
+                            feeDatas.push({title: '发票类型', value: '增值税普通发票'})
+                            feeDatas.push({title: '发票抬头', value: data.invoice_title})
+                            feeDatas.push({title: '纳税人识别号', value: data.invoice_code})
+                            accoutInfo.push({title: '联系电话', value: data.contact_phone})
+                            accoutInfo.push({title: '收车地址', value: data.address})
+                            this.contractName = data.contact_name;
+                        }
 
                     }
                     this.setState({
                         renderPlaceholderOnly: 'success',
                         contractName: this.contractName,
                         accoutInfo: accoutInfo,
-                        feeDatas:feeDatas
+                        feeDatas: feeDatas
                     });
                 },
                 (error) => {
@@ -150,7 +152,7 @@ export default class InvoiceInfo extends BaseComponent {
                 }}>
                     {
                         this.state.feeDatas.map((data, index) => {
-                            console.log('-------',data);
+                            console.log('-------', data);
                             return (
                                 <View key={index + 'fee'} style={styles.content_title_text_wrap}>
                                     <Text style={styles.content_title_text}>{data.title}</Text>
