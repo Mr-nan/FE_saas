@@ -36,6 +36,7 @@ import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
 import AuthenticationModal from '../component/AuthenticationModal';
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
+import OrderTypeSelectSceneOld from  '../mine/myOrderOld/OrderTypeSelectScene';
 import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
 import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
 import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
@@ -110,6 +111,7 @@ export default class MineScene extends BaseComponent {
         super(props);
         // 初始状态
         //    拿到所有的json数据
+        this.isLogistics = 'true';
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -514,14 +516,32 @@ export default class MineScene extends BaseComponent {
                                 lastType = response.mjson.data.account.status;
                             }
                             // lastType = '3';、
-                            this.changeData();
+                            this.getLogisticsKey();
                         },
                         (error) => {
-                            this.changeData();
+                            this.getLogisticsKey();
                         });
             }
         });
-    }
+    };
+
+
+    /**
+     *   订单物流开关接口
+     **/
+    getLogisticsKey = () => {
+        let maps = {
+
+        };
+        let url = Urls.LOGISTICS_SWITCH;
+        request(url, 'post', maps).then((response) => {
+            this.isLogistics = response.mjson.data;
+            this.changeData();
+        }, (error) => {
+            this.changeData();
+        });
+    };
+
     allRefresh = () => {
         firstType = '-1';
         lastType = '-1';
@@ -661,8 +681,13 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.component = MycarScene
                 break;
             case 52:
-                this.navigatorParams.name = 'OrderTypeSelectScene'
-                this.navigatorParams.component = OrderTypeSelectScene
+                if (this.isLogistics === 'false') {
+                    this.navigatorParams.name = 'OrderTypeSelectSceneOld'
+                    this.navigatorParams.component = OrderTypeSelectSceneOld
+                } else {
+                    this.navigatorParams.name = 'OrderTypeSelectScene'
+                    this.navigatorParams.component = OrderTypeSelectScene
+                }
                 break;
             case 69:
                 this.navigatorParams.name = 'AddressManageListScene'

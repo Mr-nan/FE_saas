@@ -44,6 +44,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+        console.log('订单物流');
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
