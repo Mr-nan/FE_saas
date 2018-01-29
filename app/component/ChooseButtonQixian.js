@@ -13,8 +13,9 @@ import {
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from '../utils/PixelUtil';
 var Pixel = new PixelUtil();
+import {width, height, adapeSize, PAGECOLOR, fontadapeSize} from '../finance/lend/component/MethodComponent'
 
-export default class ChooseButton extends PureComponent {
+export default class ChooseButtonQixian extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,7 +42,6 @@ export default class ChooseButton extends PureComponent {
             <TouchableHighlight onPress={this.props.onPressButton}>
                 <View style={[styles.itemBackground, this.props.itemBackground]}>
                     <Text allowFontScaling={false}  style={[styles.leftFont, this.props.leftFont]}>
-                        <Text allowFontScaling={false}  style={{color: FontAndColor.COLORB2}}>*</Text>
                         {this.props.leftText}
                     </Text>
                     <Text allowFontScaling={false} style={styles.headerCellRight}>{this.state.dengjiren}</Text>
@@ -74,11 +74,13 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     leftFont: {
-        fontSize: Pixel.getFontPixel(14),
+        fontSize:fontadapeSize(14),
         color: 'black'
     },
     headerCellRight: {
         flex: 1,
-        textAlign:'right'
+        textAlign:'right',
+        fontSize:fontadapeSize(14),
+
     },
 });

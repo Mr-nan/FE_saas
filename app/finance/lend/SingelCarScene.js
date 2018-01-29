@@ -29,9 +29,10 @@ import AllNavigatior from '../../component/AllNavigationView'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
-
+import Picker from 'react-native-picker';
 
 const PostData={
+    dateLimit:'',
     apply_type:'2',
     loan_mny:'',
     use_time:'',
@@ -39,7 +40,6 @@ const PostData={
 }
 const showData={
     companyName:'',
-    dateLimit:'',
     lendType:'',
     maxMoney:'',
     rate:'',
@@ -50,8 +50,8 @@ const showData={
 const verificationtips={
     loan_mny:'请输入借款金额',
     remark:'请输入借款用途',
-    use_time:'请选择用款时间'
-
+    use_time:'请选择用款时间',
+    dateLimit:'请选择借款期限',
 }
 
 let changeDate;
@@ -65,9 +65,11 @@ export default class SingelCarSence extends BaseComponent {
         // 初始状态
         this.state = {
             isDateTimePickerVisible: false,
-            renderPlaceholderOnly: STATECODE.loading
+            renderPlaceholderOnly: STATECODE.loading,
+
         }
       }
+
     initFinish() {
 
        this.getLendinfo();
@@ -83,7 +85,7 @@ export default class SingelCarSence extends BaseComponent {
              let tempjson = response.mjson.data
              showData.companyName = this.props.customerName,
              showData.lendType = tempjson.product_type,
-             showData.dateLimit = tempjson.loan_life,
+             // showData.dateLimit = tempjson.loan_life,
              showData.maxMoney = changeToMillion(tempjson.min_loanmny) + '-' + changeToMillion(tempjson.max_loanmny) + '万',
              showData.tempMin=changeToMillion(tempjson.min_loanmny);
              showData.tempMax=changeToMillion(tempjson.max_loanmny);
@@ -112,9 +114,11 @@ export default class SingelCarSence extends BaseComponent {
     dataSourceBlob = [
         {title: '借款主体', key: 'companyName'},
         {title: '借款类型', key: 'lendType'},
+        {title: '可借额度', key: 'maxMoney'},
         {title: '借款期限', key: 'dateLimit'},
-        {title: '可借额度', key: 'maxMoney'}
     ];
+    dateBlob =['30天','90天','180天','360天'];
+
     //datePiker的方法
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
     //datePiker的回调
@@ -124,18 +128,17 @@ export default class SingelCarSence extends BaseComponent {
         PostData.use_time=tempdate;
         this._hideDateTimePicker();
     }
-//日历按钮事件
+    //日历按钮事件
     onPress = (changeText)=> {
         changeDate=changeText;
         this.setState({ isDateTimePickerVisible: true });
     }
-//申请借款
+    //申请借款
     applyForMoney = ()=> {
 
         let infoComolete = true;
 
         for(temp in PostData){
-
            if(PostData[temp]===''){
                this.props.showToast(verificationtips[temp]);
                infoComolete=false;
@@ -179,6 +182,30 @@ export default class SingelCarSence extends BaseComponent {
 
 
     }
+    /**
+     * 点击选择借款期限
+     * onPressButton
+     **/
+    onPressButton = () => {
+        QIXIAN = [ '30天','90天'];
+
+
+        this.toNextPage(
+            {
+                name: 'SelectDJRScene',
+                component: SelectDJRScene,
+                params: {
+                    regShowData: QIXIAN,
+                    title: '选择借款期限',
+                    callBack: (name, index) => {
+
+                        this.refs.dancheqixian.changeRightText(name);
+                        PostData.dateLimit = name;
+                        // showData.dateLimit = name;
+                    }
+                }
+            })
+    }
     render() {
         if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess){
            return( <View style={styles.container}>
@@ -190,8 +217,14 @@ export default class SingelCarSence extends BaseComponent {
            </View>);
         }
         let itemBlob = [];
+        let itemBlobQIXIAN = [];
         this.dataSourceBlob.map((item)=> {
-            itemBlob.push(<LendItem key={item.key} leftTitle={item.title} rightTitle={showData[item.key]}/>)
+            if(item.title ==  '借款期限'){
+
+            }else {
+                itemBlob.push(<LendItem key={item.key} leftTitle={item.title} rightTitle={showData[item.key]}/>)
+
+            }
         });
         return (
             <View style={styles.container}>
@@ -200,6 +233,29 @@ export default class SingelCarSence extends BaseComponent {
                         <View style={styles.lendInfo}>
                             {itemBlob}
                         </View>
+                        <View style={{marginBottom:10,}}>
+                            <LendDatePike ref={(limit)=>{this.dateLimit=limit}} onPress={()=>{
+                                Picker.init({
+                                    pickerData: this.dateBlob,
+                                    selectedValue: [0],
+                                    pickerConfirmBtnText:'确认',
+                                    pickerCancelBtnText:'取消',
+                                    pickerTitleText:'选择期限天数',
+                                    onPickerConfirm: data => {
+                                        let tempString=data.toString();
+                                        let  placeHodel =tempString==='0'?this.dateBlob[0]:tempString;
+                                        let  num = parseInt(placeHodel);
+                                        PostData.dateLimit=num;
+                                        this.dateLimit.changeText(placeHodel);
+
+                                    },
+                                });
+                                Picker.show();
+
+                            }} lefTitle="借款期限" placeholder="请选择借款期限" imageSouce={require('../../../images/financeImages/celljiantou.png')}/>
+
+                        </View>
+
                         <View style={styles.input}>
                             <LendInputItem onChangeText={(text)=>{
                                 PostData.loan_mny=text;
@@ -248,7 +304,7 @@ const styles = StyleSheet.create({
 
     lendInfo: {
         paddingTop: adapeSize(15),
-        paddingBottom: adapeSize(10),
+        paddingBottom: adapeSize(0),
         backgroundColor: PAGECOLOR.COLORA3
     },
     input: {
