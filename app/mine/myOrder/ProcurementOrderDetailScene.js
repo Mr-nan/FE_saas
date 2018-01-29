@@ -646,7 +646,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 orderId: this.orderDetail.id,
                                 logisticsType: 4,
                                 vType: this.orderDetail.orders_item_data[0].car_data.v_type,
-                                callBack: this.payCallBack
+                                callBack: this.payCallBack,
+                                fromSingle:true
                             }
                         });
                     } else {

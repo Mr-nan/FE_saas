@@ -67,7 +67,7 @@ export default class FillWaybill extends BaseComponent {
         this.addressDatas = [];
         this.vType = this.props.vType;//1:二手车 2:新车
         this.toStore = this.props.toStore;//0到店，1到库，非融资
-        this.fromAddress = false;//来自地址管理
+        this.fromSingle = false;//来自地址管理
         this.totalMoney = 0;
         if (this.toStore == '0') {
             this.title = '填写运单（到店）';
@@ -75,8 +75,8 @@ export default class FillWaybill extends BaseComponent {
         } else if (this.toStore == '1') {//到库
             this.title = '填写运单（到库）';
             this.toStore = this.props.toStore;//运单信息到库
-        } else if (this.props.fromAddress) {
-            this.fromAddress = this.props.fromAddress
+        } else if (this.props.fromSingle) {
+            this.fromSingle = this.props.fromSingle
         } else {
             this.title = '填写运单'
         }
@@ -141,7 +141,7 @@ export default class FillWaybill extends BaseComponent {
                                 }
                             })
                         }
-                        if (this.fromAddress) {
+                        if (this.fromSingle) {
                             this.totalMoney = parseFloat(data.store_amount).toFixed(2) + parseFloat(data.trans_amount.freight).toFixed(2);
                         }
                         if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0) {
@@ -352,7 +352,7 @@ export default class FillWaybill extends BaseComponent {
                                 }
                             })
                         }
-                        if (this.fromAddress) {
+                        if (this.fromSingle) {
                             this.totalMoney = parseFloat(data.store_amount).toFixed(2) + parseFloat(data.trans_amount.freight).toFixed(2);
                         }
                         if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0) {
@@ -561,7 +561,7 @@ export default class FillWaybill extends BaseComponent {
 
                     </View>
 
-                    {this.fromAddress && <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                    {this.fromSingle && <TouchableOpacity activeOpacity={0.8} onPress={() => {
                         // this.toNextPage({
                         //         name: 'WaybillToStore',
                         //         component: WaybillToStore,
@@ -637,7 +637,7 @@ export default class FillWaybill extends BaseComponent {
                     {/*<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14),}}>《物流协议》</Text>*/}
                     {/*</TouchableOpacity>*/}
                     {/*</View>*/}
-                    {!this.fromAddress && <MyButton buttonType={MyButton.TEXTBUTTON}
+                    {!this.fromSingle && <MyButton buttonType={MyButton.TEXTBUTTON}
                                                     content={'确定'}
                                                     parentStyle={styles.loginBtnStyle}
                                                     childStyle={styles.loginButtonTextStyle}
@@ -678,7 +678,7 @@ export default class FillWaybill extends BaseComponent {
                         this._renderItem()
                     }
                 </View>
-                {this.fromAddress && <View
+                {this.fromSingle && <View
                     style={styles.footerStyle}>
                     <Text
                         style={{
