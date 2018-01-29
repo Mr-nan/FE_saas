@@ -2105,7 +2105,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                            orderDetail={this.orderDetail}
                                            orderState={this.orderState}
                                            refresh={this.payCallBack}
-                                           ordersTrans={transOrder ? this.ordersTrans : {'id' : -1, 'status': 0, total_amount : '0'}}
+                                           ordersTrans={transOrder ? this.ordersTrans : {'id' : -1, 'status': 0, total_amount : '0', logistics_type: '0'}}
                                            updateOrdersTrans={this.updateOrdersTrans}
                                            updateLogisticsType={this.updateLogisticsType}/>
             )
