@@ -474,7 +474,7 @@ export default class FillWaybill extends BaseComponent {
                             }}></Image>
                         </View>
                         <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                            if (this.collectAddress == '请选择') {
+                            if (this.toStore=='1') {
                                 this.getWarehouse()
                             } else {
                                 this.toNextPage({
