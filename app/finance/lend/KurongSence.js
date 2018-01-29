@@ -136,8 +136,13 @@ export default class KurongSence extends BaseComponent {
     }
 //日历按钮事件
     onPress = (changeText)=> {
+        Picker.hide();
         changeDate=changeText;
         this.setState({ isDateTimePickerVisible: true });
+    }
+    _backPage = () =>{
+        this.backPage();
+        Picker.hide();
     }
 //申请借款
     onClickLend = ()=> {
@@ -260,7 +265,7 @@ export default class KurongSence extends BaseComponent {
                     this.props.backRefresh();
                     this.backToTop()
                 }} title='借款成功'subtitle='恭喜您借款成功'/>
-                <AllNavigatior title='库融借款' backIconClick={()=>{ this.backPage()}}/>
+                <AllNavigatior title='库融借款' backIconClick={()=>{ this._backPage()}}/>
 
             </View>
         )

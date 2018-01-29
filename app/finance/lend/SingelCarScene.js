@@ -130,6 +130,7 @@ export default class SingelCarSence extends BaseComponent {
     }
     //日历按钮事件
     onPress = (changeText)=> {
+        Picker.hide();
         changeDate=changeText;
         this.setState({ isDateTimePickerVisible: true });
     }
@@ -205,6 +206,10 @@ export default class SingelCarSence extends BaseComponent {
                     }
                 }
             })
+    }
+    _backPage = () =>{
+        this.backPage();
+        Picker.hide();
     }
     render() {
         if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess){
@@ -282,7 +287,7 @@ export default class SingelCarSence extends BaseComponent {
                     this.backToTop()
                 }} title='借款成功'subtitle='恭喜您借款成功'/>
                 <LendSuccessAlert ref={(shouxin)=>{this.shouxinAlert=shouxin}} confimClick={()=>{this.backPage()}} title='需要授信'subtitle='请联系客户经理进行授信'/>
-                <AllNavigatior title='单车借款' backIconClick={()=>{ this.backPage();}}/>
+                <AllNavigatior title='单车借款' backIconClick={()=>{ this._backPage();}}/>
             </View>
         )
     }
