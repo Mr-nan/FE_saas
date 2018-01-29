@@ -153,7 +153,7 @@ export default class LogisticsMode extends BaseComponent {
                             this.tagRef = ref;
                         }} onTagClick={this.onTagClick} cellData={this.tagSelect}/>
                 </View>)}
-                {this.state.fillWaybill && (<View style={styles.separatedLine}/>)}
+                {this.state.fillWaybill && alreadyChoose.state < 2 && (<View style={styles.separatedLine}/>)}
                 {this.state.fillWaybill && (
                     <TouchableOpacity
                         onPress={() => {
