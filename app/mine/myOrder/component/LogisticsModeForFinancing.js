@@ -185,7 +185,8 @@ export default class LogisticsModeForFinancing extends BaseComponent {
     render() {
         let views = '';
         let alreadyChoose = this.transStateMapping(this.state.ordersTrans);  // 是否已经生成运单并支付完成
-        if (alreadyChoose.state < 1 && (this.state.isStore === 0 || this.state.isStore === 2)) {  // 未选择
+        if ((alreadyChoose.state < 1 && (this.state.isStore === 0 || this.state.isStore === 2)) ||
+            (this.state.ordersTrans.logistics_type !== 2 && this.state.ordersTrans.logistics_type !== 3)) {  // 未选择
             views =
                 <View style={{
                     height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
@@ -201,11 +202,11 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                             this.tagRef = ref;
                         }} onTagClick={this.onTagClick} cellData={this.tagSelect}/>
                 </View>
-        } else if (alreadyChoose.state > 0 && (this.state.isStore === 0 || this.state.isStore === 2)) {  // 选择物流
+        } else if (alreadyChoose.state > 0 && (this.state.isStore === 0 || this.state.isStore === 2) &&
+            (this.state.ordersTrans.logistics_type === 2 || this.state.ordersTrans.logistics_type === 3)) {  // 选择物流
             views =
                 <TouchableOpacity
                     onPress={() => {
-                        // TODO 跳转到运单信息
                         this.toNextPage({
                             name: 'CheckWaybill',
                             component: CheckWaybill,
@@ -221,9 +222,9 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                         height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                         paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                     }}>
-                        <Text >填写运单</Text>
+                        <Text >运单信息</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={{color: fontAndColor.COLORB0}}>{this.state.waybillState}</Text>
+                        <Text style={{color: fontAndColor.COLORB0}}>{alreadyChoose.waybillState}</Text>
                         <Image source={require('../../../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </TouchableOpacity>
