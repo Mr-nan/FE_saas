@@ -49,12 +49,12 @@ export default class SelectProvinceCityModal extends BaseComponent {
                 height: Pixel.getPixel(40),
                 width:width,
                 alignItems: 'center',
-                backgroundColor:fontAndColor.COLORA3,
+                backgroundColor:'white',
                 borderBottomWidth:1,
                 paddingHorizontal:Pixel.getPixel(35),
                 justifyContent: 'space-between',
                 borderColor:fontAndColor.COLORA4
-            },data.check&&{backgroundColor:'white',},index==this.datas.length-1&&{marginBottom:40}]}>
+            },data.check&&{backgroundColor:fontAndColor.COLORA3,}]}>
                 <Text
                     style={[{color: fontAndColor.COLORA1,fontSize:14}, data.check && {color: 'black',fontSize:16}]}>{data.province}</Text>
                 <Text
@@ -72,14 +72,16 @@ export default class SelectProvinceCityModal extends BaseComponent {
                 style={{
                     width: width,
                     height: height,
-                    backgroundColor: 'rgba(0,0,0,0.3)',
+                    backgroundColor:'rgba(0,0,0,0.3)',
+                    position:'absolute',
+                    top:0,
                 }}>
                 <View style={{
                     height: Pixel.getPixel(280),
                     backgroundColor: 'white',
                     width:Pixel.getPixel(width),
                     position:'absolute',
-                    bottom:Pixel.getPixel(30),
+                    bottom:Pixel.getPixel(5),
                 }}>
                     <View style={{height:Pixel.getPixel(280)}}>
                         <View style={{
@@ -101,11 +103,7 @@ export default class SelectProvinceCityModal extends BaseComponent {
                             </TouchableOpacity>
                             <Text>选择城市</Text>
                             <TouchableOpacity activeOpacity={0.8} onPress={()=>{
-                                if(this.repoId==''){
-                                    this.props.showToast('请选择城市');
-                                }else{
                                     this.props.confirm(this.repoId,this.index);
-                                }
                             }}>
                                 <Text style={{color:fontAndColor.COLORB0,textAlign:'center',fontSize:16}}>确定</Text>
                             </TouchableOpacity>

@@ -281,6 +281,7 @@ export default class FillWaybill extends BaseComponent {
                         let data = response.mjson.data;
                         this.addressDatas = [];
                         data.map((data) => {
+                            for(let i=0;i<7;i++){
                             this.addressDatas.push({
                                 province: data.provinceName,
                                 city: data.cityName,
@@ -288,8 +289,9 @@ export default class FillWaybill extends BaseComponent {
                                 repoId: data.repoId,
                                 address: data.address,
                                 isCheck: false,
-                            })
+                            })}
                         });
+
 
                     }
                     this.setState({
@@ -408,6 +410,10 @@ export default class FillWaybill extends BaseComponent {
     }
 
     confirm = (repoId, index) => {
+        if (this.isEmpty(index)) {
+            this.props.showToast('请选择城市');
+            return;
+        }
         this.warehouse_id = repoId;
         this.state.accoutInfo[2].value = this.addressDatas[index].address;
         this.setState({
@@ -474,7 +480,7 @@ export default class FillWaybill extends BaseComponent {
                             }}></Image>
                         </View>
                         <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                            if (this.toStore=='1') {
+                            if (this.toStore == '1') {
                                 this.getWarehouse()
                             } else {
                                 this.toNextPage({
@@ -670,59 +676,61 @@ export default class FillWaybill extends BaseComponent {
                 <NavigatorView title={this.title} backIconClick={this.backPage}/>
             </View>);
         } else {
-            return (<View style={styles.container}>
-                <View style={{flex: 1, marginTop: Pixel.getTitlePixel(64),}}>
-                    {
-                        this._renderItem()
-                    }
-                </View>
-                {this.fromSingle && <View
-                    style={styles.footerStyle}>
-                    <Text
-                        style={{
-                            color: '#666666',
-                            fontSize: 13,
-                            marginHorizontal: Pixel.getPixel(10)
-                        }}>共计:</Text>
-                    <Text style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{this.totalMoney + '元'}</Text>
-                    <TouchableOpacity activeOpacity={0.8} style={{
-                        width: Pixel.getPixel(80),
-                        height: Pixel.getPixel(38),
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: FontAndColor.COLORB0,
-                        borderRadius: 4,
-                        marginRight: Pixel.getPixel(10)
-                    }} onPress={() => {
-                        this.toNextPage({
-                                name: 'LogisticsCheckStand',
-                                component: LogisticsCheckStand,
-                                params: {
-                                    totalMoney: 100,
-                                    storeFee: 50,
-                                    transFee: 50
+            return (
+                <View style={styles.container}>
+                    <View style={{flex: 1, marginTop: Pixel.getTitlePixel(64),}}>
+                        {
+                            this._renderItem()
+                        }
+                    </View>
+                    {this.fromSingle && <View
+                        style={styles.footerStyle}>
+                        <Text
+                            style={{
+                                color: '#666666',
+                                fontSize: 13,
+                                marginHorizontal: Pixel.getPixel(10)
+                            }}>共计:</Text>
+                        <Text
+                            style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{this.totalMoney + '元'}</Text>
+                        <TouchableOpacity activeOpacity={0.8} style={{
+                            width: Pixel.getPixel(80),
+                            height: Pixel.getPixel(38),
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: FontAndColor.COLORB0,
+                            borderRadius: 4,
+                            marginRight: Pixel.getPixel(10)
+                        }} onPress={() => {
+                            this.toNextPage({
+                                    name: 'LogisticsCheckStand',
+                                    component: LogisticsCheckStand,
+                                    params: {
+                                        totalMoney: 100,
+                                        storeFee: 50,
+                                        transFee: 50
 
+                                    }
                                 }
-                            }
-                        );
-                    }}
-                    >
-                        <Text style={{color: 'white', fontSize: 18}}>支付</Text>
-                    </TouchableOpacity>
-                </View>}
-                {!this.fromSingle && <MyButton buttonType={MyButton.TEXTBUTTON}
-                                               content={'确定'}
-                                               parentStyle={styles.loginBtnStyle}
-                                               childStyle={styles.loginButtonTextStyle}
-                                               mOnPress={() => {
-                                                   this.confirmBt();
-                                               }}/>}
-                <AccountModal ref="accountModal"/>
-                {this.state.isShow &&
-                < SelectProvinceCityModal ref='selectProvinceCityModal' datas={this.state.addressDatas}
-                                          confirm={this.confirm} closeModal={this.closeModal}/>}
-                <NavigatorView title={this.title} backIconClick={this.backPg}/>
-            </View>)
+                            );
+                        }}
+                        >
+                            <Text style={{color: 'white', fontSize: 18}}>支付</Text>
+                        </TouchableOpacity>
+                    </View>}
+                    {!this.fromSingle && <MyButton buttonType={MyButton.TEXTBUTTON}
+                                                   content={'确定'}
+                                                   parentStyle={styles.loginBtnStyle}
+                                                   childStyle={styles.loginButtonTextStyle}
+                                                   mOnPress={() => {
+                                                       this.confirmBt();
+                                                   }}/>}
+                    <AccountModal ref="accountModal"/>
+                    {this.state.isShow &&
+                    < SelectProvinceCityModal ref='selectProvinceCityModal' datas={this.state.addressDatas}
+                                              confirm={this.confirm} closeModal={this.closeModal}/>}
+                    <NavigatorView title={this.title} backIconClick={this.backPg}/>
+                </View>)
         }
 
     }
