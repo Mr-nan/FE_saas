@@ -40,6 +40,7 @@ export default class CheckWaybill extends BaseComponent {
         this.isShowPay=false;
         this.trans_code='';
         this.title='查看运单';
+        this.warehouse_amount='';
         if(this.props.isShowPay){//运单信息
             this.isShowPay=true
             accoutInfo = [{title: '仓库名称', value: '刘威'}, {title: '仓库地址', value: ''}]
@@ -85,6 +86,7 @@ export default class CheckWaybill extends BaseComponent {
                         let end_address=data.end_address_data;
                         if(end_address!==null){
                             this.trans_code=data.trans_code;
+                            this.warehouse_amount=data.warehouse_amount;
                             feeDatas.push({title: '发车地', value: data.start_address_data.address});
                             feeDatas.push({title: '收车地', value: end_address.address});
                             feeDatas.push({title: '下单时间', value: data.created_time});
@@ -92,8 +94,8 @@ export default class CheckWaybill extends BaseComponent {
                             feeDatas.push({title: '运输类型', value: trans_type});
 
                             if(this.isShowPay){
-                                accoutInfo.push({title: '仓库名称', value:end_address.contact_name });
-                                accoutInfo.push({title: '仓库地址', value:end_address.contact_phone });
+                                accoutInfo.push({title: '仓库名称', value:end_address.end_warehouse_address });
+                                accoutInfo.push({title: '仓库地址', value:end_address.end_address });
                             }else{
                                 accoutInfo.push({title: '联系人', value:end_address.contact_name });
                                 accoutInfo.push({title: '联系方式', value:end_address.contact_phone });
@@ -300,7 +302,7 @@ export default class CheckWaybill extends BaseComponent {
                             fontSize: 13,
                             marginHorizontal: Pixel.getPixel(10)
                         }}>仓库费:</Text>
-                    <Text style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{50 + '元'}</Text>
+                    <Text style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{this.warehouse_amount + '元'}</Text>
                     <TouchableOpacity activeOpacity={0.8} style={{
                         width: Pixel.getPixel(80),
                         height: Pixel.getPixel(38),
@@ -314,7 +316,8 @@ export default class CheckWaybill extends BaseComponent {
                                 name: 'StorageCheckStand',
                                 component: StorageCheckStand,
                                 params: {
-                                    storeFee: 50,
+                                    payAmount: this.warehouse_amount,
+                                    orderId:this.props.orderId
                                 }
                             }
                         );

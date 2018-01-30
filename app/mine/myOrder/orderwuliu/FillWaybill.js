@@ -707,9 +707,9 @@ export default class FillWaybill extends BaseComponent {
                                     name: 'LogisticsCheckStand',
                                     component: LogisticsCheckStand,
                                     params: {
-                                        totalMoney: 100,
-                                        storeFee: 50,
-                                        transFee: 50
+                                        garageAmount: 50,//仓储费
+                                        transAmount: this.totalMoney,//物流费
+                                        orderId:this.props.orderId
 
                                     }
                                 }
