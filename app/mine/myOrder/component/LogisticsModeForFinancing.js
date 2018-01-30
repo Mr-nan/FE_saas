@@ -186,22 +186,47 @@ export default class LogisticsModeForFinancing extends BaseComponent {
     render() {
         let views = '';
         let alreadyChoose = this.transStateMapping(this.state.ordersTrans);  // 是否已经生成运单并支付完成
-        if ((alreadyChoose.state < 1 && (this.state.isStore === 0 || this.state.isStore === 2)) ||
-            (this.state.ordersTrans.logistics_type !== 2 && this.state.ordersTrans.logistics_type !== 3)) {  // 未选择
+        if (this.state.isStore === 1) {  // 选择 车已在店
             views =
-                <View style={{
-                    height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
-                    paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
-                }}>
-                    <Text >交车方式</Text>
-                    <View style={{flex: 1}}/>
-                    <TagSelectView
-                        buttonWidth={Pixel.getPixel(80)}
-                        textSize={Pixel.getPixel(15)}
-                        paddingHorizontal={Pixel.getPixel(8)}
-                        ref={(ref) => {
-                            this.tagRef = ref;
-                        }} onTagClick={this.onTagClick} cellData={this.tagSelect}/>
+                <View>
+                    <View style={{
+                        height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
+                        paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
+                    }}>
+                        <Text >车已在店</Text>
+                        <View style={{flex: 1}}/>
+                        <Text style={{color: fontAndColor.COLORB2}}>审核中</Text>
+                    </View>
+                    <View style={styles.separatedLine}/>
+                    <View style={{
+                        flexDirection: 'row', alignItems: 'center',
+                    }}>
+                        <View style={{flexDirection: 'row', alignItems: 'flex-start', margin: Pixel.getPixel(15)}}>
+                            <Text style={{
+                                color: fontAndColor.COLORA1,
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+                            }}>审核地址</Text>
+                            <View style={{flex: 1}}/>
+                            <Text style={{
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                textAlign: 'right', width: Pixel.getPixel(250)
+                            }}>
+                                {this.props.orderDetail.orders_item_data[0].store_address.full_address}
+                            </Text>
+                        </View>
+                    </View>
+                </View>
+        } else if (this.state.isStore === 3) {  // 选择 车已在店
+            views =
+                <View>
+                    <View style={{
+                        height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
+                        paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
+                    }}>
+                        <Text >车已在店</Text>
+                        <View style={{flex: 1}}/>
+                        <Text style={{color: fontAndColor.COLORB2}}>已同意</Text>
+                    </View>
                 </View>
         } else if (alreadyChoose.state > 0 && (this.state.isStore === 0 || this.state.isStore === 2) &&
             (this.state.ordersTrans.logistics_type === 2 || this.state.ordersTrans.logistics_type === 3)) {  // 选择物流
@@ -229,43 +254,22 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                         <Image source={require('../../../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </TouchableOpacity>
-        } else if (this.state.isStore === 1) {  // 选择 车已在店
+        } else if ((alreadyChoose.state < 1 && (this.state.isStore === 0 || this.state.isStore === 2)) ||
+            (this.state.ordersTrans.logistics_type !== 2 && this.state.ordersTrans.logistics_type !== 3)) {  // 未选择
             views =
-                <View>
-                    <View style={{
-                        height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
-                        paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
-                    }}>
-                        <Text >车已在店</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={{color: fontAndColor.COLORB2}}>审核中</Text>
-                    </View>
-                    <View style={styles.separatedLine}/>
-                    <View style={{
-                        flexDirection: 'row', alignItems: 'center',
-                    }}>
-                        <View style={{flexDirection: 'row', alignItems: 'flex-start',margin: Pixel.getPixel(15)}}>
-                            <Text style={{color: fontAndColor.COLORA1,
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>审核地址</Text>
-                            <View style={{flex: 1}}/>
-                            <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                textAlign: 'right', width: Pixel.getPixel(250)}}>
-                                {this.props.orderDetail.orders_item_data[0].store_address.full_address}
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-        } else if (this.state.isStore === 3) {  // 选择 车已在店
-            views =
-                <View>
-                    <View style={{
-                        height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
-                        paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
-                    }}>
-                        <Text >车已在店</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={{color: fontAndColor.COLORB2}}>已同意</Text>
-                    </View>
+                <View style={{
+                    height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
+                    paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
+                }}>
+                    <Text >交车方式</Text>
+                    <View style={{flex: 1}}/>
+                    <TagSelectView
+                        buttonWidth={Pixel.getPixel(80)}
+                        textSize={Pixel.getPixel(15)}
+                        paddingHorizontal={Pixel.getPixel(8)}
+                        ref={(ref) => {
+                            this.tagRef = ref;
+                        }} onTagClick={this.onTagClick} cellData={this.tagSelect}/>
                 </View>
         } else {
             views =

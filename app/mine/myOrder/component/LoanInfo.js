@@ -43,10 +43,6 @@ export default class LoanInfo extends BaseComponent {
     }
 
     render() {
-        console.log('balanceAmount==', this.balanceAmount);
-        console.log('applyLoanAmount==', this.state.applyLoanAmount);
-        console.log('fee_mny==', this.state.financeInfo.fee_mny);
-        console.log('supervision_fee==', this.state.financeInfo.supervision_fee);
         return (
             <View style={styles.itemType5}>
                 <TouchableOpacity
