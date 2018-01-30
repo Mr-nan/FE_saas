@@ -175,7 +175,7 @@ export default class FillWaybill extends BaseComponent {
 
     refreshingData = () => {
         this.setState({isRefreshing: true});
-        this.getData();
+        this.getTransType();
     };
     //获取运单费
     getTransFee = () => {
