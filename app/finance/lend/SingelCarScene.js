@@ -33,6 +33,8 @@ import Picker from 'react-native-picker';
 
 const PostData={
     dateLimit:'',
+    rate:'',
+    loan_life_type:'',
     apply_type:'2',
     loan_mny:'',
     use_time:'',
@@ -44,7 +46,8 @@ const showData={
     maxMoney:'',
     rate:'',
     tempMin:'',
-    tempMax:''
+    tempMax:'',
+    rateAndLifeAndType:[],
 }
 
 const verificationtips={
@@ -55,7 +58,8 @@ const verificationtips={
 }
 
 let changeDate;
-
+let dateBlob = [];
+let rateBlob = [];
 const imageSouce =require('../../../images/financeImages/dateIcon.png')
 
 export default class SingelCarSence extends BaseComponent {
@@ -66,6 +70,7 @@ export default class SingelCarSence extends BaseComponent {
         this.state = {
             isDateTimePickerVisible: false,
             renderPlaceholderOnly: STATECODE.loading,
+            rate:'12.5%'
 
         }
       }
@@ -85,11 +90,16 @@ export default class SingelCarSence extends BaseComponent {
              let tempjson = response.mjson.data
              showData.companyName = this.props.customerName,
              showData.lendType = tempjson.product_type,
-             // showData.dateLimit = tempjson.loan_life,
+             showData.rateAndLifeAndType = tempjson.product_period,
              showData.maxMoney = changeToMillion(tempjson.min_loanmny) + '-' + changeToMillion(tempjson.max_loanmny) + '万',
              showData.tempMin=changeToMillion(tempjson.min_loanmny);
              showData.tempMax=changeToMillion(tempjson.max_loanmny);
-             showData.rate = tempjson.rate
+             showData.rate = tempjson.rate;
+             for(let item in  showData.rateAndLifeAndType){
+                 console.log(item);
+                 dateBlob.push(showData.rateAndLifeAndType[item].loan_life + showData.rateAndLifeAndType[item].loan_life_type);
+                 rateBlob.push(showData.rateAndLifeAndType[item].rate);
+             }
 
              this.setState({
 
@@ -117,8 +127,6 @@ export default class SingelCarSence extends BaseComponent {
         {title: '可借额度', key: 'maxMoney'},
         {title: '借款期限', key: 'dateLimit'},
     ];
-    dateBlob =['30天','90天','180天','360天'];
-
     //datePiker的方法
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
     //datePiker的回调
@@ -158,7 +166,10 @@ export default class SingelCarSence extends BaseComponent {
                 apply_type:PostData.apply_type,
                 loan_mny:PostData.loan_mny,
                 remark:PostData.remark,
-                use_time:PostData.use_time
+                use_time:PostData.use_time,
+                loan_life_type:PostData.loan_life_type,
+                rate:PostData.rate,
+                loan_life:PostData.dateLimit,
             };
             this.props.showModal(true);
             request(apis.FINANCE, 'Post', maps)
@@ -183,30 +194,7 @@ export default class SingelCarSence extends BaseComponent {
 
 
     }
-    /**
-     * 点击选择借款期限
-     * onPressButton
-     **/
-    onPressButton = () => {
-        QIXIAN = [ '30天','90天'];
 
-
-        this.toNextPage(
-            {
-                name: 'SelectDJRScene',
-                component: SelectDJRScene,
-                params: {
-                    regShowData: QIXIAN,
-                    title: '选择借款期限',
-                    callBack: (name, index) => {
-
-                        this.refs.dancheqixian.changeRightText(name);
-                        PostData.dateLimit = name;
-                        // showData.dateLimit = name;
-                    }
-                }
-            })
-    }
     _backPage = () =>{
         this.backPage();
         Picker.hide();
@@ -240,18 +228,30 @@ export default class SingelCarSence extends BaseComponent {
                         </View>
                         <View style={{marginBottom:10,}}>
                             <LendDatePike ref={(limit)=>{this.dateLimit=limit}} onPress={()=>{
+
                                 Picker.init({
-                                    pickerData: this.dateBlob,
+                                    pickerData: dateBlob,
                                     selectedValue: [0],
                                     pickerConfirmBtnText:'确认',
                                     pickerCancelBtnText:'取消',
                                     pickerTitleText:'选择期限天数',
                                     onPickerConfirm: data => {
                                         let tempString=data.toString();
-                                        let  placeHodel =tempString==='0'?this.dateBlob[0]:tempString;
+                                        let  placeHodel =tempString==='0'?dateBlob[0]:tempString;
                                         let  num = parseInt(placeHodel);
+                                        let index;
+                                        for (let item in dateBlob){
+                                            if (dateBlob[item] == placeHodel){
+                                                index = item;
+                                            }
+                                        }
                                         PostData.dateLimit=num;
+                                        PostData.rate = showData.rateAndLifeAndType[index].rate;
+                                        PostData.loan_life_type = showData.rateAndLifeAndType[index].loan_life_type
                                         this.dateLimit.changeText(placeHodel);
+                                        this.setState({
+                                            rate:PostData.rate+'%'
+                                        })
 
                                     },
                                 });
@@ -268,7 +268,7 @@ export default class SingelCarSence extends BaseComponent {
                         </View>
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce} onPress={this.onPress}/>
                         <LendUseful onEndEidt={(text)=>{PostData.remark =text}}/>
-                        <LendRate rate={showData.rate}/>
+                        <LendRate rate={this.state.rate}/>
                     </KeyboardAvoidingView>
                 </ScrollView>
                 <CommenButton
