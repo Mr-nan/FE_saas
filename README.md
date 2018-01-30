@@ -220,8 +220,6 @@ return [
 
     logistics_type  0自提1全款到店2融资到店3融资到库4库到店
 
-
-
      'orders_status'=>[
             0=>'创建订单',
             1=>'订单订价中',
@@ -254,7 +252,7 @@ return [
             23=>'融资单质押车辆提前还款成功',
             24=>'融资单圈提失败',
         ],
-        'trans_status'=>[  logistics_type
+        'trans_status'=>[  logistics_type    0自提 1全款到店 2融资到店 3融资到库 4库到店
             1 =>'填写完',
             100 =>'支付运单中',
             101 =>'支付运单失败',
