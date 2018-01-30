@@ -313,7 +313,6 @@ export default class FillWaybill extends BaseComponent {
 
     //获取运输类型
     getTransType = () => {
-        this.props.showModal(true);
         let maps = {
             company_id: global.companyBaseID,
             order_id: this.props.orderId,
@@ -378,7 +377,8 @@ export default class FillWaybill extends BaseComponent {
                         collectAddress: this.collectAddress,
                         feeDatas: feeDatas,
                         accoutInfo: accoutInfo,
-                        distance: this.distance
+                        distance: this.distance,
+                        isRefreshing: false,
 
                     });
                 },
@@ -398,6 +398,7 @@ export default class FillWaybill extends BaseComponent {
     updateAddress = (newAddress) => {
         console.log('newAddress', newAddress);
         this.endId = newAddress.id;
+        this.props.showModal(true);
         this.getTransType();
 
     };
