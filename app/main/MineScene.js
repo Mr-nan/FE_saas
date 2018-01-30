@@ -625,6 +625,7 @@ export default class MineScene extends BaseComponent {
     };
 
     _navigator(rowData) {
+        this.props.showModal(true);
         //先判断认证状态
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -635,15 +636,18 @@ export default class MineScene extends BaseComponent {
                     type: 'app'
                 };
                 request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                    this.props.showModal(false);
                     if (response.mjson.data.auth == 0) {
                         this._navigatorPage(rowData);
                     } else {
                         this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth + '']);
                     }
                 }, (error) => {
+                    this.props.showModal(false);
                     this.props.showToast(error.msg);
                 });
             } else {
+                this.props.showModal(false);
                 this.props.showToast('获取企业信息失败');
             }
         });

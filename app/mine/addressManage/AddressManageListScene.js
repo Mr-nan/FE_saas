@@ -21,11 +21,10 @@ import AddressManageEditScene from './AddressManageEditScene';
 import AccountModal from '../../component/AccountModal';
 
 
-let allSouce = [];
 export default class AddressManageListScene extends BaseComponent {
 
     componentWillUnmount() {
-        allSouce = [];
+        this.allSouce = [];
     }
 
     initFinish = () => {
@@ -40,10 +39,10 @@ export default class AddressManageListScene extends BaseComponent {
             .then((response) => {
                     this.props.showModal(false);
                     if(response.mycode == 1){
-                        allSouce.push(...response.mjson.data);
+                        this.allSouce.push(...response.mjson.data);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
-                            dataSource: ds.cloneWithRows(allSouce),
+                            dataSource: ds.cloneWithRows(this.allSouce),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });
@@ -59,6 +58,7 @@ export default class AddressManageListScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+        this.allSouce = [];
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
@@ -68,7 +68,7 @@ export default class AddressManageListScene extends BaseComponent {
     }
 
     refreshingData = () => {
-        allSouce = [];
+        this.allSouce = [];
         this.setState({isRefreshing: true});
         this.getData();
     };
@@ -82,7 +82,7 @@ export default class AddressManageListScene extends BaseComponent {
     };
 
     _refreshData = () => {
-        allSouce = [];
+        this.allSouce = [];
         this.getData();
     };
 
