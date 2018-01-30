@@ -97,8 +97,8 @@ export default class CheckWaybill extends BaseComponent {
                             }else{
                                 accoutInfo.push({title: '联系人', value:end_address.contact_name });
                                 accoutInfo.push({title: '联系方式', value:end_address.contact_phone });
+                                accoutInfo.push({title: '收车地址', value:end_address.full_address });
                             }
-                            accoutInfo.push({title: '收车地址', value:end_address.full_address });
 
                         }
 
