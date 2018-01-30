@@ -347,17 +347,17 @@ export default class FillWaybill extends BaseComponent {
                         accoutInfo.push({title: '联系', value: end_address.contact_name});
                         accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
                         accoutInfo.push({title: '收车地址', value: end_address.full_address});
-                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0) {
+                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择') {
                             data.all_amount.map((data) => {
+                                if (this.fromSingle && data.amount_name == '总金额') {
+                                    this.totalMoney = data.amount;
+                                }
                                 if (parseFloat(data.amount) > 0) {
-                                    if (this.fromSingle && data.amount_name == '总金额') {
-                                        this.totalMoney = data.amount;
-                                    }
                                     feeDatas.push({title: data.amount_name, value: data.amount + '元'});
                                 }
                             })
                         }
-                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0) {
+                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择') {
                             data.trans_type.map((data, index) => {
                                 tagViews.push({
                                     name: data.transportType,
