@@ -47,6 +47,7 @@ export default class LogisticsMode extends BaseComponent {
 
     /**
      *    运单状态映射
+     *    ordersTrans
      **/
     transStateMapping = (ordersTrans) => {
         switch (ordersTrans.status) {
@@ -64,21 +65,21 @@ export default class LogisticsMode extends BaseComponent {
             case 4:  // 4 =>'到店',
                 return {'state': 4, 'waybillState': '已到店'};
             case 5:  // 5 =>'到库',
-                return {'state': 5, 'waybillState': '已到库'};
+            case 8: // 8 =>'申请提车函支付失败',
+                return {'state': 5, 'waybillState': '已入库'};
             case 6:  // 6 =>'申请提车函',
             case 7: // 7 =>'申请提车函支付中',
-            case 8: // 8 =>'申请提车函支付失败',
-                return {'state': 5, 'waybillState': '已到库'};
+                return {'state': 6, 'waybillState': '已入库'};
             case 9:    // 9 =>'申请提车函支付完成',
-                return {'state': 6, 'waybillState': '仓储费已支付'};
+                return {'state': 7, 'waybillState': '仓储费已支付'};
             case 10:  // 10 =>'申请转单车',
             case 12:  // 12 =>'申请转单车支付中',
             case 13:  // 13 =>'申请转单车支付失败',
             case 14:  // 14 =>'申请转单车支付成功生成运单',
             case 15: //  15 =>'申请转单车支付成功生成运单失败',
-                return {'state': 7, 'waybillState': '已到库'};
+                return {'state': 8, 'waybillState': '已入库'};
             case 11: // 11 =>'终结',
-                return {'state': 8, 'waybillState': '已交车'};
+                return {'state': 9, 'waybillState': '已交车'};
         }
     };
 
