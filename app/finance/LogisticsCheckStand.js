@@ -115,18 +115,18 @@ export default class LogisticsCheckStand extends BaseComponent {
                         marginTop: Pixel.getPixel(6),
                         //fontWeight: 'bold',
                         fontSize: Pixel.getFontPixel(38)
-                    }}>{(parseFloat(this.props.payAmount) + parseFloat(this.props.transAmount)).toFixed(2)}元</Text>
+                    }}>{(parseFloat(this.props.garageAmount) + parseFloat(this.props.transAmount)).toFixed(2)}元</Text>
                 </View>
                 <View style={styles.separatedLine}/>
                 <View style={styles.accountBar}>
-                    <Text allowFontScaling={false} style={styles.title}>尾款金额：</Text>
+                    <Text allowFontScaling={false} style={styles.title}>物流费用：</Text>
                     <Text allowFontScaling={false}
-                          style={styles.content}>{parseFloat(this.props.payAmount)}元</Text>
+                          style={styles.content}>{parseFloat(this.props.transAmount)}元</Text>
                 </View>
                 <View style={styles.separatedLine}/>
                 <View style={styles.accountBar}>
-                    <Text allowFontScaling={false} style={styles.title}>运单费用：</Text>
-                    <Text allowFontScaling={false} style={styles.content}>{this.props.transAmount}元</Text>
+                    <Text allowFontScaling={false} style={styles.title}>仓储费用：</Text>
+                    <Text allowFontScaling={false} style={styles.content}>{this.props.garageAmount}元</Text>
                 </View>
                 <View style={{height: Pixel.getPixel(10),
                     backgroundColor: fontAndColor.COLORA3}}/>
