@@ -761,6 +761,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     existTransOrder = (ordersTrans) => {
         if (typeof(ordersTrans) == "undefined") {
             return false;
+        } else if (ordersTrans.logistics_type === 1) {
+            return false;
         } else {
             return true;
         }

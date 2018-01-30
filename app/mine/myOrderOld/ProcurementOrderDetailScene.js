@@ -1682,7 +1682,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             return (
                 <LoanInfo
                     refresh={this.payCallBack}
-                    balanceAmount={this.orderDetail.balance_amount}
+                    balanceAmount={this.orderDetail.totalpay_amount > 0 ? this.orderDetail.totalpay_amount : this.orderDetail.balance_amount}
                     financeInfo={this.financeInfo}
                     loanCode={this.orderDetail.finance_no}
                     navigator={this.props.navigator}
