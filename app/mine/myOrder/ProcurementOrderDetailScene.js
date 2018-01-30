@@ -761,6 +761,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     existTransOrder = (ordersTrans) => {
         if (typeof(ordersTrans) == "undefined") {
             return false;
+        } else if (ordersTrans.logistics_type === 1 && this.orderState == 6) {
+            return false;
         } else {
             return true;
         }
@@ -1216,21 +1218,33 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 4:  // 4 =>'到店',
                 return {'state': 4, 'waybillState': '已到店'};
             case 5:  // 5 =>'到库',
-                return {'state': 5, 'waybillState': '已到库'};
+            case 8: // 8 =>'申请提车函支付失败',
+            case 13:  // 13 =>'申请转单车支付失败',
+                return {'state': 5, 'waybillState': '已入库'};
             case 6:  // 6 =>'申请提车函',
             case 7: // 7 =>'申请提车函支付中',
-            case 8: // 8 =>'申请提车函支付失败',
-                return {'state': 5, 'waybillState': '已到库'};
+                return {'state': 6, 'waybillState': '已入库'};
             case 9:    // 9 =>'申请提车函支付完成',
-                return {'state': 6, 'waybillState': '仓储费已支付'};
+                return {'state': 7, 'waybillState': '仓储费已支付'};
             case 10:  // 10 =>'申请转单车',
             case 12:  // 12 =>'申请转单车支付中',
-            case 13:  // 13 =>'申请转单车支付失败',
             case 14:  // 14 =>'申请转单车支付成功生成运单',
             case 15: //  15 =>'申请转单车支付成功生成运单失败',
-                return {'state': 7, 'waybillState': '已到库'};
+                return {'state': 8, 'waybillState': '已入库'};
             case 11: // 11 =>'终结',
-                return {'state': 8, 'waybillState': '已交车'};
+                return {'state': 9, 'waybillState': '已交车'};
+        }
+    };
+
+    /**
+     *   判断运单是否到库
+     **/
+    toGarage = (ordersTrans) => {
+        let state = this.transStateMapping(ordersTrans).state;
+        if (this.existTransOrder(ordersTrans) && state === 5) {
+            return true;
+        } else {
+            return false;
         }
     };
 
@@ -1473,7 +1487,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 4;
                     this.topState = -1;
-                    this.bottomState = -1;
+                    if (this.toGarage(this.ordersTrans)) {
+                        this.bottomState = 16;
+                    } else {
+                        this.bottomState = -1;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 4;
                     this.topState = -1;
@@ -1735,10 +1753,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 status = 0;
                             }
                         }
-                        this.stateMapping(status, cancelStatus);
                         this.financeInfo = this.orderDetail.finance_data;
-                        this.ordersTrans = this.orderDetail.orders_trans_data[0];
-                        //console.log(this.ordersTrans);
+                        if (this.orderDetail.orders_trans_data.length > 1) {
+                            for (let transData in this.orderDetail.orders_trans_data) {
+                                if (this.orderDetail.orders_trans_data[transData].logistics_type === 4) {
+                                    this.ordersTrans = this.orderDetail.orders_trans_data[transData];
+                                }
+                            }
+                        } else {
+                            this.ordersTrans = this.orderDetail.orders_trans_data[0];
+                        }
+                        this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({

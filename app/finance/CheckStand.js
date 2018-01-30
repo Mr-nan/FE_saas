@@ -533,7 +533,7 @@ export default class CheckStand extends BaseComponent {
                 let url = AppUrls.ORDER_CHECK_PAY_FULL;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        if (response.mjson.data.pay_status == 3) {
+                        if (response.mjson.data.pay_status == 1) {
                             this.props.showToast('支付成功');
                             this.props.callBack();
                             this.backPage();
@@ -605,7 +605,7 @@ export default class CheckStand extends BaseComponent {
                 let url = AppUrls.FIRST_PAYMENT_PAY_CALLBACK;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        if (response.mjson.data.pay_status == 3) {
+                        if (response.mjson.data.pay_status == 1) {
                             this.props.showToast('支付成功');
                             this.props.callBack();
                             this.backPage();

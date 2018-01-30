@@ -146,7 +146,7 @@ export default class LoanInfo extends BaseComponent {
                         0 : parseFloat(this.state.applyLoanAmount)) +
                         parseFloat(this.state.financeInfo.fee_mny) +
                         parseFloat(this.state.financeInfo.obd_mny) +
-                        parseFloat(this.state.financeInfo.supervision_fee)).toFixed(2)}元</Text>
+                        parseFloat(this.state.financeInfo.supervision_fee ? parseFloat(this.state.financeInfo.supervision_fee).toFixed(2) : '0.00')).toFixed(2)}元</Text>
                 </View>
             </View>
         )
