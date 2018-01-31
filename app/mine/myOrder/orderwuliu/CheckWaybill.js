@@ -87,18 +87,18 @@ export default class CheckWaybill extends BaseComponent {
                         let start_address=data.start_address_data;
                         if(end_address!==null){
                             this.trans_code=data.trans_code;
-                            if(this.isEmpty(this.warehouse_amount)){
-                                this.warehouse_amount=data.warehouse_amount;
+                            if(!this.isEmpty(data.warehouse_amount)){
+                                this.warehouse_amount=parseFloat(data.warehouse_amount).toFixed(2);
                             }
                             feeDatas.push({title: '发车地', value: start_address.province+start_address.city+start_address.district});
                             feeDatas.push({title: '收车地', value: end_address.province+end_address.city+end_address.district});
-                            feeDatas.push({title: '下单时间', value: data.created_time});
+                            feeDatas.push({title: '下单时间', value: data.created_trans_time});
                             feeDatas.push({title: '物流费', value: data.logistics_amount+'元'});
                             feeDatas.push({title: '运输类型', value: trans_type});
 
                             if(this.isShowPay){
-                                accoutInfo.push({title: '仓库名称', value:end_address.end_warehouse_address });
-                                accoutInfo.push({title: '仓库地址', value:end_address.end_address });
+                                accoutInfo.push({title: '仓库名称', value:data.end_warehouse_address });
+                                accoutInfo.push({title: '仓库地址', value:data.end_address });
                             }else{
                                 accoutInfo.push({title: '联系人', value:end_address.contact_name });
                                 accoutInfo.push({title: '联系方式', value:end_address.contact_phone });

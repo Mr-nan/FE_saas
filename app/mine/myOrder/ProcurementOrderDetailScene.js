@@ -628,6 +628,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      **/
     changeCarSingle = () => {
         this.props.showModal(true);
+        let alreadyChoose = this.transStateMapping(this.ordersTrans);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -649,6 +650,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 callBack: this.payCallBack,
                                 fromSingle:true,
                                 transId: this.ordersTrans.id,
+                                waybillState: alreadyChoose.waybillState,
                             }
                         });
                     } else {

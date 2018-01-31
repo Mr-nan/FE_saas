@@ -101,6 +101,58 @@ export default class FillWaybill extends BaseComponent {
         this.getData();
     }
 
+    freshTotalData=(data)=>{
+        let end_address = data.end_address;
+        this.startAdress = data.start_address.city + data.start_address.district;
+        this.collectAddress = end_address.city + end_address.district;
+        this.endId = end_address.id;
+        this.startId = data.start_address.id;
+        this.companyName = end_address.company_name;
+        this.distance = data.distance;
+        this.province = end_address.province_code;
+        this.city = end_address.city_code;
+        this.country = end_address.district_code;
+        if(!this.isEmpty(data.store_amount)){
+            this.store_amount=parseFloat(data.store_amount).toFixed(2);
+        }
+        if (this.toStore == '1') {
+            if (this.isEmpty(data.warehouse_id) && this.toStore == '1') {
+                this.collectAddress = '请选择'
+            } else {
+                this.warehouse_id = data.warehouse_id;
+            }
+        }
+        accoutInfo.push({title: '联系人', value: end_address.contact_name});
+        accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
+        accoutInfo.push({title: '收车地址', value: end_address.full_address});
+        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
+            data.all_amount.map((data) => {
+                if (this.fromSingle && data.amount_name == '总金额') {
+                    this.totalMoney = data.amount;
+                }
+                if (parseFloat(data.amount) > 0) {
+                    feeDatas.push({title: data.amount_name, value: parseFloat(data.amount).toFixed(2) + '元'});
+                }
+            })
+            if(this.fromSingle){
+                feeDatas.push({title: '仓储费', value:  parseFloat(this.store_amount).toFixed(2) + '元'})
+            }
+        }
+        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
+            data.trans_type.map((data, index) => {
+                tagViews.push({
+                    name: data.transportType,
+                    check: index == 0 ? true : false,
+                    transportTypeCode: data.transportTypeCode
+                })
+
+            });
+        }
+        if (data.trans_invoice !== null) {
+
+        }
+    }
+
     getData = () => {
         let maps = {
             company_id: global.companyBaseID,
@@ -114,52 +166,8 @@ export default class FillWaybill extends BaseComponent {
                         feeDatas = [];
                         tagViews = [];
                         let data = response.mjson.data;
-                        let end_address = data.end_address;
-                        this.startAdress = data.start_address.city + data.start_address.district;
-                        this.collectAddress = end_address.city + end_address.district;
-                        this.endId = end_address.id;
-                        this.startId = data.start_address.id;
-                        this.companyName = end_address.company_name;
-                        this.distance = data.distance;
-                        this.province = end_address.province_code;
-                        this.city = end_address.city_code;
-                        this.country = end_address.district_code;
-                        if(!this.isEmpty(data.store_amount)){
-                            this.store_amount=data.store_amount;
-                        }
-                        if (this.toStore == '1') {
-                            if (this.isEmpty(data.warehouse_id) && this.toStore == '1') {
-                                this.collectAddress = '请选择'
-                            } else {
-                                this.warehouse_id = data.warehouse_id;
-                            }
-                        }
-                        accoutInfo.push({title: '联系人', value: end_address.contact_name});
-                        accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
-                        accoutInfo.push({title: '收车地址', value: end_address.full_address});
-                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
-                            data.all_amount.map((data) => {
-                                if (this.fromSingle && data.amount_name == '总金额') {
-                                    this.totalMoney = data.amount;
-                                }
-                                if (parseFloat(data.amount) > 0) {
-                                    feeDatas.push({title: data.amount_name, value: data.amount + '元'});
-                                }
-                            })
-                        }
-                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
-                            data.trans_type.map((data, index) => {
-                                tagViews.push({
-                                    name: data.transportType,
-                                    check: index == 0 ? true : false,
-                                    transportTypeCode: data.transportTypeCode
-                                })
+                        this.freshTotalData(data);
 
-                            });
-                        }
-                        if (data.trans_invoice !== null) {
-
-                        }
                     }
                     this.setState({
                         renderPlaceholderOnly: 'success',
@@ -330,52 +338,7 @@ export default class FillWaybill extends BaseComponent {
                         feeDatas = [];
                         tagViews = [];
                         let data = response.mjson.data;
-                        let end_address = data.end_address;
-                        this.startAdress = data.start_address.city + data.start_address.district;
-                        this.collectAddress = end_address.city + end_address.district;
-                        this.endId = end_address.id;
-                        this.startId = data.start_address.id;
-                        this.companyName = end_address.company_name;
-                        this.distance = data.distance;
-                        this.province = end_address.province_code;
-                        this.city = end_address.city_code;
-                        this.country = end_address.district_code;
-                        if(this.isEmpty(data.store_amount)){
-                            this.store_amount=data.store_amount;
-                        }
-                        if (this.toStore == '1') {
-                            if (this.isEmpty(data.warehouse_id) && this.toStore == '1') {
-                                this.collectAddress = '请选择'
-                            } else {
-                                this.warehouse_id = data.warehouse_id;
-                            }
-                        }
-                        accoutInfo.push({title: '联系', value: end_address.contact_name});
-                        accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
-                        accoutInfo.push({title: '收车地址', value: end_address.full_address});
-                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
-                            data.all_amount.map((data) => {
-                                if (this.fromSingle && data.amount_name == '总金额') {
-                                    this.totalMoney = data.amount;
-                                }
-                                if (parseFloat(data.amount) > 0) {
-                                    feeDatas.push({title: data.amount_name, value: data.amount + '元'});
-                                }
-                            })
-                        }
-                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
-                            data.trans_type.map((data, index) => {
-                                tagViews.push({
-                                    name: data.transportType,
-                                    check: index == 0 ? true : false,
-                                    transportTypeCode: data.transportTypeCode
-                                })
-
-                            });
-                        }
-                        if (data.trans_invoice !== null) {
-
-                        }
+                        this.freshTotalData(data);
                     }
                     this.tagRef.refreshData(tagViews);
                     this.setState({
@@ -581,8 +544,8 @@ export default class FillWaybill extends BaseComponent {
                             component: CheckWaybill,
                             params: {
                                 orderId: this.props.orderId,
-                                transId: '3',
-                                waybillState: '已付',
+                                transId: this.props.transId,
+                                waybillState: this.props.waybillState,
                                 isShowPay: true
                             }
                         });
