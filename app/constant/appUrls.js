@@ -1590,3 +1590,7 @@ export const GETTRANSTYPE = BASEURL  + "v2/order.home/getTransType";
  *   2月8日物流项目入口开关
  */
 export const LOGISTICS_SWITCH = BASEURL  + "v2/index/status";
+/**
+ *   添加运单提车人
+ **/
+export const STORE_GETER_REQUEST = BASEURL  + "v2/order.home/storeGeterRequest";
