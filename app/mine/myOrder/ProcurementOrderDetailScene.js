@@ -69,6 +69,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.companyId = 0;
         this.logisticsType = 1;
         this.ordersTrans = {};
+        this.geterData = {};
         this.applyLoanAmount = '请输入申请贷款金额';
         this.state = {
             dataSource: [],
@@ -130,10 +131,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     /**
      * 判断订单详情页显示内容
      * @param orderState   订单状态
-     * @param merchantNum   商家电话
-     * @param customerServiceNum   客服电话
      **/
-    initListData = (orderState, merchantNum, customerServiceNum) => {
+    initListData = (orderState) => {
         switch (orderState) {
             case 0: //创建订单
                 this.mList = [];
@@ -143,9 +142,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.contactData = {
                     layoutTitle: '已拍下',
                     layoutContent: '请先与卖家联系商议成交价，待卖家确认后支付订金。',
-                    setPrompt: false,
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    setPrompt: false
                 };
                 this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
@@ -162,9 +159,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     layoutContent: '请尽快支付订金' + this.orderDetail.deposit_amount + '元，支付后卖家可查看到账金额，但不可提现。',
                     setPrompt: true,
                     promptTitle: '订金说明',
-                    promptContent: '交付订金后卖家会为您保留车源，且卖家不可提现，如果交易最终未完成，您可以和卖家协商退回订金。',
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    promptContent: '交付订金后卖家会为您保留车源，且卖家不可提现，如果交易最终未完成，您可以和卖家协商退回订金。'
                 };
                 this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
@@ -212,9 +207,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.contactData = {
                     layoutTitle: '全款已付清',
                     layoutContent: '确认验收车辆后卖家可提款，手续齐全。',
-                    setPrompt: false,
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    setPrompt: false
                 };
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
@@ -228,12 +221,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 4: // 已完成
-                // TODO 提车人判断
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
                 // 物流单
                 if (this.existTransOrder(this.ordersTrans) &&
+                    this.transStateMapping(this.ordersTrans).state >= 8) {
+                    this.mList = ['0', '1', '3', '4', '9', '11', '6'];
+                } else if (this.existTransOrder(this.ordersTrans) &&
                     this.transStateMapping(this.ordersTrans).state >= 2) {
                     this.mList = ['0', '1', '3', '4', '9', '6'];
                 } else {
@@ -242,9 +237,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.contactData = {
                     layoutTitle: '已完成',
                     layoutContent: '恭喜您交易已完成',
-                    setPrompt: false,
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    setPrompt: false
                 };
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
@@ -258,7 +251,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 5: // 订单融资处理中
-                // TODO 提车人判断
                 this.mList = [];
                 if (this.orderDetail.status === 16) {
                     this.contactData = {};
@@ -321,7 +313,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 7: // 融资单确认验收车辆
-                // TODO 提车人判断
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
@@ -765,6 +756,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         if (typeof(ordersTrans) == "undefined") {
             return false;
         } else if (ordersTrans.logistics_type === 1 && this.orderState == 6) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    /**
+     *   判断订单是否选择了提车人
+     **/
+    existGeterData = (geterData) => {
+        if (geterData.length === 0) {
             return false;
         } else {
             return true;
@@ -1216,26 +1218,28 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 return {'state': 1, 'waybillState': '运费' + ordersTrans.total_amount + '元'};
             case 2:   // 2 =>'支付运单成功生成运单',
                 return {'state': 2, 'waybillState': '已支付'};
-            case 3:  //  3 =>'发运',
+            case 30:  //  30 =>'待发运',
                 return {'state': 3, 'waybillState': '已支付'};
+            case 3:  //  3 =>'发运',
+                return {'state': 4, 'waybillState': '已支付'};
             case 4:  // 4 =>'到店',
-                return {'state': 4, 'waybillState': '已到店'};
+                return {'state': 5, 'waybillState': '已到店'};
             case 5:  // 5 =>'到库',
             case 6:  // 6 =>'申请提车函',
             case 8:  // 8 =>'申请提车函支付失败',
             case 10:  // 10 =>'申请转单车',
             case 13:  // 13 =>'申请转单车支付失败',
-                return {'state': 5, 'waybillState': '已入库'};
-            case 7: // 7 =>'申请提车函支付中',
                 return {'state': 6, 'waybillState': '已入库'};
+            case 7: // 7 =>'申请提车函支付中',
+                return {'state': 7, 'waybillState': '已入库'};
             case 9:    // 9 =>'申请提车函支付完成',
-                return {'state': 7, 'waybillState': '仓储费已支付'};
+                return {'state': 8, 'waybillState': '仓储费已支付'};
             case 12:  // 12 =>'申请转单车支付中',
             case 14:  // 14 =>'申请转单车支付成功生成运单',
             case 15: //  15 =>'申请转单车支付成功生成运单失败',
-                return {'state': 8, 'waybillState': '已入库'};
+                return {'state': 9, 'waybillState': '已入库'};
             case 11: // 11 =>'终结',
-                return {'state': 9, 'waybillState': '已交车'};
+                return {'state': 10, 'waybillState': '已交车'};
         }
     };
 
@@ -1244,7 +1248,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      **/
     toGarage = (ordersTrans) => {
         let state = this.transStateMapping(ordersTrans).state;
-        if (this.existTransOrder(ordersTrans) && state === 5) {
+        if (this.existTransOrder(ordersTrans) && state === 6) {
             return true;
         } else {
             return false;
@@ -1671,7 +1675,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 7;
                     this.topState = -1;
-                    this.bottomState = 11;
+                    if (this.existTransOrder(ordersTrans) && this.transStateMapping(ordersTrans).state !== 3) {
+                        this.bottomState = -1;
+                    } else {
+                        this.bottomState = 11;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 7;
                     this.topState = -1;
@@ -1766,6 +1774,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         } else {
                             this.ordersTrans = this.orderDetail.orders_trans_data[0];
                         }
+                        this.geterData = this.orderDetail.geter_data;
                         this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -1807,6 +1816,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      **/
     updateOrdersTrans = (newOrdersTrans) => {
         this.ordersTrans = newOrdersTrans;
+    };
+
+    /**
+     *
+     **/
+    updateGeterData = (newGeterData) => {
+        this.geterData = newGeterData;
     };
 
     /**
@@ -2139,8 +2155,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                            updateLogisticsType={this.updateLogisticsType}/>
             )
         } else if (rowData === '11') {
+            let transOrder = this.existTransOrder(this.ordersTrans);
             return (
-                <ExtractCarPeople navigator={this.props.navigator} orderDetail={this.orderDetail}/>
+                <ExtractCarPeople navigator={this.props.navigator}
+                                  orderDetail={this.orderDetail}
+                                  ordersTrans={transOrder ? this.ordersTrans : {'id' : -1, 'status': 0, total_amount : '0', logistics_type: '0'}}
+                                  updateGeterData={this.updateGeterData}/>
             )
         }
     }

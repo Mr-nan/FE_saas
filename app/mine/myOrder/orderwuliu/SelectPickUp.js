@@ -14,6 +14,8 @@ import MyButton from "../../../component/MyButton";
 import GetCarerManageEditScene from '../../getCarerManage/GetCarerManageEditScene';
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
+import StorageUtil from "../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../constant/storageKeyNames";
 
 const selected_icon = require('../../../../images/selected_icon.png');
 const no_select_icon = require('../../../../images/no_select_icon.png');
@@ -146,17 +148,45 @@ export default class SelectPickUp extends BaseComponent {
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
-                              this.toNextPage({
-                                  component:GetCarerManageEditScene,
-                                  name:'GetCarerManageEditScene',
-                                  params:{item:{},refreshData:this.refreshingData}
-                              });
+                              this.storeGeterRequest();
                           }}/>
             </View>
         );
 
     }
 
+    /**
+     *   添加运单提车人
+     **/
+    storeGeterRequest = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                    //geter:
+                };
+                let url = Urls.STORE_GETER_REQUEST;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('查看合同失败');
+            }
+        });
+    };
+
+    /**
+     *
+     */
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
