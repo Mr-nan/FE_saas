@@ -1569,7 +1569,7 @@ export const PAY_STORE_AMOUNT = BASEURL  + "v2/order.home/payStoreAmount";
 /**
  *  申请提车函后支付仓储费回调
  */
-export const PAY_STORE_AMOUNT_CALLBACK = BASEURL  + "v2/order.home/payStoreAmount";
+export const PAY_STORE_AMOUNT_CALLBACK = BASEURL  + "v2/order.home/payStoreAmountCallback";
 /**
  *  支付库到店的物流和仓储费回调
  */

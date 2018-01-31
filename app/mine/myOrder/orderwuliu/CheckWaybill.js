@@ -320,7 +320,8 @@ export default class CheckWaybill extends BaseComponent {
                                 component: StorageCheckStand,
                                 params: {
                                     payAmount: this.warehouse_amount,
-                                    orderId:this.props.orderId
+                                    orderId:this.props.orderId,
+                                    callBack:this.props.callBack,
                                 }
                             }
                         );

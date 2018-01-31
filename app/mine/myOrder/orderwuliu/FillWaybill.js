@@ -18,6 +18,7 @@ import InvoiceInfo from './InvoiceInfo';
 import AccountModal from './AccountModal';
 import AddressManage from './AddressManage';
 import CheckWaybill from './CheckWaybill';
+import WarehouseListScene from './WarehouseListScene';
 import SelectProvinceCityModal from './SelectProvinceCityModal';
 
 const agree_icon = require('../../../../images/agree_icon.png');
@@ -35,7 +36,6 @@ const white_jiantou = require('../../../../images/white_jiantou.png');
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
 import LogisticsCheckStand from "../../../finance/LogisticsCheckStand";
-
 const Pixel = new PixelUtil();
 let tagViews = [{
     name: '大板',
@@ -49,6 +49,7 @@ let tagViews = [{
 }];
 let feeDatas = [{title: '物流费', value: '元'}, {title: '提验车费', value: '元'}]
 let accoutInfo = [{title: '联系人', value: ''}, {title: '联系方式', value: ''}, {title: '收车地址', value: ''}]
+const dismissKeyboard = require('dismissKeyboard');
 export default class FillWaybill extends BaseComponent {
     constructor(props) {
         super(props);
@@ -94,6 +95,7 @@ export default class FillWaybill extends BaseComponent {
             isShow: false,//底部选择框
             addressDatas: this.addressDatas,
             isRefreshing: false,
+            cityStatus:false
         }
     }
 
@@ -131,7 +133,9 @@ export default class FillWaybill extends BaseComponent {
                     this.totalMoney = data.amount;
                 }
                 if (parseFloat(data.amount) > 0) {
-                    feeDatas.push({title: data.amount_name, value: parseFloat(data.amount).toFixed(2) + '元'});
+                    if(data.amount_name!=='总金额'){
+                        feeDatas.push({title: data.amount_name, value: parseFloat(data.amount).toFixed(2) + '元'});
+                    }
                 }
             })
             if(this.fromSingle){
@@ -243,7 +247,15 @@ export default class FillWaybill extends BaseComponent {
     //提交运单费
     submitTransFee = () => {
         this.props.showModal(true);
-        let maps = {
+        let maps = this.fromSingle?{
+            company_id: global.companyBaseID,
+            end_id: this.endId,
+            order_id: this.props.orderId,
+            logistics_type: this.props.logisticsType,//物流类型
+            trans_type: this.transType,
+            invoice_id: this.invoiceId,
+            warehouse_id: this.warehouse_id
+        }:{
             company_id: global.companyBaseID,
             end_id: this.endId,
             order_id: this.props.orderId,
@@ -258,8 +270,23 @@ export default class FillWaybill extends BaseComponent {
                     this.props.showModal(false);
                     if (response.mjson.data != null) {
                         let data = response.mjson.data;
-                        this.backPage();
-                        this.props.callBack(data);
+                        if(this.fromSingle){
+                            this.toNextPage({
+                                    name: 'LogisticsCheckStand',
+                                    component: LogisticsCheckStand,
+                                    params: {
+                                        garageAmount: this.store_amount,//仓储费
+                                        transAmount: this.totalMoney,//物流费
+                                        orderId:this.props.orderId,
+                                        callBack:this.props.callBack()
+
+                                    }
+                                }
+                            );
+                        }else{
+                            this.backPage();
+                            this.props.callBack(data);
+                        }
                     }
                     this.setState({renderPlaceholderOnly: 'success'});
                 },
@@ -353,12 +380,29 @@ export default class FillWaybill extends BaseComponent {
                 },
                 (error) => {
                     this.props.showModal(false);
+                    this.setState({
+                        isRefreshing: false,
+                    })
                     if (error.mjson.msg == '') {
                         this.props.showToast('网络请求错误');
                     } else {
                         this.props.showToast(error.mjson.msg);
                     }
                 });
+    }
+
+    // 选择城市列表
+    loactionClick = () => {
+
+        let navigatorParams = {
+            name: "WarehouseListScene",
+            component: WarehouseListScene,
+            params: {
+                checkedCarType: this.state.checkedCarType,
+                checkedCarClick: this.checkedCarClick,
+            }
+        }
+        this.props.callBack(navigatorParams);
     }
 
     /**
@@ -371,6 +415,9 @@ export default class FillWaybill extends BaseComponent {
         this.getTransType();
 
     };
+    updateWarehouseList=()=>{
+        console.log('-------')
+    }
 
     allRefresh = () => {
         this.setState({
@@ -451,7 +498,7 @@ export default class FillWaybill extends BaseComponent {
                         </View>
                         <TouchableOpacity activeOpacity={0.8} onPress={() => {
                             if (this.toStore == '1') {
-                                this.getWarehouse()
+                                this._toProvince();
                             } else {
                                 this.toNextPage({
                                         name: 'AddressManage',
@@ -546,7 +593,6 @@ export default class FillWaybill extends BaseComponent {
                                 orderId: this.props.orderId,
                                 transId: this.props.transId,
                                 waybillState: this.props.waybillState,
-                                isShowPay: true
                             }
                         });
                     }}>
@@ -639,6 +685,30 @@ export default class FillWaybill extends BaseComponent {
             });
     }
 
+    checkAreaClick = (cityRegion)=>{
+        console.log('-------',cityRegion);
+        // this.item.province = cityRegion.provice_name;
+        // this.item.province_code = cityRegion.provice_code;
+        // this.item.city = cityRegion.city_name;
+        // this.item.city_code = cityRegion.city_code;
+        // this.item.district = cityRegion.district_name;
+        // this.item.district_code = cityRegion.district_code;
+        // this.aRegion.setNativeProps({
+        //     text:cityRegion.provice_name + ' ' + cityRegion.city_name + ' ' + cityRegion.district_name
+        // })
+    };
+    _showModal = (show)=>{
+        this.props.showModal(show);
+    };
+    _toProvince = ()=>{
+        dismissKeyboard();
+        this.setState({cityStatus:true});
+    };
+
+    _closeProvince = ()=>{
+        this.setState({cityStatus:false});
+    };
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
@@ -672,17 +742,7 @@ export default class FillWaybill extends BaseComponent {
                             borderRadius: 4,
                             marginRight: Pixel.getPixel(10)
                         }} onPress={() => {
-                            this.toNextPage({
-                                    name: 'LogisticsCheckStand',
-                                    component: LogisticsCheckStand,
-                                    params: {
-                                        garageAmount: this.store_amount,//仓储费
-                                        transAmount: this.totalMoney,//物流费
-                                        orderId:this.props.orderId
-
-                                    }
-                                }
-                            );
+                            this.submitTransFee()
                         }}
                         >
                             <Text style={{color: 'white', fontSize: 18}}>支付</Text>
@@ -700,6 +760,9 @@ export default class FillWaybill extends BaseComponent {
                     < SelectProvinceCityModal ref='selectProvinceCityModal' datas={this.state.addressDatas}
                                               confirm={this.confirm} closeModal={this.closeModal}/>}
                     <NavigatorView title={this.title} backIconClick={this.backPg}/>
+                    {
+                        this.state.cityStatus && <WarehouseListScene orderId={this.props.orderId} checkAreaClick={this.checkAreaClick} showModal={this._showModal} closePress={this._closeProvince}/>
+                    }
                 </View>)
         }
 
