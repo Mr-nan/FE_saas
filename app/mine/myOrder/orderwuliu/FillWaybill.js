@@ -70,6 +70,7 @@ export default class FillWaybill extends BaseComponent {
         this.toStore = this.props.toStore;//0到店，1到库，非融资
         this.fromSingle = false;//来自地址管理
         this.totalMoney = 0;
+        this.store_amount=0;
         if (this.toStore == '0') {
             this.title = '填写运单（到店）';
             this.toStore = this.props.toStore;//运单信息到店
@@ -123,6 +124,9 @@ export default class FillWaybill extends BaseComponent {
                         this.province = end_address.province_code;
                         this.city = end_address.city_code;
                         this.country = end_address.district_code;
+                        if(!this.isEmpty(data.store_amount)){
+                            this.store_amount=data.store_amount;
+                        }
                         if (this.toStore == '1') {
                             if (this.isEmpty(data.warehouse_id) && this.toStore == '1') {
                                 this.collectAddress = '请选择'
@@ -133,7 +137,7 @@ export default class FillWaybill extends BaseComponent {
                         accoutInfo.push({title: '联系人', value: end_address.contact_name});
                         accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
                         accoutInfo.push({title: '收车地址', value: end_address.full_address});
-                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择') {
+                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
                             data.all_amount.map((data) => {
                                 if (this.fromSingle && data.amount_name == '总金额') {
                                     this.totalMoney = data.amount;
@@ -143,7 +147,7 @@ export default class FillWaybill extends BaseComponent {
                                 }
                             })
                         }
-                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择') {
+                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
                             data.trans_type.map((data, index) => {
                                 tagViews.push({
                                     name: data.transportType,
@@ -281,7 +285,6 @@ export default class FillWaybill extends BaseComponent {
                         let data = response.mjson.data;
                         this.addressDatas = [];
                         data.map((data) => {
-                            for(let i=0;i<7;i++){
                             this.addressDatas.push({
                                 province: data.provinceName,
                                 city: data.cityName,
@@ -289,7 +292,7 @@ export default class FillWaybill extends BaseComponent {
                                 repoId: data.repoId,
                                 address: data.address,
                                 isCheck: false,
-                            })}
+                            })
                         });
 
 
@@ -337,6 +340,9 @@ export default class FillWaybill extends BaseComponent {
                         this.province = end_address.province_code;
                         this.city = end_address.city_code;
                         this.country = end_address.district_code;
+                        if(this.isEmpty(data.store_amount)){
+                            this.store_amount=data.store_amount;
+                        }
                         if (this.toStore == '1') {
                             if (this.isEmpty(data.warehouse_id) && this.toStore == '1') {
                                 this.collectAddress = '请选择'
@@ -347,7 +353,7 @@ export default class FillWaybill extends BaseComponent {
                         accoutInfo.push({title: '联系', value: end_address.contact_name});
                         accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
                         accoutInfo.push({title: '收车地址', value: end_address.full_address});
-                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择') {
+                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
                             data.all_amount.map((data) => {
                                 if (this.fromSingle && data.amount_name == '总金额') {
                                     this.totalMoney = data.amount;
@@ -357,7 +363,7 @@ export default class FillWaybill extends BaseComponent {
                                 }
                             })
                         }
-                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择') {
+                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
                             data.trans_type.map((data, index) => {
                                 tagViews.push({
                                     name: data.transportType,
@@ -693,7 +699,7 @@ export default class FillWaybill extends BaseComponent {
                                 marginHorizontal: Pixel.getPixel(10)
                             }}>共计:</Text>
                         <Text
-                            style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{this.totalMoney + '元'}</Text>
+                            style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{(parseFloat(this.store_amount) + parseFloat(this.totalMoney)).toFixed(2)}元</Text>
                         <TouchableOpacity activeOpacity={0.8} style={{
                             width: Pixel.getPixel(80),
                             height: Pixel.getPixel(38),
@@ -707,7 +713,7 @@ export default class FillWaybill extends BaseComponent {
                                     name: 'LogisticsCheckStand',
                                     component: LogisticsCheckStand,
                                     params: {
-                                        garageAmount: 50,//仓储费
+                                        garageAmount: this.store_amount,//仓储费
                                         transAmount: this.totalMoney,//物流费
                                         orderId:this.props.orderId
 

@@ -40,7 +40,7 @@ export default class CheckWaybill extends BaseComponent {
         this.isShowPay=false;
         this.trans_code='';
         this.title='查看运单';
-        this.warehouse_amount='';
+        this.warehouse_amount=0;
         if(this.props.isShowPay){//运单信息
             this.isShowPay=true
             accoutInfo = [{title: '仓库名称', value: '刘威'}, {title: '仓库地址', value: ''}]
@@ -84,13 +84,16 @@ export default class CheckWaybill extends BaseComponent {
                             trans_type='代驾'
                         }
                         let end_address=data.end_address_data;
+                        let start_address=data.start_address_data;
                         if(end_address!==null){
                             this.trans_code=data.trans_code;
-                            this.warehouse_amount=data.warehouse_amount;
-                            feeDatas.push({title: '发车地', value: data.start_address_data.address});
-                            feeDatas.push({title: '收车地', value: end_address.address});
+                            if(this.isEmpty(this.warehouse_amount)){
+                                this.warehouse_amount=data.warehouse_amount;
+                            }
+                            feeDatas.push({title: '发车地', value: start_address.province+start_address.city+start_address.district});
+                            feeDatas.push({title: '收车地', value: end_address.province+end_address.city+end_address.district});
                             feeDatas.push({title: '下单时间', value: data.created_time});
-                            feeDatas.push({title: '物流费', value: data.trans_amount+'元'});
+                            feeDatas.push({title: '物流费', value: data.logistics_amount+'元'});
                             feeDatas.push({title: '运输类型', value: trans_type});
 
                             if(this.isShowPay){
