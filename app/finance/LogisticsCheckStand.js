@@ -186,7 +186,7 @@ export default class LogisticsCheckStand extends BaseComponent {
                                   content={'账户支付'}
                                   parentStyle={styles.loginBtnStyle}
                                   childStyle={styles.loginButtonTextStyle}
-                                  mOnPress={this.goStorePay}/>
+                                  mOnPress={this.goWarehousePay}/>
                         <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton}
                                       textStyle={styles.expText}
                                       text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
