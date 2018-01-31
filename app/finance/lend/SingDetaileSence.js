@@ -232,7 +232,9 @@ export  default  class SingDetaileSence extends BaseComponent {
                 tempTitle = ['查看合同']
             } else if (stateCode == '5') {
                 if (parseInt(extendCode) == 1) {
-                    tempTitle = ['查看合同', '申请展期']
+                    // tempTitle = ['查看合同', '申请展期']
+                    tempTitle = ['查看合同']
+
                 } else {
                     tempTitle = ['查看合同']
                 }
@@ -255,8 +257,8 @@ export  default  class SingDetaileSence extends BaseComponent {
                 return styles.controlButton
             case '查看合同':
                 return styles.cancelButton
-            case '申请展期':
-                return styles.controlButton
+            // case '申请展期':
+            //     return styles.controlButton
             case '已取消借款':
                 return styles.canceledButton
             case '签署微单合同':
@@ -327,11 +329,13 @@ export  default  class SingDetaileSence extends BaseComponent {
                 component: ContractInfoScene,
                 params: {loan_code: this.props.loanNumber, showButton: false}
             });
-        } else if (title === "申请展期") {
-            this.toNextPage({
-                name: 'CarOverdue', component: CarOverdue, params: {loan_code: controlCode.loan_code}
-            });
-        } else if (title === "签署微单合同") {
+        }
+        // else if (title === "申请展期") {
+        //     this.toNextPage({
+        //         name: 'CarOverdue', component: CarOverdue, params: {loan_code: controlCode.loan_code}
+        //     });
+        // }
+        else if (title === "签署微单合同") {
             this.toNextPage({
                 name: 'RecognizedGains', component: RecognizedGains, params: {
                     loan_code: controlCode.loan_code,

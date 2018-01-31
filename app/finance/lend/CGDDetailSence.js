@@ -32,7 +32,7 @@ let ControlState = [];
 let loan_code;
 import ContractInfoScene from './ContractInfoScene';
 
-export default class OrderCarDetailScene extends BaseComponent {
+export default class CGDDetailSence extends BaseComponent {
 
     constructor(props) {
         super(props);
