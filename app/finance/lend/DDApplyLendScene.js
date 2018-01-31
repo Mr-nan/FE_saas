@@ -38,6 +38,14 @@ export default class DDApplyLendScene extends BaseComponent {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading,
         }
+        this.PostData = {
+            dateLimit: '',
+            rate: '',
+            loan_life_type: '',
+        }
+        this.ShowData = {
+            rateAndLifeAndType: [],
+        }
 
         this.carData = {
             sell_city_id: '',
@@ -118,6 +126,10 @@ export default class DDApplyLendScene extends BaseComponent {
      * 获取到借款费率      申请获取车辆列表
      **/
     getCarListInfo = (lendInfo) => {
+        showData.rateAndLifeAndType = lendInfo.product_period;
+        PostData.dateLimit = showData.rateAndLifeAndType[0].loan_life;;
+        PostData.rate = showData.rateAndLifeAndType[0].rate;
+        PostData.loan_life_type = showData.rateAndLifeAndType[0].loan_life_type;
         let maps;
         if (this.props.sceneName == "FinanceScene") {
             maps = {
@@ -598,6 +610,9 @@ export default class DDApplyLendScene extends BaseComponent {
                         car_lists: this.carData.info_id,
                         order_id: this.props.orderId,
                         loan_code: this.props.loan_code,
+                        loan_life_type: PostData.loan_life_type,
+                        rate: PostData.rate,
+                        loan_life: PostData.dateLimit,
                     }
                 } else {
                     maps = {
@@ -607,6 +622,9 @@ export default class DDApplyLendScene extends BaseComponent {
                         company_base_id: this.companyId,
                         car_lists: this.carData.info_id,
                         order_id: this.props.orderId,
+                        loan_life_type: PostData.loan_life_type,
+                        rate: PostData.rate,
+                        loan_life: PostData.dateLimit,
                     }
                 }
                 this.props.showModal(true);
