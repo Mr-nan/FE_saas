@@ -130,10 +130,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     /**
      * 判断订单详情页显示内容
      * @param orderState   订单状态
-     * @param merchantNum   商家电话
-     * @param customerServiceNum   客服电话
      **/
-    initListData = (orderState, merchantNum, customerServiceNum) => {
+    initListData = (orderState) => {
         switch (orderState) {
             case 0: //创建订单
                 this.mList = [];
@@ -143,9 +141,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.contactData = {
                     layoutTitle: '已拍下',
                     layoutContent: '请先与卖家联系商议成交价，待卖家确认后支付订金。',
-                    setPrompt: false,
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    setPrompt: false
                 };
                 this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
@@ -162,9 +158,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     layoutContent: '请尽快支付订金' + this.orderDetail.deposit_amount + '元，支付后卖家可查看到账金额，但不可提现。',
                     setPrompt: true,
                     promptTitle: '订金说明',
-                    promptContent: '交付订金后卖家会为您保留车源，且卖家不可提现，如果交易最终未完成，您可以和卖家协商退回订金。',
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    promptContent: '交付订金后卖家会为您保留车源，且卖家不可提现，如果交易最终未完成，您可以和卖家协商退回订金。'
                 };
                 this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
@@ -212,9 +206,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.contactData = {
                     layoutTitle: '全款已付清',
                     layoutContent: '确认验收车辆后卖家可提款，手续齐全。',
-                    setPrompt: false,
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    setPrompt: false
                 };
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
@@ -228,12 +220,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 4: // 已完成
-                // TODO 提车人判断
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
                 // 物流单
                 if (this.existTransOrder(this.ordersTrans) &&
+                    this.transStateMapping(this.ordersTrans).state >= 7) {
+                    this.mList = ['0', '1', '3', '4', '9', '11', '6'];
+                } else if (this.existTransOrder(this.ordersTrans) &&
                     this.transStateMapping(this.ordersTrans).state >= 2) {
                     this.mList = ['0', '1', '3', '4', '9', '6'];
                 } else {
@@ -242,9 +236,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.contactData = {
                     layoutTitle: '已完成',
                     layoutContent: '恭喜您交易已完成',
-                    setPrompt: false,
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    setPrompt: false
                 };
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
@@ -258,7 +250,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 5: // 订单融资处理中
-                // TODO 提车人判断
                 this.mList = [];
                 if (this.orderDetail.status === 16) {
                     this.contactData = {};
@@ -321,7 +312,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 7: // 融资单确认验收车辆
-                // TODO 提车人判断
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
