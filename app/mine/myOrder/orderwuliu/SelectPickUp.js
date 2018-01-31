@@ -29,6 +29,7 @@ let allSouce=[];
 export default class SelectPickUp extends BaseComponent {
     constructor(props) {
         super(props);
+        this.pickups=[];
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: false,
@@ -89,7 +90,7 @@ export default class SelectPickUp extends BaseComponent {
         this.getData();
     }
 
-    itemClick = (index) => {
+    itemClick = (data,index) => {
         accountInfo.map((data) => {
             data.isSelect = false;
         })
@@ -106,7 +107,7 @@ export default class SelectPickUp extends BaseComponent {
     _renderRow = (data, s,index) => {
         return (
             <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
-                this.itemClick(index);
+                this.itemClick(data,index);
             }}>
                 <View style={styles.content_title_text_wrap}>
                     <Image source={data.isSelect ? selected_icon : no_select_icon}

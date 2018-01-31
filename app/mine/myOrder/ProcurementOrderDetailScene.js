@@ -684,7 +684,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 orderId: this.orderDetail.id,
                                 transId: this.ordersTrans.id,
                                 waybillState: alreadyChoose.waybillState,
-                                isShowPay: true
+                                isShowPay: true,
+                                callBack: this.payCallBack
                             }
                         });
                     } else {
