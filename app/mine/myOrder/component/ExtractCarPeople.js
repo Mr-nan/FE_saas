@@ -28,7 +28,7 @@ export default class ExtractCarPeople extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-
+            geterName: this.existGeterData(this.props.ordersTrans.geter_data) ? this.props.ordersTrans.geter_data : '选择'
         }
     }
 
@@ -37,8 +37,31 @@ export default class ExtractCarPeople extends BaseComponent {
      * @param nextProps new Props
      **/
     componentWillReceiveProps(nextProps) {
-
+        this.setState({
+            geterName: this.existGeterData(nextProps.geter_data) ? nextProps.geter_data : '选择'
+        });
     }
+
+    /**
+     *   判断订单是否选择了提车人
+     **/
+    existGeterData = (geterData) => {
+        if (geterData.length == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    /**
+     *
+     **/
+    updateGeterData = (newOrdersTrans) => {
+        this.props.updateGeterData(newOrdersTrans);
+        this.setState({
+            geterName: this.existGeterData(newOrdersTrans) ? newOrdersTrans : '选择'
+        });
+    };
 
     /**
      *  render
@@ -51,9 +74,9 @@ export default class ExtractCarPeople extends BaseComponent {
                                       name: 'SelectPickUp',
                                       component: SelectPickUp,
                                       params: {
+                                          callBack: this.updateGeterData,
                                           orderId: this.props.orderDetail.id
                                       }
-
                                   });
                               }}>
                 <View style={{
@@ -62,7 +85,7 @@ export default class ExtractCarPeople extends BaseComponent {
                 }}>
                     <Text >提车人</Text>
                     <View style={{flex: 1}}/>
-                    <Text >选择</Text>
+                    <Text >{this.state.geterName}</Text>
                     <Image source={require('../../../../images/mainImage/celljiantou.png')}/>
                 </View>
             </TouchableOpacity>

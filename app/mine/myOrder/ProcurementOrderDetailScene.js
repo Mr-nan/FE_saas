@@ -69,6 +69,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.companyId = 0;
         this.logisticsType = 1;
         this.ordersTrans = {};
+        this.geterData = {};
         this.applyLoanAmount = '请输入申请贷款金额';
         this.state = {
             dataSource: [],
@@ -755,6 +756,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         if (typeof(ordersTrans) == "undefined") {
             return false;
         } else if (ordersTrans.logistics_type === 1 && this.orderState == 6) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    /**
+     *   判断订单是否选择了提车人
+     **/
+    existGeterData = (geterData) => {
+        if (geterData.length === 0) {
             return false;
         } else {
             return true;
@@ -1762,6 +1774,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         } else {
                             this.ordersTrans = this.orderDetail.orders_trans_data[0];
                         }
+                        this.geterData = this.orderDetail.geter_data;
                         this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -1803,6 +1816,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      **/
     updateOrdersTrans = (newOrdersTrans) => {
         this.ordersTrans = newOrdersTrans;
+    };
+
+    /**
+     *
+     **/
+    updateGeterData = (newGeterData) => {
+        this.geterData = newGeterData;
     };
 
     /**
@@ -2135,8 +2155,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                            updateLogisticsType={this.updateLogisticsType}/>
             )
         } else if (rowData === '11') {
+            let transOrder = this.existTransOrder(this.ordersTrans);
             return (
-                <ExtractCarPeople navigator={this.props.navigator} orderDetail={this.orderDetail}/>
+                <ExtractCarPeople navigator={this.props.navigator}
+                                  orderDetail={this.orderDetail}
+                                  ordersTrans={transOrder ? this.ordersTrans : {'id' : -1, 'status': 0, total_amount : '0', logistics_type: '0'}}
+                                  updateGeterData={this.updateGeterData}/>
             )
         }
     }
