@@ -1237,12 +1237,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 9:    // 9 =>'申请提车函支付完成',
                 return {'state': 8, 'waybillState': '仓储费已支付'};
             case 12:  // 12 =>'申请转单车支付中',
-            case 14:  // 14 =>'申请转单车支付成功生成运单',
+            case 14:  // 14 =>'申请转单车支付成功',
             case 15: //  15 =>'申请转单车支付成功生成运单失败',
-            case 16: //  15 =>'申请转单车支付成功生成运单失败',
+            case 16: //  16 =>'申请转单车支付成功生成运单成功',
                 return {'state': 9, 'waybillState': '已入库'};
             case 11: // 11 =>'终结',
                 return {'state': 10, 'waybillState': '已交车'};
+            default:
+                return {'state': 0, 'waybillState': ''};
         }
     };
 
