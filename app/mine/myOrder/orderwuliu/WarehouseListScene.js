@@ -330,6 +330,7 @@ class DistrictList extends  Component{
 
         request(appUrls.GETWAREHOUSEINFO,'post',{ company_id: global.companyBaseID,
             order_id: orderId,
+            province: selectData.provice_code,
             city: selectData.city_code,})
             .then((response) => {
 
@@ -382,7 +383,7 @@ class DistrictList extends  Component{
                 selectData.repoId=rowData.repoId;
                 this.props.checkDistrictClick();
             }}>
-                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.countyName+rowData.adsress}</Text>
+                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.countyName+rowData.address}</Text>
             </TouchableOpacity>
         )
     };

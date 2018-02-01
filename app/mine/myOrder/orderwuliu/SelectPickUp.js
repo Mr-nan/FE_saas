@@ -102,7 +102,7 @@ export default class SelectPickUp extends BaseComponent {
             this.pickups.push(data.id);
         } else {
             this.pickups.map((value, i) => {
-                if (value.id==data.id) {
+                if (value==data.id) {
                     this.pickups.splice(i, 1);
                 }
             })
