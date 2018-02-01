@@ -461,7 +461,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 
 
 				{/*个人身份证照片3张view*/}
-				<TouchableWithoutFeedback onPress={() => dismissKeyboard() }>
+				<TouchableWithoutFeedback >
 					<View style={{width: width,height: Pixel.getPixel(118),
 							backgroundColor: '#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15), }}>
 
@@ -558,7 +558,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 
 				<View style={{width:width,height:Pixel.getPixel(10),backgroundColor:fontAndColor.COLORA3}}/>
 				{/*名片或工作证照片view*/}
-				<TouchableWithoutFeedback onPress={() => dismissKeyboard() }>
+				<TouchableWithoutFeedback >
 					<View style={{width: width,height: Pixel.getPixel(88),flexDirection: 'row',alignItems: 'center',
 							backgroundColor: '#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15), }}>
 
