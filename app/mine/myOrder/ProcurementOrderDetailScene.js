@@ -1676,7 +1676,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 7;
                     this.topState = -1;
-                    if (this.existTransOrder(ordersTrans) && this.transStateMapping(ordersTrans).state !== 3) {
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state !== 3 &&
+                        this.transStateMapping(this.ordersTrans).state >= 2) {
                         this.bottomState = -1;
                     } else {
                         this.bottomState = 11;
