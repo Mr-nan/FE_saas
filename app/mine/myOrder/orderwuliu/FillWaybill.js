@@ -197,7 +197,7 @@ export default class FillWaybill extends BaseComponent {
             start_id: this.startId,
             logistics_type: this.props.logisticsType,//物流类型
             trans_type: this.transType,
-            warehouse_id: this.warehouse_id
+            warehouse_id: this.props.logisticsType==3?this.endId:this.warehouse_id
 
         };
         request(Urls.CHECKTRANSTYPE, 'Post', maps)
@@ -248,7 +248,7 @@ export default class FillWaybill extends BaseComponent {
             logistics_type: this.props.logisticsType,//物流类型
             trans_type: this.transType,
             invoice_id: this.invoiceId,
-            warehouse_id: this.warehouse_id
+            warehouse_id: this.props.logisticsType==3?this.endId:this.warehouse_id
         };
         if(!this.fromSingle){
             maps['start_id']= this.startId;
