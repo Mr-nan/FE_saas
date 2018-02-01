@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, Image, ListView,RefreshControl
+    View, TouchableOpacity, Dimensions, Image, ListView, RefreshControl
 } from 'react-native';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
@@ -25,11 +25,11 @@ let accountInfo = [{name: '张大大', tel: '13000000001', isSelect: true}, {
     tel: '13000000001',
     isSelect: false
 }]
-let allSouce=[];
+let allSouce = [];
 export default class SelectPickUp extends BaseComponent {
     constructor(props) {
         super(props);
-        this.pickups=[];
+        this.pickups = [];
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: false,
@@ -43,23 +43,25 @@ export default class SelectPickUp extends BaseComponent {
         //allSouce=[];
         this.getData();
     }
+
     getData = () => {
-        allSouce=[];
+        allSouce = [];
         let maps = {
-            company_id:global.companyBaseID,
+            company_id: global.companyBaseID,
         };
         request(Urls.GET_GETER_LIST, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
-                    if(response.mycode === 1){
+                    if (response.mycode === 1) {
                         accountInfo = [];
                         allSouce.push(...response.mjson.data);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        allSouce.map((data)=>{
+                        allSouce.map((data) => {
                             accountInfo.push({
-                                name:data.name,
-                                phone:data.phone,
-                                isSelect:false
+                                name: data.name,
+                                phone: data.phone,
+                                id: data.id,
+                                isSelect: false
                             });
                         });
                         this.setState({
@@ -67,7 +69,7 @@ export default class SelectPickUp extends BaseComponent {
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });
-                    }else {
+                    } else {
                         this.setState({renderPlaceholderOnly: 'error'});
                     }
                 },
@@ -90,24 +92,33 @@ export default class SelectPickUp extends BaseComponent {
         this.getData();
     }
 
-    itemClick = (data,index) => {
-        accountInfo.map((data) => {
-            data.isSelect = false;
-        })
-/*        accountInfo.push({
-            name:accountInfo[index].name,
-            phone:accountInfo[index].phone
-        });*/
-        accountInfo[index].isSelect = true;
+    itemClick = (data, index) => {
+        /*        accountInfo.push({
+                    name:accountInfo[index].name,
+                    phone:accountInfo[index].phone
+                });*/
+        accountInfo[index].isSelect = !accountInfo[index].isSelect;
+        if (accountInfo[index].isSelect == true) {
+            this.pickups.push(data.id);
+        } else {
+            this.pickups.map((value, i) => {
+                if (value.id==data.id) {
+                    this.pickups.splice(i, 1);
+                }
+            })
+
+        }
+
+        console.log('------', this.pickups);
         this.setState({
             dataSource: this.ds.cloneWithRows(accountInfo),
         });
 
     }
-    _renderRow = (data, s,index) => {
+    _renderRow = (data, s, index) => {
         return (
             <TouchableOpacity key={index + 'accountInfo'} activeOpacity={0.8} onPress={() => {
-                this.itemClick(data,index);
+                this.itemClick(data, index);
             }}>
                 <View style={styles.content_title_text_wrap}>
                     <Image source={data.isSelect ? selected_icon : no_select_icon}
@@ -149,7 +160,12 @@ export default class SelectPickUp extends BaseComponent {
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
-                              this.storeGeterRequest();
+                              if (this.pickupArr.length > 0) {
+                                  this.storeGeterRequest();
+                              }else{
+                                  this.props.showToast('请选择提车人');
+                              }
+
                           }}/>
             </View>
         );
@@ -167,12 +183,14 @@ export default class SelectPickUp extends BaseComponent {
                 let maps = {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
-                    //geter:
+                    geter: this.pickups.toString()
                 };
                 let url = Urls.STORE_GETER_REQUEST;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.showModal(false);
+                        this.backPage();
+                        this.props.callBack();
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
@@ -281,8 +299,8 @@ const styles = StyleSheet.create({
         width: width - Pixel.getPixel(30),
         backgroundColor: FontAndColor.COLORB0,
         marginTop: Pixel.getPixel(10),
-        position:'absolute',
-        bottom:Pixel.getPixel(10),
+        position: 'absolute',
+        bottom: Pixel.getPixel(10),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),
