@@ -25,6 +25,7 @@ import * as StorageKeyNames from "../../../constant/storageKeyNames";
 import * as AppUrls from "../../../constant/appUrls";
 import AddressManage from "../orderwuliu/AddressManage";
 import CheckWaybill from "../orderwuliu/CheckWaybill";
+import FillWaybill from "../orderwuliu/FillWaybill";
 const Pixel = new PixelUtil();
 
 export default class LogisticsModeForFinancing extends BaseComponent {
@@ -241,16 +242,28 @@ export default class LogisticsModeForFinancing extends BaseComponent {
             views =
                 <TouchableOpacity
                     onPress={() => {
-                        this.toNextPage({
-                            name: 'CheckWaybill',
-                            component: CheckWaybill,
-                            params: {
-                                orderId: this.props.orderDetail.id,
-                                transId: this.state.ordersTrans.id,
-                                waybillState: alreadyChoose.waybillState
-                            }
-
-                        });
+                        if (alreadyChoose.state < 2) {
+                            this.toNextPage({
+                                name: 'FillWaybill',
+                                component: FillWaybill,
+                                params: {
+                                    orderId: this.props.orderDetail.id,
+                                    logisticsType: this.state.ordersTrans.logistics_type,
+                                    vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
+                                    callBack: this.updateOrdersTrans
+                                }
+                            });
+                        } else {
+                            this.toNextPage({
+                                name: 'CheckWaybill',
+                                component: CheckWaybill,
+                                params: {
+                                    orderId: this.props.orderDetail.id,
+                                    transId: this.state.ordersTrans.id,
+                                    waybillState: alreadyChoose.waybillState
+                                }
+                            });
+                        }
                     }}>
                     <View style={{
                         height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
