@@ -34,16 +34,12 @@ export default class DDApplyLendScene extends BaseComponent {
             rowHasChanged: (row1, row2) => row1 !== row2,
             sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
         })
-        this.state = {
-            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
-            renderPlaceholderOnly: STATECODE.loading,
-        }
         this.PostData = {
             dateLimit: '',
             rate: '',
             loan_life_type: '',
         }
-        this.ShowData = {
+        this.showData = {
             rateAndLifeAndType: [],
         }
 
@@ -74,6 +70,11 @@ export default class DDApplyLendScene extends BaseComponent {
             file_list: [],
             obd_track_url: ''
         };
+
+        this.state = {
+            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
+            renderPlaceholderOnly: STATECODE.loading,
+        }
     }
 
     initFinish() {
@@ -104,8 +105,9 @@ export default class DDApplyLendScene extends BaseComponent {
 
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-                ControlState = ["申请借款"]
+                ControlState = ["申请借款"];
                 this.getCarListInfo(response.mjson.data);
+
             }, (error) => {
                 this.setState({
                     renderPlaceholderOnly: STATECODE.loadError
@@ -126,10 +128,11 @@ export default class DDApplyLendScene extends BaseComponent {
      * 获取到借款费率      申请获取车辆列表
      **/
     getCarListInfo = (lendInfo) => {
-        showData.rateAndLifeAndType = lendInfo.product_period;
-        PostData.dateLimit = showData.rateAndLifeAndType[0].loan_life;;
-        PostData.rate = showData.rateAndLifeAndType[0].rate;
-        PostData.loan_life_type = showData.rateAndLifeAndType[0].loan_life_type;
+
+        this.showData.rateAndLifeAndType = lendInfo.product_period;
+        this.PostData.dateLimit = this.showData.rateAndLifeAndType[0].loan_life;
+        this.PostData.rate = this.showData.rateAndLifeAndType[0].rate;
+        this.PostData.loan_life_type = this.showData.rateAndLifeAndType[0].loan_life_type;
         let maps;
         if (this.props.sceneName == "FinanceScene") {
             maps = {
@@ -183,16 +186,24 @@ export default class DDApplyLendScene extends BaseComponent {
      *
      **/
     titleNameBlob = (jsonData, carData) => {
+        if(jsonData.product_period){
+            this.period = jsonData.product_period[0].loan_life + jsonData.product_period[0].loan_life_type;
+        }else {
+            this.period = jsonData.loan_life;
+        }
+
+
         this.payment_audit_reason = jsonData.payment_audit_reason;
         let dataSource = {};
         let section1;
+
         if (this.props.sceneName == "FinanceScene") {
             section1 = [
                 {title: '借贷类型', key: jsonData.product_type},
                 {title: '借款费率', key: jsonData.payment_rate_str},
                 {title: '保证金余额', key: jsonData.deposit_amount + "元"},
                 {title: '保证金比例', key: jsonData.deposit_rate + '%'},
-                {title: '借款期限', key: jsonData.loanperiodstr},
+                {title: '借款期限', key: this.period},
                 {title: '借款额度', key: "30000" + "~" + jsonData.max_loanmny + "元"},
             ]
         } else {
@@ -201,7 +212,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 {title: '借款费率', key: jsonData.rate},
                 {title: '保证金余额', key: jsonData.deposit_amount + "元"},
                 {title: '保证金比例', key: jsonData.deposit_rate + '%'},
-                {title: '借款期限', key: jsonData.loan_life},
+                {title: '借款期限', key: this.period},
                 {title: '借款额度', key: "30000" + "~" + jsonData.paymnet_maxloanmny + "元"},
             ]
         }
@@ -610,9 +621,9 @@ export default class DDApplyLendScene extends BaseComponent {
                         car_lists: this.carData.info_id,
                         order_id: this.props.orderId,
                         loan_code: this.props.loan_code,
-                        loan_life_type: PostData.loan_life_type,
-                        rate: PostData.rate,
-                        loan_life: PostData.dateLimit,
+                        loan_life_type: this.PostData.loan_life_type,
+                        rate: this.PostData.rate,
+                        loan_life: this.PostData.dateLimit,
                     }
                 } else {
                     maps = {
@@ -622,9 +633,9 @@ export default class DDApplyLendScene extends BaseComponent {
                         company_base_id: this.companyId,
                         car_lists: this.carData.info_id,
                         order_id: this.props.orderId,
-                        loan_life_type: PostData.loan_life_type,
-                        rate: PostData.rate,
-                        loan_life: PostData.dateLimit,
+                        loan_life_type: this.PostData.loan_life_type,
+                        rate: this.PostData.rate,
+                        loan_life: this.PostData.dateLimit,
                     }
                 }
                 this.props.showModal(true);
