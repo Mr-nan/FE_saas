@@ -28,11 +28,14 @@ import * as StorageKeyNames from "../../../constant/storageKeyNames";
 const Pixel = new PixelUtil();
 const ScreenWidth = Dimensions.get('window').width;
 const IS_ANDROID = Platform.OS === 'android';
+const title ='安和御鑫物流服务平台';
+const content ='您身边的整车散车物流专家';
 export default class SharedView extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
+        this.webpageUrl=this.props.webpageUrl;
         this.state = {
             isVisible: false,
         };
@@ -52,7 +55,6 @@ export default class SharedView extends BaseComponent {
                 if (isInstalled) {
 
                     let imageResource = require('../../../../images/carSourceImages/car_info_null.png');
-                    let carContent = '';
                     let fenxiangUrl = '';
                     if (AppUrls.BASEURL == 'http://api-gateway.test.dycd.com/') {
                         fenxiangUrl = AppUrls.FENXIANGTEST;
@@ -62,9 +64,9 @@ export default class SharedView extends BaseComponent {
                     let carImage = resolveAssetSource(imageResource).uri;
                     weChat.shareToSession({
                         type: 'news',
-                        title: '分享',
-                        description: '你好啊',
-                        webpageUrl: 'https://www.baidu.com/',
+                        title: title,
+                        description: content,
+                        webpageUrl: this.webpageUrl,
                         thumbImage: carImage,
 
                     }).then((resp) => {
@@ -99,9 +101,9 @@ export default class SharedView extends BaseComponent {
                     let carImage = resolveAssetSource(imageResource).uri;
                     weChat.shareToTimeline({
                         type: 'news',
-                        title: '分享',
-                        description: '你好朋友',
-                        webpageUrl: 'https://www.baidu.com/',
+                        title: title,
+                        description: content,
+                        webpageUrl: this.webpageUrl,
                         thumbImage: carImage,
 
                     }).then((resp) => {

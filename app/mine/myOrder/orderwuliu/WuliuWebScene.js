@@ -20,6 +20,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import NavigatorView from '../../../component/AllNavigationView';
+import * as Urls from '../../../constant/appUrls';
 import * as fontAndColor from '../../../constant/fontAndColor';
 import BaseComponent from '../../../component/BaseComponent';
 let oldUrl = '';
@@ -31,7 +32,13 @@ export  default class WuliuWebScene extends BaseComponent {
         super(props);
         // 初始状态
         this.shareData=null;
-        this.webUrl='https://www.baidu.com/'
+        if(Urls.BASEURL=='http://api-gateway.test.dycd.com/'){
+            this.webUrl='http://api-gateway.test.dycd.com/';
+        }else if(Urls.BASEURL=='http://dev.api-gateway.dycd.com/'){
+            this.webUrl='http://dev.api-gateway.dycd.com/';
+        }else if(Urls.BASEURL=='https://gatewayapi.dycd.com/'){
+            this.webUrl='https://gatewayapi.dycd.com/';
+        }
         this.state = {
             renderPlaceholderOnly: true,
         };
@@ -84,7 +91,7 @@ export  default class WuliuWebScene extends BaseComponent {
                     }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
-                <WuliuShare ref="sharedView" shareData={this.shareData}/>
+                <WuliuShare ref="sharedView" shareData={this.shareData} webpageUrl={this.webUrl}/>
                 <NavigatorView title='物流服务' backIconClick={()=>{
                     this.props.showModal(false);
                     console.log('====',oldUrl+'---'+this.webUrl)

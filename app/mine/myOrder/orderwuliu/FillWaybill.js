@@ -37,16 +37,7 @@ import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
 import LogisticsCheckStand from "../../../finance/LogisticsCheckStand";
 const Pixel = new PixelUtil();
-let tagViews = [{
-    name: '大板',
-    check: true,
-}, {
-    name: '救援',
-    check: false,
-}, {
-    name: '代驾',
-    check: false,
-}];
+let tagViews = [];
 let feeDatas = [{title: '物流费', value: '元'}, {title: '提验车费', value: '元'}]
 let accoutInfo = [{title: '联系人', value: ''}, {title: '联系方式', value: ''}, {title: '收车地址', value: ''}]
 const dismissKeyboard = require('dismissKeyboard');
@@ -103,10 +94,17 @@ export default class FillWaybill extends BaseComponent {
     freshTotalData=(data)=>{
         let end_address = data.end_address;
         this.startAdress = data.start_address.city + data.start_address.district;
+        this.startId = data.start_address.id;
+        if(end_address==null){
+            this.collectAddress = '请选择'
+            return;
+        }
+        accoutInfo = [];
+        feeDatas = [];
+        tagViews = [];
         this.collectAddress = this.props.logisticsType=='3'?end_address.cityName+end_address.countyName:
             end_address.city + end_address.district;
         this.endId = this.props.logisticsType=='3'?end_address.repoId:end_address.id;
-        this.startId = data.start_address.id;
         this.distance = data.distance;
         if(!this.isEmpty(data.store_amount)){
             this.store_amount=parseFloat(data.store_amount).toFixed(2);
@@ -160,9 +158,6 @@ export default class FillWaybill extends BaseComponent {
         request(Urls.WAYBILL, 'Post', maps)
             .then((response) => {
                     if (response.mjson.data != null) {
-                        accoutInfo = [];
-                        feeDatas = [];
-                        tagViews = [];
                         let data = response.mjson.data;
                         this.freshTotalData(data);
 
