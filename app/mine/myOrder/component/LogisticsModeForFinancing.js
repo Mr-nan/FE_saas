@@ -179,6 +179,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
      *
      **/
     updateOrdersTrans = (newOrdersTrans) => {
+        //console.log('newOrdersTrans======', newOrdersTrans);
         newOrdersTrans.status = newOrdersTrans.trans_status;
         this.props.updateOrdersTrans(newOrdersTrans);
         //this.ordersTrans = newOrdersTrans;
@@ -193,7 +194,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
     render() {
         let views = '';
         let alreadyChoose = this.transStateMapping(this.state.ordersTrans);  // 是否已经生成运单并支付完成
-        if (this.state.isStore === 1) {  // 选择 车已在店
+        if (this.state.isStore == 1) {  // 选择 车已在店
             views =
                 <View>
                     <View style={{
@@ -223,7 +224,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                         </View>
                     </View>
                 </View>
-        } else if (this.state.isStore === 3) {  // 选择 车已在店
+        } else if (this.state.isStore == 3) {  // 选择 车已在店
             views =
                 <View>
                     <View style={{
@@ -235,8 +236,8 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                         <Text style={{color: fontAndColor.COLORB2}}>已同意</Text>
                     </View>
                 </View>
-        } else if (alreadyChoose.state > 0 && (this.state.isStore === 0 || this.state.isStore === 2) &&
-            (this.state.ordersTrans.logistics_type === 2 || this.state.ordersTrans.logistics_type === 3)) {  // 选择物流
+        } else if (alreadyChoose.state > 0 && (this.state.isStore == 0 || this.state.isStore == 2) &&
+            (this.state.ordersTrans.logistics_type == 2 || this.state.ordersTrans.logistics_type == 3)) {  // 选择物流
             views =
                 <TouchableOpacity
                     onPress={() => {
@@ -261,8 +262,8 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                         <Image source={require('../../../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </TouchableOpacity>
-        } else if ((alreadyChoose.state < 1 && (this.state.isStore === 0 || this.state.isStore === 2)) ||
-            (this.state.ordersTrans.logistics_type !== 2 && this.state.ordersTrans.logistics_type !== 3)) {  // 未选择
+        } else if ((alreadyChoose.state < 1 && (this.state.isStore == 0 || this.state.isStore == 2)) ||
+            (this.state.ordersTrans.logistics_type != 2 && this.state.ordersTrans.logistics_type != 3)) {  // 未选择
             views =
                 <View style={{
                     height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',

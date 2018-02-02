@@ -51,10 +51,11 @@ export default class SelectDestination extends BaseComponent {
                 toStore: this.toStore,
                 orderId: this.orderId,
                 vType: this.vType,
-                callBack: (data)=>{
+/*                callBack: (data)=>{
                     this.backPage();
                     this.props.callBack(data);
-                },
+                },*/
+                callBack: this.props.callBack,
                 maxLoanmny: this.maxLoanmny,
                 logisticsType:this.logisticsType
             }

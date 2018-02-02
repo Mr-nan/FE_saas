@@ -273,8 +273,16 @@ export default class FillWaybill extends BaseComponent {
                                 }
                             );
                         }else{
-                            this.backPage();
                             this.props.callBack(data);
+                            const navigator = this.props.navigator;
+                            if (navigator) {
+                                for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                                    if (navigator.getCurrentRoutes()[i].name == 'ProcurementOrderDetailScene') {
+                                        navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                     this.setState({renderPlaceholderOnly: 'success'});
