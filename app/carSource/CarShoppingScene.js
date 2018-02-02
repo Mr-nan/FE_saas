@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import *as fontAndColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
+import CarShoppingCell from  './znComponent/CarShoppingCell';
 import PixelUtil from '../utils/PixelUtil';
 import * as AppUrls         from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
@@ -21,23 +22,199 @@ import BaseComponent from "../component/BaseComponent";
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 
+
+
 export  default  class CarShoppingScene extends BaseComponent{
+
+
+    // 构造
+      constructor(props) {
+          super(props);
+
+
+          const dataSource = new  ListView.DataSource(
+              {
+                  rowHasChanged:(r1,r2)=>r1==r2,
+              });
+          this.shoppingData = [
+              {
+                  shopTitle:'商户1',
+                  select:false,
+                  list:[{select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:5}},{select:false,carData:{title:'车辆2',type:1,number:1,maxNumber:5}},{select:false,carData:{title:'车辆3',type:1,number:3,maxNumber:5}},{select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:5}}]
+              },
+              {
+                  shopTitle:'商户2',
+                  select:false,
+                  list:[{select:false,carData:{title:'车辆1',type:2,number:1,maxNumber:4}},{select:false,carData:{title:'车辆2',type:2,number:1,maxNumber:5}},{select:false,carData:{title:'车辆3',type:2,number:1,maxNumber:5}}]
+              },
+              {
+                  shopTitle:'商户3',
+                  select:false,
+                  list:[{select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:3}}]
+              },
+
+          ];
+
+          this.state = {
+              dataSource:dataSource.cloneWithRows(this.shoppingData),
+              isEditType:false,
+              isAllSelect:false,
+          };
+      }
 
     render(){
         return(
             <View style={styles.rootView}>
-                <FootView allSelectActin={this.allSelectActin} financialAtion={this.financialAtion} allPriceAtion={this.allPriceAtion}/>
+                {
+                  this.state.isEditType && (
+                        <HeadView select={this.state.isAllSelect} headViewSelectClick={this.headViewSelectClick} headViewDelectClick={this.headViewDelectClick}/>
+                    )
+                }
+                <ListView style={{marginBottom:this.state.isEditType?Pixel.getPixel(0):Pixel.getPixel(44)}}
+                          dataSource={this.state.dataSource}
+                          renderRow={this.renderRow}
+                          renderSeparator={this.renderSeparator}
+                          enableEmptySections={true}
+                          />
+                {
+                    !this.state.isEditType &&  (
+                        <FootView allSelectActin={this.allSelectActin} financialAtion={this.financialAtion} allPriceAtion={this.allPriceAtion}/>
+                    )
+                }
                 <NavigationView title="购物车" backIconClick={this.backPage} renderRihtFootView={this.renderNavigationBtn}/>
             </View>
         )
     }
 
+
+
     renderNavigationBtn=()=>{
         return(
-            <TouchableOpacity style={styles.navigationRightBtn} activeOpacity={1}>
-                <Text style={styles.navigationRightText}>编辑</Text>
+            <TouchableOpacity style={styles.navigationRightBtn} activeOpacity={1} onPress={this.navigationBtnClick}>
+                <Text style={styles.navigationRightText}>{this.state.isEditType?'完成':'编辑'}</Text>
             </TouchableOpacity>
         )
+    }
+
+    renderRow =(data,sectionID,rowID)=> {
+        return(
+            <CarShoppingCell data={data}
+                             shopSelectClick={(type)=>{
+                                 let list = this.shoppingData[rowID].list;
+                                 for (let i=0;i<list.length;i++){
+                                     list[i].select = type;
+                                 }
+                                 this.shoppingData[rowID].select = type;
+
+                             }}
+                             carSelectClick={(type,index)=>{
+                                     let list = this.shoppingData[rowID].list;
+                                     let isShopSelect = true;
+                                     for (let i=0;i<list.length;i++){
+                                         if(i==index){
+                                             list[i].select = type;
+                                         }
+                                         if(!list[i].select && isShopSelect){
+                                             isShopSelect = false;
+                                         }
+                                     }
+                                 this.shoppingData[rowID].select = isShopSelect;
+
+                             }}
+                             carDelectClick={(index)=>{
+                                 this.carDelectAction(rowID,index);
+                             }}/>
+        )
+    }
+
+    renderSeparator =(sectionID,rowID)=>{
+        return(<View key={`${sectionID}-${rowID}`} style={{height:Pixel.getPixel(10),backgroundColor:fontAndColor.COLORA3}}/>)
+    }
+
+    carDelectAction=(rowID,index)=>{
+        let list = this.shoppingData[rowID].list;
+        list.splice(index,1);
+
+        if(list.length<=0){
+            this.shoppingData.splice(rowID,1);
+        }
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows(this.shoppingData),
+        })
+    }
+
+    navigationBtnClick=()=>{
+        this.setState({
+            isEditType:!this.state.isEditType
+        })
+    }
+
+    headViewSelectClick=(type)=>{
+
+        for(let i=0;i<this.shoppingData.length;i++){
+            let item = this.shoppingData[i];
+            item.select = type;
+            for(let j=0;j<item.list.length;j++){
+                let subItem = item.list[j];
+                subItem.select=type;
+            }
+        }
+        console.log(this.shoppingData);
+
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows(this.shoppingData),
+            isAllSelect:type
+        })
+    }
+
+    headViewDelectClick=()=>{
+
+        if(this.state.isAllSelect){
+            this.shoppingData=[];
+            this.setState({
+                dataSource:this.state.dataSource.cloneWithRows(this.shoppingData),
+
+            })
+            return;
+        }
+
+        let isSelect = false;
+        for(let i=0;i<this.shoppingData.length;i++){
+            let item = this.shoppingData[i];
+            if(item.select){
+                this.shoppingData.splice(i,1);
+                isSelect = true;
+            }else {
+                for(let j=0;j<item.list.length;j++){
+                    let subItem = item.list[j];
+                    if(subItem.select){
+                        item.list.splice(j,1);
+                        isSelect = true;
+                    }
+                }
+            }
+        }
+
+        if(isSelect){
+            this.setState({
+                dataSource:this.state.dataSource.cloneWithRows(this.shoppingData),
+
+            })
+        }else {
+            this.props.showToast('请选择要删除的车辆');
+        }
+    }
+
+    isAllSelectType=()=>{
+        let isAllSelect = true;
+        for(let i=0;i<this.shoppingData.length;i++){
+            let item = this.shoppingData[i];
+            if(!item.select){
+                isAllSelect = false;
+                break;
+            }
+        }
+        return isAllSelect;
     }
 
     allSelectActin=(type)=>{
@@ -51,6 +228,26 @@ export  default  class CarShoppingScene extends BaseComponent{
     }
 
 
+}
+
+class HeadView extends Component{
+
+    render(){
+        return(
+            <View style={styles.headView}>
+                <TouchableOpacity activeOpacity={1} onPress={()=>this.props.headViewSelectClick(!this.props.select)}
+                                  style={{flexDirection:'row'}}>
+                    <Image source={this.props.select? require('../../images/carSourceImages/shopSelect.png'):require('../../images/carSourceImages/shopNoSelect.png')}/>
+                    <Text style={styles.selectTitle}>全选</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={1} style={{width:Pixel.getPixel(100),height:Pixel.getPixel(33),
+                    alignItems:'center',justifyContent:'center',backgroundColor:fontAndColor.COLORB0
+                }} onPress={this.props.headViewDelectClick}>
+                    <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>删除</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
 }
 
 class FootView extends Component {
@@ -68,18 +265,9 @@ class FootView extends Component {
           const {allSelectActin,financialAtion,allPriceAtion} = this.props;
          return(
              <View style={styles.footView}>
-                 <TouchableOpacity activeOpacity={1} onPress={()=>{
-                     allSelectActin(!this.state.allSelectType);
-                     this.setState({
-                         allSelectType:!this.state.allSelectType
-                     })
-                 }}>
+                 <TouchableOpacity activeOpacity={1} onPress={()=>{}}>
                      <View style={styles.selectView}>
-                         <View style={{width:Pixel.getPixel(20),height:Pixel.getPixel(20),
-                             borderRadius:Pixel.getPixel(10),
-                             borderColor:this.state.allSelectType?fontAndColor.COLORB0 : fontAndColor.COLORA3,
-                             borderWidth:Pixel.getPixel(1),backgroundColor:this.state.allSelectType?fontAndColor.COLORB0:'white'}}/>
-                         <Text style={styles.selectTitle}>全选</Text>
+                         <Text style={styles.selectText}>合计： </Text>
                          <Text style={[styles.selectPrice,{fontWeight:'bold'}]}>0.00</Text>
                          <Text style={[styles.selectPrice,{fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}]}>万元</Text>
                      </View>
@@ -103,7 +291,6 @@ const styles = StyleSheet.create({
     rootView:{
         flex:1,
         paddingTop:Pixel.getTitlePixel(64),
-        paddingBottom:Pixel.getBottomPixel(44),
         backgroundColor:fontAndColor.COLORA3,
     },
     navigationRightBtn:{
@@ -115,6 +302,18 @@ const styles = StyleSheet.create({
         color:'white',
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+    },
+    headView:{
+        flexDirection:'row',
+        paddingHorizontal:Pixel.getPixel(15),
+        paddingVertical:Pixel.getPixel(10),
+        backgroundColor:'white',
+        alignItems:'center',
+        justifyContent:'space-between',
+        width:ScreenWidth,
+        height:Pixel.getPixel(50),
+        marginBottom:Pixel.getPixel(10)
+
     },
     footView:{
         flexDirection: 'row',

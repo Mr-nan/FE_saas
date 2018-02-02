@@ -177,6 +177,36 @@ export default class CarPublishSecondScene extends BaseComponent {
                     }
                 },
                 {
+                    title: '定金',
+                    subTitle: '按分销价的0-20%设置，在交易中可以修改',
+                    isShowTag: true,
+                    isShowTail: true,
+                    tailView: () => {
+                        return (
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                                <TextInput style={styles.textInput}
+                                           ref={(ref)=>{this.earnestInput = ref}}
+                                           placeholder='请输入  '
+                                           keyboardType={'numeric'}
+                                           maxLength={10}
+                                           underlineColorAndroid='transparent'
+                                           defaultValue={this.carData.earnest?this.carMoneyChange(this.carData.earnest):''}
+                                           onEndEditing={()=>{this.saveCarData();}}
+                                           onChangeText={(text)=>{
+                                               if(text.length>7&&text.indexOf('.')==-1){
+                                                   text = text.substring(0,7);
+                                               }
+                                               let moneyStr = this.chkPrice(text);
+                                               this.carData.earnest= moneyStr;
+                                               this.earnestInput.setNativeProps({
+                                                   text: moneyStr,
+                                               });
+                                           }}/>
+                                <Text allowFontScaling={false} style={styles.textInputTitle}>元</Text>
+                            </View>)
+                    }
+                },
+                {
                     title: '圈子内的分销批发价',
                     subTitle: '展示给其他圈友看',
                     isShowTag: false,

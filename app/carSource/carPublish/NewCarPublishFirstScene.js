@@ -226,6 +226,36 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                         </View>)
                 }
             }, {
+                title: '定金',
+                subTitle: '按分销价的0-20%设置，在交易中可以修改',
+                subTitleColor:fontAndColor.COLORA1,
+                isShowTag: true,
+                isShowTail: true,
+                tailView: () => {
+                    return (
+                        <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       ref={(ref)=>{this.earnestInput = ref}}
+                                       placeholder='请输入  '
+                                       keyboardType={'numeric'}
+                                       maxLength={10}
+                                       underlineColorAndroid='transparent'
+                                       defaultValue={this.carData.earnest?this.carMoneyChange(this.carData.earnest):''}
+                                       onEndEditing={()=>{this.saveCarData();}}
+                                       onChangeText={(text)=>{
+                                            if(text.length>7&&text.indexOf('.')==-1){
+                                               text = text.substring(0,7);
+                                            }
+                                           let moneyStr = this.chkPrice(text);
+                                           this.carData.earnest= moneyStr;
+                                           this.earnestInput.setNativeProps({
+                                               text: moneyStr,
+                                           });
+                                       }}/>
+                            <Text allowFontScaling={false} style={styles.textInputTitle}>元</Text>
+                        </View>)
+                }
+            }, {
                 title: '网上零售价',
                 // subTitle: '展示给个人消费者看',
                 isShowTag: true,
@@ -495,7 +525,7 @@ export default class NewCarPublishFirstScene extends BaseComponent {
                                                     }
                                                     activeOpacity={1}>
                                                     <CellView cellData={rowData}
-                                                              subTitleSytle={{color:fontAndColor.COLORB4,}}/>
+                                                              subTitleSytle={[{color:fontAndColor.COLORB4},rowData.subTitleColor && {color:rowData.subTitleColor}]}/>
                                                 </TouchableOpacity>))
                                     })
                                 }

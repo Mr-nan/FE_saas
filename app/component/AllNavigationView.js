@@ -18,7 +18,7 @@ import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
-export default class CarInfoNavigationView extends PureComponent {
+export default class CarInfoNavigationView extends Component {
 
 
     // 构造
@@ -26,9 +26,7 @@ export default class CarInfoNavigationView extends PureComponent {
         super(props);
         // 初始状态
         this.state = {
-
             navigationBackgroundColor:null,
-
         };
       }
 

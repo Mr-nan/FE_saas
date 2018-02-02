@@ -281,11 +281,11 @@ export default class CarInfoScene extends BaseComponent {
                         renderPageIndicator={(index) => {
                             return (
                                 <View style={styles.imageFootView}>
-                                    {/*<View style={styles.carAgeView}>*/}
-                                        {/*<Text allowFontScaling={false} */}
-                                            {/*style={styles.carAgeText}>{carData.v_type == 1 ? '车龄 ' + carData.init_coty : carData.v_type_str}</Text>*/}
-                                    {/*</View>*/}
                                     <View style={styles.carAgeView}>
+                                        <Text allowFontScaling={false}
+                                            style={styles.carAgeText}>{'车龄 ' + carData.init_coty}</Text>
+                                    </View>
+                                    <View style={[styles.carAgeView,{backgroundColor:'transparent'}]}>
                                         <Text allowFontScaling={false}
                                               style={styles.imageIndexText}>{this.state.currentImageIndex + '/' + this.state.carData.imgs.length}</Text>
                                     </View>
@@ -302,13 +302,16 @@ export default class CarInfoScene extends BaseComponent {
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
                             <Text allowFontScaling={false}  style={styles.titleText}>{carData.model_name}</Text>
-                            {
                                 <View style={styles.titleFootView}>
                                     {
                                         carData.dealer_price > 0 && (
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                                <Text allowFontScaling={false} 
-                                                    style={styles.priceText}>{stringTransform.carMoneyChange(carData.dealer_price) + '万'}</Text>
+                                                <View style={{flexDirection:'row',alignItems:'center'}}>
+                                                    <Text allowFontScaling={false}
+                                                          style={styles.priceText}>{stringTransform.carMoneyChange(carData.dealer_price)}</Text>
+                                                    <Text allowFontScaling={false}
+                                                          style={{fontSize:Pixel.getPixel(fontAndColor.NAVIGATORFONT34), color:fontAndColor.COLORB2}}>万元</Text>
+                                                </View>
                                                 {
                                                     (carData.city_id != '0' && carData.model_id != '0' && carData.city_id != '' && carData.model_id != '') &&
                                                     <TouchableOpacity
@@ -329,12 +332,19 @@ export default class CarInfoScene extends BaseComponent {
                                         )
                                     }
                                     <View style={styles.browseView}>
-                                        <Image style={{marginRight: 5}}
+                                        <Image style={{marginRight: Pixel.getPixel(5)}}
                                                source={require('../../images/carSourceImages/browse.png')}/>
                                         <Text allowFontScaling={false}  style={styles.browseText}>{carData.views + ' 次浏览'}</Text>
                                     </View>
                                 </View>
-                            }
+                            <View style={{flexDirection:'row', alignItems:'center',marginTop:Pixel.getPixel(10)}}>
+                                <Image style={{marginRight: Pixel.getPixel(5)}}
+                                       source={require('../../images/carSourceImages/carPriceIcone.png')}/>
+                                <View style={{flexDirection:'row', alignItems:'center'}}>
+                                    <Text allowFontScaling={false}  style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30), fontWeight:'bold',color:fontAndColor.COLORA1}}>{100}</Text>
+                                    <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT)}}>元定金</Text>
+                                </View>
+                            </View>
                         </View>
                         {/*{*/}
                         {/*(carData.lowest_pay_price>0||carData.lowest_pay_ratio>0) &&*/}
@@ -383,13 +393,18 @@ export default class CarInfoScene extends BaseComponent {
                                             }
                                         </View>
                                         <View>
-                                            {
-                                                carData.plate_number !== '' && (<View style={styles.carAddressSubView}>
-                                                    <Text allowFontScaling={false}  style={styles.carAddressTitleText}>挂牌地: </Text>
-                                                    <Text allowFontScaling={false} 
-                                                        style={styles.carAddressSubTitleText}>{carData.plate_number.substring(0, 2)}</Text>
-                                                </View>)
-                                            }
+                                            {/*{*/}
+                                            {/*carData.plate_number !== '' && (<View style={styles.carAddressSubView}>*/}
+                                            {/*<Text allowFontScaling={false}  style={styles.carAddressTitleText}>挂牌地: </Text>*/}
+                                            {/*<Text allowFontScaling={false} */}
+                                            {/*style={styles.carAddressSubTitleText}>{carData.plate_number.substring(0, 2)}</Text>*/}
+                                            {/*</View>)*/}
+                                            {/*}*/}
+                                            <View style={styles.carAddressSubView}>
+                                                <Text allowFontScaling={false}  style={styles.carAddressTitleText}>{'中盛二手车: '}</Text>
+                                                <Text allowFontScaling={false}
+                                                      style={styles.carAddressSubTitleText}>{12331223333}</Text>
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
@@ -1505,7 +1520,6 @@ const styles = StyleSheet.create({
     callText: {
         color: fontAndColor.COLORB0,
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
-        marginLeft: Pixel.getPixel(5)
     },
     carNumberView: {
         alignItems: 'center',
