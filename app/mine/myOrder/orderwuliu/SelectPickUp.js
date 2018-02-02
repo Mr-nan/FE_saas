@@ -219,7 +219,7 @@ export default class SelectPickUp extends BaseComponent {
                         this._renderItem()
                     }
                 </View>
-                <NavigatorView title='选择提车人' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
+                <NavigatorView title='选择提车人' backIconClick={this.backPage}/>
             </View>)
         }
 
