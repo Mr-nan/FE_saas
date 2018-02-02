@@ -820,6 +820,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
                 let balanceAmount = this.orderDetail.totalpay_amount > 0 ? this.orderDetail.totalpay_amount : this.orderDetail.balance_amount;
                 let transOrder = this.existTransOrder(this.ordersTrans);
+                let isStore = this.orderDetail.orders_item_data[0].is_store;  // 是否在店 0没有申请 1申请中 2驳回 3同意
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -835,6 +836,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             onPress={() => {
                                 if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 6) {
                                     this.props.showToast('请输入申请贷款金额');
+                                } else if (!transOrder && (isStore == 0 || isStore == 2)) {
+                                    this.props.showToast('请选择交车方式');
+                                } else if (isStore == 1) {
+                                    this.props.showToast('车已在店审核中');
                                 } else {
                                     this.toNextPage({
                                         name: 'CheckStand',
