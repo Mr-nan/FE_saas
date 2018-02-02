@@ -24,8 +24,8 @@ import * as Urls from '../../../constant/appUrls';
 import * as fontAndColor from '../../../constant/fontAndColor';
 import BaseComponent from '../../../component/BaseComponent';
 let oldUrl = '';
-import WebViewTitle from '../../../mine/accountManage/component/WebViewTitle';
-import WuliuShare from '../../../mine/myOrder/orderwuliu/WuliuShare';
+import WebViewTitle from '../../accountManage/component/WebViewTitle';
+import WuliuShare from './WuliuShare';
 export  default class WuliuWebScene extends BaseComponent {
 
     constructor(props) {
@@ -33,11 +33,11 @@ export  default class WuliuWebScene extends BaseComponent {
         // 初始状态
         this.shareData=null;
         if(Urls.BASEURL=='http://api-gateway.test.dycd.com/'){
-            this.webUrl='http://api-gateway.test.dycd.com/';
+            this.webUrl='http://test.bms.dycd.com/platform/logistics.html';
         }else if(Urls.BASEURL=='http://dev.api-gateway.dycd.com/'){
-            this.webUrl='http://dev.api-gateway.dycd.com/';
+            this.webUrl='http://devwd.bms.dycd.com/platform/logistics.html/';
         }else if(Urls.BASEURL=='https://gatewayapi.dycd.com/'){
-            this.webUrl='https://gatewayapi.dycd.com/';
+            this.webUrl='http://bms.dycd.com/platform/logistics.html';
         }
         this.state = {
             renderPlaceholderOnly: true,
