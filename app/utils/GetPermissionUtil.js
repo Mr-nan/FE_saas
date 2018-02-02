@@ -15,7 +15,6 @@ import CarNumberScene   from '../carSource/CarNumberScene';
 import CarPublishFirstScene from "../carSource/carPublish/CarPublishFirstScene";
 import NewCarPublishFirstScene from "../carSource/carPublish/NewCarPublishFirstScene";
 import CarTrimScene from "../carSource/carBuy/CarTrimScene";
-import WuliuWebScene from "../mine/myOrder/wuliuweb/WuliuWebScene";
 import CarBuyScene from "../carSource/carBuy/CarBuyScene";
 import CollectionIntent from "../collectionIntent/CollectionIntent";
 import CarSharedListScene from "../carSource/CarSharedListScene";
@@ -217,11 +216,6 @@ const GetPermissionUtil = React.createClass({
             names = name;
             component = CarMySourceScene;
             componentName = 'CarMySourceScene';
-        }else if(id == 72){
-            image = require('../../images/workbench/kcgl.png');
-            names = name;
-            component = WuliuWebScene;
-            componentName = 'WuliuWebScene';
         }
         return {name: names, id: id, image: image, component: component, componentName: componentName ,pushAction:pushAction}
     }, removal(array){
