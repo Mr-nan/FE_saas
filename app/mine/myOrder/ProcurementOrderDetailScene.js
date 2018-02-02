@@ -836,9 +836,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             onPress={() => {
                                 if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 6) {
                                     this.props.showToast('请输入申请贷款金额');
-                                } else if (!transOrder && (isStore == 0 || isStore == 2)) {
+                                } else if (!transOrder && (isStore == 0 || isStore == 2) && this.orderState == 6) {
                                     this.props.showToast('请选择交车方式');
-                                } else if (isStore == 1) {
+                                } else if (isStore == 1 && this.orderState == 6) {
                                     this.props.showToast('车已在店审核中');
                                 } else {
                                     this.toNextPage({
