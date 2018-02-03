@@ -855,6 +855,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     this.props.showToast('请选择交车方式');
                                 } else if (isStore == 1 && this.orderState == 6) {
                                     this.props.showToast('车已在店审核中');
+                                } else if (!transOrder && this.orderState == 2 && this.logisticsType === 1) {
+                                    this.props.showToast('选择物流请填写运单');
                                 } else {
                                     this.toNextPage({
                                         name: 'CheckStand',
