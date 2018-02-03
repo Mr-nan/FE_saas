@@ -20,18 +20,39 @@ const Pixel = new PixelUtil();
 export default class TransitInformation extends BaseComponent {
     constructor(props) {
         super(props);
-        this.addressInfo = [{date: '2017-12-12', time: '18:00',status: 1, statusText: '已签收',address:'山西太原市阿斯蒂芬'},
-            {date: '2017-12-12', time: '18:00',status: 2, statusText: '正在配送中',address:'山西太原市阿斯蒂芬'}, {date: '2017-12-12', time: '18:00',statusText: '已出库',status: 3, address:'山西太原市阿斯蒂芬'}]
+        this.dates=[];
+        this.logistics_data=this.props.logistics_data;
+        this.addressInfo = [];
         this.state = {
             renderPlaceholderOnly: false,
-            payStatus: true
+            payStatus: true,
+            addressInfo:this.addressInfo
         }
     }
 
     initFinish() {
+        this.logistics_data.map((data)=>{
+            console.log('----',this.userDate(data.nodeTime));
+            this.dates=this.userDate(data.nodeTime);
+            this.addressInfo.push({date:this.dates[0] , time: this.dates[1],status: data.nodeStatus, statusText: data.nodeStatusName,address:data.nodeDesc});
+        })
         this.setState({
-            renderPlaceholderOnly: 'success'
+            renderPlaceholderOnly: 'success',
+            addressInfo:this.addressInfo
         });
+    }
+
+     userDate=(uData)=>{
+        this.times=[];
+        let myDate = new Date(uData);
+         let year = myDate.getFullYear();
+         let month = myDate.getMonth() + 1;
+         let day = myDate.getDate();
+         let hour = myDate.getHours();
+         let minute = myDate.getMinutes();
+         this.times.push(year+'-'+month+'-'+day);
+         this.times.push(hour+':'+minute);
+        return this.times;
     }
 
     _renderItem = () => {

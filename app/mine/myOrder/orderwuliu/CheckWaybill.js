@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, ScrollView, Image,Platform,NativeModules,Linking,RefreshControl
+    View, TouchableOpacity, Dimensions, ScrollView, Image, Platform, NativeModules, Linking, RefreshControl
 } from 'react-native';
 import BaseComponent from '../../../component/BaseComponent';
 import NavigatorView from '../../../component/AllNavigationView';
@@ -28,33 +28,31 @@ let accoutInfo = [{title: '联系人', value: ''}, {title: '联系方式', value
     title: '收车地址',
     value: ''
 }]
-let carInfo = [{title: '2013款奔驰宝马', value: '配送中'}, {title: '2013款奔驰宝马', value: '已签收'}, {
-    title: '2013款奔驰宝马',
-    value: '已签收'
-}, {title: '2013款奔驰宝马', value: '已签收'}, {title: '2013款奔驰宝马', value: '已签收'}, {title: '2013款奔驰宝马', value: '已签收'}]
 
 export default class CheckWaybill extends BaseComponent {
     constructor(props) {
         super(props);
-        this.number='400888888';
-        this.isShowPay=false;
-        this.trans_code='';
-        this.title='查看运单';
-        this.warehouse_amount=0;
-        if(this.props.isShowPay){//运单信息
-            this.isShowPay=true
+        this.number = '400888888';
+        this.isShowPay = false;
+        this.trans_code = '';
+        this.title = '查看运单';
+        this.warehouse_amount = 0;
+        this.modelName='';
+        this.logistics_data=[];
+        if (this.props.isShowPay) {//运单信息
+            this.isShowPay = true
             accoutInfo = [{title: '仓库名称', value: '刘威'}, {title: '仓库地址', value: ''}]
-            this.title='运单信息';
+            this.title = '运单信息';
         }
-        if(this.props.fromDetail){
-            this.title='运单信息（到店）';
+        if (this.props.fromDetail) {
+            this.title = '运单信息（到店）';
         }
         this.state = {
             renderPlaceholderOnly: false,
             payStatus: true,
-            feeDatas:feeDatas,
-            accoutInfo:accoutInfo,
-            isRefreshing:false
+            feeDatas: feeDatas,
+            accoutInfo: accoutInfo,
+            isRefreshing: false
 
         }
     }
@@ -72,37 +70,49 @@ export default class CheckWaybill extends BaseComponent {
         request(Urls.WAYBILL_DETAIL, 'Post', maps)
             .then((response) => {
                     if (response.mjson.data != null) {
-                        let data=response.mjson.data;
-                        feeDatas=[];
-                        accoutInfo=[];
-                        let trans_type='大板';
-                        if(data.trans_type==1){
-                            trans_type='大板';
-                        }else if(data.trans_type=='2'){
-                            trans_type='救援'
-                        }else if(data.trans_type=='3'){
-                            trans_type='代驾'
+                        let data = response.mjson.data;
+                        feeDatas = [];
+                        accoutInfo = [];
+                        carInfo = []
+                        let trans_type = '大板';
+                        if (data.trans_type == 1) {
+                            trans_type = '大板';
+                        } else if (data.trans_type == '2') {
+                            trans_type = '救援'
+                        } else if (data.trans_type == '3') {
+                            trans_type = '代驾'
                         }
-                        let end_address=data.end_address_data;
-                        let start_address=data.start_address_data;
-                        if(end_address!==null){
-                            this.trans_code=data.trans_code;
-                            if(!this.isEmpty(data.warehouse_amount)){
-                                this.warehouse_amount=parseFloat(data.warehouse_amount).toFixed(2);
+                        let end_address = data.end_address_data;
+                        let start_address = data.start_address_data;
+                        if (end_address !== null) {
+                            this.modelName=data.orders_item_data.model_name;
+                            if (!this.isEmpty(data.logistics_data)) {
+                                this.logistics_data=data.logistics_data;
                             }
-                            feeDatas.push({title: '发车地', value: start_address.province+start_address.city+start_address.district});
-                            feeDatas.push({title: '收车地', value: end_address.province+end_address.city+end_address.district});
+                            this.trans_code = data.trans_code;
+                            if (!this.isEmpty(data.warehouse_amount)) {
+                                this.warehouse_amount = parseFloat(data.warehouse_amount).toFixed(2);
+                            }
+                            feeDatas.push({
+                                title: '发车地',
+                                value: start_address.province + start_address.city + start_address.district
+                            });
+                            feeDatas.push({
+                                title: '收车地',
+                                value: end_address.province + end_address.city + end_address.district
+                            });
                             feeDatas.push({title: '下单时间', value: data.created_trans_time});
-                            feeDatas.push({title: '物流费', value: data.logistics_amount+'元'});
+                            feeDatas.push({title: '物流费', value: data.logistics_amount + '元'});
                             feeDatas.push({title: '运输类型', value: trans_type});
 
-                            if(this.isShowPay){
-                                accoutInfo.push({title: '仓库名称', value:data.end_warehouse_address });
-                                accoutInfo.push({title: '仓库地址', value:data.end_address });
-                            }else{
-                                accoutInfo.push({title: '联系人', value:end_address.contact_name });
-                                accoutInfo.push({title: '联系方式', value:end_address.contact_phone });
-                                accoutInfo.push({title: '收车地址', value:end_address.full_address });
+
+                            if (this.isShowPay) {
+                                accoutInfo.push({title: '仓库名称', value: data.end_warehouse_address});
+                                accoutInfo.push({title: '仓库地址', value: data.end_address});
+                            } else {
+                                accoutInfo.push({title: '联系人', value: end_address.contact_name});
+                                accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
+                                accoutInfo.push({title: '收车地址', value: end_address.full_address});
                             }
 
                         }
@@ -110,9 +120,9 @@ export default class CheckWaybill extends BaseComponent {
                     }
                     this.setState({
                         renderPlaceholderOnly: 'success',
-                        feeDatas:feeDatas,
-                        accoutInfo:accoutInfo,
-                        isRefreshing:false
+                        feeDatas: feeDatas,
+                        accoutInfo: accoutInfo,
+                        isRefreshing: false
                     });
                 },
                 (error) => {
@@ -132,7 +142,10 @@ export default class CheckWaybill extends BaseComponent {
 
     _renderItem = () => {
         return (
-            <View style={[{flex: 1, paddingBottom: Pixel.getPixel(10)},this.isShowPay?{paddingBottom: Pixel.getPixel(50)}:{}]}>
+            <View style={[{
+                flex: 1,
+                paddingBottom: Pixel.getPixel(10)
+            }, this.isShowPay ? {paddingBottom: Pixel.getPixel(50)} : {}]}>
 
                 <View style={{
                     backgroundColor: 'white',
@@ -151,7 +164,12 @@ export default class CheckWaybill extends BaseComponent {
                             return (
                                 <View key={index + 'fee'} style={styles.content_title_text_wrap}>
                                     <Text style={styles.content_title_text}>{data.title}</Text>
-                                    <View style={{flexWrap:'wrap',height:Pixel.getPixel(51),width:width*3/4,justifyContent:'center'}}>
+                                    <View style={{
+                                        flexWrap: 'wrap',
+                                        height: Pixel.getPixel(51),
+                                        width: width * 3 / 4,
+                                        justifyContent: 'center'
+                                    }}>
                                         <Text style={[styles.content_base_Right]}>{data.value}</Text>
                                     </View>
                                 </View>
@@ -170,7 +188,12 @@ export default class CheckWaybill extends BaseComponent {
                             return (
                                 <View key={index + 'fee'} style={styles.content_title_text_wrap}>
                                     <Text style={styles.content_title_text}>{data.title}</Text>
-                                    <View style={{flexWrap:'wrap',height:Pixel.getPixel(51),width:width*3/4,justifyContent:'center'}}>
+                                    <View style={{
+                                        flexWrap: 'wrap',
+                                        height: Pixel.getPixel(51),
+                                        width: width * 3 / 4,
+                                        justifyContent: 'center'
+                                    }}>
                                         <Text style={[styles.content_base_Right]}>{data.value}</Text>
                                     </View>
                                 </View>
@@ -227,33 +250,28 @@ export default class CheckWaybill extends BaseComponent {
                         <Text style={styles.content_base_Right}>{'在途'}</Text>
                     </View>
 
-                    {
-                        carInfo.map((data, index) => {
-                            return (
-                                <TouchableOpacity key={index + 'carInfo'} activeOpacity={0.8} onPress={() => {
-                                    this.toNextPage({
-                                            name: 'TransitInformation',
-                                            component: TransitInformation,
-                                            params: {}
-                                        }
-                                    );
-                                }}>
-                                    <View style={styles.content_base_wrap}>
-                                        <View style={styles.content_base_text_wrap}>
-                                            <Text style={styles.content_base_left}>{data.title}</Text>
-                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                                <Text style={[styles.content_Right,
-                                                    index == 1 ? {color: FontAndColor.COLORB1} : {}]}>{data.value}</Text>
-                                                <Image source={cellJianTou}
-                                                       style={[styles.image, {marginLeft: Pixel.getPixel(5)}]}></Image>
-                                            </View>
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                        this.toNextPage({
+                                name: 'TransitInformation',
+                                component: TransitInformation,
+                                params: {
+                                    logistics_data:this.logistics_data
+                                }
+                            }
+                        );
+                    }}>
+                        <View style={styles.content_base_wrap}>
+                            <View style={styles.content_base_text_wrap}>
+                                <Text style={styles.content_base_left}>{this.modelName}</Text>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text style={[styles.content_Right]}>{'查看'}</Text>
+                                    <Image source={cellJianTou}
+                                           style={[styles.image, {marginLeft: Pixel.getPixel(5)}]}></Image>
+                                </View>
 
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
+                            </View>
+                        </View>
+                    </TouchableOpacity>
 
                 </View>
             </View>
@@ -266,7 +284,7 @@ export default class CheckWaybill extends BaseComponent {
         this.getData();
     };
 
-    callUp=()=>{
+    callUp = () => {
         if (Platform.OS === 'android') {
             NativeModules.VinScan.callPhone(this.number);
         } else {
@@ -305,7 +323,11 @@ export default class CheckWaybill extends BaseComponent {
                             fontSize: 13,
                             marginHorizontal: Pixel.getPixel(10)
                         }}>仓库费:</Text>
-                    <Text style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{this.warehouse_amount + '元'}</Text>
+                    <Text style={{
+                        color: FontAndColor.COLORB2,
+                        fontSize: 18,
+                        flex: 1
+                    }}>{this.warehouse_amount + '元'}</Text>
                     <TouchableOpacity activeOpacity={0.8} style={{
                         width: Pixel.getPixel(80),
                         height: Pixel.getPixel(38),
@@ -314,14 +336,14 @@ export default class CheckWaybill extends BaseComponent {
                         backgroundColor: FontAndColor.COLORB0,
                         borderRadius: 4,
                         marginRight: Pixel.getPixel(10)
-                    }} onPress={()=>{
+                    }} onPress={() => {
                         this.toNextPage({
                                 name: 'StorageCheckStand',
                                 component: StorageCheckStand,
                                 params: {
                                     payAmount: this.warehouse_amount,
-                                    orderId:this.props.orderId,
-                                    callBack:this.props.callBack,
+                                    orderId: this.props.orderId,
+                                    callBack: this.props.callBack,
                                 }
                             }
                         );
@@ -329,7 +351,7 @@ export default class CheckWaybill extends BaseComponent {
                     >
                         <Text style={{color: 'white', fontSize: 18}}>支付</Text>
                     </TouchableOpacity>
-                </View>:null}
+                </View> : null}
                 <NavigatorView title={this.title} backIconClick={this.backPage}/>
             </View>)
         }
