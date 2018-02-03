@@ -218,7 +218,7 @@ const GetPermissionUtil = React.createClass({
             component = CarMySourceScene;
             componentName = 'CarMySourceScene';
         }else if(id == 72){
-            image = require('../../images/workbench/kcgl.png');
+            image = require('../../images/wuliu_service_icon.png');
             names = name;
             component = WuliuWebScene;
             componentName = 'WuliuWebScene';

@@ -54,7 +54,7 @@ export default class SharedView extends BaseComponent {
             .then((isInstalled) => {
                 if (isInstalled) {
 
-                    let imageResource = require('../../../../images/carSourceImages/car_info_null.png');
+                    let imageResource = require('../../../../images/wuliu_share_content_icon.png');
                     let fenxiangUrl = '';
                     if (AppUrls.BASEURL == 'http://api-gateway.test.dycd.com/') {
                         fenxiangUrl = AppUrls.FENXIANGTEST;
@@ -91,7 +91,7 @@ export default class SharedView extends BaseComponent {
         weChat.isWXAppInstalled()
             .then((isInstalled) => {
                 if (isInstalled) {
-                    let imageResource = require('../../../../images/carSourceImages/car_info_null.png');
+                    let imageResource = require('../../../../images/wuliu_share_content_icon.png');
                     let fenxiangUrl = '';
                     if (AppUrls.BASEURL == 'http://api-gateway.test.dycd.com/') {
                         fenxiangUrl = AppUrls.FENXIANGTEST;
