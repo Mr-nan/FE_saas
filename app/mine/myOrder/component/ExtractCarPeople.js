@@ -76,7 +76,7 @@ export default class ExtractCarPeople extends BaseComponent {
                                       params: {
                                           callBack: this.updateGeterData,
                                           orderId: this.props.orderDetail.id,
-                                          isSelect: geterName === '查看'
+                                          isSelect: this.state.geterName === '查看'
                                       }
                                   });
                               }}>

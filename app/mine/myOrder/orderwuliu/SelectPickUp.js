@@ -46,16 +46,17 @@ export default class SelectPickUp extends BaseComponent {
 
     getData = () => {
         allSouce = [];
+        this.pickups=[];
         let maps = {
             company_id: global.companyBaseID,
         };
+
         request(Urls.GET_GETER_LIST, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
                     if (response.mycode === 1) {
                         accountInfo = [];
                         allSouce.push(...response.mjson.data);
-                        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         allSouce.map((data) => {
                             accountInfo.push({
                                 name: data.name,
@@ -64,8 +65,45 @@ export default class SelectPickUp extends BaseComponent {
                                 isSelect: false
                             });
                         });
+                        if(this.props.isSelect){
+                            this.getStoreGeter()
+                        }else{
+                            this.setState({
+                                dataSource: this.ds.cloneWithRows(accountInfo),
+                                isRefreshing: false,
+                                renderPlaceholderOnly: 'success'
+                            });
+                        }
+                    } else {
+                        this.setState({renderPlaceholderOnly: 'error'});
+                    }
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                });
+    };
+
+    getStoreGeter = () => {
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id:this.props.orderId,
+        };
+        request(Urls.GETSTOREGETER, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    if (response.mycode === 1) {
+                        let data=response.mjson.data;
+                        accountInfo.map((value,index)=>{
+                            data.map((value1)=>{
+                                if(value.name==value1.name&& value.phone==value1.phone){
+                                    accountInfo[index].isSelect=true;
+                                    this.pickups.push(value.id);
+                                }
+                            });
+                        })
                         this.setState({
-                            dataSource: ds.cloneWithRows(accountInfo),
+                            dataSource: this.ds.cloneWithRows(accountInfo),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });
