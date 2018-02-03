@@ -135,6 +135,9 @@ export default class FillWaybill extends BaseComponent {
         }
         if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
             data.trans_type.map((data, index) => {
+                if(index=='0'){
+                    this.transType=data.transportTypeCode;
+                }
                 tagViews.push({
                     name: data.transportType,
                     check: index == 0 ? true : false,
@@ -353,6 +356,9 @@ export default class FillWaybill extends BaseComponent {
                         }
                         if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
                             data.trans_type.map((data, index) => {
+                                if(index=='0'){
+                                    this.transType=data.transportTypeCode;
+                                }
                                 tagViews.push({
                                     name: data.transportType,
                                     check: index == 0 ? true : false,
