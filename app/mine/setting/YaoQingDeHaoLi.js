@@ -149,6 +149,7 @@ export default class YaoQingDeHaoLi extends BaseComponent {
                          {/*this.refs.webviewtitle.lastProgress();*/}
                     }}
                         onNavigationStateChange={this.onNavigationStateChange.bind(this)}
+                        onMessage={this._onReceiveMessage}
                     />
                 </View>
                 <View style={styles.container}>
@@ -177,6 +178,9 @@ export default class YaoQingDeHaoLi extends BaseComponent {
 
     }
 
+    _onReceiveMessage = (evt)=>{
+        this.showShared();
+    };
     // this.toNextPage({
     //     name: 'AbountPlatform',
     //     component: AbountPlatform,
