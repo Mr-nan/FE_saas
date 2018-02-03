@@ -109,7 +109,7 @@ export default class SelectPickUp extends BaseComponent {
 
         }
 
-        console.log('------', this.pickups);
+        console.log('------', this.pickups.toString());
         this.setState({
             dataSource: this.ds.cloneWithRows(accountInfo),
         });
@@ -160,7 +160,7 @@ export default class SelectPickUp extends BaseComponent {
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
-                              if (this.pickupArr.length > 0) {
+                              if (this.pickups.length > 0) {
                                   this.storeGeterRequest();
                               }else{
                                   this.props.showToast('请选择提车人');
