@@ -1272,8 +1272,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      *   判断运单是否到库
      **/
     toGarage = (ordersTrans) => {
-        let state = this.transStateMapping(ordersTrans).state;
-        if (this.existTransOrder(ordersTrans) && state === 6) {
+        //console.log('ordersTrans=====', ordersTrans);
+        if (this.existTransOrder(ordersTrans) && this.transStateMapping(ordersTrans).state === 6) {
             return true;
         } else {
             return false;
