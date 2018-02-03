@@ -190,7 +190,7 @@ export default class SelectPickUp extends BaseComponent {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.showModal(false);
                         this.backPage();
-                        this.props.callBack();
+                        this.props.callBack(response.mjson.data);
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }

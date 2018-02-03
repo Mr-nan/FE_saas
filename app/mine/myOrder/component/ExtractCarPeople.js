@@ -28,7 +28,7 @@ export default class ExtractCarPeople extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            geterName: this.existGeterData(this.props.ordersTrans.geter_data) ? this.props.ordersTrans.geter_data : '选择'
+            geterName: this.existGeterData(this.props.ordersTrans.geter_data) ? '查看' : '选择'
         }
     }
 
@@ -38,7 +38,7 @@ export default class ExtractCarPeople extends BaseComponent {
      **/
     componentWillReceiveProps(nextProps) {
         this.setState({
-            geterName: this.existGeterData(nextProps.geter_data) ? nextProps.geter_data : '选择'
+            geterName: this.existGeterData(nextProps.geter_data) ? '查看' : '选择'
         });
     }
 
@@ -46,7 +46,7 @@ export default class ExtractCarPeople extends BaseComponent {
      *   判断订单是否选择了提车人
      **/
     existGeterData = (geterData) => {
-        if (geterData.length == 0) {
+        if (geterData == '' || geterData.length == 0) {
             return false;
         } else {
             return true;
@@ -59,7 +59,7 @@ export default class ExtractCarPeople extends BaseComponent {
     updateGeterData = (newOrdersTrans) => {
         this.props.updateGeterData(newOrdersTrans);
         this.setState({
-            geterName: this.existGeterData(newOrdersTrans) ? newOrdersTrans : '选择'
+            geterName: this.existGeterData(newOrdersTrans) ? '查看' : '选择'
         });
     };
 
