@@ -469,6 +469,21 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 )
                 break;
+            case 6:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text allowFontScaling={false} style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB2
+                            }}>验车中，请耐心等待</Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
             default:
                 this.listViewStyle = Pixel.getTitlePixel(65);
                 return null;
@@ -1223,9 +1238,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 200: // 200 =>'支付运单成功生成运单失败',
                 return {'state': 1, 'waybillState': '运费' + ordersTrans.total_amount + '元'};
             case 201:   // 201 =>'支付运单成功生成运单成功',
+            case 31:  //  31 =>'审核失败待发',
                 return {'state': 2, 'waybillState': '已支付'};
             case 30:  //  30 =>'审核成功待发',
-            case 31:  //  31 =>'审核失败待发',
                 return {'state': 3, 'waybillState': '已支付'};
             case 3:  //  3 =>'发运',
                 return {'state': 4, 'waybillState': '已支付'};
@@ -1566,7 +1581,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 24:  //24=>'融资单确认验收失败',
                 if (cancelStatus === 0) {
                     this.orderState = 5;
-                    this.topState = -1;
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state === 2) {
+                        this.topState = 6;
+                    } else {
+                        this.topState = -1;
+                    }
                     if (status === 17 || status === 19 || status === 20 || status === 21 || status === 22 ||
                         status === 23 || status === 24) {
                         this.bottomState = -1;
