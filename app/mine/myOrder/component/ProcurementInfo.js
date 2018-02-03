@@ -131,7 +131,7 @@ export default class ProcurementInfo extends BaseComponent {
                         textAlign: 'right',
                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
                     }}
-                >其中订单融资支付{this.state.orderDetail.balance_amount - this.state.orderDetail.first_amount}元</Text>}
+                >其中订单融资支付{parseFloat(this.state.orderDetail.balance_amount - this.state.orderDetail.first_amount).toFixed(2)}元</Text>}
                 {/*<View style={{
                  alignItems: 'center',
                  flexDirection: 'row',
