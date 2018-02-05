@@ -121,6 +121,7 @@ export  default class WuliuWebScene extends BaseComponent {
                     alignItems: 'center'
                 }}>
                     <Image
+                        style={{width:Pixel.getPixel(22),height:Pixel.getPixel(22)}}
                         source={require('../../../../images/wuliu_share_icon.png')}></Image>
                 </View>
             </TouchableOpacity>
