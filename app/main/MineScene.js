@@ -685,7 +685,7 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.component = MycarScene
                 break;
             case 52:
-                if (this.isLogistics === 'false') {
+                if (this.isLogistics == 'false') {  //this.isLogistics == 'false'
                     this.navigatorParams.name = 'OrderTypeSelectSceneOld'
                     this.navigatorParams.component = OrderTypeSelectSceneOld
                 } else {
