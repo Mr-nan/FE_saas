@@ -46,6 +46,7 @@ user_id = '';
 export default class YaoQingDeHaoLi extends BaseComponent {
     constructor(props) {
         super(props);
+        this.btnFlat = 0;
         this.state = {
             renderPlaceholderOnly: 'blank',
             url: ""
@@ -137,12 +138,16 @@ export default class YaoQingDeHaoLi extends BaseComponent {
                         domStorageEnabled={true}
                         scalesPageToFit={false}
                         onLoadStart={()=>{
-                            this.setState({
-                                loading: true,
-                            });
+                            if(this.btnFlat === 0){
+                                this.setState({
+                                    loading: true,
+                                });
+                            }
+
                     }}
                         onLoadEnd={
                             ()=>{
+                                this.btnFlat = this.btnFlat + 1;
                             this.setState({
                                 loading: false,
                             });
