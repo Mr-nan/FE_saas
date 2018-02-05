@@ -264,7 +264,7 @@ export default class FillWaybill extends BaseComponent {
                                         garageAmount: this.store_amount,//仓储费
                                         transAmount: this.totalMoney,//物流费
                                         orderId:this.props.orderId,
-                                        callBack:this.props.callBack()
+                                        callBack:this.props.callBack
 
                                     }
                                 }
