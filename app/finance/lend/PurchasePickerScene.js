@@ -210,6 +210,7 @@ export  default class PurchasePickerScene extends BaseComponent {
             rev_user_id: this.props.carData.rev_user_id,
             sell_city_id: this.props.carData.sell_city_id,
             series_id: this.props.carData.series_id,
+            payment_id:this.props.carData.payment_id,
             api: MyUrl.PURCHAAUTO_ADDAUTO
         };
         this.props.showModal(true);

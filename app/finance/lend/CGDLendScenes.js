@@ -451,7 +451,7 @@ export  default  class CGDLendScenes extends BaseComponent {
             return (<LendItem leftTitle={rowData.title} rightTitle={rowData.value}/>)
         } else if (sectionID === 'section2' && rowID === '0') {
 
-            return <LendInputItem placeholder={'请输入借款金额'} title={rowData.title} onChangeText={(text)=>{PostData.loan_mny=text} } showValue={PostData.loan_mny}/>
+            return <LendInputItem placeholder={'请输入借款金额'} title={rowData.title} onChangeText={(text)=>{PostData.loan_mny=text} } showValue={PostData.loan_mny} unit={'万'}/>
         } else if (sectionID === 'section2' && rowID === '1') {
 
             return <LendDatePike ref={(piker)=>{this.datePiker =piker}} showData={'3333'} lefTitle={rowData.title} placeholder='请选择用款时间'
