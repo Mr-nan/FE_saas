@@ -247,7 +247,6 @@ export default class CheckWaybill extends BaseComponent {
                 }}>
                     <View style={styles.content_title_text_wrap}>
                         <Text style={[styles.content_title_text, {color: 'black'}]}>车辆信息</Text>
-                        <Text style={styles.content_base_Right}>{'在途'}</Text>
                     </View>
 
                     <TouchableOpacity activeOpacity={0.8} onPress={() => {

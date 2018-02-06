@@ -85,8 +85,8 @@ export default class LogisticsModeForFinancing extends BaseComponent {
 
             });
         } else {
-            // 车已在店
-            this.refs.chooseModal.changeShowType(true, '取消', '确定', '选择车已在店需要风控人员后台审核确认，是否继续？',
+            // 同城同市场
+            this.refs.chooseModal.changeShowType(true, '取消', '确定', '选择同城同市场需要风控人员后台审核确认，是否继续？',
                 () => {
                     this.toNextPage({
                             name: 'AddressManage',
@@ -101,7 +101,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
     };
 
     /**
-     * 车已在店
+     * 同城同市场
      **/
     isCarStoreCheck = (callBackInfo) => {
         this.props.showModal(true);
@@ -126,7 +126,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                 });
             } else {
                 this.props.showModal(false);
-                this.props.showToast('车已在店审核发起失败');
+                this.props.showToast('同城同市场审核发起失败');
             }
         });
     };
@@ -195,14 +195,14 @@ export default class LogisticsModeForFinancing extends BaseComponent {
     render() {
         let views = '';
         let alreadyChoose = this.transStateMapping(this.state.ordersTrans);  // 是否已经生成运单并支付完成
-        if (this.state.isStore == 1) {  // 选择 车已在店
+        if (this.state.isStore == 1) {  // 选择 同城同市场
             views =
                 <View>
                     <View style={{
                         height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                         paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                     }}>
-                        <Text >车已在店</Text>
+                        <Text >同城同市场</Text>
                         <View style={{flex: 1}}/>
                         <Text style={{color: fontAndColor.COLORB2}}>审核中</Text>
                     </View>
@@ -225,14 +225,14 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                         </View>
                     </View>
                 </View>
-        } else if (this.state.isStore == 3) {  // 选择 车已在店
+        } else if (this.state.isStore == 3) {  // 选择 同城同市场
             views =
                 <View>
                     <View style={{
                         height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                         paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                     }}>
-                        <Text >车已在店</Text>
+                        <Text >同城同市场</Text>
                         <View style={{flex: 1}}/>
                         <Text style={{color: fontAndColor.COLORB2}}>已同意</Text>
                     </View>
