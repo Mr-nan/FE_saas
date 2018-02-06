@@ -56,9 +56,7 @@ export default class MyAccountScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             backColor: fontAndColor.COLORA3,
-            mbWKHShow: false,
-            mbWBKShow: false,
-            mbKTShow: false,
+
         };
     }
 
@@ -92,9 +90,9 @@ export default class MyAccountScene extends BaseComponent {
                             obj = {};
                         }
                         if (obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] == null) {
-                            obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = false;
-                            obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = false;
-                            obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = false;
+                            obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = 0;
+                            obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = 0;
+                            obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = 0;
                             StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {})
                         }
                         this.setState({
@@ -215,13 +213,15 @@ export default class MyAccountScene extends BaseComponent {
                                 StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                                     if (subData.code == 1) {
                                         let obj = JSON.parse(subData.result);
-                                        obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = true;
+
+                                        if (obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] == 2){return}
+                                        obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = 1;
                                         StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                         })
                                         this.setState({
                                             mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
-                                            mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
-                                            mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                            mbWBKShow: 0,
+                                            mbKTShow:  0,
                                         })
                                     }
                                 })
@@ -236,13 +236,14 @@ export default class MyAccountScene extends BaseComponent {
                                 StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                                     if (subData.code == 1) {
                                         let obj = JSON.parse(subData.result);
-                                        obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = true;
+                                        if (obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] == 2){return}
+                                        obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = 1;
                                         StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                         })
                                         this.setState({
                                             mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
                                             mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
-                                            mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                            mbKTShow:  0,
                                         })
                                     }
                                 })
@@ -257,7 +258,8 @@ export default class MyAccountScene extends BaseComponent {
                                 StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                                     if (subData.code == 1) {
                                         let obj = JSON.parse(subData.result);
-                                        obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = true;
+                                        if (obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] == 2){return}
+                                        obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = 1;
                                         StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                         })
                                         this.setState({
@@ -335,12 +337,10 @@ export default class MyAccountScene extends BaseComponent {
                               />
                           }/>
                 {
-                    this.state.mbWKHShow == true ?
+                    this.state.mbWKHShow == 1 ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{
-
-
 
                                     StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                                         if (data.code == 1) {
@@ -348,7 +348,7 @@ export default class MyAccountScene extends BaseComponent {
                                             StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                                                 if (subData.code == 1) {
                                                     let obj = JSON.parse(subData.result);
-                                                    obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = true;
+                                                    obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = 2;
                                                     StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                                     })
                                                     this.setState({
@@ -370,7 +370,7 @@ export default class MyAccountScene extends BaseComponent {
                         </View> : null
                 }
                 {
-                    this.state.mbWBKShow == true ?
+                    this.state.mbWBKShow == 1 ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{
@@ -380,7 +380,7 @@ export default class MyAccountScene extends BaseComponent {
                                             StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                                                 if (subData.code == 1) {
                                                     let obj = JSON.parse(subData.result);
-                                                    obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = true;
+                                                    obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = 2;
                                                     StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                                     })
                                                     this.setState({
@@ -402,7 +402,7 @@ export default class MyAccountScene extends BaseComponent {
                         </View> : null
                 }
                 {
-                    this.state.mbKTShow == true ?
+                    this.state.mbKTShow == 1 ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
                                 onPress={()=>{
@@ -413,7 +413,7 @@ export default class MyAccountScene extends BaseComponent {
                                             StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                                                 if (subData.code == 1) {
                                                     let obj = JSON.parse(subData.result);
-                                                    obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = true;
+                                                    obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = 2;
                                                     StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                                     })
                                                     this.setState({
