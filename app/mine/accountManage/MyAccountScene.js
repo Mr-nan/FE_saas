@@ -309,6 +309,7 @@ export default class MyAccountScene extends BaseComponent {
         }
         return (
             <MyAccountItem
+                showQuestion = {rowData == 315?true:false}
                 navigator={this.props.navigator}
                 showToast={this.props.showToast}
                 showModal={this.props.showModal}
