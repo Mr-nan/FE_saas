@@ -183,6 +183,9 @@ export default class LogisticsModeForFinancing extends BaseComponent {
         //console.log('newOrdersTrans======', newOrdersTrans);
         newOrdersTrans.status = newOrdersTrans.trans_status;
         this.props.updateOrdersTrans(newOrdersTrans);
+        if (newOrdersTrans.status >= 1) {
+            this.props.updateLogisticsType(1);
+        }
         //this.ordersTrans = newOrdersTrans;
         this.setState({
             ordersTrans: newOrdersTrans

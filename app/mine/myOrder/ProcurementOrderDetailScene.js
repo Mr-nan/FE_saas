@@ -771,7 +771,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     existTransOrder = (ordersTrans) => {
         if (typeof(ordersTrans) == "undefined") {
             return false;
-        } else if (ordersTrans.logistics_type === 1 && this.orderState == 6) {
+        } else if (ordersTrans.logistics_type == 1 && this.orderState == 6) {
             return false;
         } else {
             return true;
@@ -849,12 +849,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             onPress={() => {
                                 let transOrder = this.existTransOrder(this.ordersTrans);
                                 let isStore = this.orderDetail.orders_item_data[0].is_store;  // 是否在店 0没有申请 1申请中 2驳回 3同意
+/*                                console.log('this.ordersTrans=====', this.ordersTrans);
+                                console.log('transOrder=====', transOrder);
+                                console.log('this.logisticsType=====', this.logisticsType);
+                                console.log('111111ticsType=====', this.logisticsType === 1 && transOrder);*/
                                 if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 6) {
                                     this.props.showToast('请输入申请贷款金额');
                                 } else if (!transOrder && (isStore == 0 || isStore == 2) && this.orderState == 6) {
                                     this.props.showToast('请选择交车方式');
                                 } else if (isStore == 1 && this.orderState == 6) {
-                                    this.props.showToast('车已在店审核中');
+                                    this.props.showToast('同城同市场审核中');
                                 } else if (!transOrder && this.orderState == 2 && this.logisticsType === 1) {
                                     this.props.showToast('选择物流请填写运单');
                                 } else {
@@ -1801,7 +1805,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.financeInfo = this.orderDetail.finance_data;
                         if (this.orderDetail.orders_trans_data.length > 1) {
                             for (let transData in this.orderDetail.orders_trans_data) {
-                                if (this.orderDetail.orders_trans_data[transData].logistics_type === 4) {
+                                if (this.orderDetail.orders_trans_data[transData].logistics_type == 4) {
                                     this.ordersTrans = this.orderDetail.orders_trans_data[transData];
                                 }
                             }
@@ -1849,6 +1853,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      *
      **/
     updateOrdersTrans = (newOrdersTrans) => {
+        //console.log('newOrdersTrans=====', newOrdersTrans);
         this.ordersTrans = newOrdersTrans;
     };
 
@@ -2106,7 +2111,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 <TouchableOpacity
                     style={styles.itemType7}
                     onPress={() => {
-                        console.log(this.orderDetail.finance_no);
+                        //console.log(this.orderDetail.finance_no);
                         // 跳转金融页面  借款详情
                         this.toNextPage({
                             name: 'DDDetailScene',
@@ -2170,7 +2175,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 <LogisticsMode navigator={this.props.navigator}
                                orderDetail={this.orderDetail}
                                orderState={this.orderState}
-                               ordersTrans={transOrder ? this.ordersTrans : {'id' : -1, 'status': 0, total_amount : '0'}}
+                               ordersTrans={transOrder ? this.ordersTrans : {id : -1, status: 0, total_amount : '0'}}
                                updateOrdersTrans={this.updateOrdersTrans}
                                updateLogisticsType={this.updateLogisticsType}/>
             )
@@ -2184,7 +2189,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                            orderDetail={this.orderDetail}
                                            orderState={this.orderState}
                                            refresh={this.payCallBack}
-                                           ordersTrans={transOrder ? this.ordersTrans : {'id' : -1, 'status': 0, total_amount : '0', logistics_type: '0'}}
+                                           ordersTrans={transOrder ? this.ordersTrans : {id : -1, status: 0, total_amount : '0', logistics_type: '0'}}
                                            updateOrdersTrans={this.updateOrdersTrans}
                                            updateLogisticsType={this.updateLogisticsType}/>
             )
@@ -2193,7 +2198,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             return (
                 <ExtractCarPeople navigator={this.props.navigator}
                                   orderDetail={this.orderDetail}
-                                  ordersTrans={transOrder ? this.ordersTrans : {'id' : -1, 'status': 0, total_amount : '0', logistics_type: '0'}}
+                                  ordersTrans={transOrder ? this.ordersTrans : {id : -1, status: 0, total_amount : '0', logistics_type: '0'}}
                                   updateGeterData={this.updateGeterData}/>
             )
         }

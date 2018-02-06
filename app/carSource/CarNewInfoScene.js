@@ -542,7 +542,7 @@ export default class CarNewInfoScene extends BaseComponent {
             let isLogistics = response.mjson.data;
             if (isLogistics == 'false') {  //isLogistics == 'false'
                 this.toNextPage({
-                    name: 'ProcurementOrderDetailSceneOld',
+                    name: 'ProcurementOrderDetailScene',
                     component: ProcurementOrderDetailSceneOld,
                     params: {
                         business: 1,
