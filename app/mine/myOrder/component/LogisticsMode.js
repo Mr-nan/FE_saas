@@ -56,8 +56,8 @@ export default class LogisticsMode extends BaseComponent {
             case 2: //2 =>'支付运单成功',
             case 100: // 100 =>'支付运单中',
             case 101: // 101 =>'支付运单失败',
-            case 200: // 200 =>'支付运单成功生成运单失败',
                 return {'state': 1, 'waybillState': '运费' + ordersTrans.total_amount + '元'};
+            case 200: // 200 =>'支付运单成功生成运单失败',
             case 201:   // 201 =>'支付运单成功生成运单成功',
             case 31:  //  31 =>'审核失败待发',
                 return {'state': 2, 'waybillState': '已支付'};
