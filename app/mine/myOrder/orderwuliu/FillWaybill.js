@@ -52,20 +52,17 @@ export default class FillWaybill extends BaseComponent {
         this.invoiceId = '';
         this.endId = '';
         this.startId = '';
-        this.toStore = false;
         this.warehouse_id = '';//仓库id
         this.addressDatas = [];
         this.vType = this.props.vType;//1:二手车 2:新车
-        this.toStore = this.props.toStore;//0到店，1到库，非融资
+        this.toStore = this.props.logisticsType;//0自提,1全款到店,2融资到店,3融资到库,4库到店
         this.fromSingle = false;//来自地址管理
         this.totalMoney = 0;
         this.store_amount=0;
-        if (this.toStore == '0') {
+        if (this.toStore == '2') {
             this.title = '填写运单（到店）';
-            this.toStore = this.props.toStore;//运单信息到店
-        } else if (this.toStore == '1') {//到库
+        } else if (this.toStore == '3') {//到库
             this.title = '填写运单（到库）';
-            this.toStore = this.props.toStore;//运单信息到库
         } else if (this.props.fromSingle) {
             this.fromSingle = this.props.fromSingle
         } else {
@@ -108,16 +105,23 @@ export default class FillWaybill extends BaseComponent {
         if(!this.isEmpty(data.store_amount)){
             this.store_amount=parseFloat(data.store_amount).toFixed(2);
         }
-        if (this.toStore == '1') {
-            if (this.isEmpty(data.warehouse_id) && this.toStore == '1') {
+        if (this.toStore == '3') {
+            if (this.isEmpty(data.warehouse_id) && this.toStore == '3') {
                 this.collectAddress = '请选择'
             } else {
                 this.warehouse_id = data.warehouse_id;
             }
         }
-        accoutInfo.push({title: '联系人', value: end_address.contact_name});
-        accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
-        accoutInfo.push({title: '收车地址', value: end_address.full_address});
+        if(this.collectAddress=='请选择'){
+            accoutInfo.push({title: '联系人', value: ''});
+            accoutInfo.push({title: '联系方式', value: ''});
+            accoutInfo.push({title: '收车地址', value: ''});
+        }else{
+            accoutInfo.push({title: '联系人', value: end_address.contact_name});
+            accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
+            accoutInfo.push({title: '收车地址', value: end_address.full_address});
+        }
+
         if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
             data.all_amount.map((data) => {
                 if (this.fromSingle && data.amount_name == '总金额') {
@@ -329,16 +333,23 @@ export default class FillWaybill extends BaseComponent {
                         if(!this.isEmpty(data.store_amount)){
                             this.store_amount=parseFloat(data.store_amount).toFixed(2);
                         }
-                        if (this.toStore == '1') {
-                            if (this.isEmpty(data.warehouse_id) && this.toStore == '1') {
+                        if (this.toStore == '3') {
+                            if (this.isEmpty(data.warehouse_id) && this.toStore == '3') {
                                 this.collectAddress = '请选择'
                             } else {
                                 this.warehouse_id = data.warehouse_id;
                             }
                         }
-                        accoutInfo.push({title: '联系人', value: end_address.contact_name});
-                        accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
-                        accoutInfo.push({title: '收车地址', value: this.props.logisticsType=='3'?end_address.address:end_address.full_address});
+                        if(this.collectAddress=='请选择'){
+                            accoutInfo.push({title: '联系人', value: ''});
+                            accoutInfo.push({title: '联系方式', value: ''});
+                            accoutInfo.push({title: '收车地址', value: ''});
+                        }else{
+                            accoutInfo.push({title: '联系人', value: end_address.contact_name});
+                            accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
+                            accoutInfo.push({title: '收车地址', value: this.props.logisticsType=='3'?end_address.address:end_address.full_address});
+                        }
+
                         if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
                             data.all_amount.map((data) => {
                                 if (this.fromSingle && data.amount_name == '总金额') {
