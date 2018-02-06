@@ -263,7 +263,6 @@ export default class CarSharedListScene extends BaceComponent{
             this.shareNumberSum-=1;
         }
         this.isAllSelect = this.shareNumberSum == carUpperFrameData.length ? true:false;
-        console.log('isAllSelect',this.isAllSelect,carUpperFrameData.length);
         this.refs.footView.setAllSelectBtn(this.isAllSelect,this.shareNumberSum);
 
         this.setState(

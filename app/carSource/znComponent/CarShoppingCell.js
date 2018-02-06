@@ -37,7 +37,9 @@ export default class CarShoppingCell extends Component{
                 {
                     this.state.list.map((data,index)=>{
                         return(
-                            <CarCell key={index} isShowLine={index<this.state.list.length?true:false} data={data} carSelectClick={(type)=>{this.carSelectClick(type,index)}} carDelectClick={()=>{this.props.carDelectClick(index)}}/>
+                            <CarCell key={index} isShowLine={index<this.state.list.length?true:false} data={data}
+                                     carSelectClick={(type)=>{this.carSelectClick(type,index)}}
+                                     carDelectClick={()=>{this.props.carDelectClick(index)}}/>
                         )
                     })
                 }
@@ -109,15 +111,15 @@ export default class CarShoppingCell extends Component{
     render(){
         return(
             <View style={styles.shopView}>
-                <TouchableOpacity onPress={()=>{
+                <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>{
                     this.props.shopSelectClick(!this.state.select);
                     this.setState({
                         select:!this.state.select
                     })
                 }}>
                     <Image source={this.state.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')}/>
+                    <Text style={styles.shopTitle}>{this.props.shopTitle}</Text>
                 </TouchableOpacity>
-                <Text style={styles.shopTitle}>{this.props.shopTitle}</Text>
             </View>)
     }
 
@@ -147,6 +149,8 @@ export default class CarShoppingCell extends Component{
              this.state.leftGap,
              {
                  toValue:-Pixel.getPixel(85),
+                 duration:300,
+
 
              }
          ).start();
@@ -158,6 +162,8 @@ export default class CarShoppingCell extends Component{
              this.state.leftGap,
              {
                  toValue:0,
+                 duration:300,
+
              }
          ).start();
      }
@@ -272,6 +278,7 @@ class DelectButton extends Component{
               this.state.rightGap,
               {
                   toValue:0,
+                  duration:300,
               }
           ).start();
       }
@@ -281,6 +288,7 @@ class DelectButton extends Component{
               this.state.rightGap,
               {
                   toValue:this.defaultGap,
+                  duration:300,
 
               }
           ).start();

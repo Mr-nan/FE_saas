@@ -67,7 +67,7 @@ export  default  class CarShoppingScene extends BaseComponent{
             <View style={styles.rootView}>
                 {
                   this.state.isEditType && (
-                        <HeadView select={this.state.isAllSelect} headViewSelectClick={this.headViewSelectClick} headViewDelectClick={this.headViewDelectClick}/>
+                        <HeadView ref={(ref)=>{this.headView = ref}} select={this.state.isAllSelect} headViewSelectClick={this.headViewSelectClick} headViewDelectClick={this.headViewDelectClick}/>
                     )
                 }
                 <ListView style={{marginBottom:this.state.isEditType?Pixel.getPixel(0):Pixel.getPixel(44)}}
@@ -105,6 +105,7 @@ export  default  class CarShoppingScene extends BaseComponent{
                                      list[i].select = type;
                                  }
                                  this.shoppingData[rowID].select = type;
+                                 this.isAllSelectType();
 
                              }}
                              carSelectClick={(type,index)=>{
@@ -119,6 +120,7 @@ export  default  class CarShoppingScene extends BaseComponent{
                                          }
                                      }
                                  this.shoppingData[rowID].select = isShopSelect;
+                                 this.isAllSelectType();
 
                              }}
                              carDelectClick={(index)=>{
@@ -159,8 +161,6 @@ export  default  class CarShoppingScene extends BaseComponent{
                 subItem.select=type;
             }
         }
-        console.log(this.shoppingData);
-
         this.setState({
             dataSource:this.state.dataSource.cloneWithRows(this.shoppingData),
             isAllSelect:type
@@ -214,7 +214,8 @@ export  default  class CarShoppingScene extends BaseComponent{
                 break;
             }
         }
-        return isAllSelect;
+        this.state.isAllSelect = isAllSelect;
+        this.headView && this.headView.setSelectType(isAllSelect);
     }
 
     allSelectActin=(type)=>{
@@ -232,12 +233,24 @@ export  default  class CarShoppingScene extends BaseComponent{
 
 class HeadView extends Component{
 
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+            select:this.props.select
+        };
+      }
+    componentWillReceiveProps(nextProps) {
+        this.state.select = nextProps.select;
+    }
+
     render(){
         return(
             <View style={styles.headView}>
-                <TouchableOpacity activeOpacity={1} onPress={()=>this.props.headViewSelectClick(!this.props.select)}
+                <TouchableOpacity activeOpacity={1} onPress={()=>this.props.headViewSelectClick(!this.state.select)}
                                   style={{flexDirection:'row'}}>
-                    <Image source={this.props.select? require('../../images/carSourceImages/shopSelect.png'):require('../../images/carSourceImages/shopNoSelect.png')}/>
+                    <Image source={this.state.select? require('../../images/carSourceImages/shopSelect.png'):require('../../images/carSourceImages/shopNoSelect.png')}/>
                     <Text style={styles.selectTitle}>全选</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={1} style={{width:Pixel.getPixel(100),height:Pixel.getPixel(33),
@@ -248,6 +261,13 @@ class HeadView extends Component{
             </View>
         )
     }
+
+    setSelectType=(type)=> {
+        this.setState({
+            select:type
+        })
+    }
+
 }
 
 class FootView extends Component {
