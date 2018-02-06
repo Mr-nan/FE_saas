@@ -110,6 +110,7 @@ export default class FillWaybill extends BaseComponent {
                 this.collectAddress = '请选择'
             } else {
                 this.warehouse_id = data.warehouse_id;
+                this.endId=this.warehouse_id;
             }
         }
         if(this.collectAddress=='请选择'){
