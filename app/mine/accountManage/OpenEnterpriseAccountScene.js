@@ -18,6 +18,7 @@ import {
 //图片加文字
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
+
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
@@ -31,7 +32,8 @@ import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as webBackUrl from "../../constant/webBackUrl";
 import SelectTypeScene from './SelectTypeScene';
 import AccountWebScene from './AccountWebScene';
-export  default class OpenEnterpriseAccountScene extends BaseComponent {
+
+export default class OpenEnterpriseAccountScene extends BaseComponent {
 
     constructor(props) {
         super(props);
@@ -39,19 +41,63 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: 'blank',
             topSize: -179,
-            mbXzKtqyzh: true,
         };
     }
 
     initFinish = () => {
-        StorageUtil.mGetItem(StorageKeyNames.MB_KTQYZH, (data) => {
-            if (data.result != 'false') {
-                this.setState({mbXzKtqyzh: true,})
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+
+                let userData = JSON.parse(data.result);
+
+                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.INDICATIVE_LAYER), (subData) => {
+
+                    if (subData.code == 1) {
+                        let obj = JSON.parse(subData.result);
+
+                        if (obj == null) {
+                            obj = {};
+                        }
+                        if (obj[StorageKeyNames.OPEN_ENTERPRISE] == null) {
+
+                            obj[StorageKeyNames.OPEN_ENTERPRISE] = false;
+
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.INDICATIVE_LAYER), JSON.stringify(obj), () => {})
+
+                        }
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            mbXzKtqyzh: obj[StorageKeyNames.OPEN_ENTERPRISE],
+                        })
+                    }
+
+                })
+
             }
         })
-        this.setState({
-            renderPlaceholderOnly: 'success',
-        });
+
+
+        //
+        // StorageUtil.mGetItem(StorageKeyNames.MB_KTQYZH, (data) => {
+        //     if (data.result != 'false') {
+        //         this.setState({mbXzKtqyzh: true,})
+        //     }
+        // })
+        // this.setState({
+        //     renderPlaceholderOnly: 'success',
+        // });
+    }
+    backPage = () => {
+        let navigator = this.props.navigator;
+        if (navigator) {
+            for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                if (navigator.getCurrentRoutes()[i].name == 'MyAccountScene') {
+                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                    break;
+                }
+            }
+        }
     }
 
     render() {
@@ -69,36 +115,40 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                             viewStytle={styles.itemStyel}
                             inputTextStyle={styles.inputTextStyle}
                             leftIcon={false}
-                            foucsChange={()=>{
-                                    if(this.state.topSize==5){
-                                        this.setState({
-                                            topSize:-179
-                                        });
-                                    }
-                                }}
+                            foucsChange={() => {
+                                if (this.state.topSize == 5) {
+                                    this.setState({
+                                        topSize: -179
+                                    });
+                                }
+                            }}
                             import={false}
                             clearValue={true}
                             rightIcon={false}/>
-                        <SelectNumberType ref="cert_type" callBack={()=>{
-                            this.toNextPage({name:'SelectTypeScene',component:SelectTypeScene,
-                            params:{regShowData:['营业执照号'
-                            ,'社会信用代码'],callBack:(name,value)=>{
-                                this.refs.cert_type.setValue(name,value);
-                            },title:'选择证件类型'}});
-                       }}/>
+                        <SelectNumberType ref="cert_type" callBack={() => {
+                            this.toNextPage({
+                                name: 'SelectTypeScene', component: SelectTypeScene,
+                                params: {
+                                    regShowData: ['营业执照号'
+                                        , '社会信用代码'], callBack: (name, value) => {
+                                        this.refs.cert_type.setValue(name, value);
+                                    }, title: '选择证件类型'
+                                }
+                            });
+                        }}/>
                         <LoginInputText
                             ref="cert_no"
                             textPlaceholder={'请输入企业证件号'}
                             viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                             inputTextStyle={styles.inputTextStyle}
                             leftIcon={false}
-                            foucsChange={()=>{
-                                    if(this.state.topSize==5){
-                                        this.setState({
-                                            topSize:-179
-                                        });
-                                    }
-                                }}
+                            foucsChange={() => {
+                                if (this.state.topSize == 5) {
+                                    this.setState({
+                                        topSize: -179
+                                    });
+                                }
+                            }}
                             import={false}
                             clearValue={true}
                             rightIcon={false}/>
@@ -113,13 +163,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                             inputTextStyle={styles.inputTextStyle}
                             leftIcon={false}
                             import={false}
-                            foucsChange={()=>{
-                                    if(this.state.topSize==5){
-                                        this.setState({
-                                            topSize:-179
-                                        });
-                                    }
-                                }}
+                            foucsChange={() => {
+                                if (this.state.topSize == 5) {
+                                    this.setState({
+                                        topSize: -179
+                                    });
+                                }
+                            }}
                             clearValue={true}
                             rightIcon={false}/>
                         <LoginInputText
@@ -129,13 +179,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                             inputTextStyle={styles.inputTextStyle}
                             leftIcon={false}
                             import={false}
-                            foucsChange={()=>{
-                                    if(this.state.topSize==-179){
-                                        this.setState({
-                                            topSize:5
-                                        });
-                                    }
-                                }}
+                            foucsChange={() => {
+                                if (this.state.topSize == -179) {
+                                    this.setState({
+                                        topSize: 5
+                                    });
+                                }
+                            }}
                             clearValue={true}
                             rightIcon={false}/>
                     </View>
@@ -150,13 +200,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                             inputTextStyle={styles.inputTextStyle}
                             leftIcon={false}
                             import={false}
-                            foucsChange={()=>{
-                                    if(this.state.topSize==-179){
-                                        this.setState({
-                                            topSize:5
-                                        });
-                                    }
-                                }}
+                            foucsChange={() => {
+                                if (this.state.topSize == -179) {
+                                    this.setState({
+                                        topSize: 5
+                                    });
+                                }
+                            }}
                             clearValue={true}
                             rightIcon={false}/>
                         <LoginInputText
@@ -166,13 +216,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                             inputTextStyle={styles.inputTextStyle}
                             leftIcon={false}
                             import={false}
-                            foucsChange={()=>{
-                                    if(this.state.topSize==-179){
-                                        this.setState({
-                                            topSize:5
-                                        });
-                                    }
-                                }}
+                            foucsChange={() => {
+                                if (this.state.topSize == -179) {
+                                    this.setState({
+                                        topSize: 5
+                                    });
+                                }
+                            }}
                             clearValue={true}
                             rightIcon={false}/>
                         <LoginInputText
@@ -182,35 +232,54 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                             inputTextStyle={styles.inputTextStyle}
                             leftIcon={false}
                             import={false}
-                            foucsChange={()=>{
-                                    if(this.state.topSize==-179){
-                                        this.setState({
-                                            topSize:5
-                                        });
-                                    }
-                                }}
+                            foucsChange={() => {
+                                if (this.state.topSize == -179) {
+                                    this.setState({
+                                        topSize: 5
+                                    });
+                                }
+                            }}
                             clearValue={true}
                             rightIcon={false}/>
 
                     </View>
-                    <Text allowFontScaling={false} style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                            marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15)}}>
+                    <Text allowFontScaling={false} style={{
+                        color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                        marginTop: Pixel.getPixel(20), marginLeft: Pixel.getPixel(15)
+                    }}>
                         请确认您的企业信息填写准确
                     </Text>
 
-                    <TouchableOpacity onPress={()=>{
-                            this.checkEmpty();
-                        }} activeOpacity={0.8} style={{backgroundColor:fontAndColor.COLORB0,marginTop:Pixel.getPixel(15),
-                            width:width-Pixel.getPixel(30),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),
-                            height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
+                    <TouchableOpacity onPress={() => {
+                        this.checkEmpty();
+                    }} activeOpacity={0.8} style={{
+                        backgroundColor: fontAndColor.COLORB0,
+                        marginTop: Pixel.getPixel(15),
+                        width: width - Pixel.getPixel(30),
+                        marginLeft: Pixel.getPixel(15),
+                        marginRight: Pixel.getPixel(15),
+                        height: Pixel.getPixel(44),
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
                         <Text allowFontScaling={false}
-                              style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.buttonText}</Text>
+                              style={{
+                                  color: '#fff',
+                                  fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)
+                              }}>{this.props.buttonText}</Text>
                     </TouchableOpacity>
-                    <Text allowFontScaling={false} style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:18}}>
+                    <Text allowFontScaling={false} style={{
+                        color: fontAndColor.COLORA1,
+                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                        marginTop: Pixel.getPixel(20),
+                        marginLeft: Pixel.getPixel(15),
+                        marginRight: Pixel.getPixel(15),
+                        lineHeight: 18
+                    }}>
                         每天
-                        <Text style={{color: fontAndColor.COLORB2,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)
-                            }}>
+                        <Text style={{
+                            color: fontAndColor.COLORB2, fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)
+                        }}>
                             9:00～17:00
                         </Text>
                         为实时注册时间，其他时间银行会先记录下信息，在工作时间处理后返回给您处理结果。
@@ -224,11 +293,38 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                 />
 
                 {
-                    this.state.mbXzKtqyzh != false ?
-                        <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
+                    this.state.mbXzKtqyzh == false ?
+                        <View style={{position: 'absolute', bottom: 0, top: 0, width: width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_KTQYZH,'false',()=>{this.setState({mbXzKtqyzh: false,})})}}>
-                                <Image style={{width:width,flex:1,resizeMode:'stretch'}}
+                                onPress={() => {
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+
+                                            let userData = JSON.parse(data.result);
+
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.INDICATIVE_LAYER), (subData) => {
+
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+
+                                                    obj[StorageKeyNames.OPEN_ENTERPRISE] = true;
+
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+
+                                                    this.setState({
+                                                        mbXzKtqyzh: obj[StorageKeyNames.OPEN_ENTERPRISE],
+                                                    })
+                                                }
+
+                                            })
+                                        }
+                                    })
+
+                                }}
+
+                            >
+                                <Image style={{width: width, flex: 1, resizeMode: 'stretch'}}
                                        source={require('../../../images/tishimengban/mb_ktqyzh.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
@@ -381,7 +477,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
+            <View style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
                     title={this.props.title}

@@ -37,19 +37,43 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         // 初始状态
         this.state = {
             renderPlaceholderOnly: 'blank',
-            mbXzKtgrzh: false,
         };
     }
 
     initFinish = () => {
-        StorageUtil.mGetItem(StorageKeyNames.MB_KTGRZH, (data) => {
-            if (data.result != 'false') {
-                this.setState({mbXzKtgrzh: true,})
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+            if (data.code ==1){
+
+                let userData = JSON.parse(data.result);
+
+                StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER) ,(subData)=>{
+
+                    if (subData.code == 1){
+                        let obj = JSON.parse(subData.result);
+
+                        if(obj == null){
+                            obj = {};
+                        }
+                        if(obj[StorageKeyNames.OPEN_INDIVIDUAL] == null ){
+
+                            obj[StorageKeyNames.OPEN_INDIVIDUAL] = false;
+
+                            StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+
+                            })
+                        }
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            mbXzKtgrzh: obj[StorageKeyNames.OPEN_INDIVIDUAL],
+                        })
+                    }
+
+                })
+
             }
         })
-        this.setState({
-            renderPlaceholderOnly: 'success',
-        });
+
     }
 
     backPage = () => {
@@ -63,6 +87,33 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
             }
         }
     }
+
+    onLayerPress = ()=>{
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+            if (data.code ==1){
+
+                let userData = JSON.parse(data.result);
+
+                StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER) ,(subData)=>{
+
+                    if (subData.code == 1){
+                        let obj = JSON.parse(subData.result);
+
+                        obj[StorageKeyNames.OPEN_INDIVIDUAL] = true;
+
+                        StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER), obj, ()=>{})
+
+                        this.state({
+                            mbXzKtgrzh: obj[StorageKeyNames.OPEN_INDIVIDUAL],
+                        })
+                    }
+
+                })
+            }
+        })
+    }
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -123,10 +174,38 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                     backIconClick={this.backPage}
                 />
                 {
-                    this.state.mbXzKtgrzh != false ?
+                    this.state.mbXzKtgrzh == false ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_KTGRZH,'false',()=>{this.setState({mbXzKtgrzh: false,})})}}>
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+                                        if (data.code ==1){
+
+                                            let userData = JSON.parse(data.result);
+
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER) ,(subData)=>{
+
+                                                if (subData.code == 1){
+                                                    let obj = JSON.parse(subData.result);
+
+                                                    obj[StorageKeyNames.OPEN_INDIVIDUAL] = true;
+
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER), JSON.stringify(obj), ()=>{})
+
+                                                    this.setState({
+                                                        mbXzKtgrzh: obj[StorageKeyNames.OPEN_INDIVIDUAL],
+                                                    })
+                                                }
+
+                                            })
+                                        }
+                                    })
+
+                                }}
+
+                            >
+
                                 <Image style={{width:width,flex:1,resizeMode:'stretch'}}
                                        source={require('../../../images/tishimengban/mb_ktgrzh.png')}/>
                             </TouchableWithoutFeedback>
@@ -135,6 +214,9 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
             </View>
         );
     }
+
+
+
 
     checkEmpty = () => {
         let name = this.refs.name.getInputTextValue();

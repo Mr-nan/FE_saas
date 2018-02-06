@@ -53,6 +53,11 @@ export const MB_XZ_KTQYZH = "mb_xz_ktqyzh";   // 选择 开通企业账户
 export const MB_KTGRZH = "mb_ktgrzh";   //  开通企业账户
 export const MB_KTQYZH = "mb_ktqyzh";   //  开通企业账户
 
+export const INDICATIVE_LAYER = '_indicative_layer'  //恒丰账户蒙层显示控制对象  @dingyonggang
+export const OPEN_INDIVIDUAL = 'open_individual'    // 开通个人账户蒙层
+export const OPEN_ENTERPRISE = 'open_enterprise'    // 开通企业账户蒙层
+
+
 
 
 
