@@ -48,14 +48,32 @@ export  default class AccountFlowScene extends BaseComponent {
     }
 
     initFinish = () => {
-        StorageUtil.mGetItem(StorageKeyNames.MB_LSSJ, (data) => {
-            if (data.result != 'false') {
-                this.setState({mbTimeShow: true,})
+
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let userData = JSON.parse(data.result);
+                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                    if (subData.code == 1) {
+                        let obj = JSON.parse(subData.result);
+                        if (obj == null) {
+                            obj = {};
+                        }
+                        if (obj[StorageKeyNames.HF_TRANSACTION_LOG] == null) {
+                            obj[StorageKeyNames.HF_TRANSACTION_LOG] = false;
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                            })
+                        }
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            mbTimeShow: obj[StorageKeyNames.HF_TRANSACTION_LOG],
+                        })
+                    }
+
+                })
             }
         })
-        this.setState({
-            renderPlaceholderOnly: 'success',
-        });
+
     }
 
     render() {
@@ -123,10 +141,32 @@ export  default class AccountFlowScene extends BaseComponent {
                     renderRihtFootView={this._navigatorRightView}
                 />
                 {
-                    this.state.mbTimeShow != false ?
+                    this.state.mbTimeShow == false ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_LSSJ,'false',()=>{this.setState({mbTimeShow: false,})})}}>
+
+                                onPress={() => {
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_TRANSACTION_LOG] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mbTimeShow: obj[StorageKeyNames.HF_TRANSACTION_LOG],
+                                                    })
+                                                }
+
+                                            })
+                                        }
+                                    })
+
+                                }}
+
+                            >
                                 <Image style={{width:width,resizeMode:'stretch',flex:1}}
                                        source={Platform.OS === 'android'?require('../../../images/tishimengban/lssj_android.png'):require('../../../images/tishimengban/lssj.png')}/>
                             </TouchableWithoutFeedback>

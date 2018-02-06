@@ -53,9 +53,26 @@ export const MB_XZ_KTQYZH = "mb_xz_ktqyzh";   // 选择 开通企业账户
 export const MB_KTGRZH = "mb_ktgrzh";   //  开通企业账户
 export const MB_KTQYZH = "mb_ktqyzh";   //  开通企业账户
 
-export const INDICATIVE_LAYER = '_indicative_layer'  //恒丰账户蒙层显示控制对象  @dingyonggang
-export const OPEN_INDIVIDUAL = 'open_individual'    // 开通个人账户蒙层
-export const OPEN_ENTERPRISE = 'open_enterprise'    // 开通企业账户蒙层
+export const HF_INDICATIVE_LAYER = '_indicative_layer';  //恒丰账户蒙层显示控制对象  @dingyonggang
+export const HF_OPEN_INDIVIDUAL = 'open_individual';     // 开通个人账户蒙层
+export const HF_OPEN_ENTERPRISE = 'open_enterprise';     // 开通企业账户蒙层
+export const HF_OPEN_ENTERPRISE_OPTION = 'open_enterprise_option';    //开通企业选项蒙层
+export const HF_OPEN_INDIVIDUAL_OPTION = 'open_individual_option';    //开通个人账户选项蒙层
+export const HF_WITHDRAW_BUTTON = 'withdraw_button';            // 提现按钮蒙层
+export const HF_WITHDRAW_INSTRUCTION= 'withdraw_instruction'; //提现银行受理时间及到账时间
+export const HF_ACCOUNT_TRANSFER = 'transfer';    //账户管理转账条目说明蒙层
+export const HF_ACCOUNT_WITHDRAW = 'account_withdraw';    //账户管理提现按钮蒙层
+export const HF_ACCOUNT_DEPOSIT = 'account_deposit';    //账户管理充值页面
+export const HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT = 'do_not_open_account';    //卡片页 未开恒丰账户
+export const HF_ACCOUNT_DO_NOT_BIND_BANKCARD = 'account_do_not_bind_bankcard';    //卡片页 我的账户未绑卡 蒙层
+export const HF_ACCOUNT_DID_BIND_BANKCARD = 'account_did_bind_bankcard';    //卡片页 我的账户已经绑卡蒙层
+export const HF_MINE_OPEN_ACCOUNT = 'open_account';    //我的页面里账户管理条目蒙层
+export const HF_MINE_DO_NOT_BIND_BANKCARD= 'mine_do_not_bind_bankcard';    //我的 账户管理 未绑卡蒙层
+export const HF_MINE_DID_BIND_BANKCARD = 'account_did_bind_bankcard';    //我的 账户管理 已绑卡 蒙层
+export const HF_TRANSACTION_LOG = 'transaction_log';    //账户流水时间筛选按钮蒙层01234
+
+
+
 
 
 

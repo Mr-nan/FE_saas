@@ -27,7 +27,8 @@ import {request} from "../../../utils/RequestUtil";
 import * as Urls from '../../../constant/appUrls';
 import ZheShangAccountScene from "../zheshangAccount/ZheShangAccountScene";
 import ZSAccountTypeSelectScene from "../zheshangAccount/ZSAccountTypeSelectScene";
-import WebScene from '../../../main/WebScene'
+import WebScene from '../../../main/WebScene';
+import {BASEURL}  from '../../../constant/appUrls';
 
 const Pixel = new PixelUtil();
 
@@ -390,10 +391,11 @@ export default class MyAccountItem extends BaseComponent {
                             this.props.showQuestion == true?
                                 <TouchableOpacity
                                     onPress={()=>{
+                                        let url = BASEURL== 'https://gatewayapi.dycd.com/'? 'http://bms.dycd.com/platform/activity_newhand.html ':'http://test.bms.dycd.com/platform/activity_newhand.html';
                                         this.toNextPage({
                                             component: WebScene,
                                             name: 'WebScene',
-                                            params: {webUrl:'http://test.bms.dycd.com/platform/activity_newhand.html', title: '新手指引'}
+                                            params: {webUrl:url, title: '新手指引'}
                                         })
                                     }}
                                 >

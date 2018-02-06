@@ -57,21 +57,34 @@ export  default class AccountScene extends BaseComponent {
     }
 
     initFinish = () => {
-        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_ZZ, (data) => {
-            if (data.result != 'false') {
-                this.setState({mbZhShow: true,})
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let userData = JSON.parse(data.result);
+                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                    if (subData.code == 1) {
+                        let obj = JSON.parse(subData.result);
+                        if (obj == null) {
+                            obj = {};
+                        }
+                        if (obj[StorageKeyNames.HF_ACCOUNT_TRANSFER] == null) {
+                            obj[StorageKeyNames.HF_ACCOUNT_TRANSFER] = false;
+                            obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] = false;
+                            obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW] = false;
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {})
+                        }
+                        this.setState({
+
+                            mbCzShow: obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] ,
+                            mbTxShow: obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW],
+                            mbZhShow: obj[StorageKeyNames.HF_ACCOUNT_TRANSFER],
+
+                        })
+                    }
+                })
             }
         })
-        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_TX, (data) => {
-            if (data.result != 'false') {
-                this.setState({mbTxShow: true,})
-            }
-        })
-        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_CZ, (data) => {
-            if (data.result != 'false') {
-                this.setState({mbCzShow: true,})
-            }
-        })
+
         this.getData()
         // let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         // this.setState({
@@ -307,10 +320,36 @@ export  default class AccountScene extends BaseComponent {
                  showModal={this.props.showModal}
                  navigator={this.props.navigator}/>*/}
                 {
-                    this.state.mbZhShow != false ?
+                    this.state.mbZhShow == false ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_ZZ,'false',()=>{this.setState({mbZhShow: false,})})}}>
+
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+                                        if (data.code ==1){
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
+                                                if (subData.code == 1){
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_TRANSFER] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+                                                        this.setState({
+                                                            mbCzShow: obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] ,
+                                                            mbTxShow: obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW],
+                                                            mbZhShow: obj[StorageKeyNames.HF_ACCOUNT_TRANSFER],
+                                                        })
+
+                                                    })
+
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+
+                            >
                                 <Image
                                     style={{width:width,flex:1,resizeMode:'stretch'}}
                                     source={Platform.OS === 'android'?require('../../../images/tishimengban/zhgl_zz_android.png'):require('../../../images/tishimengban/zhgl_zhuanzhang.png')}/>
@@ -318,20 +357,69 @@ export  default class AccountScene extends BaseComponent {
                         </View> : null
                 }
                 {
-                    this.state.mbTxShow != false && this.state.mbZhShow == false ?
+                    this.state.mbTxShow == false && this.state.mbZhShow == true ?
                         <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_TX,'false',()=>{this.setState({mbTxShow: false,})})}}>
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+                                        if (data.code ==1){
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
+                                                if (subData.code == 1){
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+                                                        this.setState({
+                                                            mbCzShow: obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] ,
+                                                            mbTxShow: obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW],
+                                                            mbZhShow: obj[StorageKeyNames.HF_ACCOUNT_TRANSFER],
+                                                        })
+
+                                                    })
+
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+                            >
                                 <Image style={{flex:1,width:width,resizeMode:'stretch'}}
                                        source={require('../../../images/tishimengban/zhgl_tx.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
-                    this.state.mbCzShow != false && this.state.mbZhShow == false && this.state.mbTxShow == false ?
+                    this.state.mbCzShow == false && this.state.mbZhShow == true && this.state.mbTxShow == true ?
                         <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_CZ,'false',()=>{this.setState({mbCzShow: false,})})}}>
+
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+                                        if (data.code ==1){
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
+                                                if (subData.code == 1){
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+                                                        this.setState({
+                                                            mbCzShow: obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] ,
+                                                            mbTxShow: obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW],
+                                                            mbZhShow: obj[StorageKeyNames.HF_ACCOUNT_TRANSFER],
+                                                        })
+
+                                                    })
+
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+                            >
                                 <Image style={{flex:1,width:width,resizeMode:'stretch'}}
                                        source={require('../../../images/tishimengban/zhgl_cz.png')}/>
                             </TouchableWithoutFeedback>

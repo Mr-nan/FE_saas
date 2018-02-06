@@ -42,22 +42,38 @@ export  default class WithdrawalsScene extends BaseComponent {
             id: '',
             type: '',
             cardNumber: '',
-            mbtxShow: false,
-            mbslsjShow: false,
         };
     }
 
     initFinish = () => {
-        StorageUtil.mGetItem(StorageKeyNames.MB_TX, (data) => {
-            if (data.result != 'false') {
-                this.setState({mbtxShow: true,})
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let userData = JSON.parse(data.result);
+                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                    if (subData.code == 1) {
+                        let obj = JSON.parse(subData.result);
+                        if (obj == null) {
+                            obj = {};
+                        }
+                        if (obj[StorageKeyNames.HF_WITHDRAW_BUTTON] == null) {
+                            obj[StorageKeyNames.HF_WITHDRAW_BUTTON] = false;
+                            obj[StorageKeyNames.HF_WITHDRAW_INSTRUCTION] = false;
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {})
+                        }
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            mbtxShow: obj[StorageKeyNames.HF_WITHDRAW_BUTTON],
+                            mbslsjShow: obj[StorageKeyNames.HF_WITHDRAW_INSTRUCTION],
+
+                        })
+                    }
+
+                })
+
             }
         })
-        StorageUtil.mGetItem(StorageKeyNames.MB_SLSJ, (data) => {
-            if (data.result != 'false') {
-                this.setState({mbslsjShow: true,})
-            }
-        })
+
         this.getData();
     }
 
@@ -173,20 +189,70 @@ export  default class WithdrawalsScene extends BaseComponent {
                     backIconClick={this.backPage}
                 />
                 {
-                    this.state.mbtxShow != false ?
+                    this.state.mbtxShow == false ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_TX,'false',()=>{this.setState({mbtxShow: false,})})}}>
+
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+                                        if (data.code ==1){
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
+                                                if (subData.code == 1){
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_WITHDRAW_BUTTON] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+                                                        this.setState({
+                                                            mbtxShow: obj[StorageKeyNames.HF_WITHDRAW_BUTTON],
+                                                            mbslsjShow: obj[StorageKeyNames.HF_WITHDRAW_INSTRUCTION],
+                                                        })
+
+                                                    })
+
+                                                }
+                                            })
+                                        }
+                                    })
+
+
+                                }}
+                                >
                                 <Image style={{resizeMode:'stretch',width:width,flex:1}}
                                        source={Platform.OS === 'android'?require('../../../images/tishimengban/tixian_android.png'):require('../../../images/tishimengban/tixian.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
-                    this.state.mbslsjShow != false && this.state.mbtxShow == false ?
+                    this.state.mbslsjShow == false && this.state.mbtxShow == true ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_SLSJ,'false',()=>{this.setState({mbslsjShow: false,})})}}>
+
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+                                        if (data.code ==1){
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
+                                                if (subData.code == 1){
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_WITHDRAW_INSTRUCTION] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+                                                        this.setState({
+                                                            mbtxShow: obj[StorageKeyNames.HF_WITHDRAW_BUTTON],
+                                                            mbslsjShow: obj[StorageKeyNames.HF_WITHDRAW_INSTRUCTION],
+                                                        })
+
+                                                    })
+
+                                                }
+                                            })
+                                        }
+                                    })
+
+
+                                }}
+                            >
                                 <Image style={{resizeMode:'stretch',width:width,flex:1}}
                                        source={Platform.OS === 'android'?require('../../../images/tishimengban/shoulitime_andr.png'):require('../../../images/tishimengban/shoulitime.png')}/>
                             </TouchableWithoutFeedback>

@@ -48,27 +48,20 @@ export default class OpenEnterpriseAccountScene extends BaseComponent {
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
             if (data.code == 1) {
-
                 let userData = JSON.parse(data.result);
-
-                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.INDICATIVE_LAYER), (subData) => {
-
+                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                     if (subData.code == 1) {
                         let obj = JSON.parse(subData.result);
-
                         if (obj == null) {
                             obj = {};
                         }
-                        if (obj[StorageKeyNames.OPEN_ENTERPRISE] == null) {
-
-                            obj[StorageKeyNames.OPEN_ENTERPRISE] = false;
-
-                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.INDICATIVE_LAYER), JSON.stringify(obj), () => {})
-
+                        if (obj[StorageKeyNames.HF_OPEN_ENTERPRISE] == null) {
+                            obj[StorageKeyNames.HF_OPEN_ENTERPRISE] = false;
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {})
                         }
                         this.setState({
                             renderPlaceholderOnly: 'success',
-                            mbXzKtqyzh: obj[StorageKeyNames.OPEN_ENTERPRISE],
+                            mbXzKtqyzh: obj[StorageKeyNames.HF_OPEN_ENTERPRISE],
                         })
                     }
 
@@ -299,24 +292,17 @@ export default class OpenEnterpriseAccountScene extends BaseComponent {
                                 onPress={() => {
                                     StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                                         if (data.code == 1) {
-
                                             let userData = JSON.parse(data.result);
-
-                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.INDICATIVE_LAYER), (subData) => {
-
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                                                 if (subData.code == 1) {
                                                     let obj = JSON.parse(subData.result);
-
-                                                    obj[StorageKeyNames.OPEN_ENTERPRISE] = true;
-
-                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    obj[StorageKeyNames.HF_OPEN_ENTERPRISE] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                                     })
-
                                                     this.setState({
-                                                        mbXzKtqyzh: obj[StorageKeyNames.OPEN_ENTERPRISE],
+                                                        mbXzKtqyzh: obj[StorageKeyNames.HF_OPEN_ENTERPRISE],
                                                     })
                                                 }
-
                                             })
                                         }
                                     })

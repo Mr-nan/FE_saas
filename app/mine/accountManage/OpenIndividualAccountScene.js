@@ -47,7 +47,7 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
 
                 let userData = JSON.parse(data.result);
 
-                StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER) ,(subData)=>{
+                StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
 
                     if (subData.code == 1){
                         let obj = JSON.parse(subData.result);
@@ -55,17 +55,17 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                         if(obj == null){
                             obj = {};
                         }
-                        if(obj[StorageKeyNames.OPEN_INDIVIDUAL] == null ){
+                        if(obj[StorageKeyNames.HF_OPEN_INDIVIDUAL] == null ){
 
-                            obj[StorageKeyNames.OPEN_INDIVIDUAL] = false;
+                            obj[StorageKeyNames.HF_OPEN_INDIVIDUAL] = false;
 
-                            StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+                            StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
 
                             })
                         }
                         this.setState({
                             renderPlaceholderOnly: 'success',
-                            mbXzKtgrzh: obj[StorageKeyNames.OPEN_INDIVIDUAL],
+                            mbXzKtgrzh: obj[StorageKeyNames.HF_OPEN_INDIVIDUAL],
                         })
                     }
 
@@ -95,17 +95,17 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
 
                 let userData = JSON.parse(data.result);
 
-                StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER) ,(subData)=>{
+                StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
 
                     if (subData.code == 1){
                         let obj = JSON.parse(subData.result);
 
-                        obj[StorageKeyNames.OPEN_INDIVIDUAL] = true;
+                        obj[StorageKeyNames.HF_OPEN_INDIVIDUAL] = true;
 
-                        StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER), obj, ()=>{})
+                        StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), obj, ()=>{})
 
                         this.state({
-                            mbXzKtgrzh: obj[StorageKeyNames.OPEN_INDIVIDUAL],
+                            mbXzKtgrzh: obj[StorageKeyNames.HF_OPEN_INDIVIDUAL],
                         })
                     }
 
@@ -181,23 +181,16 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
 
                                     StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
                                         if (data.code ==1){
-
                                             let userData = JSON.parse(data.result);
-
-                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER) ,(subData)=>{
-
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
                                                 if (subData.code == 1){
                                                     let obj = JSON.parse(subData.result);
-
-                                                    obj[StorageKeyNames.OPEN_INDIVIDUAL] = true;
-
-                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.INDICATIVE_LAYER), JSON.stringify(obj), ()=>{})
-
+                                                    obj[StorageKeyNames.HF_OPEN_INDIVIDUAL] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{})
                                                     this.setState({
-                                                        mbXzKtgrzh: obj[StorageKeyNames.OPEN_INDIVIDUAL],
+                                                        mbXzKtgrzh: obj[StorageKeyNames.HF_OPEN_INDIVIDUAL],
                                                     })
                                                 }
-
                                             })
                                         }
                                     })

@@ -81,6 +81,32 @@ export default class MyAccountScene extends BaseComponent {
          dataSource: ds.cloneWithRows(['0', '1']),
          renderPlaceholderOnly: 'success'
          });*/
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let userData = JSON.parse(data.result);
+                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                    if (subData.code == 1) {
+                        let obj = JSON.parse(subData.result);
+                        if (obj == null) {
+                            obj = {};
+                        }
+                        if (obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] == null) {
+                            obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = false;
+                            obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = false;
+                            obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = false;
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {})
+                        }
+                        this.setState({
+                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                            mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                            mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                        })
+                    }
+                })
+            }
+        })
+
         this.loadData();
     };
 
@@ -177,24 +203,74 @@ export default class MyAccountScene extends BaseComponent {
                 //this.hengFengInfo = response.mjson.data['315'][0] ? response.mjson.data['315'][0] : {};
                 if (response.mjson.data['315'][0]) {
                     this.hengFengInfo = response.mjson.data['315'][0];
+
+
+
+
                     if (this.hengFengInfo.status == '0') {
-                        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_WKHWBD_YHK, (data) => {
-                            if (data.result != 'false') {
-                                this.setState({mbWKHShow: true,})
+
+                        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                            if (data.code == 1) {
+                                let userData = JSON.parse(data.result);
+                                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                    if (subData.code == 1) {
+                                        let obj = JSON.parse(subData.result);
+                                        obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = true;
+                                        StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                        })
+                                        this.setState({
+                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                            mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                                            mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                        })
+                                    }
+                                })
                             }
                         })
+
                     } else if (this.hengFengInfo.status == '2') {
-                        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_BKJM, (data) => {
-                            if (data.result != 'false') {
-                                this.setState({mbWBKShow: true,})
+
+                        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                            if (data.code == 1) {
+                                let userData = JSON.parse(data.result);
+                                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                    if (subData.code == 1) {
+                                        let obj = JSON.parse(subData.result);
+                                        obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = true;
+                                        StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                        })
+                                        this.setState({
+                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                            mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                                            mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                        })
+                                    }
+                                })
                             }
                         })
+
                     } else if (this.hengFengInfo.status == '3') {
-                        StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_YKHYBD, (data) => {
-                            if (data.result != 'false') {
-                                this.setState({mbKTShow: true,})
+
+                        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                            if (data.code == 1) {
+                                let userData = JSON.parse(data.result);
+                                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                    if (subData.code == 1) {
+                                        let obj = JSON.parse(subData.result);
+                                        obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = true;
+                                        StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                        })
+                                        this.setState({
+                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                            mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                                            mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                        })
+                                    }
+                                })
                             }
                         })
+
+
                     }
                     this.lastType = response.mjson.data['315'][0].status;
                     if (this.props.callBack) {
@@ -259,30 +335,98 @@ export default class MyAccountScene extends BaseComponent {
                               />
                           }/>
                 {
-                    this.state.mbWKHShow != false ?
+                    this.state.mbWKHShow == true ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_WKHWBD_YHK,'false',()=>{this.setState({mbWKHShow: false,})})}}>
+                                onPress={()=>{
+
+
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                                        mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                                                        mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+
+
+                                }}>
                                 <Image style={{width:width,flex:1,resizeMode:'stretch'}}
                                        source={require('../../../images/tishimengban/zhgl_wkhwbkyhk.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
-                    this.state.mbWBKShow != false ?
+                    this.state.mbWBKShow == true ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_BKJM,'false',()=>{this.setState({mbWBKShow: false,})})}}>
+                                onPress={()=>{
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                                        mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                                                        mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+
+                            >
                                 <Image style={{width:width,flex:1,resizeMode:'stretch'}}
                                        source={require('../../../images/tishimengban/zhgl_bky.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
-                    this.state.mbKTShow != false ?
+                    this.state.mbKTShow == true ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_YKHYBD,'false',()=>{this.setState({mbKTShow: false,})})}}>
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                                        mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                                                        mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}>
                                 <Image style={{width:width,flex:1,resizeMode:'stretch'}}
                                        source={require('../../../images/tishimengban/zhgl_ykhybk.png')}/>
                             </TouchableWithoutFeedback>

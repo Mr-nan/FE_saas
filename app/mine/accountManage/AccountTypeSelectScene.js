@@ -29,31 +29,44 @@ export  default class AccountTypeSelectScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        // 初始状态
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: ds.cloneWithRows(['1', '2']),
-            mbXzKtgrzh: false,
-            mbXzKtqyzh: false,
+        }
 
-        };
+
+
     }
 
     initFinish = () => {
-        StorageUtil.mGetItem(StorageKeyNames.MB_XZ_KTGRZH, (data) => {
-            if (data.result != 'false') {
-                this.setState({mbXzKtgrzh: true,})
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let userData = JSON.parse(data.result);
+                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                    if (subData.code == 1) {
+                        let obj = JSON.parse(subData.result);
+                        if (obj == null) {
+                            obj = {};
+                        }
+                        if (obj[StorageKeyNames.HF_OPEN_INDIVIDUAL_OPTION] == null) {
+                            obj[StorageKeyNames.HF_OPEN_INDIVIDUAL_OPTION] = false;
+                            obj[StorageKeyNames.HF_OPEN_ENTERPRISE_OPTION] = false;
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {})
+                        }
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            mbXzKtgrzh: obj[StorageKeyNames.HF_OPEN_INDIVIDUAL_OPTION],
+                            mbXzKtqyzh: obj[StorageKeyNames.HF_OPEN_ENTERPRISE_OPTION],
+                            source: ds.cloneWithRows(['1', '2']),
+                        })
+                    }
+
+                })
+
             }
         })
-        StorageUtil.mGetItem(StorageKeyNames.MB_XZ_KTQYZH, (data) => {
-            if (data.result != 'false') {
-                this.setState({mbXzKtqyzh: true,})
-            }
-        })
-        this.setState({
-            renderPlaceholderOnly: 'success',
-        });
+
     }
 
     render() {
@@ -75,20 +88,70 @@ export  default class AccountTypeSelectScene extends BaseComponent {
                     backIconClick={this.backPage}
                 />
                 {
-                    this.state.mbXzKtgrzh != false ?
+                    this.state.mbXzKtgrzh == false ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_XZ_KTGRZH,'false',()=>{this.setState({mbXzKtgrzh: false,})})}}>
+
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+                                        if (data.code ==1){
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
+                                                if (subData.code == 1){
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_OPEN_INDIVIDUAL_OPTION] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+                                                        this.setState({
+                                                            mbXzKtgrzh: obj[StorageKeyNames.HF_OPEN_INDIVIDUAL_OPTION],
+                                                            mbXzKtqyzh: obj[StorageKeyNames.HF_OPEN_ENTERPRISE_OPTION]
+                                                        })
+
+                                                    })
+
+                                                }
+                                            })
+                                        }
+                                    })
+
+
+                                }}
+                                >
                                 <Image style={{width:width,flex:1,resizeMode:'stretch'}}
                                        source={require('../../../images/tishimengban/mb_xz_ktgrzh.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
-                    this.state.mbXzKtqyzh != false && this.state.mbXzKtgrzh == false ?
+                    this.state.mbXzKtqyzh == false && this.state.mbXzKtgrzh == true ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_XZ_KTQYZH,'false',()=>{this.setState({mbXzKtqyzh: false,})})}}>
+
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+                                        if (data.code ==1){
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
+                                                if (subData.code == 1){
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_OPEN_ENTERPRISE_OPTION] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+                                                        this.setState({
+                                                            mbXzKtgrzh: obj[StorageKeyNames.HF_OPEN_INDIVIDUAL_OPTION],
+                                                            mbXzKtqyzh: obj[StorageKeyNames.HF_OPEN_ENTERPRISE_OPTION]
+                                                        })
+
+                                                    })
+
+                                                }
+                                            })
+                                        }
+                                    })
+
+
+                                }}
+                            >
                                 <Image style={{width:width,flex:1,resizeMode:'stretch'}}
                                        source={require('../../../images/tishimengban/mb_xz_ktqyzh.png')}/>
                             </TouchableWithoutFeedback>
