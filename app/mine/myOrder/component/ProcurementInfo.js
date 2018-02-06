@@ -77,9 +77,9 @@ export default class ProcurementInfo extends BaseComponent {
         let items = [];
         let layouts = [];
         let firstAmount = this.state.orderDetail.first_amount;
-        if (this.state.orderDetail.trans_amount > 0) {
+/*        if (this.state.orderDetail.trans_amount > 0) {
             firstAmount = firstAmount - this.state.orderDetail.trans_amount;
-        }
+        }*/
         if (this.state.orderState === 1) {
             items = [{name: '待付总金额', value: this.state.orderDetail.transaction_amount},
                 {name: '待付订金', value: this.state.orderDetail.deposit_amount},
@@ -117,9 +117,9 @@ export default class ProcurementInfo extends BaseComponent {
      **/
     render() {
         let firstAmount = this.state.orderDetail.first_amount;
-        if (this.state.orderDetail.trans_amount > 0) {
+/*        if (this.state.orderDetail.trans_amount > 0) {
             firstAmount = firstAmount - this.state.orderDetail.trans_amount;
-        }
+        }*/
         return (
             <View style={styles.itemType4}>
                 <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
