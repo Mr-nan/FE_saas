@@ -42,7 +42,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
             check: false,
             id: 0
         }, {
-            name: '车已在店',
+            name: '同城同市场',
             check: false,
             id: 1
         }];
@@ -285,7 +285,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                     <Text >交车方式</Text>
                     <View style={{flex: 1}}/>
                     <TagSelectView
-                        buttonWidth={Pixel.getPixel(80)}
+                        buttonWidth={Pixel.getPixel(120)}
                         textSize={Pixel.getPixel(15)}
                         paddingHorizontal={Pixel.getPixel(8)}
                         ref={(ref) => {

@@ -32,7 +32,7 @@ let accoutInfo = [{title: '联系人', value: ''}, {title: '联系方式', value
 export default class CheckWaybill extends BaseComponent {
     constructor(props) {
         super(props);
-        this.number = '400888888';
+        this.number = '(010)59230023';
         this.isShowPay = false;
         this.trans_code = '';
         this.title = '查看运单';
