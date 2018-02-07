@@ -35,6 +35,7 @@ import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import BindCardScene from '../mine/accountManage/BindCardScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailScene";
+import ProcurementOrderDetailSceneOld from "../mine/myOrderOld/ProcurementOrderDetailScene";
 import CarMyListScene from "./CarMyListScene";
 import GetPermissionUtil from '../utils/GetRoleUtil';
 import MyAccountScene from "../mine/accountManage/MyAccountScene";
@@ -631,6 +632,39 @@ export default class CarInfoScene extends BaseComponent {
         }
     }
 
+    /**
+     *   订单物流开关接口
+     **/
+    getLogisticsKey = (orderId) => {
+        let url = AppUrls.LOGISTICS_SWITCH;
+        request(url, 'post', {}).then((response) => {
+            this.props.showModal(false);
+            let isLogistics = response.mjson.data;
+            if (isLogistics == 'false') {  //isLogistics == 'false'
+                this.toNextPage({
+                    name: 'ProcurementOrderDetailScene',
+                    component: ProcurementOrderDetailSceneOld,
+                    params: {
+                        business: 1,
+                        orderId: orderId
+                    }
+                });
+            } else {
+                this.toNextPage({
+                    name: 'ProcurementOrderDetailScene',
+                    component: ProcurementOrderDetailScene,
+                    params: {
+                        business: 1,
+                        orderId: orderId
+                    }
+                });
+            }
+        }, (error) => {
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
+        });
+    };
+
     // 车辆订购
     carOrder = (company_base_id, carData) => {
         this.props.showModal(true);
@@ -638,20 +672,12 @@ export default class CarInfoScene extends BaseComponent {
             'car_ids': carData.id,
             'company_id': company_base_id
         }).then((response) => {
-            this.props.showModal(false);
             if (response.mjson.msg === 'ok' && response.mjson.code === 1) {  // 下单成功
-                this.toNextPage({
-                    name: 'ProcurementOrderDetailScene',
-                    component: ProcurementOrderDetailScene,
-                    params: {
-                        business: 1,
-                        orderId: response.mjson.data.order_id
-                    }
-                });
+                this.getLogisticsKey(response.mjson.data.order_id);
             } else {
+                this.props.showModal(false);
                 this.props.showToast(response.mjson.msg);
             }
-
         }, (error) => {
             if (error.mjson.code == '6350133') {
                 this.props.showModal(false);

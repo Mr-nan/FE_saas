@@ -322,5 +322,207 @@
         }
       ]
     }
+  ],
+  "provinceSource2":[
+    {
+      "title":"A",
+      "data":[
+        {
+          "provCode": "340000",
+          "provId": 13,
+          "provName": "安徽"
+        }
+      ]
+    },{
+      "title":"B",
+      "data":[
+        {
+          "provCode": "110000",
+          "provId": 1,
+          "provName": "北京"
+        }
+      ]
+    },{
+      "title":"C",
+      "data":[
+        {
+          "provCode": "500000",
+          "provId": 4,
+          "provName": "重庆"
+        }
+      ]
+    },{
+      "title":"F",
+      "data":[
+        {
+          "provCode": "350000",
+          "provId": 14,
+          "provName": "福建"
+        }
+      ]
+    },{
+      "title":"G",
+      "data":[
+        {
+          "provCode": "440000",
+          "provId": 20,
+          "provName": "广东"
+        },{
+          "provCode": "620000",
+          "provId": 21,
+          "provName": "甘肃"
+        },{
+          "provCode": "520000",
+          "provId": 24,
+          "provName": "贵州"
+        },{
+          "provCode": "610000",
+          "provId": 28,
+          "provName": "陕西"
+        }
+      ]
+    },{
+      "title":"H",
+      "data":[
+        {
+          "provCode": "130000",
+          "provId": 5,
+          "provName": "河北"
+        },{
+          "provCode": "230000",
+          "provId": 10,
+          "provName": "黑龙江"
+        }, {
+          "provCode": "410000",
+          "provId": 17,
+          "provName": "河南"
+        }, {
+          "provCode": "420000",
+          "provId": 18,
+          "provName": "湖北"
+        },{
+          "provCode": "430000",
+          "provId": 19,
+          "provName": "湖南"
+        },{
+          "provCode": "460000",
+          "provId": 25,
+          "provName": "海南"
+        }
+      ]
+    },{
+      "title":"J",
+      "data":[
+        {
+          "provCode": "220000",
+          "provId": 9,
+          "provName": "吉林"
+        },{
+          "provCode": "320000",
+          "provId": 11,
+          "provName": "江苏"
+        },{
+          "provCode": "360000",
+          "provId": 15,
+          "provName": "江西"
+        }
+      ]
+    },{
+      "title":"L",
+      "data":[
+        {
+          "provCode": "210000",
+          "provId": 8,
+          "provName": "辽宁"
+        }
+      ]
+    },{
+      "title":"N",
+      "data":[
+        {
+          "provCode": "640000",
+          "provId": 31,
+          "provName": "宁夏"
+        },{
+          "provCode": "150000",
+          "provId": 33,
+          "provName": "内蒙古"
+        }
+      ]
+    },{
+      "title":"Q",
+      "data":[
+        {
+          "provCode": "630000",
+          "provId": 27,
+          "provName": "青海"
+        }
+      ]
+    },{
+      "title":"S",
+      "data":[
+        {
+          "provCode": "310000",
+          "provId": 3,
+          "provName": "上海"
+        }, {
+          "provCode": "140000",
+          "provId": 6,
+          "provName": "山西"
+        },{
+          "provCode": "370000",
+          "provId": 16,
+          "provName": "山东"
+        },{
+          "provCode": "510000",
+          "provId": 22,
+          "provName": "四川"
+        },{
+          "provCode": "610000",
+          "provId": 28,
+          "provName": "陕西"
+        }
+      ]
+    },{
+      "title":"T",
+      "data":[
+        {
+          "provCode": "120000",
+          "provId": 2,
+          "provName": "天津"
+        }
+      ]
+    },{
+      "title":"X",
+      "data":[
+        {
+          "provCode": "540000",
+          "provId": 30,
+          "provName": "西藏"
+        },{
+          "provCode": "650000",
+          "provId": 32,
+          "provName": "新疆"
+        }
+      ]
+    },{
+      "title":"Y",
+      "data":[
+        {
+          "provCode": "530000",
+          "provId": 26,
+          "provName": "云南"
+        }
+      ]
+    },{
+      "title":"Z",
+      "data":[
+        {
+          "provCode": "330000",
+          "provId": 12,
+          "provName": "浙江"
+        }
+      ]
+    }
   ]
 }

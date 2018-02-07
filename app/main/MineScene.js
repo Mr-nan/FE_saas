@@ -37,6 +37,7 @@ import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
 import AuthenticationModal from '../component/AuthenticationModal';
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
+import OrderTypeSelectSceneOld from  '../mine/myOrderOld/OrderTypeSelectScene';
 import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
 import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
 import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
@@ -46,6 +47,8 @@ import PersonCertificate from "../mine/certificateManage/PersonCertificate";
 import ImagePicker from "react-native-image-picker";
 import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi';
 import SupervisionFeeScene from '../mine/supervisonFee/SupervisionFeeScene';
+import AddressManageListScene from '../mine/addressManage/AddressManageListScene';
+import GetCarerManageListScene from '../mine/getCarerManage/GetCarerManageListScene';
 import GetPermissionUtil from '../utils/GetPermissionUtil';
 import BaseComponent from '../component/BaseComponent';
 
@@ -109,6 +112,7 @@ export default class MineScene extends BaseComponent {
         super(props);
         // 初始状态
         //    拿到所有的json数据
+        this.isLogistics = 'true';
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -312,6 +316,18 @@ export default class MineScene extends BaseComponent {
         } else if (id == 52) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/my_order.png'),
+                "name": name
+                , "id": id
+            },);
+        }else if (id == 69) {
+            Car[2].cars.push({
+                "icon": require('../../images/mine/adderss_manage.png'),
+                "name": name
+                , "id": id
+            },);
+        }else if (id == 71) {
+            Car[2].cars.push({
+                "icon": require('../../images/mine/geter_manage.png'),
                 "name": name
                 , "id": id
             },);
@@ -542,14 +558,32 @@ export default class MineScene extends BaseComponent {
                                 lastType = response.mjson.data.account.status;
                             }
                             // lastType = '3';、
-                            this.changeData();
+                            this.getLogisticsKey();
                         },
                         (error) => {
-                            this.changeData();
+                            this.getLogisticsKey();
                         });
             }
         });
-    }
+    };
+
+
+    /**
+     *   订单物流开关接口
+     **/
+    getLogisticsKey = () => {
+        let maps = {
+
+        };
+        let url = Urls.LOGISTICS_SWITCH;
+        request(url, 'post', maps).then((response) => {
+            this.isLogistics = response.mjson.data;
+            this.changeData();
+        }, (error) => {
+            this.changeData();
+        });
+    };
+
     allRefresh = () => {
         firstType = '-1';
         lastType = '-1';
@@ -612,14 +646,16 @@ export default class MineScene extends BaseComponent {
         params: {}
     }
 
-    toPage = () => {
-        this.navigatorParams.name = 'MyAccountScene';
-        this.navigatorParams.component = MyAccountScene;
-        this.navigatorParams.params = {callBack: this.updateType};
-        this.refs.accountmodal.changeShowType(false);
-        //firstType = lastType;
-        this.props.callBack(this.navigatorParams);
-    };
+     toPage = () => {
+         this.navigatorParams.name = 'MyAccountScene';
+         this.navigatorParams.component = MyAccountScene;
+         this.navigatorParams.params = {callBack: this.updateType};
+         this.refs.accountmodal.changeShowType(false);
+         //firstType = lastType;
+         this.props.callBack(this.navigatorParams);
+     };
+
+
 
     /**
      *   更新 lastType;
@@ -631,6 +667,7 @@ export default class MineScene extends BaseComponent {
     };
 
     _navigator(rowData) {
+        this.props.showModal(true);
         //先判断认证状态
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -641,15 +678,18 @@ export default class MineScene extends BaseComponent {
                     type: 'app'
                 };
                 request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                    this.props.showModal(false);
                     if (response.mjson.data.auth == 0) {
                         this._navigatorPage(rowData);
                     } else {
                         this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth + '']);
                     }
                 }, (error) => {
+                    this.props.showModal(false);
                     this.props.showToast(error.msg);
                 });
             } else {
+                this.props.showModal(false);
                 this.props.showToast('获取企业信息失败');
             }
         });
@@ -687,8 +727,21 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.component = MycarScene
                 break;
             case 52:
-                this.navigatorParams.name = 'OrderTypeSelectScene'
-                this.navigatorParams.component = OrderTypeSelectScene
+                if (this.isLogistics == 'false') {  //this.isLogistics == 'false'
+                    this.navigatorParams.name = 'OrderTypeSelectSceneOld'
+                    this.navigatorParams.component = OrderTypeSelectSceneOld
+                } else {
+                    this.navigatorParams.name = 'OrderTypeSelectScene'
+                    this.navigatorParams.component = OrderTypeSelectScene
+                }
+                break;
+            case 69:
+                this.navigatorParams.name = 'AddressManageListScene'
+                this.navigatorParams.component = AddressManageListScene
+                break;
+            case 71:
+                this.navigatorParams.name = 'GetCarerManageListScene'
+                this.navigatorParams.component = GetCarerManageListScene
                 break;
             case 53:
                 this.navigatorParams.name = 'CarCollectSourceScene'
@@ -1097,6 +1150,7 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(26),
         height: Pixel.getPixel(26),
         marginLeft: Pixel.getPixel(15),
+        resizeMode:'contain'
     },
     rowjiantouImage: {
         width: Pixel.getPixel(15),

@@ -1,5 +1,5 @@
 export const VERSON_NAME = "4.8.0"; // 版本名
-export const VERSON_CODE = "31"; // 版本号
+export const VERSON_CODE = "32"; // 版本号
 export const ISLOGIN = "islogin";//标识用户是否登录
 export const CAR_SEARCH = "car_search";
 export const CITY_SEARCH = "city_search";
@@ -70,11 +70,5 @@ export const HF_MINE_OPEN_ACCOUNT = 'open_account';    //我的页面里账户�
 export const HF_MINE_DO_NOT_BIND_BANKCARD= 'mine_do_not_bind_bankcard';    //我的 账户管理 未绑卡蒙层
 export const HF_MINE_DID_BIND_BANKCARD = 'account_did_bind_bankcard';    //我的 账户管理 已绑卡 蒙层
 export const HF_TRANSACTION_LOG = 'transaction_log';    //账户流水时间筛选按钮蒙层01234
-
-
-
-
-
-
-
-
+export const INVOICE_TITLE = "INVOICE_TITLE";   // 发票抬头
+export const TAXPAYER_IDENTIFICATION_NUMBER = "TAXPAYER_IDENTIFICATION_NUMBER";   // 纳税人识别号
