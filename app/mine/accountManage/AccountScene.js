@@ -4,6 +4,7 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
+    Platform,
     Text,
     View,
     Image,
@@ -12,6 +13,7 @@ import {
     TouchableOpacity,
     ListView,
     InteractionManager,
+    TouchableWithoutFeedback,
     RefreshControl
 } from 'react-native';
 //图片加文字
@@ -41,16 +43,48 @@ export  default class AccountScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
+        this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(25) : height;
         this.state = {
             renderPlaceholderOnly: 'blank',
             source: [],
             info: {},
             enter_id: '',
-            isRefreshing: false
+            isRefreshing: false,
+            mbCzShow: false,
+            mbTxShow: false,
+            mbZhShow: false,
         };
     }
 
     initFinish = () => {
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let userData = JSON.parse(data.result);
+                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                    if (subData.code == 1) {
+                        let obj = JSON.parse(subData.result);
+                        if (obj == null) {
+                            obj = {};
+                        }
+                        if (obj[StorageKeyNames.HF_ACCOUNT_TRANSFER] == null) {
+                            obj[StorageKeyNames.HF_ACCOUNT_TRANSFER] = false;
+                            obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] = false;
+                            obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW] = false;
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {})
+                        }
+                        this.setState({
+
+                            mbCzShow: obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] ,
+                            mbTxShow: obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW],
+                            mbZhShow: obj[StorageKeyNames.HF_ACCOUNT_TRANSFER],
+
+                        })
+                    }
+                })
+            }
+        })
+
         this.getData()
         // let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         // this.setState({
@@ -129,10 +163,10 @@ export  default class AccountScene extends BaseComponent {
                     enter_id: enterBaseIds,
                     isRefreshing: false
                 });
-/*                if (info.account_open_type == 2 && this.trustAccountState == 0) {
-                    this.refs.openAccount.changeState(true);
-                    this.getTrustContract();
-                }*/
+                /*                if (info.account_open_type == 2 && this.trustAccountState == 0) {
+                 this.refs.openAccount.changeState(true);
+                 this.getTrustContract();
+                 }*/
             }, (error) => {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
@@ -282,9 +316,115 @@ export  default class AccountScene extends BaseComponent {
                     title="账户管理"
                     backIconClick={this.backPage}
                 />
-{/*                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}
-                                      showModal={this.props.showModal}
-                                      navigator={this.props.navigator}/>*/}
+                {/*                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}
+                 showModal={this.props.showModal}
+                 navigator={this.props.navigator}/>*/}
+                {
+                    this.state.mbZhShow == false ?
+                        <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
+                            <TouchableWithoutFeedback
+
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+                                        if (data.code ==1){
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
+                                                if (subData.code == 1){
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_TRANSFER] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+                                                        this.setState({
+                                                            mbCzShow: obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] ,
+                                                            mbTxShow: obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW],
+                                                            mbZhShow: obj[StorageKeyNames.HF_ACCOUNT_TRANSFER],
+                                                        })
+
+                                                    })
+
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+
+                            >
+                                <Image
+                                    style={{width:width,flex:1,resizeMode:'stretch'}}
+                                    source={Platform.OS === 'android'?require('../../../images/tishimengban/zhgl_zz_android.png'):require('../../../images/tishimengban/zhgl_zhuanzhang.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
+                {
+                    this.state.mbTxShow == false && this.state.mbZhShow == true ?
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+                                        if (data.code ==1){
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
+                                                if (subData.code == 1){
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+                                                        this.setState({
+                                                            mbCzShow: obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] ,
+                                                            mbTxShow: obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW],
+                                                            mbZhShow: obj[StorageKeyNames.HF_ACCOUNT_TRANSFER],
+                                                        })
+
+                                                    })
+
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+                            >
+                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
+                                       source={require('../../../images/tishimengban/zhgl_tx.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
+                {
+                    this.state.mbCzShow == false && this.state.mbZhShow == true && this.state.mbTxShow == true ?
+                        <View style={{position: 'absolute',top:0,bottom:0,left:0,right:0}}>
+                            <TouchableWithoutFeedback
+
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data)=>{
+                                        if (data.code ==1){
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem( String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER) ,(subData)=>{
+                                                if (subData.code == 1){
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] = true;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id']+StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), ()=>{
+                                                        this.setState({
+                                                            mbCzShow: obj[StorageKeyNames.HF_ACCOUNT_DEPOSIT] ,
+                                                            mbTxShow: obj[StorageKeyNames.HF_ACCOUNT_WITHDRAW],
+                                                            mbZhShow: obj[StorageKeyNames.HF_ACCOUNT_TRANSFER],
+                                                        })
+
+                                                    })
+
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+                            >
+                                <Image style={{flex:1,width:width,resizeMode:'stretch'}}
+                                       source={require('../../../images/tishimengban/zhgl_cz.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
             </View>
         );
     }
@@ -453,10 +593,10 @@ export  default class AccountScene extends BaseComponent {
                                   }
                               })
                           }}
-/*                          openTrustAccount={() => {
-                              this.refs.openAccount.changeState(true);
-                              this.getTrustContract();
-                          }}*/
+                /*                          openTrustAccount={() => {
+                 this.refs.openAccount.changeState(true);
+                 this.getTrustContract();
+                 }}*/
             />
         )
     }

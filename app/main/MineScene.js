@@ -10,6 +10,7 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
+    DeviceEventEmitter,
     View
 } from 'react-native'
 
@@ -139,7 +140,7 @@ export default class MineScene extends BaseComponent {
             firstType = '-1';
             lastType = '-1';
             haveOrder = 0;
-            un_pay_count=0;
+            un_pay_count = 0;
             componyname = '';
 
             this.renzhengData = {
@@ -236,6 +237,47 @@ export default class MineScene extends BaseComponent {
                         renderPlaceholderOnly: 'success',
                         isRefreshing: false
                     });
+                    DeviceEventEmitter.emit('mb_show', '完成');
+
+
+
+
+                    /*   获取用户账户状态更新蒙层状态    专用       */
+                    StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
+                        if (datac.code == 1) {
+                            let datasc = JSON.parse(datac.result);
+                            let maps = {
+                                enter_base_ids: datasc.company_base_id,
+                                child_type: '1'
+                            };
+                            request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                .then((response) => {
+                                        let account_status = response.mjson.data.account.status;
+
+                                        if (account_status == '0') {
+                                            DeviceEventEmitter.emit('mb_show', '未开通');
+
+                                        } else if (account_status == '1') {
+                                            DeviceEventEmitter.emit('mb_show', '未绑卡');
+
+                                        } else if (account_status == '2') {
+
+                                        } else if (account_status == '3') {
+                                            DeviceEventEmitter.emit('mb_show', '已激活');
+                                        }
+                                    },
+                                    (error) => {
+
+                                    });
+                        }
+                    });
+
+                    /*   获取用户账户状态更新蒙层状态    专用       */
+
+
+
+
+
                 });
 
             } else {
@@ -526,29 +568,29 @@ export default class MineScene extends BaseComponent {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
 
-				<View style={styles.container}>
+                <View style={styles.container}>
 
                     {this.loadView()}
 
-				</View>
+                </View>
             )
         }
         return (
 
-			<View style={styles.container}>
-				<ImageSource galleryClick={this._galleryClick}
-							 cameraClick={this._cameraClick}
-							 ref={(modal) => {
+            <View style={styles.container}>
+                <ImageSource galleryClick={this._galleryClick}
+                             cameraClick={this._cameraClick}
+                             ref={(modal) => {
                                  this.imageSource = modal
                              }}/>
-				<ListView
-					removeClippedSubviews={false}
-					contentContainerStyle={styles.listStyle}
-					dataSource={this.state.source}
-					renderRow={this._renderRow}
-					renderSectionHeader={this._renderSectionHeader}
-					renderHeader={this._renderHeader}
-					refreshControl={
+                <ListView
+                    removeClippedSubviews={false}
+                    contentContainerStyle={styles.listStyle}
+                    dataSource={this.state.source}
+                    renderRow={this._renderRow}
+                    renderSectionHeader={this._renderSectionHeader}
+                    renderHeader={this._renderHeader}
+                    refreshControl={
 						<RefreshControl
 							refreshing={this.state.isRefreshing}
 							onRefresh={this.refreshingData}
@@ -556,10 +598,10 @@ export default class MineScene extends BaseComponent {
 							colors={[fontAndClolr.COLORB0]}
 						/>
                     }
-				/>
-				<AccountModal ref="accountmodal"/>
-				<AuthenticationModal ref="authenmodal"/>
-			</View>
+                />
+                <AccountModal ref="accountmodal"/>
+                <AuthenticationModal ref="authenmodal"/>
+            </View>
         )
     }
 
@@ -687,16 +729,16 @@ export default class MineScene extends BaseComponent {
          }*/
         if (rowData.name == 'blank') {
             return (
-				<View style={{width: width, height: Pixel.getPixel(2), backgroundColor: fontAndClolr.COLORA3}}></View>
+                <View style={{width: width, height: Pixel.getPixel(2), backgroundColor: fontAndClolr.COLORA3}}></View>
             );
         } else {
             return (
-				<TouchableOpacity style={styles.rowView} onPress={() => {
+                <TouchableOpacity style={styles.rowView} onPress={() => {
 
                     this._navigator(rowData)
                 }}>
 
-					<Image source={rowData.icon} style={styles.rowLeftImage}/>
+                    <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
                     <Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
                     {rowData.id == 15 ? <Text allowFontScaling={false} style={{
@@ -707,16 +749,16 @@ export default class MineScene extends BaseComponent {
                     }}>{showName}</Text> :
                         <View/>}
                     {rowData.name == '我的订单' && haveOrder != 0 ?
-						<View style={{
+                        <View style={{
                             marginRight: Pixel.getPixel(15),
                             width: Pixel.getPixel(10),
                             height: Pixel.getPixel(10),
                             backgroundColor: fontAndClolr.COLORB2,
                             borderRadius: 10
                         }}
-						/> : <View/>}
-                    {rowData.name == '监管费' && un_pay_count >0 ?
-						<View style={{
+                        /> : <View/>}
+                    {rowData.name == '监管费' && un_pay_count > 0 ?
+                        <View style={{
                             marginRight: Pixel.getPixel(15),
                             width: Pixel.getPixel(65),
                             height: Pixel.getPixel(25),
@@ -724,74 +766,79 @@ export default class MineScene extends BaseComponent {
                             alignItems:'center',
                             justifyContent:'center',
                             borderRadius: 14}}>
-							<Text style={{color:'#FC6855', fontSize:12}}> {un_pay_count+'笔待付'}</Text>
-						</View>: <View/>}
+                            <Text style={{color:'#FC6855', fontSize:12}}> {un_pay_count + '笔待付'}</Text>
+                        </View> : <View/>}
 
 
+                    <Image source={cellJianTou} style={styles.rowjiantouImage}/>
 
-					<Image source={cellJianTou} style={styles.rowjiantouImage}/>
 
-
-				</TouchableOpacity>
+                </TouchableOpacity>
             );
         }
 
     }
 
     componentDidUpdate() {
+
         if (this.state.renderPlaceholderOnly == 'success') {
+
             if (firstType != lastType) {
-                if (lastType != '3') {
-                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                        if (data.code == 1) {
-                            let datas = JSON.parse(data.result);
-                            GetPermission.getMineList((mineList) => {
-                                for (let i = 0; i < mineList.length; i++) {
-                                    if (mineList[i].id == 47) {
-                                        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
-                                            if (datac.code == 1) {
-                                                let datasc = JSON.parse(datac.result);
-                                                let maps = {
-                                                    enter_base_ids: datasc.company_base_id,
-                                                    child_type: '1'
-                                                };
-                                                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                                                    .then((response) => {
-                                                            haveOrder = response.mjson.data.order.tradeing_count;
-                                                            lastType = response.mjson.data.account.status;
-                                                            if (lastType == '0') {
-                                                                this.refs.accountmodal.changeShowType(true,
-                                                                    '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                                                    '请尽快开通！', '去开户', '看看再说', () => {
-                                                                        this.toPage();
-                                                                    });
-                                                            } else if (lastType == '1') {
-                                                                this.refs.accountmodal.changeShowType(true,
-                                                                    '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                                                    , '去绑卡', '看看再说', () => {
-                                                                        this.toPage();
-                                                                    });
-                                                            } else if (lastType == '2') {
-                                                                this.refs.accountmodal.changeShowType(true,
-                                                                    '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                                                    , '去激活', '看看再说', () => {
-                                                                        this.toPage();
-                                                                    });
-                                                            }
-                                                            firstType = lastType;
-                                                        },
-                                                        (error) => {
+                StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                    if (data.code == 1) {
+                        let datas = JSON.parse(data.result);
+                        GetPermission.getMineList((mineList) => {
+                            for (let i = 0; i < mineList.length; i++) {
+                                if (mineList[i].id == 47) {
+                                    StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
+                                        if (datac.code == 1) {
+                                            let datasc = JSON.parse(datac.result);
+                                            let maps = {
+                                                enter_base_ids: datasc.company_base_id,
+                                                child_type: '1'
+                                            };
+                                            request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                                .then((response) => {
+                                                        haveOrder = response.mjson.data.order.tradeing_count;
+                                                        lastType = response.mjson.data.account.status;
 
-                                                        });
-                                            }
-                                        });
-                                    }
+                                                        console.log(lastType + '-----------')
+                                                        if (lastType == '0') {
+                                                            DeviceEventEmitter.emit('mb_show', '未开通');
+                                                            // this.refs.accountmodal.changeShowType(true,
+                                                            //     '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                                            //     '请尽快开通！', '去开户', '看看再说', () => {
+                                                            //         this.toPage();
+                                                            //     });
+                                                        } else if (lastType == '1') {
+                                                            DeviceEventEmitter.emit('mb_show', '未绑卡');
+                                                            // this.refs.accountmodal.changeShowType(true,
+                                                            //     '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                                            //     , '去绑卡', '看看再说', () => {
+                                                            //         this.toPage();
+                                                            //     });
+                                                        } else if (lastType == '2') {
+                                                            // this.refs.accountmodal.changeShowType(true,
+                                                            //     '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                                            //     , '去激活', '看看再说', () => {
+                                                            //         this.toPage();
+                                                            //     });
+                                                        } else if (lastType == '3') {
+                                                            DeviceEventEmitter.emit('mb_show', '已激活');
+                                                        }
+                                                        firstType = lastType;
+                                                    },
+                                                    (error) => {
+
+                                                    });
+                                        }
+                                    });
                                 }
-                            });
+                            }
+                        });
 
-                        }
-                    });
-                }
+                    }
+                });
             }
         }
     }
@@ -800,36 +847,36 @@ export default class MineScene extends BaseComponent {
     // 每一组对应的数据
     _renderSectionHeader(sectionData, sectionId) {
         return (
-			<View style={styles.sectionView}>
-			</View>
+            <View style={styles.sectionView}>
+            </View>
         );
     }
 
     _renderHeader = () => {
         return (
-			<View style={{width:width}}>
-				<View style={styles.headerViewStyle}>
-					<TouchableOpacity style={[styles.headerImageStyle]}>
-						<Image
-							source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
-							style={{
+            <View style={{width:width}}>
+                <View style={styles.headerViewStyle}>
+                    <TouchableOpacity style={[styles.headerImageStyle]}>
+                        <Image
+                            source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
+                            style={{
                                 width: Pixel.getPixel(65),
                                 height: Pixel.getPixel(65), resizeMode: 'stretch'
                             }}
-						/>
-					</TouchableOpacity>
-					<Text allowFontScaling={false} style={styles.headerNameStyle}>
+                        />
+                    </TouchableOpacity>
+                    <Text allowFontScaling={false} style={styles.headerNameStyle}>
                         {this.state.name}
-					</Text>
-					<Text allowFontScaling={false} style={styles.headerPhoneStyle}>
+                    </Text>
+                    <Text allowFontScaling={false} style={styles.headerPhoneStyle}>
                         {componyname}
-					</Text>
+                    </Text>
 
-				</View>
+                </View>
                 {this.renzhengData.RenZhengVisiable != true ? null : <View
-					style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+                        style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
 
-					<TouchableOpacity onPress={() => {
+                        <TouchableOpacity onPress={() => {
                         if(this.renzhengData.personRenZheng == 2 || this.renzhengData.personRenZheng == 1){
                             //0-> 未审核 1->审核中 2->通过  3->未通过
 
@@ -837,32 +884,32 @@ export default class MineScene extends BaseComponent {
                             this._gerenrenzheng();
                         }
                     }} activeOpacity={0.8}
-									  style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-						<Image
-							source={this.renzhengData.personRenZheng == 2  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
-							style={{
+                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+                            <Image
+                                source={this.renzhengData.personRenZheng == 2  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
+                                style={{
                                 width: Pixel.getPixel(27),
                                 height: Pixel.getPixel(20),
                                 resizeMode: 'stretch',
                                 marginLeft:Pixel.getPixel(37)
                             }}
-						/>
-						<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
+                            />
+                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
 
-							<Text allowFontScaling={false}
-								  style={{color:this.mColor[this.renzhengData.personRenZheng]}}
+                                <Text allowFontScaling={false}
+                                      style={{color:this.mColor[this.renzhengData.personRenZheng]}}
 
-							>
-                                {this._getRenZhengResult(this.renzhengData.personRenZheng)}
+                                >
+                                    {this._getRenZhengResult(this.renzhengData.personRenZheng)}
 
-							</Text>
-						</Text>
-					</TouchableOpacity>
+                                </Text>
+                            </Text>
+                        </TouchableOpacity>
 
-					<Image source={require('../../images/login/xuxian.png')}
-						   style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
+                        <Image source={require('../../images/login/xuxian.png')}
+                               style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
 
-					<TouchableOpacity onPress={() => {
+                        <TouchableOpacity onPress={() => {
                         if(this.renzhengData.enterpriseRenZheng == 2  || this.renzhengData.enterpriseRenZheng == 1){
                             //0-> 未审核 1->审核中 2->通过  3->未通过
 
@@ -871,34 +918,34 @@ export default class MineScene extends BaseComponent {
                             this._qiyerenzheng();
                         }
                     }} activeOpacity={0.8}
-									  style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-						<Image
-							source={this.renzhengData.enterpriseRenZheng == 2  ? require('../../images/login/qiyeyirenzheng.png') : require('../../images/login/qiyeweirenzheng.png')}
-							style={{
+                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+                            <Image
+                                source={this.renzhengData.enterpriseRenZheng == 2  ? require('../../images/login/qiyeyirenzheng.png') : require('../../images/login/qiyeweirenzheng.png')}
+                                style={{
                                 width: Pixel.getPixel(27),
                                 height: Pixel.getPixel(20),
                                 resizeMode: 'stretch',
                                 marginLeft:Pixel.getPixel(37)
                             }}
-						/>
-						<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
+                            />
+                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
 
-							<Text allowFontScaling={false}
+                                <Text allowFontScaling={false}
 
-								  style={{color:this.mColor[this.renzhengData.enterpriseRenZheng]}}
+                                      style={{color:this.mColor[this.renzhengData.enterpriseRenZheng]}}
 
-							>
-                                {this._getRenZhengResult(this.renzhengData.enterpriseRenZheng)}
+                                >
+                                    {this._getRenZhengResult(this.renzhengData.enterpriseRenZheng)}
 
-							</Text>
-						</Text>
+                                </Text>
+                            </Text>
 
-					</TouchableOpacity>
+                        </TouchableOpacity>
 
-				</View>}
+                    </View>}
 
 
-			</View>
+            </View>
         )
     }
 
