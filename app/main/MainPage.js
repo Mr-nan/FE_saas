@@ -360,7 +360,7 @@ export default class MainPage extends BaseComponent {
                                 }}
                             >
                                 <Image
-                                    style={{flex:1,resizeMode:'stretch',width:width}}
+                                    style={{flex:1,resizeMode:'cover',width:width}}
                                     source={require('../../images/tishimengban/zhgl_wkhwbk.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
@@ -393,7 +393,7 @@ export default class MainPage extends BaseComponent {
 
                                 }}
                                 >
-                                <Image style={{width:width,resizeMode:'stretch',flex:1}}
+                                <Image style={{width:width,resizeMode:'cover',flex:1}}
                                        source={require('../../images/tishimengban/zhgl_ykhwbk.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
@@ -425,7 +425,7 @@ export default class MainPage extends BaseComponent {
 
                                 }}
                                 >
-                                <Image style={{resizeMode:'stretch',width:width,flex:1}}
+                                <Image style={{resizeMode:'cover',width:width,flex:1}}
                                        source={require('../../images/tishimengban/ykhybk.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
