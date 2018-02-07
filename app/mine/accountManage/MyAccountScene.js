@@ -203,8 +203,6 @@ export default class MyAccountScene extends BaseComponent {
                     this.hengFengInfo = response.mjson.data['315'][0];
 
 
-
-
                     if (this.hengFengInfo.status == '0') {
 
                         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {

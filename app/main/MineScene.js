@@ -238,6 +238,46 @@ export default class MineScene extends BaseComponent {
                         isRefreshing: false
                     });
                     DeviceEventEmitter.emit('mb_show', '完成');
+
+
+
+
+                    /*   获取用户账户状态更新蒙层状态    专用       */
+                    StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
+                        if (datac.code == 1) {
+                            let datasc = JSON.parse(datac.result);
+                            let maps = {
+                                enter_base_ids: datasc.company_base_id,
+                                child_type: '1'
+                            };
+                            request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                .then((response) => {
+                                        let account_status = response.mjson.data.account.status;
+
+                                        if (account_status == '0') {
+                                            DeviceEventEmitter.emit('mb_show', '未开通');
+
+                                        } else if (account_status == '1') {
+                                            DeviceEventEmitter.emit('mb_show', '未绑卡');
+
+                                        } else if (account_status == '2') {
+
+                                        } else if (account_status == '3') {
+                                            DeviceEventEmitter.emit('mb_show', '已激活');
+                                        }
+                                    },
+                                    (error) => {
+
+                                    });
+                        }
+                    });
+
+                    /*   获取用户账户状态更新蒙层状态    专用       */
+
+
+
+
+
                 });
 
             } else {
@@ -740,7 +780,9 @@ export default class MineScene extends BaseComponent {
     }
 
     componentDidUpdate() {
+
         if (this.state.renderPlaceholderOnly == 'success') {
+
             if (firstType != lastType) {
                 StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                     if (data.code == 1) {
@@ -759,6 +801,8 @@ export default class MineScene extends BaseComponent {
                                                 .then((response) => {
                                                         haveOrder = response.mjson.data.order.tradeing_count;
                                                         lastType = response.mjson.data.account.status;
+
+                                                        console.log(lastType + '-----------')
                                                         if (lastType == '0') {
                                                             DeviceEventEmitter.emit('mb_show', '未开通');
                                                             // this.refs.accountmodal.changeShowType(true,

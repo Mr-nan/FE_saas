@@ -103,27 +103,127 @@ export default class MainPage extends BaseComponent {
         })
         this.mbShow = DeviceEventEmitter.addListener('mb_show', (data) => {
             if (data == '未开通') {
-                StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_WKHWBD, (data) => {
-                    if (data.result != 'false') {
-                        this.setState({mb_one: true,})
+
+                StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                    if (data.code == 1) {
+                        let userData = JSON.parse(data.result);
+                        StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                            if (subData.code == 1) {
+                                let obj = JSON.parse(subData.result);
+
+                                if ( obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT] == 2){return}
+                                obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT] = 1;
+                                StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                })
+                                this.setState({
+                                    mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                    mb_tow: 0,
+                                    mb_three: 0,
+                                })
+                            }
+                        })
                     }
                 })
+
+
+                // StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_WKHWBD, (data) => {
+                //     if (data.result != 'false') {
+                //         this.setState({mb_one: true,})
+                //     }
+                // })
             } else if (data == '已激活') {
-                StorageUtil.mGetItem(StorageKeyNames.MB_YKHYBD, (data) => {
-                    if (data.result != 'false') {
-                        this.setState({mb_three: true,})
+
+
+                StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                    if (data.code == 1) {
+                        let userData = JSON.parse(data.result);
+                        StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                            if (subData.code == 1) {
+                                let obj = JSON.parse(subData.result);
+
+                                if ( obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD] == 2){return}
+                                obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD] = 1;
+                                StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                })
+                                this.setState({
+                                    mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                    mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                                    mb_three: obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD],
+                                })
+                            }
+                        })
                     }
                 })
+
+
+                //
+                //
+                // StorageUtil.mGetItem(StorageKeyNames.MB_YKHYBD, (data) => {
+                //     if (data.result != 'false') {
+                //         this.setState({mb_three: true,})
+                //     }
+                // })
             } else if (data == '未绑卡') {
-                StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_YKHWBD, (data) => {
-                    if (data.result != 'false') {
-                        this.setState({mb_tow: true,})
+
+                StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                    if (data.code == 1) {
+                        let userData = JSON.parse(data.result);
+                        StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                            if (subData.code == 1) {
+                                let obj = JSON.parse(subData.result);
+
+                                if ( obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD] == 2){return}
+                                obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD] = 1;
+                                StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                })
+                                this.setState({
+                                    mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                    mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                                    mb_three: 0,
+                                })
+                            }
+                        })
                     }
                 })
+
+
+                // StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_YKHWBD, (data) => {
+                //     if (data.result != 'false') {
+                //         this.setState({mb_tow: true,})
+                //     }
+                // })
             } else if (data == '完成') {
                 this.setState({mbShow: true});
             }
         })
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let userData = JSON.parse(data.result);
+                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                    if (subData.code == 1) {
+                        let obj = JSON.parse(subData.result);
+                        if (obj == null) {
+                            obj = {};
+                        }
+                        if (obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT] == null) {
+                            obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT] = 0;
+                            obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD] = 0;
+                            obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD] = 0;
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {})
+                        }
+                        this.setState({
+                            mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                            mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                            mb_three: obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD],
+                        })
+                    }
+                })
+            }
+        })
+
+
+
         tabArray = [];
     }
 
@@ -232,10 +332,33 @@ export default class MainPage extends BaseComponent {
                     style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
                 {/*<CustomerServiceButton ref='customerservicebutton'/>*/}
                 {
-                    this.state.mb_one != false && this.state.selectedTab == 'mypage' && this.state.mbShow ?
+                    this.state.mb_one == 1 && this.state.selectedTab == 'mypage' && this.state.mbShow ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_WKHWBD,'false',()=>{this.setState({mb_one: false,})})}}>
+
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT] = 2;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                                        mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                                                        mb_three: obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+                            >
                                 <Image
                                     style={{flex:1,resizeMode:'stretch',width:width}}
                                     source={require('../../images/tishimengban/zhgl_wkhwbk.png')}/>
@@ -243,20 +366,65 @@ export default class MainPage extends BaseComponent {
                         </View> : null
                 }
                 {
-                    this.state.mb_tow != false && this.state.selectedTab == 'mypage' && this.state.mbShow ?
+                    this.state.mb_tow == 1 && this.state.selectedTab == 'mypage' && this.state.mbShow ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_ZHGL_YKHWBD,'false',()=>{this.setState({mb_tow: false,})})}}>
+
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD] = 2;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                                        mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                                                        mb_three: obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+                                >
                                 <Image style={{width:width,resizeMode:'stretch',flex:1}}
                                        source={require('../../images/tishimengban/zhgl_ykhwbk.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
-                    this.state.mb_three != false && this.state.selectedTab == 'mypage' && this.state.mbShow ?
+                    this.state.mb_three == 1 && this.state.selectedTab == 'mypage' && this.state.mbShow ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{StorageUtil.mSetItem(StorageKeyNames.MB_YKHYBD,'false',()=>{this.setState({mb_three: false,})})}}>
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD] = 2;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                                        mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                                                        mb_three: obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+                                >
                                 <Image style={{resizeMode:'stretch',width:width,flex:1}}
                                        source={require('../../images/tishimengban/ykhybk.png')}/>
                             </TouchableWithoutFeedback>
