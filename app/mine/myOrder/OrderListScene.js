@@ -281,6 +281,7 @@ export default class OrderListScene extends BaseComponent {
                             params: {
                                 business: this.props.business,
                                 status: this.status,
+                                singleCar: this.props.singleCar
                             }
                         });
                     }}
