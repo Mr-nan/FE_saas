@@ -112,7 +112,8 @@ export default class MineScene extends BaseComponent {
         super(props);
         // 初始状态
         //    拿到所有的json数据
-        this.isLogistics = 'true';
+        this.isLogistics = 1;
+        this.singleCar = 1;
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -577,7 +578,8 @@ export default class MineScene extends BaseComponent {
         };
         let url = Urls.LOGISTICS_SWITCH;
         request(url, 'post', maps).then((response) => {
-            this.isLogistics = response.mjson.data;
+            this.isLogistics = response.mjson.data.a;
+            this.singleCar = response.mjson.data.b;
             this.changeData();
         }, (error) => {
             this.changeData();
@@ -727,12 +729,15 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.component = MycarScene
                 break;
             case 52:
-                if (this.isLogistics == 'false') {  //this.isLogistics == 'false'
+                if (this.isLogistics == 0) {  //this.isLogistics == 'false'
                     this.navigatorParams.name = 'OrderTypeSelectSceneOld'
                     this.navigatorParams.component = OrderTypeSelectSceneOld
                 } else {
                     this.navigatorParams.name = 'OrderTypeSelectScene'
                     this.navigatorParams.component = OrderTypeSelectScene
+                    this.navigatorParams.params = {
+                        singleCar: this.singleCar
+                    }
                 }
                 break;
             case 69:

@@ -1205,14 +1205,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 16:
                 return (
                     <View style={[styles.bottomBar]}>
-                        <TouchableOpacity
+                        {this.props.singleCar == 1 && (<TouchableOpacity
                             onPress={() => {
                                 this.changeCarSingle();
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>转单车</Text>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity>)}
                         <TouchableOpacity
                             onPress={() => {
                                 this.applyGetCarLetter();
