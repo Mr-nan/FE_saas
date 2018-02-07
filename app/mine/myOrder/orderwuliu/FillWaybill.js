@@ -214,7 +214,9 @@ export default class FillWaybill extends BaseComponent {
                                     this.totalMoney = data.amount;
                                 }
                                 if (parseFloat(data.amount) > 0) {
-                                    feeDatas.push({title: data.amount_name, value: data.amount + '元'});
+                                    if(data.amount_name!=='总金额'){
+                                        feeDatas.push({title: data.amount_name, value: parseFloat(data.amount).toFixed(2) + '元'});
+                                    }
                                 }
                             })
                         }
