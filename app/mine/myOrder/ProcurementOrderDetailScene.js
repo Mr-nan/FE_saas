@@ -1710,7 +1710,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 160:  //160=>'支付首付款完成',
                 if (cancelStatus === 0) {
                     this.orderState = 7;
-                    this.topState = -1;
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state === 2) {
+                        this.topState = 6;
+                    } else {
+                        this.topState = -1;
+                    }
                     if (this.existTransOrder(this.ordersTrans) &&
                         this.transStateMapping(this.ordersTrans).state !== 3 &&
                         this.transStateMapping(this.ordersTrans).state >= 2) {
