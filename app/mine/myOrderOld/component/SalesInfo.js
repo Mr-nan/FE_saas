@@ -54,9 +54,6 @@ export default class SalesInfo extends BaseComponent {
             if (i === items.length - 1) {
                 itemStyle = [itemStyle, {marginBottom: Pixel.getPixel(20)}]
             }
-            if (this.state.orderState === 4 && this.state.orderDetail.first_amount > 0) {
-                itemStyle = [styles.infoItem, {marginTop: Pixel.getPixel(20)}];
-            }
             layouts.push(<View key={i} style={itemStyle}>
                 <Text allowFontScaling={false} style={styles.orderInfo}>{items[i].name}</Text>
                 <View style={{flex: 1}}/>
@@ -73,7 +70,7 @@ export default class SalesInfo extends BaseComponent {
         let items = [];
         let layouts = [];
         if (this.state.orderDetail.totalpay_amount > 0) {
-            items = [{name: '到账金额', value: this.state.orderDetail.done_totalpay_amount}];
+            items = [{name: '到账金额', value: this.state.orderDetail.done_to_seller_amount}];
         } else {
             items = [{name: '到账订金', value: this.state.orderDetail.done_deposit_amount},
                 {name: '到账尾款', value: this.state.orderDetail.done_balance_amount},
