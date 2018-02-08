@@ -102,8 +102,8 @@ android {
         applicationId "com.fe_sass"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 31
-        versionName "4.8.0"
+        versionCode 32
+        versionName "4.9.0"
         resValue("string", "growingio_project_id", "8c70ed29c1985918")
         resValue("string", "growingio_url_scheme", "growing.f115f58aa5c1f754")
         ndk {

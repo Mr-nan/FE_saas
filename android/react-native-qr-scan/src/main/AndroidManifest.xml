@@ -21,6 +21,12 @@
         <activity
             android:name=".ScanCaptureAct"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".BaiduLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PoiSearchActivity"
+            android:screenOrientation="portrait" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="8eZvro8UxZb52v2405k6HTvxevpdzGH7" >

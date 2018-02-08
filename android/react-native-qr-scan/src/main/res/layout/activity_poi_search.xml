@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff">
+    <include layout="@layout/imageselector_title_bar" />
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/txt_city_find"
+            android:paddingLeft="10dp"
+            android:gravity="center"
+            android:background="#F0F0F0"
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:text=""
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#F0F0F0"
+            android:paddingBottom="7dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="15dp"
+            android:paddingTop="7dp">
+            <EditText
+                android:textColor="#000"
+                android:id="@+id/et_find"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:background="@drawable/find_edittext_shap"
+                android:paddingLeft="20dp"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/iv_find"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentRight="true"
+                android:paddingRight="10dp"
+                android:src="@drawable/assessment_customer_find" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/sug_address_list"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        />
+
+</LinearLayout>

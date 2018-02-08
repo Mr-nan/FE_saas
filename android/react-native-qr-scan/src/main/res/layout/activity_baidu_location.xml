@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+    android:background="#fff">
+    <include layout="@layout/imageselector_title_bar" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#F0F0F0"
+        android:paddingBottom="7dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="7dp">
+
+        <EditText
+            android:focusable="false"
+            android:id="@+id/et_find"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@drawable/find_edittext_shap"
+            android:maxLength="17"
+            android:paddingLeft="20dp"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/iv_find"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            android:src="@drawable/assessment_customer_find" />
+    </RelativeLayout>
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clickable="true" />
+    <ListView
+        android:id="@+id/sug_address_list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+    />
+</LinearLayout>

@@ -96,8 +96,8 @@ export  default class PurchasePickerItem extends PureComponent {
             allowsEditing: false,
             noData: false,
             quality: 1.0,
-            maxWidth: 480,
-            maxHeight: 800,
+            maxWidth: 1080,
+            maxHeight: 1920,
             storageOptions: {
                 skipBackup: true,
                 path: 'images',

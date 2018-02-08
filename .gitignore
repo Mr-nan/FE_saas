@@ -55,3 +55,6 @@ fastlane/screenshots
 /android/app/build
 /build
 diff_list
+
+# vscode
+.vscode

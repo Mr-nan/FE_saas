@@ -42,6 +42,16 @@
 				<string>growing.b162375b543d2f77</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.dycd.dycdsaas</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>dycd</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>4.8.0</string>
