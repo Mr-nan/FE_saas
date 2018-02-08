@@ -218,9 +218,10 @@ export  default class WithdrawalsScene extends BaseComponent {
 
                                 }}
                                 >
-                                <Image style={{resizeMode:'stretch',width:width,flex:1}}
+                                <Image style={{resizeMode:'stretch',width:width,height:Pixel.getPixel(660)}}
                                        source={Platform.OS === 'android'?require('../../../images/tishimengban/tixian_android.png'):require('../../../images/tishimengban/tixian.png')}/>
                             </TouchableWithoutFeedback>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
                         </View> : null
                 }
                 {
@@ -253,9 +254,10 @@ export  default class WithdrawalsScene extends BaseComponent {
 
                                 }}
                             >
-                                <Image style={{resizeMode:'stretch',width:width,flex:1}}
+                                <Image style={{resizeMode:'stretch',width:width,height:Pixel.getPixel(660)}}
                                        source={Platform.OS === 'android'?require('../../../images/tishimengban/shoulitime_andr.png'):require('../../../images/tishimengban/shoulitime.png')}/>
                             </TouchableWithoutFeedback>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
                         </View> : null
                 }
             </View >

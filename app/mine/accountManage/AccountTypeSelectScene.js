@@ -152,9 +152,10 @@ export  default class AccountTypeSelectScene extends BaseComponent {
 
                                 }}
                             >
-                                <Image style={{width:width,flex:1,resizeMode:'stretch'}}
+                                <Image style={{width:width,height:Pixel.getPixel(660),resizeMode:'stretch'}}
                                        source={require('../../../images/tishimengban/mb_xz_ktqyzh.png')}/>
                             </TouchableWithoutFeedback>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
                         </View> : null
                 }
             </View>
