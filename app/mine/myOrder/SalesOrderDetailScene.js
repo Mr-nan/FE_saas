@@ -398,7 +398,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
                         //this.isPort = this.existAddress(this.orderDetail.address) ? this.orderDetail.address.is_port : 0;
-                        this.addressId = this.orderDetail.address === null ? -1 : this.orderDetail.address.id;
+                        this.addressId = this.isNull(this.orderDetail.address) ? -1 : this.orderDetail.address.id;
                         this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.cancel_time);
                         this.closeOrder = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.pricing_time);
                         this.carAmount = 0;

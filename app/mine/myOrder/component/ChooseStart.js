@@ -40,13 +40,13 @@ export default class ChooseStart extends BaseComponent {
         }];
         //console.log('this.props.orderDetail.address===', this.props.orderDetail.address);
         this.state = {
-            address: this.props.orderDetail.address === null ?
+            address: this.isNull(this.props.orderDetail.address) ?
                 '请选择' :
                 this.props.orderDetail.address.province +
                 this.props.orderDetail.address.city +
                 this.props.orderDetail.address.district,
-            addressId: this.props.orderDetail.address === null ? -1 : this.props.orderDetail.address.id,
-            isPort: this.props.orderDetail.address === null ? 0 : this.props.orderDetail.address.is_port
+            addressId: this.isNull(this.props.orderDetail.address) ? -1 : this.props.orderDetail.address.id,
+            isPort: this.isNull(this.props.orderDetail.address) ? 0 : this.props.orderDetail.address.is_port
         }
     }
 
