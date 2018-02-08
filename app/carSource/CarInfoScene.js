@@ -639,14 +639,16 @@ export default class CarInfoScene extends BaseComponent {
         let url = AppUrls.LOGISTICS_SWITCH;
         request(url, 'post', {}).then((response) => {
             this.props.showModal(false);
-            let isLogistics = response.mjson.data;
-            if (isLogistics == 'false') {  //isLogistics == 'false'
+            let isLogistics = response.mjson.data.a;
+            let singleCar = response.mjson.data.b;
+            if (isLogistics == 0) {  //isLogistics == 'false'
                 this.toNextPage({
                     name: 'ProcurementOrderDetailScene',
                     component: ProcurementOrderDetailSceneOld,
                     params: {
                         business: 1,
-                        orderId: orderId
+                        orderId: orderId,
+                        singleCar: singleCar
                     }
                 });
             } else {
@@ -655,7 +657,8 @@ export default class CarInfoScene extends BaseComponent {
                     component: ProcurementOrderDetailScene,
                     params: {
                         business: 1,
-                        orderId: orderId
+                        orderId: orderId,
+                        singleCar: singleCar
                     }
                 });
             }
