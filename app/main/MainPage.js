@@ -333,9 +333,8 @@ export default class MainPage extends BaseComponent {
                 {/*<CustomerServiceButton ref='customerservicebutton'/>*/}
                 {
                     this.state.mb_one == 1 && this.state.selectedTab == 'mypage' && this.state.mbShow ?
-                        <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
+                        <View style={{position: 'absolute',bottom:0, top:0,width:width}}>
                             <TouchableWithoutFeedback
-
                                 onPress={()=>{
 
                                     StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
@@ -360,9 +359,14 @@ export default class MainPage extends BaseComponent {
                                 }}
                             >
                                 <Image
-                                    style={{flex:1,resizeMode:'stretch',width:width}}
+                                    style={{
+                                        width:width,
+                                        resizeMode:'stretch',
+                                        height:Pixel.getPixel(660),
+                                        }}
                                     source={require('../../images/tishimengban/zhgl_wkhwbk.png')}/>
                             </TouchableWithoutFeedback>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
                         </View> : null
                 }
                 {
@@ -393,9 +397,10 @@ export default class MainPage extends BaseComponent {
 
                                 }}
                                 >
-                                <Image style={{width:width,resizeMode:'stretch',flex:1}}
+                                <Image style={{width:width,resizeMode:'stretch',height:Pixel.getPixel(660)}}
                                        source={require('../../images/tishimengban/zhgl_ykhwbk.png')}/>
                             </TouchableWithoutFeedback>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
                         </View> : null
                 }
                 {
@@ -425,9 +430,10 @@ export default class MainPage extends BaseComponent {
 
                                 }}
                                 >
-                                <Image style={{resizeMode:'stretch',width:width,flex:1}}
+                                <Image style={{resizeMode:'stretch',width:width,height:Pixel.getPixel(660)}}
                                        source={require('../../images/tishimengban/ykhybk.png')}/>
                             </TouchableWithoutFeedback>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
                         </View> : null
                 }
             </View>

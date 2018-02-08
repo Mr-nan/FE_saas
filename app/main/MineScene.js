@@ -234,14 +234,13 @@ export default class MineScene extends BaseComponent {
                             sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
                         }
                     );
-                    this.setState({
-                        source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
-                        name: datas.real_name,
-                        phone: datas.phone,
-                        headUrl: datas.head_portrait_url,
-                        renderPlaceholderOnly: 'success',
-                        isRefreshing: false
-                    });
+
+
+
+
+
+
+
                     DeviceEventEmitter.emit('mb_show', '完成');
 
 
@@ -257,7 +256,18 @@ export default class MineScene extends BaseComponent {
                             };
                             request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                                 .then((response) => {
+
                                         let account_status = response.mjson.data.account.status;
+
+                                        this.setState({
+                                            source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+                                            name: datas.real_name,
+                                            phone: datas.phone,
+                                            headUrl: datas.head_portrait_url,
+                                            renderPlaceholderOnly: 'success',
+                                            isRefreshing: false
+                                        });
+
 
                                         if (account_status == '0') {
                                             DeviceEventEmitter.emit('mb_show', '未开通');
@@ -272,16 +282,15 @@ export default class MineScene extends BaseComponent {
                                         }
                                     },
                                     (error) => {
-
+                                        this.setState({
+                                            renderPlaceholderOnly: 'error',
+                                            isRefreshing: false
+                                        });
                                     });
                         }
                     });
 
                     /*   获取用户账户状态更新蒙层状态    专用       */
-
-
-
-
 
                 });
 

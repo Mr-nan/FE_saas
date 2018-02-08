@@ -351,9 +351,10 @@ export  default class AccountScene extends BaseComponent {
 
                             >
                                 <Image
-                                    style={{width:width,flex:1,resizeMode:'stretch'}}
+                                    style={{width:width, height:Pixel.getPixel(660),resizeMode:'stretch'}}
                                     source={Platform.OS === 'android'?require('../../../images/tishimengban/zhgl_zz_android.png'):require('../../../images/tishimengban/zhgl_zhuanzhang.png')}/>
                             </TouchableWithoutFeedback>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
                         </View> : null
                 }
                 {
