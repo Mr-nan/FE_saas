@@ -36,7 +36,7 @@ export  default class WuliuWebScene extends BaseComponent {
             this.webUrl='http://test.bms.dycd.com/platform/logistics.html';
         }else if(Urls.BASEURL=='http://dev.api-gateway.dycd.com/'){
             this.webUrl='http://devwd.bms.dycd.com/platform/logistics.html/';
-        }else if(Urls.BASEURL=='https://gatewayapi.dycd.com/'){
+        }else if(Urls.BASEURL=='https://gatewayapi.dycd.com/' || Urls.BASEURL=='https://stgatewayapi.dycd.com/'){
             this.webUrl='http://bms.dycd.com/platform/logistics.html';
         }
         this.state = {
