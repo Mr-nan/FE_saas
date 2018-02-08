@@ -63,7 +63,7 @@ const options = {
 		path: 'images',
 	}
 };
-export default class EnterpriseCertificate extends BaseComponent {
+export default class PersonCertificate extends BaseComponent {
 	/*
 	 * 为了延迟调用*/
 	componentWillUnmount() {
@@ -646,7 +646,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 	/*
 	 * 相机点击
 	 * */
-	_cameraClick = () => {
+	_cameraClick = (ID) => {
 		this.timer = setTimeout(
 			() => {
 				ImagePicker.launchCamera(options, (response) => {
@@ -667,7 +667,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 	/*
 	 * 相册点击
 	 * */
-	_photoClick = () => {
+	_photoClick = (ID) => {
 		this.timer = setTimeout(
 			() => {
 				ImagePicker.launchImageLibrary(options, (response) => {
@@ -687,6 +687,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 	 * 图片上传
 	 * */
 	uploadImage = (response, id) => {
+		alert(id)
 
 		let params = {
 			file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
