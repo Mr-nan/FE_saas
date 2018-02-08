@@ -65,9 +65,9 @@ export  default class AllSelectCompanyScene extends BaseComponent {
                             renderPlaceholderOnly: 'null',
                         });
                     }
-/*                    else if(response.mjson.data.length==1){
+                    else if(response.mjson.data.length==1){
                         this.setLoanOne(response.mjson.data[0]);
-                    }*/
+                    }
                     else{
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({

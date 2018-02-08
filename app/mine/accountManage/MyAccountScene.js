@@ -226,7 +226,7 @@ export default class MyAccountScene extends BaseComponent {
                             }
                         })
 
-                    } else if (this.hengFengInfo.status == '2') {
+                    } else if (this.hengFengInfo.status == '1') {
 
                         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                             if (data.code == 1) {
