@@ -35,15 +35,18 @@ import ContactLayout from "./component/ContactLayout";
 import ChooseModal from "./component/ChooseModal";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
-import AccountWebScene from "../accountManage/AccountWebScene";
-import WebScene from "../../main/WebScene";
-import ContractWebScene from "./ContractWebScene";
 import ContractScene from "./ContractScene";
 import LoanInfo from "./component/LoanInfo";
 import DDDetailScene from "../../finance/lend/DDDetailScene";
 import ProcurementInfo from "./component/ProcurementInfo";
-import AccountScene from "../accountManage/AccountScene";
 import CancelOrderReasonScene from "./CancelOrderReasonScene";
+import LogisticsMode from "./component/LogisticsMode";
+import LogisticsModeForFinancing from "./component/LogisticsModeForFinancing";
+import ExtractCarPeople from "./component/ExtractCarPeople";
+import AddressManage from "./orderwuliu/AddressManage";
+import FillWaybill from "./orderwuliu/FillWaybill";
+import LogisticsMode1 from "./component/LogisticsMode1";
+import CheckWaybill from "./orderwuliu/CheckWaybill";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -64,6 +67,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.leftTime = 0;
         this.financeInfo = {};
         this.companyId = 0;
+        this.logisticsType = 1;
+        this.ordersTrans = {};
+        this.geterData = {};
         this.applyLoanAmount = '请输入申请贷款金额';
         this.state = {
             dataSource: [],
@@ -125,10 +131,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     /**
      * 判断订单详情页显示内容
      * @param orderState   订单状态
-     * @param merchantNum   商家电话
-     * @param customerServiceNum   客服电话
      **/
-    initListData = (orderState, merchantNum, customerServiceNum) => {
+    initListData = (orderState) => {
         switch (orderState) {
             case 0: //创建订单
                 this.mList = [];
@@ -138,9 +142,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.contactData = {
                     layoutTitle: '已拍下',
                     layoutContent: '请先与卖家联系商议成交价，待卖家确认后支付订金。',
-                    setPrompt: false,
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    setPrompt: false
                 };
                 this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
@@ -157,9 +159,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     layoutContent: '请尽快支付订金' + this.orderDetail.deposit_amount + '元，支付后卖家可查看到账金额，但不可提现。',
                     setPrompt: true,
                     promptTitle: '订金说明',
-                    promptContent: '交付订金后卖家会为您保留车源，且卖家不可提现，如果交易最终未完成，您可以和卖家协商退回订金。',
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    promptContent: '交付订金后卖家会为您保留车源，且卖家不可提现，如果交易最终未完成，您可以和卖家协商退回订金。'
                 };
                 this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
@@ -170,7 +170,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '6'];
+                this.mList = ['0', '1', '3', '4', '9', '6'];
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.contactData = {
                         layoutTitle: '付全款',
@@ -196,13 +196,18 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '2', '3', '4', '6'];
+                // 物流单
+                if (this.existTransOrder(this.ordersTrans) &&
+                    this.transStateMapping(this.ordersTrans).state >= 2) {
+                    this.mList = ['0', '1', '2', '3', '4', '9', '6'];
+                } else {
+                    this.mList = ['0', '1', '2', '3', '4', '6'];
+                }
+
                 this.contactData = {
                     layoutTitle: '全款已付清',
                     layoutContent: '确认验收车辆后卖家可提款，手续齐全。',
-                    setPrompt: false,
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    setPrompt: false
                 };
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
@@ -219,13 +224,20 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '6'];
+                // 物流单
+                if (this.existTransOrder(this.ordersTrans) &&
+                    this.transStateMapping(this.ordersTrans).state >= 8) {
+                    this.mList = ['0', '1', '3', '4', '9', '11', '6'];
+                } else if (this.existTransOrder(this.ordersTrans) &&
+                    this.transStateMapping(this.ordersTrans).state >= 2) {
+                    this.mList = ['0', '1', '3', '4', '9', '6'];
+                } else {
+                    this.mList = ['0', '1', '3', '4', '6'];
+                }
                 this.contactData = {
                     layoutTitle: '已完成',
                     layoutContent: '恭喜您交易已完成',
-                    setPrompt: false,
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
+                    setPrompt: false
                 };
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
@@ -242,7 +254,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 if (this.orderDetail.status === 16) {
                     this.contactData = {};
-                    this.mList = ['1', '3', '7'];
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state >= 2) {
+                        this.mList = ['1', '3', '7', '9'];
+                    } else {
+                        this.mList = ['1', '3', '7'];
+                    }
                     this.contactData = {
                         layoutTitle: '订单融资处理中',
                         layoutContent: '恭喜您首付已经支付成功，预计10分钟内生成合同，之后请您签署',
@@ -251,25 +268,32 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (this.orderDetail.status === 17 || this.orderDetail.status === 19 || this.orderDetail.status === 20 || this.orderDetail.status === 21 || this.orderDetail.status === 22 ||
                     this.orderDetail.status === 23 || this.orderDetail.status === 24) {
                     this.contactData = {};
-                    this.mList = ['1', '3', '7'];
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state >= 2) {
+                        this.mList = ['1', '3', '7', '9'];
+                    } else {
+                        this.mList = ['1', '3', '7'];
+                    }
                     this.contactData = {
                         layoutTitle: '订单融资处理中',
                         layoutContent: '您确认车辆无误，点击“验收确认”后，24小时内即可为您结放贷款。',
                         setPrompt: false
                     };
                 } else {
-                    this.mList = ['3', '7'];
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state >= 2) {
+                        this.mList = ['3', '7', '9'];
+                    } else {
+                        this.mList = ['3', '7'];
+                    }
                 }
                 break;
             case 6: // 待付首付款
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '5', '6'];
+                this.mList = ['0', '1', '3', '4', '5', '10', '6'];
                 let amount = '  ';
-                /*                if (this.applyLoanAmount === '请输入申请贷款金额') {
-                 amount = '';
-                 }*/
                 this.contactData = {
                     layoutTitle: '付首付款',
                     layoutContent: '恭喜您的' + amount + '元贷款已经授权，请尽快支付首付款以便尽快完成融资。',
@@ -292,7 +316,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '2', '3', '4', '7', '6'];
+                if (this.existTransOrder(this.ordersTrans) &&
+                    this.transStateMapping(this.ordersTrans).state >= 2) {
+                    this.mList = ['0', '1', '2', '3', '4', '7', '10', '6'];
+                } else {
+                    this.mList = ['0', '1', '2', '3', '4', '7', '6'];
+                }
+
                 this.contactData = {
                     layoutTitle: '确认验收车辆',
                     layoutContent: '您确认车辆无误，点击"验收确认"后，24小时内即可为您结放贷款。',
@@ -309,7 +339,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
                 }
                 break;
-            case 8: // 融资单完成交易
+            case 8: // 融资单完成交易  没有使用
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
@@ -404,6 +434,51 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB7
                             }}>正在准备放款请稍后。</Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
+            case 4:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text allowFontScaling={false} style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB2
+                            }}>您的申请已被驳回，请选择使用物流服务</Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
+            case 5:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text allowFontScaling={false} style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB2
+                            }}>财务放款时间(工作日): 9:00到16:30</Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
+            case 6:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text allowFontScaling={false} style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB2
+                            }}>验车中，请耐心等待</Text>
                         </View>
                         <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
                     </View>
@@ -555,6 +630,96 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     };
 
     /**
+     *   转单车
+     **/
+    changeCarSingle = () => {
+        this.props.showModal(true);
+        let alreadyChoose = this.transStateMapping(this.ordersTrans);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.CHANGE_CAR_SINGLE_FINANCE;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.toNextPage({
+                            name: 'FillWaybill',
+                            component: FillWaybill,
+                            params: {
+                                orderId: this.orderDetail.id,
+                                logisticsType: 4,
+                                vType: this.orderDetail.orders_item_data[0].car_data.v_type,
+                                callBack: this.payCallBack,
+                                fromSingle:true,
+                                transId: this.ordersTrans.id,
+                                waybillState: alreadyChoose.waybillState,
+                            }
+                        });
+                    } else {
+                        this.props.showModal(false);
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('恢复订单失败');
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showModal(false);
+                this.props.showToast('转单车申请失败');
+            }
+        });
+    };
+
+    /**
+     *   申请提车函
+     **/
+    applyGetCarLetter = () => {
+        this.props.showModal(true);
+        let alreadyChoose = this.transStateMapping(this.ordersTrans);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.APPLY_GET_CAR_LETTER;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.toNextPage({
+                            name: 'CheckWaybill',
+                            component: CheckWaybill,
+                            params: {
+                                orderId: this.orderDetail.id,
+                                transId: this.ordersTrans.id,
+                                waybillState: alreadyChoose.waybillState,
+                                isShowPay: true,
+                                callBack: this.payCallBack
+                            }
+                        });
+                    } else {
+                        this.props.showModal(false);
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('恢复订单失败');
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showModal(false);
+                this.props.showToast('转单车申请失败');
+            }
+        });
+    };
+
+    /**
      * from @hanmeng
      * 合同预览页加载
      **/
@@ -601,9 +766,34 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     };
 
     /**
+     *   判断订单是否生成了运单(dms订单)
+     **/
+    existTransOrder = (ordersTrans) => {
+        if (typeof(ordersTrans) == "undefined") {
+            return false;
+        } else if (ordersTrans.logistics_type == 1 && this.orderState == 6) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    /**
+     *   判断订单是否选择了提车人
+     **/
+    existGeterData = (geterData) => {
+        if (geterData.length === 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+
+    /**
      * 根据订单状态初始化详情页悬浮底
      * @param orderState 页面悬浮底状态
-     * @returns {*}
+     * @returns 返回底部布局
      **/
     initDetailPageBottom = (orderState) => {
         switch (orderState) {
@@ -639,7 +829,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                       textStyle={styles.expText}
                                       text='确定' content='请咨询卖家，确认成交价'/>
                     </View>
-                )
+                );
                 break;
             case 1:
                 let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
@@ -657,8 +847,20 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
+                                let transOrder = this.existTransOrder(this.ordersTrans);
+                                let isStore = this.orderDetail.orders_item_data[0].is_store;  // 是否在店 0没有申请 1申请中 2驳回 3同意
+/*                                console.log('this.ordersTrans=====', this.ordersTrans);
+                                console.log('transOrder=====', transOrder);
+                                console.log('this.logisticsType=====', this.logisticsType);
+                                console.log('111111ticsType=====', this.logisticsType === 1 && transOrder);*/
                                 if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 6) {
                                     this.props.showToast('请输入申请贷款金额');
+                                } else if (!transOrder && (isStore == 0 || isStore == 2) && this.orderState == 6) {
+                                    this.props.showToast('请选择交车方式');
+                                } else if (isStore == 1 && this.orderState == 6) {
+                                    this.props.showToast('同城同市场审核中');
+                                } else if (!transOrder && this.orderState == 2 && this.logisticsType === 1) {
+                                    this.props.showToast('选择物流请填写运单');
                                 } else {
                                     this.toNextPage({
                                         name: 'CheckStand',
@@ -667,7 +869,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                             payAmount: this.orderState === 1 ?
                                                 this.orderDetail.deposit_amount :
                                                 parseFloat(balanceAmount - applyAmount +
-                                                    parseFloat(this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0) +
                                                     parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) +
                                                     parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
                                             orderId: this.props.orderId,
@@ -681,7 +882,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                             isSellerFinance: this.orderDetail.is_seller_finance,
                                             applyLoanAmount: this.applyLoanAmount,
                                             financeNo: this.orderDetail.finance_no,
-                                            callBack: this.payCallBack
+                                            callBack: this.payCallBack,
+                                            logisticsType: this.logisticsType === 1 && transOrder,
+                                            transAmount: transOrder ? this.ordersTrans.total_amount : 0
                                         }
                                     });
                                 }
@@ -702,6 +905,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 )
                 break;
             case 2:
+                let confirmText = '确认验收';
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -733,7 +937,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 //this.confirmCar();
                             }}>
                             <View style={styles.buttonConfirm}>
-                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>确认验收</Text>
+                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>{confirmText}</Text>
                             </View>
                         </TouchableOpacity>
                         <ChooseModal ref='chooseModal' title='注意'
@@ -879,15 +1083,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 11:
                 return (
                     <View style={styles.bottomBar}>
-                        {/*<TouchableOpacity
-                         onPress={() => {
-                         this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
-                         this.cancelOrder);
-                         }}>
-                         <View style={styles.buttonCancel}>
-                         <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
-                         </View>
-                         </TouchableOpacity>*/}
                         <TouchableOpacity
                             onPress={() => {
                                 if (this.orderState == 3) {
@@ -1007,9 +1202,87 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 );
                 break;
+            case 16:
+                return (
+                    <View style={[styles.bottomBar]}>
+                        {this.props.singleCar == 1 && (<TouchableOpacity
+                            onPress={() => {
+                                this.changeCarSingle();
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>转单车</Text>
+                            </View>
+                        </TouchableOpacity>)}
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.applyGetCarLetter();
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请提车函</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                );
+                break;
             default:
                 return null;
                 break;
+        }
+    };
+
+    /**
+     *    运单状态映射
+     **/
+    transStateMapping = (ordersTrans) => {
+        switch (ordersTrans.status) {
+            case 0:    // 0 是前端自己定义的状态 说明未生成运单
+                return {'state': 0, 'waybillState': ''};
+            case 1: //1 =>'填写完',
+            case 2: //2 =>'支付运单成功',
+            case 100: // 100 =>'支付运单中',
+            case 101: // 101 =>'支付运单失败',
+                return {'state': 1, 'waybillState': '运费' + ordersTrans.total_amount + '元'};
+            case 200: // 200 =>'支付运单成功生成运单失败',
+            case 201:   // 201 =>'支付运单成功生成运单成功',
+            case 31:  //  31 =>'审核失败待发',
+                return {'state': 2, 'waybillState': '已支付'};
+            case 30:  //  30 =>'审核成功待发',
+                return {'state': 3, 'waybillState': '已支付'};
+            case 3:  //  3 =>'发运',
+                return {'state': 4, 'waybillState': '已支付'};
+            case 4:  // 4 =>'到店',
+                return {'state': 5, 'waybillState': '已到店'};
+            case 5:  // 5 =>'到库',
+            case 6:  // 6 =>'申请提车函',
+            case 8:  // 8 =>'申请提车函支付失败',
+            case 10:  // 10 =>'申请转单车',
+            case 13:  // 13 =>'申请转单车支付失败',
+                return {'state': 6, 'waybillState': '已入库'};
+            case 7: // 7 =>'申请提车函支付中',
+                return {'state': 7, 'waybillState': '已入库'};
+            case 9:    // 9 =>'申请提车函支付完成',
+                return {'state': 8, 'waybillState': '仓储费已支付'};
+            case 12:  // 12 =>'申请转单车支付中',
+            case 14:  // 14 =>'申请转单车支付成功',
+            case 15: //  15 =>'申请转单车支付成功生成运单失败',
+            case 16: //  16 =>'申请转单车支付成功生成运单成功',
+                return {'state': 9, 'waybillState': '已入库'};
+            case 11: // 11 =>'终结',
+                return {'state': 10, 'waybillState': '已交车'};
+            default:
+                return {'state': 0, 'waybillState': ''};
+        }
+    };
+
+    /**
+     *   判断运单是否到库
+     **/
+    toGarage = (ordersTrans) => {
+        //console.log('ordersTrans=====', ordersTrans);
+        if (this.existTransOrder(ordersTrans) && this.transStateMapping(ordersTrans).state === 6) {
+            return true;
+        } else {
+            return false;
         }
     };
 
@@ -1044,28 +1317,83 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 2: // 待付订金  2=>'订单定价完成'
             case 3: // 3=>'订金支付中'
             case 4:  // 4=>'订金支付失败'
-                if (cancelStatus === 0) {
-                    this.orderState = 1;
-                    this.topState = 0;
-                    if (status === 3) {
-                        this.bottomState = 1;
-                    } else {
-                        this.bottomState = 1;
+                if (this.orderDetail.set_deposit_amount == 0) {
+                    if (cancelStatus === 0) {
+                        this.orderState = 2;
+                        this.topState = -1;
+                        if (status === 50 || status === 51) {
+                            this.bottomState = 12;
+                        } else {
+                            this.bottomState = 1;
+                        }
+                    } else if (cancelStatus === 1) {
+                        this.orderState = 2;
+                        this.topState = -1;
+                        this.bottomState = 3;
+                    } else if (cancelStatus === 2) {
+                        this.orderState = 2;
+                        this.topState = -1;
+                        if (this.orderDetail.cancel_is_agree == 1) {
+                            this.bottomState = 5;
+                        } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                            this.orderDetail.refund_data.is_who == 1 &&
+                            this.orderDetail.refund_data.status == 2) {
+                            this.bottomState = 13;
+                        } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                            this.orderDetail.refund_data.is_who == 2 &&
+                            this.orderDetail.refund_data.status == 2) {
+                            this.bottomState = 14;
+                        } else if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                            this.bottomState = 15;
+                        } else {
+                            this.bottomState = 4;
+                        }
+                    } else if (cancelStatus === 3) {
+                        this.orderState = 2;
+                        this.topState = -1;
+                        if (this.orderDetail.cancel_is_agree == 1) {
+                            this.bottomState = 5;
+                        } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                            this.orderDetail.refund_data.is_who == 1 &&
+                            this.orderDetail.refund_data.status == 2) {
+                            this.bottomState = 13;
+                        } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                            this.orderDetail.refund_data.is_who == 2 &&
+                            this.orderDetail.refund_data.status == 2) {
+                            this.bottomState = 14;
+                        } else if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                            this.bottomState = 15;
+                        } else {
+                            this.bottomState = 4;
+                        }
                     }
-                } else if (cancelStatus === 1) {
-                    this.orderState = 1;
-                    this.topState = -1;
-                    this.bottomState = 3;
-                } else if (cancelStatus === 2) {
-                    this.orderState = 1;
-                    this.topState = -1;
-                    this.bottomState = 4;
-                } else if (cancelStatus === 3) {
-                    this.orderState = 1;
-                    this.topState = -1;
-                    this.bottomState = 4;
+                } else {
+                    if (cancelStatus === 0) {
+                        this.orderState = 1;
+                        this.topState = 0;
+                        if (status === 3) {
+                            this.bottomState = 1;
+                        } else {
+                            this.bottomState = 1;
+                        }
+                    } else if (cancelStatus === 1) {
+                        this.orderState = 1;
+                        this.topState = -1;
+                        this.bottomState = 3;
+                    } else if (cancelStatus === 2) {
+                        this.orderState = 1;
+                        this.topState = -1;
+                        this.bottomState = 4;
+                    } else if (cancelStatus === 3) {
+                        this.orderState = 1;
+                        this.topState = -1;
+                        this.bottomState = 4;
+                    }
                 }
-
                 break;
             case 5:  // 待付尾款  5=>'订金支付完成'
             case 6:  // 6=>'尾款支付中'
@@ -1197,7 +1525,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 4;
                     this.topState = -1;
-                    this.bottomState = -1;
+                    if (this.toGarage(this.ordersTrans)) {
+                        this.bottomState = 16;
+                    } else {
+                        this.bottomState = -1;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 4;
                     this.topState = -1;
@@ -1255,7 +1587,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 24:  //24=>'融资单确认验收失败',
                 if (cancelStatus === 0) {
                     this.orderState = 5;
-                    this.topState = -1;
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state === 2) {
+                        this.topState = 6;
+                    } else {
+                        this.topState = -1;
+                    }
                     if (status === 17 || status === 19 || status === 20 || status === 21 || status === 22 ||
                         status === 23 || status === 24) {
                         this.bottomState = -1;
@@ -1313,7 +1650,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 15:  //15=>'支付首付款失败',
                 if (cancelStatus === 0) {
                     this.orderState = 6;
-                    this.topState = -1;
+                    if (this.orderDetail.orders_item_data[0].is_store == 2) {
+                        this.topState = 4;
+                    } else {
+                        this.topState = -1;
+                    }
                     if (status === 6) {
                         this.bottomState = 1;
                     } else {
@@ -1369,8 +1710,19 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 160:  //160=>'支付首付款完成',
                 if (cancelStatus === 0) {
                     this.orderState = 7;
-                    this.topState = -1;
-                    this.bottomState = 11;
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state === 2) {
+                        this.topState = 6;
+                    } else {
+                        this.topState = -1;
+                    }
+                    if (this.existTransOrder(this.ordersTrans) &&
+                        this.transStateMapping(this.ordersTrans).state !== 3 &&
+                        this.transStateMapping(this.ordersTrans).state >= 2) {
+                        this.bottomState = -1;
+                    } else {
+                        this.bottomState = 11;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 7;
                     this.topState = -1;
@@ -1455,8 +1807,18 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 status = 0;
                             }
                         }
-                        this.stateMapping(status, cancelStatus);
                         this.financeInfo = this.orderDetail.finance_data;
+                        if (this.orderDetail.orders_trans_data.length > 1) {
+                            for (let transData in this.orderDetail.orders_trans_data) {
+                                if (this.orderDetail.orders_trans_data[transData].logistics_type == 4) {
+                                    this.ordersTrans = this.orderDetail.orders_trans_data[transData];
+                                }
+                            }
+                        } else {
+                            this.ordersTrans = this.orderDetail.orders_trans_data[0];
+                        }
+                        this.geterData = this.orderDetail.geter_data;
+                        this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -1483,6 +1845,28 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.props.showToast('获取订单详情失败');
             }
         });
+    };
+
+    /**
+     *
+     */
+    updateLogisticsType = (newLogisticsType) => {
+        this.logisticsType = newLogisticsType;
+    };
+
+    /**
+     *
+     **/
+    updateOrdersTrans = (newOrdersTrans) => {
+        //console.log('newOrdersTrans=====', newOrdersTrans);
+        this.ordersTrans = newOrdersTrans;
+    };
+
+    /**
+     *
+     **/
+    updateGeterData = (newGeterData) => {
+        this.geterData = newGeterData;
     };
 
     /**
@@ -1682,7 +2066,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             return (
                 <LoanInfo
                     refresh={this.payCallBack}
-                    balanceAmount={this.orderDetail.balance_amount}
+                    balanceAmount={this.orderDetail.totalpay_amount > 0 ? this.orderDetail.totalpay_amount : this.orderDetail.balance_amount}
                     financeInfo={this.financeInfo}
                     loanCode={this.orderDetail.finance_no}
                     navigator={this.props.navigator}
@@ -1732,7 +2116,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 <TouchableOpacity
                     style={styles.itemType7}
                     onPress={() => {
-                        console.log(this.orderDetail.finance_no);
+                        //console.log(this.orderDetail.finance_no);
                         // 跳转金融页面  借款详情
                         this.toNextPage({
                             name: 'DDDetailScene',
@@ -1789,6 +2173,38 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                style={{marginRight: Pixel.getPixel(15)}}/>
                     </View>
                 </TouchableOpacity>
+            )
+        } else if (rowData === '9') {   // 非订单融资运单填写以及信息组件
+            let transOrder = this.existTransOrder(this.ordersTrans);
+            return (
+                <LogisticsMode navigator={this.props.navigator}
+                               orderDetail={this.orderDetail}
+                               orderState={this.orderState}
+                               ordersTrans={transOrder ? this.ordersTrans : {id : -1, status: 0, total_amount : '0'}}
+                               updateOrdersTrans={this.updateOrdersTrans}
+                               updateLogisticsType={this.updateLogisticsType}/>
+            )
+        } else if (rowData === '10') {  // 订单融资运单填写以及信息组件
+            let transOrder = this.existTransOrder(this.ordersTrans);
+            return (
+                <LogisticsModeForFinancing navigator={this.props.navigator}
+                                           showModal={this.props.showModal}
+                                           showToast={this.props.showToast}
+                                           financeInfo={this.financeInfo}
+                                           orderDetail={this.orderDetail}
+                                           orderState={this.orderState}
+                                           refresh={this.payCallBack}
+                                           ordersTrans={transOrder ? this.ordersTrans : {id : -1, status: 0, total_amount : '0', logistics_type: '0'}}
+                                           updateOrdersTrans={this.updateOrdersTrans}
+                                           updateLogisticsType={this.updateLogisticsType}/>
+            )
+        } else if (rowData === '11') {
+            let transOrder = this.existTransOrder(this.ordersTrans);
+            return (
+                <ExtractCarPeople navigator={this.props.navigator}
+                                  orderDetail={this.orderDetail}
+                                  ordersTrans={transOrder ? this.ordersTrans : {id : -1, status: 0, total_amount : '0', logistics_type: '0'}}
+                                  updateGeterData={this.updateGeterData}/>
             )
         }
     }

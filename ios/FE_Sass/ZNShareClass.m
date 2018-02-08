@@ -14,8 +14,6 @@
   
 }
 RCT_EXPORT_MODULE()
-
-
 RCT_REMAP_METHOD(shareAction,
                  setShareArray:(NSArray *)sharArray
                  resolver:(RCTPromiseResolveBlock)resolve

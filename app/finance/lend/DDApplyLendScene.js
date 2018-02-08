@@ -21,7 +21,7 @@ import DDCarInfoScene from "./DDCarInfoLendAndEditScene";
 import OBDDevice from "./OBDDevice";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 let ControlState = [];
-let obdEdit = true;
+// let obdEdit = true;
 let qsEdit = true;
 export default class DDApplyLendScene extends BaseComponent {
 
@@ -52,19 +52,19 @@ export default class DDApplyLendScene extends BaseComponent {
             register_user_id: '',
             purchas_price: '',
             bind_type: '',
-            obd_number: '',
+            // obd_number: '',
             payment_id: '',
             base_id: '',
             info_id: '',
             isCarinvoice: '',
-            obd_bind_status: '',
-            obd_audit_status: '',
+            // obd_bind_status: '',
+            // obd_audit_status: '',
             auto_ownership_status: '',//车辆权属审核状态
             order_ownership_status: '',//车辆权属提交状态
             is_mortgagor: '',
             is_new: '',
             file_list: [],
-            obd_track_url: ''
+            // obd_track_url: ''
         };
     }
 
@@ -137,15 +137,15 @@ export default class DDApplyLendScene extends BaseComponent {
                 let tempjson = response.mjson.data;
                 this.carData.base_id = tempjson.list[0].base_id;
                 this.carData.frame_number = tempjson.list[0].frame_number;
-                this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
-                this.carData.obd_audit_status = tempjson.list[0].obd_audit_status;
-                this.carData.obd_number = tempjson.list[0].obd_number;
+                // this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
+                // this.carData.obd_audit_status = tempjson.list[0].obd_audit_status;
+                // this.carData.obd_number = tempjson.list[0].obd_number;
                 this.carData.auto_ownership_status = tempjson.list[0].auto_ownership_status;
                 this.carData.order_ownership_status = tempjson.list[0].order_ownership_status;
                 this.carData.is_mortgagor = tempjson.list[0].is_mortgagor;
                 this.carData.is_new = tempjson.list[0].is_new;
                 this.carData.info_id = tempjson.list[0].info_id;
-                this.carData.obd_track_url = tempjson.list[0].obd_track_url;
+                // this.carData.obd_track_url = tempjson.list[0].obd_track_url;
 
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
@@ -209,40 +209,58 @@ export default class DDApplyLendScene extends BaseComponent {
                         icon: item.cover.icon,
                         frame_number: item.frame_number,
                         price: item.first_assess_loan,//放款额
-                        obd_bind_status: item.obd_bind_status,//车牌号
+                        // obd_bind_status: item.obd_bind_status,//车牌号
                         info_id: item.info_id,
                         model_name: item.model_name,
                         init_reg: item.init_reg,
                         base_id: item.base_id,
                         mileage: item.mileage,
                         invoice_upload_status: item.invoice_upload_status,
-                        obd_audit_status: item.obd_audit_status,
+                        // obd_audit_status: item.obd_audit_status,
                         invoice_audit_status: item.invoice_audit_status
                     }
                 )
             })
             dataSource['section3'] = tempCarDate;
             let section4;
-            if (carData[0].is_new == 1) {
-                section4 = [
-                    {
-                        title: 'OBD设备',
-                        key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
-                    },
-                    {
-                        title: '车辆权属',
-                        key: this.OwnershiptransferToString(carData[0].auto_ownership_status, carData[0].order_ownership_status)
-                    },
+            //=================================================关闭OBD入口========================================================================
+            // if (carData[0].is_new == 1) {
+            //     section4 = [
+            //         {
+            //             title: 'OBD设备',
+            //             key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
+            //         },
+            //         {
+            //             title: '车辆权属',
+            //             key: this.OwnershiptransferToString(carData[0].auto_ownership_status, carData[0].order_ownership_status)
+            //         },
+            //
+            //     ]
+            // } else {
+            //     section4 = [
+            //         {
+            //             title: 'OBD设备',
+            //             key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
+            //         },
+            //     ]
+            // }
+	        //=================================================关闭OBD入口========================================================================
 
-                ]
-            } else {
-                section4 = [
-                    {
-                        title: 'OBD设备',
-                        key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
-                    },
-                ]
-            }
+
+	        if (carData[0].is_new == 1) {
+	            section4 = [
+	                {
+	                    title: '车辆权属',
+	                    key: this.OwnershiptransferToString(carData[0].auto_ownership_status, carData[0].order_ownership_status)
+	                },
+
+	            ]
+	        } else {
+	            section4 = [
+
+	            ]
+	        }
+
             dataSource['section4'] = section4;
             dataSource['section5'] = ['如您提交资料和信息、完成OBD接入，预计1个工作日内告知您可融资金额'];
         }
@@ -253,31 +271,31 @@ export default class DDApplyLendScene extends BaseComponent {
      * 根据后台返回，将数据进行转换
      * OBDtransferToString
      **/
-    OBDtransferToString = (audit, bind) => {
-        let status;
-        if (this.props.sceneName == 'FinanceScene' && obdEdit) {
-            if (audit == 0) {
-                status = '未审核';
-            } else if (audit == 1) {
-                status = '已通过';
-            } else if (audit == 2) {
-                status = '未通过';
-            }
-        } else {
-            if (audit == 1) {
-                status = '已通过';
-            } else {
-                if (bind == 0) {
-                    status = '未绑定';
-                } else if (bind == 1) {
-                    status = '已绑定';
-                } else if (bind == 2) {
-                    status = '解除绑定';
-                }
-            }
-        }
-        return status;
-    }
+    // OBDtransferToString = (audit, bind) => {
+    //     let status;
+    //     if (this.props.sceneName == 'FinanceScene' && obdEdit) {
+    //         if (audit == 0) {
+    //             status = '未审核';
+    //         } else if (audit == 1) {
+    //             status = '已通过';
+    //         } else if (audit == 2) {
+    //             status = '未通过';
+    //         }
+    //     } else {
+    //         if (audit == 1) {
+    //             status = '已通过';
+    //         } else {
+    //             if (bind == 0) {
+    //                 status = '未绑定';
+    //             } else if (bind == 1) {
+    //                 status = '已绑定';
+    //             } else if (bind == 2) {
+    //                 status = '解除绑定';
+    //             }
+    //         }
+    //     }
+    //     return status;
+    // }
 
     /**
      * 根据后台返回，将数据进行转换
@@ -345,35 +363,35 @@ export default class DDApplyLendScene extends BaseComponent {
             />)
         }
         if (sectionID === 'section4') {
-            if (rowData.title === 'OBD设备') {
-                return (
-                    <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
-                                     showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
-                        if (this.carData.obd_audit_status != 1) {
-                            this.toNextPage({
-                                name: 'OBDDevice',
-                                component: OBDDevice,
-                                params: {
-                                    carData: this.carData,
-                                    fromScene: 'DDApplyLendScene',
-                                    backRefresh: () => {
-                                        //刷新界面
-                                        obdEdit = false;
-                                        this.props.showModal(true);
-                                        this.getLendInfo();
-                                    }
-                                }
-                            });
-                        } else {
-                            this.toNextPage({
-                                name: 'WebScene',
-                                component: WebScene,
-                                params: {webUrl: this.carData.obd_track_url}
-                            })
-                        }
-                    }}/>
-                )
-            }
+            // if (rowData.title === 'OBD设备') {
+            //     return (
+            //         <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
+            //                          showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
+            //             if (this.carData.obd_audit_status != 1) {
+            //                 this.toNextPage({
+            //                     name: 'OBDDevice',
+            //                     component: OBDDevice,
+            //                     params: {
+            //                         carData: this.carData,
+            //                         fromScene: 'DDApplyLendScene',
+            //                         backRefresh: () => {
+            //                             //刷新界面
+            //                             obdEdit = false;
+            //                             this.props.showModal(true);
+            //                             this.getLendInfo();
+            //                         }
+            //                     }
+            //                 });
+            //             } else {
+            //                 this.toNextPage({
+            //                     name: 'WebScene',
+            //                     component: WebScene,
+            //                     params: {webUrl: this.carData.obd_track_url}
+            //                 })
+            //             }
+            //         }}/>
+            //     )
+            // }
             if (rowData.title === '车辆权属') {
                 return (
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
@@ -463,59 +481,84 @@ export default class DDApplyLendScene extends BaseComponent {
      * buttonClick
      **/
     buttonClick = (title) => {
-        if (title == '申请借款') {
+        // if (title == '申请借款') {
             if (this.props.sceneName == 'FinanceScene') {
-                if (obdEdit) {
-                    if (this.carData.obd_audit_status == 1 || this.carData.obd_audit_status == 0) {// obd 未审核 、审核通过
-                        if (this.carData.is_new == 1) {
-                            if (qsEdit) {
-                                if (this.carData.auto_ownership_status == 1 || this.carData.auto_ownership_status == 0) {
-                                    this.lendMoneyClick();
-                                } else if (this.carData.auto_ownership_status == 2) {
-                                    this.props.showToast("车辆权属审核未通过");
-                                }
-                            } else {
-                                if (this.carData.order_ownership_status == 1) {
-                                    this.lendMoneyClick();
-                                } else {
-                                    if (this.carData.is_mortgagor == 1) {
-                                        this.lendMoneyClick();
-                                    } else {
-                                        this.props.showToast("车辆权属未上传");
-                                    }
-                                }
-                            }
-                        } else {
-                            this.lendMoneyClick();
-                        }
-                    } else if (this.carData.obd_audit_status == 2) {
-                        this.props.showToast("0BD审核未通过");
-                    }
-                } else {
-                    if (this.carData.obd_bind_status == 0) {
-                        this.props.showToast("0BD未绑定");
-                    } else if (this.carData.obd_bind_status == 1) {
-                        if (this.carData.is_new == 1) {
-                            if (this.carData.order_ownership_status == 1) {
-                                this.lendMoneyClick();
-                            } else {
-                                if (this.carData.is_mortgagor == 1) {
-                                    this.lendMoneyClick();
-                                } else {
-                                    this.props.showToast("车辆权属未上传");
-                                }
-                            }
-                        } else {
-                            this.lendMoneyClick();
-                        }
-                    } else if (this.carData.obd_bind_status == 2) {
-                        this.props.showToast("0BD需重新绑定");
-                    }
-                }
-            } else {
-                if (this.carData.obd_bind_status == 0) {
-                    this.props.showToast("0BD未绑定");
-                } else if (this.carData.obd_bind_status == 1) {
+                // if (obdEdit) {
+                    // if (this.carData.obd_audit_status == 1 || this.carData.obd_audit_status == 0) {// obd 未审核 、审核通过
+                    //     if (this.carData.is_new == 1) {
+                    //         if (qsEdit) {
+                    //             if (this.carData.auto_ownership_status == 1 || this.carData.auto_ownership_status == 0) {
+                    //                 this.lendMoneyClick();
+                    //             } else if (this.carData.auto_ownership_status == 2) {
+                    //                 this.props.showToast("车辆权属审核未通过");
+                    //             }
+                    //         } else {
+                    //             if (this.carData.order_ownership_status == 1) {
+                    //                 this.lendMoneyClick();
+                    //             } else {
+                    //                 if (this.carData.is_mortgagor == 1) {
+                    //                     this.lendMoneyClick();
+                    //                 } else {
+                    //                     this.props.showToast("车辆权属未上传");
+                    //                 }
+                    //             }
+                    //         }
+                    //     } else {
+                    //         this.lendMoneyClick();
+                    //     }
+                    // }
+                    // else if (this.carData.obd_audit_status == 2) {
+                    //     this.props.showToast("0BD审核未通过");
+                    // }
+	                if (this.carData.is_new == 1) {
+		                if (qsEdit) {
+			                if (this.carData.auto_ownership_status == 1 || this.carData.auto_ownership_status == 0) {
+				                this.lendMoneyClick();
+			                } else if (this.carData.auto_ownership_status == 2) {
+				                this.props.showToast("车辆权属审核未通过");
+			                }
+		                } else {
+			                if (this.carData.order_ownership_status == 1) {
+				                this.lendMoneyClick();
+			                } else {
+				                if (this.carData.is_mortgagor == 1) {
+					                this.lendMoneyClick();
+				                } else {
+					                this.props.showToast("车辆权属未上传");
+				                }
+			                }
+		                }
+	                } else {
+		                this.lendMoneyClick();
+	                }
+                // }
+                // else {
+                //     if (this.carData.obd_bind_status == 0) {
+                //         this.props.showToast("0BD未绑定");
+                //     } else if (this.carData.obd_bind_status == 1) {
+                //         if (this.carData.is_new == 1) {
+                //             if (this.carData.order_ownership_status == 1) {
+                //                 this.lendMoneyClick();
+                //             } else {
+                //                 if (this.carData.is_mortgagor == 1) {
+                //                     this.lendMoneyClick();
+                //                 } else {
+                //                     this.props.showToast("车辆权属未上传");
+                //                 }
+                //             }
+                //         } else {
+                //             this.lendMoneyClick();
+                //         }
+                //     } else if (this.carData.obd_bind_status == 2) {
+                //         this.props.showToast("0BD需重新绑定");
+                //     }
+                // }
+            }
+            else {
+                // if (this.carData.obd_bind_status == 0) {
+                //     this.props.showToast("0BD未绑定");
+                // } else
+                //     if (this.carData.obd_bind_status == 1) {
                     if (this.carData.is_new == 1) {
                         if (this.carData.order_ownership_status == 1) {
                             this.lendMoneyClick();
@@ -529,12 +572,13 @@ export default class DDApplyLendScene extends BaseComponent {
                     } else {
                         this.lendMoneyClick();
                     }
-                } else if (this.carData.obd_bind_status == 2) {
-                    this.props.showToast("0BD需重新绑定");
-                }
+                // }
+                // else if (this.carData.obd_bind_status == 2) {
+                //     this.props.showToast("0BD需重新绑定");
+                // }
             }
 
-        }
+        // }
     }
 
     render() {

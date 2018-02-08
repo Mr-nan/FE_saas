@@ -46,6 +46,7 @@ user_id = '';
 export default class YaoQingDeHaoLi extends BaseComponent {
     constructor(props) {
         super(props);
+        this.btnFlat = 0;
         this.state = {
             renderPlaceholderOnly: 'blank',
             url: ""
@@ -137,18 +138,23 @@ export default class YaoQingDeHaoLi extends BaseComponent {
                         domStorageEnabled={true}
                         scalesPageToFit={false}
                         onLoadStart={()=>{
-                            this.setState({
-                                loading: true,
-                            });
+                            if(this.btnFlat === 0){
+                                this.setState({
+                                    loading: true,
+                                });
+                            }
+
                     }}
                         onLoadEnd={
                             ()=>{
+                                this.btnFlat = this.btnFlat + 1;
                             this.setState({
                                 loading: false,
                             });
                          {/*this.refs.webviewtitle.lastProgress();*/}
                     }}
                         onNavigationStateChange={this.onNavigationStateChange.bind(this)}
+                        onMessage={this._onReceiveMessage}
                     />
                 </View>
                 <View style={styles.container}>
@@ -177,6 +183,9 @@ export default class YaoQingDeHaoLi extends BaseComponent {
 
     }
 
+    _onReceiveMessage = (evt)=>{
+        this.showShared();
+    };
     // this.toNextPage({
     //     name: 'AbountPlatform',
     //     component: AbountPlatform,

@@ -17,7 +17,7 @@
   
 }
 
-@property (strong,nonatomic) MBProgressHUD *hud;\
+@property (strong,nonatomic) MBProgressHUD *hud;
 @end
 
 
