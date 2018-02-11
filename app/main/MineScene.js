@@ -27,8 +27,8 @@ import BindCardScene from '../mine/accountManage/BindCardScene'
 import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 import Setting from './../mine/setting/Setting'
-import CarCollectSourceScene from '../carSource/CarCollectSourceScene';
-import BrowsingHistoryScene from '../carSource/BrowsingHistoryScene';
+import CarCollectSourceScene from '../carSource/CarCollectsScene';
+import BrowsingHistoryScene from '../carSource/BrowsingHistorysScene';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import ImageSource from '../publish/component/ImageSource';
