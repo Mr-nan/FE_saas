@@ -226,7 +226,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.contactData = {};
                 // 物流单
                 if (this.existTransOrder(this.ordersTrans) &&
-                    this.transStateMapping(this.ordersTrans).state >= 8) {
+                    this.transStateMapping(this.ordersTrans).state >= 8 &&
+                    this.transStateMapping(this.ordersTrans).state < 10) {
+                    this.mList = ['0', '1', '3', '4', '9', '11', '6'];
+                } else if (this.existTransOrder(this.ordersTrans) &&
+                    this.transStateMapping(this.ordersTrans).state >= 8 &&
+                    !this.isNull(this.ordersTrans.geter_data)) {
                     this.mList = ['0', '1', '3', '4', '9', '11', '6'];
                 } else if (this.existTransOrder(this.ordersTrans) &&
                     this.transStateMapping(this.ordersTrans).state >= 2) {
