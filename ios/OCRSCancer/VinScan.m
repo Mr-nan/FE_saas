@@ -10,7 +10,8 @@
 #import "VLCameraViewController.h"
 #import "VinCameraViewController.h"
 #import "AppDelegate.h"
-
+// 0401140011406929
+// 4928168
 
 @implementation VinScan
 
@@ -39,7 +40,6 @@ RCT_REMAP_METHOD(scan,
         
       };
       AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-      
       [app.window.rootViewController presentViewController:one animated:YES completion:nil];
       
     });
@@ -50,6 +50,8 @@ RCT_REMAP_METHOD(scan,
       
       onev.scaneResult=^(NSString*successInfo,NSError*errorInfo){
         
+        
+        
         if (successInfo) {
           resolve(successInfo);
         }else{
@@ -59,7 +61,6 @@ RCT_REMAP_METHOD(scan,
       };
       
       AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-      
       [app.window.rootViewController presentViewController:onev animated:YES completion:nil];
     
     });

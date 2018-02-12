@@ -79,8 +79,8 @@ export default class AmountConfirm extends BaseComponent {
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
-                    <Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)}}>借款单号</Text>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{color: FontAndColor.COLORA1, fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)}}>借款单号</Text>
+                    <Text allowFontScaling={false}  style={{
                         flex: 1,
                         textAlign: 'right',
                         color: FontAndColor.COLORA0,
@@ -88,7 +88,7 @@ export default class AmountConfirm extends BaseComponent {
                     }}>{this.props.loan_code}</Text>
                 </View>
 
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     color: FontAndColor.COLORA1,
                     fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
                     marginLeft: Pixel.getPixel(15),
@@ -97,6 +97,7 @@ export default class AmountConfirm extends BaseComponent {
                 }}>融资车辆</Text>
 
                 <ListView
+                    removeClippedSubviews={false}
                     stickyHeaderIndices={[]}
                     onEndReachedThreshold={1}
                     scrollRenderAheadDistance={1}
@@ -118,11 +119,11 @@ export default class AmountConfirm extends BaseComponent {
                     paddingRight: Pixel.getPixel(15),
                     alignItems: 'center',
                 }}>
-                    <Text style={styles.bottomItemTextStyle}>您采购的</Text>
-                    <Text style={[styles.bottomItemTextStyle, {fontWeight: 'bold'}]}>{this.state.carNumber}辆</Text>
-                    <Text style={styles.bottomItemTextStyle}>车辆最高融资为</Text>
-                    <Text style={[styles.bottomItemTextStyle, {fontWeight: 'bold'}]}>{this.state.totalMoney}万元，</Text>
-                    <Text style={styles.bottomItemTextStyle}>请确认借款金额。</Text>
+                    <Text allowFontScaling={false}  style={styles.bottomItemTextStyle}>您采购的</Text>
+                    <Text allowFontScaling={false}  style={[styles.bottomItemTextStyle, {fontWeight: 'bold'}]}>{this.state.carNumber}辆</Text>
+                    <Text allowFontScaling={false}  style={styles.bottomItemTextStyle}>车辆最高融资为</Text>
+                    <Text allowFontScaling={false}  style={[styles.bottomItemTextStyle, {fontWeight: 'bold'}]}>{this.state.totalMoney}万元，</Text>
+                    <Text allowFontScaling={false}  style={styles.bottomItemTextStyle}>请确认借款金额。</Text>
                 </View>
 
                 <View style={{width: width, height: onePT, backgroundColor: FontAndColor.COLORA4}}/>
@@ -137,7 +138,7 @@ export default class AmountConfirm extends BaseComponent {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <Text style={{fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT), color: FontAndColor.COLORA0}}>借款金额：</Text>
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT), color: FontAndColor.COLORA0}}>借款金额：</Text>
                     <TextInput
                         ref="inputTexts"
                         underlineColorAndroid={"#00000000"}
@@ -155,7 +156,7 @@ export default class AmountConfirm extends BaseComponent {
                                 values: text
                             });
                         }}/>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         flex: 2,
                         fontWeight: 'bold',
                         fontSize: Pixel.getFontPixel(22),
@@ -182,13 +183,13 @@ export default class AmountConfirm extends BaseComponent {
                                style={styles.itemIconStyle}/>
                     }
                     <View style={{flex: 1, marginLeft: Pixel.getPixel(15)}}>
-                        <Text style={styles.itemTextStyle}>{data.model_name}</Text>
-                        <Text style={[styles.itemTextStyle, {
+                        <Text allowFontScaling={false}  style={styles.itemTextStyle}>{data.model_name}</Text>
+                        <Text allowFontScaling={false}  style={[styles.itemTextStyle, {
                             color: FontAndColor.COLORA1,
                             fontSize: FontAndColor.CONTENTFONT
                         }]}>
                             {'初评放款额' + " : "}
-                            <Text style={{color: FontAndColor.COLORB2, fontSize: FontAndColor.CONTENTFONT}}>
+                            <Text allowFontScaling={false}  style={{color: FontAndColor.COLORB2, fontSize: FontAndColor.CONTENTFONT}}>
                                 {data.first_assess_loan}万
                             </Text>
                         </Text>

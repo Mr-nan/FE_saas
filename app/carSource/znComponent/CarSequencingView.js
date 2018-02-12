@@ -29,7 +29,7 @@ export class SequencingButton extends Component {
         return (
             <TouchableOpacity style={styles.sequencingButton} onPress={buttonClick}>
                 <Image source={require('../../../images/carSourceImages/sort.png')}/>
-                <Text style={styles.sequencingText}>排序</Text>
+                <Text allowFontScaling={false}  style={styles.sequencingText}>排序</Text>
             </TouchableOpacity>
         )
     }
@@ -76,7 +76,7 @@ export class SequencingView extends Component {
 
                                     }}>
                                         <View style={styles.checkedCell}>
-                                            <Text style={[styles.checkedCellText,data.title == checkedType.title && {color:fontAndColor.COLORB0}]}>{data.title}</Text>
+                                            <Text allowFontScaling={false}  style={[styles.checkedCellText,data.title == checkedType.title && {color:fontAndColor.COLORB0}]}>{data.title}</Text>
                                         </View>
                                     </TouchableOpacity>
                                 )
@@ -86,7 +86,6 @@ export class SequencingView extends Component {
                 </View>
             </View>
             </Modal>
-
         )
     }
 }
@@ -104,7 +103,7 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORB1,
         justifyContent: 'center',
         alignItems: 'center',
-        bottom: Pixel.getPixel(25),
+        bottom: Pixel.getBottomPixel(55),
     },
     sequencingText: {
 

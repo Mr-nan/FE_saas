@@ -33,6 +33,7 @@ let nameList = [];
 let adjustLsit = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import RepaymentModal from '../../component/RepaymentModal';
 export  default class PurchaseLoanStatusScene extends BaseComponent {
 
     constructor(props) {
@@ -125,12 +126,16 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             };
             request(Urls.FINANCE, 'Post', maps)
                 .then((response) => {
-                        this.props.showModal(false);
-                        this.props.showToast('申请成功');
-                        this.allRefresh();
+                        if(response.mjson.data.is_open_cash_account=='1'){
+                            this.props.showToast('申请成功');
+                            this.allRefresh();
+                        }else{
+                            this.props.showModal(false);
+                            this.refs.repaymentmodal.changeShowType(true,'申请还款成功!系统将从您的账户扣款,' +
+                                '请保证账户足额,超过还款日期仍未充值,提前还款自动取消');
+                        }
                     },
                     (error) => {
-                        this.props.showModal(false);
                         if (error.mycode == -300 || error.mycode == -500) {
                             this.props.showToast('申请失败');
                         } else {
@@ -152,6 +157,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     backIconClick={this.backPage}
                 />
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(64)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -161,6 +167,9 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 {movies.paymen_status == '0' ? this.props.from == 'SingleRepaymentPage' ?
                         <MyButton {...this.buttonParams}/> : <View/> : <View/>}
                 <ServerMoneyListModal ref="servermoneylistmodal"/>
+                <RepaymentModal ref="repaymentmodal" callBack={()=>{
+                    this.allRefresh();
+                }}/>
             </View>
         );
     }
@@ -207,8 +216,6 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     }
                     let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
                     let newList = ['1', '2', '3', '4', '5', '6','7'];
-                    console.log((selecttime-parseFloat(movies.loan_time))/60/60/24);
-                    console.log(currentdate);
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         source: ds.cloneWithRows(newList),

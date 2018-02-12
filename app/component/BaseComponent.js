@@ -19,24 +19,42 @@ const {width, height} = Dimensions.get('window');
 const Pixel = new PixelUtil();
 import ConsoleUtils from "../utils/ConsoleUtils";
 const Console = new ConsoleUtils();
-export default class BaseComponent extends Component {
 
+let dismissKeyboard = require('dismissKeyboard')
+
+export default class BaseComponent extends Component {
+    /**
+     * from @zhaojian
+     *
+     * 监听回退键
+     **/
     handleBack = () => {
-        console.log('11111111111111111');
         this.backPage();
         return true;
     }
 
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.setDeadline(500);
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
+
+        } finally {
+            //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
-        });
+            // });
+        }
+
+
     }
 
     initFinish() {
 
+    }
+
+    dismissKeyboard = () => {
+        dismissKeyboard();
     }
 
     toNextPage = (mProps) => {
@@ -45,6 +63,40 @@ export default class BaseComponent extends Component {
             navigator.push({
                 ...mProps
             })
+        }
+    }
+
+    /**
+     * 非空判断
+     * @param content  任意类型值
+     */
+    isNull = (content) => {
+        try {
+            if (content == undefined) {
+                return true;
+            }
+            if (content == null) {
+                return true;
+            }
+            if (content instanceof Array) {
+                if (content.length <= 0) {
+                    return true;
+                }
+            }
+            if (content instanceof Object) {
+                if (JSON.stringify(content) == '{}') {
+                    return true;
+                }
+            }
+            if (content == 'null') {
+                return true;
+            }
+            if ((content+'').trim() == '') {
+                return true;
+            }
+            return false;
+        } catch (e) {
+            return true;
         }
     }
 
@@ -77,7 +129,6 @@ export default class BaseComponent extends Component {
     }
 
     componentWillUnmount() {
-        BackAndroid.removeEventListener('hardwareBackPress', this.handleBack)
     }
 
     allRefreshParams = {
@@ -113,7 +164,7 @@ export default class BaseComponent extends Component {
         if (this.state.renderPlaceholderOnly == 'blank') {
             view = <View/>
         } else if (this.state.renderPlaceholderOnly == 'loading') {
-            view = <View style={{flex: 1, alignItems: 'center'}}>
+            view = <View style={{flex: 1, alignItems: 'center',}}>
                 <Image
                     style={{
                         width: Pixel.getPixel(150),
@@ -121,8 +172,8 @@ export default class BaseComponent extends Component {
                         marginTop: Pixel.getTitlePixel(189) - margintop
                     }}
                     source={require('../../images/loading.gif')}/>
-                <Text
-                    style={{
+                <Text allowFontScaling={false}
+                      style={{
                         color: fontAndColor.COLORA0,
                         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                         marginTop: Pixel.getPixel(32)
@@ -139,15 +190,15 @@ export default class BaseComponent extends Component {
                         marginTop: Pixel.getTitlePixel(85 + 64) - margintop
                     }}
                     source={require('../../images/loadingError.png')}/>
-                <Text
-                    style={{
+                <Text allowFontScaling={false}
+                      style={{
                         color: fontAndColor.COLORA0, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                         marginTop: Pixel.getPixel(27)
                     }}>
                     网络错误
                 </Text>
-                <Text
-                    style={{
+                <Text allowFontScaling={false}
+                      style={{
                         color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         marginTop: Pixel.getPixel(10)
                     }}>
@@ -164,19 +215,20 @@ export default class BaseComponent extends Component {
                         marginTop: Pixel.getTitlePixel(85 + 64) - margintop
                     }}
                     source={require('../../images/noData.png')}/>
-                <Text
-                    style={{
+                <Text allowFontScaling={false}
+                      style={{
                         color: fontAndColor.COLORA0, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                         marginTop: Pixel.getPixel(27)
                     }}>
                     暂无数据
                 </Text>
-                <Text
-                    style={{
+                <Text allowFontScaling={false}
+                      style={{
                         color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         marginTop: Pixel.getPixel(10)
                     }}>
                 </Text>
+                {this.state.renderPlaceholderOnly == 'noData' ? <MyButton {...this.allRefreshParams}/> : null}
             </View>
         }
         return view;
@@ -206,4 +258,12 @@ export default class BaseComponent extends Component {
         }
         return view;
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== null && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 }

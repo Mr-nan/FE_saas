@@ -36,10 +36,10 @@ export default class InventoryRepaymentInfoScene extends BaseComponent {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
-        });
+        //});
     }
 
     initFinish = () => {
@@ -78,6 +78,7 @@ export default class InventoryRepaymentInfoScene extends BaseComponent {
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <InventoryRepaymentInfoTop itemData={movies}/>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getPixel(10)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -116,17 +117,17 @@ export default class InventoryRepaymentInfoScene extends BaseComponent {
                 backgroundColor: '#ffffff',flexDirection:'row',
                 paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)}}>
                 <View style={{flex:1,justifyContent:'center'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), color:fontAndColor.COLORA0}}>
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), color:fontAndColor.COLORA0}}>
                         还款日：{movie.dead_line}</Text>
-                    <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(9)}}>{repaymentStatus}</Text>
                 </View>
                 <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color:fontAndColor.COLORB2,}}>
                         {movie.plantype == '1' ? '本'+movie.repaymentmny : '息'+movie.repaymentmny}
                     </Text>
-                    <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(9)}}>调整：{movie.adjustmoney}</Text>
                 </View>
             </TouchableOpacity>

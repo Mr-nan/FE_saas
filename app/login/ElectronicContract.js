@@ -30,9 +30,9 @@ export default class ElectronicContract extends BaseComponent {
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
-        });
+        //});
     }
 
     render() {
@@ -48,7 +48,7 @@ export default class ElectronicContract extends BaseComponent {
         }
         return (
             <View style={{flex:1,backgroundColor: '#fff',alignItems: 'center'}}>
-                <Text style={{color: '#000',fontSize: 30,marginTop:Pixel.getTitlePixel(84)}}>等待文案</Text>
+                <Text allowFontScaling={false}  style={{color: '#000',fontSize: 30,marginTop:Pixel.getTitlePixel(84)}}>等待文案</Text>
                 <NavigationView
                     title="电子账户服务协议"
                     backIconClick={this.backPage}

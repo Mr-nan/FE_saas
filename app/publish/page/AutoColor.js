@@ -338,7 +338,7 @@ export default class AutoColor extends Component {
                     >
                         <View style={styles.center}>
                             <View style={[styles.colorContainer,{backgroundColor:data.color}]}/>
-                            <Text style={styles.textLabel}>{data.title}</Text>
+                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -354,7 +354,7 @@ export default class AutoColor extends Component {
                     >
                         <View style={styles.center}>
                             <Image style={styles.colorContainer} source={data.img}/>
-                            <Text style={styles.textLabel}>{data.title}</Text>
+                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -372,7 +372,7 @@ export default class AutoColor extends Component {
                         <View style={[styles.colorContainer,styles.selectColor]}>
                             <Image style={styles.selectImg} source={colorSelect}/>
                         </View>
-                        <Text style={styles.textLabel}>{data.title}</Text>
+                        <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                     </View>
                 </TouchableOpacity>
             );
@@ -400,7 +400,7 @@ export default class AutoColor extends Component {
                     >
                         <View style={styles.center}>
                             <View style={[styles.colorContainer,{backgroundColor:data.color}]}/>
-                            <Text style={styles.textLabel}>{data.title}</Text>
+                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -416,7 +416,7 @@ export default class AutoColor extends Component {
                     >
                         <View style={styles.center}>
                             <Image style={styles.colorContainer} source={data.img}/>
-                            <Text style={styles.textLabel}>{data.title}</Text>
+                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                         </View>
                     </TouchableOpacity>
                 );
@@ -433,7 +433,7 @@ export default class AutoColor extends Component {
                         <View style={[styles.colorContainer,styles.selectColor]}>
                             <Image style={styles.selectImg} source={colorSelect}/>
                         </View>
-                        <Text style={styles.textLabel}>{data.title}</Text>
+                        <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                     </View>
                 </TouchableOpacity>
             );
@@ -449,7 +449,7 @@ export default class AutoColor extends Component {
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={()=>{this.props.publishData()}}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text allowFontScaling={false}  style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };
@@ -472,7 +472,7 @@ export default class AutoColor extends Component {
                                 showsVerticalScrollIndicator={false}
                                 style={styles.contentContainer}>
                         <View>
-                            <Text style={styles.titleText}>车身颜色</Text>
+                            <Text allowFontScaling={false}  style={styles.titleText}>车身颜色</Text>
                             <View style={styles.splitLine}/>
                             <Grid
                                 ref = {(grid)=>{this.shellGrid = grid}}
@@ -483,7 +483,7 @@ export default class AutoColor extends Component {
                             />
                         </View>
                         <View style={styles.itemTop}>
-                            <Text style={styles.titleText}>内饰颜色</Text>
+                            <Text allowFontScaling={false}  style={styles.titleText}>内饰颜色</Text>
                             <View style={styles.splitLine}/>
                             <Grid
                                 ref = {(grid)=>{this.interiorGrid = grid}}

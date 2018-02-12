@@ -32,7 +32,7 @@ export default class ViewPagers extends Component {
 
     }
 
-    getData=()=>{
+    getData = () => {
         alldata = this.props.items;
         let imageItems = [];
         if (alldata.banners == null || alldata.banners.length <= 0) {
@@ -84,7 +84,11 @@ export default class ViewPagers extends Component {
         } else {
             return (
                 <TouchableOpacity onPress={()=>{
-                 this.props.callBack(data.ret_url);
+                    if(data.ret_url=='finance'){
+                        this.props.toNext();
+                    }else if(data.ret_url){
+                        this.props.callBack(data.ret_url);
+                    }
                 }} activeOpacity={1} style={{width: width,
         height: Pixel.getPixel(225),}}>
                     <Image style={styles.postPosition}

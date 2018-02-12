@@ -21,7 +21,7 @@ import * as fontAndColor from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil';
 import BaseComponent from '../component/BaseComponent';
 import NewCarScene from '../publish/NewCarScene';
-import CarPublishFirstScene from '../carSource/CarPublishFirstScene';
+import CarPublishFirstScene from '../carSource/carPublish/CarPublishFirstScene';
 
 const  publishReceive = require('../../images/mainImage/publishReceive.png');
 const publishNew = require('../../images/mainImage/publishNew.png');
@@ -38,11 +38,16 @@ export default class PublishModal extends BaseComponent {
     }
 
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'});
-            this.initFinish();
-        });
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
+
+        } finally {
+            //InteractionManager.runAfterInteractions(() => {
+                this.setState({renderPlaceholderOnly: 'loading'});
+                this.initFinish();
+            //});
+        }
     }
 
     initFinish=()=>{};
@@ -84,16 +89,18 @@ export default class PublishModal extends BaseComponent {
     };
 
     _newPress = ()=>{
-        this._closePress();
-        this.props.callBack(this.newCarParams);
 
-        // let navigatorParams = {
-        //     name: "CarPublishFirstScene",
-        //     component: CarPublishFirstScene,
-        //     params: {
-        //     }
-        // };
-        // this.props.callBack(navigatorParams);
+        // this.props.callBack(this.newCarParams);
+
+        this._closePress();
+        let navigatorParams = {
+            name: "CarPublishFirstScene",
+            component: CarPublishFirstScene,
+            params: {
+            }
+        };
+        this.props.callBack(navigatorParams);
+
 
     };
 
@@ -112,7 +119,7 @@ export default class PublishModal extends BaseComponent {
                             >
                                 <View style={styles.rowCenter}>
                                     <Image style={styles.img} source={publishNew}/>
-                                    <Text style={styles.fontMain}>发布新车源</Text>
+                                    <Text allowFontScaling={false}  style={styles.fontMain}>发布新车源</Text>
                                 </View>
                             </TouchableOpacity>
                             <View style={styles.fillSpace}/>
@@ -121,7 +128,7 @@ export default class PublishModal extends BaseComponent {
                                 onPress={()=>{this._receivePress()}}>
                                 <View style={styles.rowCenter}>
                                     <Image style={styles.img} source={publishReceive}/>
-                                    <Text style={styles.fontMain}>发布收车意向</Text>
+                                    <Text allowFontScaling={false}  style={styles.fontMain}>订阅车源</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>

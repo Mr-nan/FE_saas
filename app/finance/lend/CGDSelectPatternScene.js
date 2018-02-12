@@ -106,6 +106,7 @@ export  default  class CGDSelectPatternScene extends BaseComponent {
             <View style={styles.rootContainer}>
                 <ListView style={{marginBottom:Pixel.getPixel(44)}}
                     dataSource={this.state.dataSource}
+                    removeClippedSubviews={false}
                     renderRow={this.renderRow}
                     renderHeader={this.renderHeadView}
                 />
@@ -124,7 +125,7 @@ export  default  class CGDSelectPatternScene extends BaseComponent {
                     };
                     this.toNextPage(colorParams);
                 }}>
-                    <Text style={styles.footButtonText}>确定</Text>
+                    <Text allowFontScaling={false}  style={styles.footButtonText}>确定</Text>
                 </TouchableOpacity>
                 <NavigatorView title='选择模式' backIconClick={() => {
                     this.backPage()
@@ -146,7 +147,7 @@ export  default  class CGDSelectPatternScene extends BaseComponent {
                 <View style={styles.headViewHintView}>
                     <Image style={{width: 20, height: 20}}
                            source={require('../../../images/financeImages/hintImage.png')}/>
-                    <Text style={styles.headViewHintText}>模式一旦选择将不可变更</Text>
+                    <Text allowFontScaling={false}  style={styles.headViewHintText}>模式一旦选择将不可变更</Text>
                 </View>
                 <CGDSelectView title="二手车交易发票" selectClick={(btnType) => {
                     isCarinvoice = btnType;
@@ -157,8 +158,8 @@ export  default  class CGDSelectPatternScene extends BaseComponent {
                     this.loadData();
                 }}/>
                 <View style={styles.headViewTitleView}>
-                    <Text style={styles.headViewTitleText}>该模式收费标准</Text>
-                    <Text style={styles.headViewTitleSubText}>（放款时按每台车融资额砍头收取）</Text>
+                    <Text allowFontScaling={false}  style={styles.headViewTitleText}>该模式收费标准</Text>
+                    <Text allowFontScaling={false}  style={styles.headViewTitleSubText}>（放款时按每台车融资额砍头收取）</Text>
                 </View>
             </View>
         )
@@ -182,7 +183,7 @@ class CGDSelectView extends Component {
         return (
             <View style={styles.headViewSelectView}>
                 <View style={styles.headViewSelectLeftView}>
-                    <Text style={styles.headViewSelectTitle}>{this.props.title}</Text>
+                    <Text allowFontScaling={false}  style={styles.headViewSelectTitle}>{this.props.title}</Text>
                 </View>
                 <View style={styles.headViewSelectRightView}>
                     <TouchableOpacity onPress={() => {
@@ -190,7 +191,7 @@ class CGDSelectView extends Component {
                     }}>
                         <View
                             style={[styles.headViewSelectBtn, {marginRight: 10}, this.state.isConfirm && {borderColor: fontAndColor.COLORB0}]}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={[styles.headViewSelectBtnText, this.state.isConfirm && {color: fontAndColor.COLORB0}]}>有</Text>
                         </View>
                     </TouchableOpacity>
@@ -199,7 +200,7 @@ class CGDSelectView extends Component {
                     }}>
                         <View
                             style={[styles.headViewSelectBtn, !this.state.isConfirm && {borderColor: fontAndColor.COLORB0}]}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={[styles.headViewSelectBtnText, !this.state.isConfirm && {color: fontAndColor.COLORB0}]}>无</Text>
                         </View>
                     </TouchableOpacity>
@@ -229,17 +230,17 @@ class CGDSelectPatternCell extends Component {
             <View style={styles.cellContainer}>
                 <View style={styles.cellContentView}>
                     <View style={styles.cellContentLeftView}>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={styles.cellTitleText}>{loan_lower > 0 ? ( loan_lower / 10000 + '-' + loan_upper / 10000 + '万(含)') : (loan_upper / 10000 + '万以下')}</Text>
                     </View>
                     <View style={styles.cellContentRightView}>
                         <View style={styles.cellContentItemView}>
-                            <Text style={styles.cellContentItemTitle}>采购贷服务费</Text>
-                            <Text style={styles.cellContentItemText}>{this.carMoneyChange(service_fee)}元</Text>
+                            <Text allowFontScaling={false}  style={styles.cellContentItemTitle}>采购贷服务费</Text>
+                            <Text allowFontScaling={false}  style={styles.cellContentItemText}>{this.carMoneyChange(service_fee)}元</Text>
                         </View>
                         <View style={styles.cellContentItemView}>
-                            <Text style={styles.cellContentItemTitle}>OBD服务费</Text>
-                            <Text style={styles.cellContentItemText}>{this.carMoneyChange(obd_fee)}元</Text>
+                            <Text allowFontScaling={false}  style={styles.cellContentItemTitle}>OBD服务费</Text>
+                            <Text allowFontScaling={false}  style={styles.cellContentItemText}>{this.carMoneyChange(obd_fee)}元</Text>
                         </View>
                     </View>
                 </View>

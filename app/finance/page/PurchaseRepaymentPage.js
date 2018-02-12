@@ -40,10 +40,10 @@ export  default class PurchaseRepaymentPage extends BaseComponent {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
-        });
+        //});
     }
 
     componentWillUnmount() {
@@ -117,6 +117,7 @@ export  default class PurchaseRepaymentPage extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -161,33 +162,33 @@ export  default class PurchaseRepaymentPage extends BaseComponent {
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
                         <MyButton {...this.buttonParams} content="采购"/>
-                        <Text style={styles.rowTopTextStyle}>{this.props.customerName}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowTopTextStyle}>{this.props.customerName}</Text>
                     </View>
                     <View style={[styles.rowTopViewStyle, {
                         flex: 2,
                         justifyContent: 'flex-end'
                     }]}>
-                        <Text style={styles.rowTopGrayTextStyle}>{movie.loan_number}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowTopGrayTextStyle}>{movie.loan_number}</Text>
                     </View>
                 </View>
                 <View style={[styles.line]}></View>
                 <View
                     style={[styles.centerView]}>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-start'}]}>
-                        <Text style={styles.centerText}>
+                        <Text allowFontScaling={false}  style={styles.centerText}>
                             到账日期
                         </Text>
-                        <Text style={[styles.centerBottomText, {
+                        <Text allowFontScaling={false}  style={[styles.centerBottomText, {
                             color: fontAndColor.COLORA0
                         }]}>
                             {movie.loan_time_str}
                         </Text>
                     </View>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-end'}]}>
-                        <Text style={styles.centerText}>
+                        <Text allowFontScaling={false}  style={styles.centerText}>
                             本息合计
                         </Text>
-                        <Text style={[styles.centerBottomText, {
+                        <Text allowFontScaling={false}  style={[styles.centerBottomText, {
                             color: fontAndColor.COLORB2
                         }]}>
                             {movie.total_repayment}
@@ -196,7 +197,7 @@ export  default class PurchaseRepaymentPage extends BaseComponent {
                 </View>
                 <View style={[styles.line]}></View>
                 <View style={[styles.bottomView]}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color: fontAndColor.COLORA1
                     }}>

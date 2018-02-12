@@ -60,13 +60,13 @@ export default class LoginFailSmsYes extends BaseComponent {
                     leftImageCallBack={this.backPage}
                 />
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={styles.fontStyle}>
+                    <Text allowFontScaling={false}  style={styles.fontStyle}>
                         您可以通过
-                        <Text style={[styles.fontStyle, {color: FontAndColor.COLORB0}]}>
+                        <Text allowFontScaling={false}  style={[styles.fontStyle, {color: FontAndColor.COLORB0}]}>
                             手机号+短信验证码
                         </Text>
                     </Text>
-                    <Text style={styles.fontStyle}>
+                    <Text allowFontScaling={false}  style={styles.fontStyle}>
                         登录第1车贷APP
                     </Text>
                 </View>

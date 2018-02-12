@@ -42,6 +42,8 @@ var imgSid: '';
 var smsCode: '';
 var userNames = [];
 var Platform = require('Platform');
+let androidPhoneVersion = '';
+import ErrorBackToast from './component/ErrorBackToast';
 export default class LoginScene extends BaseComponent {
 
     constructor(props) {
@@ -53,6 +55,8 @@ export default class LoginScene extends BaseComponent {
             verifyCode: null,
             renderPlaceholderOnly: true,
         }
+        this.needToast = '';
+        this.props.showModal(false);
     }
 
     handleBack = () => {
@@ -61,12 +65,18 @@ export default class LoginScene extends BaseComponent {
     }
 
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'});
-            this.props.showModal(false);
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.getPhoneVersion((verison) => {
+                androidPhoneVersion = verison;
+            });
+        }
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
+
+        } finally {
             this.initFinish();
-        });
+        }
     }
 
     initFinish = () => {
@@ -75,10 +85,22 @@ export default class LoginScene extends BaseComponent {
                 userNames = data.result.split(",");
             }
         })
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-            this.Verifycode();
-        });
+        StorageUtil.mGetItem(StorageKeyNames.NEED_TOAST_ERROR, (data) => {
+            if (data.code == 1 && data.result != null) {
+                this.needToast = data.result;
+            }
+            this.setState({renderPlaceholderOnly: false},()=>{
+                this.Verifycode();
+            });
+        })
+    }
+
+    componentDidUpdate() {
+        if (this.needToast != '') {
+            StorageUtil.mSetItem(StorageKeyNames.NEED_TOAST_ERROR, '');
+            this.refs.errorbacktoast.show(this.needToast);
+            this.needToast = '';
+        }
     }
 
     loginSuccess = {
@@ -120,11 +142,11 @@ export default class LoginScene extends BaseComponent {
                     break;
                 }
                 views.push(
-                    <Text
-                        key={x}
-                        style={styles.item}
-                        onPress={this.hide.bind(this, userNames[x])}
-                        numberOfLines={1}>
+                    <Text allowFontScaling={false}
+                          key={x}
+                          style={styles.item}
+                          onPress={this.hide.bind(this, userNames[x])}
+                          numberOfLines={1}>
                         {userNames[x]}
                     </Text>
                 );
@@ -141,7 +163,6 @@ export default class LoginScene extends BaseComponent {
                     <NavigationBar
                         leftImageShow={false}
                         leftTextShow={true}
-                        leftText={"取消"}
                         centerText={"登录"}
                         rightText={"注册"}
                         leftTextCallBack={this.backPage}
@@ -228,7 +249,7 @@ export default class LoginScene extends BaseComponent {
                                 params: {},
                             })
                         }}>
-                            <Text style={styles.bottomTestSytle}>登录遇到问题 ></Text>
+                            <Text allowFontScaling={false} style={styles.bottomTestSytle}>登录遇到问题 ></Text>
                         </TouchableOpacity>
                     </View>
 
@@ -238,7 +259,7 @@ export default class LoginScene extends BaseComponent {
                            style={{width: width, height: Pixel.getPixel(175)}}/>
 
                     {this.loadingView()}
-
+                    <ErrorBackToast ref="errorbacktoast"/>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -361,17 +382,23 @@ export default class LoginScene extends BaseComponent {
             this.props.showToast("短信验证码不能为空");
         } else {
             let device_code = '';
+            let device_type = '';
             if (Platform.OS === 'android') {
                 device_code = 'dycd_platform_android';
+                device_type = androidPhoneVersion;
             } else {
                 device_code = 'dycd_platform_ios';
+                device_type = 'phoneVersion=' + phoneVersion + ',phoneModel='
+                    + phoneModel + ',appVersion=' + appVersion;
             }
+            console.log(device_type);
             let maps = {
                 device_code: device_code,
                 code: smsCode,
                 login_type: "2",
                 phone: userName,
                 pwd: md5.hex_md5(passWord),
+                device_type: device_type
             };
             // this.props.showModal(true);
             this.setState({
@@ -379,14 +406,19 @@ export default class LoginScene extends BaseComponent {
             });
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
-                    // this.props.showModal(false);
-                    this.setState({
-                        loading: false,
-                    });
-                    if (response.mycode == "1") {
-                        if (response.mjson.data.user_level == 2) {
+                    try {
+                        if (Platform.OS === 'android') {
+                            NativeModules.GrowingIOModule.setCS1("user_id", userName);
+                        } else {
+                            // NativeModules.growingSetCS1("user_id", userName);
+                        }
+                        // this.props.showModal(false);
+                        this.setState({
+                            loading: false,
+                        });
+                        if (response.mjson.data.user_level == 2 || response.mjson.data.user_level == 1) {
                             if (response.mjson.data.enterprise_list == [] || response.mjson.data.enterprise_list == "") {
-                                this.props.showToast("无授信企业");
+                                this.props.showToast("您的账号未绑定企业");
                             } else {
                                 // 保存用户登录状态
                                 StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
@@ -427,19 +459,19 @@ export default class LoginScene extends BaseComponent {
                                 StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                                     if (data.code == 1) {
                                         if (data.result != null) {
-                                            if (response.mjson.data.user_level == 2) {
-                                                if (response.mjson.data.enterprise_list[0].role_type == '2') {
-                                                    this.loginPage({
-                                                        name: 'LoginGesture',
-                                                        component: LoginGesture,
-                                                        params: {from: 'RootScene'}
-                                                    })
-                                                } else {
-                                                    this.loginPage(this.loginSuccess)
-                                                }
-                                            } else {
-                                                this.loginPage(this.loginSuccess)
-                                            }
+                                            // if (response.mjson.data.user_level == 2) {
+                                            //     if (response.mjson.data.enterprise_list[0].role_type == '2') {
+                                            this.loginPage({
+                                                name: 'LoginGesture',
+                                                component: LoginGesture,
+                                                params: {from: 'RootScene'}
+                                            })
+                                            //     } else {
+                                            //         this.loginPage(this.loginSuccess)
+                                            //     }
+                                            // } else {
+                                            //     this.loginPage(this.loginSuccess)
+                                            // }
                                             StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                         } else {
                                             this.loginPage(this.setLoginGesture)
@@ -487,19 +519,19 @@ export default class LoginScene extends BaseComponent {
                             StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                                 if (data.code == 1) {
                                     if (data.result != null) {
-                                        if (response.mjson.data.user_level == 2) {
-                                            if (response.mjson.data.enterprise_list[0].role_type == '2') {
-                                                this.loginPage({
-                                                    name: 'LoginGesture',
-                                                    component: LoginGesture,
-                                                    params: {from: 'RootScene'}
-                                                })
-                                            } else {
-                                                this.loginPage(this.loginSuccess)
-                                            }
-                                        } else {
-                                            this.loginPage(this.loginSuccess)
-                                        }
+                                        // if (response.mjson.data.user_level == 2) {
+                                        //     if (response.mjson.data.enterprise_list[0].role_type == '2') {
+                                        this.loginPage({
+                                            name: 'LoginGesture',
+                                            component: LoginGesture,
+                                            params: {from: 'RootScene'}
+                                        })
+                                        //     } else {
+                                        //         this.loginPage(this.loginSuccess)
+                                        //     }
+                                        // } else {
+                                        //     this.loginPage(this.loginSuccess)
+                                        // }
                                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                     } else {
                                         this.loginPage(this.setLoginGesture)
@@ -507,9 +539,10 @@ export default class LoginScene extends BaseComponent {
                                 }
                             })
                         }
-                    } else {
-                        this.props.showToast(response.mjson.msg + "");
+                    } catch (error) {
+                        this.props.showToast('数据错误');
                     }
+
                 }, (error) => {
                     // this.props.showModal(false);
                     this.setState({

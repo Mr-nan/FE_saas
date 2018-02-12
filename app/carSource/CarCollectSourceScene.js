@@ -159,6 +159,7 @@ export default class CarCollectSourceScene extends BaceComponent {
             <View style={styles.rootContainer}>
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
                           dataSource={this.state.carData}
+                          removeClippedSubviews={false}
                           renderRow={(rowData) =>
                           <CarCell from="CarCollectSourceScene" items={rowData} mOnPress={(id)=>{
                               if(rowData.status==3){

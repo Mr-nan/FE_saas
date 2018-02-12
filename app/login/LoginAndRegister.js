@@ -31,22 +31,31 @@ export default class LoginAndRegister extends BaseComponent {
             renderPlaceholderOnly: true,
         }
     }
-
+    /**
+     * from @zhaojian
+     *
+     * 返回到手机桌面
+     **/
     handleBack = () => {
         NativeModules.VinScan.goBack();
         return true;
     }
 
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        this.initFinish();
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
+
+        } finally {
+            this.initFinish();
+        }
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
             // this.Verifycode();
-        });
+        //});
     }
 
     render() {

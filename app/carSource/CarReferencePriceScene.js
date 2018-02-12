@@ -46,6 +46,30 @@ export  default class CarReferencePriceScene extends  BaseComponent{
 
         this.loadData();
     }
+
+    /**
+     * from @zhaojian
+     *
+     * 回退到车辆详情页面
+     **/
+    backPage = () => {
+        if(this.props.from=='CarUpkeepScene'){
+            const navigator = this.props.navigator;
+            if (navigator){
+                for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                    if(navigator.getCurrentRoutes()[i].name=='CarInfoScene'){
+                        navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                        break;
+                    }
+                }
+            }
+        }else{
+            const navigator = this.props.navigator;
+            if (navigator) {
+                navigator.pop();
+            }
+        }
+    }
     render(){
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
@@ -76,12 +100,11 @@ export  default class CarReferencePriceScene extends  BaseComponent{
     }
 
     loadData=()=>{
-        let carData = this.props.carData;
         RequestUtil.request(appUrls.CAR_GET_REFERENCEPRICE,'post',{
-                'city_id':carData.city_id,
-                'mile':carData.mileage,
-                'model_id':carData.model_id,
-                'reg_date':this.dateReversal(carData.init_reg+'000')
+                'city_id':this.props.city_id,
+                'mile':this.props.mileage,
+                'model_id':this.props.model_id,
+                'reg_date':this.props.init_reg
         }).then((response)=>{
 
             console.log(response);
@@ -129,8 +152,8 @@ class PriceCell extends Component{
                   this.props.data.map((data,index)=>{
                       return(
                           <View style={styles.cellContentView} key={this.props.myKey+index}>
-                              <Text style={styles.cellTitle}>{data.title}</Text>
-                              <Text style={styles.cellValue}>{data.value} 万元</Text>
+                              <Text allowFontScaling={false}  style={styles.cellTitle}>{data.title}</Text>
+                              <Text allowFontScaling={false}  style={styles.cellValue}>{data.value} 万元</Text>
                           </View>
                       )
                   })

@@ -47,10 +47,10 @@ export default class ColorChoose extends BaseComponent {
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
             // this.Verifycode();
-        });
+        //});
     }
 
     render() {
@@ -87,6 +87,7 @@ export default class ColorChoose extends BaseComponent {
                         onEndReachedThreshold={1}
                         scrollRenderAheadDistance={1}
                         pageSize={3}
+                        removeClippedSubviews={false}
                         contentContainerStyle={styles.listStyle}
                         dataSource={this.state.source}
                         style={{paddingLeft: 10, paddingRight: 10}}
@@ -103,7 +104,7 @@ export default class ColorChoose extends BaseComponent {
             <TouchableOpacity onPress={() => this.finshPage(data)}>
                 <View style={styles.itemStyle}>
                     <View style={[styles.itemIconStyle, {backgroundColor: data.color,}]}/>
-                    <Text style={styles.itemTextStyle}>{data.name}</Text>
+                    <Text allowFontScaling={false}  style={styles.itemTextStyle}>{data.name}</Text>
                 </View>
             </TouchableOpacity>
 

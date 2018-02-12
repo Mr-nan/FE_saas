@@ -32,17 +32,17 @@ export default class CouponItem extends Component {
             <TouchableOpacity onPress={this._selectCoupon}>
                 <Image style={styles.container} source={bg}>
                     <View style={styles.leftContainer}>
-                        <Text style={styles.leftTitle}>还息优惠券</Text>
-                        <Text style={styles.leftBottom}>有效期:2016.12.20-2017.02.20</Text>
+                        <Text allowFontScaling={false}  style={styles.leftTitle}>还息优惠券</Text>
+                        <Text allowFontScaling={false}  style={styles.leftBottom}>有效期:2016.12.20-2017.02.20</Text>
                     </View>
                     <View style={styles.rightContainer}>
                         <View style={styles.rightTitleContainer}>
-                            <Text style={[styles.rightTitle,styles.rightTitleAlign]}>¥</Text>
-                            <Text style={styles.rightTitle}>25</Text>
+                            <Text allowFontScaling={false}  style={[styles.rightTitle,styles.rightTitleAlign]}>¥</Text>
+                            <Text allowFontScaling={false}  style={styles.rightTitle}>25</Text>
                         </View>
                         <TouchableOpacity style={styles.rightBottom} onPress={()=>{}}>
                             <View>
-                                <Text style={styles.rightBottomText}>使用规则</Text>
+                                <Text allowFontScaling={false}  style={styles.rightBottomText}>使用规则</Text>
                             </View>
                         </TouchableOpacity>
                         {this.state.selected && <Image style={styles.imgContainer} source={duigou}/>}

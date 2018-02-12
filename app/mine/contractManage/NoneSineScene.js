@@ -45,9 +45,9 @@ export default class NoneSineScene extends BaseComponent {
         let maps = {
             page: page,
             rows: 10,
-            api : Urls.CONTRACTLIST,
+            api : Urls.CONTRACT_CONTRACT_LIST,
             opt_user_id: this.props.opt_user_id,
-            sign_status: '1',
+            sign_status: '0',
         };
         request(Urls.FINANCE, 'Post', maps)
 
@@ -119,6 +119,7 @@ export default class NoneSineScene extends BaseComponent {
                     <ListView
                         contentContainerStyle={styles.listStyle}
                         dataSource={this.state.dataSource}
+                        removeClippedSubviews={false}
                         renderRow={this._renderRow}
                         renderFooter={
                             this.renderListFooter
@@ -144,8 +145,8 @@ export default class NoneSineScene extends BaseComponent {
         return (
             <View style={styles.rowView}>
                 <View style={styles.rowLeft}>
-                <Text style={styles.rowLeftTitle}>{rowData.contract_name}</Text>
-                <Text style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
+                <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.contract_name}</Text>
+                <Text allowFontScaling={false}  style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
                 </View>
                 <TouchableOpacity
                     style={styles.buttonStyle}
@@ -159,6 +160,7 @@ export default class NoneSineScene extends BaseComponent {
                                 product_type_code: rowData.product_type_code,	//产品类型编码
                                 opt_user_id:this.props.opt_user_id,
                                 showButton: true,
+                                user_id:rowData.signator_id,
                                 callBack: () => {
                                     allSouce = [];
                                     this.setState({renderPlaceholderOnly: 'loading'});
@@ -168,7 +170,7 @@ export default class NoneSineScene extends BaseComponent {
                             },
                         })
                     }}>
-                    <Text style={styles.rowRightTitle}>签署合同</Text>
+                    <Text allowFontScaling={false}  style={styles.rowRightTitle}>签署合同</Text>
 
                 </TouchableOpacity>
             </View>

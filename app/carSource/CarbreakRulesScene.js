@@ -10,7 +10,7 @@ import {
     ListView,
     Image,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
 
 } from 'react-native';
 
@@ -44,7 +44,15 @@ export  default class CarbreakRulesScene extends  BaseComponent{
         this.loadData();
     }
     render(){
-        if (this.state.renderPlaceholderOnly !== 'success') {
+        if(this.state.renderPlaceholderOnly=='null'){
+            return(
+                <View style={{flex:1,backgroundColor:'white'}}>
+                    {this.nullDataView()}
+                    <NavigationView title="违章记录" backIconClick={()=>{this.backPage();}}/>
+                </View>
+            )
+        }
+        else if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={{flex:1,backgroundColor:'white'}}>
                     {this.loadView()}
@@ -54,6 +62,7 @@ export  default class CarbreakRulesScene extends  BaseComponent{
         return(
             <View style={styles.rootContainer}>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}/>
                 <NavigationView title="违章记录" backIconClick={()=>{this.backPage();}}/>
@@ -79,10 +88,10 @@ export  default class CarbreakRulesScene extends  BaseComponent{
         }).then((response)=>{
 
             console.log(response);
-            if(response.mjson.data.lengte>0){
+            if(response.mjson.data.length>0){
 
                 this.setState({
-                    dataSource:this.state.dataSource(response.mjson.data),
+                    dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
                     renderPlaceholderOnly: 'success',
 
                 });
@@ -98,6 +107,26 @@ export  default class CarbreakRulesScene extends  BaseComponent{
                 renderPlaceholderOnly: 'null',
             });
         });
+    }
+
+    nullDataView=()=>{
+        return(
+            <View style={{flex: 1, alignItems: 'center',justifyContent:'center'}}>
+                <Image
+                    style={{
+                        width: Pixel.getPixel(121),
+                        height: Pixel.getPixel(163),
+                    }}
+                    source={require('../../images/noData.png')}/>
+                <Text allowFontScaling={false} 
+                    style={{
+                        color: fontAndColor.COLORA0, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        marginTop: Pixel.getPixel(27)
+                    }}>
+                    抱歉，暂未查到相关数据！
+                </Text>
+            </View>
+        )
     }
 
 }
@@ -120,46 +149,46 @@ class CarbreakRulesCell extends Component{
               <View style={styles.cellView}>
                   <TouchableOpacity style={styles.cellTitleView} onPress={()=>{this.setState({isUnfold:!this.state.isUnfold})}}>
                       <View>
-                          <Text style={styles.cellTitleViewTitle}>{cellData.status==0?'未':'已'}经处理违章</Text>
-                          <Text style={styles.cellTitleViewDate}>{cellData.time}</Text>
+                          <Text allowFontScaling={false}  style={styles.cellTitleViewTitle}>{cellData.status==0?'未':'已'}经处理违章</Text>
+                          <Text allowFontScaling={false}  style={styles.cellTitleViewDate}>{cellData.time}</Text>
                       </View>
                       <View style={{flexDirection:'row', alignItems:'center'}}>
-                          <Text style={{color:fontAndColor.COLORA2, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>展开</Text>
+                          <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA2, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>展开</Text>
                           <Image style={{marginLeft:Pixel.getPixel(5)}} source={this.state.isUnfold?require('../../images/carSourceImages/unfold_is.png'):require('../../images/carSourceImages/unfold_no.png')}/>
                       </View>
                   </TouchableOpacity>
                   {
                       this.state.isUnfold &&(
                           <View style={styles.cellContentView}>
-                              <Text style={styles.cellTitle}>违章地点</Text>
-                              <Text style={styles.cellValue}>{cellData.address}</Text>
+                              <Text allowFontScaling={false}  style={styles.cellTitle}>违章地点</Text>
+                              <Text allowFontScaling={false}  style={styles.cellValue}>{cellData.address}</Text>
 
-                              <Text style={styles.cellTitle}>违章原因</Text>
-                              <Text style={styles.cellValue}>{cellData.reason}</Text>
+                              <Text allowFontScaling={false}  style={styles.cellTitle}>违章原因</Text>
+                              <Text allowFontScaling={false}  style={styles.cellValue}>{cellData.reason}</Text>
 
-                              <Text style={styles.cellTitle}>违章采集机关</Text>
-                              <Text style={styles.cellValue}>{cellData.department}</Text>
+                              <Text allowFontScaling={false}  style={styles.cellTitle}>违章采集机关</Text>
+                              <Text allowFontScaling={false}  style={styles.cellValue}>{cellData.department}</Text>
 
-                              <Text style={styles.cellTitle}>违章扣分</Text>
-                              <Text style={styles.cellValue}>{cellData.score}</Text>
+                              <Text allowFontScaling={false}  style={styles.cellTitle}>违章扣分</Text>
+                              <Text allowFontScaling={false}  style={styles.cellValue}>{cellData.score}</Text>
 
-                              <Text style={styles.cellTitle}>违章代码</Text>
-                              <Text style={styles.cellValue}>{cellData.code}</Text>
+                              <Text allowFontScaling={false}  style={styles.cellTitle}>违章代码</Text>
+                              <Text allowFontScaling={false}  style={styles.cellValue}>{cellData.code}</Text>
 
-                              <Text style={styles.cellTitle}>违章项文件编号</Text>
-                              <Text style={styles.cellValue}>{cellData.archive_no}</Text>
+                              <Text allowFontScaling={false}  style={styles.cellTitle}>违章项文件编号</Text>
+                              <Text allowFontScaling={false}  style={styles.cellValue}>{cellData.archive_no}</Text>
 
                               {
                                   cellData.tel && (
                                       <View>
-                                          <Text style={styles.cellTitle}>联系电话</Text>
-                                          <Text style={styles.cellValue}>{cellData.tel}</Text>
+                                          <Text allowFontScaling={false}  style={styles.cellTitle}>联系电话</Text>
+                                          <Text allowFontScaling={false}  style={styles.cellValue}>{cellData.tel}</Text>
                                       </View>
                                   )
                               }
 
-                              <Text style={styles.cellTitle}>违章归属地</Text>
-                              <Text style={styles.cellValue}>{cellData.address_name}</Text>
+                              <Text allowFontScaling={false}  style={styles.cellTitle}>违章归属地</Text>
+                              <Text allowFontScaling={false}  style={styles.cellValue}>{cellData.address_name}</Text>
                           </View>
                       )
                   }

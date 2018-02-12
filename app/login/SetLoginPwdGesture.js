@@ -18,6 +18,7 @@ import NavigationBar from "../component/NavigationBar";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import MainPage from "../main/MainPage";
+import AllSelectCompanyScene from "../main/AllSelectCompanyScene";
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
@@ -109,11 +110,11 @@ export default class SetLoginPwdGesture extends BaseComponent {
                                     <View style={styles.cycleStyle}/>}
                             </View>
                         </View>
-                        <Text style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
+                        <Text allowFontScaling={false}  style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
                             {this.state.message}
                         </Text>
 
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             color: FontAndColor.COLORA1,
                             fontSize: Pixel.getFontPixel(14),
                             height: Pixel.getPixel(20),
@@ -144,7 +145,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
                             message: '重新绘制解锁图案',
                         });
                     }}>
-                        <Text style={styles.bottomSytle }>重置手势密码</Text>
+                        <Text allowFontScaling={false}  style={styles.bottomSytle }>重置手势密码</Text>
                     </TouchableOpacity>}/>
         );
     }
@@ -181,9 +182,13 @@ export default class SetLoginPwdGesture extends BaseComponent {
                     }
                 })
                 if (this.props.from == 'login') {
-                    this.loginPage(this.loginSuccess)
                     StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                     StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
+                    StorageUtil.mGetItem(StorageKeyNames.USER_LEVEL, (data) => {
+                        if (data.code == 1) {
+                            this.loginPage({name: 'AllSelectCompanyScene', component: AllSelectCompanyScene});
+                        }
+                    })
                 } else {
                     this.props.showToast("设置成功");
                     this.backPage();

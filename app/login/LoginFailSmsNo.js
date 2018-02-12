@@ -59,7 +59,7 @@ export default class LoginFailSmsNo extends BaseComponent {
                     rightText={"  "}
                     leftImageCallBack={this.backPage}/>
                 <View style={styles.messageVeiwStyle}>
-                    <Text style={styles.messageStyle}>
+                    <Text allowFontScaling={false}  style={styles.messageStyle}>
                         *请填写您的企业信息，工作人员会主动与您联系
                     </Text>
                 </View>

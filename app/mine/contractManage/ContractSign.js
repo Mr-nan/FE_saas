@@ -48,11 +48,11 @@ export default class ContractSign extends BaseComponent {
                         <View style={{flexDirection: 'row',justifyContent: 'center', alignItems: 'center',}}>
                             <Image source={require('../../../images/service_contract@2x.png')}
                                    style={{marginRight: 5}}></Image>
-                            <Text style={styles.buttonText}>融资服务合同</Text>
+                            <Text allowFontScaling={false}  style={styles.buttonText}>融资服务合同</Text>
                         </View>
                     </TouchableOpacity>
                     { isShow ? (<TouchableOpacity onPress={()=>{this.shareSpanner.setModalVisible()}} style={styles.rightStyle}>
-                            <Text style={styles.buttonText}>签署合同</Text>
+                            <Text allowFontScaling={false}  style={styles.buttonText}>签署合同</Text>
                     </TouchableOpacity>) : null
                     }
 

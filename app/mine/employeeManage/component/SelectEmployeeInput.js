@@ -23,14 +23,15 @@ export  default class AddEmployeeInput extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state={
-            value : '请选择'+this.props.items.name
+        this.state = {
+            value: this.props.default ?
+                this.props.default:'请选择' + this.props.items.name
         }
     }
 
-    setValue=(values)=>{
+    setValue = (values) => {
         this.setState({
-            value:values
+            value: values
         });
     }
 
@@ -39,12 +40,15 @@ export  default class AddEmployeeInput extends PureComponent {
             <View style={{width:width,height:Pixel.getPixel(44),backgroundColor:'#00000000',flexDirection: 'row',
             paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15)}}>
                 <View style={{flex:1,justifyContent:'center'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(14),color:'#000'}}>{this.props.items.name}</Text>
+                    <Text allowFontScaling={false}
+                          style={{fontSize: Pixel.getFontPixel(14),color:'#000'}}>{this.props.items.name}</Text>
                 </View>
                 <TouchableOpacity onPress={()=>{
                     this.props.toSelect();
-                }} activeOpacity={0.8} style={{flex:1,justifyContent:'flex-end',alignItems:'center',flexDirection: 'row'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(14),color:fontAndColor.COLORA2,marginRight:Pixel.getPixel(5)}}>
+                }} activeOpacity={0.8}
+                                  style={{flex:1,justifyContent:'flex-end',alignItems:'center',flexDirection: 'row'}}>
+                    <Text numberOfLines={1} allowFontScaling={false}
+                          style={{fontSize: Pixel.getFontPixel(14),color:fontAndColor.COLORA2,marginRight:Pixel.getPixel(5)}}>
                         {this.state.value}</Text>
                     <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14)}}
                            source={require('../../../../images/mainImage/celljiantou.png')}/>

@@ -102,6 +102,7 @@ export  default class PurchasePickerScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -185,7 +186,7 @@ export  default class PurchasePickerScene extends BaseComponent {
                     {/*}*/}
                     {/*console.log(navigator.getCurrentRoutes());*/}
             }}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     color: 'white',
                     fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     textAlign: 'center',

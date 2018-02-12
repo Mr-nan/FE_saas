@@ -90,7 +90,6 @@ export default class CGDAddCarScene extends BaseComponent {
             (response) => {
                 if (response.mycode === 1) {
                     let rdb = response.mjson.data;
-                    console.log('=====================>>>>>>>>>');
                     console.log(rdb);
                     if (rdb.rev_user_list.length === 0) {
                         this._showHint('请先配置收车人');
@@ -586,11 +585,11 @@ export default class CGDAddCarScene extends BaseComponent {
                         />
 
                         <View style={[styles.itemBackground, styles.alignTop]}>
-                            <Text style={styles.leftFont}>出售城市</Text>
+                            <Text allowFontScaling={false}  style={styles.leftFont}>出售城市</Text>
                             <View style={styles.fillSpace}/>
                             <TouchableOpacity onPress={this._onCityPress}>
                                 <View style={styles.rightContainer}>
-                                    <Text style={styles.selectHintFont}>{this.state.city_name}</Text>
+                                    <Text allowFontScaling={false}  style={styles.selectHintFont}>{this.state.city_name}</Text>
                                     <Image style={styles.selectImage} source={selectImg}/>
                                 </View>
                             </TouchableOpacity>
@@ -598,18 +597,18 @@ export default class CGDAddCarScene extends BaseComponent {
 
                         <View style={styles.splitItem}/>
                         <View style={styles.itemBackground}>
-                            <Text style={styles.leftFont}>选择车型</Text>
+                            <Text allowFontScaling={false}  style={styles.leftFont}>选择车型</Text>
                             <View style={styles.fillSpace}/>
                             <TouchableOpacity onPress={this._onModelPress}>
                                 <View style={styles.rightContainer}>
-                                    <Text style={styles.selectHintFont}>{this.state.modelName}</Text>
+                                    <Text allowFontScaling={false}  style={styles.selectHintFont}>{this.state.modelName}</Text>
                                     <Image style={styles.selectImage} source={selectImg}/>
                                 </View>
                             </TouchableOpacity>
                         </View>
 
                         <View style={[styles.itemBackground, styles.alignItem]}>
-                            <Text style={styles.leftFont}>车架号</Text>
+                            <Text allowFontScaling={false}  style={styles.leftFont}>车架号</Text>
                             <TextInput
                                 ref={(input) => {
                                 this.vinInput = input
@@ -628,11 +627,11 @@ export default class CGDAddCarScene extends BaseComponent {
 
                         <View style={styles.splitItem}/>
                         <View style={styles.itemBackground}>
-                            <Text style={styles.leftFont}>外观颜色</Text>
+                            <Text allowFontScaling={false}  style={styles.leftFont}>外观颜色</Text>
                             <View style={styles.fillSpace}/>
                             <TouchableOpacity onPress={this._onColorPress}>
                                 <View style={styles.rightContainer}>
-                                    <Text style={styles.selectHintFont}>{this.state.car_color}</Text>
+                                    <Text allowFontScaling={false}  style={styles.selectHintFont}>{this.state.car_color}</Text>
                                     <Image style={styles.selectImage} source={selectImg}/>
                                 </View>
                             </TouchableOpacity>
@@ -640,7 +639,7 @@ export default class CGDAddCarScene extends BaseComponent {
 
                         <View style={styles.splitItem}/>
                         <View style={styles.itemBackground}>
-                            <Text style={styles.leftFont}>行驶里程</Text>
+                            <Text allowFontScaling={false}  style={styles.leftFont}>行驶里程</Text>
                             <TextInput
                                 ref={(input) => {
                                 this.milInput = input
@@ -652,16 +651,16 @@ export default class CGDAddCarScene extends BaseComponent {
                                 placeholder='请输入'
                                 placeholderTextColor={fontAndColor.COLORA1}
                             />
-                            <Text style={styles.rightHintFont}>万公里</Text>
+                            <Text allowFontScaling={false}  style={styles.rightHintFont}>万公里</Text>
                         </View>
 
                         <View style={styles.splitItem}/>
                         <View style={styles.itemBackground}>
-                            <Text style={styles.leftFont}>首次上牌时间</Text>
+                            <Text allowFontScaling={false}  style={styles.leftFont}>首次上牌时间</Text>
                             <View style={styles.fillSpace}/>
                             <TouchableOpacity onPress={this._onDatePress}>
                                 <View style={styles.rightContainer}>
-                                    <Text style={styles.selectHintFont}>{this.state.init_reg}</Text>
+                                    <Text allowFontScaling={false}  style={styles.selectHintFont}>{this.state.init_reg}</Text>
                                     <Image style={styles.selectImage} source={selectImg}/>
                                 </View>
                             </TouchableOpacity>
@@ -669,11 +668,11 @@ export default class CGDAddCarScene extends BaseComponent {
 
                         <View style={styles.splitItem}/>
                         <View style={styles.itemBackground}>
-                            <Text style={styles.leftFont}>收车人</Text>
+                            <Text allowFontScaling={false}  style={styles.leftFont}>收车人</Text>
                             <View style={styles.fillSpace}/>
                             <TouchableOpacity onPress={this._onReceiverPress}>
                                 <View style={styles.rightContainer}>
-                                    <Text style={styles.selectHintFont}>{this.state.carReceive}</Text>
+                                    <Text allowFontScaling={false}  style={styles.selectHintFont}>{this.state.carReceive}</Text>
                                     <Image style={styles.selectImage} source={selectImg}/>
                                 </View>
                             </TouchableOpacity>
@@ -681,11 +680,11 @@ export default class CGDAddCarScene extends BaseComponent {
 
                         <View style={styles.splitItem}/>
                         <View style={styles.itemBackground}>
-                            <Text style={styles.leftFont}>登记人</Text>
+                            <Text allowFontScaling={false}  style={styles.leftFont}>登记人</Text>
                             <View style={styles.fillSpace}/>
                             <TouchableOpacity onPress={this._onRegisterPress}>
                                 <View style={styles.rightContainer}>
-                                    <Text style={styles.selectHintFont}>{this.state.carRegister}</Text>
+                                    <Text allowFontScaling={false}  style={styles.selectHintFont}>{this.state.carRegister}</Text>
                                     <Image style={styles.selectImage} source={selectImg}/>
                                 </View>
                             </TouchableOpacity>
@@ -693,7 +692,7 @@ export default class CGDAddCarScene extends BaseComponent {
 
 
                         <View style={[styles.itemBackground, styles.alignItem]}>
-                            <Text style={styles.leftFont}>收购价</Text>
+                            <Text allowFontScaling={false}  style={styles.leftFont}>收购价</Text>
                             <TextInput
                                 ref={(input) => {
                                 this.priceInput = input
@@ -705,14 +704,14 @@ export default class CGDAddCarScene extends BaseComponent {
                                 placeholder='请输入'
                                 placeholderTextColor={fontAndColor.COLORA1}
                             />
-                            <Text style={styles.rightHintFont}>万元</Text>
+                            <Text allowFontScaling={false}  style={styles.rightHintFont}>万元</Text>
                         </View>
                     </KeyboardAvoidingView>
                 </ScrollView>
 
                 <View style={styles.fillSpace}>
                     <TouchableOpacity style={styles.btnOk} activeOpacity={0.6} onPress={this._onOKPress}>
-                        <Text style={styles.btnFont}>确定</Text>
+                        <Text allowFontScaling={false}  style={styles.btnFont}>确定</Text>
                     </TouchableOpacity>
                 </View>
                 <DateTimePicker

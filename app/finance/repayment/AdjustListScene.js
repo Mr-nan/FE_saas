@@ -103,10 +103,10 @@ export  default class AdjustListScene extends BaseComponent {
         return (
             <View style={styles.listHeader}>
                 <View style={styles.textAllStyle}>
-                    <Text style={styles.headerTextStyle}>到期日</Text>
-                    <Text style={styles.headerTextStyle}>调整前</Text>
-                    <Text style={styles.headerTextStyle}>抵扣金额</Text>
-                    <Text style={styles.headerTextStyle}>调整后</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>到期日</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整前</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>抵扣金额</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整后</Text>
                 </View>
                 <View style={[styles.textAllStyle, {
                     backgroundColor: '#ffffff',
@@ -115,10 +115,10 @@ export  default class AdjustListScene extends BaseComponent {
                     paddingTop: Pixel.getPixel(10),
                     paddingBottom: Pixel.getPixel(10)
                 }]}>
-                    <Text style={styles.headerTextsStyle}>{movies.enddate}</Text>
-                    <Text style={styles.headerTextsStyle}>{movies.repaymentmny}</Text>
-                    <Text style={styles.headerTextsStyle}>{movies.adjustmoney}</Text>
-                    <Text style={styles.headerTextsStyle}>{movies.aftermoney}</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextsStyle}>{movies.enddate}</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextsStyle}>{movies.repaymentmny}</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextsStyle}>{movies.adjustmoney}</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextsStyle}>{movies.aftermoney}</Text>
                 </View>
             </View>
         );
@@ -182,6 +182,7 @@ export  default class AdjustListScene extends BaseComponent {
                     title="选择优惠券"
                     backIconClick={this.backPage}/>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(70), flex: 1,marginBottom: Pixel.getPixel(45)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -254,19 +255,19 @@ export  default class AdjustListScene extends BaseComponent {
             <TouchableOpacity onPress={() => this._selectCoupon(rowId)}>
                 <Image style={styles.container} source={bg}>
                     <View style={styles.leftContainer}>
-                        <Text style={styles.leftTitle}>{movie.coupon_name}</Text>
-                        <Text style={styles.leftBottom}>有效期:{coupon_begindate}-{coupon_enddate}</Text>
+                        <Text allowFontScaling={false}  style={styles.leftTitle}>{movie.coupon_name}</Text>
+                        <Text allowFontScaling={false}  style={styles.leftBottom}>有效期:{coupon_begindate}-{coupon_enddate}</Text>
                     </View>
                     <View style={styles.rightContainer}>
                         <View style={styles.rightTitleContainer}>
-                            <Text style={[styles.rightTitle, styles.rightTitleAlign]}>¥</Text>
-                            <Text style={styles.rightTitle}>{movie.coupon_mny}</Text>
+                            <Text allowFontScaling={false}  style={[styles.rightTitle, styles.rightTitleAlign]}>¥</Text>
+                            <Text allowFontScaling={false}  style={styles.rightTitle}>{movie.coupon_mny}</Text>
                         </View>
                         <TouchableOpacity style={styles.rightBottom} onPress={() => {
                                 this.refs.cgdModal.changeShowType(true,movie.coupon_rule.coupon_remark);
                         }}>
                             <View>
-                                <Text style={styles.rightBottomText}>使用规则</Text>
+                                <Text allowFontScaling={false}  style={styles.rightBottomText}>使用规则</Text>
                             </View>
                         </TouchableOpacity>
                         {this.selected == rowId ? <Image style={styles.imgContainer} source={duigou}/> : null}
@@ -305,7 +306,7 @@ export  default class AdjustListScene extends BaseComponent {
             <TouchableOpacity activeOpacity={0.8} onPress={() => {
                 this.toNextPage(this.navigatorParams)
             }}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     color: 'white',
                     fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     textAlign: 'center',

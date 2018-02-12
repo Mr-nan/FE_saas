@@ -18,7 +18,7 @@ import MyButton from "../../component/MyButton";
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-var onePT = 1 / PixelRatio.get(); //一个像素
+let onePT = 1 / PixelRatio.get(); //一个像素
 
 export default class LoginInputText extends Component {
 
@@ -113,12 +113,12 @@ export default class LoginInputText extends Component {
                         : null
                 }
                 {this.props.leftText ?
-                    <Text style={styles.leftTextStyle}>{this.props.leftText}</Text>
+                    <Text allowFontScaling={false}  style={styles.leftTextStyle}>{this.props.leftText}</Text>
                     : null
                 }
 
                 {this.props.import ?
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: FontAndColor.COLORB2,
                         fontSize: FontAndColor.BUTTONFONT,
                         paddingRight: Pixel.getPixel(2)
@@ -142,6 +142,14 @@ export default class LoginInputText extends Component {
                         maxLength={this.props.maxLength}
                         secureTextEntry={this.props.secureTextEntry}
                         value={this.state.values}
+                        onFocus={
+                            this.props.foucsChange ? this.props.foucsChange : () => {}
+
+                        }
+                        onBlur={
+                            this.props.onMyBlur ? this.props.onMyBlur : () => {}
+
+                        }
                         editable={this.props.editable}
                         onChangeText={(text) => {
                             this.setState({

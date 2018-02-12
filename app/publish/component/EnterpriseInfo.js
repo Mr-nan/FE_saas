@@ -56,6 +56,7 @@ export default class EnterpriseInfo extends Component{
                 <View style={styles.container}>
                     <View>
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             renderRow={this._renderRow}
                         />
@@ -74,7 +75,7 @@ export default class EnterpriseInfo extends Component{
                 key={rowID}
                 onPress={()=>{this.props.enterpricePress(rowID),this._hiedModal()}}>
                 <View  style={styles.rowStyle}>
-                    <Text style={styles.fontMain}>{rowData.enterprise_name}</Text>
+                    <Text allowFontScaling={false}  style={styles.fontMain}>{rowData.enterprise_name}</Text>
                 </View>
             </TouchableOpacity>
         );

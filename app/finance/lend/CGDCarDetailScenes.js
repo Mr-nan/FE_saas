@@ -47,7 +47,6 @@ export default class CGDCarDetailScenes extends BaseComponent{
     }
 
     initFinish() {
-
         this.getCarInfo();
     }
 
@@ -160,7 +159,7 @@ export default class CGDCarDetailScenes extends BaseComponent{
                 let temp=this.state.carImageData.cloneWithPages(tempData);
                 return(
                     <View style={styles.ImageBackView}>
-                        <Text style={styles.thumbTitle}>{temptitle}</Text>
+                        <Text allowFontScaling={false}  style={styles.thumbTitle}>{temptitle}</Text>
                         <ImagePageView
                             dataSource={temp}    //数据源（必须）
                             renderPage={this.renderImagePage}     //page页面渲染方法（必须）
@@ -235,6 +234,7 @@ export default class CGDCarDetailScenes extends BaseComponent{
         return(
             <View style={styles.container}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop:64}}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}

@@ -108,7 +108,7 @@ class LabelSelect extends Component {
                 {selectedLabels}
                 <Modal
                     transparent={true}
-                    visible={this.state.isModalVisible}
+                    visible={false}
                     onRequestClose={() => {
                     }}>
                     <View style={{flex: 1}}>
@@ -119,7 +119,7 @@ class LabelSelect extends Component {
                             onPress={this.cancelSelect}>
                             <View style={Styles.modalContainer}>
                                 <View style={Styles.modal}>
-                                    <View style={Styles.title}><Text style={Styles.titleText}>{title}</Text></View>
+                                    <View style={Styles.title}><Text allowFontScaling={false}  style={Styles.titleText}>{title}</Text></View>
                                     <View style={Styles.scrollView}>
                                         <ScrollView>
                                             {modalItems}
@@ -130,13 +130,13 @@ class LabelSelect extends Component {
                                             underlayColor="transparent"
                                             style={Styles.modalButton}
                                             onPress={this.cancelSelect}>
-                                            <Text style={Styles.buttonText}>Cancel</Text>
+                                            <Text allowFontScaling={false}  style={Styles.buttonText}>Cancel</Text>
                                         </TouchableHighlight>
                                         <TouchableHighlight
                                             underlayColor="transparent"
                                             onPress={this.confirmSelect}
                                             style={[Styles.modalButton, Styles.confirmButton]}>
-                                            <Text style={Styles.buttonText}>Confirm</Text>
+                                            <Text allowFontScaling={false}  style={Styles.buttonText}>Confirm</Text>
                                         </TouchableHighlight>
                                     </View>
                                 </View>
@@ -197,7 +197,7 @@ class Label extends Component {
                         onCancel();
                     }
                 }}>
-                <Text
+                <Text allowFontScaling={false} 
                     style={[Styles.labelText, this.state.enable && Styles.disableText]}>{this.props.children}</Text>
 
                 {!readOnly && <TouchableOpacity
@@ -249,7 +249,7 @@ class ModalItem extends Component {
                 underlayColor="transparent"
                 onPress={this._toggleSelect}>
                 <View style={Styles.modalItem}>
-                    <Text style={Styles.modalText}>{this.props.children}</Text>
+                    <Text allowFontScaling={false}  style={Styles.modalText}>{this.props.children}</Text>
                     <View style={[Styles.outerCircle, this.isSelected ? Styles.enableCircle : {}]}>
                         {this.isSelected && <View style={Styles.innerCircle}/>}
                     </View>

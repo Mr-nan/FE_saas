@@ -33,9 +33,9 @@ let cityData = new Array;
 export default class CityListScene extends BaseComponent {
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
-        });
+        //});
 
     }
     _backIconClick = () => {
@@ -186,12 +186,12 @@ export default class CityListScene extends BaseComponent {
         return (
             <TouchableOpacity onPress={() => {
 
-                this._checkedCityClick({city_id:rowData.city_id,city_name:rowData.city_name,provice_id:0});
+                this._checkedCityClick({city_id:rowData.city_id,city_name:rowData.city_name,provice_id:rowData.prov_id});
                 {/*this.loadCarSeriesData(rowData.city_id,rowData.city_name)*/}
 
             }}>
                 <View style={styles.rowCell}>
-                    <Text style={styles.rowCellText}>{rowData.city_name}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.city_name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -202,7 +202,7 @@ export default class CityListScene extends BaseComponent {
 
         return (
             <View style={styles.sectionHeader}>
-                <Text style={styles.sectionText}>{sectionData}</Text>
+                <Text allowFontScaling={false}  style={styles.sectionText}>{sectionData}</Text>
             </View>
         );
     }
@@ -232,7 +232,7 @@ export default class CityListScene extends BaseComponent {
         return (
             this.props.unlimitedAction &&  <TouchableOpacity onPress={()=>{this.props.unlimitedAction();this.backPage();}}>
                 <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: 'white',
                         fontSize: Pixel.getFontPixel(fontAnColor.BUTTONFONT30),
                         textAlign: 'center',
@@ -259,6 +259,7 @@ export default class CityListScene extends BaseComponent {
                     this.state.dataSource && (
                         <ListView ref="listView"
                                   style={{flex: 1}}
+                                  removeClippedSubviews={false}
                                   dataSource={this.state.dataSource}
                                   renderRow={this.renderRow}
                                   renderSectionHeader={this.renderSectionHeader}
@@ -309,7 +310,7 @@ class ZNListIndexView extends Component{
                                 this.props.indexClick(index);
 
                             }}>
-                                <Text style={styles.indexItemText}>{data}</Text>
+                                <Text allowFontScaling={false}  style={styles.indexItemText}>{data}</Text>
                             </TouchableOpacity>
                         )
                     })

@@ -132,6 +132,7 @@ export default class SeeEmployeeInfoScene extends BaseComponent {
                     backIconClick={this.backPage}
                 />
                 <ListView
+                    removeClippedSubviews={false}
                     style={styles.listStyle}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -147,8 +148,8 @@ export default class SeeEmployeeInfoScene extends BaseComponent {
         return (
             <View style={styles.rowView}>
 
-                <Text style={styles.rowLeftTitle}>{rowData.title}</Text>
-                <Text style={styles.rowRightTitle}>{rowData.name }</Text>
+                <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.title}</Text>
+                <Text allowFontScaling={false}  style={styles.rowRightTitle}>{rowData.name }</Text>
 
             </View>
         );

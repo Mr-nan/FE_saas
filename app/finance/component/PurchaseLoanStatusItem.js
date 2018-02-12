@@ -65,11 +65,11 @@ export  default class PurchasePickerChildItem extends PureComponent {
                 </View>
                 <View style={{flex: 1}}>
                     <View style={{flex: 1, height: Pixel.getPixel(69.5)}}>
-                        <Text style={[{
+                        <Text allowFontScaling={false}  style={[{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             marginTop:Pixel.getPixel(18)
                         },this.props.index==0?{color: fontAndColor.COLORA0,}:{color: fontAndColor.COLORA1}]}>{this.props.items.info}</Text>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
                             color: fontAndColor.COLORA1,marginTop:Pixel.getPixel(10)
                         }}>{this.props.items.createtime}</Text>

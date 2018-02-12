@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">react-native-share-wechat</string>
+    <string name="picture">选择图片</string>
+    <string name="finish">完成</string>
+    <string name="folder_name">FolderName</string>
+    <string name="image_num">ImageNum</string>
+    <string name="all_folder">All Images</string>
+    <string name="sheet">sheet</string>
+    <string name="shoot">shoot</string>
+    <string name="temp_date">2015-4-1</string>
+    <string name="msg_no_camera">No system camera found</string>
+    <string name="msg_amount_limit">Select images amount is limit</string>
+</resources>

@@ -36,10 +36,10 @@ export default class AccountSecurity extends BaseComponent {
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
             // this.Verifycode();
-        });
+        //});
         StorageUtil.mGetItem(StorageKeyNames.LOGIN_TYPE, (data) => {
             this.setState({
                 loginType: data.result
@@ -82,7 +82,7 @@ export default class AccountSecurity extends BaseComponent {
                     })
                 }}>
                     <View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
-                        <Text style={styles.centerTextStyle}>修改密码</Text>
+                        <Text allowFontScaling={false}  style={styles.centerTextStyle}>修改密码</Text>
                         <Image source={require("./../../../images/mainImage/celljiantou.png")}
                                style={styles.rightImageStyle}/>
                     </View>
@@ -98,7 +98,7 @@ export default class AccountSecurity extends BaseComponent {
                     })
                 }}>
                     <View style={styles.itemStyle}>
-                        <Text style={styles.centerTextStyle}>手势密码</Text>
+                        <Text allowFontScaling={false}  style={styles.centerTextStyle}>手势密码</Text>
                         <Image source={require("./../../../images/mainImage/celljiantou@3x.png")}
                                style={styles.rightImageStyle}/>
                     </View>

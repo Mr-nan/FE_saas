@@ -46,9 +46,9 @@ export default class CompleteSignScene extends BaseComponent {
         let maps = {
             page: page,
             rows: 10,
-            api : Urls.CONTRACTLIST,
+            api : Urls.CONTRACT_CONTRACT_LIST,
             opt_user_id: this.props.opt_user_id,
-            sign_status: '3',
+            sign_status: '1',
         };        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
@@ -117,6 +117,7 @@ export default class CompleteSignScene extends BaseComponent {
             return (
                 <View style={styles.container}>
                     <ListView
+                        removeClippedSubviews={false}
                         contentContainerStyle={styles.listStyle}
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}
@@ -157,8 +158,8 @@ export default class CompleteSignScene extends BaseComponent {
                 }}>
                 <View style={styles.rowView}>
                     <View style={styles.rowLeft}>
-                        <Text style={styles.rowLeftTitle}>{rowData.contract_name}</Text>
-                        <Text style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.contract_name}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
                     </View>
                     <Image source={cellJianTou} style={styles.image}></Image>
 

@@ -39,7 +39,7 @@ export default class CarPriceAnalysisView extends Component{
         return(
             <View style={styles.rootContainer}>
                 <View style={styles.headView}>
-                    <Text style={styles.headTitle}>残值分析（万）</Text>
+                    <Text allowFontScaling={false}  style={styles.headTitle}>残值分析（万）</Text>
                 </View>
                 <View style={{backgroundColor:'white', flex:1,height:Pixel.getPixel(230)}}>
                     <View style={styles.columnarContainer}>
@@ -55,7 +55,7 @@ export default class CarPriceAnalysisView extends Component{
                         {
                             this.data.map((data,index)=>{
                                 return(
-                                    <Text style={styles.dateText} key={index}>{data.trend_date}</Text>
+                                    <Text allowFontScaling={false}  style={styles.dateText} key={index}>{data.trend_date}</Text>
                                 )
                             })
                         }
@@ -71,7 +71,7 @@ class ColumnarView extends  Component{
     render(){
         return(
             <View>
-                <Text style={styles.priceText}>{this.props.title}</Text>
+                <Text allowFontScaling={false}  style={styles.priceText}>{this.props.title}</Text>
                 <View style={[styles.columnarView,{height:Pixel.getPixel(this.props.height)-Pixel.getPixel(20),width:Pixel.getPixel(this.props.width)}]} />
             </View>
         )

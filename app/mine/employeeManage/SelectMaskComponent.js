@@ -59,6 +59,7 @@ export default class SelectMaskComponent extends Component {
                     <View>
 
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             renderRow={this._renderRow}
                         />
@@ -80,7 +81,7 @@ export default class SelectMaskComponent extends Component {
                     this.props.onClick(rowID), this._hideModal()
                 }}>
                 <View style={styles.rowStyle}>
-                    <Text style={styles.fontMain}>{rowData}</Text>
+                    <Text allowFontScaling={false}  style={styles.fontMain}>{rowData}</Text>
                 </View>
             </TouchableOpacity>
         );

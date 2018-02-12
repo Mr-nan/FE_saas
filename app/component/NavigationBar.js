@@ -73,14 +73,14 @@ export default class NavigationBar extends PureComponent {
                 }
 
 
-                <Text style={[styles.centerTextStyle, this.props.centerTextStyle]}>
+                <Text allowFontScaling={false}  style={[styles.centerTextStyle, this.props.centerTextStyle]}>
                     {this.props.centerText}
                 </Text>
 
                 {this.props.rightTextShow ?
-                    <MyButton buttonType={MyButton.TEXTBUTTON} content={this.props.rightText}
-                              childStyle={[styles.rightTextStyle, this.props.rightTextStyle]}
-                              mOnPress={this.props.rightTextCallBack}/>
+                        <MyButton buttonType={MyButton.TEXTBUTTON} content={this.props.rightText}
+                                  childStyle={[styles.rightTextStyle, this.props.rightTextStyle]}
+                                  mOnPress={ this.props.rightTextCallBack }/>
                     : null
                 }
 

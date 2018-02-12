@@ -50,7 +50,7 @@ export default class CarInfoNavigationView extends PureComponent {
                                       onPress={backIconClick}>
                     {backIconClick && <Image style={styles.backIcon} source={require('../../images/mainImage/navigatorBack.png')}/>}
                      </TouchableOpacity>
-                    <Text style={styles.titleText}>{title}</Text>
+                    <Text allowFontScaling={false}  style={styles.titleText}>{title}</Text>
                     <View style={styles.imageFoot}>
                         {
                             renderRihtFootView && renderRihtFootView()
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        // backgroundColor:'red',
+        // backgroundColor:'red
         width: Pixel.getPixel(80),
         marginRight:Pixel.getPixel(15),
 

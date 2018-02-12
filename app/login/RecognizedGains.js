@@ -83,6 +83,7 @@ export default class RecognizedGains extends BaseComponent {
                     style={{marginTop:Pixel.getPixel(15)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
+                    removeClippedSubviews={false}
                     renderSeparator={this._renderSeparator}
                     renderFooter={this.props.isShow?this._renderFooter:()=>{return <View/>}}
                 />
@@ -90,10 +91,15 @@ export default class RecognizedGains extends BaseComponent {
         );
     }
 
+    /**
+     * from @zhaojian
+     *
+     * 列表底部组件
+     **/
     _renderFooter = () => {
         let childitems = [];
         for (let i = 0; i < this.state.agreement.length; i++) {
-            childitems.push(<Text onPress={()=>{
+            childitems.push(<Text allowFontScaling={false}  onPress={()=>{
                 this.toNextPage({name:'ContractInfoScene',component:ContractInfoScene,params:
                 {title:this.state.agreement[i].name,
                 webUrl:this.state.agreement[i].url}});
@@ -102,20 +108,20 @@ export default class RecognizedGains extends BaseComponent {
         }
         return (
             <View>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     color: FontAndColor.COLORA0,
                     paddingLeft: Pixel.getPixel(15),
                     paddingRight: Pixel.getPixel(15),
                     fontSize: Pixel.getPixel(FontAndColor.CONTENTFONT24),
                     paddingTop: Pixel.getPixel(10),
                     paddingBottom: Pixel.getPixel(10),
-                }}><Text style={{color: FontAndColor.COLORA1}}>
+                }}><Text allowFontScaling={false}  style={{color: FontAndColor.COLORA1}}>
                     如上借据内车辆使用车贷微单额度，需要点击确认后完成最终放款</Text></Text>
                 <View style={{width:width,height:Pixel.getPixel(60)}}>
 
-                    <Text
+                    <Text allowFontScaling={false} 
                         style={{lineHeight: 25,paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(7)}}>
-                        <Text style={{color:FontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
+                        <Text allowFontScaling={false}  style={{color:FontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
                             {'         我已详细阅读并同意'}</Text>
                         {childitems}
                     </Text>
@@ -144,11 +150,16 @@ export default class RecognizedGains extends BaseComponent {
         );
     }
 
+    /**
+     * from @zhaojian
+     *
+     * 绘制列表每一行
+     **/
     _renderRow = (data, sindex, rowID) => {
         return (
             <TouchableOpacity style={styles.itemStyle} onPress={() => this.finshPage(data)}>
-                <Text style={[styles.itemIconStyle, {flex: 1}]}>{data.loan_number}</Text>
-                <Text style={styles.itemTextStyle}>{data.money_str}</Text>
+                <Text allowFontScaling={false}  style={[styles.itemIconStyle, {flex: 1}]}>{data.loan_number}</Text>
+                <Text allowFontScaling={false}  style={styles.itemTextStyle}>{data.money_str}</Text>
             </TouchableOpacity>
 
         )
@@ -226,7 +237,6 @@ export default class RecognizedGains extends BaseComponent {
                 this.props.callBack();
                 this.backPage();
             }, (error) => {
-                this.props.showModal(false);
                 if (error.mycode == -300 || error.mycode == -500) {
                     this.props.showToast("获取失败");
                 } else {

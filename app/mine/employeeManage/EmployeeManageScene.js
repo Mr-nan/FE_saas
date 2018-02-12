@@ -18,7 +18,7 @@ import {request} from '../../utils/RequestUtil';
 import SeeEmployeeInfoScene from '../employeeManage/SeeEmployeeInfoScene';
 // import AddEmployeeScene from '../employeeManage/AddEmployeeScene';
 import AddEmployeeScene from '../employeeManage/NewAddEmployeeScene';
-import EditEmployeeScene from '../employeeManage/EditEmployeeScene';
+import NewEditEmployeeScene from '../employeeManage/NewEditEmployeeScene';
 
 import BaseComponent from "../../component/BaseComponent";
 import NavigationView from '../../component/AllNavigationView';
@@ -48,7 +48,9 @@ export default class EmployeeManageScene extends BaseComponent {
 
     getData = () => {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        request(AppUrls.BASEURL + 'v1/user.employee/index', 'Post', {})
+        request(AppUrls.BASEURL + 'v1/user.employee/index', 'Post', {
+            enterprise_uid:global.companyBaseID
+        })
             .then((response) => {
                     if (response.mjson.data == null || response.mjson.data.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
@@ -101,6 +103,7 @@ export default class EmployeeManageScene extends BaseComponent {
                     {/**      导航栏          */}
 
                     <ListView
+                        removeClippedSubviews={false}
                         style={styles.listStyle}
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}
@@ -150,21 +153,21 @@ export default class EmployeeManageScene extends BaseComponent {
             <View style={styles.rowView}>
                 <View style={styles.rowLeft}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={styles.rowLeftTitle}>{rowData.username}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.username}</Text>
                         <View
                             style={[styles.employeeStyle, rowData.role === '财务' && {borderColor: fontAndClolr.COLORB3}, (rowData.role === '收车人员' || rowData.role==='销售')&& {borderColor: fontAndClolr.COLORB1}]}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={[styles.employeeText, rowData.role === '财务' && {color: fontAndClolr.COLORB3}, (rowData.role === '收车人员' || rowData.role==='销售') && {color: fontAndClolr.COLORB1}]}>{rowData.role}</Text>
                         </View>
                     </View>
-                    <Text style={styles.rowLeftTitle1}>{rowData.company}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowLeftTitle1}>{rowData.company}</Text>
                 </View>
                 <TouchableOpacity
                     style={styles.buttonStyle}
                     onPress={() => {
                         this.toNextPage({
-                            name: 'EditEmployeeScene',
-                            component: EditEmployeeScene,
+                            name: 'NewEditEmployeeScene',
+                            component: NewEditEmployeeScene,
                             params: {
                                 callBack: () => {
                                     this.setState({renderPlaceholderOnly: 'loading'});
@@ -184,7 +187,7 @@ export default class EmployeeManageScene extends BaseComponent {
                     }}>
                     <View style={{flexDirection: 'row'}}>
                         <Image source={require('../../../images/edit_icon.png') } style={styles.image}/>
-                        <Text style={styles.rowRightTitle}>编辑</Text>
+                        <Text allowFontScaling={false}  style={styles.rowRightTitle}>编辑</Text>
                     </View>
 
                 </TouchableOpacity>
@@ -206,7 +209,7 @@ export default class EmployeeManageScene extends BaseComponent {
                     }}>
                     <View style={{flexDirection: 'row'}}>
                         <Image source={require('../../../images/check_iocn.png') } style={styles.image}/>
-                        <Text style={styles.rowRightTitle}>查看</Text>
+                        <Text allowFontScaling={false}  style={styles.rowRightTitle}>查看</Text>
                     </View>
 
                 </TouchableOpacity>

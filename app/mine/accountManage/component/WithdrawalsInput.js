@@ -36,11 +36,13 @@ export  default class WithdrawalsInput extends PureComponent {
     render() {
         return (
             <View style={{flex:2,flexDirection: 'row',}}>
-                <Text style={{fontSize: Pixel.getFontPixel(22),color: '#000',fontWeight: 'bold',marginTop:Pixel.getPixel(15)}}>
+                <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(22),color: '#000',fontWeight: 'bold',marginTop:Pixel.getPixel(15)}}>
                     ¥</Text>
                 <TextInput style={{fontSize: Pixel.getFontPixel(38),color: '#000',fontWeight: 'bold',width:width}}
                            returnKeyType={"search"}
                            placeholder={'提现金额'}
+                           keyboardType={'numeric'}
+                           maxLength={11}
                            underlineColorAndroid={"#00000000"}
                            value={this.state.value}
                            onChangeText={this.goSearch}/>
@@ -49,9 +51,21 @@ export  default class WithdrawalsInput extends PureComponent {
         );
     }
 
+    chkPrice=(obj)=> {
+        obj = obj.replace(/[^\d.]/g, "");
+        //必须保证第一位为数字而不是.
+        obj = obj.replace(/^\./g, "");
+        //保证只有出现一个.而没有多个.
+        obj = obj.replace(/\.{2,}/g, ".");
+        //保证.只出现一次，而不能出现两次以上
+        obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        return obj;
+    }
+
     goSearch = (text) => {
+        let test = this.chkPrice(text)
             this.setState({
-                value: text
+                value: test
             });
     }
 

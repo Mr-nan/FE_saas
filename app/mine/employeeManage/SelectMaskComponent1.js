@@ -97,6 +97,7 @@ export default class SelectMaskComponent extends Component {
                     <View>
 
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             renderRow={this._renderRow}
                         />
@@ -118,7 +119,7 @@ export default class SelectMaskComponent extends Component {
                     this.isSelect(rowID)
                 }}>
                 <View style={styles.rowStyle}>
-                    <Text
+                    <Text allowFontScaling={false} 
                         style={[styles.fontMain, rowData.selected && {color: fontAndColor.COLORB0}]}>{rowData.enterprise_name}</Text>
                 </View>
             </TouchableOpacity>

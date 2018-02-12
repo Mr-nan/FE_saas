@@ -26,7 +26,7 @@ import * as Urls from '../constant/appUrls';
 import CarInfoScene from './CarInfoScene';
 var screenWidth = Dimensions.get('window').width;
 import  AllLoading from '../component/AllLoading';
-import  LoadMoreFooter from '../carSource/znComponent/LoadMoreFooter';
+import  LoadMoreFooter from './znComponent/LoadMoreFooter';
 let allSouce = [];
 export default class BrowsingHistoryScene extends BaceComponent {
 
@@ -135,12 +135,10 @@ export default class BrowsingHistoryScene extends BaceComponent {
         request(Urls.USER_HISTORY_DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
-                    this.props.showModal(false);
                     this.props.showToast('删除成功');
                     this.getData();
                 },
                 (error) => {
-                    this.props.showModal(false);
                     this.props.showToast('删除失败');
                 });
     }
@@ -151,13 +149,11 @@ export default class BrowsingHistoryScene extends BaceComponent {
         request(Urls.USER_HISTORY_DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
-                    this.props.showModal(false);
                     this.props.showToast('删除成功');
                     page = 1;
                     this.getData();
                 },
                 (error) => {
-                    this.props.showModal(false);
                     this.props.showToast('删除失败');
                 });
     }
@@ -175,6 +171,7 @@ export default class BrowsingHistoryScene extends BaceComponent {
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
                           dataSource={this.state.carData}
                           showsVerticalScrollIndicator={false}
+                          removeClippedSubviews={false}
                           renderRow={(rowData) =>
                           <CarCell from="BrowsingHistoryScene" items={rowData} mOnPress={(id)=>{
                                if(rowData.status==3){
@@ -219,7 +216,8 @@ export default class BrowsingHistoryScene extends BaceComponent {
             this.refs.allloading.changeShowType(true,'确认清空吗？');
         }}>
                 <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
-                <Text style={{
+                <Text allowFontScaling={false} 
+                    style={{
                     color: 'white',
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     textAlign: 'center',

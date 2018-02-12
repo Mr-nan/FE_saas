@@ -7,7 +7,7 @@ import {
     Text
 } from 'react-native';
 import AllNavigatior from '../../component/AllNavigationView'
-import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton,CGDCarItems} from './component/ComponentBlob'
+import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton, CGDCarItems} from './component/ComponentBlob'
 import {
     width,
     height,
@@ -27,7 +27,7 @@ import ImagePageView from 'react-native-viewpager'
 import AmountConfirm from './AmountConfirm';
 import CGDCarDetailScenes from './CGDCarDetailScenes'
 import PurchaseLoanStatusScene from './PurchaseLoanStatusScene'
-import {LendSuccessAlert,ModalAlert} from './component/ModelComponent'
+import {LendSuccessAlert, ModalAlert} from './component/ModelComponent'
 let ControlState = [];
 let loan_code;
 import ContractInfoScene from './ContractInfoScene';
@@ -67,7 +67,7 @@ export default class OrderCarDetailScene extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
-                    ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.payment_schedule))
+                    ControlState = this.confimOrderState(parseInt(tempjson.payment_status), parseInt(tempjson.payment_schedule))
 
                     this.getCarListInfo(tempjson);
                 },
@@ -126,7 +126,7 @@ export default class OrderCarDetailScene extends BaseComponent {
         }
         this.toNextPage(navigatorParams);
     }
-    canclelend=()=>{
+    canclelend = () => {
 
         let maps = {
             api: apis.CANCEL_LOAN,
@@ -183,10 +183,10 @@ export default class OrderCarDetailScene extends BaseComponent {
                         model_name: item.model_name,
                         init_reg: item.init_reg,
                         base_id: item.base_id,
-                        mileage:item.mileage,
-                        invoice_upload_status:item.invoice_upload_status,
-                        obd_audit_status:item.obd_audit_status,
-                        invoice_audit_status:item.invoice_audit_status
+                        mileage: item.mileage,
+                        invoice_upload_status: item.invoice_upload_status,
+                        obd_audit_status: item.obd_audit_status,
+                        invoice_audit_status: item.invoice_audit_status
                     }
                 )
                 dataSource['section2'] = tempCarDate;
@@ -195,21 +195,28 @@ export default class OrderCarDetailScene extends BaseComponent {
         return dataSource;
     }
 
-    confimOrderState = (state, isComplete) => {
+    /**
+     * from @zhaojian
+     *
+     * 根据状态给予对应名称
+     **/
+    confimOrderState = (state, isComplete, status) => {
         let NameBlobs = [];
-
-        if (state > 0 && state <= 32 || state == 50) {
-            NameBlobs = ['取消借款']
-        } else if (state == 33) {
-            NameBlobs = ['取消借款', '确认金额']
-        } else if (state === 35) {
-            NameBlobs = ['取消借款','签署合同']
-        } else if (state == 40 || state == 42 || isComplete == 4) {
-            NameBlobs = ['查看合同']
-        } else if (state == 41) {
-            NameBlobs = ['取消借款', '确认金额', '查看合同']
+        if (status == '8') {
+            NameBlobs = ['资金方签署中']
+        } else {
+            if (state > 0 && state <= 32 || state == 50) {
+                NameBlobs = ['取消借款']
+            } else if (state == 33) {
+                NameBlobs = ['取消借款', '确认金额']
+            } else if (state === 35) {
+                NameBlobs = ['取消借款', '签署合同']
+            } else if (state == 40 || state == 42 || isComplete == 4) {
+                NameBlobs = ['查看合同']
+            } else if (state == 41) {
+                NameBlobs = ['取消借款', '确认金额', '查看合同']
+            }
         }
-
         return NameBlobs;
     }
 
@@ -244,11 +251,11 @@ export default class OrderCarDetailScene extends BaseComponent {
         if (sectionID === 'section2') {
             //
             return (<CGDCarItems url={rowData.icon} title={rowData.model_name}
-                                invoice_upload_status ={rowData.invoice_upload_status}
-                                obd_bind_status={rowData.obd_bind_status}
-                                obd_audit_status={rowData.obd_audit_status}
-                                invoice_audit_status={rowData.invoice_audit_status}
-                                date={rowData.init_reg+' / '+rowData.mileage+'万公里'}  onPress={() => {
+                                 invoice_upload_status={rowData.invoice_upload_status}
+                                 obd_bind_status={rowData.obd_bind_status}
+                                 obd_audit_status={rowData.obd_audit_status}
+                                 invoice_audit_status={rowData.invoice_audit_status}
+                                 date={rowData.init_reg+' / '+rowData.mileage+'万公里'} onPress={() => {
                 this.carItemClick(rowData.info_id);
             }}/>)
         }
@@ -260,7 +267,7 @@ export default class OrderCarDetailScene extends BaseComponent {
 
             return (
                 <View style={styles.section2Style}>
-                    <Text style={styles.sectionText}>车辆信息</Text>
+                    <Text allowFontScaling={false} style={styles.sectionText}>车辆信息</Text>
                 </View>
             )
         }
@@ -298,14 +305,24 @@ export default class OrderCarDetailScene extends BaseComponent {
         } else if (title == '签署合同') {
             this.toNextPage({
                 name: 'ContractInfoScene', component: ContractInfoScene,
-                params: {loan_code: loan_code, showButton: true}
+                params: {
+                    loan_code: loan_code, showButton: true, callbackfresh: () => {
+                        this.initFinish();
+                        this.props.backRefresh();
+                    }
+                }
             })
         } else if (title == '查看合同') {
             this.toNextPage({
                 name: 'ContractInfoScene', component: ContractInfoScene,
                 params: {loan_code: loan_code, showButton: false}
             })
-        }else if (title == '取消借款'){
+        } else if (title == '资金方签署中') {
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene,
+                params: {loan_code: loan_code, showButton: false}
+            })
+        } else if (title == '取消借款') {
 
             this.cancle.setModelVisible(true);
         }
@@ -343,6 +360,7 @@ export default class OrderCarDetailScene extends BaseComponent {
 
             <View style={styles.container}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={commnetStyle.ListWarp}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
@@ -354,11 +372,12 @@ export default class OrderCarDetailScene extends BaseComponent {
                     this.backPage();
                 }}/>
 
-                <ModalAlert ref={(deleteCar)=>{this.cancle=deleteCar}} title='取消借款'subtitle='您确定要取消借款' confimClick={(setHide)=>{
+                <ModalAlert ref={(deleteCar)=>{this.cancle=deleteCar}} title='取消借款' subtitle='您确定要取消借款' confimClick={(setHide)=>{
                     setHide(false);
                     this.canclelend();
                 }} cancleClick={(setHide)=>{setHide(false)}}/>
-                <LendSuccessAlert  title="取消成功"subtitle='恭喜您取消成功' ref={(success)=>{this.cancleSuccess=success}} confimClick={()=>{
+                <LendSuccessAlert title="取消成功" subtitle='恭喜您取消成功' ref={(success)=>{this.cancleSuccess=success}}
+                                  confimClick={()=>{
                       this.props.backRefresh();
                       this.backToTop()
                 }}/>

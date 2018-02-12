@@ -8,7 +8,8 @@ import {
     Dimensions,
     TouchableOpacity,
     InteractionManager,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    NativeModules
 } from "react-native";
 import PwdGesture from "../gesture/PwdGesture";
 import BaseComponent from "../component/BaseComponent";
@@ -18,12 +19,12 @@ import NavigationBar from "../component/NavigationBar";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import LoginScene from "./LoginScene";
-import MainPage from "../main/MainPage";
+import AllSelectCompanyScene from "../main/AllSelectCompanyScene";
 
 let Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
-
+var Platform = require('Platform');
 let Password = '';
 export default class GesturePassword extends BaseComponent {
     constructor(props) {
@@ -39,36 +40,34 @@ export default class GesturePassword extends BaseComponent {
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-            // this.Verifycode();
-        });
-
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1) {
                 if (data.result != null) {
-                    this.setState({
-                        phone: data.result,
-                    });
-                    StorageUtil.mGetItem(data.result + "", (data) => {
-                        if (data.code == 1) {
-                            if (data.result != null) {
-                                Password = data.result;
+                    StorageUtil.mGetItem(data.result + "", (datass) => {
+                        if (datass.code == 1) {
+                            if (datass.result != null) {
+                                Password = datass.result;
                             } else {
                                 Password = "";
                             }
+                            StorageUtil.mGetItem(StorageKeyNames.HEAD_PORTRAIT_URL, (datas) => {
+                                if (datas.code == 1) {
+                                    if (datas.result != null) {
+                                        this.setState({
+                                            url: datas.result,
+                                            renderPlaceholderOnly: false,
+                                            phone: data.result,
+                                        });
+                                    }else{
+                                        this.setState({
+                                            renderPlaceholderOnly: false,
+                                            phone: data.result,
+                                        });
+                                    }
+                                }
+                            })
                         }
                     })
-                }
-            }
-        })
-
-        StorageUtil.mGetItem(StorageKeyNames.HEAD_PORTRAIT_URL, (data) => {
-            if (data.code == 1) {
-                if (data.result != null) {
-                    this.setState({
-                        url: data.result,
-                    });
                 }
             }
         })
@@ -97,10 +96,11 @@ export default class GesturePassword extends BaseComponent {
                 NavigationBar={
                     <View style={styles.topStyle}>
                         <NavigationBar
-                            leftImageShow={true}
-                            leftTextShow={false}
+                            leftImageShow={false}
+                            leftTextShow={true}
                             centerText={"解锁手势密码"}
                             rightText={""}
+                            leftText={""}
                             leftImage={require('./../../images/login/left_cancle.png')}
                             leftImageCallBack={this.backPage}/>
 
@@ -109,9 +109,10 @@ export default class GesturePassword extends BaseComponent {
                             <Image style={styles.avatarStyle}
                                    source={require("./../../images/mainImage/zhanghuguanli.png")}/>}
 
-                        <Text style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
+                        <Text allowFontScaling={false} style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
 
-                        <Text style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
+                        <Text allowFontScaling={false}
+                              style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
                             {this.state.message}
                         </Text>
                     </View>
@@ -129,14 +130,14 @@ export default class GesturePassword extends BaseComponent {
                             StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                             this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
-                            <Text style={styles.bottomLeftSytle}>忘记手势密码？</Text>
+                            <Text allowFontScaling={false} style={styles.bottomLeftSytle}>忘记手势密码？</Text>
                         </TouchableOpacity>
                         <View style={{flex: 1}}/>
                         <TouchableOpacity onPress={() => {
                             StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                             this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
-                            <Text style={styles.bottomRightSytle}>切换登录</Text>
+                            <Text allowFontScaling={false} style={styles.bottomRightSytle}>切换登录</Text>
                         </TouchableOpacity>
                     </View>
                 }
@@ -164,13 +165,17 @@ export default class GesturePassword extends BaseComponent {
                 status: 'right',
                 message: '验证成功',
             });
-            StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
-            if (this.props.from == 'RootScene') {
-                this.loginPage({name: 'MainPage', component: MainPage});
-            } else {
-                this.props.callBack();
-                this.backPage();
+            if (Platform.OS === 'android') {
+                NativeModules.GrowingIOModule.setCS1("user_id", this.state.phone);
+            }else {
+               // NativeModules.growingSetCS1("user_id", this.state.phone);
             }
+            StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
+            StorageUtil.mGetItem(StorageKeyNames.USER_LEVEL, (data) => {
+                if (data.code == 1) {
+                    this.loginPage({name: 'AllSelectCompanyScene', component: AllSelectCompanyScene});
+                }
+            })
         } else {
             this.setState({
                 status: 'wrong',

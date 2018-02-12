@@ -58,7 +58,7 @@ export default class EditIndicator extends Component{
                     activeOpacity={0.6}
                     onPress={()=>{this._onPress(data.page)}}>
                     <View style={styles.centerItem}>
-                        <Text style={isTabActive ? styles.selectText : styles.defaultText}>{data.title}</Text>
+                        <Text allowFontScaling={false}  style={isTabActive ? styles.selectText : styles.defaultText}>{data.title}</Text>
                         <Image style={styles.imgContainer} source={isTabActive ? select : unselect}/>
                     </View>
                 </TouchableOpacity>

@@ -40,10 +40,10 @@ export  default class InventoryRepaymentPage extends BaseComponent {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
-        });
+       // });
     }
 
     componentWillUnmount() {
@@ -118,6 +118,7 @@ export  default class InventoryRepaymentPage extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -162,23 +163,23 @@ export  default class InventoryRepaymentPage extends BaseComponent {
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
                         <MyButton {...this.buttonParams} content="库融"/>
-                        <Text style={styles.rowTopTextStyle}>{this.props.customerName}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowTopTextStyle}>{this.props.customerName}</Text>
                     </View>
                     <View style={[styles.rowTopViewStyle, {
                         flex: 2,
                         justifyContent: 'flex-end'
                     }]}>
-                        <Text style={styles.rowTopGrayTextStyle}>{movie.loan_number}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowTopGrayTextStyle}>{movie.loan_number}</Text>
                     </View>
                 </View>
                 <View style={[styles.line]}></View>
                 <View
                     style={[styles.centerView]}>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'center',flexDirection:'row',justifyContent:'flex-start'}]}>
-                        <Text style={[styles.centerText,{color: fontAndColor.COLORA1}]}>
+                        <Text allowFontScaling={false}  style={[styles.centerText,{color: fontAndColor.COLORA1}]}>
                             到账日期:
                         </Text>
-                        <Text style={[styles.centerText,{color: fontAndColor.COLORA0}]}>
+                        <Text allowFontScaling={false}  style={[styles.centerText,{color: fontAndColor.COLORA0}]}>
                             {movie.dead_line_str}
                         </Text>
                     </View>

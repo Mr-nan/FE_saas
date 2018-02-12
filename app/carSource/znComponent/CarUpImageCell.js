@@ -29,7 +29,6 @@ export  default class CarUpImageCell extends PureComponent {
     constructor(props) {
         super(props);
 
-        console.log(this.props.childList.length);
         this.state = {
             childMovie: this.props.childList
         };
@@ -87,9 +86,9 @@ export  default class CarUpImageCell extends PureComponent {
         return (
             <View style={styles.parentView}>
                 <View style={{width: width, marginTop: Pixel.getPixel(15), flexDirection: 'row'}}>
-                    {movie.explain=='1'?<Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORB2}}>*</Text>:<View/>}
-                    <Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA0}}>{movie.title}</Text>
-                    <Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA1}}>({movie.subTitle})</Text>
+                    {movie.explain=='1'?<Text allowFontScaling={false}  style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORB2}}>*</Text>:<View/>}
+                    <Text allowFontScaling={false}  style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA0}}>{movie.title}</Text>
+                    <Text allowFontScaling={false}  style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA1}}>({movie.subTitle})</Text>
                 </View>
                 <View style={{width: width, marginTop: Pixel.getPixel(7), flexDirection: 'row', flexWrap: 'wrap'}}>
                     {movieItems}
@@ -129,47 +128,14 @@ export  default class CarUpImageCell extends PureComponent {
             });
         }
 
-    openPicker=()=>{
-        const options = {
-            //弹出框选项
-            title: '请选择',
-            cancelButtonTitle: '取消',
-            takePhotoButtonTitle: '拍照',
-            chooseFromLibraryButtonTitle: '选择相册',
-            allowsEditing: false,
-            noData: false,
-            quality: 1.0,
-            maxWidth: 480,
-            maxHeight: 800,
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            }
-        };
-        ImagePicker.launchImageLibrary(options, (response) => {
-            if (response.didCancel) {}
-            else if (response.error) {}
-            else if (response.customButton) {}
-            else {
-                this._uploadPicture(response);
-            }
-        });
-    }
-
-    openCamera=()=>{
-        NativeModules.CustomCamera.takePic().then((response) => {
-            this._uploadPicture(response);
-        }, (error) => {
-
-        })
-    }
 
     _uploadPicture = (responses)=>{
         this.props.showModal(true);
+        let base64 = encodeURI(responses.data).replace(/\+/g,'%2B');
         let params ={
-            file:'data:image/jpeg;base64,' + encodeURI(responses.data).replace(/\+/g,'%2B')
+            file:'data:image/jpeg;base64,' + base64
         };
-        ImageUpload.request(MyUrl.INDEX_UPLOAD,'Post',params).then(
+        ImageUpload.request(MyUrl.INDEX_UPLOAD,'post',params).then(
             (response)=>{
                 this.props.showModal(false);
                 if(response.mycode === 1){
@@ -177,7 +143,7 @@ export  default class CarUpImageCell extends PureComponent {
                     let news =[];
                     news.push(...this.state.childMovie);
                     news.push({url: response.mjson.data.url,file_id:response.mjson.data.file_id});
-                    this.props.results.push({url: response.mjson.data.url,file_id:response.mjson.data.file_id,name:this.props.items.name});
+                    this.props.results.push({url: response.mjson.data.url,file_id:response.mjson.data.file_id,name:this.props.items.name,});
                     this.props.retureSaveAction();
                     this.setState({
                         childMovie:news,

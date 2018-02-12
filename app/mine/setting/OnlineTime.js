@@ -29,10 +29,10 @@ export default class OnlineTime extends BaseComponent {
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
             // this.Verifycode();
-        });
+        //});
     }
 
     render() {
@@ -65,7 +65,7 @@ export default class OnlineTime extends BaseComponent {
                 <TouchableOpacity style={styles.itemStyle} onPress={() => {
                     alert("5分钟")
                 }}>
-                    <Text style={styles.centerTextStyle}>5分钟</Text>
+                    <Text allowFontScaling={false}  style={styles.centerTextStyle}>5分钟</Text>
                 </TouchableOpacity>
 
                 <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
@@ -73,7 +73,7 @@ export default class OnlineTime extends BaseComponent {
                 <TouchableOpacity style={styles.itemStyle} onPress={() => {
                     alert("10分钟")
                 }}>
-                    <Text style={styles.centerTextStyle}>10分钟</Text>
+                    <Text allowFontScaling={false}  style={styles.centerTextStyle}>10分钟</Text>
                 </TouchableOpacity>
 
                 <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
@@ -81,11 +81,11 @@ export default class OnlineTime extends BaseComponent {
                 <TouchableOpacity style={styles.itemStyle} onPress={() => {
                     alert("15分钟")
                 }}>
-                    <Text style={styles.centerTextStyle}>15分钟</Text>
+                    <Text allowFontScaling={false}  style={styles.centerTextStyle}>15分钟</Text>
                 </TouchableOpacity>
 
                 <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     marginTop: Pixel.getPixel(22),
                     fontSize: Pixel.getFontPixel(12),
                     color: FontAndColor.COLORA1,

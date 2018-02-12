@@ -23,7 +23,7 @@ import ContractManageScene from './ContractManageScene';
 const {width, height} = Dimensions.get('window');
 export default class AdjustManageScene extends BaseComponent {
     initFinish = () => {
-        let select = ["售后回租合同","非售后回租合同"];
+        let select = ["售后回租合同"];
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
             dataSource:ds.cloneWithRows(select),
@@ -55,6 +55,7 @@ export default class AdjustManageScene extends BaseComponent {
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(74)}}
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
+                          removeClippedSubviews={false}
                           enableEmptySections = {true}
                 />
 
@@ -76,8 +77,8 @@ export default class AdjustManageScene extends BaseComponent {
                 activeOpacity={0.9}
             >
                 <View style={styles.rowView} >
-                    <Text style={styles.rowLeftTitle}>{rowData}</Text>
-                    <Text style={styles.rowRightTitle} ></Text>
+                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowRightTitle} ></Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>

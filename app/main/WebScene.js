@@ -23,6 +23,9 @@ import NavigationView from '../component/AllNavigationView';
 import * as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 let oldUrl = '';
+import WebViewTitle from '../mine/accountManage/component/WebViewTitle';
+import CarInfoScene from '../carSource/CarInfoScene';
+import MainPage from './MainPage'
 export  default class WebScene extends BaseComponent {
 
     constructor(props) {
@@ -35,16 +38,22 @@ export  default class WebScene extends BaseComponent {
 
     componentDidMount() {
         oldUrl = this.props.webUrl;
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
+
+        } finally {
+            //InteractionManager.runAfterInteractions(() => {
+                this.setState({renderPlaceholderOnly: false});
+            //});
+        }
     }
 
     handleBack = () => {
-        if(oldUrl==this.props.webUrl){
+        this.props.showModal(false);
+        if (oldUrl == this.props.webUrl) {
             this.backPage();
-        }else{
+        } else {
             this.refs.www.goBack();
         }
         return true;
@@ -57,32 +66,70 @@ export  default class WebScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+                <WebViewTitle ref="webviewtitle"/>
                 <WebView
                     ref="www"
-                    style={{width:width,height:height,backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                    style={{width:width,height:height,backgroundColor:
+                    fontAndColor.COLORA3}}
                     source={{uri:this.props.webUrl,method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
+                    onLoadStart={()=>{
+                        this.refs.webviewtitle.firstProgress();
+                    }}
+                    onLoadEnd={()=>{
+                         this.refs.webviewtitle.lastProgress();
+                    }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
                 <NavigationView
-                    title="公告"
+                    title= {this.props.title?this.props.title:'公告'}
                     backIconClick={()=>{
+                         this.props.showModal(false);
+                        console.log(this.props.webUrl)
                         if(oldUrl==this.props.webUrl){
                                 this.backPage();
+
                         }else{
                             this.refs.www.goBack();
                         }
-
                     }}
                 />
             </View>
         );
     }
 
-    onNavigationStateChange=(navState)=> {
-        oldUrl=navState.url;
+    onNavigationStateChange = (navState) => {
+        oldUrl = navState.url;
+        let urls = oldUrl.split('?');
+        if (urls[0] == 'http://dycd.tocarsource.com/') {
+            let id = urls[1].replace('id=','');
+            let navigatorParams = {
+                name: "CarInfoScene",
+                component: CarInfoScene,
+                params: {
+                    carID: id,
+                    from:'webview'
+                }
+            };
+            let mainParams = {
+                name: "MainPage",
+                component: MainPage,
+                params: {
+                }
+            };
+            this.loginPage(navigatorParams,mainParams)
+        }
+    }
+
+    loginPage = (mProps,mainParams) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{...mainParams},{
+                ...mProps
+            }])
+        }
     }
 
     _renderPlaceholderView() {
@@ -90,7 +137,10 @@ export  default class WebScene extends BaseComponent {
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 <NavigationView
                     title="公告"
-                    backIconClick={this.backPage}
+                    backIconClick={()=>{
+                         this.props.showModal(false);
+                        this.backPage();
+                    }}
                 />
             </View>
         );

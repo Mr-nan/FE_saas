@@ -53,6 +53,7 @@ export  default class FrozenScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -74,10 +75,10 @@ export  default class FrozenScene extends BaseComponent {
                     paddingRight:Pixel.getPixel(15)
                 }}>
                 <View style={{flex:1,justifyContent:'center'}}>
-                    <Text style={{color:'#000',fontSize: Pixel.getFontPixel(14)}}>{movie.title}</Text>
+                    <Text allowFontScaling={false}  style={{color:'#000',fontSize: Pixel.getFontPixel(14)}}>{movie.title}</Text>
                 </View>
                 <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                    <Text style={{color:fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(14)}}>{movie.value}</Text>
+                    <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(14)}}>{movie.value}</Text>
                 </View>
             </View>
         )

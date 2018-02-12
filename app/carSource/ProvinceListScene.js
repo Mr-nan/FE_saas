@@ -21,22 +21,37 @@ import AllNavigationView   from '../component/AllNavigationView';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
+import *as appUrls from '../constant/appUrls';
+import {request} from "../utils/RequestUtil";
+
+
+
 const provinceData = (require('./carData/carFilterData.json')).provinceSource;
 const SceneWidth = Dimensions.get('window').width;
 
 let selectData={
+
     city_name:'',
-    provinceID:0,
-    cityID:0,
+    provice_id:0,
+    provice_name:'',
+    city_id:0,
 
 };
 
  export default class ProvinceListScene extends BaseComponent{
 
+     componentWillMount() {
+         selectData.provice_id = 0;
+         selectData.provice_name = 0;
+         selectData.city_name='';
+         selectData.city_id=0;
+     }
+
     // 构造
       constructor(props) {
         super(props);
         // 初始状态
+
 
           this.titleArray = [];
 
@@ -80,16 +95,21 @@ let selectData={
           this.backPage();
     }
 
+    loadModel=(type)=>{
+        this.props.showModal(type);
+    }
+
     render(){
         return(
             <View style={styles.rootContainer}>
                 <ListView
                     ref="listView"
                     dataSource={this.state.dataSource}
+
                     renderSectionHeader={(sectionData)=>{
                         return(
                             <View style={styles.sectionHeader}>
-                                <Text style={styles.sectionText}>{sectionData}</Text>
+                                <Text allowFontScaling={false}  style={styles.sectionText}>{sectionData}</Text>
                             </View>
                         )
                     }}
@@ -104,22 +124,43 @@ let selectData={
                     }}}/>
                 <ZNListIndexView indexTitleArray={this.titleArray} indexClick={this._indexAndScrollClick}/>
                 {
-                    this.state.isShowCityList && (<CityList checkedCityClick={this._checkedCityClick}/>)
+                    this.state.isShowCityList && (<CityList  isZs = {this.props.isZs} ref="cityList" checkedCityClick={this._checkedCityClick} isSelectProvince = {this.props.isSelectProvince} showLoadModel={this.loadModel}/>)
                 }
-                <AllNavigationView title="城市筛选" backIconClick={this.backPage}/>
+                <AllNavigationView title="城市筛选" backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
         </View>)
     }
+
+     renderRightFootView = () => {
+
+         return (
+             this.props.unlimitedAction &&  <TouchableOpacity onPress={()=>{this.props.unlimitedAction();this.backPage();}}>
+                 <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
+                     <Text allowFontScaling={false}  style={{
+                         color: 'white',
+                         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                         textAlign: 'center',
+                         backgroundColor: 'transparent',}}>全国</Text>
+                 </View>
+             </TouchableOpacity>
+         )
+     }
 
      // 每一行中的数据
      renderRow = (rowData) => {
          return (
              <TouchableOpacity onPress={()=>{
                  this.setState({isShowCityList:true});
+
+                 if(selectData.provinceID == rowData.ID){return;}
+
                  selectData.city_name=rowData.title;
-                 selectData.provinceID=rowData.ID;
+                 selectData.provice_id=rowData.ID;
+                 selectData.provice_name=rowData.title;
+
+                 this.refs.cityList && this.refs.cityList.loadData();
              }}>
                  <View style={styles.rowCell}>
-                     <Text style={styles.rowCellText}>{rowData.title}</Text>
+                     <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.title}</Text>
                  </View>
              </TouchableOpacity>
          )
@@ -154,7 +195,7 @@ class ZNListIndexView extends Component{
                                 this.props.indexClick(index);
 
                             }}>
-                                <Text style={styles.indexItemText}>{data}</Text>
+                                <Text allowFontScaling={false}  style={styles.indexItemText}>{data}</Text>
                             </TouchableOpacity>
                         )
                     })
@@ -177,6 +218,9 @@ class CityList extends  Component{
             }
         ).start();
 
+        this.loadData();
+
+
     }
      // 构造
        constructor(props) {
@@ -185,24 +229,54 @@ class CityList extends  Component{
            const dataSource = new ListView.DataSource({
                rowHasChanged:(r1,r2)=>r1!==r2,
            });
+
          this.state = {
-             dataSource:dataSource.cloneWithRows(['111','2222','3333','444','555']),
+             dataSource:dataSource,
              valueRight: new Animated.Value(0),
          };
        }
 
+      loadData=()=>{
+
+        this.props.showLoadModel(true);
+
+        request(this.props.isZs?appUrls.ZS_GET_CITY:appUrls.GET_PROVINCE,'post',this.props.isZs?{province_name:selectData.city_name, payment_type:'ZS'}:{'prov_id':selectData.provice_id})
+            .then((response) => {
+
+                this.props.showLoadModel(false);
+
+                if(response.mycode ==1){
+               this.setState(
+                   {dataSource:this.state.dataSource.cloneWithRows(response.mjson.data)}
+               );
+           }
+
+
+        }, (error) => {
+                this.props.showLoadModel(false);
+
+                console.log(error);
+
+            });
+      }
      render(){
          return(
              <Animated.View style={[styles.cityContainer,{left:this.state.valueRight}]}>
                  <ListView dataSource={this.state.dataSource}
                            renderRow={this.renderRow}
                            removeClippedSubviews={false}
+                           enableEmptySections={true}
                            renderHeader={()=>{
                                return(
-                               <TouchableOpacity style={styles.sectionHeader} onPress={this.props.checkedCityClick}>
-                                   <Text style={styles.sectionText}>{selectData.city_name}</Text>
-                               </TouchableOpacity>
-                           )}}/>
+                                   <TouchableOpacity style={styles.sectionHeader} onPress={()=>{
+                                       if(this.props.isSelectProvince)
+                                       {
+                                           this.props.checkedCityClick();
+                                       }
+                                   }} activeOpacity={1}>
+                                       <Text allowFontScaling={false}  style={styles.sectionText}>{selectData.city_name}</Text>
+                                   </TouchableOpacity>
+                               )}}/>
              </Animated.View>
          )
      }
@@ -211,10 +285,11 @@ class CityList extends  Component{
         return (
 
             <TouchableOpacity style={styles.rowCell} onPress={()=>{
-
-
+                selectData.city_name=rowData.city_name;
+                selectData.city_id=rowData.city_id;
+                this.props.checkedCityClick();
             }}>
-                <Text style={styles.rowCellText}>{rowData}</Text>
+                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.city_name}</Text>
             </TouchableOpacity>
         )
     };

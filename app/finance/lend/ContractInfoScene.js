@@ -71,6 +71,8 @@ export  default class ContractInfoScene extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showToast('签署成功');
+                    this.props.callbackfresh();
+                    this.backPage();
                 },
                 (error) => {
                     this.props.showToast('签署失败');
@@ -79,6 +81,7 @@ export  default class ContractInfoScene extends BaseComponent {
 
 
     render() {
+
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
@@ -103,7 +106,7 @@ export  default class ContractInfoScene extends BaseComponent {
                     ,alignItems:'center',flexDirection:'row'}}>
                         <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(15)}}
                                source={require('../../../images/financeImages/contractInfo.png')}/>
-                        <Text numberOfLines={1} style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        <Text allowFontScaling={false} numberOfLines={1} style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:'#fff',width:width/2-Pixel.getPixel(Pixel.getPixel(28)),marginLeft:Pixel.getPixel(5)}}>
                             {RJson.data[numberPage].contract[namePage].name}</Text>
                     </TouchableOpacity>
@@ -112,7 +115,7 @@ export  default class ContractInfoScene extends BaseComponent {
                     }
                     } activeOpacity={0.8} style={{flex:1,backgroundColor:fontAndColor.COLORB0,justifyContent:'center'
                     ,alignItems:'center'}}>
-                            <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:'#fff'}}>签署合同</Text>
                         </TouchableOpacity> : <View/>}
                 </View>
@@ -140,7 +143,7 @@ export  default class ContractInfoScene extends BaseComponent {
             <TouchableOpacity activeOpacity={0.8} onPress={()=>{
                  this.refs.selectloannumber.openModalForNumber(RJson.data);
         }}>
-                <Text style={{color: 'white',
+                <Text allowFontScaling={false} style={{color: 'white',
                 fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                 textAlign: 'center',
                 backgroundColor: 'transparent',}}>选择单号</Text>

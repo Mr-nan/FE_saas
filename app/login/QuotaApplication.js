@@ -65,7 +65,7 @@ export default class QuotaApplication extends BaseComponent {
         }
         let childitems = [];
         for (let i = 0; i < this.state.agreement.length; i++) {
-            childitems.push(<Text onPress={()=>{
+            childitems.push(<Text allowFontScaling={false}  onPress={()=>{
                 this.toNextPage({name:'ContractInfoScene',component:ContractInfoScene,params:{title:this.state.agreement[i].name,
                 webUrl:this.state.agreement[i].url}});
             }} key={i+'a'} style={{color:FontAndColor.COLORA2,fontSize: Pixel.getFontPixel(12)}}>
@@ -84,9 +84,9 @@ export default class QuotaApplication extends BaseComponent {
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(14), flex: 1}}>借款人</Text>
-                            <Text>{this.state.name}</Text>
+                            <Text allowFontScaling={false} >{this.state.name}</Text>
                         </View>
                         <View style={{
                             height: Pixel.getPixel(45),
@@ -96,9 +96,9 @@ export default class QuotaApplication extends BaseComponent {
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(14), flex: 1}}>身份证号</Text>
-                            <Text>{this.state.idcard}</Text>
+                            <Text allowFontScaling={false} >{this.state.idcard}</Text>
                         </View>
                         <View style={{
                             height: Pixel.getPixel(45),
@@ -106,9 +106,9 @@ export default class QuotaApplication extends BaseComponent {
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(14), flex: 1}}>联系电话</Text>
-                            <Text>{this.state.phone}</Text>
+                            <Text allowFontScaling={false} >{this.state.phone}</Text>
                         </View>
                     </View>
                     <View style={styles.inputTextLine}/>
@@ -130,14 +130,14 @@ export default class QuotaApplication extends BaseComponent {
                             leftIcon={false}
                             rightIcon={false}/>
                     </View>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: FontAndColor.COLORA0,
                         paddingLeft: Pixel.getPixel(15),
                         paddingRight: Pixel.getPixel(15),
                         fontSize: Pixel.getPixel(FontAndColor.CONTENTFONT24),
                         paddingTop: Pixel.getPixel(10),
                         paddingBottom: Pixel.getPixel(10),
-                    }}>注意：<Text style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行预留手机号码。</Text></Text>
+                    }}>注意：<Text allowFontScaling={false}  style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行预留手机号码。</Text></Text>
                     <View style={styles.inputTextsStyle}>
                         <LoginInputText
                             ref="verifycode"
@@ -162,9 +162,9 @@ export default class QuotaApplication extends BaseComponent {
                     </View>
                     <View style={{width:width,height:Pixel.getPixel(60)}}>
 
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={{lineHeight: 25,paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(7)}}>
-                            <Text style={{color:FontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
+                            <Text allowFontScaling={false}  style={{color:FontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
                                 {'         我已详细阅读并同意'}</Text>
                             {childitems}
                         </Text>
@@ -365,7 +365,6 @@ export default class QuotaApplication extends BaseComponent {
                     this.props.callBack();
                     this.backPage();
                 }, (error) => {
-                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("申请失败");
                     } else {

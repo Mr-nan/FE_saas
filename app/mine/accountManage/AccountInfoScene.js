@@ -119,6 +119,7 @@ export default class AccountInfoScene extends BaseComponent {
                 />
 
                 <ListView
+                    removeClippedSubviews={false}
                     contentContainerStyle={styles.listStyle}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -134,8 +135,8 @@ export default class AccountInfoScene extends BaseComponent {
         return (
             <View style={styles.rowView} >
 
-                <Text style={styles.rowLeftTitle}>{rowData.title}</Text>
-                <Text style={styles.rowRightTitle}>{rowData.name}</Text>
+                <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.title}</Text>
+                <Text allowFontScaling={false}  style={styles.rowRightTitle}>{rowData.name}</Text>
 
             </View>
         );

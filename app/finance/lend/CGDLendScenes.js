@@ -96,7 +96,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
     getType=(state)=>{
 
-        let  temp =Number.parseInt(state);
+        let  temp =parseInt(state);
 
         return temp==1?'有':'无'
     }
@@ -177,7 +177,6 @@ export  default  class CGDLendScenes extends BaseComponent {
                         })
                         if(error.mycode!= -300||error.mycode!= -500){
                             this.props.showToast(error.mjson.msg);
-
                         }else {
 
                             this.props.showToast('服务器连接有问题')
@@ -209,7 +208,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                         payment_audit_reason:tempjson.payment_audit_reason,
                     };
 
-                    PostData.loan_mny=(Number.parseFloat(tempjson.payment_loanmny_str)).toString();
+                    PostData.loan_mny=(parseFloat(tempjson.payment_loanmny_str)).toString();
                     PostData.use_time=tempjson.use_time_str;
                     this.getLendInfo(showData.tempDetailInfo.isobd,showData.tempDetailInfo.isinvoice);
                 },
@@ -286,7 +285,7 @@ export  default  class CGDLendScenes extends BaseComponent {
         }
 
         if (infoIsall&&isHasCar){
-            if (Number.parseFloat(PostData.loan_mny)<Number.parseFloat(showData.tempMin)||Number.parseFloat(PostData.loan_mny)>Number.parseFloat(showData.tempMax)){
+            if (parseFloat(PostData.loan_mny)<parseFloat(showData.tempMin)||parseFloat(PostData.loan_mny)>parseFloat(showData.tempMax)){
                 moneyAdape=false;
                 this.props.showToast('借款金额范围为'+showData.tempMin+'-'+showData.tempMax+'万元')
             }
@@ -296,8 +295,8 @@ export  default  class CGDLendScenes extends BaseComponent {
             let isinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isCarinvoice;
 
             showData.tempCarList.map((item)=>{
-                let obdState =Number.parseInt(item.obd_bind_status);
-                let invoice  =Number.parseInt(item.invoice_upload_status);
+                let obdState =parseInt(item.obd_bind_status);
+                let invoice  =parseInt(item.invoice_upload_status);
                 if(invoice<isinvoice){
                     this.props.showToast('请补全票据信息')
                     return
@@ -467,8 +466,8 @@ export  default  class CGDLendScenes extends BaseComponent {
 
             return (
                 <View style={styles.sections}>
-                    <Text style={{color:'#ff0000',fontSize:Pixel.getFontPixel(14)}}> {'审核未通过:'}</Text>
-                    <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>
+                    <Text allowFontScaling={false}  style={{color:'#ff0000',fontSize:Pixel.getFontPixel(14)}}> {'审核未通过:'}</Text>
+                    <Text allowFontScaling={false}  style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>
                 </View>
             )
         }
@@ -478,7 +477,7 @@ export  default  class CGDLendScenes extends BaseComponent {
         }
         return (
             <View style={styles.section}>
-                <Text>采购车辆</Text>
+                <Text allowFontScaling={false} >采购车辆</Text>
             </View>
         )
     }
@@ -504,6 +503,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
                <View style={commnetStyle.ListWarp}>
                    <ListView
+                       removeClippedSubviews={false}
                        enableEmptySections={true}
                        style={{flex:1}}
                        dataSource={this.state.dataSource}
@@ -545,7 +545,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                     this.props.backRefresh();
                       this.backToTop()
                 }}/>
-                <ModalAlert ref={(alert)=>{this.infoMessage=alert}} title='解绑提示'subtitle='继续借款将会解绑车辆OB' confimClick={(setHide)=>{
+                <ModalAlert ref={(alert)=>{this.infoMessage=alert}} title='解绑提示'subtitle='继续借款将会解绑车辆OBD' confimClick={(setHide)=>{
                     setHide(false);
                     this.lendMoneyClick()
                 }} cancleClick={(setHide)=>{setHide(false)}}/>

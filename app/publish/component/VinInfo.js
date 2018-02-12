@@ -54,14 +54,15 @@ export default class VinInfo extends Component{
                 transparent={true}
                 visible={this.state.modalVisible}
                 onRequestClose={() => {}}>
-                <View style={styles.container}>
+                <TouchableOpacity style={styles.container} activeOpacity={1} onPress={this._hiedModal}>
                     <View>
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             renderRow={this._renderRow}
                         />
                     </View>
-                </View>
+                </TouchableOpacity>
             </Modal>
         );
     }
@@ -75,7 +76,7 @@ export default class VinInfo extends Component{
                 key={rowID}
                 onPress={()=>{this.props.vinPress(this.mType,rowID),this._hiedModal()}}>
                 <View  style={styles.rowStyle}>
-                    <Text style={styles.fontMain}>{rowData.model_name}</Text>
+                    <Text allowFontScaling={false}  style={styles.fontMain}>{rowData.model_name}</Text>
                 </View>
             </TouchableOpacity>
         );

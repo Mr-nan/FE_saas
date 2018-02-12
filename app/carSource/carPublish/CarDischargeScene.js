@@ -31,27 +31,54 @@ export default class CarDischargeScene extends  BaseComponent{
     // 构造
     constructor(props) {
         super(props);
-        this.viewData = [
-            {title: '国Ⅱ', selected: false,index:0},
-            {title: '欧Ⅳ', selected: false,index:1},
-            {title: '国Ⅲ', selected: false,index:2},
-            {title: '欧Ⅴ', selected: false,index:3},
-            {title: '国Ⅳ', selected: false,index:4},
-            {title: '欧Ⅵ', selected: false,index:5},
-            {title: '国Ⅴ', selected: false,index:6},
-            {title: '欧Ⅲ', selected: false,index:7},
-            {title: '京Ⅴ', selected: false,index:8},
-            {title: '欧Ⅱ', selected: false,index:9},
-            {title: 'OBD', selected: false,index:10},
-            {title: '欧Ⅰ', selected: false,index:11},
-        ];
+        // this.viewData = [
+        //     {title: '国Ⅱ', selected: false,index:0,value:'naitonal_ii'},
+        //     {title: '欧Ⅳ', selected: false,index:1,value:'european_iv'},
+        //     {title: '国Ⅲ', selected: false,index:2,value:'naitonal_iii'},
+        //     {title: '欧Ⅴ', selected: false,index:3,value:'european_v'},
+        //     {title: '国Ⅳ', selected: false,index:4,value:'naitonal_iv'},
+        //     {title: '欧Ⅵ', selected: false,index:5,value:'european_vi'},
+        //     {title: '国Ⅴ', selected: false,index:6,value:'naitonal_v'},
+        //     {title: '欧Ⅲ', selected: false,index:7,value:'european_iii'},
+        //     {title: '京Ⅴ', selected: false,index:8,value:'beijing_v'},
+        //     {title: '欧Ⅱ', selected: false,index:9,value:'european_ii'},
+        //     {title: 'OBD', selected: false,index:10,value:'obd'},
+        //     {title: '欧Ⅰ', selected: false,index:11,value:'european_i'},
+        // ];
 
+        // this.viewData.map((data,index)=>{
+        //     if(data.title == this.props.currentChecked)
+        //     {
+        //         data.selected = true;
+        //     }
+        // });
+
+        this.viewData = this.props.DischargeData;
+        let nodeNumber = 2; // 节点数
+        if(this.viewData){
+            let length = this.viewData.length;
+            if(length % nodeNumber!==0){
+                let number =(length % nodeNumber);
+                console.log('number:',number,'length',length,);
+                for(let i=0;i<number;i++){
+                    this.viewData.push({
+                        name:'',
+                        value:''
+                    });
+                }
+            }
+        }
         this.viewData.map((data,index)=>{
-            if(data.title == this.props.currentChecked)
+            data.index = index;
+            if(data.name == this.props.currentChecked)
             {
                 data.selected = true;
+            }else {
+                data.selected = false;
             }
         });
+
+
 
         this.state = {
             dataSource: this.viewData,
@@ -78,6 +105,14 @@ export default class CarDischargeScene extends  BaseComponent{
     }
 
     _renderItem = (data, i) => {
+
+        if(!data.name) {
+            return (
+                <View key={i}>
+
+                </View>
+            );
+        }
         if (data.selected === true) {
             return (
                 <TouchableOpacity
@@ -87,8 +122,8 @@ export default class CarDischargeScene extends  BaseComponent{
                     onPress={()=>{this._labelPress(data.index)}}
                 >
                     <View >
-                        <Text style={styles.selectText}>
-                            {data.title}
+                        <Text allowFontScaling={false}  style={styles.selectText}>
+                            {data.name}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -102,25 +137,19 @@ export default class CarDischargeScene extends  BaseComponent{
                     onPress={()=>{this._labelPress(data.index)}}
                 >
                     <View >
-                        <Text style={styles.defaultText}>
-                            {data.title}
+                        <Text allowFontScaling={false}  style={styles.defaultText}>
+                            {data.name}
                         </Text>
                     </View>
                 </TouchableOpacity>
-            );
-        } else {
-            return (
-                <View key={i} style={styles.emptyItem}>
-
-                </View>
             );
         }
     };
     _labelPress = (i) => {
 
         this.props.checkedCarDischargeClick({
-            title:this.viewData[i].title,
-            value:i,
+            title:this.viewData[i].name,
+            value:this.viewData[i].value,
         });
         this.backPage();
 

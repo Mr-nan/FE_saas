@@ -111,6 +111,7 @@ export default class ContractManageScene extends BaseComponent {
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
                           enableEmptySections={true}
+                          removeClippedSubviews={false}
                           refreshControl={
                               <RefreshControl
                                   refreshing={this.state.isRefreshing}
@@ -125,8 +126,19 @@ export default class ContractManageScene extends BaseComponent {
         }
     }
 
-    // 每一行中的数据
+    /**
+     * from @zhaojian
+     *
+     * 绘制每一行
+     **/
     _renderRow = (rowData, rowID, selectionID) => {
+
+        let names = '';
+        if (rowData.companyname == null || rowData.companyname == '') {
+            names = rowData.name;
+        } else {
+            names = rowData.name + '(' + rowData.companyname + ')';
+        }
         return (
             <TouchableOpacity
                 onPress={()=>{
@@ -155,7 +167,7 @@ export default class ContractManageScene extends BaseComponent {
 
                    }}>
                 <View style={styles.rowView}>
-                    <Text style={styles.rowLeftTitle}>{rowData.companyname}</Text>
+                    <Text style={styles.rowLeftTitle}>{names}</Text>
                     <Text
                         style={styles.rowRightTitle}>{this.props.from == 'xs' ? rowData.contract_num + '份未签署合同' : ''}</Text>
                     <Image source={cellJianTou} style={styles.image}></Image>

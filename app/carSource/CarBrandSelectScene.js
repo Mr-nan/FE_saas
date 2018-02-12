@@ -31,10 +31,10 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 
 
-let status  = 0;
-let carData = new  Array;
-let carBrandArray1  = [];       // status=1
-let carBrandArray2  = [];       // status=2
+let status = 0;
+let carData = new Array;
+let carBrandArray1 = [];       // status=1
+let carBrandArray2 = [];       // status=2
 let isHeadInteraction = false;  // 是否能选择车类
 let isCheckedCarModel = false;  // 是否能选择车型   false-能选,true-不能选
 
@@ -47,20 +47,27 @@ let carObject = {
     series_name: '0',
     model_id: '0',
     model_name: '0',
-    discharge_standard:'',
-    model_year:'',
-    liter:''
+    model_price : '0',
+    discharge_standard: '',
+    model_year: '',
+    liter: '',
+    config_value: ''
 
 };
 
 export default class CarBrandSelectScene extends BaseComponent {
 
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-            this.loadData();
-        });
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
+
+        } finally {
+            // InteractionManager.runAfterInteractions(() => {
+                this.setState({renderPlaceholderOnly: false});
+                this.loadData();
+            // });
+        }
     }
 
     _backIconClick = () => {
@@ -83,9 +90,11 @@ export default class CarBrandSelectScene extends BaseComponent {
         carObject.series_name = '0';
         carObject.model_id = '0';
         carObject.model_name = '0';
-        carObject.discharge_standard='';
-        carObject.model_year='';
-        carObject.liter='';
+        carObject.model_price = '0'
+        carObject.discharge_standard = '';
+        carObject.model_year = '';
+        carObject.liter = '';
+        carObject.config_value = '';
 
 
         let getSectionData = (dataBlob, sectionID) => {
@@ -134,13 +143,12 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     loadData = () => {
 
-        if(status==1 && carBrandArray1.length>0 ){
+        if (status == 1 && carBrandArray1.length > 0) {
 
             this.setListData(carBrandArray1);
             return;
 
-        }else if(status == 0 && carBrandArray2.length>0)
-        {
+        } else if (status == 0 && carBrandArray2.length > 0) {
             this.setListData(carBrandArray2);
             return;
         }
@@ -153,12 +161,11 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         }).then((response) => {
 
-            if(status==1){
+            if (status == 1) {
 
                 carBrandArray1 = response.mjson.data;
 
-            }else if(status == 0)
-            {
+            } else if (status == 0) {
                 carBrandArray2 = response.mjson.data;
             }
             this.setListData(response.mjson.data);
@@ -247,7 +254,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                 <View style={styles.rowCell}>
                     <Image style={styles.rowCellImag}
                            source={{uri:rowData.brand_icon+'?x-oss-process=image/resize,w_'+80+',h_'+80}}></Image>
-                    <Text style={styles.rowCellText}>{rowData.brand_name}</Text>
+                    <Text allowFontScaling={false} style={styles.rowCellText}>{rowData.brand_name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -258,7 +265,7 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         return (
             <View style={styles.sectionHeader}>
-                <Text style={styles.sectionText}>{sectionData}</Text>
+                <Text allowFontScaling={false} style={styles.sectionText}>{sectionData}</Text>
             </View>
         );
     }
@@ -302,9 +309,11 @@ export default class CarBrandSelectScene extends BaseComponent {
     renderRightFootView = () => {
 
         return (
-          this.props.unlimitedAction &&  <TouchableOpacity onPress={()=>{this.props.unlimitedAction();this.backPage();}}>
-                <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
-                    <Text style={{
+            this.props.unlimitedAction &&
+            <TouchableOpacity onPress={()=>{this.props.unlimitedAction();this.backPage();}}>
+                <View
+                    style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
+                    <Text allowFontScaling={false} style={{
                         color: 'white',
                         fontSize: Pixel.getFontPixel(fontAnColor.BUTTONFONT30),
                         textAlign: 'center',
@@ -330,7 +339,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                 {
                     (this.props.status == 1 && this.state.footprintData.length > 0) && (
                         <View style={styles.carBrandHeadView}>
-                            <Text style={styles.carBrandHeadText}>足迹:</Text>
+                            <Text allowFontScaling={false} style={styles.carBrandHeadText}>足迹:</Text>
                             {
                                 this.state.footprintData.map((data, index) => {
                                     return (
@@ -339,7 +348,8 @@ export default class CarBrandSelectScene extends BaseComponent {
                                         this._checkedCarType(data);
                                     }}>
                                             <View style={styles.footprintView}>
-                                                <Text style={styles.footprintText}>{data.series_name!='0'?data.series_name:data.brand_name}</Text>
+                                                <Text allowFontScaling={false}
+                                                      style={styles.footprintText}>{data.series_name != '0' ? data.series_name : data.brand_name}</Text>
                                             </View>
                                         </TouchableOpacity>)
                                 })
@@ -349,6 +359,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                 {
                     this.state.dataSource && (
                         <ListView ref="listView"
+                                  removeClippedSubviews={false}
                                   style={[{flex:1}, (this.props.status==0 || this.state.footprintData.length==0) && {marginTop: Pixel.getTitlePixel(64)}]}
                                   dataSource={this.state.dataSource}
                                   renderRow={this.renderRow}
@@ -409,12 +420,13 @@ class CarSeriesList extends BaseComponent {
         super(props);
         this.state = {
 
-            carTitle:carObject.brand_name +(isHeadInteraction ? '/全部车系':''),
+            carTitle: carObject.brand_name + (isHeadInteraction ? '/全部车系' : ''),
             brandIcon: carObject.brand_icon,
             valueRight: new Animated.Value(0),
         };
         this.loadCarSeriesData(carObject.brand_id, carObject.brand_name);
     }
+
     loadCarSeriesData = (carBrandID, carBrandName) => {
 
         let url = AppUrls.CAR_HOME_SERIES;
@@ -513,7 +525,7 @@ class CarSeriesList extends BaseComponent {
 
         return (
             <View style={styles.sectionHeader}>
-                <Text style={styles.sectionText}>{sectionData}</Text>
+                <Text allowFontScaling={false} style={styles.sectionText}>{sectionData}</Text>
             </View>
         );
     }
@@ -529,6 +541,7 @@ class CarSeriesList extends BaseComponent {
 
                         carObject.model_id = rowData.model_id;
                         carObject.model_name = rowData.model_name;
+                        carObject.model_price = rowData.model_price;
                         this.props.checkedCarClick(carObject);
 
 
@@ -554,7 +567,7 @@ class CarSeriesList extends BaseComponent {
 
             }}>
                 <View style={styles.rowCell}>
-                    <Text style={styles.rowCellText}>{rowData.series_name}</Text>
+                    <Text allowFontScaling={false} style={styles.rowCellText}>{rowData.series_name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -574,12 +587,13 @@ class CarSeriesList extends BaseComponent {
                 }}>
                     <View style={styles.carSubBrandHeadView}>
                         <Image style={styles.rowCellImag} source={{uri:this.state.brandIcon}}/>
-                        <Text style={styles.rowCellText}>{this.state.carTitle}</Text>
+                        <Text allowFontScaling={false} style={styles.rowCellText}>{this.state.carTitle}</Text>
                     </View>
                 </TouchableOpacity>
                 {
                     this.state.dataSource &&
                     <ListView ref="subListView"
+                              removeClippedSubviews={false}
                               style={{flex: 1}}
                               dataSource={this.state.dataSource}
                               renderRow={this.renderRow}
@@ -616,7 +630,7 @@ class CarModelList extends BaseComponent {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
         this.state = ({
 
-            carTitle: carObject.series_name + (isHeadInteraction?'/全部车型':''),
+            carTitle: carObject.series_name + (isHeadInteraction ? '/全部车型' : ''),
             valueRight: new Animated.Value(0),
             modelsData: ds,
         });
@@ -658,8 +672,11 @@ class CarModelList extends BaseComponent {
 
                 carObject.model_id = rowData.model_id;
                 carObject.model_name = rowData.model_name;
+                carObject.model_price = rowData.model_price;
                 carObject.discharge_standard = rowData.discharge_standard;
                 carObject.model_year = rowData.model_year;
+                carObject.config_value = rowData.config_value;
+
                 if(rowData.liter)
                 {
                     carObject.liter = rowData.liter;
@@ -668,7 +685,7 @@ class CarModelList extends BaseComponent {
 
             }}>
                 <View style={styles.rowCell}>
-                    <Text style={styles.rowCellText}>{rowData.model_name}</Text>
+                    <Text allowFontScaling={false} style={styles.rowCellText}>{rowData.model_name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -687,12 +704,13 @@ class CarModelList extends BaseComponent {
                 }}>
                     <View style={styles.carSubBrandHeadView}>
                         {/*<Image style={styles.rowCellImag}/>*/}
-                        <Text style={styles.rowCellText}>{this.state.carTitle}</Text>
+                        <Text allowFontScaling={false} style={styles.rowCellText}>{this.state.carTitle}</Text>
                     </View>
                 </TouchableOpacity>
                 {
                     this.state.modelsData &&
                     <ListView ref="subListView"
+                              removeClippedSubviews={false}
                               style={{flex: 1}}
                               dataSource={this.state.modelsData}
                               renderRow={this.renderRow}
@@ -720,7 +738,7 @@ class ZNListIndexView extends Component {
                                 this.props.indexClick(index);
 
                             }}>
-                                <Text style={styles.indexItemText}>{data}</Text>
+                                <Text allowFontScaling={false} style={styles.indexItemText}>{data}</Text>
                             </TouchableOpacity>
                         )
                     })
@@ -750,7 +768,7 @@ const styles = StyleSheet.create({
         marginTop: Pixel.getTitlePixel(64),
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingVertical:Pixel.getPixel(10),
+        paddingVertical: Pixel.getPixel(10),
 
     },
     carBrandHeadText: {

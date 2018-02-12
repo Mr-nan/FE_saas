@@ -25,30 +25,33 @@ var   Pixel = new PixelUtil();
 export class CarSourceSelectHeadView extends Component{
 
     // 构造
-      constructor(props) {
+    constructor(props) {
         super(props);
-        // 初始状态
         this.state = {
-
             isCheckRecommend:this.props.isCheckRecommend,
         };
-      }
+    }
 
     checkSelect=(index)=>{
 
-        switch(index) {
-            case 1:
-                this.refs.but1._setImgHighlighted(false);
-                break;
-            case 2:
-                this.refs.but2._setImgHighlighted(false);
-                break;
-            case 3:
-                this.refs.but3._setImgHighlighted(false);
-                break;
-            default:
-                break;
-        }
+        // switch(index) {
+        //     case 1:
+        //         this.refs.but1._setImgHighlighted(false);
+        //         break;
+        //     case 2:
+        //         this.refs.but2._setImgHighlighted(false);
+        //         break;
+        //     case 3:
+        //         this.refs.but3._setImgHighlighted(false);
+        //         break;
+        //     default:
+        //         break;
+        // }
+        //
+
+        let tmpBut = this.butArray[index];
+        tmpBut._setImgHighlighted(false);
+
     };
 
 
@@ -57,35 +60,44 @@ export class CarSourceSelectHeadView extends Component{
         this.setState({
 
             isCheckRecommend:isCheck,
-
         });
 
         this.props.checkRecommendClick(isCheck);
+    }
 
+    getCheckRecommend=()=>{
+        return this.state.isCheckRecommend;
     }
 
     render(){
+        this.butArray = [];
         return(
+            <View style={styles.container}>
+                <View style={{ flexDirection:'row', justifyContent:'space-between',width:screenWidth-Pixel.getPixel(100)}}>
+                {
+                    this.props.titleArray.map((data,index)=>{
+                        return(
+                            <SelectButton ref={(ref)=>{ ref && this.butArray.push(ref)}}  title={data} index={index} key={index} btnClick={this.props.onPres}/>
+                        )
+                    })
+                }
+                </View>
+                <View style={{  flexDirection:'row', justifyContent:'space-between',width:Pixel.getPixel(100)}}>
+                    <View style={styles.lineView}>
+                        <View style={styles.line}/>
+                    </View>
 
-            <Image style={styles.container} source={require('../../../images/carSourceImages/bottomShaow.png')}>
+                    <TouchableOpacity style={styles.unitsView} onPress={()=>{
 
-                    <SelectButton ref="but1" title="车型" index={1} btnClick={this.props.onPres}/>
-                    <SelectButton ref="but2" title="车龄" index={2} btnClick={this.props.onPres}/>
-                    <SelectButton ref="but3" title="里程" index={3} btnClick={this.props.onPres}/>
+                        this.setCheckRecommend(!this.state.isCheckRecommend);
 
-                <View style={styles.lineView}>
-                    <View style={styles.line}/>
+                    }}>
+                        <Image style={{marginLeft:10}} source={this.state.isCheckRecommend ? (require('../../../images/carSourceImages/checkIcone.png')):(require('../../../images/carSourceImages/checkIcone_nil.png'))}/>
+                        <Text allowFontScaling={false}  style={styles.unitsText}>已订阅</Text>
+                    </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.unitsView} onPress={()=>{
-
-                    this.setCheckRecommend(!this.state.isCheckRecommend);
-
-                }}>
-                    <Image style={{marginLeft:10}} source={this.state.isCheckRecommend ? (require('../../../images/carSourceImages/checkIcone.png')):(require('../../../images/carSourceImages/checkIcone_nil.png'))}/>
-                    <Text style={styles.unitsText}>意向</Text>
-                </TouchableOpacity>
-            </Image>
+            </View>
         )
     }
 
@@ -131,7 +143,7 @@ export class SelectButton extends  Component{
             <TouchableOpacity onPress={this._btnClick}>
             <View style={styles.selectBtn}>
                     <View>
-                        <Text style={styles.selectBtnText}>{this.props.title}</Text>
+                        <Text allowFontScaling={false}  style={styles.selectBtnText}>{this.props.title}</Text>
                     </View>
                     <View style={{marginLeft:5}}>
                         <Image source={this.state.imgSource}></Image>
@@ -163,7 +175,7 @@ export class CarSourceSelectView extends Component{
                                         }}>
                                             <View style={styles.checkedCell}>
                                                 {
-                                                        <Text
+                                                        <Text allowFontScaling={false} 
                                                             style={[styles.checkedCellText,
                                                                 data.name==checkedTypeString && {color:fontAndColor.COLORB0}]}>{data.name}
                                                         </Text>
@@ -184,24 +196,21 @@ export class CarSourceSelectView extends Component{
 }
 
 
+
 var screenWidth = Dimensions.get('window').width;
 
 const  styles = StyleSheet.create({
 
     container:{
-
         height:Pixel.getPixel(40),
         width:screenWidth,
         flexDirection:'row',
-        justifyContent:'space-between'
-
-    },
-
-    selectView:{
-
-        flexDirection:'row',
+        justifyContent:'space-between',
         alignItems:'center',
-        justifyContent:'space-between'
+        borderBottomColor:fontAndColor.COLORA4,
+        borderBottomWidth:Pixel.getPixel(1),
+        backgroundColor:'white'
+
     },
 
     lineView:{
@@ -211,7 +220,6 @@ const  styles = StyleSheet.create({
     },
 
     line:{
-
         height:Pixel.getPixel(15),
         backgroundColor:fontAndColor.COLORA3,
     },
@@ -224,7 +232,7 @@ const  styles = StyleSheet.create({
 
     selectBtn:{
 
-        width:Pixel.getPixel(80),
+        width:Pixel.getPixel(65),
         height:Pixel.getPixel(40),
         alignItems:'center',
         justifyContent:'center',
@@ -251,6 +259,8 @@ const  styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         flexDirection:'row',
+        backgroundColor:'white',
+
     },
 
     unitsText:{
@@ -260,8 +270,8 @@ const  styles = StyleSheet.create({
 
     },
     selectView: {
-        top: Pixel.getTitlePixel(104),
-        backgroundColor: 'rgba(0, 0, 0,0.3)',
+        top: Pixel.getPixel(87),
+        backgroundColor:'rgba(0, 0, 0,0.3)',
         left: 0,
         right: 0,
         position: 'absolute',
@@ -269,7 +279,6 @@ const  styles = StyleSheet.create({
     },
 
     checkedCell: {
-
         backgroundColor: 'white',
         height: Pixel.getPixel(44),
         alignItems: 'center',

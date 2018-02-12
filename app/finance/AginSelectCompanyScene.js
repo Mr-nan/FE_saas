@@ -51,6 +51,7 @@ export  default class SelectCompanyScene extends BaseComponent {
                     backIconClick={this.backPage}
                 />
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -108,10 +109,10 @@ export  default class SelectCompanyScene extends BaseComponent {
                            source={require('../../images/financeImages/companyIcon.png')}></Image>
                 </View>
                 <View style={{flex: 4, justifyContent: 'center'}}>
-                    <Text
+                    <Text allowFontScaling={false} 
                         style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), color: fontAndColor.COLORA0}}>
                         {names}</Text>
-                    <Text
+                    <Text allowFontScaling={false} 
                         style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,

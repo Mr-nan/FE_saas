@@ -35,7 +35,8 @@ export default  class  ReceiptInfoScene extends BaseComponent{
               [{title:'借款人',value:data.username}
                   ,{title:'身份证号',value:data.idcard_number}
                   ,{title:'手机号码',value:data.phone}
-                  ,{title:'借款金额',value:data.money_str}
+	              ,{title:'借款金额',value:data.money_str}
+	              ,{title:'贷款人',value:data.lender}
                   ,{title:'起息日(以实际放款日为准)',value:data.start_time}
                   ,{title:'到期日',value:data.end_time}
                   ,{title:'还款方式',value:data.repayment_type}
@@ -84,6 +85,7 @@ export default  class  ReceiptInfoScene extends BaseComponent{
             <ListView dataSource={this.state.dataSource}
                       renderSectionHeader={this.renderSectionHeader}
                       renderRow={this.renderRow}
+                      removeClippedSubviews={false}
                       renderSeparator={this._renderSeparator}
 
 
@@ -109,8 +111,8 @@ export default  class  ReceiptInfoScene extends BaseComponent{
 
         return (
                 <View style={styles.rowCell}>
-                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>{rowData.title}</Text>
-                    <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),textAlign:'right'}}>{rowData.value}</Text>
+                    <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>{rowData.title}</Text>
+                    <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),textAlign:'right'}}>{rowData.value}</Text>
                 </View>
         )
     };

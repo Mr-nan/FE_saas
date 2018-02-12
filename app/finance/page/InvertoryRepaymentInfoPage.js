@@ -49,10 +49,10 @@ export  default class RepaymentInfoPage extends BaseComponent {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
-        });
+        //});
     }
 
     initFinish = () => {
@@ -115,6 +115,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop:Pixel.getPixel(5)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

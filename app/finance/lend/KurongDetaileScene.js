@@ -11,23 +11,39 @@ import {
     ListView,
 } from 'react-native';
 
-import {CommnetListItem, LendCarItemCell, CommenButton,commnetStyle,ComentImageButton} from './component/ComponentBlob'
-import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
+import {
+    CommnetListItem,
+    LendCarItemCell,
+    CommenButton,
+    commnetStyle,
+    ComentImageButton
+} from './component/ComponentBlob'
+import {
+    width,
+    height,
+    fontadapeSize,
+    adapeSize,
+    STATECODE,
+    PAGECOLOR,
+    getRowData,
+    getSectionData,
+    changeToMillion
+} from './component/MethodComponent'
 import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
-import {ModifyBorrowing,LendSuccessAlert,ModalAlert} from './component/ModelComponent'
+import {ModifyBorrowing, LendSuccessAlert, ModalAlert} from './component/ModelComponent'
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 
 
-const controlCode={
+const controlCode = {
 
-    stateCode:'',
-    extendCode:'',
-    lendType:'',
-    maxLend:'',
-    minLend:'',
-    changeMoney:''
+    stateCode: '',
+    extendCode: '',
+    lendType: '',
+    maxLend: '',
+    minLend: '',
+    changeMoney: ''
 }
 import ContractInfoScene from './ContractInfoScene';
 
@@ -47,7 +63,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
             }
         )//
         this.state = {
-            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({},[])),
+            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading
         }
     }
@@ -57,6 +73,9 @@ export  default  class KurongDetaileScene extends BaseComponent {
         this.getLendinfo();
     }
 
+    /**
+     * 获取借款详情
+     */
     getLendinfo = () => {
         let maps = {
             api: apis.GET_APPLY_INFO,
@@ -64,23 +83,20 @@ export  default  class KurongDetaileScene extends BaseComponent {
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-
                     let tempjson = response.mjson.data
-                    let carNum =Number.parseInt(tempjson.car_count)
-                    controlCode.stateCode=tempjson.status
-                    controlCode.extendCode=tempjson.is_extend;
-                    controlCode.lendType=tempjson.type;
-                    controlCode.minLend=changeToMillion(tempjson.min_loanmny);
-                    let Maxmum=Number.parseFloat(tempjson.max_loanmny)+Number.parseFloat(tempjson.payment_loanmny)
-                    controlCode.maxLend=changeToMillion(Maxmum)
-                    if (carNum>0){
-
+                    let carNum = parseInt(tempjson.car_count)
+                    controlCode.stateCode = tempjson.status
+                    controlCode.extendCode = tempjson.is_extend;
+                    controlCode.lendType = tempjson.type;
+                    controlCode.minLend = changeToMillion(tempjson.min_loanmny);
+                    let Maxmum = parseFloat(tempjson.max_loanmny) + parseFloat(tempjson.payment_loanmny)
+                    controlCode.maxLend = changeToMillion(Maxmum)
+                    if (carNum > 0) {
                         this.getOrderCarInfo(tempjson)
                     }
                     else {
                         this.setState({
-
-                            dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,[])),
+                            dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson, [])),
                             renderPlaceholderOnly: STATECODE.loadSuccess
                         })
                     }
@@ -89,32 +105,34 @@ export  default  class KurongDetaileScene extends BaseComponent {
                 (error) => {
 
                     this.setState({
-                        renderPlaceholderOnly:STATECODE.loadError,
+                        renderPlaceholderOnly: STATECODE.loadError,
                     })
-                    if(error.mycode!= -300||error.mycode!= -500){
-
+                    if (error.mycode != -300 || error.mycode != -500) {
                         this.props.showToast('服务器连接有问题')
-                    }else {
-
+                    } else {
                         this.props.showToast(error.mjson.msg);
                     }
 
                 });
     }
 
-    getOrderCarInfo=(lendInfoJson)=>{
+    /**
+     * 获取订单车辆列表
+     * @param lendInfoJson
+     */
+    getOrderCarInfo = (lendInfoJson) => {
 
-        let maps={
+        let maps = {
             api: apis.GET_APPLY_CARLIST,
             loan_code: this.props.loanNumber
         }
         request(apis.FINANCE, 'Post', maps)
-            .then((response) =>{
+            .then((response) => {
 
                     let tempCarJson = response.mjson.data.list
                     this.setState({
 
-                        dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfoJson,tempCarJson)),
+                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfoJson, tempCarJson)),
                         renderPlaceholderOnly: STATECODE.loadSuccess
                     })
                 },
@@ -122,62 +140,60 @@ export  default  class KurongDetaileScene extends BaseComponent {
                 (error) => {
 
                     this.setState({
-                        renderPlaceholderOnly:STATECODE.loadError,
+                        renderPlaceholderOnly: STATECODE.loadError,
                     })
-                    if(error.mycode!= -300||error.mycode!= -500){
+                    if (error.mycode != -300 || error.mycode != -500) {
                         this.props.showToast(error.mjson.msg);
 
-                    }else {
+                    } else {
                         this.props.showToast('服务器连接有问题')
 
                     }
                 });
 
 
-
     }
-    titleNameBlob=(jsonData,carData)=>{
+    titleNameBlob = (jsonData, carData) => {
 
         let dataSource = {};
-        dataSource['section1']=[
+        dataSource['section1'] = [
             {title: '借款单号', key: jsonData.loan_code},
-            {title:'产品类型',key:jsonData.product_type},
+            {title: '产品类型', key: jsonData.product_type},
             {title: '借款类型', key: jsonData.loantype_str},
             {title: '借款金额', key: jsonData.payment_loanmny_str},
             {title: '综合费率', key: jsonData.payment_rate_str},
             {title: '借款期限', key: jsonData.loanperiodstr},
             {title: '用款时间', key: jsonData.use_time_str},
-            {title: '状态',     key: jsonData.status_str},
+            {title: '状态', key: jsonData.status_str},
             {title: '放款日期', key: jsonData.loan_time},
             {title: '借款用途', key: jsonData.remarks},
-            ]
-        if(carData.length>0){
+        ]
+        if (carData.length > 0) {
 
-            let tempCarDate=[];
+            let tempCarDate = [];
 
-            carData.map((item)=>{
+            carData.map((item) => {
 
                 tempCarDate.push(
                     {
-                        autoid:item.auto_id,
-                        model_name:item.model_name,
-                        state:item.status_str,
-                        order:item.frame_number,
-                        price:item.lend_mny,//放款额
-                        plate_number:item.plate_number,//车牌号
-                        loan_number:item.loan_number,
+                        autoid: item.auto_id,
+                        model_name: item.model_name,
+                        state: item.status_str,
+                        order: item.frame_number,
+                        price: item.lend_mny,//放款额
+                        plate_number: item.plate_number,//车牌号
+                        loan_number: item.loan_number,
                     }
                 )
             })
-            dataSource['section2']=tempCarDate;
+            dataSource['section2'] = tempCarDate;
         }
 
         return dataSource;
     }
-    getButtonStyleWithTitle=(title)=>{
+    getButtonStyleWithTitle = (title) => {
 
-        switch (title){
-
+        switch (title) {
             case '取消借款':
                 return styles.cancelButton
             case '签署合同':
@@ -188,15 +204,20 @@ export  default  class KurongDetaileScene extends BaseComponent {
                 return styles.controlButton
             case '已取消借款':
                 return styles.canceledButton
+            case '资金方签署中':
+                return styles.cancelButton
             default:
                 return styles.cancelButton
 
         }
 
     }
-    modifyLengNum=(callback)=> {
 
-
+    /**
+     *修改借款金额
+     * @param callback
+     */
+    modifyLengNum = (callback) => {
         if (controlCode.changeMoney !== '') {
             let maps = {
                 api: apis.SET_APPLY_MNY,
@@ -212,33 +233,43 @@ export  default  class KurongDetaileScene extends BaseComponent {
                         this.change.setModelVisible(true)
                     },
                     (error) => {
-//需要做处理
+                        //需要做处理
 
                     });
-
         }
     }
 
+    controsButtonClick = (title) => {
 
-    controsButtonClick=(title)=>{
-
-        if (title==='取消借款'){
+        if (title === '取消借款') {
             this.canleAlert.setModelVisible(true)
-        }else if (title === '签署合同') {
+        } else if (title === '签署合同') {
             this.toNextPage({
-                name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:true}
+                name: 'ContractInfoScene',
+                component: ContractInfoScene,
+                params: {
+                    loan_code: this.props.loanNumber, showButton: true, callbackfresh: () => {
+                        this.initFinish();
+                        this.props.backRefresh();
+                    }
+                }
             });
         } else if (title === '查看合同') {
             this.toNextPage({
-                name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:false}
+                name: 'ContractInfoScene',
+                component: ContractInfoScene,
+                params: {loan_code: this.props.loanNumber, showButton: false}
+            });
+        } else if (title === '资金方签署中') {
+            this.toNextPage({
+                name: 'ContractInfoScene',
+                component: ContractInfoScene,
+                params: {loan_code: this.props.loanNumber, showButton: false}
             });
         }
     }
 
-
-
-
-//获取不同页面的颜色
+    //获取不同页面的颜色
     getStyle = (state) => {
 
         switch (state) {
@@ -252,26 +283,29 @@ export  default  class KurongDetaileScene extends BaseComponent {
                 return PAGECOLOR.COLORA1
         }
     }
-    getControlTitleblob=(stateCode,extendCode)=>{
 
-        if(stateCode!==''&&extendCode!==''){
+    getControlTitleblob = (stateCode, extendCode) => {
 
-            let tempTitle=[]
-            if (stateCode==='1'){
-                tempTitle=['取消借款']
-            }else if(stateCode==='2'){
-                tempTitle=['签署合同','取消借款']
+        if (stateCode !== '' && extendCode !== '') {
+
+            let tempTitle = []
+            if (stateCode === '8') {
+                tempTitle = ['资金方签署中']
+            } else if (stateCode === '1') {
+                tempTitle = ['取消借款']
+            } else if (stateCode === '2') {
+                tempTitle = ['签署合同', '取消借款']
             }
-            else if(stateCode==='2'){
-                tempTitle=['已取消借款']
+            else if (stateCode === '2') {
+                tempTitle = ['已取消借款']
             }
-            else if(Number.parseInt(stateCode)>2&&stateCode!=='5'){
-                tempTitle=['查看合同']
-            }else if(stateCode=='5'){
-                if (Number.parseInt(extendCode)==='1'){
-                    tempTitle=['查看合同','申请展期']
-                }else {
-                    tempTitle=['查看合同']
+            else if (parseInt(stateCode) > 2 && stateCode !== '5') {
+                tempTitle = ['查看合同']
+            } else if (stateCode == '5') {
+                if (parseInt(extendCode) === '1') {
+                    tempTitle = ['查看合同', '申请展期']
+                } else {
+                    tempTitle = ['查看合同']
                 }
             }
 
@@ -282,10 +316,12 @@ export  default  class KurongDetaileScene extends BaseComponent {
 
         let Color = this.getStyle(controlCode.stateCode);
         if (sectionID === 'section2') {
-            return <LendCarItemCell onPress={()=>{}} carName={rowData.model_name} orderNum={rowData.loan_number} orderState={rowData.state} price={rowData.price}/>
+            return <LendCarItemCell onPress={()=>{}} carName={rowData.model_name} orderNum={rowData.loan_number}
+                                    orderState={rowData.state} price={rowData.price}/>
         }
         return (
-            <CommnetListItem textStyle={rowData.title === '状态' ? {color: Color} : null} leftTitle={rowData.title} showValue={rowData.key}/>
+            <CommnetListItem textStyle={rowData.title === '状态' ? {color: Color} : null} leftTitle={rowData.title}
+                             showValue={rowData.key}/>
         );
     }
     renderSectionHeader = (sectionData, sectionID) => {
@@ -296,11 +332,11 @@ export  default  class KurongDetaileScene extends BaseComponent {
         )
 
     }
-    renderSeparator =(sectionID,rowId,adjacentRowHighlighted)=>{
+    renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
 
-        let separtrorHegigth =1;
-        if (rowId==='2'||rowId==='6'||rowId==='7'){
-            separtrorHegigth=10;
+        let separtrorHegigth = 1;
+        if (rowId === '2' || rowId === '6' || rowId === '7') {
+            separtrorHegigth = 10;
         }
         return (
             <View key={`${sectionID}-${rowId}`} style={{
@@ -310,27 +346,32 @@ export  default  class KurongDetaileScene extends BaseComponent {
             </View>
         )
     }
-    cancleLoad=(setModelVis)=>{
+
+    /**
+     * 取消借款
+     * @param setModelVis
+     */
+    cancleLoad = (setModelVis) => {
 
         setModelVis(false);
         this.props.showModal(true);
 
-        let maps={
+        let maps = {
             api: apis.CANCEL_LOAN,
             loan_code: this.props.loanNumber
         }
         request(apis.FINANCE, 'Post', maps)
-            .then((response) =>{
+            .then((response) => {
 
                     this.props.showModal(false);
                     this.successCancle.setModelVisible(true)
                 },
                 (error) => {
                     this.props.showModal(false);
-                    if(error.mycode!= -300||error.mycode!= -500){
+                    if (error.mycode != -300 || error.mycode != -500) {
 
                         this.props.showToast(error.mjson.msg);
-                    }else {
+                    } else {
 
                         this.props.showToast('服务器连接有问题')
                     }
@@ -341,9 +382,8 @@ export  default  class KurongDetaileScene extends BaseComponent {
 
 
     render() {
-        if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess)
-        {
-            return(
+        if (this.state.renderPlaceholderOnly !== STATECODE.loadSuccess) {
+            return (
                 <View style={styles.container}>
                     {this.loadView()}
                     <AllNavigationView title='借款详情' backIconClick={()=>{
@@ -356,7 +396,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
         let tempButtons = [];
         let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode);
 
-        tempButtonTitles.map((item)=> {
+        tempButtonTitles.map((item) => {
                 tempButtons.push(<CommenButton buttonStyle={this.getButtonStyleWithTitle(item)}
                                                textStyle={styles.buttontextStyle}
                                                onPress={()=>{this.controsButtonClick(item)}}
@@ -367,9 +407,10 @@ export  default  class KurongDetaileScene extends BaseComponent {
         )
         return (
 
-            <View  style={commnetStyle.container}>
+            <View style={commnetStyle.container}>
 
                 <ListView
+                    removeClippedSubviews={false}
                     style={commnetStyle.ListWarp}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
@@ -377,7 +418,8 @@ export  default  class KurongDetaileScene extends BaseComponent {
                     renderSeparator={this.renderSeparator}
                 />
 
-                <View style={[commnetStyle.bottomWarp,{flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}]}>
+                <View
+                    style={[commnetStyle.bottomWarp,{flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}]}>
                     {tempButtons}
                 </View>
                 <ModifyBorrowing ref={(model)=>{this.modifyb=model}}
@@ -386,9 +428,14 @@ export  default  class KurongDetaileScene extends BaseComponent {
                                  maxLend={controlCode.maxLend}
                                  confimClick={this.modifyLengNum}
                                  cancleClick={(callback)=>{callback(false)}}/>
-                <LendSuccessAlert ref={(lend)=>{this.change=lend}} confimClick={()=>{this.props.backRefresh();this.backPage()}} title='修改成功'subtitle='恭喜您修改借款成功'/>
-                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗" ref={(cancle)=>{this.canleAlert=cancle}} confimClick={this.cancleLoad} cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
-                <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}} confimClick={()=>{this.props.backRefresh();this.backPage()}} title='取消成功'subtitle='取消借款成功'/>
+                <LendSuccessAlert ref={(lend)=>{this.change=lend}}
+                                  confimClick={()=>{this.props.backRefresh();this.backPage()}} title='修改成功'
+                                  subtitle='恭喜您修改借款成功'/>
+                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗" ref={(cancle)=>{this.canleAlert=cancle}}
+                            confimClick={this.cancleLoad} cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
+                <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}}
+                                  confimClick={()=>{this.props.backRefresh();this.backPage()}} title='取消成功'
+                                  subtitle='取消借款成功'/>
                 <AllNavigationView
                     title="借款详情"
                     backIconClick={this.backPage}
@@ -402,7 +449,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
 
                     }}
                 />
-               </View>
+            </View>
 
         );
     }
@@ -410,10 +457,10 @@ export  default  class KurongDetaileScene extends BaseComponent {
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
 
-        flex:1,
-        backgroundColor:PAGECOLOR.COLORA3
+        flex: 1,
+        backgroundColor: PAGECOLOR.COLORA3
     },
     buttonStyle: {
 
@@ -430,33 +477,33 @@ const styles = StyleSheet.create({
         fontSize: fontadapeSize(15),
         color: '#FFFFFF'
     },
-    cancelButton:{
+    cancelButton: {
 
-        flex:1,
-        backgroundColor:PAGECOLOR.COLORA2,
-        height:adapeSize(44),
-        justifyContent:'center'
+        flex: 1,
+        backgroundColor: PAGECOLOR.COLORA2,
+        height: adapeSize(44),
+        justifyContent: 'center'
     },
-    canceledButton:{
+    canceledButton: {
 
-        flex:1,
-        height:adapeSize(44),
-        backgroundColor:PAGECOLOR.COLORA1,
-        justifyContent:'center'
+        flex: 1,
+        height: adapeSize(44),
+        backgroundColor: PAGECOLOR.COLORA1,
+        justifyContent: 'center'
 
     },
-    controlButton:{
-        flex:1,
-        height:adapeSize(44),
-        backgroundColor:PAGECOLOR.COLORB0,
-        justifyContent:'center'
+    controlButton: {
+        flex: 1,
+        height: adapeSize(44),
+        backgroundColor: PAGECOLOR.COLORB0,
+        justifyContent: 'center'
     },
 
-    buttontextStyle:{
+    buttontextStyle: {
 
-        fontSize:fontadapeSize(15),
-        color:'white',
-        textAlign:'center',
+        fontSize: fontadapeSize(15),
+        color: 'white',
+        textAlign: 'center',
     }
 
 });

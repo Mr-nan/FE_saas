@@ -43,7 +43,7 @@ export  default class RepaymentInfoDateItem extends PureComponent {
         return (
             <View style={styles.itemStyle}>
                 <View style={{flex:1,justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
-                    <Text style={[styles.loanCodeStyle]}>还款日期</Text>
+                    <Text allowFontScaling={false}  style={[styles.loanCodeStyle]}>还款日期</Text>
                 </View>
                 <TouchableOpacity onPress={()=>{
                     if(this.props.status=='0'){
@@ -54,7 +54,7 @@ export  default class RepaymentInfoDateItem extends PureComponent {
 
                 }} activeOpacity={0.8}
                                   style={{flex:1,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
-                    <Text style={[styles.loanCodeStyle,{color:fontAndColor.COLORA2,marginRight:Pixel.getPixel(10)}]}>{this.state.selectTime}</Text>
+                    <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{color:fontAndColor.COLORA2,marginRight:Pixel.getPixel(10)}]}>{this.state.selectTime}</Text>
                     <Image style={[{width:Pixel.getPixel(22),height:Pixel.getPixel(22)}]}
                            source={require('../../../../images/financeImages/dateIcon.png')}/>
                 </TouchableOpacity>

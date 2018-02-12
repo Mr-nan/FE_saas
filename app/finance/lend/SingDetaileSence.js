@@ -86,14 +86,14 @@ export  default  class SingDetaileSence extends BaseComponent {
             .then((response) => {
 
                     let tempjson = response.mjson.data
-                    let carNum = Number.parseInt(tempjson.car_count)
+                    let carNum = parseInt(tempjson.car_count)
                     controlCode.stateCode = tempjson.status
                     controlCode.extendCode = tempjson.is_extend;
                     controlCode.lendType = tempjson.type;
                     controlCode.minLend = changeToMillion(tempjson.min_loanmny);
                     controlCode.loan_code = tempjson.loan_code;
                     controlCode.is_microchinese_contract = tempjson.is_microchinese_contract;
-                    let Maxmum = Number.parseFloat(tempjson.max_loanmny) + Number.parseFloat(tempjson.payment_loanmny)
+                    let Maxmum = parseFloat(tempjson.max_loanmny) + parseFloat(tempjson.payment_loanmny)
                     controlCode.maxLend = changeToMillion(Maxmum)
 
                     if (carNum > 0) {
@@ -162,19 +162,32 @@ export  default  class SingDetaileSence extends BaseComponent {
     titleNameBlob = (jsonData, carData) => {
 
         let dataSource = {};
-        dataSource['section1'] = [
-            {title: '申请日期', key: jsonData.createtimestr},
-            {title: '借款金额', key: jsonData.payment_loanmny_str},
-            {title: '借款期限', key: jsonData.loanperiodstr},
-            {title: '借款单号', key: jsonData.loan_code},
-            {title: '综合费率', key: jsonData.payment_rate_str},
-            {title: '还款方式', key: jsonData.repayment_type},
-            {title: '状态', key: jsonData.status_str},
-            {title: '放款日期', key: jsonData.loan_time},
-            {title: '评估总额', key: jsonData.reassessed},
-            {title: '债权人', key: jsonData.credito},
-
-        ]
+        if (jsonData.microchinese_single_status && jsonData.microchinese_single_status == '1') {
+            dataSource['section1'] = [
+                {title: '申请日期', key: jsonData.createtimestr},
+                {title: '借款金额', key: jsonData.payment_loanmny_str},
+                {title: '借款期限', key: jsonData.loanperiodstr},
+                {title: '借款单号', key: jsonData.loan_code},
+                {title: '综合费率', key: jsonData.payment_rate_str},
+                {title: '还款方式', key: jsonData.repayment_type},
+                {title: '状态', key: jsonData.status_str},
+                {title: '放款日期', key: jsonData.loan_time},
+                {title: '评估总额', key: jsonData.reassessed},
+            ]
+        } else {
+            dataSource['section1'] = [
+                {title: '申请日期', key: jsonData.createtimestr},
+                {title: '借款金额', key: jsonData.payment_loanmny_str},
+                {title: '借款期限', key: jsonData.loanperiodstr},
+                {title: '借款单号', key: jsonData.loan_code},
+                {title: '综合费率', key: jsonData.payment_rate_str},
+                {title: '还款方式', key: jsonData.repayment_type},
+                {title: '状态', key: jsonData.status_str},
+                {title: '放款日期', key: jsonData.loan_time},
+                {title: '评估总额', key: jsonData.reassessed},
+                {title: '债权人', key: jsonData.credito},
+            ]
+        }
         if (carData.length > 0) {
 
             let tempCarDate = [];
@@ -205,7 +218,9 @@ export  default  class SingDetaileSence extends BaseComponent {
         if (stateCode !== '' && extendCode !== '') {
 
             let tempTitle = []
-            if (stateCode == '1') {
+            if (stateCode == '8') {
+                tempTitle = ['资金方签署中']
+            } else if (stateCode == '1') {
                 tempTitle = ['取消借款']
             } else if (stateCode == '2') {
                 tempTitle = ['签署合同', '取消借款']
@@ -213,10 +228,10 @@ export  default  class SingDetaileSence extends BaseComponent {
             // else if (stateCode === '2') {
             //     tempTitle = ['已取消借款']
             // }
-            else if (Number.parseInt(stateCode) > 2 && stateCode != '5') {
+            else if (parseInt(stateCode) > 2 && stateCode != '5') {
                 tempTitle = ['查看合同']
             } else if (stateCode == '5') {
-                if (Number.parseInt(extendCode) == 1) {
+                if (parseInt(extendCode) == 1) {
                     tempTitle = ['查看合同', '申请展期']
                 } else {
                     tempTitle = ['查看合同']
@@ -224,7 +239,7 @@ export  default  class SingDetaileSence extends BaseComponent {
             }
 
             if (is_microchinese_contract == 1) {
-                tempTitle = ['签署转债权合同']
+                tempTitle = ['签署微单合同']
             }
             return tempTitle;
         }
@@ -244,8 +259,10 @@ export  default  class SingDetaileSence extends BaseComponent {
                 return styles.controlButton
             case '已取消借款':
                 return styles.canceledButton
-            case '签署转债权合同':
+            case '签署微单合同':
                 return styles.controlButton
+            case '资金方签署中':
+                return styles.cancelButton
             default:
                 return styles.cancelButton
 
@@ -291,9 +308,20 @@ export  default  class SingDetaileSence extends BaseComponent {
             this.toNextPage({
                 name: 'ContractInfoScene',
                 component: ContractInfoScene,
-                params: {loan_code: this.props.loanNumber, showButton: true}
+                params: {
+                    loan_code: this.props.loanNumber, showButton: true, callbackfresh: () => {
+                        this.initFinish();
+                        this.props.backRefresh();
+                    }
+                }
             });
         } else if (title === '查看合同') {
+            this.toNextPage({
+                name: 'ContractInfoScene',
+                component: ContractInfoScene,
+                params: {loan_code: this.props.loanNumber, showButton: false}
+            });
+        } else if (title === '资金方签署中') {
             this.toNextPage({
                 name: 'ContractInfoScene',
                 component: ContractInfoScene,
@@ -303,15 +331,15 @@ export  default  class SingDetaileSence extends BaseComponent {
             this.toNextPage({
                 name: 'CarOverdue', component: CarOverdue, params: {loan_code: controlCode.loan_code}
             });
-        } else if (title === "签署转债权合同") {
+        } else if (title === "签署微单合同") {
             this.toNextPage({
                 name: 'RecognizedGains', component: RecognizedGains, params: {
                     loan_code: controlCode.loan_code,
                     loan_number: '',
-                    isShow:true,
-                    callBack:()=>{
+                    isShow: true,
+                    callBack: () => {
                         this.setState({
-                            renderPlaceholderOnly:'loading'
+                            renderPlaceholderOnly: 'loading'
                         });
                         this.getLendinfo();
                     }
@@ -450,6 +478,7 @@ export  default  class SingDetaileSence extends BaseComponent {
             <View style={commnetStyle.container}>
 
                 <ListView
+                    removeClippedSubviews={false}
                     style={[commnetStyle.ListWarp]}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}

@@ -246,6 +246,7 @@ export default class AddEmployeeScene extends BaseComponent {
                 />
 
                     <ListView
+                        removeClippedSubviews={false}
                         style={styles.listStyle}
                         dataSource={this.state.source}
                         renderRow={this._renderRow}
@@ -368,7 +369,7 @@ export default class AddEmployeeScene extends BaseComponent {
     _onClick = (rowID) => {
         if (SECTIONID === 0 && ROWID === 1) {
 
-            this.sex = Number.parseInt(rowID) + 1 + '';
+            this.sex = parseInt(rowID) + 1 + '';
         } else if (SECTIONID === 1 && ROWID === 1) {
 
             for(let value of this.props.roleData){
@@ -455,8 +456,8 @@ export default class AddEmployeeScene extends BaseComponent {
             }>
                 <View style={styles.rowView}>
 
-                    <Text style={styles.rowLeftTitle}>{rowData.title}</Text>
-                    {HIDDEN ? <Text
+                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.title}</Text>
+                    {HIDDEN ? <Text allowFontScaling={false} 
                             style={[styles.rowRightTitle,]}>{this.state.rowdata ? this.state.rowdata : rowData.name}</Text> :
                         <TextInput ref={sectionID + rowID} defaultValue={rowData.name}
                                    placeholder={"请输入" + rowData.title } style={styles.inputStyle}

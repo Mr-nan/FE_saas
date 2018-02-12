@@ -32,7 +32,7 @@ const {width, height} = Dimensions.get('window')
 
 const changeToMillion=(number)=>{
 
-    let temp =Number.parseFloat(number);
+    let temp =parseFloat(number);
 
     return Math.floor(temp/10000*10000)/10000
 }

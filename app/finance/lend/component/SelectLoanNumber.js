@@ -69,6 +69,7 @@ export default class SelectLoanNumber extends Component {
                     this.state.topOrBottom=='top'?{justifyContent:'flex-start'}:{justifyContent:'flex-end'}]}>
                         <View>
                             <ListView
+                                removeClippedSubviews={false}
                                 dataSource={this.state.dataSource}
                                 renderRow={this._renderRow}
                             />
@@ -96,7 +97,7 @@ export default class SelectLoanNumber extends Component {
                     }
                     this._hiedModal()}}>
                 <View style={styles.rowStyle}>
-                    <Text style={styles.fontMain}>{this.state.topOrBottom == 'top' ? rowData.code : rowData.name}</Text>
+                    <Text allowFontScaling={false}  style={styles.fontMain}>{this.state.topOrBottom == 'top' ? rowData.code : rowData.name}</Text>
                 </View>
             </TouchableOpacity>
         );

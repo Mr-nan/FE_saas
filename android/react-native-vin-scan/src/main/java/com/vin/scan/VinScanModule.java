@@ -11,6 +11,18 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.text.TextUtils;
+import android.net.Uri;
+
+import android.os.Environment;
+import android.util.Log;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by Administrator on 2017/3/2.
@@ -94,4 +106,70 @@ public class VinScanModule extends ReactContextBaseJavaModule implements Activit
         String imei = mTm.getDeviceId();
         callback.invoke(imei);
     }
+    @ReactMethod
+    public void getPhoneVersion(Callback callback){
+        String verison = "phoneVersion=" +android.os.Build.VERSION.RELEASE  +
+                ",phoneModel=" + android.os.Build.MODEL+
+                ",appVersion="+getAppVersionName(mContext);
+        callback.invoke(verison);
+    }
+    private String getAppVersionName(Context context) {
+        String versionName = "";
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo("com.fe_sass", 0);
+            versionName = packageInfo.versionName;
+            if (TextUtils.isEmpty(versionName)) {
+                return "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return versionName;
+    }
+
+    @ReactMethod
+    public void callPhone(String tel){
+        tel = tel.replace(",", ",,");
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.fromParts("tel", tel, null));//拼一个电话的Uri，拨打分机号 关键代码
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+    }
+
+    @ReactMethod
+    public void getPicture(Callback callback){
+        String sdPath = getSDPath() + File.separator + "saas.png";
+        try {
+            InputStream its = mContext.getAssets().open("erweima.png");
+            int fileLength = its.available();
+            File file = new File(sdPath);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream fots = new FileOutputStream(file, true);
+            byte[] buffer = new byte[fileLength];
+            int readCount = 0;
+            while (readCount < fileLength) {
+                readCount += its.read(buffer, readCount, fileLength - readCount);
+            }
+            fots.write(buffer, 0, fileLength);
+            its.close();
+            fots.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        callback.invoke(sdPath);
+    }
+
+    public String getSDPath() {
+        File sdDir = null;
+        boolean sdCardExist = Environment.getExternalStorageState()
+                .equals(android.os.Environment.MEDIA_MOUNTED); //判断sd卡是否存在
+        if (sdCardExist) {
+            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+        }
+        return sdDir.getPath();
+    }
+
 }

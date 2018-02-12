@@ -92,7 +92,7 @@ export default class AutoPlate extends Component {
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={()=>{this.props.publishData()}}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text allowFontScaling={false}  style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };
@@ -173,7 +173,7 @@ export default class AutoPlate extends Component {
                             onPress={()=>{this._openModal()}}
                             style={styles.preContainer}>
                             <Image style={styles.preContainer} source={preBg}>
-                                <Text style={styles.fontPre}>{this.state.city}</Text>
+                                <Text allowFontScaling={false}  style={styles.fontPre}>{this.state.city}</Text>
                             </Image>
                         </TouchableOpacity>
 
