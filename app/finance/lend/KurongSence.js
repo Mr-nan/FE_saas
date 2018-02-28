@@ -253,7 +253,7 @@ export default class KurongSence extends BaseComponent {
                         </View>
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce} onPress={this.onPress}/>
                         <LendUseful onEndEidt={(text)=>{PostData.remark=text}}/>
-                        {PostData.loan_life !== '' && (<LendRate rate={ShowData.rate}/>)}
+                        <LendRate rate={ShowData.rate}/>
                     </KeyboardAvoidingView>
                 </ScrollView>
                 <CommenButton
