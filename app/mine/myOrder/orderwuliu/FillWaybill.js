@@ -186,7 +186,8 @@ export default class FillWaybill extends BaseComponent {
                         tagViews: tagViews,
                         accoutInfo: accoutInfo,
                         distance: this.distance,
-                        isRefreshing: false
+                        isRefreshing: false,
+                        transType: this.transType,
 
                     });
                 },
@@ -235,7 +236,8 @@ export default class FillWaybill extends BaseComponent {
                         }
                         this.setState({
                                 feeDatas: feeDatas,
-                                distance: this.distance
+                                distance: this.distance,
+                                transType: this.transType,
                             }, () => {
                                 this.tagRef.refreshData(tagViews);
                             }
@@ -409,6 +411,7 @@ export default class FillWaybill extends BaseComponent {
                         accoutInfo: accoutInfo,
                         distance: this.distance,
                         isRefreshing: false,
+                        transType: this.transType,
 
                     });
                 },
