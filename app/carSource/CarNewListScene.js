@@ -727,7 +727,7 @@ export  default  class CarNewListScene extends BaseComponent {
             this.setHeadViewType();
         }
 
-        if(/^\d+$/.test(carObject.brand_name) && carObject.brand_name.length== 12 && !isOpenCarInfo){
+        if(/^\d+$/.test(carObject.brand_name) && carObject.brand_name.length>=11 && !isOpenCarInfo){
             this.loadCarInfo();
         }
 
