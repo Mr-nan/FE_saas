@@ -377,6 +377,8 @@ export  default  class CarNewListScene extends BaseComponent {
 
             });
 
+
+
     }
 
     toEnd = () => {
