@@ -65,20 +65,20 @@ export default class DDDetailScene extends BaseComponent {
             register_user_id: '',
             purchas_price: '',
             bind_type: '',
-            obd_number: '',
+            // obd_number: '',
             payment_id: '',
             base_id: '',
             info_id: '',
             isCarinvoice: '',
-            obd_bind_status: '',
-            obd_audit_status: '',
+            // obd_bind_status: '',
+            // obd_audit_status: '',
             auto_ownership_status: '',//车辆权属审核状态
             order_ownership_status: '',//车辆权属提交状态
             is_mortgagor: '',
             is_new: '',
             file_list: [],
 
-            obd_track_url: ''
+            // obd_track_url: ''
         };
     }
 
@@ -136,15 +136,15 @@ export default class DDDetailScene extends BaseComponent {
                     if (tempjson.list.length > 0) {
                         this.carData.base_id = tempjson.list[0].base_id;
                         this.carData.frame_number = tempjson.list[0].frame_number;
-                        this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
-                        this.carData.obd_audit_status = tempjson.list[0].obd_audit_status;
-                        this.carData.obd_number = tempjson.list[0].obd_number;
+                        // this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
+                        // this.carData.obd_audit_status = tempjson.list[0].obd_audit_status;
+                        // this.carData.obd_number = tempjson.list[0].obd_number;
                         this.carData.auto_ownership_status = tempjson.list[0].auto_ownership_status;
                         this.carData.order_ownership_status = tempjson.list[0].order_ownership_status;
                         this.carData.is_mortgagor = tempjson.list[0].is_mortgagor;
                         this.carData.is_new = tempjson.list[0].is_new;
                         this.carData.info_id = tempjson.list[0].info_id;
-                        this.carData.obd_track_url = tempjson.list[0].obd_track_url;
+                        // this.carData.obd_track_url = tempjson.list[0].obd_track_url;
                     }
 
                     this.setState({
@@ -230,42 +230,59 @@ export default class DDDetailScene extends BaseComponent {
                         icon: item.cover.icon,
                         frame_number: item.frame_number,
                         price: item.first_assess_loan,//放款额
-                        obd_bind_status: item.obd_bind_status,//车牌号
+                        // obd_bind_status: item.obd_bind_status,//车牌号
                         info_id: item.info_id,
                         model_name: item.model_name,
                         init_reg: item.init_reg,
                         base_id: item.base_id,
                         mileage: item.mileage,
                         invoice_upload_status: item.invoice_upload_status,
-                        obd_audit_status: item.obd_audit_status,
+                        // obd_audit_status: item.obd_audit_status,
                         invoice_audit_status: item.invoice_audit_status
                     }
                 )
             })
             dataSource['section3'] = tempCarDate;
             let section4;
-            if (carData[0].is_new == 1) {
-                section4 = [
-                    {
-                        title: 'OBD设备',
-                        key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
-                    },
-                    {
-                        title: '车辆权属',
-                        key: this.OBDtransferToString(carData[0].auto_ownership_status, carData[0].order_ownership_status)
-                    },
+	        //=================================================关闭OBD入口========================================================================
+	        // if (carData[0].is_new == 1) {
+            //     section4 = [
+            //         {
+            //             title: 'OBD设备',
+            //             key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
+            //         },
+            //         {
+            //             title: '车辆权属',
+            //             key: this.OBDtransferToString(carData[0].auto_ownership_status, carData[0].order_ownership_status)
+            //         },
+            //
+            //     ]
+            // } else {
+            //     section4 = [
+            //         {
+            //             title: 'OBD设备',
+            //             key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
+            //         },
+            //
+            //
+            //     ]
+            // }
+	        //=================================================关闭OBD入口========================================================================
 
-                ]
-            } else {
-                section4 = [
-                    {
-                        title: 'OBD设备',
-                        key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
-                    },
+	        if (carData[0].is_new == 1) {
+		        section4 = [
 
+			        {
+				        title: '车辆权属',
+				        key: this.OBDtransferToString(carData[0].auto_ownership_status, carData[0].order_ownership_status)
+			        },
 
-                ]
-            }
+		        ]
+	        } else {
+		        section4 = [
+
+		        ]
+	        }
             dataSource['section4'] = section4;
         }
         return dataSource;
@@ -357,21 +374,21 @@ export default class DDDetailScene extends BaseComponent {
             />)
         }
         if (sectionID === 'section4') {
-            if (rowData.title === 'OBD设备') {
-
-                return (
-                    <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
-                                     showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
-
-                                         this.toNextPage({
-                                         name: 'WebScene',
-                                         component: WebScene,
-                                         params: {webUrl: this.carData.obd_track_url}
-                            })
-
-                    }}/>
-                )
-            }
+            // if (rowData.title === 'OBD设备') {
+            //
+            //     return (
+            //         <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
+            //                          showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
+            //
+            //                              this.toNextPage({
+            //                              name: 'WebScene',
+            //                              component: WebScene,
+            //                              params: {webUrl: this.carData.obd_track_url}
+            //                 })
+            //
+            //         }}/>
+            //     )
+            // }
             if (rowData.title === '车辆权属') {
                 return (
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}

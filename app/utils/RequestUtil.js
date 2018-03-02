@@ -61,7 +61,7 @@ const request = (url, method, params, backToLogin) => {
                             console.log(key + "===" + params[key]);
                         }
                         console.log("success----------" + JSON.stringify(responseData));
-                        if (responseData.code == 1 && responseData.code!=='0001') {
+                        if (responseData.code == 1 && responseData.code!=='0001') {1
                             resolve({mjson: responseData, mycode: 1});
                         } else {
                             if (responseData.code == 7040011 || responseData.code == 7040020) {

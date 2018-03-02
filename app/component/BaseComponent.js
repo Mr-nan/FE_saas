@@ -258,4 +258,12 @@ export default class BaseComponent extends Component {
         }
         return view;
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== null && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 }

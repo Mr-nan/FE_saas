@@ -76,6 +76,10 @@ export default class ProcurementInfo extends BaseComponent {
     addItemData = () => {
         let items = [];
         let layouts = [];
+        let firstAmount = this.state.orderDetail.first_amount;
+/*        if (this.state.orderDetail.trans_amount > 0) {
+            firstAmount = firstAmount - this.state.orderDetail.trans_amount;
+        }*/
         if (this.state.orderState === 1) {
             items = [{name: '待付总金额', value: this.state.orderDetail.transaction_amount},
                 {name: '待付订金', value: this.state.orderDetail.deposit_amount},
@@ -97,10 +101,11 @@ export default class ProcurementInfo extends BaseComponent {
                 {name: '待付金额', value: this.state.orderDetail.balance_amount},
                 {name: '已付订金', value: this.state.orderDetail.deposit_amount}];
         } else if (this.state.orderState === 7) {
-            items = [{name: '待付总金额', value: parseFloat(this.state.orderDetail.transaction_amount - this.state.orderDetail.deposit_amount - this.state.orderDetail.first_amount).toFixed(2)},
-                {name: '融资待放款金额', value: parseFloat(this.state.orderDetail.balance_amount - this.state.orderDetail.first_amount).toFixed(2)},
-                {name: '已付订金', value: this.state.orderDetail.deposit_amount},
-                {name: '已付首付', value: this.state.orderDetail.first_amount}];
+            items = [{name: '待付总金额', value: parseFloat(this.state.orderDetail.finance_amount).toFixed(2)},
+                {name: '融资待放款金额', value: parseFloat(this.state.orderDetail.finance_amount).toFixed(2)},
+                //{name: '融资待放款金额', value: parseFloat(this.state.orderDetail.balance_amount - firstAmount).toFixed(2)},
+                {name: '已付订金', value: parseFloat(this.state.orderDetail.deposit_amount).toFixed(2)},
+                {name: '已付首付', value: parseFloat(firstAmount).toFixed(2)}];
         } else if (this.state.orderState === 8) {
             items = [{name: '已付金额', value: this.state.orderDetail.transaction_amount}];
         }
@@ -112,6 +117,10 @@ export default class ProcurementInfo extends BaseComponent {
      *  render
      **/
     render() {
+        let firstAmount = this.state.orderDetail.first_amount;
+/*        if (this.state.orderDetail.trans_amount > 0) {
+            firstAmount = firstAmount - this.state.orderDetail.trans_amount;
+        }*/
         return (
             <View style={styles.itemType4}>
                 <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
@@ -122,7 +131,7 @@ export default class ProcurementInfo extends BaseComponent {
                 </View>
                 <View style={styles.separatedLine}/>
                 {this.addItemData()}
-                {this.state.orderState === 4 && this.state.orderDetail.first_amount > 0 && <Text
+                {this.state.orderState === 4 && firstAmount > 0 && <Text
                     style={{
                         width: width - Pixel.getPixel(15),
                         marginTop: Pixel.getPixel(10),
@@ -131,7 +140,7 @@ export default class ProcurementInfo extends BaseComponent {
                         textAlign: 'right',
                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
                     }}
-                >其中订单融资支付{this.state.orderDetail.balance_amount - this.state.orderDetail.first_amount}元</Text>}
+                >其中订单融资支付{this.state.orderDetail.finance_amount}元</Text>}
                 {/*<View style={{
                  alignItems: 'center',
                  flexDirection: 'row',
