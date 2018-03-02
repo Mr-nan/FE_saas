@@ -36,6 +36,7 @@ const white_jiantou = require('../../../../images/white_jiantou.png');
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
 import LogisticsCheckStand from "../../../finance/LogisticsCheckStand";
+
 const Pixel = new PixelUtil();
 let tagViews = [];
 let feeDatas = [{title: '物流费', value: '元'}, {title: '提验车费', value: '元'}]
@@ -58,7 +59,14 @@ export default class FillWaybill extends BaseComponent {
         this.toStore = this.props.logisticsType;//0自提,1全款到店,2融资到店,3融资到库,4库到店
         this.fromSingle = false;//来自地址管理
         this.totalMoney = 0;
-        this.store_amount=0;
+        this.store_amount = 0;
+        this.transTypeTags = [{
+            name: '平台上门取车',
+            check: true,
+        }, {
+            name: '客户送车到网点',
+            check: false,
+        }]
         if (this.toStore == '2') {
             this.title = '填写运单（到店）';
         } else if (this.toStore == '3') {//到库
@@ -80,7 +88,9 @@ export default class FillWaybill extends BaseComponent {
             isShow: false,//底部选择框
             addressDatas: this.addressDatas,
             isRefreshing: false,
-            cityStatus:false
+            cityStatus: false,
+            transTypeTags: this.transTypeTags,
+            transType: this.transType,
         }
     }
 
@@ -88,11 +98,11 @@ export default class FillWaybill extends BaseComponent {
         this.getData();
     }
 
-    freshTotalData=(data)=>{
+    freshTotalData = (data) => {
         let end_address = data.end_address;
         this.startAdress = data.start_address.city + data.start_address.district;
         this.startId = data.start_address.id;
-        if(end_address==null){
+        if (end_address == null) {
             this.collectAddress = '请选择'
             return;
         }
@@ -102,46 +112,46 @@ export default class FillWaybill extends BaseComponent {
         this.collectAddress = end_address.city + end_address.district;
         this.endId = end_address.id;
         this.distance = data.distance;
-        if(!this.isEmpty(data.store_amount)){
-            this.store_amount=parseFloat(data.store_amount).toFixed(2);
+        if (!this.isEmpty(data.store_amount)) {
+            this.store_amount = parseFloat(data.store_amount).toFixed(2);
         }
         if (this.toStore == '3') {
             if (this.isEmpty(data.warehouse_id) && this.toStore == '3') {
                 this.collectAddress = '请选择'
             } else {
                 this.warehouse_id = data.warehouse_id;
-                this.endId=this.warehouse_id;
+                this.endId = this.warehouse_id;
             }
         }
-        if(this.collectAddress=='请选择'){
+        if (this.collectAddress == '请选择') {
             accoutInfo.push({title: '联系人', value: ''});
             accoutInfo.push({title: '联系方式', value: ''});
             accoutInfo.push({title: '收车地址', value: ''});
-        }else{
+        } else {
             accoutInfo.push({title: '联系人', value: end_address.contact_name});
             accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
             accoutInfo.push({title: '收车地址', value: end_address.full_address});
         }
 
-        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
+        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 && this.collectAddress !== '请选择' && this.distance !== '0') {
             data.all_amount.map((data) => {
-                if (this.fromSingle && data.amount_name == '总金额') {
+                // if (this.fromSingle && data.amount_name == '总金额') {
                     this.totalMoney = data.amount;
-                }
-                if (parseFloat(data.amount) > 0) {
-                    if(data.amount_name!=='总金额'){
+                // }
+                // if (parseFloat(data.amount) > 0) {
+                    if (data.amount_name !== '总金额') {
                         feeDatas.push({title: data.amount_name, value: parseFloat(data.amount).toFixed(2) + '元'});
                     }
-                }
+                // }
             })
-            if(this.fromSingle){
-                feeDatas.push({title: '仓储费', value:  parseFloat(this.store_amount).toFixed(2) + '元'})
+            if (this.fromSingle) {
+                feeDatas.push({title: '仓储费', value: parseFloat(this.store_amount).toFixed(2) + '元'})
             }
         }
-        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
+        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 && this.collectAddress !== '请选择' && this.distance !== '0') {
             data.trans_type.map((data, index) => {
-                if(index=='0'){
-                    this.transType=data.transportTypeCode;
+                if (index == '0') {
+                    this.transType = data.transportTypeCode;
                 }
                 tagViews.push({
                     name: data.transportType,
@@ -199,7 +209,7 @@ export default class FillWaybill extends BaseComponent {
             start_id: this.startId,
             logistics_type: this.props.logisticsType,//物流类型
             trans_type: this.transType,
-            warehouse_id: this.props.logisticsType==3?this.endId:this.warehouse_id
+            warehouse_id: this.props.logisticsType == 3 ? this.endId : this.warehouse_id
 
         };
         request(Urls.CHECKTRANSTYPE, 'Post', maps)
@@ -210,13 +220,16 @@ export default class FillWaybill extends BaseComponent {
                         feeDatas = [];
                         if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0) {
                             data.all_amount.map((data) => {
-                                if (this.fromSingle && data.amount_name == '总金额') {
+                                // if (this.fromSingle && data.amount_name == '总金额') {
                                     this.totalMoney = data.amount;
-                                }
-                                if (parseFloat(data.amount) > 0) {
-                                    if(data.amount_name!=='总金额'){
-                                        feeDatas.push({title: data.amount_name, value: parseFloat(data.amount).toFixed(2) + '元'});
-                                    }
+                                // }
+                                // if (parseFloat(data.amount) > 0) {
+                                    if (data.amount_name !== '总金额') {
+                                        feeDatas.push({
+                                            title: data.amount_name,
+                                            value: parseFloat(data.amount).toFixed(2) + '元'
+                                        });
+                                    // }
                                 }
                             })
                         }
@@ -252,10 +265,10 @@ export default class FillWaybill extends BaseComponent {
             logistics_type: this.props.logisticsType,//物流类型
             trans_type: this.transType,
             invoice_id: this.invoiceId,
-            warehouse_id: this.props.logisticsType==3?this.endId:this.warehouse_id
+            warehouse_id: this.props.logisticsType == 3 ? this.endId : this.warehouse_id
         };
-        if(!this.fromSingle){
-            maps['start_id']= this.startId;
+        if (!this.fromSingle) {
+            maps['start_id'] = this.startId;
         }
         this.props.showModal(true);
         request(Urls.SUBMITTRANFERINFO, 'Post', maps)
@@ -263,20 +276,20 @@ export default class FillWaybill extends BaseComponent {
                     this.props.showModal(false);
                     if (response.mjson.data != null) {
                         let data = response.mjson.data;
-                        if(this.fromSingle){
+                        if (this.fromSingle) {
                             this.toNextPage({
                                     name: 'LogisticsCheckStand',
                                     component: LogisticsCheckStand,
                                     params: {
                                         garageAmount: this.store_amount,//仓储费
                                         transAmount: this.totalMoney,//物流费
-                                        orderId:this.props.orderId,
-                                        callBack:this.props.callBack
+                                        orderId: this.props.orderId,
+                                        callBack: this.props.callBack
 
                                     }
                                 }
                             );
-                        }else{
+                        } else {
                             this.props.callBack(data);
                             const navigator = this.props.navigator;
                             if (navigator) {
@@ -322,19 +335,19 @@ export default class FillWaybill extends BaseComponent {
                         let end_address = data.end_address;
                         this.startAdress = data.start_address.city + data.start_address.district;
                         this.startId = data.start_address.id;
-                        if(end_address==null){
+                        if (end_address == null) {
                             this.collectAddress = '请选择'
                             return;
                         }
                         accoutInfo = [];
                         feeDatas = [];
                         tagViews = [];
-                        this.collectAddress = this.props.logisticsType=='3'?end_address.cityName+end_address.countyName:
+                        this.collectAddress = this.props.logisticsType == '3' ? end_address.cityName + end_address.countyName :
                             end_address.city + end_address.district;
-                        this.endId = this.props.logisticsType=='3'?end_address.repoId:end_address.id;
+                        this.endId = this.props.logisticsType == '3' ? end_address.repoId : end_address.id;
                         this.distance = data.distance;
-                        if(!this.isEmpty(data.store_amount)){
-                            this.store_amount=parseFloat(data.store_amount).toFixed(2);
+                        if (!this.isEmpty(data.store_amount)) {
+                            this.store_amount = parseFloat(data.store_amount).toFixed(2);
                         }
                         if (this.toStore == '3') {
                             if (this.isEmpty(data.warehouse_id) && this.toStore == '3') {
@@ -343,35 +356,41 @@ export default class FillWaybill extends BaseComponent {
                                 this.warehouse_id = data.warehouse_id;
                             }
                         }
-                        if(this.collectAddress=='请选择'){
+                        if (this.collectAddress == '请选择') {
                             accoutInfo.push({title: '联系人', value: ''});
                             accoutInfo.push({title: '联系方式', value: ''});
                             accoutInfo.push({title: '收车地址', value: ''});
-                        }else{
+                        } else {
                             accoutInfo.push({title: '联系人', value: end_address.contact_name});
                             accoutInfo.push({title: '联系方式', value: end_address.contact_phone});
-                            accoutInfo.push({title: '收车地址', value: this.props.logisticsType=='3'?end_address.address:end_address.full_address});
+                            accoutInfo.push({
+                                title: '收车地址',
+                                value: this.props.logisticsType == '3' ? end_address.address : end_address.full_address
+                            });
                         }
 
-                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
+                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 && this.collectAddress !== '请选择' && this.distance !== '0') {
                             data.all_amount.map((data) => {
                                 if (this.fromSingle && data.amount_name == '总金额') {
                                     this.totalMoney = data.amount;
                                 }
-                                if (parseFloat(data.amount) > 0) {
-                                    if(data.amount_name!=='总金额'){
-                                        feeDatas.push({title: data.amount_name, value: parseFloat(data.amount).toFixed(2) + '元'});
+                                // if (parseFloat(data.amount) > 0) {
+                                    if (data.amount_name !== '总金额') {
+                                        feeDatas.push({
+                                            title: data.amount_name,
+                                            value: parseFloat(data.amount).toFixed(2) + '元'
+                                        });
                                     }
-                                }
+                                // }
                             })
-                            if(this.fromSingle){
-                                feeDatas.push({title: '仓储费', value:  parseFloat(this.store_amount).toFixed(2) + '元'})
+                            if (this.fromSingle) {
+                                feeDatas.push({title: '仓储费', value: parseFloat(this.store_amount).toFixed(2) + '元'})
                             }
                         }
-                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 &&this.collectAddress !== '请选择'&&this.distance!=='0') {
+                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 && this.collectAddress !== '请选择' && this.distance !== '0') {
                             data.trans_type.map((data, index) => {
-                                if(index=='0'){
-                                    this.transType=data.transportTypeCode;
+                                if (index == '0') {
+                                    this.transType = data.transportTypeCode;
                                 }
                                 tagViews.push({
                                     name: data.transportType,
@@ -425,9 +444,9 @@ export default class FillWaybill extends BaseComponent {
         this.getData();
     }
 
-    checkAreaClick = (cityRegion)=>{
-        console.log('-------',cityRegion);
-        this.endId=cityRegion.repoId;
+    checkAreaClick = (cityRegion) => {
+        console.log('-------', cityRegion);
+        this.endId = cityRegion.repoId;
         this.props.showModal(true);
         this.getTransType();
     };
@@ -447,6 +466,14 @@ export default class FillWaybill extends BaseComponent {
         this.getTransFee();
     }
 
+    onTransTagClick = (dt, index) => {
+        //单选
+        this.transTypeTags.map((data) => {
+            data.check = false;
+        });
+        this.transTypeTags[index].check = !this.transTypeTags[index].check;
+        this.transTagRef.refreshData(this.transTypeTags);
+    }
     _renderItem = () => {
         return (
             <ScrollView style={{flex: 1, marginBottom: Pixel.getPixel(60)}} refreshControl={
@@ -525,12 +552,12 @@ export default class FillWaybill extends BaseComponent {
 
                     <View style={{backgroundColor: 'white', marginBottom: Pixel.getPixel(10)}}>
                         <View style={styles.content_tag_wrap}>
-                            <Text style={{color: 'black'}}> 运输类型</Text>
+                            <Text style={styles.tagText}> 运输类型</Text>
 
                             <View style={{
                                 height: Pixel.getPixel(49),
                                 justifyContent: 'center',
-                                marginRight: Pixel.getPixel(5),
+                                marginLeft: Pixel.getPixel(5)
                             }}>
                                 <TagSelectView ref={(ref) => {
                                     this.tagRef = ref;
@@ -538,7 +565,28 @@ export default class FillWaybill extends BaseComponent {
                                                buttonWidth={Pixel.getPixel(80)}/>
                             </View>
                         </View>
+                        <View style={styles.divideLine}/>
 
+                        {this.state.transType == '1' && <View style={{marginRight: Pixel.getPixel(15),}}>
+                            <Text style={styles.tagText}> 运输方式</Text>
+
+                            <View style={{
+                                height: Pixel.getPixel(49),
+                                justifyContent: 'center',
+                                marginLeft: Pixel.getPixel(5)
+                            }}>
+                                <TagSelectView ref={(ref) => {
+                                    this.transTagRef = ref;
+                                }} onTagClick={this.onTransTagClick} cellData={this.state.transTypeTags}
+                                               buttonWidth={Pixel.getPixel(140)}/>
+                            </View>
+                        </View>}
+
+                    </View>
+
+                    <View style={{backgroundColor: 'white', marginBottom: Pixel.getPixel(10)}}>
+                        <Text style={styles.titleText}> 运费明细</Text>
+                        <View style={styles.divideLine}/>
                         {
                             this.state.feeDatas.map((data, index) => {
                                 return (
@@ -549,14 +597,21 @@ export default class FillWaybill extends BaseComponent {
                                 )
                             })
                         }
+                        <View style={[styles.divideLine,{marginTop:Pixel.getPixel(10)}]}/>
+                        <View style={{margin:Pixel.getPixel(15),flexDirection:'row',justifyContent:'space-between'}}>
+                            <Text>{'   '}</Text>
+                            <Text style={{color:FontAndColor.COLORA2, fontSize:Pixel.getPixel(16)}}>总价(含运输保险)</Text>
+                            <Text style={{color:FontAndColor.COLORA2, fontSize:Pixel.getPixel(16)}}>{this.totalMoney}元</Text>
+                        </View>
 
                     </View>
 
                     <View style={{
                         backgroundColor: 'white',
                         marginBottom: Pixel.getPixel(10),
-                        paddingVertical: Pixel.getPixel(10)
                     }}>
+                        <Text style={styles.titleText}> 收车详情</Text>
+                        <View style={styles.divideLine}/>
                         {
                             this.state.accoutInfo.map((data, index) => {
                                 return (
@@ -634,28 +689,6 @@ export default class FillWaybill extends BaseComponent {
                         </View>
                     </TouchableOpacity>}
 
-                    {/*<View style={{alignItems: 'center', flexDirection: 'row',marginTop: Pixel.getPixel(10),}}>*/}
-                    {/*<TouchableOpacity activeOpacity={0.8} onPress={() => {*/}
-                    {/*this.setState({*/}
-                    {/*isAgree: !this.state.isAgree*/}
-                    {/*});*/}
-                    {/*}}>*/}
-                    {/*<View style={{*/}
-                    {/*flexDirection: 'row',*/}
-                    {/*alignItems: 'center',*/}
-                    {/*marginLeft: Pixel.getPixel(15)*/}
-                    {/*}}>*/}
-                    {/*<Image source={this.state.isAgree ? agree_icon : disagree}*/}
-                    {/*style={{marginRight: Pixel.getPixel(3)}}></Image>*/}
-                    {/*<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>我已同意签署物流协议</Text>*/}
-                    {/*</View>*/}
-                    {/*</TouchableOpacity>*/}
-                    {/*<TouchableOpacity activeOpacity={0.8} onPress={() => {*/}
-                    {/*alert('1111')*/}
-                    {/*}}>*/}
-                    {/*<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14),}}>《物流协议》</Text>*/}
-                    {/*</TouchableOpacity>*/}
-                    {/*</View>*/}
                 </View>
             </ScrollView>
         );
@@ -663,7 +696,7 @@ export default class FillWaybill extends BaseComponent {
     }
 
     confirmBt = () => {
-        if(this.state.collectAddress=='请选择'){
+        if (this.state.collectAddress == '请选择') {
             this.props.showToast('请选择收车地');
             return;
         }
@@ -677,16 +710,16 @@ export default class FillWaybill extends BaseComponent {
             });
     }
 
-    _showModal = (show)=>{
+    _showModal = (show) => {
         this.props.showModal(show);
     };
-    _toProvince = ()=>{
+    _toProvince = () => {
         dismissKeyboard();
-        this.setState({cityStatus:true});
+        this.setState({cityStatus: true});
     };
 
-    _closeProvince = ()=>{
-        this.setState({cityStatus:false});
+    _closeProvince = () => {
+        this.setState({cityStatus: false});
     };
 
     render() {
@@ -712,7 +745,11 @@ export default class FillWaybill extends BaseComponent {
                                 marginHorizontal: Pixel.getPixel(10)
                             }}>共计:</Text>
                         <Text
-                            style={{color: FontAndColor.COLORB2, fontSize: 18, flex: 1}}>{(parseFloat(this.store_amount) + parseFloat(this.totalMoney)).toFixed(2)}元</Text>
+                            style={{
+                                color: FontAndColor.COLORB2,
+                                fontSize: 18,
+                                flex: 1
+                            }}>{(parseFloat(this.store_amount) + parseFloat(this.totalMoney)).toFixed(2)}元</Text>
                         <TouchableOpacity activeOpacity={0.8} style={{
                             width: Pixel.getPixel(80),
                             height: Pixel.getPixel(38),
@@ -722,7 +759,7 @@ export default class FillWaybill extends BaseComponent {
                             borderRadius: 4,
                             marginRight: Pixel.getPixel(10)
                         }} onPress={() => {
-                            if(this.state.collectAddress=='请选择'){
+                            if (this.state.collectAddress == '请选择') {
                                 this.props.showToast('请选择收车地');
                                 return;
                             }
@@ -742,10 +779,12 @@ export default class FillWaybill extends BaseComponent {
                     <AccountModal ref="accountModal"/>
                     {/*{this.state.isShow &&*/}
                     {/*< SelectProvinceCityModal ref='selectProvinceCityModal' datas={this.state.addressDatas}*/}
-                                              {/*confirm={this.confirm} closeModal={this.closeModal}/>}*/}
+                    {/*confirm={this.confirm} closeModal={this.closeModal}/>}*/}
                     <NavigatorView title={this.title} backIconClick={this.backPg}/>
                     {
-                        this.state.cityStatus && <WarehouseListScene orderId={this.props.orderId} checkAreaClick={this.checkAreaClick} showModal={this._showModal} closePress={this._closeProvince}/>
+                        this.state.cityStatus &&
+                        <WarehouseListScene orderId={this.props.orderId} checkAreaClick={this.checkAreaClick}
+                                            showModal={this._showModal} closePress={this._closeProvince}/>
                     }
                 </View>)
         }
@@ -760,13 +799,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     content_tag_wrap: {
-        height: Pixel.getPixel(49),
-        marginHorizontal: Pixel.getPixel(15),
-        borderBottomWidth: Pixel.getPixel(1),
-        borderColor: FontAndColor.COLORA4,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
+        marginRight: Pixel.getPixel(15),
     },
     content_title_wrap: {
         height: Pixel.getPixel(51),
@@ -837,4 +870,21 @@ const styles = StyleSheet.create({
         bottom: Pixel.getPixel(0),
 
     },
+    titleText: {
+        fontSize: Pixel.getPixel(15),
+        color: FontAndColor.COLORA1,
+        marginVertical: Pixel.getPixel(10),
+        marginLeft:Pixel.getPixel(15),
+    },
+    tagText: {
+        marginLeft: Pixel.getPixel(15),
+        fontSize: Pixel.getPixel(15),
+        color: FontAndColor.COLORA1,
+        marginTop: Pixel.getPixel(10)
+    },
+    divideLine:{
+        borderBottomWidth: Pixel.getPixel(1),
+        borderColor: FontAndColor.COLORA4,
+        marginHorizontal:Pixel.getPixel(15)
+    }
 });
