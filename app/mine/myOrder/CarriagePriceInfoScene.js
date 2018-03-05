@@ -20,7 +20,7 @@ import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 
-let priceData=[{title:'运价',value:'300'},{title:'运价',value:'300'},{title:'运价',value:'300'},{title:'运价',value:'300'},{title:'运价',value:'300'},{title:'总价',value:'300'}];
+let priceData=[{title:'运价',value:'300'},{title:'保险费',value:'300'},{title:'运价',value:'300'},{title:'运价',value:'300'},{title:'运价',value:'300'},{title:'总价',value:'300'}];
 
 export  default class CarriagePriceInfoScene extends BaseComponent {
 
