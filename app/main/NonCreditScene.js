@@ -27,6 +27,10 @@ import  PixelUtil from '../utils/PixelUtil'
 let Pixel = new PixelUtil();
 import AllNavigationView from '../component/AllNavigationView';
 
+// import Authentication from '../mine/kuaisushouxin/Authentication';//验四页面
+import Authentication from '../mine/kuaisushouxin/Authentication';//验四页面
+
+
 export default class NonCreditScene extends BaseComponent {
 
 	constructor(props) {
@@ -111,6 +115,7 @@ export default class NonCreditScene extends BaseComponent {
 
 				{IS_ANDROID ? null : <StatusBar barStyle={'default'}/>}
 
+				{/*//----------------------------------------------第 1 块view 新车订单授信----------------------------------------------*/}
 
 				<View
 					style={{width:width,height:Pixel.getPixel(250),alignItems:'center',backgroundColor:'white',marginTop:Pixel.getPixel(20)}}>
@@ -149,7 +154,7 @@ export default class NonCreditScene extends BaseComponent {
 								<View  style={{borderColor:'rgba(255,255,255,0.42)',borderWidth:1,borderRadius:Pixel.getPixel(8),
 							width:Pixel.getPixel(95),height:Pixel.getPixel(16),alignItems:'center',justifyContent:'center',marginLeft:Pixel.getPixel(10)}}>
 									<Text allowFontScaling={false}
-									      style={{backgroundColor:'#00000000',color:'white',fontSize: Pixel.getFontPixel(10)}} >最高额度  500万</Text>
+									      style={{backgroundColor:'#00000000',color:'white',fontSize: Pixel.getFontPixel(10)}} >最高额度  200万</Text>
 								</View>
 
 							</View>
@@ -164,19 +169,18 @@ export default class NonCreditScene extends BaseComponent {
 							</TouchableOpacity>
 
 						</View>
-
-
-
 					</Image>
 
 				</View>
 
-				<View style={{width:width,backgroundColor:'white',borderTopColor:fontAndColor.COLORA4,borderTopWidth:Pixel.getPixel(11)}}>
+				{/*//----------------------------------------------第 2 块view 小额授信----------------------------------------------*/}
+
+				<View style={{width:width,backgroundColor:'white',borderTopColor:'#F0EFF5',borderTopWidth:Pixel.getPixel(11)}}>
 					<View style={{marginTop:Pixel.getPixel(9),flexDirection:'row',alignItems:'flex-end',}}>
 						<Image source={require('../mine/kuaisushouxin/kuaisushouxin_images/kuaisu.png')} style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18),marginLeft:Pixel.getPixel(21)}}/>
 						<Text allowFontScaling={false}
 						      style={{backgroundColor:'#00000000',color:'black',fontSize: Pixel.getFontPixel(14),marginLeft:Pixel.getPixel(5)}}>
-							快速授信
+							小额授信
 						</Text>
 					</View>
 
@@ -192,15 +196,15 @@ export default class NonCreditScene extends BaseComponent {
 						</Text>
 
 						<View style={{flexDirection:'row',marginTop:Pixel.getPixel(10)}}>
-							<View  style={{borderColor:fontAndColor.COLORA4,borderWidth:1,borderRadius:Pixel.getPixel(8),
+							<View  style={{borderColor:fontAndColor.COLORA1,borderWidth:1,borderRadius:Pixel.getPixel(8),
 							width:Pixel.getPixel(95),height:Pixel.getPixel(16),alignItems:'center',justifyContent:'center'}}>
 								<Text allowFontScaling={false}
-								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA4,fontSize: Pixel.getFontPixel(11)}} >最长期限  12个月</Text>
+								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(11)}} >最长期限  12个月</Text>
 							</View>
-							<View  style={{borderColor:fontAndColor.COLORA4,borderWidth:1,borderRadius:Pixel.getPixel(8),
+							<View  style={{borderColor:fontAndColor.COLORA1,borderWidth:1,borderRadius:Pixel.getPixel(8),
 							width:Pixel.getPixel(95),height:Pixel.getPixel(16),alignItems:'center',justifyContent:'center',marginLeft:Pixel.getPixel(10)}}>
 								<Text allowFontScaling={false}
-								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA4,fontSize: Pixel.getFontPixel(11)}} >最高额度  50万</Text>
+								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(11)}} >最高额度  50万</Text>
 							</View>
 
 						</View>
@@ -216,13 +220,11 @@ export default class NonCreditScene extends BaseComponent {
 						</TouchableOpacity>
 
 					</View>
-
-
-
 				</View>
 
-				{/*第三块view*/}
-				<View style={{width:width,backgroundColor:'white',borderTopColor:fontAndColor.COLORA4,borderTopWidth:Pixel.getPixel(11)}}>
+				{/*//----------------------------------------------第 3 块view 综合授信----------------------------------------------*/}
+
+				<View style={{width:width,backgroundColor:'white',borderTopColor:'#F0EFF5',borderTopWidth:Pixel.getPixel(11)}}>
 					<View style={{marginTop:Pixel.getPixel(9),flexDirection:'row',alignItems:'flex-end',}}>
 						<Image source={require('../mine/kuaisushouxin/kuaisushouxin_images/zonghe.png')} style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18),marginLeft:Pixel.getPixel(21)}}/>
 						<Text allowFontScaling={false}
@@ -247,15 +249,15 @@ export default class NonCreditScene extends BaseComponent {
 						</Text>
 
 						<View style={{flexDirection:'row',marginTop:Pixel.getPixel(10)}}>
-							<View  style={{borderColor:fontAndColor.COLORA4,borderWidth:1,borderRadius:Pixel.getPixel(8),
+							<View  style={{borderColor:fontAndColor.COLORA1,borderWidth:1,borderRadius:Pixel.getPixel(8),
 							width:Pixel.getPixel(95),height:Pixel.getPixel(16),alignItems:'center',justifyContent:'center'}}>
 								<Text allowFontScaling={false}
-								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA4,fontSize: Pixel.getFontPixel(11)}} >最长期限  36个月</Text>
+								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(11)}} >最长期限  12个月</Text>
 							</View>
-							<View  style={{borderColor:fontAndColor.COLORA4,borderWidth:1,borderRadius:Pixel.getPixel(8),
+							<View  style={{borderColor:fontAndColor.COLORA1,borderWidth:1,borderRadius:Pixel.getPixel(8),
 							width:Pixel.getPixel(95),height:Pixel.getPixel(16),alignItems:'center',justifyContent:'center',marginLeft:Pixel.getPixel(10)}}>
 								<Text allowFontScaling={false}
-								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA4,fontSize: Pixel.getFontPixel(11)}} >最高额度  5000万</Text>
+								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(11)}} >最高额度  5000万</Text>
 							</View>
 
 						</View>
@@ -277,7 +279,7 @@ export default class NonCreditScene extends BaseComponent {
 
 				</View>
 				{/*灰色的线*/}
-				<View style={{backgroundColor:fontAndColor.COLORA4,width:Pixel.getPixel(width),
+				<View style={{backgroundColor:'#F0EFF5',width:Pixel.getPixel(width),
 						height:Pixel.getPixel(1000),marginTop:Pixel.getPixel(0)}}/>
 			</View>
 		)
@@ -317,7 +319,32 @@ export default class NonCreditScene extends BaseComponent {
 		)
 	}
 	_applyCredit = (type) => {
-		alert(type);
+		if(type == 'xinchedingdan'){
+			this.toNextPage({
+				name: 'Authentication',
+				component: Authentication,
+				params: {
+					FromScene:'xinchedingdan'
+				},
+			})
+		}
+		if(type == 'kuaisu'){
+			this.toNextPage({
+				name: 'Authentication',
+				component: Authentication,
+				params: {
+					FromScene:'kuaisu'
+				},
+			})
+		}
+		if(type == 'zonghe'){
+			this.toNextPage({
+				name: type,
+				component: type,
+				params: {},
+			})
+		}
+
 
 	}
 

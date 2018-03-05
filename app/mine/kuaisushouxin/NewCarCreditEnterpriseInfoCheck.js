@@ -106,7 +106,7 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 		}
 		this.enterpriseData = {
 
-			qiyemingcheng: '',//企业名称
+			qiyemingcheng: '企业名称企业名称企业名称',//企业名称
 
 
 		};
@@ -177,40 +177,40 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 		return (
 			<ScrollView keyboardShouldPersistTaps={'handled'} style={{height:height- Pixel.getPixel(64)}}>
 
-				{/*===============================提示语header===========================*/}
-				<View style={{backgroundColor: '#FFF8EA',height: Pixel.getPixel(58),width: width,flexDirection:'row'}}>
-					<Image
-						style={{height:Pixel.getPixel(13),width:Pixel.getPixel(13),marginTop:Pixel.getPixel(13),marginLeft:Pixel.getPixel(13)}}
-						source={require('./kuaisushouxin_images/tishixiaolaba.png')}/>
-					<View style={{marginTop:Pixel.getPixel(12),flex:1}}>
-						<Text
-							style={{color: '#FA5741',fontSize: Pixel.getPixel(12),marginLeft: Pixel.getPixel(5),lineHeight:Pixel.getPixel(17)}}>
-							授信类型一旦选择不可修改，选择个人借款\企业借款，则授信主体和借款主体均为个人\企业
-						</Text>
-					</View>
+				{/*/!*===============================提示语header===========================*!/*/}
+				{/*<View style={{backgroundColor: '#FFF8EA',height: Pixel.getPixel(58),width: width,flexDirection:'row'}}>*/}
+					{/*<Image*/}
+						{/*style={{height:Pixel.getPixel(13),width:Pixel.getPixel(13),marginTop:Pixel.getPixel(13),marginLeft:Pixel.getPixel(13)}}*/}
+						{/*source={require('./kuaisushouxin_images/tishixiaolaba.png')}/>*/}
+					{/*<View style={{marginTop:Pixel.getPixel(12),flex:1}}>*/}
+						{/*<Text*/}
+							{/*style={{color: '#FA5741',fontSize: Pixel.getPixel(12),marginLeft: Pixel.getPixel(5),lineHeight:Pixel.getPixel(17)}}>*/}
+							{/*授信类型一旦选择不可修改，选择个人借款\企业借款，则授信主体和借款主体均为个人\企业*/}
+						{/*</Text>*/}
+					{/*</View>*/}
 
-				</View>
-				{/*===============================授信类型 View===========================*/}
-				<View style={[styles.itemBackground,{height:Pixel.getPixel(60)}]}>
-					<Text allowFontScaling={false} style={styles.leftFont}>授信类型</Text>
-					<View style={styles.fillSpace}/>
-					<TouchableOpacity
-						style={[styles.selectBtn,{borderColor:this.state.selectNO == 'GeRen' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}
-						activeOpacity={0.6}
-						onPress={() =>{this._changdiTypePress('GeRen')}}>
-						<Text allowFontScaling={false}
-						      style={[styles.selectBtnFont,{color:this.state.selectNO == 'GeRen' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}>个人借款</Text>
-					</TouchableOpacity>
+				{/*</View>*/}
+				{/*/!*===============================授信类型 View===========================*!/*/}
+				{/*<View style={[styles.itemBackground,{height:Pixel.getPixel(60)}]}>*/}
+					{/*<Text allowFontScaling={false} style={styles.leftFont}>授信类型</Text>*/}
+					{/*<View style={styles.fillSpace}/>*/}
+					{/*<TouchableOpacity*/}
+						{/*style={[styles.selectBtn,{borderColor:this.state.selectNO == 'GeRen' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}*/}
+						{/*activeOpacity={0.6}*/}
+						{/*onPress={() =>{this._changdiTypePress('GeRen')}}>*/}
+						{/*<Text allowFontScaling={false}*/}
+						      {/*style={[styles.selectBtnFont,{color:this.state.selectNO == 'GeRen' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}>个人借款</Text>*/}
+					{/*</TouchableOpacity>*/}
 
-					<TouchableOpacity
-						style={[styles.selectBtn,{marginRight: Pixel.getPixel(0)},{borderColor:this.state.selectNO == 'QiYe' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}
-						activeOpacity={0.6}
-						onPress={()=>{this._changdiTypePress('QiYe')}}>
-						<Text allowFontScaling={false}
-						      style={[styles.selectBtnFont,{color:this.state.selectNO == 'QiYe' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}>企业借款</Text>
-					</TouchableOpacity>
-				</View>
-				<View style={styles.inputTextLine}/>
+					{/*<TouchableOpacity*/}
+						{/*style={[styles.selectBtn,{marginRight: Pixel.getPixel(0)},{borderColor:this.state.selectNO == 'QiYe' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}*/}
+						{/*activeOpacity={0.6}*/}
+						{/*onPress={()=>{this._changdiTypePress('QiYe')}}>*/}
+						{/*<Text allowFontScaling={false}*/}
+						      {/*style={[styles.selectBtnFont,{color:this.state.selectNO == 'QiYe' ? FontAndColor.COLORB0:FontAndColor.COLORA2}]}>企业借款</Text>*/}
+					{/*</TouchableOpacity>*/}
+				{/*</View>*/}
+				{/*<View style={styles.inputTextLine}/>*/}
 				{/*===============================企业名称 View===========================*/}
 				<View style={styles.itemBackground}>
 					<Text allowFontScaling={false} style={styles.leftFont}>企业名称</Text>
@@ -224,6 +224,7 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 						placeholder='请输入'
 						defaultValue={this.enterpriseData.qiyemingcheng}
 						placeholderTextColor={FontAndColor.COLORA1}
+						editable={false}
 						onFocus={()=>{
                                        this.setState({
                                            keyboardOffset:-Pixel.getPixel(300)

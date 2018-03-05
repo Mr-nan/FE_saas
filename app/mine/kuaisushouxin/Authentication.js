@@ -11,6 +11,7 @@ import {
 	TouchableOpacity,
 	NativeModules,
 	NativeAppEventEmitter,
+	Image,
 } from "react-native";
 import BaseComponent from "../../component/BaseComponent";
 import * as FontAndColor from "../../constant/fontAndColor";
@@ -32,6 +33,8 @@ let imgSid: '';
 let uid: '';
 
 const dismissKeyboard = require('dismissKeyboard');
+const agree_icon = require('../kuaisushouxin/kuaisushouxin_images/agree_icon.png');
+const disagree = require('../kuaisushouxin/kuaisushouxin_images/disagree.png');
 
 var Platform = require('Platform');
 const IS_ANDROID = Platform.OS === 'android';
@@ -45,6 +48,7 @@ export default class Authentication extends BaseComponent {
 			verifyCode: null,
 			renderPlaceholderOnly: true,
 			keyboardOffset: -Pixel.getPixel(100),
+			isAgree: false,
 
 		}
 		this.id;
@@ -126,24 +130,26 @@ export default class Authentication extends BaseComponent {
 				<View style={styles.inputTextLine}/>
 				<View style={styles.inputTextsStyle}>
 					<LoginInputTextYU
+						editable={false}
 						ref="BorrowerName"
 						leftText = {'借款人姓名'}
 						textPlaceholder={'请输入'}
 						viewStytle={styles.itemStyel}
 						inputTextStyle={styles.inputTextStyle}
 						leftIcon={false}
-						clearValue={true}
+						clearValue={false}
 						import={false}
 						defaultValue={'zhangqilong'}
 						rightIcon={false}/>
 					<LoginInputTextYU
+						editable={false}
 						ref="BorrowerID"
 						leftText = {'借款人身份证号'}
 						textPlaceholder={'请输入'}
 						viewStytle={[styles.itemStyel, {borderBottomWidth: 0,}]}
 						inputTextStyle={styles.inputTextStyle}
 						secureTextEntry={false}
-						clearValue={true}
+						clearValue={false}
 						leftIcon={false}
 						import={false}
 						defaultValue={'zhangqilong'}
@@ -222,15 +228,44 @@ export default class Authentication extends BaseComponent {
 						rightIcon={false}/>
 				</View>
 				<View style={styles.inputTextLine}/>
+
+				{/*===============================授信协议===========================*/}
+
+				<View style={{alignItems: 'center', flexDirection: 'row',marginTop: Pixel.getPixel(10),}}>
+					<TouchableOpacity activeOpacity={1} onPress={() => {
+                        this.setState({
+                            isAgree: !this.state.isAgree
+                        });
+                    }}>
+						<View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginLeft: Pixel.getPixel(15)
+                        }}>
+							<Image source={this.state.isAgree ? agree_icon : disagree}
+							       style={{marginRight: Pixel.getPixel(3)}}>
+
+							</Image>
+							<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(12)}}>我已阅读并同意授权</Text>
+						</View>
+					</TouchableOpacity>
+					<TouchableOpacity activeOpacity={0.8} onPress={() => {
+                        this.toNextPage({
+                                         name: 'WebScene',
+                                         component: WebScene,
+                                         params: {webUrl: 'http://www.dycd.com'}
+                            })
+                    }}>
+						<Text style={{color: FontAndColor.COLORB4, fontSize: Pixel.getPixel(12),}}>《三方征信授权书》</Text>
+					</TouchableOpacity>
+				</View>
 				<View style={styles.imagebuttonok}>
 
-					<TouchableOpacity onPress={() => {
-                                this.register();
-                            }} activeOpacity={0.8} style={{
+					<TouchableOpacity onPress={() => { this.register()}} activeOpacity= {this.state.isAgree? 0.7 : 1} style={{
                                 marginTop: Pixel.getPixel(7),
                                 width: width - Pixel.getPixel(30),
                                 height: Pixel.getPixel(44),
-                                backgroundColor: FontAndColor.COLORB0,
+                                backgroundColor: this.state.isAgree? FontAndColor.COLORB0 : FontAndColor.COLORA4,
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
@@ -239,18 +274,21 @@ export default class Authentication extends BaseComponent {
                                     fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT28)
                                 }}>下一步</Text>
 					</TouchableOpacity>
+
 				</View>
 			</ScrollView>
 		)
 	}
 	register = () => {
+		if(!this.state.isAgree){
+			return;
+		}
 
-		let userName = this.refs.userName.getInputTextValue();
-		let smsCode = this.refs.smsCode.getInputTextValue();
-		let password = this.refs.password.getInputTextValue();
-		let passwoedAgain = this.refs.passwoedAgain.getInputTextValue();
-		let name = this.refs.name.getInputTextValue();
-		let businessName = this.refs.businessName.getInputTextValue();
+		let BorrowerBankNO = this.refs.BorrowerBankNO.getInputTextValue();//借款人银行卡号
+		let BankPhone = this.refs.BankPhone.getInputTextValue();          //银行预留手机号
+		let verifycode = this.refs.verifycode.getInputTextValue();        //图形验证码
+		let smsCode = this.refs.smsCode.getInputTextValue();              //手机验证码
+		let BorrowerPhone = this.refs.BorrowerPhone.getInputTextValue();  //借款人手机号
 		if (typeof(userName) == "undefined" || userName == "") {
 			this.props.showToast("手机号码不能为空");
 		} else if (userName.length != 11) {

@@ -242,7 +242,7 @@ export default class FastCreditOne extends BaseComponent {
 				{/*导航栏view*/}
 				<AllNavigationView
 					backIconClick={this._onBack}
-					title='快速授信申请'
+					title='小额授信申请'
 				/>
 
 			</View>
