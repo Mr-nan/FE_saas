@@ -773,7 +773,7 @@ export default class FillWaybill extends BaseComponent {
                         </TouchableOpacity>
                     </View>}
                     {!this.fromSingle && <MyButton buttonType={MyButton.TEXTBUTTON}
-                                                   content={'确定'}
+                                                   content={'提交'}
                                                    parentStyle={styles.loginBtnStyle}
                                                    childStyle={styles.loginButtonTextStyle}
                                                    mOnPress={() => {
