@@ -481,7 +481,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
 
     footBtnClick=()=>{
-
+        
         if(!this.carData.vin||this.carData.vin==''){
             this.props.showToast('请输入正确的车架号');
             return;
