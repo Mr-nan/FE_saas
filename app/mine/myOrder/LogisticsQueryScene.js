@@ -69,6 +69,10 @@ export default class LogisticsQueryScene extends BaseComponent {
         }
         this.transType = [];
         this.transError = false;
+        this.transSelect = {
+            transportTypeCode: 0,
+            transportType: ''
+        }
         this.state = {
             renderPlaceholderOnly: 'blank',
             dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
@@ -130,6 +134,26 @@ export default class LogisticsQueryScene extends BaseComponent {
         });
     };
 
+    toNext = () => {
+        let brandParams = {
+            name: 'CarBrandSelectScene',
+            component: CarBrandSelectScene,
+            params: {
+                carCount: this.car.number,
+                carPrice: this.car.money,
+                carType: this.car.typeId,
+                endAddr: this.lastItem.province + this.lastItem.city,
+                endAddrRegionId: this.lastItem.city_code,
+                model_id: this.car.modelId,
+                startAddr: this.firstItem.province + this.firstItem.city +
+                this.firstItem.district,
+                startAddrRegionId: this.firstItem.district_code,
+                transportType: this.transSelect.transportTypeCode,
+            }
+        };
+        this.toNextPage(brandParams);
+    }
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
@@ -153,8 +177,14 @@ export default class LogisticsQueryScene extends BaseComponent {
                             />
                         </KeyboardAvoidingView>
                     )}
-                <View style={{width:width,height:Pixel.getPixel(45),backgroundColor: fontAndColor.COLORB0,
-                position: 'absolute',left:0,bottom:0 }}></View>
+                <TouchableOpacity onPress={()=>{
+                    this.toNext();
+                }} activeOpacity={0.9}
+                                  style={{width:width,height:Pixel.getPixel(45),backgroundColor: fontAndColor.COLORB0,
+                position: 'absolute',left:0,bottom:0 ,justifyContent:'center',alignItems: 'center'}}>
+                    <Text style={{fontSize: Pixel.getPixel(15),color:'#fff',
+                    backgroundColor: '#00000000'}}>询价</Text>
+                </TouchableOpacity>
                 {
                     this.state.cityStatus && <CityRegionScene noneDistrict={this.state.openType}
                                                               checkAreaClick={this.checkAreaClick}
@@ -169,7 +199,16 @@ export default class LogisticsQueryScene extends BaseComponent {
                         dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
                     },()=>{this.getTrans()});
                 }} ref="lqselectcartypeitem"/>
-                <LQSelectTransItem ref="lqselecttransitem"/>
+                <LQSelectTransItem selectType={(code,name)=>{
+                    this.transSelect={
+                         transportTypeCode:code,
+                         transportType:name
+                    }
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+        });
+                }} ref="lqselecttransitem"/>
                 <NavigatorView title='物流服务' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>);
         }
@@ -215,7 +254,7 @@ export default class LogisticsQueryScene extends BaseComponent {
         this.toNextPage(brandParams);
             }}/>
         } else if (rowData == '4') {
-            return <LQTransportItem selectTransport={()=>{
+            return <LQTransportItem transName={this.transSelect.transportType} selectTransport={()=>{
                 if(this.transType.length<=0&&this.transError==false){
                     this.props.showToast('请确认车辆类型与地址');
                     return;
@@ -261,60 +300,77 @@ export default class LogisticsQueryScene extends BaseComponent {
             return;
         }
         this._showModal(true);
-        let maps = {
-            carType: this.car.typeId,
-            company_id: global.companyBaseID,
-            endAddr: this.lastItem.province + this.lastItem.city,
-            endAddrRegionId: this.lastItem.city_code,
-            model_id: this.car.modelId,
-            startAddr: this.firstItem.province + this.firstItem.city +
-            this.firstItem.district,
-            startAddrRegionId: this.firstItem.district_code,
-        };
-        request(Urls.GETTRANSPORTTYPE, 'Post', maps)
-            .then((response) => {
-                    this.transType = [];
-                    if (from == 1) {
-                        if (this.isNull(response.mjson.data) || response.mjson.data.length <= 0) {
-                            this.transError = true;
-                            this.props.showToast('运输类型为空');
-                            return;
-                        }
-                        this._showModal(false);
-                        this.transError = false;
-                        for (let i = 0; i < response.mjson.data.length; i++) {
-                            this.transType.push({
-                                transportType: response.mjson.data[i].transportType,
-                                transportTypeCode: response.mjson.data[i].transportTypeCode
-                            })
-                        }
-                        this.refs.lqselecttransitem.changeShow(this.transType);
-                    } else {
-                        this._showModal(false);
-                        if (this.isNull(response.mjson.data) || response.mjson.data.length <= 0) {
-                            this.transError = true;
-                            return;
-                        }
-                        for (let i = 0; i < response.mjson.data.length; i++) {
-                            this.transType.push({
-                                transportType: response.mjson.data[i].transportType,
-                                transportTypeCode: response.mjson.data[i].transportTypeCode
-                            })
-                        }
-                    }
-                },
-                (error) => {
-                    this.transError = true;
-                    if (from == 1) {
-                        if (error.mycode == -300 || error.mycode == -500) {
-                            this.props.showToast('系统异常');
+        this.transSelect = {};
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+        }, () => {
+            let maps = {
+                carType: this.car.typeId,
+                company_id: global.companyBaseID,
+                endAddr: this.lastItem.province + this.lastItem.city,
+                endAddrRegionId: this.lastItem.city_code,
+                model_id: this.car.modelId,
+                startAddr: this.firstItem.province + this.firstItem.city +
+                this.firstItem.district,
+                startAddrRegionId: this.firstItem.district_code,
+            };
+            request(Urls.GETTRANSPORTTYPE, 'Post', maps)
+                .then((response) => {
+                        this.transType = [];
+                        if (from == 1) {
+                            if (this.isNull(response.mjson.data) || response.mjson.data.length <= 0) {
+                                this.transError = true;
+                                this.props.showToast('运输类型为空');
+                                return;
+                            }
+                            this._showModal(false);
+                            this.transError = false;
+                            for (let i = 0; i < response.mjson.data.length; i++) {
+                                this.transType.push({
+                                    transportType: response.mjson.data[i].transportType,
+                                    transportTypeCode: response.mjson.data[i].transportTypeCode
+                                })
+                            }
+                            this.refs.lqselecttransitem.changeShow(this.transType);
                         } else {
-                            this.props.showToast(error.mjson.msg);
+                            this._showModal(false);
+                            if (this.isNull(response.mjson.data) || response.mjson.data.length <= 0) {
+                                this.transError = true;
+                                return;
+                            }
+                            for (let i = 0; i < response.mjson.data.length; i++) {
+                                this.transType.push({
+                                    transportType: response.mjson.data[i].transportType,
+                                    transportTypeCode: response.mjson.data[i].transportTypeCode
+                                })
+                            }
+                            if (this.transType.length == 1) {
+                                this.transSelect = {
+                                    transportType: this.transType[0].transportType,
+                                    transportTypeCode: this.transType[0].transportTypeCode
+                                }
+                                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                                this.setState({
+                                    dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+                                });
+                            }
                         }
-                    } else {
-                        this._showModal(false);
-                    }
-                });
+                    },
+                    (error) => {
+                        this.transError = true;
+                        if (from == 1) {
+                            if (error.mycode == -300 || error.mycode == -500) {
+                                this.props.showToast('系统异常');
+                            } else {
+                                this.props.showToast(error.mjson.msg);
+                            }
+                        } else {
+                            this._showModal(false);
+                        }
+                    });
+        });
+
     }
 
 }
