@@ -45,8 +45,8 @@ export  default class PurchasePickerItem extends PureComponent {
                 <TouchableOpacity onPress={()=>{
                     this.props.select();
                 }} activeOpacity={0.9}
-                                  style={{flex:1,justifyContent: 'flex-end',alignItems: 'center',flexDirection: 'row'}}>
-                    <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14),color:'#90A1B5',
+                                  style={{flex:2,justifyContent: 'flex-end',alignItems: 'center',flexDirection: 'row'}}>
+                    <Text numberOfLines={1} allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14),color:'#90A1B5',
                     marginRight:Pixel.getPixel(10)}}>
                         {this.state.selectName}
                     </Text>

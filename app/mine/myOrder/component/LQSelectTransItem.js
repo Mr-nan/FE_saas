@@ -18,7 +18,6 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
-import ViewPager from './ViewPager';
 export  default class PurchasePickerItem extends PureComponent {
 
     constructor(props) {
@@ -37,6 +36,19 @@ export  default class PurchasePickerItem extends PureComponent {
     }
 
     render() {
+        let viewList = [];
+        for(let i=0;i<this.props.dataList;i++){
+            viewList.push( <TouchableOpacity onPress={()=>{
+                        this.setState({
+                            width: 0,
+                            height: 0
+                        },()=>{this.props.selectType(1,dataList[i]);});
+                    }} activeOpacity={1}
+                                             style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
+                <Text allowFontScaling={false}
+                      style={{fontSize: Pixel.getFontPixel(15),color:'#000'}}>新车</Text>
+            </TouchableOpacity>)
+        }
         return (
             <TouchableOpacity onPress={()=>{
                  this.setState({

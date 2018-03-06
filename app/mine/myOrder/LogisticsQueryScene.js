@@ -13,7 +13,9 @@ import {
     BackAndroid,
     InteractionManager,
     RefreshControl,
-    Dimensions
+    Dimensions,
+    Platform,
+    KeyboardAvoidingView
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -23,10 +25,15 @@ import NavigatorView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil'
 import LQBannerItem from './component/LQBannerItem';
 import LQAdressItem from './component/LQAdressItem';
+import LQTransportItem from './component/LQTransportItem';
 import LQCarItem from './component/LQCarItem';
 var Pixel = new PixelUtil();
 import CityRegionScene from '../addressManage/CityRegionScene';
 import LQSelectCarTypeItem from './component/LQSelectCarTypeItem';
+import CarBrandSelectScene from "../../carSource/CarBrandSelectScene";
+const IS_ANDROID = Platform.OS === 'android';
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
 export default class LogisticsQueryScene extends BaseComponent {
 
     // 构造
@@ -54,8 +61,12 @@ export default class LogisticsQueryScene extends BaseComponent {
             typeId: 0,
             typeName: '',
             modelId: 0,
-            modelName: ''
+            modelName: '',
+            money: 'n',
+            number: 1,
+            transType: 0
         }
+        this.transType = [];
         this.state = {
             renderPlaceholderOnly: 'blank',
             dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
@@ -122,18 +133,37 @@ export default class LogisticsQueryScene extends BaseComponent {
             </View>);
         } else {
             return (<View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
-                <ListView
-                    removeClippedSubviews={false}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderRow}
-                    showsVerticalScrollIndicator={false}
-                />
+                {IS_ANDROID ? (<ListView
+                        removeClippedSubviews={false}
+                        dataSource={this.state.dataSource}
+                        renderRow={this._renderRow}
+                        showsVerticalScrollIndicator={false}
+                    />) : (
+                        <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(100)}>
+                            <ListView
+                                removeClippedSubviews={false}
+                                dataSource={this.state.dataSource}
+                                renderRow={this._renderRow}
+                                showsVerticalScrollIndicator={false}
+                            />
+                        </KeyboardAvoidingView>
+                    )}
+                <View style={{width:width,height:Pixel.getPixel(45),backgroundColor: fontAndColor.COLORB0,
+                position: 'absolute',left:0,bottom:0 }}></View>
                 {
                     this.state.cityStatus && <CityRegionScene checkAreaClick={this.checkAreaClick}
                                                               showModal={this._showModal}
                                                               closePress={this._closeProvince}/>
                 }
-                <LQSelectCarTypeItem ref="lqselectcartypeitem"/>
+                <LQSelectCarTypeItem selectType={(id,name)=>{
+                    this.car.typeId=id;
+                    this.car.typeName = name;
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+                    });
+                }} ref="lqselectcartypeitem"/>
+
                 <NavigatorView title='物流服务' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>);
         }
@@ -153,15 +183,79 @@ export default class LogisticsQueryScene extends BaseComponent {
                 });
             }}/>
         } else if (rowData == '3') {
-            return <LQCarItem firstName={this.car.typeName} lastName={this.car.modelName} selectType={()=>{
+            return <LQCarItem inputMoney={(text)=>{
+                    this.car.money = text;
+                }} type={this.car.typeId} firstName={this.car.typeName} lastName={this.car.modelName}
+                              money={this.car.money} selectType={()=>{
                 this.refs.lqselectcartypeitem.changeShow();
+            }} selectModel={()=>{
+                let brandParams = {
+                    name: 'CarBrandSelectScene',
+                    component: CarBrandSelectScene,
+                    params: {
+                    checkedCarClick: this._checkedCarClick,
+                    status: 0,
+            }
+        };
+        this.toNextPage(brandParams);
             }}/>
         } else if (rowData == '4') {
-            return <View style={{width:width,height:Pixel.getPixel(153),backgroundColor: '#ff0'}}></View>
+            return <LQTransportItem selectTransport={()=>{
+                if(this.transType.length<=0){
+                    this.props.showToast('请确认车辆类型与地址');
+                    return;
+                }
+            }} changeNumber={(number)=>{
+                this.car.number = number;
+            }}/>
         } else if (rowData == '5') {
             return <View style={{width:width,height:Pixel.getPixel(150),backgroundColor: '#0f0'}}></View>
         }
     }
 
+    _checkedCarClick = (content) => {
+        this.car.modelName = content.model_name;
+        this.car.modelId = content.model_id;
+        this.car.money = content.model_price;
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+        });
+    }
+
+    getTrans = () => {
+        if (this.isNull(this.car.modelName)) {
+            return;
+        }
+        if (this.isNull(this.car.typeName)) {
+            return;
+        }
+        if (this.isNull(this.firstItem.province + this.firstItem.city +
+                this.firstItem.district)) {
+            return;
+        }
+        if (this.isNull(this.lastItem.province + this.lastItem.city +
+                this.lastItem.district)) {
+            return;
+        }
+        this.props._showModal(true);
+        let maps = {
+            carType: this.car.typeId,
+            company_id: global.companyBaseID,
+            endAddr: this.lastItem.province + this.lastItem.city,
+            endAddrRegionId: this.lastItem.city_code,
+            model_id: this.car.modelId,
+            startAddr: this.firstItem.province + this.firstItem.city +
+            this.firstItem.district,
+            startAddrRegionId: this.firstItem.district_code,
+        };
+        request(Urls.GETTRANSPORTTYPE, 'Post', maps)
+            .then((response) => {
+                    this.props._showModal(false)
+                },
+                (error) => {
+                    this.props.showToast('系统异常');
+                });
+    }
 
 }

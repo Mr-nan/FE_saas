@@ -531,6 +531,13 @@ export const USER_ACCOUNT_PAYLOG = BASEURL + 'v1/user.account/payLog';
 export const ACCOUNT_PAYLOG = BASEURL + 'v2/user.account/payLog';
 
 /**
+ * from @huangning
+ *
+ * 获取运输类型
+ **/
+export const GETTRANSPORTTYPE = BASEURL + 'v2/order.logistics/getTransportType';
+
+/**
  * from @zhaojian
  *
  * 注销员工
