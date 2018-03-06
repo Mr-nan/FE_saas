@@ -31,6 +31,7 @@ var Pixel = new PixelUtil();
 import CityRegionScene from '../addressManage/CityRegionScene';
 import LQSelectCarTypeItem from './component/LQSelectCarTypeItem';
 import LQSelectTransItem from './component/LQSelectTransItem';
+import LQBottomItem from './component/LQBottomItem';
 import CarBrandSelectScene from "../../carSource/CarBrandSelectScene";
 const IS_ANDROID = Platform.OS === 'android';
 import {request} from '../../utils/RequestUtil';
@@ -80,6 +81,7 @@ export default class LogisticsQueryScene extends BaseComponent {
             dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
             cityStatus: false,
             openType: false,
+            canClick: false
         };
     }
 
@@ -137,6 +139,32 @@ export default class LogisticsQueryScene extends BaseComponent {
     };
 
     toNext = () => {
+        if (this.isNull(this.firstItem.province + this.firstItem.city +
+                this.firstItem.district)) {
+            this.props.showToast('请选择始发地');
+            return;
+        }
+        if (this.isNull(this.lastItem.province + this.lastItem.city +
+                this.lastItem.district)) {
+            this.props.showToast('请选择目的地');
+            return;
+        }
+        if (this.isNull(this.car.typeName)) {
+            this.props.showToast('请选择车辆新旧');
+            return;
+        }
+        if (this.isNull(this.car.modelName)) {
+            this.props.showToast('请选择车型');
+            return;
+        }
+        if (this.isNull(this.car.money) || this.car.money <= 0) {
+            this.props.showToast('请填写单车指导价');
+            return;
+        }
+        if (this.isNull(this.transSelect.transportType)) {
+            this.props.showToast('请选择运输类型');
+            return;
+        }
         let brandParams = {
             name: 'CarriagePriceInfoScene',
             component: CarriagePriceInfoScene,
@@ -151,7 +179,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                 this.firstItem.district,
                 startAddrRegionId: this.firstItem.district_code,
                 transportType: this.transSelect.transportTypeCode,
-                model_name:this.car.modelName
+                model_name: this.car.modelName
             }
         };
         this.toNextPage(brandParams);
@@ -181,9 +209,12 @@ export default class LogisticsQueryScene extends BaseComponent {
                         </KeyboardAvoidingView>
                     )}
                 <TouchableOpacity onPress={()=>{
-                    this.toNext();
+                    if(this.state.canClick){
+                        this.toNext();
+                    }
                 }} activeOpacity={0.9}
-                                  style={{width:width,height:Pixel.getPixel(45),backgroundColor: fontAndColor.COLORB0,
+                                  style={{width:width,height:Pixel.getPixel(45),backgroundColor:
+                                  this.state.canClick?fontAndColor.COLORB0:'#69DCDA',
                 position: 'absolute',left:0,bottom:0 ,justifyContent:'center',alignItems: 'center'}}>
                     <Text style={{fontSize: Pixel.getPixel(15),color:'#fff',
                     backgroundColor: '#00000000'}}>询价</Text>
@@ -208,9 +239,18 @@ export default class LogisticsQueryScene extends BaseComponent {
                          transportType:name
                     }
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
-        });
+         if(this.isNull(this.car.money)||this.car.money<=0){
+              this.setState({
+                    dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+                    canClick:false
+              });
+         }else{
+            this.setState({
+                dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+                canClick:true
+            });
+         }
+
                 }} ref="lqselecttransitem"/>
                 <NavigatorView title='物流服务' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>);
@@ -219,7 +259,16 @@ export default class LogisticsQueryScene extends BaseComponent {
 
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowData == '1') {
-            return <LQBannerItem />
+            return <LQBannerItem clickBanner={()=>{
+                 let brandParams = {
+            name: 'CarriagePriceContenScene',
+            component: CarriagePriceContenScene,
+            params: {
+
+            }
+        };
+        this.toNextPage(brandParams);
+            }}/>
         } else if (rowData == '2') {
             return <LQAdressItem firstName={this.firstItem.province+this.firstItem.city+
             this.firstItem.district}
@@ -242,6 +291,17 @@ export default class LogisticsQueryScene extends BaseComponent {
         } else if (rowData == '3') {
             return <LQCarItem inputMoney={(text)=>{
                     this.car.money = text;
+                    console.log(this.car.money<=0);
+                     console.log(this.state.canClick);
+                    if(this.isNull(this.car.money)||this.car.money<=0){
+                        this.setState({
+                            canClick:false
+                        });
+                    }else if(!this.isNull(this.transSelect.transportTypeCode)&&!this.state.canClick){
+                         this.setState({
+                            canClick:true
+                        });
+                    }
                 }} type={this.car.typeId} firstName={this.car.typeName} lastName={this.car.modelName}
                               money={this.car.money} selectType={()=>{
                 this.refs.lqselectcartypeitem.changeShow();
@@ -271,7 +331,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                 this.car.number = number;
             }}/>
         } else if (rowData == '5') {
-            return <View style={{width:width,height:Pixel.getPixel(150),backgroundColor: '#0f0'}}></View>
+            return <LQBottomItem />
         }
     }
 
@@ -354,9 +414,17 @@ export default class LogisticsQueryScene extends BaseComponent {
                                     transportTypeCode: this.transType[0].transportTypeCode
                                 }
                                 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                                this.setState({
-                                    dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
-                                });
+                                if (this.isNull(this.car.money) || this.car.money <= 0) {
+                                    this.setState({
+                                        dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+                                        canClick: false
+                                    });
+                                } else {
+                                    this.setState({
+                                        dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+                                        canClick: true
+                                    });
+                                }
                             }
                         }
                     },

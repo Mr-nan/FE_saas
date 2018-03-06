@@ -37,7 +37,9 @@ export  default class PurchasePickerItem extends PureComponent {
     render() {
         return (
             <View style={{width:width,height:Pixel.getPixel(256)}}>
-                <ViewPager/>
+                <ViewPager clickBanner={()=>{
+                    this.props.clickBanner();
+                }}/>
                 <View
                     style={{width:width,height:Pixel.getPixel(31),backgroundColor:'#FFF8EA',
                         paddingLeft:Pixel.getPixel(15), paddingRight:Pixel.getPixel(15), overflow: 'hidden'

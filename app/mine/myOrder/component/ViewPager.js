@@ -22,10 +22,11 @@ export default class ViewPagers extends Component {
         super(props);
         let dataSource = new ViewPager.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithPages([require('../../../../images/welcomFirst.png'),
-                require('../../../../images/welcomFourth.png')]),
+            dataSource: dataSource.cloneWithPages([{id: 1, url: require('../../../../images/banner1.png')},
+                {id: 2, url: require('../../../../images/banner2.png')}]),
         };
     }
+
     render() {
         return (
             <ViewPager
@@ -40,17 +41,19 @@ export default class ViewPagers extends Component {
     }
 
     _renderPage = (data) => {
-            return (
-                <TouchableOpacity onPress={()=>{
-
+        return (
+            <TouchableOpacity onPress={()=>{
+                    if(data.id==2){
+                        this.props.clickBanner();
+                    }
                 }} activeOpacity={1} style={{width: width,
                     height: Pixel.getPixel(225),}}>
-                    <Image style={styles.postPosition}
-                           source={data}
-                    />
-                </TouchableOpacity>
+                <Image style={styles.postPosition}
+                       source={data.url}
+                />
+            </TouchableOpacity>
 
-            );
+        );
     }
 }
 const styles = StyleSheet.create({
