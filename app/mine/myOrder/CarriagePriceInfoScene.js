@@ -19,6 +19,7 @@ const Pixel = new PixelUtil();
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
+import CarriagePriceContenScene from "./CarriagePriceContenScene";
 
 let priceData=[{title:'运价',value:'300'},{title:'保险费',value:'300'},{title:'运价',value:'300'},{title:'运价',value:'300'},{title:'运价',value:'300'},{title:'总价',value:'300'}];
 
@@ -33,23 +34,31 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
         return(
             <View style={styles.root}>
                 <ScrollView onScroll={this.onScroll}>
-                    <Image style={styles.headImage}>
-                        <Text style={styles.headTitle}>2013款 帝豪EC7 1.5L 手动型</Text>
+                    <Image style={styles.headImage} source={require('../../../images/carriagePriceImage/headImage.png')}>
+                        <Text style={styles.headTitle} allowFontScaling={false}>2013款 帝豪EC7 1.5L 手动型</Text>
                         <View style={styles.headContentView}>
                             <View style={styles.headSubView}>
-                                <Text style={styles.headSubTitleText}>单价:</Text>
-                                <Text style={styles.headSubNumberText}>20万</Text>
+                                <Text style={styles.headSubTitleText} allowFontScaling={false}>单价:</Text>
+                                <Text style={styles.headSubNumberText} allowFontScaling={false}>20万</Text>
                             </View>
                             <Image style={{width:Pixel.getPixel(1)}} source={require('../../../images/carriagePriceImage/line.png')}/>
                             <View style={styles.headSubView}>
-                                <Text style={styles.headSubTitleText}>台数:</Text>
-                                <Text style={styles.headSubNumberText}>2台</Text>
+                                <Text style={styles.headSubTitleText} allowFontScaling={false}>台数:</Text>
+                                <Text style={styles.headSubNumberText} allowFontScaling={false}>2台</Text>
                             </View>
                         </View>
                     </Image>
                     <CarriagePriceInfoItemView type={1} select={1} text1={'始发地'} text2="山西省太原市和平区" value1="一车上门取车" value2="自己送车到店"/>
                     <CarriagePriceInfoItemView type={2} select={2} text1={'到达地'} text2="河南省焦作市宁远区" value1="自己到网店提车" value2="一车送车到户"/>
                     <CarriagePriceInfoListView data={priceData}/>
+                    <TouchableOpacity style={{flex:1,height:40,backgroundColor:fontAndColor.COLORB2}} onPress={()=>{
+                        this.toNextPage({
+                            name: "CarriagePriceContenScene",
+                            component: CarriagePriceContenScene,
+                            params: {
+                            }
+                        })
+                    }}/>
                 </ScrollView>
                 <NavigationView ref={(ref)=>this.navigationView=ref} title='运价查询' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>
@@ -58,7 +67,6 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
 
     onScroll =(event)=> {
 
-        console.log(event.nativeEvent.contentOffset.y)
         if (event.nativeEvent.contentOffset.y > 0) {
 
             this.navigationView.setNavigationBackgroindColor(fontAndColor.COLORB0);
@@ -133,16 +141,17 @@ const styles = StyleSheet.create({
         paddingTop:Pixel.getTitlePixel(64),
         width:width,
         height:Pixel.getPixel(149),
-        backgroundColor:fontAndColor.COLORB2,
         alignItems:'center',
         justifyContent:'space-between',
         paddingBottom:Pixel.getPixel(8.5),
-        marginBottom:Pixel.getPixel(6.5)
+        marginBottom:Pixel.getPixel(6.5),
+        // backgroundColor:'yellow'
     },
     headTitle:{
         color:'white',
         fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-        marginTop:Pixel.getPixel(10)
+        marginTop:Pixel.getPixel(10),
+        backgroundColor:'transparent'
     },
     headContentView:{
         flexDirection:'row',
@@ -161,12 +170,16 @@ const styles = StyleSheet.create({
     },
     headSubTitleText:{
         color:'white',
-        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        backgroundColor:'transparent'
+
     },
     headSubNumberText:{
         color:'white',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        fontWeight:'bold'
+        fontWeight:'bold',
+        backgroundColor:'transparent'
+
     },
     carriagePriceInfoItemView:{
         width:width,
