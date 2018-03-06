@@ -22,8 +22,8 @@ const Pixel = new PixelUtil();
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
-import CarriagePriceContenScene from "./CarriagePriceContenScene";
-
+import * as Net from '../../utils/RequestUtil';
+import * as AppUrls from '../../constant/appUrls';
 let priceData=[{title:'运价',value:'300'},{title:'保险费',value:'300'},{title:'运价',value:'300'},{title:'运价',value:'300'},{title:'运价',value:'300'},{title:'总价',value:'300'}];
 
 export  default class CarriagePriceInfoScene extends BaseComponent {
@@ -32,23 +32,25 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
         super(props);
         // 初始状态
         this.state={
-            isShowCallUpView:false
+            isShowCallUpView:false,
+            priceData:[],
         }
+
+    }
+
+    componentWillMount() {
+        this.loadData();
 
     }
     render() {
         const {
             carCount,
             carPrice,
-            carType,
             endAddr,
-            endAddrRegionId,
-            model_id,
             startAddr,
-            startAddrRegionId,
-            transportType,
             model_name
         } = this.props;
+
         return(
             <View style={styles.root}>
                 <ScrollView>
@@ -68,29 +70,33 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
                     </Image>
                     <CarriagePriceInfoItemView type={1} select={1} text1={'始发地'} text2={startAddr} value1="一车上门取车" value2="自己送车到店"/>
                     <CarriagePriceInfoItemView type={2} select={2} text1={'到达地'} text2={endAddr} value1="自己到网店提车" value2="一车送车到户"/>
-                    <CarriagePriceInfoListView data={priceData}/>
-                    <TouchableOpacity style={{flex:1,height:Pixel.getPixel(50.5),backgroundColor:'white',marginTop:Pixel.getPixel(9),paddingHorizontal:Pixel.getPixel(15),
-                        alignItems:'center',
-                        flexDirection:'row',
-                        justifyContent:'space-between'
-                    }} onPress={()=>{
-                    }}>
-                        <View style={{flexDirection:'row', alignItems:'center'}}>
-                            <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>总价:</Text>
-                            <Text style={{color:fontAndColor.COLORB2, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>--</Text>
-                        </View>
-                        <TouchableOpacity activeOpacity={1} onPress={()=>{this.setState({isShowCallUpView:true})}}>
-                            <View style={{width:Pixel.getPixel(100.5),height:Pixel.getPixel(32.5),backgroundColor:fontAndColor.COLORB0,
-                                alignItems:'center',justifyContent:'center',borderRadius:Pixel.getPixel(2)
-                            }}>
-                                <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>立即支付</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </TouchableOpacity>
+                    {
+                        this.state.priceData.length>0 &&  <CarriagePriceInfoListView data={this.state.priceData}/>
+                    }
                 </ScrollView>
                 {
                     this.state.isShowCallUpView && <CallUpView cancelClick={this.cancelClick} callUpClick={this.callUpClick}/>
                 }
+                <View style={{height:Pixel.getPixel(50.5),backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),
+                    alignItems:'center',
+                    flexDirection:'row',
+                    justifyContent:'space-between',
+                    bottom:0,
+                    position:'absolute',
+                    width:width
+                }}>
+                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>总价:</Text>
+                        <Text style={{color:fontAndColor.COLORB2, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>{this.data && this.data.totalPrice}元</Text>
+                    </View>
+                    <TouchableOpacity activeOpacity={1} onPress={()=>{ this.data && this.setState({isShowCallUpView:true})}}>
+                        <View style={{width:Pixel.getPixel(100.5),height:Pixel.getPixel(32.5),backgroundColor: this.data ? fontAndColor.COLORB0 :fontAndColor.COLORA3,
+                            alignItems:'center',justifyContent:'center',borderRadius:Pixel.getPixel(2)
+                        }}>
+                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>立即支付</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
                 <NavigationView ref={(ref)=>this.navigationView=ref} title='运价查询' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>
         )
@@ -121,6 +127,36 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
         }
 
         this.cancelClick();
+    }
+
+    loadData=()=>{
+
+        const paramsData= {
+            carCount:this.props.carCount,
+            carPrice:this.props.carPrice,
+            carType:this.props.carType,
+            endAddr:this.props.endAddr,
+            endAddrRegionId:this.props.endAddrRegionId,
+            model_id:this.props.model_id,
+            startAddr:this.props.startAddr,
+            startAddrRegionId:this.props.startAddrRegionId,
+            transportType:this.props.transportType,
+            company_id:global.companyBaseID};
+
+        this.props.showModal(true);
+        Net.request(AppUrls.ORDER_LOGISTICS_QUERY,'post',paramsData).then((response) => {
+            this.props.showModal(false);
+            let data = response.mjson.data;
+            this.data = data;
+            let priceData=[{title:'运价',value:data.freight},{title:'保险费',value:data.insurance},{title:'服务费',value:data.serviceFee},{title:'提验车费',value:data.checkCarFee},{title:'送店费',value:data.toStoreFee},{title:'税费',value:data.taxation},{title:'总价',value:data.totalPrice}];
+            this.setState({priceData:priceData});
+
+        }, (error) => {
+
+            this.props.showModal(false);
+            this.showToast(error.mjson.msg);
+
+        });
     }
 
 
@@ -203,7 +239,8 @@ const styles = StyleSheet.create({
 
     root:{
         flex:1,
-        backgroundColor:fontAndColor.COLORA3
+        backgroundColor:fontAndColor.COLORA3,
+        paddingBottom:Pixel.getPixel(50.5)
     },
     headImage:{
         paddingTop:Pixel.getTitlePixel(64),

@@ -1527,6 +1527,12 @@ export const WAYBILL_DETAIL = BASEURL  + "v2/order.logistics/detail";
  *物流运价数据检查（获取运输类型对应的费）
  */
 export const CHECKTRANSTYPE = BASEURL  + "v2/order.logistics/check";
+
+/**
+ *
+ *物流运价查询
+ */
+export const ORDER_LOGISTICS_QUERY = BASEURL  + "v2//order.logistics/query";
 /**
  *
  *获取发票信息
