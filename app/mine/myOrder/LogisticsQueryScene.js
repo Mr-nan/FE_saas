@@ -151,6 +151,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                 this.firstItem.district,
                 startAddrRegionId: this.firstItem.district_code,
                 transportType: this.transSelect.transportTypeCode,
+                model_name:this.car.modelName
             }
         };
         this.toNextPage(brandParams);
