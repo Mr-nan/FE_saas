@@ -24,31 +24,34 @@ export  default class PurchasePickerItem extends PureComponent {
         super(props);
         this.state = {
             width: 0,
-            height: 0
+            height: 0,
+            dataList: []
         }
     }
 
-    changeShow = () => {
+    changeShow = (dataList) => {
         this.setState({
             width: width,
-            height: height
+            height: height,
+            dataList: dataList
         });
     }
 
     render() {
         let viewList = [];
-        for(let i=0;i<this.props.dataList;i++){
-            viewList.push( <TouchableOpacity onPress={()=>{
-                        this.setState({
-                            width: 0,
-                            height: 0
-                        },()=>{this.props.selectType(1,dataList[i]);});
-                    }} activeOpacity={1}
-                                             style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
-                <Text allowFontScaling={false}
-                      style={{fontSize: Pixel.getFontPixel(15),color:'#000'}}>新车</Text>
-            </TouchableOpacity>)
-        }
+        // for (let i = 0; i < this.state.dataList.length; i++) {
+        //     viewList.push(<TouchableOpacity onPress={()=>{
+        //                 this.setState({
+        //                     width: 0,
+        //                     height: 0
+        //                 },()=>{this.props.selectType(this.state.dataList[i].transportTypeCode,
+        //                 this.state.dataList[i].transportType);});
+        //             }} activeOpacity={1}
+        //                                     style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
+        //         <Text allowFontScaling={false}
+        //               style={{fontSize: Pixel.getFontPixel(15),color:'#000'}}>{this.state.dataList[i].transportType)}</Text>
+        //     </TouchableOpacity>)
+        // }
         return (
             <TouchableOpacity onPress={()=>{
                  this.setState({
@@ -58,31 +61,9 @@ export  default class PurchasePickerItem extends PureComponent {
             }} activeOpacity={1}
                               style={{width:this.state.width,height:this.state.height,overflow:'hidden',
             justifyContent:'flex-end',backgroundColor:'rgba(0,0,0,0.6)',position: 'absolute'}}>
-                <View style={{width:width,height:Pixel.getPixel(134),backgroundColor:'#fff'}}>
-                    <TouchableOpacity onPress={()=>{
-                        this.setState({
-                            width: 0,
-                            height: 0
-                        },()=>{this.props.selectType(1,'新车');});
-                    }} activeOpacity={1}
-                                      style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
-                        <Text allowFontScaling={false}
-                              style={{fontSize: Pixel.getFontPixel(15),color:'#000'}}>新车</Text>
-                    </TouchableOpacity>
-                    <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(1),
-                backgroundColor:'#d8d8d8',marginLeft:Pixel.getPixel(15)}}></View>
-                    <TouchableOpacity onPress={()=>{
-                        this.setState({
-                            width: 0,
-                            height: 0
-                        },()=>{this.props.selectType(2,'二手车');});
-                    }} activeOpacity={1}
-                                      style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
-                        <Text allowFontScaling={false}
-                              style={{fontSize: Pixel.getFontPixel(15),color:'#000'}}>二手车</Text>
-                    </TouchableOpacity>
-                    <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(1),
-                backgroundColor:'#d8d8d8',marginLeft:Pixel.getPixel(15)}}></View>
+                <View style={{width:width,height:Pixel.getPixel((this.state.dataList.length+1)*50),
+                backgroundColor:'#fff'}}>
+                    {viewList}
                     <TouchableOpacity onPress={()=>{
                                       this.setState({
                                             width: 0,

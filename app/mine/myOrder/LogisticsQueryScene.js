@@ -30,6 +30,7 @@ import LQCarItem from './component/LQCarItem';
 var Pixel = new PixelUtil();
 import CityRegionScene from '../addressManage/CityRegionScene';
 import LQSelectCarTypeItem from './component/LQSelectCarTypeItem';
+import LQSelectTransItem from './component/LQSelectTransItem';
 import CarBrandSelectScene from "../../carSource/CarBrandSelectScene";
 const IS_ANDROID = Platform.OS === 'android';
 import {request} from '../../utils/RequestUtil';
@@ -168,7 +169,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                         dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
                     },()=>{this.getTrans()});
                 }} ref="lqselectcartypeitem"/>
-
+                <LQSelectTransItem ref="lqselecttransitem"/>
                 <NavigatorView title='物流服务' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>);
         }
@@ -221,7 +222,9 @@ export default class LogisticsQueryScene extends BaseComponent {
                 }
                 if(this.transError){
                     this.getTrans(1);
+                    return;
                 }
+                this.refs.lqselecttransitem.changeShow(this.transType);
             }} changeNumber={(number)=>{
                 this.car.number = number;
             }}/>
@@ -271,20 +274,37 @@ export default class LogisticsQueryScene extends BaseComponent {
         request(Urls.GETTRANSPORTTYPE, 'Post', maps)
             .then((response) => {
                     this.transType = [];
-                    this._showModal(false);
                     if (from == 1) {
-
-                    } else {
                         if (this.isNull(response.mjson.data) || response.mjson.data.length <= 0) {
+                            this.transError = true;
+                            this.props.showToast('运输类型为空');
+                            return;
+                        }
+                        this._showModal(false);
+                        this.transError = false;
+                        for (let i = 0; i < response.mjson.data.length; i++) {
+                            this.transType.push({
+                                transportType: response.mjson.data[i].transportType,
+                                transportTypeCode: response.mjson.data[i].transportTypeCode
+                            })
+                        }
+                        this.refs.lqselecttransitem.changeShow(this.transType);
+                    } else {
+                        this._showModal(false);
+                        if (this.isNull(response.mjson.data) || response.mjson.data.length <= 0) {
+                            this.transError = true;
                             return;
                         }
                         for (let i = 0; i < response.mjson.data.length; i++) {
-                            this.transType.push({transportType:response.mjson.data[i].transportType,
+                            this.transType.push({
+                                transportType: response.mjson.data[i].transportType,
+                                transportTypeCode: response.mjson.data[i].transportTypeCode
                             })
                         }
                     }
                 },
                 (error) => {
+                    this.transError = true;
                     if (from == 1) {
                         if (error.mycode == -300 || error.mycode == -500) {
                             this.props.showToast('系统异常');
