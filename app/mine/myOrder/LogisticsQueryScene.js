@@ -70,7 +70,8 @@ export default class LogisticsQueryScene extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: 'blank',
             dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
-            cityStatus: false
+            cityStatus: false,
+            openType:false,
         };
     }
 
@@ -151,7 +152,8 @@ export default class LogisticsQueryScene extends BaseComponent {
                 <View style={{width:width,height:Pixel.getPixel(45),backgroundColor: fontAndColor.COLORB0,
                 position: 'absolute',left:0,bottom:0 }}></View>
                 {
-                    this.state.cityStatus && <CityRegionScene checkAreaClick={this.checkAreaClick}
+                    this.state.cityStatus && <CityRegionScene noneDistrict={this.state.openType}
+                                                              checkAreaClick={this.checkAreaClick}
                                                               showModal={this._showModal}
                                                               closePress={this._closeProvince}/>
                 }
@@ -178,9 +180,18 @@ export default class LogisticsQueryScene extends BaseComponent {
                                  lastName={this.lastItem.province+this.lastItem.city+
             this.lastItem.district} selectCity={(index)=>{
                 this.selectIndex=index;
-                this.setState({
-                    cityStatus:true
+                if(index==1){
+                    this.setState({
+                    cityStatus:true,
+                    openType:false
                 });
+                }else{
+                    this.setState({
+                    cityStatus:true,
+                    openType:true
+                });
+                }
+
             }}/>
         } else if (rowData == '3') {
             return <LQCarItem inputMoney={(text)=>{
