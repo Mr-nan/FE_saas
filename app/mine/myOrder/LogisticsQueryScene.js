@@ -23,35 +23,43 @@ import NavigatorView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil'
 import LQBannerItem from './component/LQBannerItem';
 import LQAdressItem from './component/LQAdressItem';
+import LQCarItem from './component/LQCarItem';
 var Pixel = new PixelUtil();
 import CityRegionScene from '../addressManage/CityRegionScene';
+import LQSelectCarTypeItem from './component/LQSelectCarTypeItem';
 export default class LogisticsQueryScene extends BaseComponent {
 
     // 构造
     constructor(props) {
         super(props);
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.selectIndex=0;
-        this.firstItem={
-            province:'',
-            province_code:'',
-            city:'',
-            city_code:'',
-            district:'',
-            district_code:''
+        this.selectIndex = 0;
+        this.firstItem = {
+            province: '',
+            province_code: '',
+            city: '',
+            city_code: '',
+            district: '',
+            district_code: ''
         }
-        this.lastItem={
-            province:'',
-            province_code:'',
-            city:'',
-            city_code:'',
-            district:'',
-            district_code:''
+        this.lastItem = {
+            province: '',
+            province_code: '',
+            city: '',
+            city_code: '',
+            district: '',
+            district_code: ''
+        }
+        this.car = {
+            typeId: 0,
+            typeName: '',
+            modelId: 0,
+            modelName: ''
         }
         this.state = {
             renderPlaceholderOnly: 'blank',
             dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
-            cityStatus:false
+            cityStatus: false
         };
     }
 
@@ -76,23 +84,23 @@ export default class LogisticsQueryScene extends BaseComponent {
         this.setState({renderPlaceholderOnly: 'success'});
     }
 
-    _showModal = (show)=>{
+    _showModal = (show) => {
         this.props.showModal(show);
     };
 
-    _closeProvince = ()=>{
-        this.setState({cityStatus:false});
+    _closeProvince = () => {
+        this.setState({cityStatus: false});
     };
 
-    checkAreaClick = (cityRegion)=>{
-        if(this.selectIndex==1){
+    checkAreaClick = (cityRegion) => {
+        if (this.selectIndex == 1) {
             this.firstItem.province = cityRegion.provice_name;
             this.firstItem.province_code = cityRegion.provice_code;
             this.firstItem.city = cityRegion.city_name;
             this.firstItem.city_code = cityRegion.city_code;
             this.firstItem.district = cityRegion.district_name;
             this.firstItem.district_code = cityRegion.district_code;
-        }else{
+        } else {
             this.lastItem.province = cityRegion.provice_name;
             this.lastItem.province_code = cityRegion.provice_code;
             this.lastItem.city = cityRegion.city_name;
@@ -125,6 +133,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                                                               showModal={this._showModal}
                                                               closePress={this._closeProvince}/>
                 }
+                <LQSelectCarTypeItem ref="lqselectcartypeitem"/>
                 <NavigatorView title='物流服务' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>);
         }
@@ -144,7 +153,9 @@ export default class LogisticsQueryScene extends BaseComponent {
                 });
             }}/>
         } else if (rowData == '3') {
-            return <LQAdressItem/>
+            return <LQCarItem firstName={this.car.typeName} lastName={this.car.modelName} selectType={()=>{
+                this.refs.lqselectcartypeitem.changeShow();
+            }}/>
         } else if (rowData == '4') {
             return <View style={{width:width,height:Pixel.getPixel(153),backgroundColor: '#ff0'}}></View>
         } else if (rowData == '5') {
