@@ -71,7 +71,7 @@ export default class LogisticsQueryScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
             cityStatus: false,
-            openType:false,
+            openType: false,
         };
     }
 
@@ -123,6 +123,8 @@ export default class LogisticsQueryScene extends BaseComponent {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
             dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+        }, () => {
+            this.getTrans()
         });
     };
 
@@ -163,7 +165,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
-                    });
+                    },()=>{this.getTrans()});
                 }} ref="lqselectcartypeitem"/>
 
                 <NavigatorView title='物流服务' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
@@ -231,6 +233,8 @@ export default class LogisticsQueryScene extends BaseComponent {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
             dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+        }, () => {
+            this.getTrans()
         });
     }
 
@@ -249,7 +253,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                 this.lastItem.district)) {
             return;
         }
-        this.props._showModal(true);
+        this._showModal(true);
         let maps = {
             carType: this.car.typeId,
             company_id: global.companyBaseID,
@@ -262,7 +266,8 @@ export default class LogisticsQueryScene extends BaseComponent {
         };
         request(Urls.GETTRANSPORTTYPE, 'Post', maps)
             .then((response) => {
-                    this.props._showModal(false)
+                    this._showModal(false);
+                    console.log(response);
                 },
                 (error) => {
                     this.props.showToast('系统异常');
