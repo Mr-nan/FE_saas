@@ -36,6 +36,7 @@ const IS_ANDROID = Platform.OS === 'android';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import CarriagePriceContenScene from "./CarriagePriceContenScene";
+import CarriagePriceInfoScene from "./CarriagePriceInfoScene";
 export default class LogisticsQueryScene extends BaseComponent {
 
     // 构造
@@ -150,6 +151,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                 this.firstItem.district,
                 startAddrRegionId: this.firstItem.district_code,
                 transportType: this.transSelect.transportTypeCode,
+                model_name:this.car.modelName
             }
         };
         this.toNextPage(brandParams);
