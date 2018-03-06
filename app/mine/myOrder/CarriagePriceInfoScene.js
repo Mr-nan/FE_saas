@@ -37,25 +37,37 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
 
     }
     render() {
+        const {
+            carCount,
+            carPrice,
+            carType,
+            endAddr,
+            endAddrRegionId,
+            model_id,
+            startAddr,
+            startAddrRegionId,
+            transportType,
+            model_name
+        } = this.props;
         return(
             <View style={styles.root}>
                 <ScrollView>
                     <Image style={styles.headImage} source={require('../../../images/carriagePriceImage/headImage.png')}>
-                        <Text style={styles.headTitle} allowFontScaling={false}>2013款 帝豪EC7 1.5L 手动型</Text>
+                        <Text style={styles.headTitle} allowFontScaling={false}>{model_name}</Text>
                         <View style={styles.headContentView}>
                             <View style={styles.headSubView}>
                                 <Text style={styles.headSubTitleText} allowFontScaling={false}>单价:</Text>
-                                <Text style={styles.headSubNumberText} allowFontScaling={false}>20万</Text>
+                                <Text style={styles.headSubNumberText} allowFontScaling={false}>{`${carPrice}万`}</Text>
                             </View>
                             <Image style={{width:Pixel.getPixel(1)}} source={require('../../../images/carriagePriceImage/line.png')}/>
                             <View style={styles.headSubView}>
                                 <Text style={styles.headSubTitleText} allowFontScaling={false}>台数:</Text>
-                                <Text style={styles.headSubNumberText} allowFontScaling={false}>2台</Text>
+                                <Text style={styles.headSubNumberText} allowFontScaling={false}>{carCount}台</Text>
                             </View>
                         </View>
                     </Image>
-                    <CarriagePriceInfoItemView type={1} select={1} text1={'始发地'} text2="山西省太原市和平区" value1="一车上门取车" value2="自己送车到店"/>
-                    <CarriagePriceInfoItemView type={2} select={2} text1={'到达地'} text2="河南省焦作市宁远区" value1="自己到网店提车" value2="一车送车到户"/>
+                    <CarriagePriceInfoItemView type={1} select={1} text1={'始发地'} text2={startAddr} value1="一车上门取车" value2="自己送车到店"/>
+                    <CarriagePriceInfoItemView type={2} select={2} text1={'到达地'} text2={endAddr} value1="自己到网店提车" value2="一车送车到户"/>
                     <CarriagePriceInfoListView data={priceData}/>
                     <TouchableOpacity style={{flex:1,height:Pixel.getPixel(50.5),backgroundColor:'white',marginTop:Pixel.getPixel(9),paddingHorizontal:Pixel.getPixel(15),
                         alignItems:'center',

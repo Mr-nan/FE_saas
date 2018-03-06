@@ -36,6 +36,7 @@ const IS_ANDROID = Platform.OS === 'android';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import CarriagePriceContenScene from "./CarriagePriceContenScene";
+import CarriagePriceInfoScene from "./CarriagePriceInfoScene";
 export default class LogisticsQueryScene extends BaseComponent {
 
     // 构造
