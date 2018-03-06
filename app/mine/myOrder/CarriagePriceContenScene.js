@@ -22,7 +22,7 @@ export default class CarriagePriceContenScene extends BaseComponent {
     render(){
         return(
             <View style={styles.root}>
-            <ScrollView onScroll={this.onScroll}>
+            <ScrollView>
                 <Image style={{width:width,height:width/0.36}} source={require('../../../images/carriagePriceImage/H5Image.png')} resizeMode={'contain'}/>
             </ScrollView>
                 <NavigationView ref={(ref)=>{this.navigationView=ref}} title={'物流服务'} backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
