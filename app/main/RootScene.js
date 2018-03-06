@@ -37,6 +37,7 @@ let deploymentKey = '';
 import ErrorUtils from "ErrorUtils"
 import UmengPush from 'react-native-umeng-push';
 import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi';
+import LogisticsQueryScene from '../mine/myOrder/LogisticsQueryScene';
 const IS_ANDROID = Platform.OS === 'android';
 
 export default class RootScene extends BaseComponent {
@@ -226,7 +227,7 @@ export default class RootScene extends BaseComponent {
                 StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                     if (res.result !== StorageUtil.ERRORCODE) {
                         if (res.result == null) {
-                            that.navigatorParams.component = LoginAndRegister;
+                            that.navigatorParams.component = LogisticsQueryScene;
                             that.navigatorParams.name = 'LoginAndRegister';
                             that.toNextPage(that.navigatorParams);
                         } else {
