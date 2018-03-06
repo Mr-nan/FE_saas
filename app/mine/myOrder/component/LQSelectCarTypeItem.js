@@ -45,8 +45,11 @@ export  default class PurchasePickerItem extends PureComponent {
                  });
             }} activeOpacity={1}
                               style={[{overflow:'hidden',
-            justifyContent:'flex-end',backgroundColor:'rgba(0,0,0,0.6)',position: 'absolute'},
-            this.state.height==0?{width:this.state.width,height:this.state.height,}:{flex:1}]}>
+            justifyContent:'flex-end',backgroundColor:'rgba(0,0,0,0.6)',position: 'absolute',
+                                  left:0,
+                                  right:0,
+                                  bottom:0,},
+            this.state.height==0?{width:this.state.width,height:this.state.height,}:{top:0}]}>
                 <View style={{width:width,height:Pixel.getPixel(134),backgroundColor:'#fff'}}>
                     <TouchableOpacity onPress={()=>{
                         this.setState({
