@@ -47,7 +47,7 @@ export default class FillWaybill extends BaseComponent {
         super(props);
         this.collectAddress = '';
         this.startAdress = '';
-        this.transType = 1;
+        this.transType = 0;
         this.distance = '';
         this.companyName = '';
         this.invoiceId = '';
@@ -600,12 +600,12 @@ export default class FillWaybill extends BaseComponent {
                                 )
                             })
                         }
-                        <View style={[styles.divideLine,{marginTop:Pixel.getPixel(10)}]}/>
-                        <View style={{margin:Pixel.getPixel(15),flexDirection:'row',justifyContent:'space-between'}}>
+                        {this.collectAddress !== '请选择' && this.distance !== '0'&&<View style={[styles.divideLine,{marginTop:Pixel.getPixel(10)}]}/>}
+                        {this.collectAddress !== '请选择' && this.distance !== '0'&&<View style={{margin:Pixel.getPixel(15),flexDirection:'row',justifyContent:'space-between'}}>
                             <Text>{'   '}</Text>
                             <Text style={{color:FontAndColor.COLORA2, fontSize:Pixel.getPixel(16)}}>总价(含运输保险)</Text>
                             <Text style={{color:FontAndColor.COLORA2, fontSize:Pixel.getPixel(16)}}>{this.totalMoney}元</Text>
-                        </View>
+                        </View>}
 
                     </View>
 
