@@ -69,7 +69,7 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
                         </View>
                     </Image>
                     <CarriagePriceInfoItemView type={1} select={1} text1={'始发地'} text2={startAddr} value1="一车上门取车" value2="自己送车到店"/>
-                    <CarriagePriceInfoItemView type={2} select={2} text1={'到达地'} text2={endAddr} value1="自己到网店提车" value2="一车送车到户"/>
+                    <CarriagePriceInfoItemView type={2} select={1} text1={'到达地'} text2={endAddr} value1="自己到网店提车" value2="一车送车到户"/>
                     {
                         this.state.priceData.length>0 &&  <CarriagePriceInfoListView data={this.state.priceData}/>
                     }
