@@ -67,6 +67,7 @@ export default class LogisticsQueryScene extends BaseComponent {
             transType: 0
         }
         this.transType = [];
+        this.transError = false;
         this.state = {
             renderPlaceholderOnly: 'blank',
             dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
@@ -214,9 +215,12 @@ export default class LogisticsQueryScene extends BaseComponent {
             }}/>
         } else if (rowData == '4') {
             return <LQTransportItem selectTransport={()=>{
-                if(this.transType.length<=0){
+                if(this.transType.length<=0&&this.transError==false){
                     this.props.showToast('请确认车辆类型与地址');
                     return;
+                }
+                if(this.transError){
+                    this.getTrans(1);
                 }
             }} changeNumber={(number)=>{
                 this.car.number = number;
@@ -238,7 +242,7 @@ export default class LogisticsQueryScene extends BaseComponent {
         });
     }
 
-    getTrans = () => {
+    getTrans = (from) => {
         if (this.isNull(this.car.modelName)) {
             return;
         }
@@ -266,11 +270,30 @@ export default class LogisticsQueryScene extends BaseComponent {
         };
         request(Urls.GETTRANSPORTTYPE, 'Post', maps)
             .then((response) => {
+                    this.transType = [];
                     this._showModal(false);
-                    console.log(response);
+                    if (from == 1) {
+
+                    } else {
+                        if (this.isNull(response.mjson.data) || response.mjson.data.length <= 0) {
+                            return;
+                        }
+                        for (let i = 0; i < response.mjson.data.length; i++) {
+                            this.transType.push({transportType:response.mjson.data[i].transportType,
+                            })
+                        }
+                    }
                 },
                 (error) => {
-                    this.props.showToast('系统异常');
+                    if (from == 1) {
+                        if (error.mycode == -300 || error.mycode == -500) {
+                            this.props.showToast('系统异常');
+                        } else {
+                            this.props.showToast(error.mjson.msg);
+                        }
+                    } else {
+                        this._showModal(false);
+                    }
                 });
     }
 

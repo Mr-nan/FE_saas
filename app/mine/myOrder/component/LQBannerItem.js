@@ -228,24 +228,18 @@ export  default class PurchasePickerItem extends PureComponent {
         let i = 0;
         this.timer = setInterval(
             () => {
-                Animated.timing(
-                    this.state.fadeAnim,
-                    {toValue: 2}
-                ).start(()=>{
-                    this.setState({
-                        fadeAnim: new Animated.Value(0),
-                        lineInfo:'用户'+lines[i].name+'已下运单，路线'+lines[i].start+'——'+lines[i].end
-                    },()=>{
-                        Animated.timing(
-                            this.state.fadeAnim,
-                            {toValue: 1}
-                        ).start();
-                        if(++i >= lines.length){
-                            i = 0
-                        }
-                    });
+                this.setState({
+                    fadeAnim: new Animated.Value(0),
+                    lineInfo:'用户'+lines[i].name+'已下运单，路线'+lines[i].start+'——'+lines[i].end
+                },()=>{
+                    Animated.timing(
+                        this.state.fadeAnim,
+                        {toValue: 1}
+                    ).start();
+                    if(++i >= lines.length){
+                        i = 0
                     }
-                );
+                });
             },
             3000
         );
