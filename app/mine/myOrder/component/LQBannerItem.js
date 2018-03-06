@@ -40,7 +40,8 @@ export  default class PurchasePickerItem extends PureComponent {
                 <ViewPager/>
                 <View
                     style={{width:width,height:Pixel.getPixel(31),backgroundColor:'#FFF8EA',
-                        paddingLeft:Pixel.getPixel(15), paddingRight:Pixel.getPixel(15)}}
+                        paddingLeft:Pixel.getPixel(15), paddingRight:Pixel.getPixel(15), overflow: 'hidden'
+                    }}
                 >
                     <Animated.View
                         style={{width:width,height:Pixel.getPixel(31),
@@ -56,7 +57,7 @@ export  default class PurchasePickerItem extends PureComponent {
                             marginRight:Pixel.getPixel(6)}}
                                source={require('../../../../images/laba.png')}></Image>
                         <Text numberOfLines={1} style={{fontSize: Pixel.getFontPixel(12),color: '#D0874D',
-                            marginRight:Pixel.getPixel(12)}}>
+                            marginRight:Pixel.getPixel(12),}}>
                             {this.state.lineInfo}
                         </Text>
                     </Animated.View>
@@ -228,18 +229,25 @@ export  default class PurchasePickerItem extends PureComponent {
         let i = 0;
         this.timer = setInterval(
             () => {
-                this.setState({
-                    fadeAnim: new Animated.Value(0),
-                    lineInfo:'用户'+lines[i].name+'已下运单，路线'+lines[i].start+'——'+lines[i].end
-                },()=>{
-                    Animated.timing(
-                        this.state.fadeAnim,
-                        {toValue: 1}
-                    ).start();
-                    if(++i >= lines.length){
-                        i = 0
+                Animated.timing(
+                    this.state.fadeAnim,
+                    {toValue: 2}
+                ).start(()=>{
+                    this.setState({
+                        fadeAnim: new Animated.Value(0),
+                        lineInfo:'用户'+lines[i].name+'已下运单，路线'+lines[i].start+'——'+lines[i].end
+                    },()=>{
+                        Animated.timing(
+                            this.state.fadeAnim,
+                            {toValue: 1}
+                        ).start();
+                        if(++i >= lines.length){
+                            i = 0
+                        }
+                    });
                     }
-                });
+                );
+
             },
             3000
         );
