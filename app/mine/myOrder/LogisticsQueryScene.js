@@ -30,10 +30,14 @@ import LQCarItem from './component/LQCarItem';
 var Pixel = new PixelUtil();
 import CityRegionScene from '../addressManage/CityRegionScene';
 import LQSelectCarTypeItem from './component/LQSelectCarTypeItem';
+import LQSelectTransItem from './component/LQSelectTransItem';
+import LQBottomItem from './component/LQBottomItem';
 import CarBrandSelectScene from "../../carSource/CarBrandSelectScene";
 const IS_ANDROID = Platform.OS === 'android';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import CarriagePriceContenScene from "./CarriagePriceContenScene";
+import CarriagePriceInfoScene from "./CarriagePriceInfoScene";
 export default class LogisticsQueryScene extends BaseComponent {
 
     // 构造
@@ -68,11 +72,16 @@ export default class LogisticsQueryScene extends BaseComponent {
         }
         this.transType = [];
         this.transError = false;
+        this.transSelect = {
+            transportTypeCode: 0,
+            transportType: ''
+        }
         this.state = {
             renderPlaceholderOnly: 'blank',
             dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
             cityStatus: false,
             openType: false,
+            canClick: false
         };
     }
 
@@ -129,6 +138,53 @@ export default class LogisticsQueryScene extends BaseComponent {
         });
     };
 
+    toNext = () => {
+        if (this.isNull(this.firstItem.province + this.firstItem.city +
+                this.firstItem.district)) {
+            this.props.showToast('请选择始发地');
+            return;
+        }
+        if (this.isNull(this.lastItem.province + this.lastItem.city +
+                this.lastItem.district)) {
+            this.props.showToast('请选择目的地');
+            return;
+        }
+        if (this.isNull(this.car.typeName)) {
+            this.props.showToast('请选择车辆新旧');
+            return;
+        }
+        if (this.isNull(this.car.modelName)) {
+            this.props.showToast('请选择车型');
+            return;
+        }
+        if (this.isNull(this.car.money) || this.car.money <= 0) {
+            this.props.showToast('请填写单车指导价');
+            return;
+        }
+        if (this.isNull(this.transSelect.transportType)) {
+            this.props.showToast('请选择运输类型');
+            return;
+        }
+        let brandParams = {
+            name: 'CarriagePriceInfoScene',
+            component: CarriagePriceInfoScene,
+            params: {
+                carCount: this.car.number,
+                carPrice: this.car.money,
+                carType: this.car.typeId,
+                endAddr: this.lastItem.province + this.lastItem.city,
+                endAddrRegionId: this.lastItem.city_code,
+                model_id: this.car.modelId,
+                startAddr: this.firstItem.province + this.firstItem.city +
+                this.firstItem.district,
+                startAddrRegionId: this.firstItem.district_code,
+                transportType: this.transSelect.transportTypeCode,
+                model_name: this.car.modelName
+            }
+        };
+        this.toNextPage(brandParams);
+    }
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
@@ -152,8 +208,17 @@ export default class LogisticsQueryScene extends BaseComponent {
                             />
                         </KeyboardAvoidingView>
                     )}
-                <View style={{width:width,height:Pixel.getPixel(45),backgroundColor: fontAndColor.COLORB0,
-                position: 'absolute',left:0,bottom:0 }}></View>
+                <TouchableOpacity onPress={()=>{
+                    if(this.state.canClick){
+                        this.toNext();
+                    }
+                }} activeOpacity={0.9}
+                                  style={{width:width,height:Pixel.getPixel(45),backgroundColor:
+                                  this.state.canClick?fontAndColor.COLORB0:'#69DCDA',
+                position: 'absolute',left:0,bottom:0 ,justifyContent:'center',alignItems: 'center'}}>
+                    <Text style={{fontSize: Pixel.getPixel(15),color:'#fff',
+                    backgroundColor: '#00000000'}}>询价</Text>
+                </TouchableOpacity>
                 {
                     this.state.cityStatus && <CityRegionScene noneDistrict={this.state.openType}
                                                               checkAreaClick={this.checkAreaClick}
@@ -168,7 +233,25 @@ export default class LogisticsQueryScene extends BaseComponent {
                         dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
                     },()=>{this.getTrans()});
                 }} ref="lqselectcartypeitem"/>
+                <LQSelectTransItem selectType={(code,name)=>{
+                    this.transSelect={
+                         transportTypeCode:code,
+                         transportType:name
+                    }
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         if(this.isNull(this.car.money)||this.car.money<=0){
+              this.setState({
+                    dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+                    canClick:false
+              });
+         }else{
+            this.setState({
+                dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+                canClick:true
+            });
+         }
 
+                }} ref="lqselecttransitem"/>
                 <NavigatorView title='物流服务' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>);
         }
@@ -176,7 +259,16 @@ export default class LogisticsQueryScene extends BaseComponent {
 
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowData == '1') {
-            return <LQBannerItem />
+            return <LQBannerItem clickBanner={()=>{
+                 let brandParams = {
+            name: 'CarriagePriceContenScene',
+            component: CarriagePriceContenScene,
+            params: {
+
+            }
+        };
+        this.toNextPage(brandParams);
+            }}/>
         } else if (rowData == '2') {
             return <LQAdressItem firstName={this.firstItem.province+this.firstItem.city+
             this.firstItem.district}
@@ -199,6 +291,17 @@ export default class LogisticsQueryScene extends BaseComponent {
         } else if (rowData == '3') {
             return <LQCarItem inputMoney={(text)=>{
                     this.car.money = text;
+                    console.log(this.car.money<=0);
+                     console.log(this.state.canClick);
+                    if(this.isNull(this.car.money)||this.car.money<=0){
+                        this.setState({
+                            canClick:false
+                        });
+                    }else if(!this.isNull(this.transSelect.transportTypeCode)&&!this.state.canClick){
+                         this.setState({
+                            canClick:true
+                        });
+                    }
                 }} type={this.car.typeId} firstName={this.car.typeName} lastName={this.car.modelName}
                               money={this.car.money} selectType={()=>{
                 this.refs.lqselectcartypeitem.changeShow();
@@ -214,19 +317,21 @@ export default class LogisticsQueryScene extends BaseComponent {
         this.toNextPage(brandParams);
             }}/>
         } else if (rowData == '4') {
-            return <LQTransportItem selectTransport={()=>{
+            return <LQTransportItem transName={this.transSelect.transportType} selectTransport={()=>{
                 if(this.transType.length<=0&&this.transError==false){
                     this.props.showToast('请确认车辆类型与地址');
                     return;
                 }
                 if(this.transError){
                     this.getTrans(1);
+                    return;
                 }
+                this.refs.lqselecttransitem.changeShow(this.transType);
             }} changeNumber={(number)=>{
                 this.car.number = number;
             }}/>
         } else if (rowData == '5') {
-            return <View style={{width:width,height:Pixel.getPixel(150),backgroundColor: '#0f0'}}></View>
+            return <LQBottomItem />
         }
     }
 
@@ -258,43 +363,85 @@ export default class LogisticsQueryScene extends BaseComponent {
             return;
         }
         this._showModal(true);
-        let maps = {
-            carType: this.car.typeId,
-            company_id: global.companyBaseID,
-            endAddr: this.lastItem.province + this.lastItem.city,
-            endAddrRegionId: this.lastItem.city_code,
-            model_id: this.car.modelId,
-            startAddr: this.firstItem.province + this.firstItem.city +
-            this.firstItem.district,
-            startAddrRegionId: this.firstItem.district_code,
-        };
-        request(Urls.GETTRANSPORTTYPE, 'Post', maps)
-            .then((response) => {
-                    this.transType = [];
-                    this._showModal(false);
-                    if (from == 1) {
-
-                    } else {
-                        if (this.isNull(response.mjson.data) || response.mjson.data.length <= 0) {
-                            return;
-                        }
-                        for (let i = 0; i < response.mjson.data.length; i++) {
-                            this.transType.push({transportType:response.mjson.data[i].transportType,
-                            })
-                        }
-                    }
-                },
-                (error) => {
-                    if (from == 1) {
-                        if (error.mycode == -300 || error.mycode == -500) {
-                            this.props.showToast('系统异常');
+        this.transSelect = {};
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+        }, () => {
+            let maps = {
+                carType: this.car.typeId,
+                company_id: global.companyBaseID,
+                endAddr: this.lastItem.province + this.lastItem.city,
+                endAddrRegionId: this.lastItem.city_code,
+                model_id: this.car.modelId,
+                startAddr: this.firstItem.province + this.firstItem.city +
+                this.firstItem.district,
+                startAddrRegionId: this.firstItem.district_code,
+            };
+            request(Urls.GETTRANSPORTTYPE, 'Post', maps)
+                .then((response) => {
+                        this.transType = [];
+                        if (from == 1) {
+                            if (this.isNull(response.mjson.data) || response.mjson.data.length <= 0) {
+                                this.transError = true;
+                                this.props.showToast('运输类型为空');
+                                return;
+                            }
+                            this._showModal(false);
+                            this.transError = false;
+                            for (let i = 0; i < response.mjson.data.length; i++) {
+                                this.transType.push({
+                                    transportType: response.mjson.data[i].transportType,
+                                    transportTypeCode: response.mjson.data[i].transportTypeCode
+                                })
+                            }
+                            this.refs.lqselecttransitem.changeShow(this.transType);
                         } else {
-                            this.props.showToast(error.mjson.msg);
+                            this._showModal(false);
+                            if (this.isNull(response.mjson.data) || response.mjson.data.length <= 0) {
+                                this.transError = true;
+                                return;
+                            }
+                            for (let i = 0; i < response.mjson.data.length; i++) {
+                                this.transType.push({
+                                    transportType: response.mjson.data[i].transportType,
+                                    transportTypeCode: response.mjson.data[i].transportTypeCode
+                                })
+                            }
+                            if (this.transType.length == 1) {
+                                this.transSelect = {
+                                    transportType: this.transType[0].transportType,
+                                    transportTypeCode: this.transType[0].transportTypeCode
+                                }
+                                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                                if (this.isNull(this.car.money) || this.car.money <= 0) {
+                                    this.setState({
+                                        dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+                                        canClick: false
+                                    });
+                                } else {
+                                    this.setState({
+                                        dataSource: ds.cloneWithRows([1, 2, 3, 4, 5]),
+                                        canClick: true
+                                    });
+                                }
+                            }
                         }
-                    } else {
-                        this._showModal(false);
-                    }
-                });
+                    },
+                    (error) => {
+                        this.transError = true;
+                        if (from == 1) {
+                            if (error.mycode == -300 || error.mycode == -500) {
+                                this.props.showToast('系统异常');
+                            } else {
+                                this.props.showToast(error.mjson.msg);
+                            }
+                        } else {
+                            this._showModal(false);
+                        }
+                    });
+        });
+
     }
 
 }

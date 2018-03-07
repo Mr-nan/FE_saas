@@ -28,7 +28,7 @@ export  default class LQTransportItem extends PureComponent {
     }
 
     componentWillReceiveProps(props) {
-        this.refs.lqselectcomponenttop.setSelectName(props.firstName);
+        this.refs.lqselectcomponenttop.setSelectName(props.transName);
     }
 
     render() {
