@@ -37,7 +37,6 @@ let deploymentKey = '';
 import ErrorUtils from "ErrorUtils"
 import UmengPush from 'react-native-umeng-push';
 import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi';
-// import LoginGesture from '../mine/myOrder/LogisticsQueryScene';
 import LoginGesture from '../login/LoginGesture';
 const IS_ANDROID = Platform.OS === 'android';
 

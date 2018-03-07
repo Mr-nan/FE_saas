@@ -69,14 +69,11 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
                         </View>
                     </Image>
                     <CarriagePriceInfoItemView type={1} select={1} text1={'始发地'} text2={startAddr} value1="一车上门取车" value2="自己送车到店"/>
-                    <CarriagePriceInfoItemView type={2} select={2} text1={'到达地'} text2={endAddr} value1="自己到网店提车" value2="一车送车到户"/>
+                    <CarriagePriceInfoItemView type={2} select={1} text1={'到达地'} text2={endAddr} value1="自己到网店提车" value2="一车送车到户"/>
                     {
                         this.state.priceData.length>0 &&  <CarriagePriceInfoListView data={this.state.priceData}/>
                     }
                 </ScrollView>
-                {
-                    this.state.isShowCallUpView && <CallUpView cancelClick={this.cancelClick} callUpClick={this.callUpClick}/>
-                }
                 <View style={{height:Pixel.getPixel(50.5),backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),
                     alignItems:'center',
                     flexDirection:'row',
@@ -97,6 +94,9 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
                         </View>
                     </TouchableOpacity>
                 </View>
+                {
+                    this.state.isShowCallUpView && <CallUpView cancelClick={this.cancelClick} callUpClick={this.callUpClick}/>
+                }
                 <NavigationView ref={(ref)=>this.navigationView=ref} title='运价查询' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>
         )
