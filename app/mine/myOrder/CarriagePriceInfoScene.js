@@ -51,7 +51,7 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
 
         return(
             <View style={styles.root}>
-                <ScrollView>
+                <ScrollView onScroll={this.onScroll}>
                     <Image style={styles.headImage} source={require('../../../images/carriagePriceImage/headImage.png')}>
                         <Text style={styles.headTitle} allowFontScaling={false}>{model_name}</Text>
                         <View style={styles.headContentView}>

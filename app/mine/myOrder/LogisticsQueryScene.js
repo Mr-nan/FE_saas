@@ -198,6 +198,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}
                         showsVerticalScrollIndicator={false}
+                        onScroll={this.onScroll}
                     />) : (
                         <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(100)}>
                             <ListView
@@ -205,6 +206,8 @@ export default class LogisticsQueryScene extends BaseComponent {
                                 dataSource={this.state.dataSource}
                                 renderRow={this._renderRow}
                                 showsVerticalScrollIndicator={false}
+                                onScroll={this.onScroll}
+
                             />
                         </KeyboardAvoidingView>
                     )}
@@ -252,8 +255,19 @@ export default class LogisticsQueryScene extends BaseComponent {
          }
 
                 }} ref="lqselecttransitem"/>
-                <NavigatorView title='物流服务' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
+                <NavigatorView ref={(ref)=>this.navigationView=ref} title='物流服务' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>);
+        }
+    }
+
+    onScroll =(event)=> {
+
+        if (event.nativeEvent.contentOffset.y > 0) {
+
+            this.navigationView.setNavigationBackgroindColor(fontAndColor.COLORB0);
+
+        } else {
+            this.navigationView.setNavigationBackgroindColor('transparent');
         }
     }
 
