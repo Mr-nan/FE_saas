@@ -202,7 +202,7 @@ class CarriagePriceInfoListView extends Component{
                         <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.BUTTONFONT30)}}>{priceData.totalPrice}</Text>
                         <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.CONTENTFONT24)}}>元</Text>
                         {
-                            priceData.taxation>0 && <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getPixel(fontAndColor.CONTENTFONT24)}}>{`(含税${priceData.taxation}元)`}</Text>
+                            <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getPixel(fontAndColor.CONTENTFONT24)}}>{priceData.taxation>0?`(含税${priceData.taxation}元)`:'(不含税)'}</Text>
                         }
                     </View>
                 </View>
