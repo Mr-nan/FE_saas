@@ -34,6 +34,10 @@ export  default class PurchasePickerItem extends PureComponent {
         this._startLineAnimate();
     }
 
+    componentWillUnmount(){
+        this.timer && clearInterval(this.timer);
+    }
+
     render() {
         return (
             <View style={{width:width,height:Pixel.getPixel(256)}}>
