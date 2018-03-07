@@ -74,9 +74,6 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
                         this.state.priceData.length>0 &&  <CarriagePriceInfoListView data={this.state.priceData}/>
                     }
                 </ScrollView>
-                {
-                    this.state.isShowCallUpView && <CallUpView cancelClick={this.cancelClick} callUpClick={this.callUpClick}/>
-                }
                 <View style={{height:Pixel.getPixel(50.5),backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),
                     alignItems:'center',
                     flexDirection:'row',
@@ -97,6 +94,9 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
                         </View>
                     </TouchableOpacity>
                 </View>
+                {
+                    this.state.isShowCallUpView && <CallUpView cancelClick={this.cancelClick} callUpClick={this.callUpClick}/>
+                }
                 <NavigationView ref={(ref)=>this.navigationView=ref} title='运价查询' backIconClick={this.backPage} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>
         )
