@@ -2,8 +2,8 @@
  * Created by yujinzhong on 2017/2/8.
  */
 
-import  React, {Component, PropTypes} from  'react'
-import  {
+import React, {Component, PropTypes} from 'react'
+import {
 
     View,
     Text,
@@ -18,7 +18,7 @@ import  {
     BackAndroid,
     Platform,
     StatusBar
-} from  'react-native'
+} from 'react-native'
 
 let mnyData = {};
 let movies = [];
@@ -26,8 +26,8 @@ let page = 1;
 let allPage = 0;
 
 
-import  HomeHeaderItem from './component/HomeHeaderItem';
-import  PixelUtil from '../utils/PixelUtil'
+import HomeHeaderItem from './component/HomeHeaderItem';
+import PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
 import ChedidaiDetaileScene from '../finance/lend/ChedidaiDetaileScene';
 import DDDetailScene from '../finance/lend/DDDetailScene';
@@ -35,9 +35,11 @@ import DDApplyLendScene from '../finance/lend/DDApplyLendScene';
 
 import CGDDetailSence from '../finance/lend/CGDDetailSence';
 import SingDetaileSence from '../finance/lend/SingDetaileSence';
-import  StorageUtil from '../utils/StorageUtil';
+import StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import NavigationView from '../component/AllNavigationView';
+import ExplainModal from "./component/ExplainModal";
+
 let Pixel = new PixelUtil();
 /*
  * 获取屏幕的宽和高
@@ -49,7 +51,7 @@ import MyButton from '../component/MyButton';
 import RepaymentScene from '../finance/repayment/RepaymentScene';
 import BaseComponet from '../component/BaseComponent';
 import {request} from '../utils/RequestUtil';
-import  LoadMoreFooter from '../component/LoadMoreFooter';
+import LoadMoreFooter from '../component/LoadMoreFooter';
 import * as Urls from '../constant/appUrls';
 import * as fontAndColor from '../constant/fontAndColor';
 import QuotaApplication from '../login/QuotaApplication';
@@ -57,13 +59,13 @@ import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 import CGDLendScenes from '../finance/lend/CGDLendScenes';
 import AccountModal from '../component/AccountModal';
 import MyAccountScene from "../mine/accountManage/MyAccountScene";
-import  FinanceHeader from './component/FinanceHeader';
-import  FinanceButton from './component/FinanceButton';
-import  FinanceScreen from './component/FinanceScreen';
-import  FinanceScreenPop from './component/FinanceScreenPop';
-import  FinanceItem from './component/FinanceItem';
-import  FinanceGuide from './component/FinanceGuide';
-
+import FinanceHeader from './component/FinanceHeader';
+import FinanceButton from './component/FinanceButton';
+import FinanceScreen from './component/FinanceScreen';
+import FinanceScreenPop from './component/FinanceScreenPop';
+import FinanceItem from './component/FinanceItem';
+import FinanceGuide from './component/FinanceGuide';
+let contentData=[{title:'保证金额度',value:'100万'},{title:'保证金余度',value:'100万'}];
 export default class FinanceSence extends BaseComponet {
 
     constructor(props) {
@@ -139,28 +141,29 @@ export default class FinanceSence extends BaseComponet {
                 {IS_ANDROID ? null : <StatusBar barStyle={'default'}/>}
                 <ListView
                     ref="listview"
-                    contentContainerStyle={{marginTop:Pixel.getPixel(40)}}
+                    contentContainerStyle={{marginTop: Pixel.getPixel(40)}}
                     removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     scrollEnabled={true}
                     showsVerticalScrollIndicator={false}
                     refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={this.refreshingData}
-                                        tintColor={[fontAndColor.COLORB0]}
-                                        colors={[fontAndColor.COLORB0]}
-                                    />
-                                }
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshingData}
+                            tintColor={[fontAndColor.COLORB0]}
+                            colors={[fontAndColor.COLORB0]}
+                        />
+                    }
                 />
-                <FinanceScreenPop ref="financescreenpop" hidden={(select)=>{
-                    if(select!='null'){
+                <FinanceScreenPop ref="financescreenpop" hidden={(select) => {
+                    if (select != 'null') {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({source: ds.cloneWithRows([1, 2, select, 4, 5, 6, 7, 8, 9, 0, 11, 11, 11, 11, 11, 11])});
                     }
                     this.closePop();
                 }}/>
+                <ExplainModal ref='loanModal'  buttonStyle={cellSheet.expButton} textStyle={cellSheet.expText}/>
                 {/*<FinanceGuide/>*/}
                 <NavigationView title="锋之行汽车销售"/>
             </View>
@@ -186,25 +189,31 @@ export default class FinanceSence extends BaseComponet {
         if (rowId == 0) {
             return ( <FinanceHeader/>);
         } else if (rowId == 1) {
-            return (<FinanceButton/>);
+            return (<FinanceButton borrowBt={() => {
+                this.refs.loanModal.changeShowType(true, '保证金', '知道了',contentData,[]);
+            }} payBt={
+                () => {
+                    this.refs.loanModal.changeShowType(true, '提示', '确定',contentData,contentData);
+                }
+            }/>);
         } else if (rowId == 2) {
             return (
-                <FinanceScreen onCheck={(select)=>{
+                <FinanceScreen onCheck={(select) => {
                     this.refs.financescreenpop.changeSelect(select);
                     this.closePop();
-                }} select={movie} onPress={(y)=>{
-                    if(this.isShow){
+                }} select={movie} onPress={(y) => {
+                    if (this.isShow) {
                         this.closePop();
-                    }else{
+                    } else {
                         let heights = 303;
-                        if(Platform.OS === 'android'){
+                        if (Platform.OS === 'android') {
                             heights = 323;
                         }
                         this.isShow = !this.isShow;
-                        this.refs.listview.scrollTo({x:0,y:Pixel.getTitlePixel(heights),animated:false});
+                        this.refs.listview.scrollTo({x: 0, y: Pixel.getTitlePixel(heights), animated: false});
                         this.refs.financescreenpop.changeTop(Pixel.getTitlePixel(61),
-                        width,Pixel.getPixel(height));
-                        this.refs.listview.setNativeProps({scrollEnabled:false});
+                            width, Pixel.getPixel(height));
+                        this.refs.listview.setNativeProps({scrollEnabled: false});
                     }
 
                 }}/>);
@@ -285,10 +294,27 @@ const cellSheet = StyleSheet.create({
 
         fontSize: 20,
     },
+    expButton: {
+        marginBottom: Pixel.getPixel(20),
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(35),
+        marginTop: Pixel.getPixel(16),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0,
+        backgroundColor:fontAndColor.COLORB0
+    },
+    expText: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: 'white'
+    },
 
     container: {
 
         flex: 1,
         backgroundColor: fontAndColor.COLORA3,
-    }
+    },
 });
