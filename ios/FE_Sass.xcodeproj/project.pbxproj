@@ -1749,11 +1749,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-<<<<<<< HEAD
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.1w;
-=======
+
 				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
->>>>>>> 8011d489c07e01330f691bf65d70de13781c4208
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1806,11 +1803,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-<<<<<<< HEAD
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.1w;
-=======
+
 				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
->>>>>>> 8011d489c07e01330f691bf65d70de13781c4208
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1900,11 +1894,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-<<<<<<< HEAD
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.1w;
-=======
 				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
->>>>>>> 8011d489c07e01330f691bf65d70de13781c4208
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
