@@ -37,6 +37,7 @@ import CGDDetailSence from '../finance/lend/CGDDetailSence';
 import SingDetaileSence from '../finance/lend/SingDetaileSence';
 import  StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
+import NavigationView from '../component/AllNavigationView';
 let Pixel = new PixelUtil();
 /*
  * 获取屏幕的宽和高
@@ -138,6 +139,7 @@ export default class FinanceSence extends BaseComponet {
                 {IS_ANDROID ? null : <StatusBar barStyle={'default'}/>}
                 <ListView
                     ref="listview"
+                    contentContainerStyle={{marginTop:Pixel.getPixel(40)}}
                     removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -160,6 +162,7 @@ export default class FinanceSence extends BaseComponet {
                     this.closePop();
                 }}/>
                 {/*<FinanceGuide/>*/}
+                <NavigationView title="锋之行汽车销售"/>
             </View>
         )
     }
