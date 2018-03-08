@@ -44,6 +44,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+        console.log('订单物流');
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
@@ -104,7 +105,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 1,
-                                    status: 'in_the_deal'
+                                    status: 'in_the_deal',
+                                    singleCar: this.props.singleCar
                                 }
                             });
                         } else {
@@ -113,7 +115,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 2,
-                                    status: 'in_the_deal'
+                                    status: 'in_the_deal',
+                                    singleCar: this.props.singleCar
                                 }
                             });
                         }
@@ -134,7 +137,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 1,
-                                    status: 'finish'
+                                    status: 'finish',
+                                    singleCar: this.props.singleCar
                                 }
                             });
                         } else {
@@ -143,7 +147,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 2,
-                                    status: 'finish'
+                                    status: 'finish',
+                                    singleCar: this.props.singleCar
                                 }
                             });
                         }
@@ -164,7 +169,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 1,
-                                    status: 'closed'
+                                    status: 'closed',
+                                    singleCar: this.props.singleCar
                                 }
                             });
                         } else {
@@ -173,7 +179,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 2,
-                                    status: 'closed'
+                                    status: 'closed',
+                                    singleCar: this.props.singleCar
                                 }
                             });
                         }

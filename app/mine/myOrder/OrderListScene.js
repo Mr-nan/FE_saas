@@ -281,6 +281,7 @@ export default class OrderListScene extends BaseComponent {
                             params: {
                                 business: this.props.business,
                                 status: this.status,
+                                singleCar: this.props.singleCar
                             }
                         });
                     }}
@@ -371,7 +372,8 @@ export default class OrderListScene extends BaseComponent {
                                 component: ProcurementOrderDetailScene,
                                 params: {
                                     business: this.props.business,
-                                    orderId: rowData.order.id
+                                    orderId: rowData.order.id,
+                                    singleCar: this.props.singleCar
                                 }
                             });
                         } else {

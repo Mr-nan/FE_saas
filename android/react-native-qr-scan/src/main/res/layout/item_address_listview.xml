@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_address_item"
+    android:layout_width="match_parent"
+    android:background="#fff"
+    android:layout_height="64dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp">
+
+    <LinearLayout
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="第一上海中心"
+            android:id="@+id/txt_address_name"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:textColor="#000"
+            />
+        <TextView
+            android:layout_marginTop="2dp"
+            android:text="亮马桥路39号C901"
+            android:id="@+id/txt_address_detail"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="13sp"
+            android:textColor="#9e9e9e"
+            />
+    </LinearLayout>
+    <ImageView
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:id="@+id/img_poi_status"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/select_g" />
+
+</RelativeLayout>
