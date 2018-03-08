@@ -78,7 +78,7 @@ export default class LoginAndRegister extends BaseComponent {
                           childStyle={styles.buttonTextStyle} mOnPress={() => {
                     this.toNextPage({
                         name: 'LoginScene',
-                        component: NonCreditScene,
+                        component: LoginScene,
                         params: {},
                     })
                 }}/>

@@ -255,6 +255,11 @@ export default class MineScene extends BaseComponent {
                 "name": name
                 , "id": id
             },);
+	        Car[0].cars.push({
+		        "icon": require('../../images/mainImage/shouxinguanli.png'),
+		        "name": name
+		        , "id": id
+	        },);
         } else if (id == 48) {
             Car[0].cars.push({
                 "icon": require('../../images/mainImage/yuangongguanli.png'),
@@ -1050,6 +1055,7 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(26),
         height: Pixel.getPixel(26),
         marginLeft: Pixel.getPixel(15),
+        resizeMode:'contain'
     },
     rowjiantouImage: {
         width: Pixel.getPixel(15),
