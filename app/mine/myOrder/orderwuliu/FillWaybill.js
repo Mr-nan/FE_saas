@@ -135,9 +135,9 @@ export default class FillWaybill extends BaseComponent {
 
         if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 && this.collectAddress !== '请选择' && this.distance !== '0') {
             data.all_amount.map((data) => {
-                // if (this.fromSingle && data.amount_name == '总金额') {
+                if (data.amount_name == '总金额') {
                     this.totalMoney = data.amount;
-                // }
+                }
                 // if (parseFloat(data.amount) > 0) {
                     if (data.amount_name !== '总金额') {
                         feeDatas.push({title: data.amount_name, value: parseFloat(data.amount).toFixed(2) + '元'});
@@ -373,7 +373,7 @@ export default class FillWaybill extends BaseComponent {
 
                         if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 && this.collectAddress !== '请选择' && this.distance !== '0') {
                             data.all_amount.map((data) => {
-                                if (this.fromSingle && data.amount_name == '总金额') {
+                                if (data.amount_name == '总金额') {
                                     this.totalMoney = data.amount;
                                 }
                                 // if (parseFloat(data.amount) > 0) {
