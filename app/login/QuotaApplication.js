@@ -200,12 +200,11 @@ export default class QuotaApplication extends BaseComponent {
                                     backgroundColor: '#00000000',
                                     fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA1
                                 }}>仅为中国税收居民（指在中国境内居住满一年的个人，</Text>
-                                <View style={{flexDirection: 'row', alignItems: 'center', marginTop: Pixel.getPixel(2)}}>
+                                <View style={{flexDirection: 'row', alignItems: 'center', marginTop: Pixel.getPixel(1)}}>
                                     <Text allowFontScaling={false} style={{
                                         backgroundColor: '#00000000',
                                         fontSize: Pixel.getFontPixel(12),
                                         color: FontAndColor.COLORA1,
-                                        includeFontPadding: false
                                     }}>具体请点击</Text>
                                     <TouchableOpacity onPress={() => {
                                         this.refs.statementbox.show();
@@ -221,7 +220,6 @@ export default class QuotaApplication extends BaseComponent {
                                     <Text allowFontScaling={false} style={{
                                         backgroundColor: '#00000000',
                                         fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA1,
-                                        includeFontPadding: false
                                     }}> ）</Text>
                                 </View>
                             </View>
