@@ -153,7 +153,7 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
         }, (error) => {
 
             this.props.showModal(false);
-            this.showToast(error.mjson.msg);
+            this.props.showToast(error.mjson.msg);
 
         });
     }
