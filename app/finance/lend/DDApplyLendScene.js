@@ -285,7 +285,7 @@ export default class DDApplyLendScene extends BaseComponent {
 	        }
 
             dataSource['section4'] = section4;
-            dataSource['section5'] = ['如您提交资料和信息、完成OBD接入，预计1个工作日内告知您可融资金额'];
+            dataSource['section5'] = ['如您提交资料和信息，预计1个工作日内告知您可融资金额'];
         }
         return dataSource;
     }
