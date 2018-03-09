@@ -69,15 +69,19 @@ export default class QuotaApplication extends BaseComponent {
         }
         let childitems = [];
         for (let i = 0; i < this.state.agreement.length; i++) {
-            childitems.push(<Text allowFontScaling={false} onPress={()=>{
-                this.toNextPage({name:'ContractInfoScene',component:ContractInfoScene,params:{title:this.state.agreement[i].name,
-                webUrl:this.state.agreement[i].url}});
-            }} key={i+'a'} style={{color:FontAndColor.COLORA2,fontSize: Pixel.getFontPixel(12)}}>
+            childitems.push(<Text allowFontScaling={false} onPress={() => {
+                this.toNextPage({
+                    name: 'ContractInfoScene', component: ContractInfoScene, params: {
+                        title: this.state.agreement[i].name,
+                        webUrl: this.state.agreement[i].url
+                    }
+                });
+            }} key={i + 'a'} style={{color: FontAndColor.COLORA2, fontSize: Pixel.getFontPixel(12)}}>
                 《{this.state.agreement[i].name}》 </Text>);
         }
         return (
             <View style={styles.containerStyle}>
-                <ScrollView style={{marginTop:Pixel.getTitlePixel(79)}}>
+                <ScrollView style={{marginTop: Pixel.getTitlePixel(79)}}>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.inputTextsStyle}>
                         <View style={{
@@ -89,7 +93,11 @@ export default class QuotaApplication extends BaseComponent {
                             alignItems: 'center'
                         }}>
                             <Text allowFontScaling={false}
-                                  style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(14), flex: 1}}>借款人</Text>
+                                  style={{
+                                      color: FontAndColor.COLORA0,
+                                      fontSize: Pixel.getPixel(14),
+                                      flex: 1
+                                  }}>借款人</Text>
                             <Text allowFontScaling={false}>{this.state.name}</Text>
                         </View>
                         <View style={{
@@ -101,7 +109,11 @@ export default class QuotaApplication extends BaseComponent {
                             alignItems: 'center'
                         }}>
                             <Text allowFontScaling={false}
-                                  style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(14), flex: 1}}>身份证号</Text>
+                                  style={{
+                                      color: FontAndColor.COLORA0,
+                                      fontSize: Pixel.getPixel(14),
+                                      flex: 1
+                                  }}>身份证号</Text>
                             <Text allowFontScaling={false}>{this.state.idcard}</Text>
                         </View>
                         <View style={{
@@ -111,7 +123,11 @@ export default class QuotaApplication extends BaseComponent {
                             alignItems: 'center'
                         }}>
                             <Text allowFontScaling={false}
-                                  style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(14), flex: 1}}>联系电话</Text>
+                                  style={{
+                                      color: FontAndColor.COLORA0,
+                                      fontSize: Pixel.getPixel(14),
+                                      flex: 1
+                                  }}>联系电话</Text>
                             <Text allowFontScaling={false}>{this.state.phone}</Text>
                         </View>
                     </View>
@@ -164,71 +180,97 @@ export default class QuotaApplication extends BaseComponent {
                             keyboardType={'phone-pad'}
                             leftIcon={false}/>
                     </View>
-                    <View style={{width:width,height:Pixel.getPixel(130)}}>
-                        <Text allowFontScaling={false} style={{backgroundColor: '#00000000',
-                        fontSize: Pixel.getFontPixel(14),marginTop:Pixel.getPixel(10),
-                        marginLeft:Pixel.getPixel(15),color:FontAndColor.COLORA1,marginBottom:Pixel.getPixel(10)
+                    <View style={{width: width, height: Pixel.getPixel(130)}}>
+                        <Text allowFontScaling={false} style={{
+                            backgroundColor: '#00000000',
+                            fontSize: Pixel.getFontPixel(14),
+                            marginTop: Pixel.getPixel(10),
+                            marginLeft: Pixel.getPixel(15),
+                            color: FontAndColor.COLORA1,
+                            marginBottom: Pixel.getPixel(10)
                         }}>个人税收居民身份声明：</Text>
-                        <View style={{flex:1,flexDirection:'row',paddingLeft:Pixel.getPixel(15)}}>
-                            <View style={{flex:1,alignItems:'center'}}>
-                                <RadioButton number={1} ref="radiobuttonone" callBack={(index)=>{
+                        <View style={{flex: 1, flexDirection: 'row', paddingLeft: Pixel.getPixel(15)}}>
+                            <View style={{flex: 1, alignItems: 'center'}}>
+                                <RadioButton number={1} ref="radiobuttonone" callBack={(index) => {
                                     this.changeSelect(index);
                                 }}></RadioButton>
                             </View>
-                            <View style={{flex:8,justifyContent:'center',paddingRight:Pixel.getPixel(15)}}>
-                                <Text allowFontScaling={false} style={{backgroundColor: '#00000000',
-                        fontSize: Pixel.getFontPixel(12),color:FontAndColor.COLORA1
-                       }}>仅为中国税收居民（指在中国境内居住满一年的个人，具体请点击
-                                    {<TouchableOpacity onPress={()=>{
+                            <View style={{flex: 8, justifyContent: 'center', paddingRight: Pixel.getPixel(15)}}>
+                                <Text allowFontScaling={false} style={{
+                                    backgroundColor: '#00000000',
+                                    fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA1
+                                }}>仅为中国税收居民（指在中国境内居住满一年的个人，</Text>
+                                <View style={{flexDirection: 'row', alignItems: 'center', marginTop: Pixel.getPixel(2)}}>
+                                    <Text allowFontScaling={false} style={{
+                                        backgroundColor: '#00000000',
+                                        fontSize: Pixel.getFontPixel(12),
+                                        color: FontAndColor.COLORA1,
+                                        includeFontPadding: false
+                                    }}>具体请点击</Text>
+                                    <TouchableOpacity onPress={() => {
                                         this.refs.statementbox.show();
-                                    }} activeOpacity={1} style={{width:Pixel.getPixel(14),
-                                    height:Pixel.getPixel(14),justifyContent:'center',marginTop:Pixel.getPixel(5),
-                                    marginLeft:Pixel.getPixel(5)}}>
-                                        <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14)}}
+                                    }} activeOpacity={1} style={{
+                                        width: Pixel.getPixel(14),
+                                        height: Pixel.getPixel(14),
+                                        justifyContent: 'center',
+                                        marginLeft: Pixel.getPixel(5)
+                                    }}>
+                                        <Image style={{width: Pixel.getPixel(14), height: Pixel.getPixel(14)}}
                                                source={require('../../images/login/wenhao.png')}/>
-                                    </TouchableOpacity>}
-                                    {'   '}）</Text>
+                                    </TouchableOpacity>
+                                    <Text allowFontScaling={false} style={{
+                                        backgroundColor: '#00000000',
+                                        fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA1,
+                                        includeFontPadding: false
+                                    }}> ）</Text>
+                                </View>
                             </View>
                         </View>
-                        <View style={{flex:1,flexDirection:'row',paddingLeft:Pixel.getPixel(15)}}>
-                            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-                                <RadioButton number={2} ref="radiobuttontwo" callBack={(index)=>{
+                        <View style={{flex: 1, flexDirection: 'row', paddingLeft: Pixel.getPixel(15)}}>
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <RadioButton number={2} ref="radiobuttontwo" callBack={(index) => {
                                     this.changeSelect(index);
                                 }}></RadioButton>
                             </View>
-                            <View style={{flex:8,justifyContent:'center',paddingRight:Pixel.getPixel(15)}}>
-                                <Text allowFontScaling={false} style={{backgroundColor: '#00000000',
-                        fontSize: Pixel.getFontPixel(12),color:FontAndColor.COLORA1
-                       }}>仅为非居民</Text>
+                            <View style={{flex: 8, justifyContent: 'center', paddingRight: Pixel.getPixel(15)}}>
+                                <Text allowFontScaling={false} style={{
+                                    backgroundColor: '#00000000',
+                                    fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA1
+                                }}>仅为非居民</Text>
                             </View>
                         </View>
-                        <View style={{flex:1,flexDirection:'row',paddingLeft:Pixel.getPixel(15)}}>
-                            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-                                <RadioButton number={3} ref="radiobuttonthree" callBack={(index)=>{
+                        <View style={{flex: 1, flexDirection: 'row', paddingLeft: Pixel.getPixel(15)}}>
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <RadioButton number={3} ref="radiobuttonthree" callBack={(index) => {
                                     this.changeSelect(index);
                                 }}></RadioButton>
                             </View>
-                            <View style={{flex:8,justifyContent:'center',paddingRight:Pixel.getPixel(15)}}>
-                                <Text allowFontScaling={false} style={{backgroundColor: '#00000000',
-                        fontSize: Pixel.getFontPixel(12),color:FontAndColor.COLORA1
-                       }}>既是中国税收居民又是其他国家（地区）税收居民</Text>
+                            <View style={{flex: 8, justifyContent: 'center', paddingRight: Pixel.getPixel(15)}}>
+                                <Text allowFontScaling={false} style={{
+                                    backgroundColor: '#00000000',
+                                    fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA1
+                                }}>既是中国税收居民又是其他国家（地区）税收居民</Text>
                             </View>
                         </View>
                     </View>
-                    <View style={{width:width-Pixel.getPixel(30),height:1,marginLeft:Pixel.getPixel(15),
-                    backgroundColor: '#d7d7d7'}}></View>
-                    <View style={{width:width,height:Pixel.getPixel(60),flexDirection: 'row',
-                    paddingLeft:Pixel.getPixel(15)}}>
-                        <View style={{flex:1,alignItems:'center',paddingTop:Pixel.getPixel(8)}}>
-                            <MultiselectButton callBack={(back)=>{
+                    <View style={{
+                        width: width - Pixel.getPixel(30), height: 1, marginLeft: Pixel.getPixel(15),
+                        backgroundColor: '#d7d7d7'
+                    }}></View>
+                    <View style={{
+                        width: width, height: Pixel.getPixel(60), flexDirection: 'row',
+                        paddingLeft: Pixel.getPixel(15)
+                    }}>
+                        <View style={{flex: 1, alignItems: 'center', paddingTop: Pixel.getPixel(8)}}>
+                            <MultiselectButton callBack={(back) => {
                                 this.isTrue = back;
                             }}></MultiselectButton>
                         </View>
-                        <View style={{flex:8,justifyContent:'center',paddingRight:Pixel.getPixel(15)}}>
+                        <View style={{flex: 8, justifyContent: 'center', paddingRight: Pixel.getPixel(15)}}>
                             <Text allowFontScaling={false}
                                   style={{lineHeight: 25}}>
                                 <Text allowFontScaling={false}
-                                      style={{color:FontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
+                                      style={{color: FontAndColor.COLORA1, fontSize: Pixel.getFontPixel(12)}}>
                                     {'我已详细阅读并同意'}</Text>
                                 {childitems}
                             </Text>
@@ -266,7 +308,7 @@ export default class QuotaApplication extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height,backgroundColor:FontAndColor.COLORA3,alignItems: 'center'}}>
+            <View style={{width: width, height: height, backgroundColor: FontAndColor.COLORA3, alignItems: 'center'}}>
                 {this.loadView()}
                 <NavigationView
                     title="微单额度申请"
