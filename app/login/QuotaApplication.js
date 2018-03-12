@@ -35,6 +35,7 @@ let imeis = '';
 import RadioButton from './component/RadioButton';
 import MultiselectButton from './component/MultiselectButton';
 import StatementBox from './component/StatementBox';
+import StatementBoxs from './component/StatementBoxs';
 export default class QuotaApplication extends BaseComponent {
 
     constructor(props) {
@@ -200,7 +201,8 @@ export default class QuotaApplication extends BaseComponent {
                                     backgroundColor: '#00000000',
                                     fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA1
                                 }}>仅为中国税收居民（指在中国境内居住满一年的个人，</Text>
-                                <View style={{flexDirection: 'row', alignItems: 'center', marginTop: Pixel.getPixel(1)}}>
+                                <View
+                                    style={{flexDirection: 'row', alignItems: 'center', marginTop: Pixel.getPixel(1)}}>
                                     <Text allowFontScaling={false} style={{
                                         backgroundColor: '#00000000',
                                         fontSize: Pixel.getFontPixel(12),
@@ -281,6 +283,7 @@ export default class QuotaApplication extends BaseComponent {
                               mOnPress={this.getWZMoney}/>
                 </ScrollView>
                 <StatementBox ref="statementbox"></StatementBox>
+                <StatementBoxs ref="statementboxs"></StatementBoxs>
                 <NavigationView
                     title="微单额度申请"
                     backIconClick={this.backPage}
@@ -296,9 +299,11 @@ export default class QuotaApplication extends BaseComponent {
             this.refs.radiobuttontwo.hideAgree();
             this.refs.radiobuttonthree.hideAgree();
         } else if (index == 2) {
+            this.refs.statementboxs.show();
             this.refs.radiobuttonone.hideAgree();
             this.refs.radiobuttonthree.hideAgree();
         } else if (index == 3) {
+            this.refs.statementboxs.show();
             this.refs.radiobuttontwo.hideAgree();
             this.refs.radiobuttonone.hideAgree();
         }
