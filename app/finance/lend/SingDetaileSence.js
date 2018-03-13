@@ -147,7 +147,7 @@ export  default  class SingDetaileSence extends BaseComponent {
 
                         renderPlaceholderOnly: STATECODE.loadError
                     })
-                    if (error.mycode != -300 || error.mycode != -500) {
+                    if (error.mycode == -300 || error.mycode == -500) {
 
                         this.props.showToast('服务器连接有问题')
                     } else {
