@@ -42,7 +42,7 @@ export default class FinanceHeader extends PureComponent {
 
     render() {
         console.log('123');
-        console.log(this.state.topLeft);
+        console.log(this.props.allData1);
         return (
             <View style={{backgroundColor:'#fff',width:width,height:Pixel.getTitlePixel(235)}}>
                 <Animated.Image style={{width:this.state.topWidth,
@@ -53,7 +53,7 @@ export default class FinanceHeader extends PureComponent {
                 >
                     <FinanceHeaderTop onPress={()=>{
                             this.changeBottom(1);
-                        }}  ref="tops" type={1}/>
+                        }}  ref="tops" type={1} allData={this.props.allData1}/>
                 </Animated.Image>
                     <Animated.Image style={{width:this.state.bottomWidth,
                     height:this.state.bottomHeight,resizeMode:'stretch',
@@ -62,7 +62,7 @@ export default class FinanceHeader extends PureComponent {
                                     source={require('../../../images/financeImages/jinrongbeijinghou.png')}>
                         <FinanceHeaderTop onPress={()=>{
                             this.changeBottom(2);
-                        }} ref="bottoms" type={2}/>
+                        }} ref="bottoms" type={2} allData={this.props.allData1}/>
                     </Animated.Image>
             </View>
         );
