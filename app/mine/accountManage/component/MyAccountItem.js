@@ -27,6 +27,9 @@ import {request} from "../../../utils/RequestUtil";
 import * as Urls from '../../../constant/appUrls';
 import ZheShangAccountScene from "../zheshangAccount/ZheShangAccountScene";
 import ZSAccountTypeSelectScene from "../zheshangAccount/ZSAccountTypeSelectScene";
+import WebScene from '../../../main/WebScene';
+import {BASEURL}  from '../../../constant/appUrls';
+
 const Pixel = new PixelUtil();
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
@@ -353,30 +356,56 @@ export default class MyAccountItem extends BaseComponent {
                     <View style={{
                         height: Pixel.getPixel(38),
                         marginTop: Pixel.getPixel(18),
-                        alignItems: 'flex-start',
+                        alignItems: 'center',
                         marginLeft: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(20),
                         justifyContent: 'center',
-                        backgroundColor: 'transparent'
+                        backgroundColor: 'transparent',
+                        flexDirection:'row'
                     }}>
-                        <Text
-                            allowFontScaling={false}
-                            style={{
-                            includeFontPadding: false,
-                            textAlign: 'left',
-                            fontSize: Pixel.getPixel(12),
-                            color: fontAndColor.COLORA1
-                        }}>开通时间</Text>
-                        <Text
-                            allowFontScaling={false}
-                            style={{
-                            includeFontPadding: false,
-                            marginTop: Pixel.getPixel(3),
-                            textAlign: 'left',
-                            fontSize: Pixel.getPixel(15),
-                            color: fontAndColor.COLORA0
-                        }}>{!this.state.data.account_open_date || this.state.data.account_open_date.substr(0, 10) === '0000-00-00' ?
-                            '****-**-**' : this.state.data.account_open_date.substr(0, 10)}</Text>
+                        <View
+                            style={{flex:1}}
+                        >
+                            <Text
+                                allowFontScaling={false}
+                                style={{
+                                    includeFontPadding: false,
+                                    textAlign: 'left',
+                                    fontSize: Pixel.getPixel(12),
+                                    color: fontAndColor.COLORA1
+                                }}>开通时间</Text>
+                            <Text
+                                allowFontScaling={false}
+                                style={{
+                                    includeFontPadding: false,
+                                    marginTop: Pixel.getPixel(3),
+                                    textAlign: 'left',
+                                    fontSize: Pixel.getPixel(15),
+                                    color: fontAndColor.COLORA0
+                                }}>{!this.state.data.account_open_date || this.state.data.account_open_date.substr(0, 10) === '0000-00-00' ?
+                                '****-**-**' : this.state.data.account_open_date.substr(0, 10)}</Text>
+
+                        </View>
+
+                        {
+                            this.props.showQuestion == true?
+                                <TouchableOpacity
+                                    onPress={()=>{
+                                        let url = BASEURL== 'https://gatewayapi.dycd.com/'? 'http://bms.dycd.com/platform/activity_newhand.html':'http://test.bms.dycd.com/platform/activity_newhand.html';
+                                        this.toNextPage({
+                                            component: WebScene,
+                                            name: 'WebScene',
+                                            params: {webUrl:url, title: '新手指引'}
+                                        })
+                                    }}
+                                >
+                                    <Image style={{width:Pixel.getPixel(15), height:Pixel.getPixel(15), padding:10}} source={require('../../../../images/account/question.png')}/>
+
+                                </TouchableOpacity>
+                                :null
+
+                        }
+
                     </View>
                 </Image>
             </View>

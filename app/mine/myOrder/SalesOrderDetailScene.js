@@ -1,9 +1,7 @@
 /**
  * Created by hanmeng on 2017/5/11.
  */
-
 import React, {Component, PropTypes} from 'react'
-
 import {
     StyleSheet,
     View,
@@ -15,21 +13,16 @@ import {
     Dimensions,
     NativeModules,
     BackAndroid,
-    InteractionManager,
     TextInput,
     RefreshControl
 } from  'react-native'
-
 const {width, height} = Dimensions.get('window');
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
-import InputAmountScene from "./InputAmountScene";
-import InputVinInfo from "./InputVinInfo";
 import StepView from "./component/StepView";
 import ExplainModal from "./component/ExplainModal";
-import MakePhoneModal from "./component/MakePhoneModal";
 import ChooseModal from "./component/ChooseModal";
 import TransactionPrice from "./component/TransactionPrice";
 import {request} from "../../utils/RequestUtil";
@@ -37,26 +30,16 @@ import * as AppUrls from "../../constant/appUrls";
 import ContactLayout from "./component/ContactLayout";
 import GetCarCountDown from "./component/GetCarCountDown";
 import DepositCountDown from "./component/DepositCountDown";
-import CheckStand from "../../finance/CheckStand";
 import * as Net from '../../utils/RequestUtil';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import AccountScene from "../accountManage/RechargeScene";
 import VinInfo from '../../publish/component/VinInfo';
-import AccountWebScene from "../accountManage/AccountWebScene";
-import ContractWebScene from "./ContractWebScene";
-import OrderSearchScene from "./OrderSearchScene";
-import AccountManageScene from "../accountManage/AccountTypeSelectScene";
-import BindCardScene from "../accountManage/BindCardScene";
-import WaitActivationAccountScene from "../accountManage/WaitActivationAccountScene";
-import AccountModal from "../../component/AccountModal";
 import AccountForOrderModal from "./component/AccountForOrderModal";
 import ContractScene from "./ContractScene";
-import RepaymentInfoScene from "../../finance/repayment/RepaymentCreditInfoScene";
-import InventoryPlanInfoScene from "../../finance/repayment/InventoryPlanInfoScene";
-import NewPurchaseRepaymentInfoScene from "../../finance/repayment/NewPurchaseRepaymentInfoScene";
 import SalesInfo from "./component/SalesInfo";
 import MyAccountScene from "../accountManage/MyAccountScene";
+import ChooseStart from "./component/ChooseStart";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -81,12 +64,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.leftTime = 0;
         this.closeOrder = 0;
         this.financeInfo = {};
-
+        this.isPort = 0;   // 是否港口提车
+        this.addressId = -1;
         this.modelData = [];
         this.modelInfo = {};
+        this.isCheckPrice = -1;
         this.carData = {'v_type': 1};
 
-        this.modelData = [];
         this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}];
 
         this.state = {
@@ -147,9 +131,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
             this.financeInfo = financeInfo;
             this.mList = [];
             if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
+                this.mList = ['0', '1', '2', '8', '3', '4', '5', '7', '9'];
             } else {
-                this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
+                this.mList = ['0', '1', '2', '8', '3', '4', '5', '6', '7', '9'];
             }
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
@@ -162,9 +146,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
         } else {
             this.mList = [];
             if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+                this.mList = ['0', '1', '2', '8', '4', '5', '7', '9'];
             } else {
-                this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+                this.mList = ['0', '1', '2', '8', '4', '5', '6', '7', '9'];
             }
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
@@ -228,13 +212,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
         //console.log('prepareSavePrice==inputDeposit==', inputDeposit);
         // 判断Input控件中的数额与此页面中数额比较
         // Input控件中成交价 == 此页面成交价 && Input控件中订金 == 此页面订金 直接走savePrice
-        if (inputTransaction === this.carAmount && inputDeposit === this.deposit) {
+        if (inputTransaction === this.carAmount && inputDeposit === this.deposit && this.isCheckPrice === 1) {
             if (this.localCheckPrice(this.carAmount, this.deposit, 2)) {
                 this.savePrice();
             }
         }
         // Input控件中成交价 == 此页面成交价 && Input控件中订金 != 此页面订金 只走localCheckPrice & type = 2
-        else if (inputTransaction === this.carAmount && inputDeposit !== this.deposit) {
+        else if (inputTransaction === this.carAmount && inputDeposit !== this.deposit && this.isCheckPrice === 1) {
             this.deposit = inputDeposit;
             this.localCheckPrice(this.carAmount, this.deposit, 2);
         }
@@ -266,6 +250,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.showModal(false);
+                        this.isCheckPrice = 1;
                         this.isShowFinance(response.mjson.data, true);
                     } else {
                         this.props.showToast(response.mjson.msg);
@@ -280,6 +265,17 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     /**
+     *   更改是否港口提车标志
+     **/
+    updateIsPort = (newIsPort) => {
+        this.isPort = newIsPort;
+    };
+
+    updateAddressId = (newAddressId) => {
+        this.addressId = newAddressId;
+    };
+
+    /**
      *  定价提交
      **/
     savePrice = () => {
@@ -287,7 +283,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
-                //console.log('this.vinInput.value======',this.vinInput.value);
+                //console.log('.is_port.value======',this.isPort);
+                //console.log('.addressId.value======',this.addressId);
                 let maps = {
                     company_id: datas.company_base_id,
                     car_id: this.orderDetail.orders_item_data[0].car_id,
@@ -295,7 +292,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     pricing_amount: this.carAmount,
                     deposit_amount: this.deposit,
                     car_vin: this.orderDetail.orders_item_data[0].car_vin.length === 17 ?
-                        this.orderDetail.orders_item_data[0].car_vin : this.carVin
+                        this.orderDetail.orders_item_data[0].car_vin : this.carVin,
+                    is_port: this.isPort,
+                    start_id: this.addressId
                 };
                 let url = AppUrls.ORDER_SAVE_PRICE;
                 request(url, 'post', maps).then((response) => {
@@ -370,6 +369,17 @@ export default class SalesOrderDetailScene extends BaseComponent {
         return parseFloat(currentTime) - parseFloat(oldTime);
     };
 
+    /**
+     *   判断订单是否有默认地址
+     **/
+    existAddress = (address) => {
+        if (typeof(address.id) == "undefined" || address == null) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -387,6 +397,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.orderDetail = response.mjson.data;
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
+                        //this.isPort = this.existAddress(this.orderDetail.address) ? this.orderDetail.address.is_port : 0;
+                        this.addressId = this.isNull(this.orderDetail.address) ? -1 : this.orderDetail.address.id;
                         this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.cancel_time);
                         this.closeOrder = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.pricing_time);
                         this.carAmount = 0;
@@ -666,9 +678,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     }
                 }
                 break;
-            case 200:
-
-                break;
         }
     };
 
@@ -930,9 +939,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 this.items = [];
                 this.contactData = {};
                 if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                    this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+                    this.mList = ['0', '1', '2', '8', '4', '5', '7', '9'];
                 } else {
-                    this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+                    this.mList = ['0', '1', '2', '8', '4', '5', '6', '7', '9'];
                 }
                 this.contactData = {
                     layoutTitle: '确认成交价',
@@ -968,6 +977,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
+                //this.mList = ['0', '1', '5', '7', '8', '9'];
                 this.contactData = {
                     layoutTitle: '查看到账',
                     layoutContent: '您可以查看买家已支付到账的金额，但暂不可提现，请在交割车辆时要求买家点击"确认验收"按钮，否则将无法提现。',
@@ -1157,14 +1167,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
         if (text.length === 17) {
             this.props.showModal(true);
             this.vinInput.blur();
-            Net.request(AppUrls.VININFO, 'post', {vin: text}).then(
+            Net.request(AppUrls.VIN_CHECK, 'post', {vin: text}).then(
                 (response) => {
                     this.props.showModal(false);
-                    if (response.mycode === 1) {
-                        let rd = response.mjson.data;
+                    if (response.mycode === 1 && response.mjson.data.valid) {
+                        /*let rd = response.mjson.data;
                         if (rd.length === 0) {
                             this.props.showToast('车架号校验失败');
-                        }
+                        }*/
                     } else {
                         this.props.showToast('车架号校验失败');
                     }
@@ -1471,54 +1481,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 </View>
             )
         } else if (rowData === '5') {
-            //let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
-            //let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
             let initReg = this.orderDetail.orders_item_data[0].car_data.init_reg;
             let mileage = this.orderDetail.orders_item_data[0].car_data.mileage;
             let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
             let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
-            {/*return (*/
-            }
-            {/*<View style={styles.itemType3}>*/
-            }
-            {/*<View style={{*/
-            }
-            {/*height: Pixel.getPixel(40),*/
-            }
-            {/*marginLeft: Pixel.getPixel(15),*/
-            }
-            {/*justifyContent: 'center'*/
-            }
-            {/*}}>*/
-            }
-            {/*<Text style={styles.orderInfo}>订单号:{this.orderDetail.order_no}</Text>*/
-            }
-            //             <Text style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
-            //         </View>
-            //         <View style={styles.separatedLine}/>
-            //         <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
-            //             <Image style={styles.image}
-            //                    source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
-            //             <View style={{marginLeft: Pixel.getPixel(10)}}>
-            //                 <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
-            //                       numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_data.model_name}</Text>
-            //                 <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
-            //                     <Text style={styles.carDescribeTitle}>里程：</Text>
-            //                     <Text style={styles.carDescribe}>{mileage}万</Text>
-            //                 </View>
-            //                 <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-            //                     <Text style={styles.carDescribeTitle}>上牌：</Text>
-            //                     <Text style={styles.carDescribe}>{initRegDate}</Text>
-            //                 </View>
-            //                 {this.orderState !== 0 ? <View
-            //                     style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-            //                     <Text style={styles.carDescribeTitle}>成交价：</Text>
-            //                     <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
-            //                 </View> : null}
-            //             </View>
-            //         </View>
-            //     </View>
-            // )
             return (
                 <View style={styles.itemType3}>
                     <View style={{
@@ -1643,52 +1609,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '8') {
             return (
-                <View style={styles.itemType5}>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text allowFontScaling={false} style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            marginLeft: Pixel.getPixel(15)
-                        }}>单车融资还款</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>还款单号:</Text>
-                        <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>232222333</Text>
-                        <Image
-                            style={styles.backIcon}
-                            source={require('../../../images/mainImage/celljiantou.png')}/>
-                    </View>
-                    <View style={styles.separatedLine}/>
-                    <View style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(20),
-                        marginRight: Pixel.getPixel(15)
-                    }}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>本金</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>利息</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>居间费</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>还款总计</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>剩余总计</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>100000元</Text>
-                    </View>
-                </View>
+                <ChooseStart //isPort={this.isPort}
+                             //addressId={this.addressId}
+                             updateIsPort={this.updateIsPort}
+                             updateAddressId={this.updateAddressId}
+                             orderDetail={this.orderDetail}
+                             navigator={this.props.navigator}
+                             showToast={this.props.showToast}
+                             showModal={this.props.showModal}/>
             )
         } else if (rowData === '9') {
             return (

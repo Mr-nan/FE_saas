@@ -78,6 +78,13 @@ export default class ChedidaiSence extends BaseComponent {
     dateBlob = ['30天', '90天', '180天', '360天'];
 
     initFinish() {
+        PostData = {
+            apply_type: '8',
+            loan_mny: '',
+            loan_life: '',
+            use_time: '',
+            remark: '',
+        };
         this.getData('');
 
     }
@@ -249,7 +256,7 @@ export default class ChedidaiSence extends BaseComponent {
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce}
                                       onPress={this.onPress}/>
                         <LendUseful onEndEidt={(text)=>{PostData.remark=text}}/>
-                        <LendRate rate={ShowData.rate}/>
+                        {PostData.loan_life !== '' && (<LendRate rate={ShowData.rate}/>)}
                     </KeyboardAvoidingView>
                 </ScrollView>
                 <CommenButton

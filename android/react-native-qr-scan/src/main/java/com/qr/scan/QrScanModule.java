@@ -3,10 +3,9 @@ package com.qr.scan;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 
-import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
@@ -16,6 +15,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 
@@ -26,6 +26,7 @@ import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 public class QrScanModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
     private Promise mVLPromise;
+    private Promise mBdPromise;
 
     public QrScanModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -46,19 +47,36 @@ public class QrScanModule extends ReactContextBaseJavaModule implements Activity
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        if(mVLPromise != null){
-            if(resultCode == Activity.RESULT_CANCELED){
-                mVLPromise.reject("error","Result_Canceled");
-            }else if(resultCode == Activity.RESULT_OK){
-                boolean scan_hand = data.getBooleanExtra("SCAN_HAND",false);
-                String scan_result = data.getStringExtra("SCAN_RESULT");
-                WritableMap map = Arguments.createMap();
-                map.putString("scan_hand",scan_hand ? "input" : "scan");
-                map.putString("scan_result",scan_result);
-                mVLPromise.resolve(map);
-                mVLPromise = null;
+        if(requestCode == 0){
+            if(mVLPromise != null){
+                if(resultCode == Activity.RESULT_CANCELED){
+                    mVLPromise.reject("error","Result_Canceled");
+                }else if(resultCode == Activity.RESULT_OK){
+                    boolean scan_hand = data.getBooleanExtra("SCAN_HAND",false);
+                    String scan_result = data.getStringExtra("SCAN_RESULT");
+                    WritableMap map = Arguments.createMap();
+                    map.putString("scan_hand",scan_hand ? "input" : "scan");
+                    map.putString("scan_result",scan_result);
+                    mVLPromise.resolve(map);
+                    mVLPromise = null;
+                }
+            }
+        }else if(requestCode == 1){
+            if(mBdPromise != null){
+                if(resultCode == Activity.RESULT_CANCELED){
+                    mBdPromise.reject("error","Result_Canceled");
+                }else if(resultCode == Activity.RESULT_OK){
+                    WritableMap map = Arguments.createMap();
+                    map.putString("address",data.getStringExtra("address"));
+                    map.putString("longitude",data.getStringExtra("longitude"));
+                    map.putString("latitude",data.getStringExtra("latitude"));
+                    mBdPromise.resolve(map);
+                    mBdPromise = null;
+                }
             }
         }
+
+
     }
 
     @Override
@@ -107,7 +125,8 @@ public class QrScanModule extends ReactContextBaseJavaModule implements Activity
 
     public LocationClient mLocationClient = null;
     private MyLocationListener myListener = new MyLocationListener();
-    public class MyLocationListener extends BDAbstractLocationListener {
+    public class MyLocationListener implements BDLocationListener {
+
         @Override
         public void onReceiveLocation(BDLocation location){
             //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
@@ -131,6 +150,32 @@ public class QrScanModule extends ReactContextBaseJavaModule implements Activity
             map.putString("street_number",location.getStreetNumber());
             sendEvent("onReceiveBDLocation",map);
             mLocationClient.stop();
+        }
+    }
+
+    //利用百度地图选择地址
+    @ReactMethod
+    public void bdAddress(ReadableMap data,final Promise promise){
+        Activity currentActivity = getCurrentActivity();
+
+        if (currentActivity == null) {
+            promise.reject("error", "Activity doesn't exist");
+            return;
+        }
+
+        mBdPromise = promise;
+        try{
+            Intent vlIntent = new Intent(currentActivity,BaiduLocationActivity.class);
+            vlIntent.putExtra("province",data.getString("provinceName"));
+            vlIntent.putExtra("city",data.getString("cityName"));
+            vlIntent.putExtra("district",data.getString("districtName"));
+            vlIntent.putExtra("address",data.getString("addressName"));
+            vlIntent.putExtra("longitude",data.getString("longitude"));
+            vlIntent.putExtra("latitude",data.getString("latitude"));
+            currentActivity.startActivityForResult(vlIntent,1);
+        }catch (Exception e){
+            mBdPromise.reject("error",e.toString());
+            mBdPromise = null;
         }
     }
 
