@@ -111,18 +111,26 @@ export default class NonCreditScene extends BaseComponent {
 	 * */
 	loadScrollView = () => {
 		return (
-			<View  style={{backgroundColor:'white'}}>
+			<ScrollView  style={{backgroundColor:'white'}}>
 
 				{IS_ANDROID ? null : <StatusBar barStyle={'default'}/>}
 
 				{/*//----------------------------------------------第 1 块view 新车订单授信----------------------------------------------*/}
 
 				<View
-					style={{width:width,height:Pixel.getPixel(250),alignItems:'center',backgroundColor:'white',marginTop:Pixel.getPixel(20)}}>
+					style={{width:width,alignItems:'center',backgroundColor:'white',marginTop:Pixel.getPixel(20),
+					}}>
 					<Text
 						style={{color: 'black',fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34), lineHeight:24,marginTop:Pixel.getPixel(11)}}>
 						金融
 					</Text>
+					<TouchableOpacity  onPress ={()=>{this._applyCredit('xinchedingdan')}}
+					                   style={{backgroundColor:'red',borderColor:'rgba(255,255,255,0.30)',
+					                   width:Pixel.getPixel(330),padding:Pixel.getPixel(5)}}>
+						<Text allowFontScaling={false}
+						      style={{backgroundColor:'#00000000',color:'white',fontSize: Pixel.getFontPixel(15)}} >
+							立即申请立即申请立即申请立即申请立即申请立即申请立即申请立即立即申请立即申请立即申请立即申请立即立即申请立即申请立即申请立即申请立即申请立即申请立即申请立即申请</Text>
+					</TouchableOpacity>
 
 					<Image source={require('../mine/kuaisushouxin/kuaisushouxin_images/jinrongbeijinglanqian.png')}
 					       style={{width:Pixel.getPixel(350),height:Pixel.getPixel(170),marginTop:Pixel.getPixel(24)}}>
@@ -280,8 +288,8 @@ export default class NonCreditScene extends BaseComponent {
 				</View>
 				{/*灰色的线*/}
 				<View style={{backgroundColor:'#F0EFF5',width:Pixel.getPixel(width),
-						height:Pixel.getPixel(1000),marginTop:Pixel.getPixel(0)}}/>
-			</View>
+						height:Pixel.getPixel(10),marginTop:Pixel.getPixel(0)}}/>
+			</ScrollView>
 		)
 	}
 	/*
