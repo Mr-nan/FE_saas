@@ -107,8 +107,8 @@ export  default  class CarNewListScene extends BaseComponent {
         // 初始状态
         const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
+        this.isLoadCarInfo = false;
         this.state = {
-
             isRefreshing: false,
             dataSource: carSource,
             isHide: true,
@@ -265,6 +265,7 @@ export  default  class CarNewListScene extends BaseComponent {
 
         let url = AppUrls.CAR_INDEX;
         APIParameter.page = 1;
+
         request(url, 'post', APIParameter,()=>{
             this.props.backToLogin();
         })
@@ -287,6 +288,12 @@ export  default  class CarNewListScene extends BaseComponent {
                         isRefreshing: false,
                         renderPlaceholderOnly: 'success',
                     });
+                }
+
+                if(this.isLoadCarInfo){
+                    if(carData.length>=0){
+                        this.pushCarInfoSceneAction(carData[0]);
+                    }
                 }
 
             }, (error) => {
@@ -346,8 +353,6 @@ export  default  class CarNewListScene extends BaseComponent {
                let list = response.mjson.data.list;
                if(list.length>0){
                    let carData = list[0];
-
-
                    let navigatorParams = {
                        name: "CarNewInfoScene",
                        component: CarNewInfoScene,
@@ -377,8 +382,28 @@ export  default  class CarNewListScene extends BaseComponent {
 
             });
 
+    }
 
+    pushCarInfoSceneAction=(carData)=>{
+        this.isLoadCarInfo = false;
+        let navigatorParams = {
+            name: "CarNewInfoScene",
+            component: CarNewInfoScene,
+            params: {
+                carID: carData.id,
+            }
+        };
 
+        if(carData.v_type == 1){
+            navigatorParams = {
+                name: "CarUserInfoScene",
+                component: CarUserInfoScene,
+                params: {
+                    carID: carData.id,
+                }
+            }
+        }
+        this.props.callBack(navigatorParams);
     }
 
     toEnd = () => {
@@ -710,6 +735,11 @@ export  default  class CarNewListScene extends BaseComponent {
             APIParameter.keyword = '';
 
         }
+
+        if(/^\d+$/.test(carObject.brand_name) && carObject.brand_name.length>=11 && !isOpenCarInfo){
+            this.isLoadCarInfo = true;
+            // this.loadCarInfo();
+        }
         this.setState({
             checkedCarType: {
                 title: carObject.series_id == 0 ? carObject.brand_name : carObject.series_name,
@@ -729,9 +759,7 @@ export  default  class CarNewListScene extends BaseComponent {
             this.setHeadViewType();
         }
 
-        if(/^\d+$/.test(carObject.brand_name) && carObject.brand_name.length>=11 && !isOpenCarInfo){
-            this.loadCarInfo();
-        }
+
 
 
     };
@@ -1066,7 +1094,7 @@ export  default  class CarNewListScene extends BaseComponent {
                             pageSize={10}
                             enableEmptySections={true}
                             renderRow={(item,sectionID,rowID) =>
-                                <CarCell style={styles.carCell} carCellData={item} isNewCar={true} onPress={()=> this.carCellOnPres(item.id,sectionID,rowID)}/>
+                                <CarCell style={styles.carCell} carCellData={item} isNewCar={true} onPress={()=> this.pushCarInfoSceneAction(item)}/>
                             }
                             renderFooter={this.renderListFooter}
                             onEndReached={this.toEnd}

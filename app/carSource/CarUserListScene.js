@@ -107,6 +107,7 @@ export  default  class CarUserListScene extends BaseComponent {
         // 初始状态
         const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
+        this.isLoadCarInfo = false;
         this.state = {
 
             isRefreshing: false,
@@ -292,6 +293,12 @@ export  default  class CarUserListScene extends BaseComponent {
                     });
                 }
 
+                if(this.isLoadCarInfo){
+                    if(carData.length>=0){
+                        this.pushCarInfoSceneAction(carData[0]);
+                    }
+                }
+
             }, (error) => {
 
                 this.setState({
@@ -389,6 +396,28 @@ export  default  class CarUserListScene extends BaseComponent {
 
 
 
+    }
+
+    pushCarInfoSceneAction=(carData)=>{
+        this.isLoadCarInfo = false;
+        let navigatorParams = {
+            name: "CarNewInfoScene",
+            component: CarNewInfoScene,
+            params: {
+                carID: carData.id,
+            }
+        };
+
+        if(carData.v_type == 1){
+            navigatorParams = {
+                name: "CarInfoScene",
+                component:CarInfoScene,
+                params: {
+                    carID: carData.id,
+                }
+            }
+        }
+        this.props.callBack(navigatorParams);
     }
 
 
@@ -644,6 +673,12 @@ export  default  class CarUserListScene extends BaseComponent {
             APIParameter.keyword = '';
 
         }
+
+        if(/^\d+$/.test(carObject.brand_name) && carObject.brand_name.length>=11 && !isOpenCarInfo){
+            this.isLoadCarInfo = true;
+            // this.loadCarInfo();
+        }
+
         this.setState({
             checkedCarType: {
                 title: carObject.series_id == 0 ? carObject.brand_name : carObject.series_name,
@@ -663,9 +698,7 @@ export  default  class CarUserListScene extends BaseComponent {
 
         }
 
-        if(/^\d+$/.test(carObject.brand_name) && carObject.brand_name.length>=11 && !isOpenCarInfo){
-            this.loadCarInfo();
-        }
+
 
     };
 

@@ -122,6 +122,14 @@ export default class CarInfoScene extends BaseComponent {
         };
     }
 
+    componentDidMount() {
+
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
     initFinish = () => {
         carConfigurationData = [];
         this.isUserBoss = false;
@@ -143,6 +151,8 @@ export default class CarInfoScene extends BaseComponent {
         });
 
     }
+
+
 
     allRefresh=()=>{
         this.loadData();
@@ -238,7 +248,6 @@ export default class CarInfoScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             if (response.mycode == 1) {
                 this.setState({
                     residualsData: response.mjson.data,

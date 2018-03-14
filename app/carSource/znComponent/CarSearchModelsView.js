@@ -9,7 +9,8 @@ import {
     Text,
     ListView,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+    Platform
 } from 'react-native'
 
 import *as fontAndColor from '../../constant/fontAndColor';
@@ -17,6 +18,8 @@ import PixelUtil from '../../utils/PixelUtil';
 
 const Pixel = new PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
+const IS_ANDROID = Platform.OS === 'android';
+
 
 export default class CarSearchModelsView extends Component{
 
@@ -35,6 +38,7 @@ export default class CarSearchModelsView extends Component{
                     dataSource={this.state.data}
                     renderRow={this.renderRow}
                     renderSeparator={this.renderSeparator}
+                    keyboardDismissMode={IS_ANDROID?'none':'on-drag'}
                 />
             </TouchableOpacity>
         )

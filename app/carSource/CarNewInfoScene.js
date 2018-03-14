@@ -75,6 +75,13 @@ export default class CarNewInfoScene extends BaseComponent {
             carDetailData:[],
         };
     }
+    componentDidMount() {
+
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
 
     initFinish = () => {
         carConfigurationData = [];
