@@ -11,10 +11,11 @@ import {
 } from 'react-native';
 
 let {height, width} = Dimensions.get('window');
-import  PixelUtil from '../../utils/PixelUtil'
-import  * as fontAndColor from '../../constant/fontAndColor'
+import PixelUtil from '../../utils/PixelUtil'
+import * as fontAndColor from '../../constant/fontAndColor'
 import FinanceHeaderTop from './FinanceHeaderTop';
 import FinanceHeaderBottom from './FinanceHeaderBottom';
+
 var Pixel = new PixelUtil();
 export default class FinanceHeader extends PureComponent {
 
@@ -44,32 +45,49 @@ export default class FinanceHeader extends PureComponent {
         console.log('123');
         console.log(this.props.allData1);
         return (
-            <View style={{backgroundColor:'#fff',width:width,height:Pixel.getTitlePixel(235)}}>
-                <Animated.Image style={{width:this.state.topWidth,
-                    height:this.state.topHeight,resizeMode:'stretch',
-                position: 'absolute',top:this.state.topTop,
-                left:this.state.topLeft}}
+            <View style={{backgroundColor: '#fff', width: width, height: Pixel.getTitlePixel(235)}}>
+                <Animated.Image style={{
+                    width: this.state.topWidth,
+                    height: this.state.topHeight, resizeMode: 'stretch',
+                    position: 'absolute', top: this.state.topTop,
+                    left: this.state.topLeft
+                }}
                                 source={require('../../../images/financeImages/jinrongbeijingqian.png')}
                 >
-                    <FinanceHeaderTop onPress={()=>{
-                            this.changeBottom(1);
-                        }}  ref="tops" type={1} allData={this.props.allData1}/>
+                    <FinanceHeaderTop onPress={() => {
+                        this.changeBottom(1);
+                    }}
+                                      ref="tops"
+                                      type={1}
+                                      allData={this.props.allData1}
+                                      depositPop={()=>{this.props.depositPop()}}
+                                      creditPop={()=>{this.props.creditPop()}}
+                                      balancePop={()=>{this.props.balancePop()}}
+                                      weizongPop={()=>{this.props.weizongPop()}}
+                    />
                 </Animated.Image>
-                    <Animated.Image style={{width:this.state.bottomWidth,
-                    height:this.state.bottomHeight,resizeMode:'stretch',
-                position: 'absolute',
-                top:this.state.bottomTop,left:this.state.bottomLeft}}
-                                    source={require('../../../images/financeImages/jinrongbeijinghou.png')}>
-                        <FinanceHeaderTop onPress={()=>{
-                            this.changeBottom(2);
-                        }} ref="bottoms" type={2} allData={this.props.allData1}/>
-                    </Animated.Image>
+                <Animated.Image style={{
+                    width: this.state.bottomWidth,
+                    height: this.state.bottomHeight, resizeMode: 'stretch',
+                    position: 'absolute',
+                    top: this.state.bottomTop, left: this.state.bottomLeft
+                }}
+                                source={require('../../../images/financeImages/jinrongbeijinghou.png')}>
+                    <FinanceHeaderTop onPress={() => {
+                        this.changeBottom(2);}}
+                                      ref="bottoms" type={2} allData={this.props.allData1}
+                                      depositPop={()=>{this.props.depositPop()}}
+                                      creditPop={()=>{this.props.creditPop()}}
+                                      balancePop={()=>{this.props.balancePop()}}
+                                      weizongPop={()=>{this.props.weizongPop()}}
+                    />
+                </Animated.Image>
             </View>
         );
     }
 
     changeBottom = (from) => {
-        console.log(this.state.topWidth._value+'------------'+from);
+        console.log(this.state.topWidth._value + '------------' + from);
         if (this.state.topWidth._value == Pixel.getPixel(306) && from == 1) {
             console.log('aaaa');
             Animated.parallel([

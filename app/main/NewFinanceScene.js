@@ -74,11 +74,11 @@ export default class NewFinanceScene extends BaseComponet {
     constructor(props) {
         super(props);
         this.allData1 = {};
-        this.allData=[this.allData1, 2, 3, 4, 5,];
+        this.allData = [this.allData1, 2, 3, 4, 5,];
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.isShow = false;
         this.state = {
-            renderPlaceholderOnly: 'blank',
+            renderPlaceholderOnly: 'loading',
             isRefreshing: false,
             source: this.ds.cloneWithRows(this.allData)
         }
@@ -137,272 +137,270 @@ export default class NewFinanceScene extends BaseComponet {
             this.props.backToLogin();
         })
             .then((response) => {
-                mnyData = response.mjson.data;
-                this.allData1 = {
-                    credit_mny: mnyData.credit_mny / 10000,
-                    credit_maxloanmny: mnyData.credit_maxloanmny / 10000,
-                    loan_balance_mny: mnyData.loan_balance_mny / 10000,
+                    mnyData = response.mjson.data;
+                    this.allData1 = {
+                        credit_mny: mnyData.credit_mny / 10000,
+                        credit_maxloanmny: mnyData.credit_maxloanmny / 10000,
+                        loan_balance_mny: mnyData.loan_balance_mny / 10000,
+                    }
+                    this.allData[0] = this.allData1;
+                    console.log('-----', this.allData)
+                    this.setState({
+                        source: this.ds.cloneWithRows(this.allData),
+                        renderPlaceholderOnly: 'success'
+                    })
+                    //     mnyData: mnyData,
+                    // });
+                    // that.getApplyData();
                 }
-                this.allData[0]=this.allData1;
-                console.log('-----',this.allData)
-                this.setState({
-                    source: this.ds.cloneWithRows(this.allData),
-                    renderPlaceholderOnly: 'success'
-            })
-        //     mnyData: mnyData,
-        // });
-        // that.getApplyData();
+                ,
+                (error) => {
+                    this
+                        .setState({renderPlaceholderOnly: 'error'});
+                }
+            )
+        ;
     }
-,
-(
-    error
-) => {
-    this
-.
 
-    setState({renderPlaceholderOnly: 'error'});
-}
-)
-;
-}
+    toPage = () => {
+        this.navigatorParams.name = 'MyAccountScene';
+        this.navigatorParams.component = MyAccountScene;
+        this.navigatorParams.params = {callBack: this.updateType};
+        this.refs.accountmodal.changeShowType(false);
+        //firstType = lastType;
+        this.props.callBack(this.navigatorParams);
+    };
 
-toPage = () => {
-    this.navigatorParams.name = 'MyAccountScene';
-    this.navigatorParams.component = MyAccountScene;
-    this.navigatorParams.params = {callBack: this.updateType};
-    this.refs.accountmodal.changeShowType(false);
-    //firstType = lastType;
-    this.props.callBack(this.navigatorParams);
-};
+    componentDidUpdate() {
 
-componentDidUpdate()
-{
+        if (this.state.renderPlaceholderOnly == 'success') {
+            if (firstType != lastType) {
+                if (lastType != 3) {
+                    StorageUtil.mGetItem(storageKeyNames.ENTERPRISE_LIST, (data) => {
+                        if (data.code == 1) {
+                            let datas = JSON.parse(data.result);
+                            console.log(datas);
+                            if (datas[0].role_type == '1') {
+                                StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (datac) => {
+                                    if (datac.code == 1) {
+                                        let datasc = JSON.parse(datac.result);
+                                        let maps = {
+                                            enter_base_ids: datasc.company_base_id,
+                                            child_type: '1'
+                                        };
+                                        request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                            .then((response) => {
+                                                    lastType = response.mjson.data.account.status;
+                                                    if (lastType == '0') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                                            '请尽快开通！', '去开户', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    } else if (lastType == '1') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                                            , '去绑卡', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    } else if (lastType == '2') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                                            , '去激活', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    }
+                                                    firstType = lastType;
+                                                },
+                                                (error) => {
 
-    if (this.state.renderPlaceholderOnly == 'success') {
-        if (firstType != lastType) {
-            if (lastType != 3) {
-                StorageUtil.mGetItem(storageKeyNames.ENTERPRISE_LIST, (data) => {
-                    if (data.code == 1) {
-                        let datas = JSON.parse(data.result);
-                        console.log(datas);
-                        if (datas[0].role_type == '1') {
-                            StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (datac) => {
-                                if (datac.code == 1) {
-                                    let datasc = JSON.parse(datac.result);
-                                    let maps = {
-                                        enter_base_ids: datasc.company_base_id,
-                                        child_type: '1'
-                                    };
-                                    request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                                        .then((response) => {
-                                                lastType = response.mjson.data.account.status;
-                                                if (lastType == '0') {
-                                                    this.refs.accountmodal.changeShowType(true,
-                                                        '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                                        '请尽快开通！', '去开户', '看看再说', () => {
-                                                            this.toPage();
-                                                        });
-                                                } else if (lastType == '1') {
-                                                    this.refs.accountmodal.changeShowType(true,
-                                                        '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                                        , '去绑卡', '看看再说', () => {
-                                                            this.toPage();
-                                                        });
-                                                } else if (lastType == '2') {
-                                                    this.refs.accountmodal.changeShowType(true,
-                                                        '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                                        , '去激活', '看看再说', () => {
-                                                            this.toPage();
-                                                        });
-                                                }
-                                                firstType = lastType;
-                                            },
-                                            (error) => {
+                                                });
+                                    }
+                                });
 
-                                            });
-                                }
-                            });
-
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
     }
-}
 
 
-toEnd = () => {
-    if (this.state.isRefreshing) {
-
-    } else {
-        if (page < allPage) {
-            page++;
-        }
-    }
-
-};
-
-allRefresh = () => {
-    movies = [];
-    page = 1;
-}
-
-componentDidUpdate()
-{
-
-}
-
-refreshingData = () => {
-    movies = [];
-    page = 1;
-    this.getMnyData();
-    this.setState({isRefreshing: true});
-};
-
-render()
-{
-    const IS_ANDROID = Platform.OS === 'android';
-    if (this.state.renderPlaceholderOnly !== 'success') {
-        return this._renderPlaceholderView();
-    }
-    return (
-        <View style={cellSheet.container}>
-            {IS_ANDROID ? null : <StatusBar barStyle={'default'}/>}
-            <ListView
-                ref="listview"
-                contentContainerStyle={{marginTop: Pixel.getPixel(40)}}
-                removeClippedSubviews={false}
-                dataSource={this.state.source}
-                renderRow={this._renderRow}
-                scrollEnabled={true}
-                showsVerticalScrollIndicator={false}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={this.state.isRefreshing}
-                        onRefresh={this.refreshingData}
-                        tintColor={[fontAndColor.COLORB0]}
-                        colors={[fontAndColor.COLORB0]}
-                    />
-                }
-            />
-            <FinanceScreenPop ref="financescreenpop" hidden={(select) => {
-                if (select != 'null') {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({source: ds.cloneWithRows([1, 2, select, 4, 5, 6, 7, 8, 9, 0, 11, 11, 11, 11, 11, 11])});
-                }
-                this.closePop();
-            }}/>
-            <ExplainModal ref='loanModal' buttonStyle={cellSheet.expButton} textStyle={cellSheet.expText}/>
-            {/*<FinanceGuide/>*/}
-            <NavigationView title="锋之行汽车销售"/>
-        </View>
-    )
-}
-
-closePop = () => {
-    this.isShow = false;
-    this.refs.financescreenpop.changeTop(0, 0, 0);
-    this.refs.listview.setNativeProps({scrollEnabled: true});
-}
-
-
-renderListFooter = () => {
-    if (this.state.isRefreshing) {
-        return null;
-    } else {
-        return (<LoadMoreFooter isLoadAll={page >= allPage ? true : false}/>)
-    }
-}
-
-_renderRow = (movie, sectionId, rowId) => {
-    if (rowId == 0) {
-        return ( <FinanceHeader allData1={movie}/>);
-    } else if (rowId == 1) {
-        return (<FinanceButton borrowBt={() => {
-            this.refs.loanModal.changeShowType(true, '保证金', '知道了', contentData, []);
-        }} payBt={
-            () => {
-                this.refs.loanModal.changeShowType(true, '提示', '确定', contentData, contentData);
-            }
-        }/>);
-    } else if (rowId == 2) {
-        return (
-            <FinanceScreen onCheck={(select) => {
-                this.refs.financescreenpop.changeSelect(select);
-                this.closePop();
-            }} select={movie} onPress={(y) => {
-                if (this.isShow) {
-                    this.closePop();
-                } else {
-                    let heights = 303;
-                    if (Platform.OS === 'android') {
-                        heights = 323;
-                    }
-                    this.isShow = !this.isShow;
-                    this.refs.listview.scrollTo({x: 0, y: Pixel.getTitlePixel(heights), animated: false});
-                    this.refs.financescreenpop.changeTop(Pixel.getTitlePixel(61),
-                        width, Pixel.getPixel(height));
-                    this.refs.listview.setNativeProps({scrollEnabled: false});
-                }
-
-            }}/>);
-    } else {
-        return (<FinanceItem/>);
-    }
-
-}
-
-_renderPlaceholderView = () => {
-    return (
-        <View style={{flex: 1, backgroundColor: fontAndColor.COLORA3, alignItems: 'center'}}>
-            {this.loadView()}
-        </View>
-    );
-}
-
-/**
- * from @zhaojian
- *
- * 跳转借款或还款
- **/
-homeItemOnPress = (title) => {
-    try {
-        if (title === '借款') {
-            try {
-                this.navigatorParams.name = 'LendMoneySence';
-                this.navigatorParams.component = LendMoneySence;
-                this.navigatorParams.params = {
-                    credit_status: mnyData.credit_status,
-                    inventory_financing_status: mnyData.inventory_financing_status,
-                    purchase_archives_after_status: mnyData.purchase_archives_after_status,
-                    purchase_archives_first_status: mnyData.purchase_archives_first_status,
-                    purchase_status: mnyData.purchase_status,
-                    customerName: this.state.customerName,
-                    backRefresh: () => {
-                        this.allRefresh()
-                    }
-                }
-                ;
-                this.props.callBack(this.navigatorParams);
-            } catch (error) {
-                this.props.showToast('数据错误');
-            }
+    toEnd = () => {
+        if (this.state.isRefreshing) {
 
         } else {
-            this.navigatorParams.name = "RepaymentScene";
-            this.navigatorParams.component = RepaymentScene;
-            this.navigatorParams.params = {
-                customerName: this.state.customerName,
-
-            };
-            this.props.callBack(this.navigatorParams);
+            if (page < allPage) {
+                page++;
+            }
         }
-    } catch (error) {
-        this.props.showToast('数据错误');
+
+    };
+
+    allRefresh = () => {
+        movies = [];
+        page = 1;
     }
 
-}
+    componentDidUpdate() {
+
+    }
+
+    refreshingData = () => {
+        movies = [];
+        page = 1;
+        this.getMnyData();
+        this.setState({isRefreshing: true});
+    };
+
+    render() {
+        const IS_ANDROID = Platform.OS === 'android';
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return this._renderPlaceholderView();
+        }
+        return (
+            <View style={cellSheet.container}>
+                {IS_ANDROID ? null : <StatusBar barStyle={'default'}/>}
+                <ListView
+                    ref="listview"
+                    contentContainerStyle={{marginTop: Pixel.getPixel(40)}}
+                    removeClippedSubviews={false}
+                    dataSource={this.state.source}
+                    renderRow={this._renderRow}
+                    scrollEnabled={true}
+                    showsVerticalScrollIndicator={false}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshingData}
+                            tintColor={[fontAndColor.COLORB0]}
+                            colors={[fontAndColor.COLORB0]}
+                        />
+                    }
+                />
+                <FinanceScreenPop ref="financescreenpop" hidden={(select) => {
+                    if (select != 'null') {
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({source: ds.cloneWithRows([1, 2, select, 4, 5, 6, 7, 8, 9, 0, 11, 11, 11, 11, 11, 11])});
+                    }
+                    this.closePop();
+                }}/>
+                <ExplainModal ref='loanModal' buttonStyle={cellSheet.expButton} textStyle={cellSheet.expText}/>
+                {/*<FinanceGuide/>*/}
+                <NavigationView title="锋之行汽车销售"/>
+            </View>
+        )
+    }
+
+    closePop = () => {
+        this.isShow = false;
+        this.refs.financescreenpop.changeTop(0, 0, 0);
+        this.refs.listview.setNativeProps({scrollEnabled: true});
+    }
+
+
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={page >= allPage ? true : false}/>)
+        }
+    }
+
+    _renderRow = (movie, sectionId, rowId) => {
+        if (rowId == 0) {
+            return ( <FinanceHeader
+                allData1={movie}
+                depositPop={()=>{alert(1)}}
+                creditPop={()=>{}}
+                balancePop={()=>{}}
+                weizongPop={()=>{}}/>);
+        } else if (rowId == 1) {
+            return (<FinanceButton borrowBt={() => {
+                this.refs.loanModal.changeShowType(true, '保证金', '知道了', contentData, []);
+            }} payBt={
+                () => {
+                    this.refs.loanModal.changeShowType(true, '提示', '确定', contentData, contentData);
+                }
+            }/>);
+        } else if (rowId == 2) {
+            return (
+                <FinanceScreen onCheck={(select) => {
+                    this.refs.financescreenpop.changeSelect(select);
+                    this.closePop();
+                }} select={movie} onPress={(y) => {
+                    if (this.isShow) {
+                        this.closePop();
+                    } else {
+                        let heights = 303;
+                        if (Platform.OS === 'android') {
+                            heights = 323;
+                        }
+                        this.isShow = !this.isShow;
+                        this.refs.listview.scrollTo({x: 0, y: Pixel.getTitlePixel(heights), animated: false});
+                        this.refs.financescreenpop.changeTop(Pixel.getTitlePixel(61),
+                            width, Pixel.getPixel(height));
+                        this.refs.listview.setNativeProps({scrollEnabled: false});
+                    }
+
+                }}/>);
+        } else {
+            return (<FinanceItem/>);
+        }
+
+    }
+
+    _renderPlaceholderView = () => {
+        return (
+            <View style={{flex: 1, backgroundColor: fontAndColor.COLORA3, alignItems: 'center'}}>
+                {this.loadView()}
+            </View>
+        );
+    }
+
+    /**
+     * from @zhaojian
+     *
+     * 跳转借款或还款
+     **/
+    homeItemOnPress = (title) => {
+        try {
+            if (title === '借款') {
+                try {
+                    this.navigatorParams.name = 'LendMoneySence';
+                    this.navigatorParams.component = LendMoneySence;
+                    this.navigatorParams.params = {
+                        credit_status: mnyData.credit_status,
+                        inventory_financing_status: mnyData.inventory_financing_status,
+                        purchase_archives_after_status: mnyData.purchase_archives_after_status,
+                        purchase_archives_first_status: mnyData.purchase_archives_first_status,
+                        purchase_status: mnyData.purchase_status,
+                        customerName: this.state.customerName,
+                        backRefresh: () => {
+                            this.allRefresh()
+                        }
+                    }
+                    ;
+                    this.props.callBack(this.navigatorParams);
+                } catch (error) {
+                    this.props.showToast('数据错误');
+                }
+
+            } else {
+                this.navigatorParams.name = "RepaymentScene";
+                this.navigatorParams.component = RepaymentScene;
+                this.navigatorParams.params = {
+                    customerName: this.state.customerName,
+
+                };
+                this.props.callBack(this.navigatorParams);
+            }
+        } catch (error) {
+            this.props.showToast('数据错误');
+        }
+
+    }
 
 }
 

@@ -20,19 +20,23 @@ import GetPermissionUtil from '../../utils/GetPermissionUtil';
 const GetPermission = new GetPermissionUtil();
 import Switch from '../../mine/accountManage/component/Switch';
 
+let titleText = ['综合授信额度(万)', '贷款余额(万)', '可用余额', '微众可用余额(万)'];
+let newCarTitleText = ['新车授信额度(万)', '专项贷款余额(万)', '专项可用余额'];
 export default class HomeJobItem extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.isOpen=true;
-        this.allData={
-            credit_mny:this.props.allData.credit_mny,
-            credit_maxloanmny:this.props.allData.credit_maxloanmny,
-            loan_balance_mny:this.props.allData.loan_balance_mny,
+        this.isOpen = true;
+        this.type = this.props.type;
+        this.allData = {
+            credit_mny: this.props.allData.credit_mny,
+            credit_maxloanmny: this.props.allData.credit_maxloanmny,
+            loan_balance_mny: this.props.allData.loan_balance_mny,
         }
         this.state = {
-            type: this.props.type,
-            allData: this.allData
+            type: this.type,
+            allData: this.allData,
+            titleText: this.type == 1 ? titleText : newCarTitleText
         };
     }
 
@@ -44,18 +48,18 @@ export default class HomeJobItem extends PureComponent {
         this.setState({type: type});
     }
 
-    isEyeOpen=()=>{
-        this.isOpen=!this.isOpen;
-        if(this.isOpen){
+    isEyeOpen = () => {
+        this.isOpen = !this.isOpen;
+        if (this.isOpen) {
             this.setState({
                 allData: this.allData
             });
-        }else{
+        } else {
             this.setState({
                 allData: {
-                    credit_mny:'*******',
-                    credit_maxloanmny:'*****',
-                    loan_balance_mny:'*****',
+                    credit_mny: '*******',
+                    credit_maxloanmny: '*****',
+                    loan_balance_mny: '*****',
                 }
             });
         }
@@ -66,7 +70,8 @@ export default class HomeJobItem extends PureComponent {
             return (
                 <View style={{alignItems: 'center', flex: 1}}>
                     <View style={{height: Pixel.getPixel(34), flexDirection: 'row'}}>
-                        <TouchableOpacity activeOpacity={0.8} onPress={()=>{this.isEyeOpen()
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                            this.isEyeOpen()
                         }}>
                             <View style={{paddingTop: Pixel.getPixel(12), flex: 1, paddingLeft: Pixel.getPixel(20)}}>
                                 <Image style={{width: Pixel.getPixel(18), height: Pixel.getPixel(12)}}
@@ -81,6 +86,8 @@ export default class HomeJobItem extends PureComponent {
                                 width: Pixel.getPixel(54), height: Pixel.getPixel(17),
                                 backgroundColor: 'rgba(255,255,255,0.4)', borderRadius: 10, justifyContent: 'center',
                                 alignItems: 'center'
+                            }} onPress={() => {
+                                this.props.depositPop()
                             }}>
                                 <Text style={{
                                     fontSize: Pixel.getFontPixel(12), color: '#fff',
@@ -94,10 +101,12 @@ export default class HomeJobItem extends PureComponent {
                             style={{
                                 fontSize: Pixel.getPixel(12), color: '#fff',
                                 backgroundColor: '#00000000'
-                            }}>新车订单额度(万)</Text>
+                            }}>{this.state.titleText[0]}</Text>
                         <TouchableOpacity activeOpacity={0.8} style={{
                             flexDirection: 'row',
                             alignItems: 'center'
+                        }} onPress={() => {
+                            this.props.creditPop()
                         }}>
                             <Text
                                 style={{
@@ -119,28 +128,87 @@ export default class HomeJobItem extends PureComponent {
                             <Text style={{
                                 fontSize: Pixel.getPixel(11), color: '#fff',
                                 backgroundColor: '#00000000'
-                            }}>专项贷款余额(万)</Text>
+                            }}>{this.state.titleText[1]}</Text>
                             <Text style={{
                                 fontSize: Pixel.getPixel(17), color: '#fff',
-                                backgroundColor: '#00000000', fontWeight: 'bold'
+                                backgroundColor: '#00000000', fontWeight: 'bold', marginRight: Pixel.getPixel(4)
                             }}>{this.state.allData.loan_balance_mny}</Text>
                         </View>
-                        <View style={{
-                            width: Pixel.getPixel(1), height: Pixel.getPixel(32),
-                            backgroundColor: 'rgba(255,255,255,0.3)', marginTop: Pixel.getPixel(9)
-                        }}>
 
-                        </View>
-                        <View style={{flex: 1, alignItems: 'center', paddingTop: Pixel.getPixel(9)}}>
-                            <Text style={{
-                                fontSize: Pixel.getPixel(11), color: '#fff',
-                                backgroundColor: '#00000000'
-                            }}>专项可用额度(万)</Text>
-                            <Text style={{
-                                fontSize: Pixel.getPixel(17), color: '#fff',
-                                backgroundColor: '#00000000', fontWeight: 'bold'
-                            }}>{this.state.allData.credit_maxloanmny}</Text>
-                        </View>
+                        <TouchableOpacity activeOpacity={0.8} style={{flex: 1}} onPress={() => {
+                            this.props.balancePop()
+                        }}>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                <View style={{
+                                    width: Pixel.getPixel(1), height: Pixel.getPixel(32),
+                                    backgroundColor: 'rgba(255,255,255,0.3)', marginTop: Pixel.getPixel(9)
+                                }}>
+
+                                </View>
+                                <View style={{flex: 1, alignItems: 'center', paddingTop: Pixel.getPixel(9)}}>
+                                    <Text style={{
+                                        fontSize: Pixel.getPixel(11), color: '#fff',
+                                        backgroundColor: '#00000000'
+                                    }}>{this.state.titleText[2]}</Text>
+
+                                    <View activeOpacity={0.8} style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent:'center'
+                                    }}>
+                                        <Text style={{
+                                            fontSize: Pixel.getPixel(17),
+                                            color: '#fff',
+                                            backgroundColor: '#00000000',
+                                            fontWeight: 'bold',
+                                            marginRight: Pixel.getPixel(4)
+                                        }}>{this.state.allData.credit_maxloanmny}</Text>
+                                        <Text
+                                            style={{
+                                                fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'
+                                                , backgroundColor: '#00000000'
+                                            }}>{' >'}</Text>
+                                    </View>
+                                </View>
+
+                            </View>
+                        </TouchableOpacity>
+
+                        {this.state.titleText.length > 3 &&
+                        <TouchableOpacity activeOpacity={0.8} style={{flex: 1}} onPress={() => {
+                            this.props.weizongPop()
+                        }}>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                <View style={{
+                                    width: Pixel.getPixel(1), height: Pixel.getPixel(32),
+                                    backgroundColor: 'rgba(255,255,255,0.3)', marginTop: Pixel.getPixel(9)
+                                }}>
+
+                                </View>
+                                <View style={{flex: 1, alignItems: 'center', paddingTop: Pixel.getPixel(9)}}>
+                                    <Text style={{
+                                        fontSize: Pixel.getPixel(11), color: '#fff',
+                                        backgroundColor: '#00000000'
+                                    }}>{this.state.titleText[3]}</Text>
+
+                                    <View activeOpacity={0.8} style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent:'center'
+                                    }}>
+                                    <Text style={{
+                                        fontSize: Pixel.getPixel(17), color: '#fff',
+                                        backgroundColor: '#00000000', fontWeight: 'bold', marginRight: Pixel.getPixel(4)
+                                    }}>{this.state.allData.credit_maxloanmny}</Text>
+                                    <Text
+                                        style={{
+                                            fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'
+                                            , backgroundColor: '#00000000'
+                                        }}>{' >'}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </TouchableOpacity>}
                     </View>
                 </View>
 
