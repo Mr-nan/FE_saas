@@ -152,8 +152,8 @@ export default class CarNewInfoScene extends BaseComponent {
         }).then((response) => {
 
             let carData = response.mjson.data;
-            // this.loadCarConfigurationData(carData);
-            // this.loadCarDetailData(carData);
+            this.loadCarConfigurationData(carData);
+            this.loadCarDetailData(carData);
             if (carData.imgs.length <= 0) {
 
                 carData.imgs = [{require: require('../../images/carSourceImages/car_info_null.png')}];

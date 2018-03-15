@@ -202,7 +202,7 @@ export default class CarInfoScene extends BaseComponent {
         }).then((response) => {
 
             let carData = response.mjson.data;
-            // this.loadCarResidualsData(carData);
+            this.loadCarResidualsData(carData);
             carData.carIconsContentData = [
                 carData.manufacture != '' ? stringTransform.dateReversal(carData.manufacture + '000') : '',
                 carData.init_reg != '' ? stringTransform.dateReversal(carData.init_reg + '000') : '',
