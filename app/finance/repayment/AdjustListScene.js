@@ -12,7 +12,8 @@ import {
     TouchableOpacity,
     ListView,
     InteractionManager,
-    RefreshControl
+    RefreshControl,
+    TextInput
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -41,11 +42,12 @@ export  default class AdjustListScene extends BaseComponent {
         super(props);
         // 初始状态
         this.state = {
+            values: "",//输入框输入内容
             renderPlaceholderOnly: 'blank',
             source: [],
             isRefreshing: false,
         };
-        this.selected='';
+        this.selected = '';
     }
 
     componentWillUnmount() {
@@ -103,10 +105,10 @@ export  default class AdjustListScene extends BaseComponent {
         return (
             <View style={styles.listHeader}>
                 <View style={styles.textAllStyle}>
-                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>到期日</Text>
-                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整前</Text>
-                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>抵扣金额</Text>
-                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整后</Text>
+                    <Text allowFontScaling={false} style={styles.headerTextStyle}>到期日</Text>
+                    <Text allowFontScaling={false} style={styles.headerTextStyle}>调整前</Text>
+                    <Text allowFontScaling={false} style={styles.headerTextStyle}>抵扣金额</Text>
+                    <Text allowFontScaling={false} style={styles.headerTextStyle}>调整后</Text>
                 </View>
                 <View style={[styles.textAllStyle, {
                     backgroundColor: '#ffffff',
@@ -115,10 +117,36 @@ export  default class AdjustListScene extends BaseComponent {
                     paddingTop: Pixel.getPixel(10),
                     paddingBottom: Pixel.getPixel(10)
                 }]}>
-                    <Text allowFontScaling={false}  style={styles.headerTextsStyle}>{movies.enddate}</Text>
-                    <Text allowFontScaling={false}  style={styles.headerTextsStyle}>{movies.repaymentmny}</Text>
-                    <Text allowFontScaling={false}  style={styles.headerTextsStyle}>{movies.adjustmoney}</Text>
-                    <Text allowFontScaling={false}  style={styles.headerTextsStyle}>{movies.aftermoney}</Text>
+                    <Text allowFontScaling={false} style={styles.headerTextsStyle}>{movies.enddate}</Text>
+                    <Text allowFontScaling={false} style={styles.headerTextsStyle}>{movies.repaymentmny}</Text>
+                    <Text allowFontScaling={false} style={styles.headerTextsStyle}>{movies.adjustmoney}</Text>
+                    <Text allowFontScaling={false} style={styles.headerTextsStyle}>{movies.aftermoney}</Text>
+                </View>
+                <View
+                    style={{width:width,height:Pixel.getPixel(60),flexDirection:'row',marginBottom:Pixel.getPixel(10)}}>
+                    <Image
+                        resizeMode="stretch"
+                        source={require('./../../../images/login/shitijuam_bg.png')}
+                        style={{width:width,height:Pixel.getPixel(60),justifyContent:'center',alignItems:'center'}}>
+                        <View style={{flexDirection:'row',backgroundColor:'#00000000',justifyContent:'center'}}>
+                            <Image source={require('./../../../images/login/shitijuan_icon.png')}/>
+                            <Text style={{backgroundColor:'#00000000'}}>一车红包</Text>
+                        </View>
+                        <View style={{justifyContent:'center',flexDirection:'row'}}>
+                            <TextInput
+                                ref="inputText"
+                                underlineColorAndroid={"#00000000"}
+                                placeholder={'请输入'}
+                                style={{width:Pixel.getPixel(100),height:Pixel.getPixel(30)}}
+                                placeholderTextColor={fontAndColor.COLORA1}
+                                maxLength={11}
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        values: text
+                                    });
+                        }}/>
+                        </View>
+                    </Image>
                 </View>
             </View>
         );
@@ -131,15 +159,17 @@ export  default class AdjustListScene extends BaseComponent {
         opacity: 0.9,
         content: '确认',
         mOnPress: () => {
-            if(this.selected!=''){
-                this.refs.allloading.changeShowType(true,'优惠券金额超过抵扣利息的部分将不予留存！');
-            }else{
+            if (this.selected == '' && this.state.values == "") {
                 this.props.showToast("请选择优惠券");
+            } else if (this.selected != '' && this.state.values != "") {
+                this.props.showToast("两种优惠不可同时使用");
+            } else {
+                this.refs.allloading.changeShowType(true, '优惠券金额超过抵扣利息的部分将不予留存！');
             }
         }
     }
 
-    sendContent=()=>{
+    sendContent = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (datas) => {
             if (datas.code == 1) {
@@ -148,10 +178,10 @@ export  default class AdjustListScene extends BaseComponent {
                     api: Urls.REPAYMENT_GET_ADJUST_SAVE,
                     planid: this.props.items.planid,
                     merge_id: data.base_user_id,
-                    coupon_number:movies.list[this.selected].coupon_code,
-                    coupon_id:movies.list[this.selected].coupon_id,
-                    adjustmoney:movies.list[this.selected].coupon_mny,
-                    coupon_type:movies.list[this.selected].coupon_rule.coupon_type
+                    coupon_number: movies.list[this.selected].coupon_code,
+                    coupon_id: movies.list[this.selected].coupon_id,
+                    adjustmoney: movies.list[this.selected].coupon_mny,
+                    coupon_type: movies.list[this.selected].coupon_rule.coupon_type
                 };
                 request(Urls.FINANCE, 'Post', maps)
                     .then((response) => {
@@ -249,25 +279,26 @@ export  default class AdjustListScene extends BaseComponent {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
-        let coupon_begindate = movie.coupon_begindate.split(' ')[0].replace('-','.').replace('-','.');
-        let coupon_enddate = movie.coupon_enddate.split(' ')[0].replace('-','.').replace('-','.');
+        let coupon_begindate = movie.coupon_begindate.split(' ')[0].replace('-', '.').replace('-', '.');
+        let coupon_enddate = movie.coupon_enddate.split(' ')[0].replace('-', '.').replace('-', '.');
         return (
             <TouchableOpacity onPress={() => this._selectCoupon(rowId)}>
                 <Image style={styles.container} source={bg}>
                     <View style={styles.leftContainer}>
-                        <Text allowFontScaling={false}  style={styles.leftTitle}>{movie.coupon_name}</Text>
-                        <Text allowFontScaling={false}  style={styles.leftBottom}>有效期:{coupon_begindate}-{coupon_enddate}</Text>
+                        <Text allowFontScaling={false} style={styles.leftTitle}>{movie.coupon_name}</Text>
+                        <Text allowFontScaling={false}
+                              style={styles.leftBottom}>有效期:{coupon_begindate}-{coupon_enddate}</Text>
                     </View>
                     <View style={styles.rightContainer}>
                         <View style={styles.rightTitleContainer}>
-                            <Text allowFontScaling={false}  style={[styles.rightTitle, styles.rightTitleAlign]}>¥</Text>
-                            <Text allowFontScaling={false}  style={styles.rightTitle}>{movie.coupon_mny}</Text>
+                            <Text allowFontScaling={false} style={[styles.rightTitle, styles.rightTitleAlign]}>¥</Text>
+                            <Text allowFontScaling={false} style={styles.rightTitle}>{movie.coupon_mny}</Text>
                         </View>
                         <TouchableOpacity style={styles.rightBottom} onPress={() => {
                                 this.refs.cgdModal.changeShowType(true,movie.coupon_rule.coupon_remark);
                         }}>
                             <View>
-                                <Text allowFontScaling={false}  style={styles.rightBottomText}>使用规则</Text>
+                                <Text allowFontScaling={false} style={styles.rightBottomText}>使用规则</Text>
                             </View>
                         </TouchableOpacity>
                         {this.selected == rowId ? <Image style={styles.imgContainer} source={duigou}/> : null}
@@ -306,7 +337,7 @@ export  default class AdjustListScene extends BaseComponent {
             <TouchableOpacity activeOpacity={0.8} onPress={() => {
                 this.toNextPage(this.navigatorParams)
             }}>
-                <Text allowFontScaling={false}  style={{
+                <Text allowFontScaling={false} style={{
                     color: 'white',
                     fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     textAlign: 'center',
@@ -349,13 +380,13 @@ const styles = StyleSheet.create({
     leftTitle: {
         fontSize: Pixel.getFontPixel(15),
         color: '#000000',
-        backgroundColor:'#00000000'
+        backgroundColor: '#00000000'
     },
     leftBottom: {
         marginTop: Pixel.getPixel(5),
         fontSize: Pixel.getFontPixel(12),
         color: '#9e9e9e',
-        backgroundColor:'#00000000'
+        backgroundColor: '#00000000'
     },
     rightContainer: {
         width: Pixel.getPixel(120),
@@ -368,7 +399,7 @@ const styles = StyleSheet.create({
     rightTitle: {
         fontSize: Pixel.getFontPixel(25),
         color: '#05c5c2',
-        backgroundColor:'#00000000'
+        backgroundColor: '#00000000'
     },
     rightTitleAlign: {
         marginRight: Pixel.getPixel(3)
@@ -385,7 +416,7 @@ const styles = StyleSheet.create({
     rightBottomText: {
         fontSize: Pixel.getFontPixel(14),
         color: '#9e9e9e',
-        backgroundColor:'#00000000'
+        backgroundColor: '#00000000'
     },
     imgContainer: {
         height: Pixel.getPixel(30),
