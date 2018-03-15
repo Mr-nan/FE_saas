@@ -67,7 +67,6 @@ export default class CarNewInfoScene extends BaseComponent {
         this.state = {
             imageArray: new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
-            residualsData: [],
             carData: {imgs: []},
             currentImageIndex: 1,
             switchoverCarInfo: 0,
@@ -153,9 +152,8 @@ export default class CarNewInfoScene extends BaseComponent {
         }).then((response) => {
 
             let carData = response.mjson.data;
-            this.loadCarResidualsData(carData);
-            this.loadCarConfigurationData(carData);
-            this.loadCarDetailData(carData);
+            // this.loadCarConfigurationData(carData);
+            // this.loadCarDetailData(carData);
             if (carData.imgs.length <= 0) {
 
                 carData.imgs = [{require: require('../../images/carSourceImages/car_info_null.png')}];

@@ -116,14 +116,14 @@
 }
 
 
--(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
-{
-  if ([Growing handleUrl:url]) // 请务必确保该函数被调用
-  {
-    return YES;
-  }
-  return NO;
-}
+//-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+//{
+//  if ([Growing handleUrl:url]) // 请务必确保该函数被调用
+//  {
+//    return YES;
+//  }
+//  return NO;
+//}
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {

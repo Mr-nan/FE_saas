@@ -115,8 +115,8 @@ export default class CarInfoScene extends BaseComponent {
         this.state = {
             imageArray: new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
-            residualsData: [],
-            carData: {imgs: []},
+            residualsData:[],
+            carData: {imgs:[]},
             currentImageIndex: 1,
             switchoverCarInfo: 0,
         };
@@ -202,7 +202,7 @@ export default class CarInfoScene extends BaseComponent {
         }).then((response) => {
 
             let carData = response.mjson.data;
-            this.loadCarResidualsData(carData);
+            // this.loadCarResidualsData(carData);
             carData.carIconsContentData = [
                 carData.manufacture != '' ? stringTransform.dateReversal(carData.manufacture + '000') : '',
                 carData.init_reg != '' ? stringTransform.dateReversal(carData.init_reg + '000') : '',

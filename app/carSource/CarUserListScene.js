@@ -101,6 +101,7 @@ export  default  class CarUserListScene extends BaseComponent {
         });
     }
 
+
     // 构造
     constructor(props) {
         super(props);
@@ -294,9 +295,7 @@ export  default  class CarUserListScene extends BaseComponent {
                 }
 
                 if(this.isLoadCarInfo){
-                    if(carData.length>=0){
-                        this.pushCarInfoSceneAction(carData[0]);
-                    }
+                    this.loadCarInfo();
                 }
 
             }, (error) => {
@@ -319,7 +318,6 @@ export  default  class CarUserListScene extends BaseComponent {
             this.props.backToLogin();
         })
             .then((response) => {
-
 
                 APIParameter.status = response.mjson.data.status;
                 if (this.state.isFillData !== APIParameter.status) {
@@ -353,8 +351,8 @@ export  default  class CarUserListScene extends BaseComponent {
 
     //获取车源编号数据
     loadCarInfo=()=>{
+        this.isLoadCarInfo = false;
         this.props.showModal(true);
-
         let url = AppUrls.CAR_INDEX;
         request(url, 'post', APIParameter,()=>{
             this.props.backToLogin();
@@ -676,7 +674,6 @@ export  default  class CarUserListScene extends BaseComponent {
 
         if(/^\d+$/.test(carObject.brand_name) && carObject.brand_name.length>=11 && !isOpenCarInfo){
             this.isLoadCarInfo = true;
-            // this.loadCarInfo();
         }
 
         this.setState({

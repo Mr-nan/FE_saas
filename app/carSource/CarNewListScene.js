@@ -291,9 +291,7 @@ export  default  class CarNewListScene extends BaseComponent {
                 }
 
                 if(this.isLoadCarInfo){
-                    if(carData.length>=0){
-                        this.pushCarInfoSceneAction(carData[0]);
-                    }
+                    this.loadCarInfo();
                 }
 
             }, (error) => {
@@ -341,8 +339,8 @@ export  default  class CarNewListScene extends BaseComponent {
 
     //获取车源编号数据
     loadCarInfo=()=>{
+        this.isLoadCarInfo = false;
         this.props.showModal(true);
-
         let url = AppUrls.CAR_INDEX;
         request(url, 'post', APIParameter,()=>{
             this.props.backToLogin();
