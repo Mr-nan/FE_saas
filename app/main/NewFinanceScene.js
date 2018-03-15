@@ -312,7 +312,7 @@ export default class NewFinanceScene extends BaseComponet {
         if (rowId == 0) {
             return ( <FinanceHeader
                 allData1={movie}
-                depositPop={()=>{alert(1)}}
+                depositPop={()=>{this.refs.loanModal.changeShowType(true, '保证金', '知道了', contentData, [])}}
                 creditPop={()=>{}}
                 balancePop={()=>{}}
                 weizongPop={()=>{}}/>);
