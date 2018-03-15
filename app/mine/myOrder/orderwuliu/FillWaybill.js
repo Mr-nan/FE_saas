@@ -62,7 +62,7 @@ export default class FillWaybill extends BaseComponent {
         this.store_amount = 0;
         this.transTypeTags = [{
             name: '平台上门取车',
-            check: true,
+            check: false,
         }, {
             name: '客户送车到网点',
             check: false,
@@ -272,6 +272,9 @@ export default class FillWaybill extends BaseComponent {
         if (!this.fromSingle) {
             maps['start_id'] = this.startId;
         }
+        if (this.state.transType == '1') {
+            maps['send_type']=this.sendType;
+        }
         this.props.showModal(true);
         request(Urls.SUBMITTRANFERINFO, 'Post', maps)
             .then((response) => {
@@ -475,6 +478,11 @@ export default class FillWaybill extends BaseComponent {
             data.check = false;
         });
         this.transTypeTags[index].check = !this.transTypeTags[index].check;
+        if(dt.value=='客户送车到网点'&& dt.check==true){
+            this.sendType=1;
+        }else {
+            this.sendType=0;
+        }
         this.transTagRef.refreshData(this.transTypeTags);
     }
     _renderItem = () => {
