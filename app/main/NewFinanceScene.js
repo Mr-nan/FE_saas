@@ -142,7 +142,13 @@ export default class NewFinanceScene extends BaseComponet {
                         credit_mny: mnyData.credit_mny / 10000,
                         credit_maxloanmny: mnyData.credit_maxloanmny / 10000,
                         loan_balance_mny: mnyData.loan_balance_mny / 10000,
+                        bond_total_mny: mnyData.bond_total_mny/ 10000,
+                        bond_mny: mnyData.bond_mny / 10000,
                     }
+
+                    contentData[0].value=this.allData1.bond_total_mny;
+                    contentData[1].value=this.allData1.bond_mny;
+
                     this.allData[0] = this.allData1;
                     console.log('-----', this.allData)
                     this.setState({
