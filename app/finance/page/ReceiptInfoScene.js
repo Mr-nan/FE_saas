@@ -49,7 +49,7 @@ export default  class ReceiptInfoScene extends BaseComponent {
                     , {title: '手机号码', value: data.phone}
                     , {title: '借款金额', value: data.money_str}
                     , {title: '贷款人', value: data.lender}
-                    , {title: '利率', value: data.rate}
+                    , {title: '利率', value: data.rate + '%'}
                     , {title: '起息日(以实际放款日为准)', value: data.start_time}
                     , {title: '到期日', value: data.end_time}
                     , {title: '还款方式', value: data.repayment_type}
