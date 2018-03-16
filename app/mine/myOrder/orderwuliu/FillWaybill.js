@@ -48,6 +48,7 @@ export default class FillWaybill extends BaseComponent {
         this.collectAddress = '';
         this.startAdress = '';
         this.transType = 0;
+        this.sendType=-1;
         this.distance = '';
         this.companyName = '';
         this.invoiceId = '';
@@ -272,7 +273,7 @@ export default class FillWaybill extends BaseComponent {
         if (!this.fromSingle) {
             maps['start_id'] = this.startId;
         }
-        if (this.state.transType == '1') {
+        if (this.state.transType == '1'&& this.sendType!==-1) {
             maps['send_type']=this.sendType;
         }
         this.props.showModal(true);
@@ -474,15 +475,21 @@ export default class FillWaybill extends BaseComponent {
 
     onTransTagClick = (dt, index) => {
         //单选
+        let choose=dt.check;
         this.transTypeTags.map((data) => {
             data.check = false;
         });
-        this.transTypeTags[index].check = !this.transTypeTags[index].check;
-        if(dt.value=='客户送车到网点'&& dt.check==true){
-            this.sendType=1;
-        }else {
-            this.sendType=0;
+        if(!choose){
+            this.transTypeTags[index].check = !this.transTypeTags[index].check;
+            if(dt.name=='客户送车到网点'&& dt.check==true){
+                this.sendType=1;
+            }else {
+                this.sendType=0;
+            }
+        }else{
+            this.sendType=-1;
         }
+
         this.transTagRef.refreshData(this.transTypeTags);
     }
     _renderItem = () => {
@@ -595,7 +602,7 @@ export default class FillWaybill extends BaseComponent {
 
                     </View>
 
-                    <View style={{backgroundColor: 'white', marginBottom: Pixel.getPixel(10)}}>
+                    {<View style={{backgroundColor: 'white', marginBottom: Pixel.getPixel(10)}}>
                         <Text style={styles.titleText}> 运费明细</Text>
                         <View style={styles.divideLine}/>
                         {
@@ -608,14 +615,14 @@ export default class FillWaybill extends BaseComponent {
                                 )
                             })
                         }
-                        {this.collectAddress !== '请选择' && this.distance !== '0'&&<View style={[styles.divideLine,{marginTop:Pixel.getPixel(10)}]}/>}
-                        {this.collectAddress !== '请选择' && this.distance !== '0'&&<View style={{margin:Pixel.getPixel(15),flexDirection:'row',justifyContent:'space-between'}}>
+                        {this.collectAddress !== '请选择' && this.distance !== '0'&&this.state.feeDatas.length>0&&<View style={[styles.divideLine,{marginTop:Pixel.getPixel(10)}]}/>}
+                        {this.collectAddress !== '请选择' && this.distance !== '0'&&this.state.feeDatas.length>0&&<View style={{margin:Pixel.getPixel(15),flexDirection:'row',justifyContent:'space-between'}}>
                             <Text>{'   '}</Text>
                             <Text style={{color:FontAndColor.COLORA2, fontSize:Pixel.getPixel(16)}}>总价(含运输保险)</Text>
                             <Text style={{color:FontAndColor.COLORA2, fontSize:Pixel.getPixel(16)}}>{this.totalMoney}元</Text>
                         </View>}
 
-                    </View>
+                    </View>}
 
                     <View style={{
                         backgroundColor: 'white',
