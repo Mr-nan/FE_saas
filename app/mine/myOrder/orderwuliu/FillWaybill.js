@@ -637,7 +637,7 @@ export default class FillWaybill extends BaseComponent {
                                         <Text style={styles.content_title_text}>{data.title}</Text>
                                         <View style={{
                                             flexWrap: 'wrap',
-                                            height: Pixel.getPixel(51),
+                                            height: Pixel.getPixel(55),
                                             width: width * 3 / 4,
                                             justifyContent: 'center'
                                         }}>
