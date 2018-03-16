@@ -165,6 +165,7 @@ export default class LogisticsQueryScene extends BaseComponent {
             this.props.showToast('请选择运输类型');
             return;
         }
+
         let brandParams = {
             name: 'CarriagePriceInfoScene',
             component: CarriagePriceInfoScene,
