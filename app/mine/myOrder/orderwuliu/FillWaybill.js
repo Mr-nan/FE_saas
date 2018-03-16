@@ -211,9 +211,12 @@ export default class FillWaybill extends BaseComponent {
             start_id: this.startId,
             logistics_type: this.props.logisticsType,//物流类型
             trans_type: this.transType,
-            warehouse_id: this.props.logisticsType == 3 ? this.endId : this.warehouse_id
+            warehouse_id: this.props.logisticsType == 3 ? this.endId : this.warehouse_id,
 
         };
+        if (this.state.transType == '1'&& this.sendType!==-1) {
+            maps['send_type']=this.sendType;
+        }
         request(Urls.CHECKTRANSTYPE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
@@ -330,6 +333,9 @@ export default class FillWaybill extends BaseComponent {
             end_id: this.endId,
             logistics_type: this.props.logisticsType,//物流类型
         };
+        if (this.state.transType == '1'&& this.sendType!==-1) {
+            maps['send_type']=this.sendType;
+        }
         request(Urls.GETTRANSTYPE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
@@ -489,6 +495,7 @@ export default class FillWaybill extends BaseComponent {
         }else{
             this.sendType=-1;
         }
+        this.getTransFee();
 
         this.transTagRef.refreshData(this.transTypeTags);
     }
@@ -852,7 +859,7 @@ const styles = StyleSheet.create({
     },
     content_base_Right: {
         marginRight: Pixel.getPixel(15),
-        fontSize: Pixel.getFontPixel(14),
+        fontSize: Pixel.getFontPixel(13),
         color: 'black',
         textAlign: 'right'
     },
