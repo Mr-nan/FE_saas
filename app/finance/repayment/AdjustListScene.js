@@ -164,7 +164,11 @@ export  default class AdjustListScene extends BaseComponent {
             } else if (this.selected != '' && this.state.values != "") {
                 this.props.showToast("两种优惠不可同时使用");
             } else {
-                this.refs.allloading.changeShowType(true, '优惠券金额超过抵扣利息的部分将不予留存！');
+                if (this.selected == '') {
+                    this.getSolidVoucherRule();
+                } else {
+                    this.refs.allloading.changeShowType(true, '优惠券金额超过抵扣利息的部分将不予留存！');
+                }
             }
         }
     }
@@ -178,8 +182,8 @@ export  default class AdjustListScene extends BaseComponent {
                     api: Urls.REPAYMENT_GET_ADJUST_SAVE,
                     planid: this.props.items.planid,
                     merge_id: data.base_user_id,
-                    coupon_number: movies.list[this.selected].coupon_code,
-                    coupon_id: movies.list[this.selected].coupon_id,
+                    coupon_number: this.state.values != "" ? this.coupon_code : movies.list[this.selected].coupon_code,
+                    coupon_id: this.state.values != "" ? "0" : movies.list[this.selected].coupon_id,
                     adjustmoney: movies.list[this.selected].coupon_mny,
                     coupon_type: movies.list[this.selected].coupon_rule.coupon_type
                 };
@@ -200,6 +204,35 @@ export  default class AdjustListScene extends BaseComponent {
                         });
             }
         });
+    }
+
+
+    /**
+     * 获取实体券的使用规则
+     */
+    getSolidVoucherRule = () => {
+        this.props.showModal(true);
+        let maps = {
+            api: Urls.GETSOLIDVOUCHERRULE,
+            coupon_pwd: this.state.values,
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    // this.props.showModal(false);
+                    // this.props.showToast('使用成功');
+                    // this.props.refresh();
+                    // this.backPage();
+                    this.coupon_code = response.mjson.data.response.coupon_code;
+                    this.refs.allloading.changeShowType(true, '优惠券金额超过抵扣利息的部分将不予留存！');
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    if (error.mycode == '-300' || error.mycode == '-500') {
+                        this.props.showToast('网络连接失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
     }
 
     render() {
@@ -228,7 +261,6 @@ export  default class AdjustListScene extends BaseComponent {
         );
     }
 
-    // 使用优惠劵
     submit = () => {
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (datas) => {
             if (datas.code == 1) {

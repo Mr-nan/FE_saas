@@ -695,6 +695,13 @@ export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
 /**
  * from @zhaojian
  *
+ * 获取实体券的使用规则
+ **/
+export const GETSOLIDVOUCHERRULE = 'api/v2/coupon.home/getSolidVoucherRule';
+
+/**
+ * from @zhaojian
+ *
  * 获取库融还款计划详情
  **/
 export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
