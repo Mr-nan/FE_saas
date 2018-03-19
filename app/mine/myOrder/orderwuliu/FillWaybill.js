@@ -333,9 +333,7 @@ export default class FillWaybill extends BaseComponent {
             end_id: this.endId,
             logistics_type: this.props.logisticsType,//物流类型
         };
-        if (this.state.transType == '1'&& this.sendType!==-1) {
-            maps['send_type']=this.sendType;
-        }
+
         request(Urls.GETTRANSTYPE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
@@ -347,6 +345,10 @@ export default class FillWaybill extends BaseComponent {
                         let end_address = data.end_address;
                         this.startAdress = data.start_address.city + data.start_address.district;
                         this.startId = data.start_address.id;
+                        this.sendType=-1;
+                        this.transTypeTags.map((data) => {
+                            data.check = false;
+                        });
                         if (end_address == null) {
                             this.collectAddress = '请选择'
                             return;
