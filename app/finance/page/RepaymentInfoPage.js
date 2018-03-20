@@ -76,6 +76,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     movies = response.mjson.data;
+                    moneyList.push({name:'逾期情况',data:movies.overdue});
                     moneyList.push({name: '利息总额', data: movies.interest_total});
                     moneyList.push({name: '已还利息', data: movies.interest});
                     moneyList.push({name: '待还利息', data: movies.interest_other});
@@ -84,6 +85,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
                     moneyList.push({name: '优惠券还息金额', data: movies.coupon_info.coupon_repayment});
 
                     nameList.push({name: '渠道名称', data: movies.qvdaoname});
+                    nameList.push({name:'利息转换天数',data:movies.lixizhuanhuandays});
                     nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
                     nameList.push({name: '开户行', data: movies.bank_info.bank});
                     nameList.push({name: '开户支行', data: movies.bank_info.branch});

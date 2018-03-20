@@ -89,6 +89,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     moneyList.push({name: '贷款本金', data: movies.loan_mny_str});
                     moneyList.push({name: '计息天数', data: movies.loan_day+'天'});
                     moneyList.push({name: '综合费率', data: movies.loan_rebate+'%'});
+                    moneyList.push({name:'还息费率',data:movies.huanxif_fee+'%'});
                     moneyList.push({name: '利息总额', data: movies.interest_total});
                     moneyList.push({name: '已还利息', data: movies.interest});
                     moneyList.push({name: '贷款利息', data: movies.interest_other})
@@ -246,7 +247,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 money = (parseFloat(movies.loan_mny)
                 +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
                 this.state.loan_day-parseFloat(movies.bondmny)-parseFloat(movies.interest)+parseFloat(movies.all_fee)).toFixed(2);
-                name = '应还总额=本金+本金*综合费率/360*计息天数-保证金-已还利息'+'+服务费';
+                name = '应还总额=本金+本金*还息费率/360*计息天数-保证金-已还利息'+'+服务费';
                 formula = '='+movies.loan_mny+'+'
                     +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
                     +this.state.loan_day+'-'+movies.bondmny+'-'+movies.interest+'+'+movies.all_fee
@@ -254,7 +255,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 money = (parseFloat(movies.loan_mny)
                 +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
                 this.state.loan_day-parseFloat(movies.bondmny)-parseFloat(movies.interest)).toFixed(2);
-                name = '应还总额=本金+本金*综合费率/360*计息天数-保证金-已还利息';
+                name = '应还总额=本金+本金*还息费率/360*计息天数-保证金-已还利息';
                 formula = '='+movies.loan_mny+'+'
                     +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
                     +this.state.loan_day+'-'+movies.bondmny+'-'+movies.interest;
