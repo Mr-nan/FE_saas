@@ -32,7 +32,10 @@ var imgSid: '';
 
 var itemWidth = width;
 let imeis = '';
-
+import RadioButton from './component/RadioButton';
+import MultiselectButton from './component/MultiselectButton';
+import StatementBox from './component/StatementBox';
+import StatementBoxs from './component/StatementBoxs';
 export default class QuotaApplication extends BaseComponent {
 
     constructor(props) {
@@ -43,9 +46,11 @@ export default class QuotaApplication extends BaseComponent {
                 imeis = imei;
             });
         }
+        this.selectIndex = -1;
+        this.selectTime = 0;
+        this.isTrue = false;
         this.state = {
             renderPlaceholderOnly: 'blank',
-            agree: false,
             name: "",
             idcard: "",
             phone: "",
@@ -65,15 +70,19 @@ export default class QuotaApplication extends BaseComponent {
         }
         let childitems = [];
         for (let i = 0; i < this.state.agreement.length; i++) {
-            childitems.push(<Text allowFontScaling={false}  onPress={()=>{
-                this.toNextPage({name:'ContractInfoScene',component:ContractInfoScene,params:{title:this.state.agreement[i].name,
-                webUrl:this.state.agreement[i].url}});
-            }} key={i+'a'} style={{color:FontAndColor.COLORA2,fontSize: Pixel.getFontPixel(12)}}>
+            childitems.push(<Text allowFontScaling={false} onPress={() => {
+                this.toNextPage({
+                    name: 'ContractInfoScene', component: ContractInfoScene, params: {
+                        title: this.state.agreement[i].name,
+                        webUrl: this.state.agreement[i].url
+                    }
+                });
+            }} key={i + 'a'} style={{color: FontAndColor.COLORA2, fontSize: Pixel.getFontPixel(12)}}>
                 《{this.state.agreement[i].name}》 </Text>);
         }
         return (
             <View style={styles.containerStyle}>
-                <ScrollView style={{marginTop:Pixel.getTitlePixel(79)}}>
+                <ScrollView style={{marginTop: Pixel.getTitlePixel(79)}}>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.inputTextsStyle}>
                         <View style={{
@@ -84,9 +93,13 @@ export default class QuotaApplication extends BaseComponent {
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                            <Text allowFontScaling={false} 
-                                style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(14), flex: 1}}>借款人</Text>
-                            <Text allowFontScaling={false} >{this.state.name}</Text>
+                            <Text allowFontScaling={false}
+                                  style={{
+                                      color: FontAndColor.COLORA0,
+                                      fontSize: Pixel.getPixel(14),
+                                      flex: 1
+                                  }}>借款人</Text>
+                            <Text allowFontScaling={false}>{this.state.name}</Text>
                         </View>
                         <View style={{
                             height: Pixel.getPixel(45),
@@ -96,9 +109,13 @@ export default class QuotaApplication extends BaseComponent {
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                            <Text allowFontScaling={false} 
-                                style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(14), flex: 1}}>身份证号</Text>
-                            <Text allowFontScaling={false} >{this.state.idcard}</Text>
+                            <Text allowFontScaling={false}
+                                  style={{
+                                      color: FontAndColor.COLORA0,
+                                      fontSize: Pixel.getPixel(14),
+                                      flex: 1
+                                  }}>身份证号</Text>
+                            <Text allowFontScaling={false}>{this.state.idcard}</Text>
                         </View>
                         <View style={{
                             height: Pixel.getPixel(45),
@@ -106,9 +123,13 @@ export default class QuotaApplication extends BaseComponent {
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                            <Text allowFontScaling={false} 
-                                style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(14), flex: 1}}>联系电话</Text>
-                            <Text allowFontScaling={false} >{this.state.phone}</Text>
+                            <Text allowFontScaling={false}
+                                  style={{
+                                      color: FontAndColor.COLORA0,
+                                      fontSize: Pixel.getPixel(14),
+                                      flex: 1
+                                  }}>联系电话</Text>
+                            <Text allowFontScaling={false}>{this.state.phone}</Text>
                         </View>
                     </View>
                     <View style={styles.inputTextLine}/>
@@ -130,14 +151,14 @@ export default class QuotaApplication extends BaseComponent {
                             leftIcon={false}
                             rightIcon={false}/>
                     </View>
-                    <Text allowFontScaling={false}  style={{
+                    <Text allowFontScaling={false} style={{
                         color: FontAndColor.COLORA0,
                         paddingLeft: Pixel.getPixel(15),
                         paddingRight: Pixel.getPixel(15),
                         fontSize: Pixel.getPixel(FontAndColor.CONTENTFONT24),
                         paddingTop: Pixel.getPixel(10),
                         paddingBottom: Pixel.getPixel(10),
-                    }}>注意：<Text allowFontScaling={false}  style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行预留手机号码。</Text></Text>
+                    }}>注意：<Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行预留手机号码。</Text></Text>
                     <View style={styles.inputTextsStyle}>
                         <LoginInputText
                             ref="verifycode"
@@ -160,23 +181,100 @@ export default class QuotaApplication extends BaseComponent {
                             keyboardType={'phone-pad'}
                             leftIcon={false}/>
                     </View>
-                    <View style={{width:width,height:Pixel.getPixel(60)}}>
-
-                        <Text allowFontScaling={false} 
-                            style={{lineHeight: 25,paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(7)}}>
-                            <Text allowFontScaling={false}  style={{color:FontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
-                                {'         我已详细阅读并同意'}</Text>
-                            {childitems}
-                        </Text>
-                        <TouchableOpacity style={{width:Pixel.getPixel(23),height:Pixel.getPixel(23),position: 'absolute',top: Pixel.getPixel(12),
-                                    left:Pixel.getPixel(15),justifyContent:'center'}} onPress={()=>{
-                            this.setState({
-                                agree:!this.state.agree
-                            });
-                        }} activeOpacity={0.8}>
-                            <Image style={{width:Pixel.getPixel(16),height:Pixel.getPixel(16)}}
-                                   source={this.state.agree?require('../../images/login/amou_choose.png'):require('../../images/login/amou_unchoose.png')}/>
-                        </TouchableOpacity>
+                    <View style={{width: width, height: Pixel.getPixel(130)}}>
+                        <Text allowFontScaling={false} style={{
+                            backgroundColor: '#00000000',
+                            fontSize: Pixel.getFontPixel(14),
+                            marginTop: Pixel.getPixel(10),
+                            marginLeft: Pixel.getPixel(15),
+                            color: FontAndColor.COLORA1,
+                            marginBottom: Pixel.getPixel(10)
+                        }}>个人税收居民身份声明：</Text>
+                        <View style={{flex: 1, flexDirection: 'row', paddingLeft: Pixel.getPixel(15)}}>
+                            <View style={{flex: 1, alignItems: 'center'}}>
+                                <RadioButton number={1} ref="radiobuttonone" callBack={(index) => {
+                                    this.changeSelect(index);
+                                }}></RadioButton>
+                            </View>
+                            <View style={{flex: 8, justifyContent: 'center', paddingRight: Pixel.getPixel(15)}}>
+                                <Text allowFontScaling={false} style={{
+                                    backgroundColor: '#00000000',
+                                    fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA1
+                                }}>仅为中国税收居民（指在中国境内居住满一年的个人，</Text>
+                                <View
+                                    style={{flexDirection: 'row', alignItems: 'center', marginTop: Pixel.getPixel(1)}}>
+                                    <Text allowFontScaling={false} style={{
+                                        backgroundColor: '#00000000',
+                                        fontSize: Pixel.getFontPixel(12),
+                                        color: FontAndColor.COLORA1,
+                                    }}>具体请点击</Text>
+                                    <TouchableOpacity onPress={() => {
+                                        this.refs.statementbox.show();
+                                    }} activeOpacity={1} style={{
+                                        width: Pixel.getPixel(14),
+                                        height: Pixel.getPixel(14),
+                                        justifyContent: 'center',
+                                        marginLeft: Pixel.getPixel(5)
+                                    }}>
+                                        <Image style={{width: Pixel.getPixel(14), height: Pixel.getPixel(14)}}
+                                               source={require('../../images/login/wenhao.png')}/>
+                                    </TouchableOpacity>
+                                    <Text allowFontScaling={false} style={{
+                                        backgroundColor: '#00000000',
+                                        fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA1,
+                                    }}> ）</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={{flex: 1, flexDirection: 'row', paddingLeft: Pixel.getPixel(15)}}>
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <RadioButton number={2} ref="radiobuttontwo" callBack={(index) => {
+                                    this.changeSelect(index);
+                                }}></RadioButton>
+                            </View>
+                            <View style={{flex: 8, justifyContent: 'center', paddingRight: Pixel.getPixel(15)}}>
+                                <Text allowFontScaling={false} style={{
+                                    backgroundColor: '#00000000',
+                                    fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA1
+                                }}>仅为非居民</Text>
+                            </View>
+                        </View>
+                        <View style={{flex: 1, flexDirection: 'row', paddingLeft: Pixel.getPixel(15)}}>
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <RadioButton number={3} ref="radiobuttonthree" callBack={(index) => {
+                                    this.changeSelect(index);
+                                }}></RadioButton>
+                            </View>
+                            <View style={{flex: 8, justifyContent: 'center', paddingRight: Pixel.getPixel(15)}}>
+                                <Text allowFontScaling={false} style={{
+                                    backgroundColor: '#00000000',
+                                    fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA1
+                                }}>既是中国税收居民又是其他国家（地区）税收居民</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={{
+                        width: width - Pixel.getPixel(30), height: 1, marginLeft: Pixel.getPixel(15),
+                        backgroundColor: '#d7d7d7'
+                    }}></View>
+                    <View style={{
+                        width: width, height: Pixel.getPixel(60), flexDirection: 'row',
+                        paddingLeft: Pixel.getPixel(15)
+                    }}>
+                        <View style={{flex: 1, alignItems: 'center', paddingTop: Pixel.getPixel(8)}}>
+                            <MultiselectButton callBack={(back) => {
+                                this.isTrue = back;
+                            }}></MultiselectButton>
+                        </View>
+                        <View style={{flex: 8, justifyContent: 'center', paddingRight: Pixel.getPixel(15)}}>
+                            <Text allowFontScaling={false}
+                                  style={{lineHeight: 25}}>
+                                <Text allowFontScaling={false}
+                                      style={{color: FontAndColor.COLORA1, fontSize: Pixel.getFontPixel(12)}}>
+                                    {'我已详细阅读并同意'}</Text>
+                                {childitems}
+                            </Text>
+                        </View>
                     </View>
                     <MyButton buttonType={MyButton.TEXTBUTTON}
                               content={'确认申请'}
@@ -184,6 +282,8 @@ export default class QuotaApplication extends BaseComponent {
                               childStyle={styles.loginButtonTextStyle}
                               mOnPress={this.getWZMoney}/>
                 </ScrollView>
+                <StatementBox ref="statementbox"></StatementBox>
+                <StatementBoxs ref="statementboxs"></StatementBoxs>
                 <NavigationView
                     title="微单额度申请"
                     backIconClick={this.backPage}
@@ -192,9 +292,26 @@ export default class QuotaApplication extends BaseComponent {
         );
     }
 
+    changeSelect = (index) => {
+        this.selectIndex = index;
+        this.selectTime = Date.parse(new Date()) / 1000;
+        if (index == 1) {
+            this.refs.radiobuttontwo.hideAgree();
+            this.refs.radiobuttonthree.hideAgree();
+        } else if (index == 2) {
+            this.refs.statementboxs.show();
+            this.refs.radiobuttonone.hideAgree();
+            this.refs.radiobuttonthree.hideAgree();
+        } else if (index == 3) {
+            this.refs.statementboxs.show();
+            this.refs.radiobuttontwo.hideAgree();
+            this.refs.radiobuttonone.hideAgree();
+        }
+    }
+
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height,backgroundColor:FontAndColor.COLORA3,alignItems: 'center'}}>
+            <View style={{width: width, height: height, backgroundColor: FontAndColor.COLORA3, alignItems: 'center'}}>
                 {this.loadView()}
                 <NavigationView
                     title="微单额度申请"
@@ -332,8 +449,10 @@ export default class QuotaApplication extends BaseComponent {
             this.props.showToast("银行卡号不能为空");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
             this.props.showToast("短信验证码不能为空");
-        } else if (!this.state.agree) {
-            this.props.showToast("请选择相关协议");
+        } else if (!this.isTrue) {
+            this.props.showToast("请同意相关协议");
+        } else if (this.selectIndex == 0) {
+            this.props.showToast("请选择个人税收居民身份证明");
         } else {
             let maps = {};
             if (Platform.OS === 'android') {
@@ -344,7 +463,9 @@ export default class QuotaApplication extends BaseComponent {
                     phone_code: smsCode,
                     contract_base: JSON.stringify(this.state.agreement),
                     android_imei: imeis,
-                    useragent: 'android'
+                    useragent: 'android',
+                    id_type: this.selectIndex,
+                    id_type_click_time: this.selectTime
                 };
             } else {
                 maps = {
@@ -354,7 +475,9 @@ export default class QuotaApplication extends BaseComponent {
                     phone_code: smsCode,
                     contract_base: JSON.stringify(this.state.agreement),
                     ios_idfa: iosIDFA,
-                    useragent: 'ios'
+                    useragent: 'ios',
+                    id_type: this.selectIndex,
+                    id_type_click_time: this.selectTime
                 };
             }
             this.props.showModal(true);
@@ -412,7 +535,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         width: itemWidth - Pixel.getPixel(30),
         backgroundColor: FontAndColor.COLORB0,
-        marginTop: Pixel.getPixel(30),
+        marginTop: Pixel.getPixel(15),
         marginBottom: Pixel.getPixel(15),
         justifyContent: 'center',
         alignItems: 'center',
