@@ -6,7 +6,7 @@
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
@@ -16,7 +16,7 @@
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+//export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
 /**
@@ -398,6 +398,13 @@ export const APP_UPDATE = BASEURL + 'v1/system/index';
 export const REPAYMENT_GETLIST = 'api/v2/Repayment/getList';
 
 /**
+ * from @marongting
+ *
+ * 获取新还款信息
+ **/
+export const PREPAYMENT_REPAYMENT_DETAIL = 'Api/V1/Prepayment/repayment_detail';
+
+/**
  * from @zhaojian
  *
  * 获取还款历史
@@ -654,7 +661,7 @@ export const NEWREPAYMENT_GET_INFO = 'api/v5/NewRepayment/get_info';
  *
  * 取消提前还款
  **/
-export const BMSLOAN_GETCANCEL = 'api/v2/Bmsloan/getcancel';
+export const PREPAYMENT_CANCEL_REPAYMENT = 'Api/V1/Prepayment/cancel_repayment';
 
 /**
  * from @zhaojian
