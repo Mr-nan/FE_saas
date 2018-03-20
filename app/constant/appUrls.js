@@ -650,6 +650,13 @@ export const NEWREPAYMENT_CREDIT_APPLY_REPAYMENT = 'api/v5/NewRepayment/credit_a
 export const NEWREPAYMENT_GET_INFO = 'api/v5/NewRepayment/get_info';
 
 /**
+ * from @xujiaqi
+ *
+ * 取消提前还款
+ **/
+export const BMSLOAN_GETCANCEL = 'api/v2/Bmsloan/getcancel';
+
+/**
  * from @zhaojian
  *
  * 获取新还款计划
