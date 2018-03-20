@@ -123,21 +123,24 @@ export  default class AdjustListScene extends BaseComponent {
                     <Text allowFontScaling={false} style={styles.headerTextsStyle}>{movies.aftermoney}</Text>
                 </View>
                 <View
-                    style={{width:width,height:Pixel.getPixel(60),flexDirection:'row',marginBottom:Pixel.getPixel(10)}}>
+                    style={{width:width,height:Pixel.getPixel(100),flexDirection:'row',marginBottom:Pixel.getPixel(10)}}>
                     <Image
                         resizeMode="stretch"
                         source={require('./../../../images/login/shitijuam_bg.png')}
-                        style={{width:width,height:Pixel.getPixel(60),justifyContent:'center',alignItems:'center'}}>
-                        <View style={{flexDirection:'row',backgroundColor:'#00000000',justifyContent:'center'}}>
+                        style={{width:width,height:Pixel.getPixel(100),alignItems:'center'}}>
+                        <View
+                            style={{flexDirection:'row',backgroundColor:'#00000000',justifyContent:'center',marginTop:Pixel.getPixel(22)}}>
                             <Image source={require('./../../../images/login/shitijuan_icon.png')}/>
-                            <Text style={{backgroundColor:'#00000000'}}>一车红包</Text>
+                            <Text
+                                style={{backgroundColor:'#00000000',color:'#666666',fontSize:Pixel.getFontPixel(18),marginLeft:Pixel.getPixel(3)}}>一车红包</Text>
                         </View>
-                        <View style={{justifyContent:'center',flexDirection:'row'}}>
+                        <View
+                            style={{justifyContent:'center',flexDirection:'row',borderColor:'#9e9e9e',borderWidth:Pixel.getFontPixel(1),marginTop:Pixel.getPixel(13),alignItems:'center',width:Pixel.getPixel(200)}}>
                             <TextInput
                                 ref="inputText"
                                 underlineColorAndroid={"#00000000"}
                                 placeholder={'请输入'}
-                                style={{width:Pixel.getPixel(100),height:Pixel.getPixel(30)}}
+                                style={{width:Pixel.getPixel(80),height:Pixel.getPixel(30),color:"#9e9e9e",fontSize:Pixel.getFontPixel(12),marginLeft:Pixel.getPixel(30)}}
                                 placeholderTextColor={fontAndColor.COLORA1}
                                 maxLength={11}
                                 onChangeText={(text) => {
@@ -160,7 +163,7 @@ export  default class AdjustListScene extends BaseComponent {
         content: '确认',
         mOnPress: () => {
             if (this.selected == '' && this.state.values == "") {
-                this.props.showToast("请选择优惠券");
+                this.props.showToast("请选择电子券或请输入红包密码");
             } else if (this.selected != '' && this.state.values != "") {
                 this.props.showToast("两种优惠不可同时使用");
             } else {
