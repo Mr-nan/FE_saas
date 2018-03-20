@@ -52,8 +52,8 @@ export default  class ReceiptInfoScene extends BaseComponent {
                     , {title: '利率', value: data.rate + '%'}
                     , {title: '起息日(以实际放款日为准)', value: data.start_time}
                     , {title: '到期日', value: data.end_time}
-                    , {title: '还款方式', value: data.repayment_type}
                     , {title: '收款银行卡号', value: data.bank_name + "  " + data.bank_card}
+                    , {title: '还款方式', value: data.repayment_type}
                 ],
                 [{title: '车架号', value: data.vin}]];
         }
@@ -125,10 +125,20 @@ export default  class ReceiptInfoScene extends BaseComponent {
 
         return (
             <View style={styles.rowCell}>
-                <Text allowFontScaling={false}
-                      style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>{rowData.title}</Text>
-                <Text allowFontScaling={false}
-                      style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),textAlign:'right'}}>{rowData.value}</Text>
+                {
+                    rowData.value == '到期一次性还本付息' ?
+                        <Text allowFontScaling={false}
+                              style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(8)}}>{rowData.title}</Text> :
+                        <Text allowFontScaling={false}
+                              style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>{rowData.title}</Text>
+                }
+                {
+                    rowData.value == '到期一次性还本付息' ?
+                        <Text allowFontScaling={false}
+                              style={{color:fontAndColor.COLORA4, fontSize:Pixel.getFontPixel(8),textAlign:'right'}}>{rowData.value}</Text> :
+                        <Text allowFontScaling={false}
+                              style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),textAlign:'right'}}>{rowData.value}</Text>
+                }
             </View>
         )
     };
