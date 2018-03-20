@@ -53,7 +53,7 @@ export default  class ReceiptInfoScene extends BaseComponent {
                     , {title: '起息日(以实际放款日为准)', value: data.start_time}
                     , {title: '到期日', value: data.end_time}
                     , {title: '收款银行卡号', value: data.bank_name + "  " + data.bank_card}
-                    , {title: '还款方式', value: data.repayment_type}
+                    , {title: '微众银行还款方式', value: data.repayment_type}
                 ],
                 [{title: '车架号', value: data.vin}]];
         }
