@@ -115,11 +115,19 @@ export default class CarInfoScene extends BaseComponent {
         this.state = {
             imageArray: new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
-            residualsData: [],
-            carData: {imgs: []},
+            residualsData:[],
+            carData: {imgs:[]},
             currentImageIndex: 1,
             switchoverCarInfo: 0,
         };
+    }
+
+    componentDidMount() {
+
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
 
     initFinish = () => {
@@ -143,6 +151,8 @@ export default class CarInfoScene extends BaseComponent {
         });
 
     }
+
+
 
     allRefresh=()=>{
         this.loadData();
@@ -238,7 +248,6 @@ export default class CarInfoScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             if (response.mycode == 1) {
                 this.setState({
                     residualsData: response.mjson.data,
