@@ -16,7 +16,7 @@ import CarPublishFirstScene from "../carSource/carPublish/CarPublishFirstScene";
 import NewCarPublishFirstScene from "../carSource/carPublish/NewCarPublishFirstScene";
 import CarTrimScene from "../carSource/carBuy/CarTrimScene";
 import CarBuyScene from "../carSource/carBuy/CarBuyScene";
-import WuliuWebScene from "../mine/myOrder/wuliuweb/WuliuWebScene";
+import WuliuWebScene from "../mine/myOrder/LogisticsQueryScene";
 import CollectionIntent from "../collectionIntent/CollectionIntent";
 import CarSharedListScene from "../carSource/CarSharedListScene";
 import SysMessageListScene from "../message/sysMessage/SysMessageListScene";
