@@ -97,12 +97,17 @@ export default class CityRegionScene extends Component{
     }
 
     _checkedCityClick=()=>{
-        if (!this.state.isShowDistrictList) {
-            this.setState({
-                isShowDistrictList: true,
-            });
-        } else {
-            this.refs.districtList.loadData();
+        if(this.props.noneDistrict === true){
+            this.props.checkAreaClick(selectData);
+            this.props.closePress();
+        }else{
+            if (!this.state.isShowDistrictList) {
+                this.setState({
+                    isShowDistrictList: true,
+                });
+            } else {
+                this.refs.districtList.loadData();
+            }
         }
     };
 

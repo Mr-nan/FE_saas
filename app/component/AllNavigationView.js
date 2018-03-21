@@ -2,7 +2,7 @@
  * Created by zhengnan on 17/2/14.
  */
 
-import React, {Component, PureComponent} from 'react';
+import React, {Component} from 'react';
 
 import {
 
@@ -18,7 +18,7 @@ import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
-export default class CarInfoNavigationView extends PureComponent {
+export default class CarInfoNavigationView extends Component {
 
 
     // 构造

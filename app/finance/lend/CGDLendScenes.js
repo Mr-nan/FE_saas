@@ -13,6 +13,9 @@ import {
 } from 'react-native';
 
 let PostData = {
+    dateLimit: '',
+    rate: '',
+    loan_life_type: '',
     apply_type: '5',
     loan_mny: '',
     archives_type:'1',
@@ -26,6 +29,8 @@ let showData={
     tempCarList:[],
     tempLendInfo:{},
     tempDetailInfo:{},
+    rateAndLifeAndType: [],
+
 }
 const tempDelete={
     base_id:'',
@@ -37,6 +42,8 @@ const verificationtips={
     use_time:'请选择用款时间',
     loan_mny:'请输入用款金额',
 }
+let dateBlob = [];
+let rateBlob = [];
 import BaseComponent from '../../component/BaseComponent';
 
 import {LendDatePike, LendInputItem, LendItem, CGDCarItem, CommenButton,commnetStyle,} from './component/ComponentBlob'
@@ -76,6 +83,8 @@ export  default  class CGDLendScenes extends BaseComponent {
     componentWillUnmount(){
         PostData.use_time='';
         PostData.loan_mny='';
+        dateBlob = [];
+        rateBlob = [];
 
     }
 
@@ -83,7 +92,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
     initFinish() {
 
-        if(this.props.loan_code){
+        if(this.props.loan_code){           //编辑订单融资
             this.getLenddetail()
 
         }else {
@@ -151,6 +160,8 @@ export  default  class CGDLendScenes extends BaseComponent {
         }
         return dataSource;
     }
+
+    //新申请，获取前置流程
     getLendInfo=(obdState,invoiceState)=>{
 
             let maps = {
@@ -167,6 +178,15 @@ export  default  class CGDLendScenes extends BaseComponent {
                         showData.tempMin=changeToMillion(tempjson.min_loanmny);
                         showData.tempMax=changeToMillion(tempjson.max_loanmny);
                         showData.tempLendInfo=tempjson;
+                        showData.rateAndLifeAndType = tempjson.product_period;
+                        for (let item in  showData.rateAndLifeAndType) {
+                            console.log(item);
+                            dateBlob.push(showData.rateAndLifeAndType[item].loan_life + showData.rateAndLifeAndType[item].loan_life_type);
+                            rateBlob.push(showData.rateAndLifeAndType[item].rate);
+                        }
+                        PostData.dateLimit = showData.rateAndLifeAndType[0].loan_life;;
+                        PostData.rate = showData.rateAndLifeAndType[0].rate;
+                        PostData.loan_life_type = showData.rateAndLifeAndType[0].loan_life_type;
                         this.getCarListInfo(tempjson);
 
                     },
@@ -185,7 +205,42 @@ export  default  class CGDLendScenes extends BaseComponent {
 
 
     }
+    //获取已经添加到采购车辆
+    getCarListInfo=(templendInfo)=>{
+        let maps = {
+            api: apis.AUTOLIST,
 
+        };
+        if(this.props.loan_code){
+            Object.assign(maps,{payment_number:this.props.loan_code})
+        }
+
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    let tempjson = response.mjson.data;
+                    showData.tempCarList=tempjson.list;
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(templendInfo, tempjson.list)),
+                        renderPlaceholderOnly: STATECODE.loadSuccess
+                    })
+
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    this.setState({
+                        renderPlaceholderOnly:STATECODE.loadError
+                    })
+                    if(error.mycode!= -300||error.mycode!= -500){
+                        this.props.showToast(error.mjson.msg);
+
+                    }else {
+
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
+    }
+    //编辑状态下，获取详情
     getLenddetail = () => {
 
         let maps = {
@@ -227,42 +282,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
 
     }
-
-    getCarListInfo=(templendInfo)=>{
-        let maps = {
-            api: apis.AUTOLIST,
-
-        };
-        if(this.props.loan_code){
-            Object.assign(maps,{payment_number:this.props.loan_code})
-        }
-
-        request(apis.FINANCE, 'Post', maps)
-            .then((response) => {
-                    this.props.showModal(false);
-                    let tempjson = response.mjson.data;
-                    showData.tempCarList=tempjson.list;
-                    this.setState({
-                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(templendInfo, tempjson.list)),
-                        renderPlaceholderOnly: STATECODE.loadSuccess
-                    })
-
-                },
-                (error) => {
-                    this.props.showModal(false);
-                    this.setState({
-                        renderPlaceholderOnly:STATECODE.loadError
-                    })
-                    if(error.mycode!= -300||error.mycode!= -500){
-                        this.props.showToast(error.mjson.msg);
-
-                    }else {
-
-                        this.props.showToast('服务器连接有问题')
-                    }
-                });
-    }
-
+    //申请借款，验证完整性
     verificationInfo=()=>{
 
         let infoIsall =true;
@@ -316,7 +336,7 @@ export  default  class CGDLendScenes extends BaseComponent {
         }
 
     }
-
+    //申请借款
     lendMoneyClick=()=>{
 
             let CarList =this.state.dataSource._dataBlob['section3']
@@ -335,7 +355,10 @@ export  default  class CGDLendScenes extends BaseComponent {
                 use_time: PostData.use_time,
                 car_lists: carIdList,
                 archives_type: PostData.archives_type,
-                loan_code: this.props.loan_code
+                loan_code: this.props.loan_code,
+                loan_life_type: PostData.loan_life_type,
+                rate: PostData.rate,
+                loan_life: PostData.dateLimit,
             }
             this.props.showModal(true);
             request(apis.FINANCE, 'Post', maps)
@@ -428,7 +451,7 @@ export  default  class CGDLendScenes extends BaseComponent {
             return (<LendItem leftTitle={rowData.title} rightTitle={rowData.value}/>)
         } else if (sectionID === 'section2' && rowID === '0') {
 
-            return <LendInputItem placeholder={'请输入借款金额'} title={rowData.title} onChangeText={(text)=>{PostData.loan_mny=text} } showValue={PostData.loan_mny}/>
+            return <LendInputItem placeholder={'请输入借款金额'} title={rowData.title} onChangeText={(text)=>{PostData.loan_mny=text} } showValue={PostData.loan_mny} unit={'万'}/>
         } else if (sectionID === 'section2' && rowID === '1') {
 
             return <LendDatePike ref={(piker)=>{this.datePiker =piker}} showData={'3333'} lefTitle={rowData.title} placeholder='请选择用款时间'

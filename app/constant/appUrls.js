@@ -184,6 +184,11 @@ export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
 export const CAR_USER_CAR = BASEURL + V + 'user/car';
 
 /**
+ * 根据车型名获取车型信息
+ */
+export const CAR_SEARCH_MODELS = BASEURL + V + 'home/searchModels';
+
+/**
  * 获取库存车辆列表
  */
 export const CAR_STOCK_LIST = BASEURL + V + 'car.stock/lists';
@@ -529,6 +534,13 @@ export const USER_ACCOUNT_PAYLOG = BASEURL + 'v1/user.account/payLog';
  * 获取交易流水
  **/
 export const ACCOUNT_PAYLOG = BASEURL + 'v2/user.account/payLog';
+
+/**
+ * from @huangning
+ *
+ * 获取运输类型
+ **/
+export const GETTRANSPORTTYPE = BASEURL + 'v2/order.logistics/getTransportType';
 
 /**
  * from @zhaojian
@@ -1520,6 +1532,12 @@ export const WAYBILL_DETAIL = BASEURL  + "v2/order.logistics/detail";
  *物流运价数据检查（获取运输类型对应的费）
  */
 export const CHECKTRANSTYPE = BASEURL  + "v2/order.logistics/check";
+
+/**
+ *
+ *物流运价查询
+ */
+export const ORDER_LOGISTICS_QUERY = BASEURL  + "v2//order.logistics/query";
 /**
  *
  *获取发票信息
