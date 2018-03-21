@@ -79,7 +79,7 @@ export  default class CarUpImageCell extends PureComponent {
         } else {
             movieItems.push(<CarImagePickerItem allLength={this.state.childMovie.length} key={0} index={0}
                                                      mOnPress={(index) => {
-                                                         this.selectPhotoTapped(movie.name)
+                                                         this.selectPhotoTapped()
                                                      }}/>)
         }
 
@@ -97,10 +97,10 @@ export  default class CarUpImageCell extends PureComponent {
         );
     }
 
-    selectPhotoTapped =(name) => {
+    selectPhotoTapped =() => {
 
-        console.log('name==========>',name);
-        const options = {
+
+        let options = {
             //弹出框选项
             title: '请选择',
             cancelButtonTitle: '取消',
@@ -109,14 +109,21 @@ export  default class CarUpImageCell extends PureComponent {
             allowsEditing: false,
             noData: false,
             quality: 1.0,
-            maxWidth: 480,
-            maxHeight: 800,
+
             storageOptions: {
                 skipBackup: true,
                 path: 'images',
             }
         };
-            ImagePicker.showImagePicker(options, (response) => {
+
+        if(this.props.items.name != 'registration_card'){
+            options.maxHeight = 800;
+            options.maxWidth = 480;
+        }
+
+        console.log('name==========>',this.props.items.name,options);
+
+        ImagePicker.showImagePicker(options, (response) => {
                 if (response.didCancel) {
 
                 } else if (response.error) {
@@ -141,7 +148,8 @@ export  default class CarUpImageCell extends PureComponent {
             (response)=>{
                 this.props.showModal(false);
                 if(response.mycode === 1){
-                    this.props.showToast('上传成功')
+                    this.props.showToast('上传成功');
+                    console.log(response.mjson.data.url);
                     let news =[];
                     news.push(...this.state.childMovie);
                     news.push({url: response.mjson.data.url,file_id:response.mjson.data.file_id});
