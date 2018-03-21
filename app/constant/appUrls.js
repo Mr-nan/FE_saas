@@ -702,7 +702,7 @@ export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
  *
  * 获取实体券的使用规则
  **/
-export const GETSOLIDVOUCHERRULE = '/api/v5/Repayment/get_solid_voucher_rule';
+export const GETSOLIDVOUCHERRULE = 'api/v5/Repayment/get_solid_voucher_rule';
 
 
 /**
