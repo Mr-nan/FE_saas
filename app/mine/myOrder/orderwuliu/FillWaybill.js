@@ -331,7 +331,7 @@ export default class FillWaybill extends BaseComponent {
             company_id: global.companyBaseID,
             order_id: this.props.orderId,
             end_id: this.endId,
-            logistics_type: this.props.logisticsType//物流类型
+            logistics_type: this.props.logisticsType,//物流类型
         };
 
         request(Urls.GETTRANSTYPE, 'Post', maps)
