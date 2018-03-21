@@ -85,7 +85,8 @@ export  default class AdjustListScene extends BaseComponent {
                         (error) => {
                             if (error.mycode == '-2100045' || error.mycode == '-1') {
                                 this.setState({
-                                    renderPlaceholderOnly: 'null',
+                                    source: ds.cloneWithRows([]),
+                                    renderPlaceholderOnly: 'success',
                                     isRefreshing: false
                                 });
                             } else {
@@ -139,8 +140,8 @@ export  default class AdjustListScene extends BaseComponent {
                             <TextInput
                                 ref="inputText"
                                 underlineColorAndroid={"#00000000"}
-                                placeholder={'请输入'}
-                                style={{width:Pixel.getPixel(80),height:Pixel.getPixel(30),color:"#9e9e9e",fontSize:Pixel.getFontPixel(12),marginLeft:Pixel.getPixel(30)}}
+                                placeholder={'请输入密码'}
+                                style={{width:Pixel.getPixel(80),height:Pixel.getPixel(30),color:"#9e9e9e",fontSize:Pixel.getFontPixel(12),marginLeft:Pixel.getPixel(10)}}
                                 placeholderTextColor={fontAndColor.COLORA1}
                                 maxLength={11}
                                 onChangeText={(text) => {
