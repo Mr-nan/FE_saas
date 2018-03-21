@@ -79,7 +79,7 @@ export  default class CarUpImageCell extends PureComponent {
         } else {
             movieItems.push(<CarImagePickerItem allLength={this.state.childMovie.length} key={0} index={0}
                                                      mOnPress={(index) => {
-                                                         this.selectPhotoTapped(movie.code)
+                                                         this.selectPhotoTapped(movie.name)
                                                      }}/>)
         }
 
@@ -97,7 +97,9 @@ export  default class CarUpImageCell extends PureComponent {
         );
     }
 
-    selectPhotoTapped =(id) => {
+    selectPhotoTapped =(name) => {
+
+        console.log('name==========>',name);
         const options = {
             //弹出框选项
             title: '请选择',
