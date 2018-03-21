@@ -214,8 +214,12 @@ export default class FillWaybill extends BaseComponent {
             warehouse_id: this.props.logisticsType == 3 ? this.endId : this.warehouse_id,
 
         };
-        if (this.state.transType == '1'&& this.sendType!==-1) {
-            maps['send_type']=this.sendType;
+        if (this.state.transType == '1') {
+            if(this.sendType!==-1){
+                maps['send_type']=this.sendType;
+            }else {
+                maps['send_type']='1';
+            }
         }
         request(Urls.CHECKTRANSTYPE, 'Post', maps)
             .then((response) => {
@@ -276,8 +280,12 @@ export default class FillWaybill extends BaseComponent {
         if (!this.fromSingle) {
             maps['start_id'] = this.startId;
         }
-        if (this.state.transType == '1'&& this.sendType!==-1) {
-            maps['send_type']=this.sendType;
+        if (this.state.transType == '1') {
+            if(this.sendType!==-1){
+                maps['send_type']=this.sendType;
+            }else {
+                maps['send_type']='1';
+            }
         }
         this.props.showModal(true);
         request(Urls.SUBMITTRANFERINFO, 'Post', maps)
