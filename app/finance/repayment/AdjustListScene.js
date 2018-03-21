@@ -226,6 +226,7 @@ export  default class AdjustListScene extends BaseComponent {
                     // this.props.showToast('使用成功');
                     // this.props.refresh();
                     // this.backPage();
+                    this.props.showModal(false);
                     this.datas = response.mjson.data;
                     this.refs.allloading.changeShowType(true, '优惠券金额超过抵扣利息的部分将不予留存！');
                 },
