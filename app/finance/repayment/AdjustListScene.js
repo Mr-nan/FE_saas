@@ -186,10 +186,10 @@ export  default class AdjustListScene extends BaseComponent {
                     api: Urls.REPAYMENT_GET_ADJUST_SAVE,
                     planid: this.props.items.planid,
                     merge_id: data.base_user_id,
-                    coupon_number: this.state.values != "" ? this.coupon_code : movies.list[this.selected].coupon_code,
-                    coupon_id: this.state.values != "" ? "0" : movies.list[this.selected].coupon_id,
-                    adjustmoney: movies.list[this.selected].coupon_mny,
-                    coupon_type: movies.list[this.selected].coupon_rule.coupon_type
+                    coupon_number: this.state.values != "" ? this.datas.coupon_code : movies.list[this.selected].coupon_code,
+                    coupon_id: this.state.values != "" ? this.datas.coupon_id : movies.list[this.selected].coupon_id,
+                    adjustmoney: this.state.values != "" ? this.datas.coupon_mny : movies.list[this.selected].coupon_mny,
+                    coupon_type: this.state.values != "" ? "0" : movies.list[this.selected].coupon_rule.coupon_type
                 };
                 request(Urls.FINANCE, 'Post', maps)
                     .then((response) => {
@@ -226,7 +226,7 @@ export  default class AdjustListScene extends BaseComponent {
                     // this.props.showToast('使用成功');
                     // this.props.refresh();
                     // this.backPage();
-                    this.coupon_code = response.mjson.data.coupon_code;
+                    this.datas = response.mjson.data;
                     this.refs.allloading.changeShowType(true, '优惠券金额超过抵扣利息的部分将不予留存！');
                 },
                 (error) => {
