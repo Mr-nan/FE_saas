@@ -124,11 +124,11 @@ export  default class AdjustListScene extends BaseComponent {
                     <Text allowFontScaling={false} style={styles.headerTextsStyle}>{movies.aftermoney}</Text>
                 </View>
                 <View
-                    style={{width:width,height:Pixel.getPixel(100),flexDirection:'row',marginBottom:Pixel.getPixel(10)}}>
+                    style={{width:width,height:Pixel.getPixel(110),flexDirection:'row',marginBottom:Pixel.getPixel(10)}}>
                     <Image
                         resizeMode="stretch"
                         source={require('./../../../images/login/shitijuam_bg.png')}
-                        style={{width:width,height:Pixel.getPixel(100),alignItems:'center'}}>
+                        style={{width:width,height:Pixel.getPixel(110),alignItems:'center'}}>
                         <View
                             style={{flexDirection:'row',backgroundColor:'#00000000',justifyContent:'center',marginTop:Pixel.getPixel(22)}}>
                             <Image source={require('./../../../images/login/shitijuan_icon.png')}/>
@@ -141,7 +141,7 @@ export  default class AdjustListScene extends BaseComponent {
                                 ref="inputText"
                                 underlineColorAndroid={"#00000000"}
                                 placeholder={'请输入密码'}
-                                style={{width:Pixel.getPixel(80),height:Pixel.getPixel(40),color:"#9e9e9e",fontSize:Pixel.getFontPixel(12),marginLeft:Pixel.getPixel(10),paddingTop:0,paddingBottom:0}}
+                                style={{width:Pixel.getPixel(80),height:Pixel.getPixel(30),color:"#9e9e9e",fontSize:Pixel.getFontPixel(12),marginLeft:Pixel.getPixel(10),paddingTop:0,paddingBottom:0}}
                                 placeholderTextColor={fontAndColor.COLORA1}
                                 maxLength={11}
                                 onChangeText={(text) => {
