@@ -69,9 +69,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
     getData = () => {
         let maps = {
             api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
-            loan_id: this.props.loan_id,
             loan_number: this.props.loan_number,
-            type: '2',
             loan_code:this.props.payment_number,
         };
         request(Urls.FINANCE, 'Post', maps)
@@ -105,13 +103,23 @@ export  default class RepaymentInfoPage extends BaseComponent {
         opacity: 0.9,
         content: '申请提前还款',
         mOnPress: () => {
-             this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
+            this.toNext();
+            /* this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
                  loan_number:this.props.loan_number,payment_number:this.props.payment_number,from:'SingleRepaymentPage',
                  loan_id:this.props.loan_id
-             }});
+             }});*/
         }
     }
-
+    toNext =() => {
+        if(movies.apply_status.code == 0){
+            this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
+                loan_number:this.props.loan_number,payment_number:this.props.payment_number,from:'SingleRepaymentPage',
+                loan_id:this.props.loan_id
+            }});
+        }else{
+            this.props.showToast(movies.apply_status.msg);
+        }
+    }
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
@@ -142,7 +150,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <NewRepaymentInfoTopItem items={movies.test_coupon_info} loan_number={this.props.loan_number}/>
+                <NewRepaymentInfoTopItem items={movies.test_coupon_info} item={movies} loan_number={this.props.loan_number}/>
             )
         } else if(rowId == 1){
             return (

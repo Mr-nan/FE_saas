@@ -48,7 +48,7 @@ export  default class RepaymentScene extends BaseComponent {
     toNext = (loan_id,loan_number,type,payment_number,payment_status) => {
         if(payment_status == 0){
             this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,
-                params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'SingleRepaymentPage'}});
+                params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'SingleRepaymentPage',showToast:(text)=>{this.props.showToast(text);}}});
         }else{
             this.toNextPage({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,
                 params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'SingleRepaymentPage'}});

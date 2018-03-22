@@ -110,6 +110,7 @@ export  default class SingleRepaymentPage extends BaseComponent {
         }
     }
 
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (<View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
@@ -159,7 +160,7 @@ export  default class SingleRepaymentPage extends BaseComponent {
 
         return (
             <TouchableOpacity onPress={()=>{
-                this.props.callBack(movie.loan_id,movie.loan_number,movie.type,movie.payment_number,movie.payment_status);
+                this.props.callBack(movie.loan_id,movie.loan_number,movie.type,movie.payment_number,movie.payment_status,);
             }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>

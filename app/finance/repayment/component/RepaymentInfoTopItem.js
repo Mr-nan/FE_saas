@@ -53,7 +53,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                             放款额:
                         </Text>
                         <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0),color:fontAndColor.COLORA0}]}>
-                            {this.props.items.test_coupon_info.loan_mny_str} | {this.props.items.loanperiod}{this.props.items.test_coupon_info.loanperiod_type}
+                            {this.props.items.test_coupon_info.loan_mny_str} | {this.props.items.loanperiodstr}
                         </Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>

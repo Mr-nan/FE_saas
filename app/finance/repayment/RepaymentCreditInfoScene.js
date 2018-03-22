@@ -91,7 +91,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     movies = response.mjson.data.payment_info;
                     moneyList.push({name: '贷款本金', data: movies.money});
                     moneyList.push({name: '计息天数', data: movies.days+'天'});
-                    moneyList.push({name: '综合费率', data: movies.rate+'%'});
+                    moneyList.push({name: '综合费率', data: movies.payment_rate_str+'%'});
                     moneyList.push({name:'还息费率',data:movies.rate+'%'});
                     moneyList.push({name: '利息总额', data: movies.test_coupon_info.interest_total});
                     moneyList.push({name: '已还利息', data: movies.test_coupon_info.interest});
@@ -103,7 +103,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     nameList.push({name: '开户行', data: movies.test_coupon_info.bank_info.bank});
                     nameList.push({name: '开户支行', data: movies.test_coupon_info.bank_info.branch});
                     nameList.push({name: '还款账号', data: movies.test_coupon_info.bank_info.repaymentnumber});
-                    nameList.push({name: '保证金', data: movies.money});
+                    nameList.push({name: '保证金', data: movies.true_bondmny});
 
                     adjustLsit.push({name: '使用优惠券数量', data: movies.test_coupon_info.coupon_info.coupon_number});
                     adjustLsit.push({name: '使用优惠券金额', data: movies.test_coupon_info.coupon_info.coupon_usable});
@@ -120,12 +120,13 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         parentStyle: styles.parentStyle,
         childStyle: styles.childStyle,
         opacity: 0.7,
-        content: '申请还款',
+        content: '申请提前还款',
         mOnPress: () => {
             this.props.showModal(true);
             let maps = {
-                api: Urls.NEWREPAYMENT_APPLY_REPAYMENT,
+                api: Urls.PREPAYMENT_APPLY,
                 loan_number: this.props.loan_number,
+                payment_number:this.props.payment_number,
                 use_time: this.state.loan_dayStr
             };
             request(Urls.FINANCE, 'Post', maps)
@@ -168,8 +169,9 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                 />
-                {movies.paymen_status == '0' ? this.props.from == 'SingleRepaymentPage' ?
-                        <MyButton {...this.buttonParams}/> : <View/> : <View/>}
+                <MyButton {...this.buttonParams}/>
+             {/*   {movies.paymen_status == '0' ? this.props.from == 'SingleRepaymentPage' ?
+                        <MyButton {...this.buttonParams}/> : <View/> : <View/>}*/}
                 <ServerMoneyListModal ref="servermoneylistmodal"/>
                 <RepaymentModal ref="repaymentmodal" callBack={()=>{
                     this.allRefresh();
@@ -249,20 +251,20 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             if(parseFloat(movies.test_coupon_info.all_fee)>0){
                 money = (parseFloat(movies.money)
                 +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
-                this.state.loan_day-parseFloat(movies.money)-parseFloat(movies.test_coupon_info.interest)
+                this.state.loan_day-parseFloat(movies.true_bondmny)-parseFloat(movies.test_coupon_info.interest)
                     +parseFloat(movies.test_coupon_info.all_fee)).toFixed(2);
                 name = '应还总额=本金+本金*还息费率/360*计息天数-保证金-已还利息'+'+服务费';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+movies.rate/100+'/360*'
-                    +this.state.loan_day+'-'+movies.money+'-'+movies.test_coupon_info.interest+'+'+movies.test_coupon_info.all_fee
+                    +this.state.loan_day+'-'+movies.true_bondmny+'-'+movies.test_coupon_info.interest+'+'+movies.test_coupon_info.all_fee
             }else{
                 money = (parseFloat(movies.money)
                 +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
-                this.state.loan_day-parseFloat(movies.money)-parseFloat(movies.test_coupon_info.interest)).toFixed(2);
+                this.state.loan_day-parseFloat(movies.true_bondmny)-parseFloat(movies.test_coupon_info.interest)).toFixed(2);
                 name = '应还总额=本金+本金*还息费率/360*计息天数-保证金-已还利息';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+movies.rate/100+'/360*'
-                    +this.state.loan_day+'-'+movies.money+'-'+movies.test_coupon_info.interest;
+                    +this.state.loan_day+'-'+movies.true_bondmny+'-'+movies.test_coupon_info.interest;
             }
             return (
                 <RepaymentInfoBottomItem ref="RepaymentInfoBottomItem"
