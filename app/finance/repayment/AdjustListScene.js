@@ -294,8 +294,13 @@ export  default class AdjustListScene extends BaseComponent {
         });
     }
     _selectCoupon = (rowId) => {
-        this.selected = rowId;
-        this.adjustmoney = rowId;
+        if (this.selected == rowId) {
+            this.selected = '';
+            this.adjustmoney = '';
+        } else {
+            this.selected = rowId;
+            this.adjustmoney = rowId;
+        }
         this.setState({
             source: ds.cloneWithRows(movies.list),
         });
