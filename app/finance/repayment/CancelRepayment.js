@@ -144,34 +144,25 @@ export  default class CancelRepayment extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    if(response.mjson.code=='1'){
-                        this.props.showToast('提前还款申请取消成功');
+                    if(response.code=='1'){
+                        this.props.showToast(response.msg);
                         //this.allRefresh();
                         this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene})
                     }
-                    if(response.mjson.code=='2'){
-                        this.props.showToast('提前还款成功，不能取消');
+                    if(response.code=='2'){
+                        this.props.showToast(response.msg);
                         //this.allRefresh();
                         this.toNextPage({name:'RepaymentSence',component:RepaymentSence})
                     }
-                    if(response.mjson.code=='3'){
-                        this.props.showToast('提前还款中，不能取消');
+                    else if(response.code=='3'){
+                        this.props.showToast(response.msg);
                         //this.allRefresh();
                         this.toNextPage({name:'RepaymentSence',component:RepaymentSence})
                     }
-                    else{
-                        this.props.showModal(false);
-                        this.refs.repaymentmodal.changeShowType(true,'申请还款成功!系统将从您的账户扣款,' +
-                            '请保证账户足额,超过还款日期仍未充值,提前还款自动取消');
-                    }
-                },
-                (error) => {
-                    if (error.mycode == -300 || error.mycode == -500) {
-                        this.props.showToast('申请失败');
-                    } else {
-                        this.props.showToast(error.mjson.msg);
-                    }
+                    else {
 
+                        this.props.showToast(response.msg);
+                    }
                 });
     }
 
