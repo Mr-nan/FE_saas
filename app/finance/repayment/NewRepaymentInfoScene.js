@@ -52,7 +52,7 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
                     <RepaymentInfoPage ref="repaymentinfopage" callBack={(params)=>{
                         params.params.refresh = ()=>{this.refresh();}
                         this.toNextPage(params)
-                    }} loan_id={this.props.loan_id} loan_number={this.props.loan_number}  tabLabel="ios-paper"/>
+                    }} loan_id={this.props.loan_id} loan_number={this.props.loan_number} payment_number={this.props.payment_number}   tabLabel="ios-paper"/>
                     <PlanInfoScene ref="planinfoscene" callBack={(params)=>{
                         params.params.refresh = ()=>{this.refresh();}
                         this.toNextPage(params)

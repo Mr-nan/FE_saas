@@ -32,7 +32,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
             <View style={[{width: width, backgroundColor: '#ffffff'},styles.padding]}>
                 <View style={{flex:1,height:Pixel.getPixel(144)}}>
                     <Text allowFontScaling={false} 
-                        style={styles.loanCodeStyle}>单号：{this.props.items.loan_number}</Text>
+                        style={styles.loanCodeStyle}>单号：{this.props.items.test_coupon_info.loan_number}</Text>
                     <View
                         style={{flex: 1,
                         marginTop:Pixel.getPixel(1),
@@ -42,7 +42,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                             应还总额
                         </Text>
                         <Text allowFontScaling={false}  style={styles.loanMoneyStyle}>
-                            {this.props.items.total_repayment}
+                            {this.props.items.money}
                         </Text>
                     </View>
                 </View>
@@ -53,19 +53,19 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                             放款额:
                         </Text>
                         <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0),color:fontAndColor.COLORA0}]}>
-                            {this.props.items.loan_mny_str} | {this.props.items.loanperiod}{this.props.items.loanperiod_type}
+                            {this.props.items.test_coupon_info.loan_mny_str} | {this.props.items.loanperiod}{this.props.items.test_coupon_info.loanperiod_type}
                         </Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
                         <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                            放款时间:{this.props.items.loan_time_str}
+                            放款时间:{this.props.items.test_coupon_info.loan_time_str}
                         </Text>
                     </View>
                 </View>
                 <View style={styles.lineStyle}/>
                 <View style={styles.itemStyle}>
                     <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                        {this.props.items.model_name}
+                        {this.props.items.car_info.model_name}
                     </Text>
                 </View>
             </View>

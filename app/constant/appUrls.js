@@ -397,12 +397,20 @@ export const APP_UPDATE = BASEURL + 'v1/system/index';
  **/
 export const REPAYMENT_GETLIST = 'api/v2/Repayment/getList';
 
+
 /**
  * from @marongting
  *
- * 获取新还款信息
+ * 获取申请还款
  **/
-export const PREPAYMENT_REPAYMENT_DETAIL = 'Api/V1/Prepayment/repayment_detail';
+export const PREPAYMENT_APPLY = 'api/V1/Prepayment/apply';
+
+/**
+ * from @marongting
+ *
+ * 获取申请还款信息
+ **/
+export const PREPAYMENT_REPAYMENT_DETAIL = 'api/V1/Prepayment/repayment_detail';
 
 /**
  * from @zhaojian
@@ -661,7 +669,7 @@ export const NEWREPAYMENT_GET_INFO = 'api/v5/NewRepayment/get_info';
  *
  * 取消提前还款
  **/
-export const PREPAYMENT_CANCEL_REPAYMENT = 'Api/V1/Prepayment/cancel_repayment';
+export const PREPAYMENT_CANCEL_REPAYMENT = 'api/V1/Prepayment/cancel_repayment';
 
 /**
  * from @zhaojian

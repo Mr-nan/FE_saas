@@ -42,7 +42,6 @@ export  default class RepaymentScene extends BaseComponent {
     initFinish = () => {
         this.setState({renderPlaceholderOnly: 'success'});
     }
-
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
@@ -55,10 +54,11 @@ export  default class RepaymentScene extends BaseComponent {
                     locked={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资",'采购融资','车抵贷']}/>}
                 >
-                    <SingleRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
+                    <SingleRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type,payment_number)=>{
                       this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,
-                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'SingleRepaymentPage'}});
-                    }} tabLabel="ios-paper"/>
+                      params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'SingleRepaymentPage'}});
+                    }
+                    } tabLabel="ios-paper"/>
 
                     <InventoryRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type,planid)=>{
                       this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,

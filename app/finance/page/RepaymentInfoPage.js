@@ -68,28 +68,29 @@ export  default class RepaymentInfoPage extends BaseComponent {
 
     getData = () => {
         let maps = {
-            api: Urls.NEWREPAYMENT_GET_INFO,
+            api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
             loan_id: this.props.loan_id,
             loan_number: this.props.loan_number,
             type: '2',
+            loan_code:this.props.payment_number,
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    movies = response.mjson.data;
-                    moneyList.push({name:'逾期情况',data:movies.overdue});
-                    moneyList.push({name: '利息总额', data: movies.interest_total});
-                    moneyList.push({name: '已还利息', data: movies.interest});
-                    moneyList.push({name: '待还利息', data: movies.interest_other});
-                    moneyList.push({name: '使用优惠券数量', data: movies.coupon_info.coupon_number});
-                    moneyList.push({name: '使用优惠券金额', data: movies.coupon_info.coupon_usable});
-                    moneyList.push({name: '优惠券还息金额', data: movies.coupon_info.coupon_repayment});
+                    movies = response.mjson.data.payment_info;
+                    moneyList.push({name:'逾期情况',data:movies.payment_isoverdue_status});
+                    moneyList.push({name: '利息总额', data: movies.test_coupon_info.interest_total});
+                    moneyList.push({name: '已还利息', data: movies.test_coupon_info.interest});
+                    moneyList.push({name: '待还利息', data: movies.test_coupon_info.interest_other});
+                    moneyList.push({name: '使用优惠券数量', data: movies.test_coupon_info.coupon_info.coupon_number});
+                    moneyList.push({name: '使用优惠券金额', data: movies.test_coupon_info.coupon_info.coupon_usable});
+                    moneyList.push({name: '优惠券还息金额', data: movies.test_coupon_info.coupon_info.coupon_repayment});
 
-                    nameList.push({name: '渠道名称', data: movies.qvdaoname});
-                    nameList.push({name:'利息转换天数',data:movies.lixizhuanhuandays});
-                    nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
-                    nameList.push({name: '开户行', data: movies.bank_info.bank});
-                    nameList.push({name: '开户支行', data: movies.bank_info.branch});
-                    nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber});
+                    nameList.push({name: '渠道名称', data: movies.test_coupon_info.qvdaoname});
+                    nameList.push({name:'利息转换天数',data:movies.test_coupon_info.change_day});
+                    nameList.push({name: '还款账户', data: movies.test_coupon_info.bank_info.repaymentaccount});
+                    nameList.push({name: '开户行', data: movies.test_coupon_info.bank_info.bank});
+                    nameList.push({name: '开户支行', data: movies.test_coupon_info.bank_info.branch});
+                    nameList.push({name: '还款账号', data: movies.test_coupon_info.bank_info.repaymentnumber});
                     this.setState({renderPlaceholderOnly: 'success'});
                 },
                 (error) => {
@@ -105,7 +106,8 @@ export  default class RepaymentInfoPage extends BaseComponent {
         content: '申请提前还款',
         mOnPress: () => {
              this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
-                 loan_number:this.props.loan_number,from:'SingleRepaymentPage'
+                 loan_number:this.props.loan_number,payment_number:this.props.payment_number,from:'SingleRepaymentPage',
+                 loan_id:this.props.loan_id
              }});
         }
     }
@@ -140,7 +142,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <NewRepaymentInfoTopItem items={movies} loan_number={this.props.loan_number}/>
+                <NewRepaymentInfoTopItem items={movies.test_coupon_info} loan_number={this.props.loan_number}/>
             )
         } else if(rowId == 1){
             return (
