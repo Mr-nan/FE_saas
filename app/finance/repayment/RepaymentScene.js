@@ -30,6 +30,8 @@ import ChedidaiInventoryPlanInfoScene from '../repayment/ChedidaiInventoryPlanIn
 import ChedidaiRepaymentPage from '../page/ChedidaiRepaymentPage'
 import NewPurchaseRepaymentInfoScene from '../repayment/NewPurchaseRepaymentInfoScene';
 import PurchaseRepaymentPage from '../page/PurchaseRepaymentPage';
+import RepaymentCreditInfoScene from './RepaymentCreditInfoScene';
+
 
 export  default class RepaymentScene extends BaseComponent {
 
@@ -41,6 +43,16 @@ export  default class RepaymentScene extends BaseComponent {
 
     initFinish = () => {
         this.setState({renderPlaceholderOnly: 'success'});
+    }
+
+    toNext = (loan_id,loan_number,type,payment_number,payment_status) => {
+        if(payment_status == 0){
+            this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,
+                params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'SingleRepaymentPage'}});
+        }else{
+            this.toNextPage({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,
+                params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'SingleRepaymentPage'}});
+        }
     }
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -54,11 +66,11 @@ export  default class RepaymentScene extends BaseComponent {
                     locked={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资",'采购融资','车抵贷']}/>}
                 >
-                    <SingleRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type,payment_number)=>{
+                    <SingleRepaymentPage customerName={this.props.customerName} callBack={/*(loan_id,loan_number,type,payment_number)=>{
                       this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,
                       params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'SingleRepaymentPage'}});
-                    }
-                    } tabLabel="ios-paper"/>
+                    }*/
+                    (loan_id,loan_number,type,payment_number,payment_status)=>{this.toNext(loan_id,loan_number,type,payment_number,payment_status)}} tabLabel="ios-paper"/>
 
                     <InventoryRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type,planid)=>{
                       this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
