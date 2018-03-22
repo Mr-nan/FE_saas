@@ -137,8 +137,8 @@ export  default class CancelRepayment extends BaseComponent {
         this.props.showModal(true);
         let maps = {
             api: Urls.PREPAYMENT_CANCEL_REPAYMENT,
-            loan_id: this.props.loan_id,
-            type: '2',
+            /*loan_id: this.props.loan_id,
+            type: '2',*/
             loan_number: this.props.loan_number,
             payment_number:this.props.payment_number,
         };
