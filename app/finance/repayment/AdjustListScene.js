@@ -141,7 +141,7 @@ export  default class AdjustListScene extends BaseComponent {
                                 ref="inputText"
                                 underlineColorAndroid={"#00000000"}
                                 placeholder={'请输入密码'}
-                                style={{width:Pixel.getPixel(80),height:Pixel.getPixel(30),color:"#9e9e9e",fontSize:Pixel.getFontPixel(12),marginLeft:Pixel.getPixel(10)}}
+                                style={{width:Pixel.getPixel(80),height:Pixel.getPixel(40),color:"#9e9e9e",fontSize:Pixel.getFontPixel(12),marginLeft:Pixel.getPixel(10),paddingTop:0,paddingBottom:0}}
                                 placeholderTextColor={fontAndColor.COLORA1}
                                 maxLength={11}
                                 onChangeText={(text) => {
