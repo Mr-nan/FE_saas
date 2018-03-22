@@ -37,7 +37,7 @@ let adjustLsit = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import RepaymentModal from '../../component/RepaymentModal';
-export  default class PurchaseLoanStatusScene extends BaseComponent {
+export  default class CancelRepayment extends BaseComponent {
 
     constructor(props) {
         super(props);
