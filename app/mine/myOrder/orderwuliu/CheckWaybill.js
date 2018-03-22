@@ -105,7 +105,7 @@ export default class CheckWaybill extends BaseComponent {
                             feeDatas.push({title: '物流费', value: data.logistics_amount + '元'});
                             feeDatas.push({title: '运输类型', value: trans_type});
                             if(data.trans_type == 1){
-                                if(data.send_type==0){
+                                if(data.get_type==0){
                                     feeDatas.push({title: '运输方式', value: '平台上门取车'});
                                 }else{
                                     feeDatas.push({title: '运输方式', value: '客户送车到网点'});
