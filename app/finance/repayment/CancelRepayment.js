@@ -156,14 +156,13 @@ export  default class CancelRepayment extends BaseComponent {
                 }
             },(error)=>{
                 this.props.showModal(false);
-                this.props.showToast(error.mjson.msg);
                 if(response.code=='-2005105'){
-                    this.props.showToast(response.msg);
+                    this.props.showToast(error.mjson.msg);
                     this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
                         params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
                     })
                 } else {
-                    this.props.showToast(response.msg);
+                    this.props.showToast(error.mjson.msg);
                     this.toNextPage({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,
                         params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
                     })
