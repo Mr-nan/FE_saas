@@ -147,8 +147,8 @@ export  default class CancelRepayment extends BaseComponent {
             .then((response) => {
                 this.props.showModal(false);
                 console.log(response+'----')
-                if(response.code=='1'){
-                    this.props.showToast(response.msg);
+                if(response.mjson.code=='1'){
+                    this.props.showToast(response.mjson.msg);
                     //this.allRefresh();
                     this.toNextPage({name:'RepaymentSence',component:RepaymentSence,
                         params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
