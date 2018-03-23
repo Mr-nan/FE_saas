@@ -30,7 +30,8 @@ import MyButton from '../../component/MyButton';
 import ServerMoneyListModal from '../../component/ServerMoneyListModal';
 import AccountModal from './component/AccountModal';
 import RepaymentSence from './RepaymentScene';
-import NewRepaymentInfoScene from './NewRepaymentInfoScene'
+import NewRepaymentInfoScene from './NewRepaymentInfoScene';
+import RepaymentCreditInfoScene from './RepaymentCreditInfoScene'
 let moneyList = [];
 let nameList = [];
 let adjustLsit = [];
@@ -144,28 +145,30 @@ export  default class CancelRepayment extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-            console.log(response+'----')
-                    if(response.code=='1'){
-                        this.props.showToast(response.msg);
-                        //this.allRefresh();
-                        this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene})
-                    }
-                    if(response.code=='2'){
-                        this.props.showToast(response.msg);
-                        //this.allRefresh();
-                        this.toNextPage({name:'RepaymentSence',component:RepaymentSence})
-                    }
-                    else if(response.code=='3'){
-                        this.props.showToast(response.msg);
-                        //this.allRefresh();
-                        this.toNextPage({name:'RepaymentSence',component:RepaymentSence})
-                    }
-                    else {
-
-                        this.props.showToast(response.msg);
-                        this.toNextPage({name:'RepaymentSence',component:RepaymentSence})
-                    }
-                });
+                this.props.showModal(false);
+                console.log(response+'----')
+                if(response.code=='1'){
+                    this.props.showToast(response.msg);
+                    //this.allRefresh();
+                    this.toNextPage({name:'RepaymentSence',component:RepaymentSence,
+                        params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                    })
+                }
+            },(error)=>{
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+                if(response.code=='-2005105'){
+                    this.props.showToast(response.msg);
+                    this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
+                        params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                    })
+                } else {
+                    this.props.showToast(response.msg);
+                    this.toNextPage({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,
+                        params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                    })
+                }
+            });
     }
 
     render() {
