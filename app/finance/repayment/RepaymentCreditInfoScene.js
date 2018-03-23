@@ -139,18 +139,20 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                             this.props.showModal(false);
                             this.refs.repaymentmodal.changeShowType(true,'申请还款成功!系统将从您的账户扣款,' +
                                 '请保证账户足额,超过还款日期仍未充值,提前还款自动取消');
-                        }*/else if(response.code == '-2005010'){
-                            this.props.showToast(response.msg);
-                            this.toNextPage({name:'RepaymentInfoPage',component:RepaymentInfoPage,
-                                params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number,from:'SingleRepaymentPage',
-                                    loan_id:this.props.loan_id}})
+                        }*/
+                    },(error)=>{
+                    if(error.mjson.code == '-2005010'){
+                this.props.showToast(response.msg);
+                this.toNextPage({name:'RepaymentInfoPage',component:RepaymentInfoPage,
+                    params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number,
+                        loan_id:this.props.loan_id}})
 
-                        }else{
-                            this.props.showToast(response.data.msg);
-                            this.allRefresh();
+            }else{
+                this.props.showToast(response.data.msg);
+                this.allRefresh();
 
-                        }
-                    });
+            }
+                });
         }
     }
 
