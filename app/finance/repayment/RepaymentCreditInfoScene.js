@@ -35,6 +35,7 @@ import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import RepaymentModal from '../../component/RepaymentModal';
 import RepaymentInfoPage from './RepaymentCreditInfoScene';
+import RepaymentSence from './RepaymentScene';
 export  default class PurchaseLoanStatusScene extends BaseComponent {
 
     constructor(props) {
@@ -132,15 +133,15 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             };
             request(Urls.FINANCE, 'Post', maps)
                 .then((response) => {
-                        if(response.code =='1'){
-                            this.props.showToast('申请成功');
-                            this.allRefresh();
-                        }/*else{
-                            this.props.showModal(false);
-                            this.refs.repaymentmodal.changeShowType(true,'申请还款成功!系统将从您的账户扣款,' +
-                                '请保证账户足额,超过还款日期仍未充值,提前还款自动取消');
-                        }*/
+                    this.props.showModal(false);
+                        if(response.mjson.code =='1'){
+                            this.props.showToast(response.mjson.msg);
+                            this.toNextPage({name:'RepaymentSence',component:RepaymentSence,
+                                params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number,
+                                loan_id:this.props.loan_id}})
+                        }
                     },(error)=>{
+                    this.props.showModal(false);
                     if(error.mjson.code == '-2005010'){
                 this.props.showToast(error.mjson.msg);
                 this.toNextPage({name:'RepaymentInfoPage',component:RepaymentInfoPage,
