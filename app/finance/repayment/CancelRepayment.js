@@ -156,7 +156,7 @@ export  default class CancelRepayment extends BaseComponent {
                 }
             },(error)=>{
                 this.props.showModal(false);
-                if(response.code=='-2005105'){
+                if(error.mjson.code=='-2005105'){
                     this.props.showToast(error.mjson.msg);
                     this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
                         params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
