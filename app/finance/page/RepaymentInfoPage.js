@@ -103,11 +103,11 @@ export  default class RepaymentInfoPage extends BaseComponent {
         opacity: 0.9,
         content: '申请提前还款',
         mOnPress: () => {
-            /*this.toNext();*/
-             this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
+            this.toNext();
+            /* this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
                  loan_number:this.props.loan_number,payment_number:this.props.payment_number,from:'SingleRepaymentPage',
                  loan_id:this.props.loan_id
-             }});
+             }});*/
         }
     }
     toNext =() => {
