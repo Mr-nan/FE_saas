@@ -144,6 +144,7 @@ export  default class CancelRepayment extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
+            console.log(response+'----')
                     if(response.code=='1'){
                         this.props.showToast(response.msg);
                         //this.allRefresh();
@@ -162,6 +163,7 @@ export  default class CancelRepayment extends BaseComponent {
                     else {
 
                         this.props.showToast(response.msg);
+                        this.toNextPage({name:'RepaymentSence',component:RepaymentSence})
                     }
                 });
     }
