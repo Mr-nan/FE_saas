@@ -30,8 +30,7 @@ import ChedidaiInventoryPlanInfoScene from '../repayment/ChedidaiInventoryPlanIn
 import ChedidaiRepaymentPage from '../page/ChedidaiRepaymentPage'
 import NewPurchaseRepaymentInfoScene from '../repayment/NewPurchaseRepaymentInfoScene';
 import PurchaseRepaymentPage from '../page/PurchaseRepaymentPage';
-import RepaymentCreditInfoScene from './RepaymentCreditInfoScene';
-
+import CancelRepayment from './CancelRepayment';
 
 export  default class RepaymentScene extends BaseComponent {
 
@@ -50,8 +49,35 @@ export  default class RepaymentScene extends BaseComponent {
             this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,
                 params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'SingleRepaymentPage',showToast:(text)=>{this.props.showToast(text);}}});
         }else{
-            this.toNextPage({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,
+            this.toNextPage({name:'CancelRepayment',component:CancelRepayment,
                 params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'SingleRepaymentPage'}});
+        }
+    }
+    toNext1 = (loan_id,loan_number,type,payment_number,payment_status) => {
+        if(payment_status == 0){
+            this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
+                params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'InventoryRepaymentPage',showToast:(text)=>{this.props.showToast(text);}}});
+        }else{
+            this.toNextPage({name:'CancelRepayment',component:CancelRepayment,
+                params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'InventoryRepaymentPage'}});
+        }
+    }
+    toNext2 = (loan_id,loan_number,type,payment_number,payment_status) => {
+        if(payment_status == 0){
+            this.toNextPage({name:'NewPurchaseRepaymentInfoScene',component:NewPurchaseRepaymentInfoScene,
+                params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'PurchaseRepaymentPage',showToast:(text)=>{this.props.showToast(text);}}});
+        }else{
+            this.toNextPage({name:'CancelRepayment',component:CancelRepayment,
+                params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'PurchaseRepaymentPage'}});
+        }
+    }
+    toNext3 = (loan_id,loan_number,type,payment_number,payment_status) => {
+        if(payment_status == 0){
+            this.toNextPage({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
+                params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'ChedidaiRepaymentPage',showToast:(text)=>{this.props.showToast(text);}}});
+        }else{
+            this.toNextPage({name:'CancelRepayment',component:CancelRepayment,
+                params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'ChedidaiRepaymentPage'}});
         }
     }
     render() {
@@ -72,20 +98,23 @@ export  default class RepaymentScene extends BaseComponent {
                     }*/
                     (loan_id,loan_number,type,payment_number,payment_status)=>{this.toNext(loan_id,loan_number,type,payment_number,payment_status)}} tabLabel="ios-paper"/>
 
-                    <InventoryRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type,planid)=>{
+                    <InventoryRepaymentPage customerName={this.props.customerName} callBack={/*(loan_id,loan_number,type,planid)=>{
                       this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'InventoryRepaymentPage',planid:planid}});
-                    }} tabLabel="ios-people"/>
+                    }*/
+                        (loan_id,loan_number,type,payment_number,payment_status)=>{this.toNext1(loan_id,loan_number,type,payment_number,payment_status)}} tabLabel="ios-people"/>
 
-                    <PurchaseRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
+                    <PurchaseRepaymentPage customerName={this.props.customerName} callBack={/*(loan_id,loan_number,type)=>{
                       this.toNextPage({name:'NewPurchaseRepaymentInfoScene',component:NewPurchaseRepaymentInfoScene,
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'PurchaseRepaymentPage'}});
-                    }} tabLabel="ios-chatboxes"/>
+                    }*/(loan_id,loan_number,type,payment_number,payment_status)=>{this.toNext2(loan_id,loan_number,type,payment_number,payment_status)}
+                    } tabLabel="ios-chatboxes"/>
 
-                    <ChedidaiRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type,planid)=>{
+                    <ChedidaiRepaymentPage customerName={this.props.customerName} callBack={/*(loan_id,loan_number,type,planid)=>{
                       this.toNextPage({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'ChedidaiRepaymentPage',planid:planid}});
-                    }} tabLabel="ios-peoplea"/>
+                    }*/(loan_id,loan_number,type,payment_number,payment_status)=>{this.toNext3(loan_id,loan_number,type,payment_number,payment_status)}
+                    } tabLabel="ios-peoplea"/>
 
                 </ScrollableTabView>
                 <NavigationView

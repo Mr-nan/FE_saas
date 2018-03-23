@@ -68,26 +68,28 @@ export  default class RepaymentInfoPage extends BaseComponent {
 
     getData = () => {
         let maps = {
-            api: Urls.NEWREPAYMENT_GET_INFO,
-            loan_id: this.props.loan_id,
-            planid:this.props.planid,
+            api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
+            loan_number: this.props.loan_number,
+            loan_code:this.props.payment_number,
             type: '1',
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    movies = response.mjson.data;
-                    moneyList.push({name: '利息总额', data: movies.interest_total});
-                    moneyList.push({name: '已还利息', data: movies.interest});
-                    moneyList.push({name: '待还利息', data: movies.interest_other});
-                    moneyList.push({name: '使用优惠券数量', data: movies.coupon_info.coupon_number});
-                    moneyList.push({name: '使用优惠券金额', data: movies.coupon_info.coupon_usable});
-                    moneyList.push({name: '优惠券还息金额', data: movies.coupon_info.coupon_repayment});
+                    movies = response.mjson.data.payment_info;
+                    moneyList.push({name:'逾期情况',data:movies.payment_isoverdue_status});
+                    moneyList.push({name: '利息总额', data: movies.test_coupon_info.interest_total});
+                    moneyList.push({name: '已还利息', data: movies.test_coupon_info.interest});
+                    moneyList.push({name: '待还利息', data: movies.test_coupon_info.interest_other});
+                    moneyList.push({name: '使用优惠券数量', data: movies.test_coupon_info.coupon_info.coupon_number});
+                    moneyList.push({name: '使用优惠券金额', data: movies.test_coupon_info.coupon_info.coupon_usable});
+                    moneyList.push({name: '优惠券还息金额', data: movies.test_coupon_info.coupon_info.coupon_repayment});
 
-                    nameList.push({name: '渠道名称', data: movies.qvdaoname});
-                    nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
-                    nameList.push({name: '开户行', data: movies.bank_info.bank});
-                    nameList.push({name: '开户支行', data: movies.bank_info.branch});
-                    nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber});
+                    nameList.push({name: '渠道名称', data: movies.test_coupon_info.qvdaoname});
+                    nameList.push({name:'利息转换天数',data:movies.test_coupon_info.change_day});
+                    nameList.push({name: '还款账户', data: movies.test_coupon_info.bank_info.repaymentaccount});
+                    nameList.push({name: '开户行', data: movies.test_coupon_info.bank_info.bank});
+                    nameList.push({name: '开户支行', data: movies.test_coupon_info.bank_info.branch});
+                    nameList.push({name: '还款账号', data: movies.test_coupon_info.bank_info.repaymentnumber});
                     this.setState({renderPlaceholderOnly: 'success'});
                 },
                 (error) => {
@@ -102,9 +104,20 @@ export  default class RepaymentInfoPage extends BaseComponent {
         opacity: 0.9,
         content: '申请提前还款',
         mOnPress: () => {
-             this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
+            this.toNext();
+             /*this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
                  loan_number:this.props.loan_number,from:'SingleRepaymentPage'
-             }});
+             }});*/
+        }
+    }
+    toNext =() => {
+        if(movies.apply_status.code == 0){
+            this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
+                loan_number:this.props.loan_number,payment_number:this.props.payment_number,from:'SingleRepaymentPage',
+                loan_id:this.props.loan_id
+            }});
+        }else{
+            this.props.showToast(movies.apply_status.msg);
         }
     }
 
