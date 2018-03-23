@@ -205,7 +205,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             )
         } else if (rowId == 1) {
             return (
-                <RepaymentInfoDateItem loanday={movies.days} status={movies.test_coupon_info.paymen_status} callBack={(time)=>{
+                <RepaymentInfoDateItem loanday={movies.days} time={movies.repayment_time}status={movies.test_coupon_info.paymen_status} callBack={(time)=>{
                     let selecttime = time/1000;
                     let lasttime = parseFloat(Date.parse(movies.list[0].dead_line)/1000);
                     let firsttime = parseFloat(movies.loan_time);
@@ -259,17 +259,17 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
                 this.state.loan_day-parseFloat(movies.true_bondmny)-parseFloat(movies.test_coupon_info.interest)
                     +parseFloat(movies.test_coupon_info.all_fee)).toFixed(2);
-                name = '应还总额=本金+本金*还息费率/360*计息天数-保证金-已还利息'+'+服务费';
+                name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-保证金-已还利息'+'+服务费';
                 formula = '='+movies.money+'+'
-                    +movies.money+'*'+movies.rate/100+'/360*'
+                    +movies.money+'*'+movies.rate/100+'/'+movies.test_coupon_info.change_day+'*'
                     +this.state.loan_day+'-'+movies.true_bondmny+'-'+movies.test_coupon_info.interest+'+'+movies.test_coupon_info.all_fee
             }else{
                 money = (parseFloat(movies.money)
                 +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
                 this.state.loan_day-parseFloat(movies.true_bondmny)-parseFloat(movies.test_coupon_info.interest)).toFixed(2);
-                name = '应还总额=本金+本金*还息费率/360*计息天数-保证金-已还利息';
+                name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-保证金-已还利息';
                 formula = '='+movies.money+'+'
-                    +movies.money+'*'+movies.rate/100+'/360*'
+                    +movies.money+'*'+movies.rate/100+'/'+movies.test_coupon_info.change_day+'*'
                     +this.state.loan_day+'-'+movies.true_bondmny+'-'+movies.test_coupon_info.interest;
             }
             return (

@@ -21,7 +21,7 @@ export  default class RepaymentInfoDateItem extends PureComponent {
 
     constructor(props) {
         super(props);
-        let date = new Date();
+    /*    let date = new Date();
         let seperator1 = "-";
         let month = date.getMonth() + 1;
         let strDate = date.getDate();
@@ -31,11 +31,11 @@ export  default class RepaymentInfoDateItem extends PureComponent {
         if (strDate >= 0 && strDate <= 9) {
             strDate = "0" + strDate;
         }
-        let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+        let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;*/
         this.state = {
             show: 'row',
             isDateTimePickerVisible:false,
-            selectTime:currentdate
+            selectTime:this.props.time,
         };
     }
 
@@ -43,7 +43,7 @@ export  default class RepaymentInfoDateItem extends PureComponent {
         return (
             <View style={styles.itemStyle}>
                 <View style={{flex:1,justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
-                    <Text allowFontScaling={false}  style={[styles.loanCodeStyle]}>还款日期</Text>
+                    <Text allowFontScaling={false}  style={[styles.loanCodeStyle]}>提前还款日期</Text>
                 </View>
                 <TouchableOpacity onPress={()=>{
                     if(this.props.status=='0'){
