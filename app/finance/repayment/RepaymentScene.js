@@ -78,14 +78,14 @@ export  default class RepaymentScene extends BaseComponent {
                     }*/
                         (loan_id,loan_number,type,payment_number,payment_status)=>{this.toNext({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
                             params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'InventoryRepaymentPage',planid:planid}},
-                            loan_id,loan_number,type,payment_number,payment_status,InventoryRepaymentPage)}} tabLabel="ios-people"/>
+                            loan_id,loan_number,type,payment_number,payment_status,'InventoryRepaymentPage')}} tabLabel="ios-people"/>
 
                     <PurchaseRepaymentPage customerName={this.props.customerName} callBack={/*(loan_id,loan_number,type)=>{
                       this.toNextPage({name:'NewPurchaseRepaymentInfoScene',component:NewPurchaseRepaymentInfoScene,
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'PurchaseRepaymentPage'}});
                     }*/(loan_id,loan_number,type,payment_number,payment_status)=>{this.toNext({name:'NewPurchaseRepaymentInfoScene',component:NewPurchaseRepaymentInfoScene,
                         params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'PurchaseRepaymentPage'}},
-                        loan_id,loan_number,type,payment_number,payment_status,PurchaseRepaymentPage)}
+                        loan_id,loan_number,type,payment_number,payment_status,'PurchaseRepaymentPage')}
                     } tabLabel="ios-chatboxes"/>
 
                     <ChedidaiRepaymentPage customerName={this.props.customerName} callBack={/*(loan_id,loan_number,type,planid)=>{
@@ -93,7 +93,7 @@ export  default class RepaymentScene extends BaseComponent {
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'ChedidaiRepaymentPage',planid:planid}});
                     }*/(loan_id,loan_number,type,payment_number,payment_status)=>{this.toNext3({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
                         params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'ChedidaiRepaymentPage',planid:planid}},
-                        loan_id,loan_number,type,payment_number,payment_status,ChedidaiRepaymentPage)}
+                        loan_id,loan_number,type,payment_number,payment_status,'ChedidaiRepaymentPage')}
                     } tabLabel="ios-peoplea"/>
 
                 </ScrollableTabView>

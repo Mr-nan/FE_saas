@@ -21,7 +21,7 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import MyButton from '../../component/MyButton';
 import BaseComponent from '../../component/BaseComponent';
-let allList = [];
+//let allList = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import  LoadMoreFooter from '../../component/LoadMoreFooter';
@@ -32,6 +32,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
+        this.allList=[];
         this.state = {
             source: [],
             renderPlaceholderOnly: 'blank',
@@ -49,7 +50,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
     componentWillUnmount() {
          page = 1;
          allPage = 1;
-        allList = [];
+        this.allList = [];
     }
 
     initFinish = () => {
@@ -64,11 +65,11 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    allList.push(...response.mjson.data.list);
+                    this.allList.push(...response.mjson.data.list);
                     allPage = response.mjson.data.total/10;
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
-                        source: ds.cloneWithRows(allList),
+                        source: ds.cloneWithRows(this.allList),
                         renderPlaceholderOnly: 'success',
                         isRefreshing: false
                     });
@@ -83,7 +84,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
     }
 
     refreshingData = () => {
-        allList = [];
+        this.allList = [];
         this.setState({isRefreshing: true});
         page = 1;
         this.getData();
