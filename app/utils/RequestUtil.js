@@ -73,9 +73,9 @@ const request = (url, method, params, backToLogin) => {
                                     }])
                                 }
                             } else {
-                                if(responseData.msg.length>=40){
+                               /* if(responseData.msg.length>=40){
                                     responseData.msg = '系统异常'
-                                }
+                                }*/
                                 reject({mycode: responseData.code, mjson: responseData});
                             }
                         }
