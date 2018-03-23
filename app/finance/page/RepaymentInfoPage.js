@@ -114,7 +114,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
         if(movies.apply_status.code == 0){
             this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
                 loan_number:this.props.loan_number,payment_number:this.props.payment_number,from:'SingleRepaymentPage',
-                loan_id:this.props.loan_id
+                loan_id:this.props.loan_id,total_repayment_money:movies.total_repayment_money
             }});
         }else{
             this.props.showToast(movies.apply_status.msg);

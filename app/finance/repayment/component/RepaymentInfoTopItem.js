@@ -42,7 +42,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                             应还总额
                         </Text>
                         <Text allowFontScaling={false}  style={styles.loanMoneyStyle}>
-                            {this.props.items.money}
+                            {this.props.items.total_repayment_money}
                         </Text>
                     </View>
                 </View>

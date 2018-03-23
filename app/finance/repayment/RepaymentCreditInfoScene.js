@@ -31,6 +31,7 @@ import ServerMoneyListModal from '../../component/ServerMoneyListModal';
 let moneyList = [];
 let nameList = [];
 let adjustLsit = [];
+let currentdate;
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import RepaymentModal from '../../component/RepaymentModal';
@@ -53,12 +54,12 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         if (strDate >= 0 && strDate <= 9) {
             strDate = "0" + strDate;
         }
-        let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+         currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
         this.state = {
             source: ds.cloneWithRows(mList),
             renderPlaceholderOnly: 'blank',
             loan_day: '',
-            loan_dayStr: currentdate
+            loan_dayStr: this.props.total_repayment_money
         };
     }
 
@@ -129,7 +130,6 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 api: Urls.PREPAYMENT_APPLY,
                 loan_number: this.props.loan_number,
                 payment_number:this.props.payment_number,
-                use_time: this.state.loan_dayStr
             };
             request(Urls.FINANCE, 'Post', maps)
                 .then((response) => {
@@ -142,17 +142,21 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                         }
                     },(error)=>{
                     this.props.showModal(false);
-                    if(error.mjson.code == '-2005010'){
+            /*        if(error.mjson.code == '-2005010'){
                 this.props.showToast(error.mjson.msg);
                 this.toNextPage({name:'RepaymentInfoPage',component:RepaymentInfoPage,
                     params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number,
                         loan_id:this.props.loan_id}})
-
-            }else{
+                    }else{
                 this.props.showToast(error.mjson.msg);
                 this.allRefresh();
-
-            }
+            }*/   if(currentdate != this.state.loan_dayStr){
+                      this.allRefresh();
+                    }else{
+                        this.toNextPage({name:'RepaymentInfoPage',component:RepaymentInfoPage,
+                            params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number,
+                                loan_id:this.props.loan_id}})
+                    }
                 });
         }
     }
@@ -252,21 +256,21 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             )
         } else if (rowId == 5) {
             let name = '';
-            let money = 0;
+            let money = movies.total_repayment_money;
             let formula = '';
             if(parseFloat(movies.test_coupon_info.all_fee)>0){
-                money = (parseFloat(movies.money)
+                /*money = (parseFloat(movies.money)
                 +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
                 this.state.loan_day-parseFloat(movies.true_bondmny)-parseFloat(movies.test_coupon_info.interest)
-                    +parseFloat(movies.test_coupon_info.all_fee)).toFixed(2);
+                    +parseFloat(movies.test_coupon_info.all_fee)).toFixed(2);*/
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-保证金-已还利息'+'+服务费';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+movies.rate/100+'/'+movies.test_coupon_info.change_day+'*'
                     +this.state.loan_day+'-'+movies.true_bondmny+'-'+movies.test_coupon_info.interest+'+'+movies.test_coupon_info.all_fee
             }else{
-                money = (parseFloat(movies.money)
+               /* money = (parseFloat(movies.money)
                 +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
-                this.state.loan_day-parseFloat(movies.true_bondmny)-parseFloat(movies.test_coupon_info.interest)).toFixed(2);
+                this.state.loan_day-parseFloat(movies.true_bondmny)-parseFloat(movies.test_coupon_info.interest)).toFixed(2);*/
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-保证金-已还利息';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+movies.rate/100+'/'+movies.test_coupon_info.change_day+'*'
