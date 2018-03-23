@@ -142,13 +142,13 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                         }*/
                     },(error)=>{
                     if(error.mjson.code == '-2005010'){
-                this.props.showToast(response.msg);
+                this.props.showToast(error.mjson.msg);
                 this.toNextPage({name:'RepaymentInfoPage',component:RepaymentInfoPage,
                     params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number,
                         loan_id:this.props.loan_id}})
 
             }else{
-                this.props.showToast(response.data.msg);
+                this.props.showToast(error.mjson.msg);
                 this.allRefresh();
 
             }
