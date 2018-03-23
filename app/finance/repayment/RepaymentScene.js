@@ -91,7 +91,7 @@ export  default class RepaymentScene extends BaseComponent {
                     <ChedidaiRepaymentPage customerName={this.props.customerName} callBack={/*(loan_id,loan_number,type,planid)=>{
                       this.toNextPage({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'ChedidaiRepaymentPage',planid:planid}});
-                    }*/(loan_id,loan_number,type,payment_number,payment_status)=>{this.toNext3({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
+                    }*/(loan_id,loan_number,type,payment_number,payment_status)=>{this.toNext({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
                         params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'ChedidaiRepaymentPage',planid:planid}},
                         loan_id,loan_number,type,payment_number,payment_status,'ChedidaiRepaymentPage')}
                     } tabLabel="ios-peoplea"/>
