@@ -30,8 +30,10 @@ import MyButton from '../../component/MyButton';
 import ServerMoneyListModal from '../../component/ServerMoneyListModal';
 import AccountModal from './component/AccountModal';
 import RepaymentSence from './RepaymentScene';
+import RepaymentCreditInfoScene from './RepaymentCreditInfoScene';
+import InventoryPlanInfoScene from './InventoryPlanInfoScene';
 import NewRepaymentInfoScene from './NewRepaymentInfoScene';
-import RepaymentCreditInfoScene from './RepaymentCreditInfoScene'
+import ChedidaiInventoryPlanInfoScene from './ChedidaiInventoryPlanInfoScene'
 let moneyList = [];
 let nameList = [];
 let adjustLsit = [];
@@ -158,9 +160,24 @@ export  default class CancelRepayment extends BaseComponent {
                 this.props.showModal(false);
                 if(error.mjson.code=='-2005105'){
                     this.props.showToast(error.mjson.msg);
-                    this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
-                        params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
-                    })
+                    if(this.props.from=='SingleRepaymentPage'){
+                        this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
+                            params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                        })
+                    }else if(this.props.from=='InventoryRepaymentPage'){
+                        this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
+                            params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                        })
+                    }else if(this.props.from=='PurchaseRepaymentPage'){
+                        this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
+                            params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                        })
+                    }else{
+                        this.toNextPage({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
+                            params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                        })
+                    }
+
                 } else {
                     this.props.showToast(error.mjson.msg);
                     this.toNextPage({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,
