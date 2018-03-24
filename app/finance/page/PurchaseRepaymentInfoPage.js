@@ -86,7 +86,7 @@ export  default class PurchaseRepaymentInfoPage extends BaseComponent {
                     moneyList.push({name: '优惠券还息金额', data: movies.test_coupon_info.coupon_info.coupon_repayment});
 
                     nameList.push({name: '渠道名称', data: movies.test_coupon_info.qvdaoname});
-                    nameList.push({name:'利息转换天数',data:movies.test_coupon_info.change_day});
+                    nameList.push({name:'利息转换天数',data:movies.test_coupon_info.change_day+ '天'});
                     nameList.push({name: '还款账户', data: movies.test_coupon_info.bank_info.repaymentaccount});
                     nameList.push({name: '开户行', data: movies.test_coupon_info.bank_info.bank});
                     nameList.push({name: '开户支行', data: movies.test_coupon_info.bank_info.branch});
@@ -115,7 +115,7 @@ export  default class PurchaseRepaymentInfoPage extends BaseComponent {
     toNext =() => {
         if(movies.apply_status.code == 0){
             this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
-                loan_number:this.props.loan_number,payment_number:this.props.payment_number,from:'SingleRepaymentPage',
+                loan_number:this.props.loan_number,payment_number:this.props.payment_number,from:'PurchaseRepaymentPage',
                 loan_id:this.props.loan_id
             }});
         }else{
@@ -154,7 +154,7 @@ export  default class PurchaseRepaymentInfoPage extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <NewRepaymentInfoTopItem items={movies} loan_number={this.props.loan_number}/>
+                <NewRepaymentInfoTopItem items={movies.test_coupon_info} item={movies} loan_number={this.props.loan_number}/>
             )
         } else if(rowId == 1){
             return (

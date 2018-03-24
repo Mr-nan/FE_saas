@@ -52,7 +52,7 @@ export  default class RepaymentScene extends BaseComponent {
             this.toNextPage({name:'CancelRepayment',component:CancelRepayment,
                 params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:from,refreshListPage:refreshListPage}});
         }
-    }
+    };
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
@@ -72,22 +72,22 @@ export  default class RepaymentScene extends BaseComponent {
                         loan_id,loan_number,type,payment_number,payment_status,'SingleRepaymentPage',refreshListPage)}} tabLabel="ios-paper"/>
 
                     <InventoryRepaymentPage customerName={this.props.customerName} callBack={
-                        (loan_id,loan_number,type,payment_number,payment_status,refreshListPage)=>
+                        (loan_id,loan_number,payment_number,type,planid,payment_status,refreshListPage)=>
                         {this.toNext({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
-                            params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'InventoryRepaymentPage',planid:planid,refreshListPage:refreshListPage}},
+                            params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'InventoryRepaymentPage',planid:planid,refreshListPage:refreshListPage}},
                             loan_id,loan_number,type,payment_number,payment_status,'InventoryRepaymentPage',refreshListPage)}} tabLabel="ios-people"/>
 
                     <PurchaseRepaymentPage customerName={this.props.customerName} callBack={
-                        (loan_id,loan_number,type,payment_number,payment_status,refreshListPage)=>
+                        (loan_id,loan_number,payment_number,type,payment_status,refreshListPage)=>
                         {this.toNext({name:'NewPurchaseRepaymentInfoScene',component:NewPurchaseRepaymentInfoScene,
-                        params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'PurchaseRepaymentPage',refreshListPage:refreshListPage}},
+                        params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'PurchaseRepaymentPage',refreshListPage:refreshListPage}},
                         loan_id,loan_number,type,payment_number,payment_status,'PurchaseRepaymentPage',refreshListPage)}
                     } tabLabel="ios-chatboxes"/>
 
                     <ChedidaiRepaymentPage customerName={this.props.customerName}
-                                           callBack={(loan_id,loan_number,type,payment_number,payment_status,refreshListPage)=>
+                                           callBack={(loan_id,loan_number,payment_number,type,planid,payment_status,refreshListPage)=>
                                            {this.toNext({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
-                        params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'ChedidaiRepaymentPage',planid:planid,refreshListPage:refreshListPage}},
+                        params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'ChedidaiRepaymentPage',planid:planid,refreshListPage:refreshListPage}},
                         loan_id,loan_number,type,payment_number,payment_status,'ChedidaiRepaymentPage',refreshListPage)}
                     } tabLabel="ios-peoplea"/>
 

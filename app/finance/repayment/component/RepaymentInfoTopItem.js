@@ -22,8 +22,13 @@ export  default class RepaymentInfoTopItem extends PureComponent {
 
     constructor(props) {
         super(props);
+        let model_show = false;
+        if(this.props.from === 'SingleRepaymentPage' || this.props.from === 'PurchaseRepaymentPage'){
+            model_show = true;
+        }
         this.state = {
-            show: 'row'
+            show: 'row',
+            model_show:model_show
         };
     }
 
@@ -63,11 +68,15 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                     </View>
                 </View>
                 <View style={styles.lineStyle}/>
-                <View style={styles.itemStyle}>
-                    <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                        {this.props.items.car_info.model_name}
-                    </Text>
-                </View>
+                {
+                    this.state.model_show &&
+                    <View style={styles.itemStyle}>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
+                            {this.props.items.car_info.model_name}
+                        </Text>
+                    </View>
+                }
+
             </View>
         );
     }

@@ -50,10 +50,13 @@ export  default class ChedidaiInventoryPlanInfoScene extends BaseComponent {
                     locked={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["还款详情", "还款计划"]}/>}
                 >
-                    <ChedidaiRepaymentInfoPage planid={this.props.planid} ref="ChedidaiRepaymentInfoPage" callBack={(params)=>{
+                    <ChedidaiRepaymentInfoPage planid={this.props.planid} ref="ChedidaiRepaymentInfoPage"
+                                               showToast={(text)=>{this.props.showToast(text)}}
+                                               callBack={(params)=>{
                         params.params.refresh = ()=>{this.refresh();}
                         this.toNextPage(params)
                     }} loan_id={this.props.loan_id} loan_number={this.props.loan_number}
+                                               payment_number={this.props.payment_number}
                                                refreshListPage={()=>{this.backPage(); this.props.refreshListPage();}}
                                                tabLabel="ios-paper"/>
 
