@@ -31,7 +31,7 @@ import ServerMoneyListModal from '../../component/ServerMoneyListModal';
 let moneyList = [];
 let nameList = [];
 let adjustLsit = [];
-let currentdate;
+/*let currentdate;*/
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import RepaymentModal from '../../component/RepaymentModal';
@@ -54,7 +54,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         if (strDate >= 0 && strDate <= 9) {
             strDate = "0" + strDate;
         }
-         currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+         /*currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;*/
         this.state = {
             source: ds.cloneWithRows(mList),
             renderPlaceholderOnly: 'blank',
@@ -130,6 +130,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 api: Urls.PREPAYMENT_APPLY,
                 loan_number: this.props.loan_number,
                 payment_number:this.props.payment_number,
+                use_time:movies.repayment_time,
             };
             request(Urls.FINANCE, 'Post', maps)
                 .then((response) => {
@@ -142,15 +143,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                         }
                     },(error)=>{
                     this.props.showModal(false);
-            /*        if(error.mjson.code == '-2005010'){
-                this.props.showToast(error.mjson.msg);
-                this.toNextPage({name:'RepaymentInfoPage',component:RepaymentInfoPage,
-                    params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number,
-                        loan_id:this.props.loan_id}})
-                    }else{
-                this.props.showToast(error.mjson.msg);
-                this.allRefresh();
-            }*/   if(currentdate != this.state.loan_dayStr){
+                    if(error.mjson.code=='-2005010'){
                       this.allRefresh();
                     }else{
                         this.toNextPage({name:'RepaymentInfoPage',component:RepaymentInfoPage,

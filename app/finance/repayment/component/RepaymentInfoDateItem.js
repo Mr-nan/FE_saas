@@ -78,7 +78,8 @@ export  default class RepaymentInfoDateItem extends PureComponent {
                     cancelTextIOS='取消'
                 />*/}
                 </View>
-                {this.state.isDateTimePickerVisible ? <View style={{width:width,height:Pixel.getPixel(64),backgroundColor:fontAndColor.COLORA4,paddingLeft:Pixel.getPixel(10),paddingTop:Pixel.getPixel(10)}}>
+                {this.state.isDateTimePickerVisible ? <View style={{width:width,height:Pixel.getPixel(44),backgroundColor:fontAndColor.COLORA3,paddingLeft:Pixel.getPixel(10),
+                    paddingTop:Pixel.getPixel(10),paddingRight:Pixel.getPixel(10)}}>
                     <Text style={{fontSize:Pixel.getFontPixel(13),color:fontAndColor.COLORA2}}>提示：当日14：00之后，提前还款日期将为您自动顺延至下一个工作日。</Text>
                 </View> :null
                     }
