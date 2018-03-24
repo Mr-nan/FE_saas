@@ -23,7 +23,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
     constructor(props) {
         super(props);
         let model_show = false;
-        if(this.props.from === 'SingleRepaymentPage' || this.props.from === 'PurchaseRepaymentPage'){
+        if(this.props.from === 'SingleRepaymentPage'){
             model_show = true;
         }
         this.state = {
