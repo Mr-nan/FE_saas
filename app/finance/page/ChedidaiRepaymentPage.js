@@ -159,7 +159,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
 
         return (
             <TouchableOpacity onPress={()=>{
-                     this.props.callBack(movie.loan_id,movie.loan_number,movie.type,movie.planid,movie.payment_number,movie.payment_status);
+                     this.props.callBack(movie.loan_id,movie.loan_number,movie.type,movie.planid,movie.payment_number,movie.payment_status,this.refreshingData);
             }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>

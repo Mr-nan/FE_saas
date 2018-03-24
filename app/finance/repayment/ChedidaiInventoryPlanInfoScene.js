@@ -53,7 +53,9 @@ export  default class ChedidaiInventoryPlanInfoScene extends BaseComponent {
                     <ChedidaiRepaymentInfoPage planid={this.props.planid} ref="ChedidaiRepaymentInfoPage" callBack={(params)=>{
                         params.params.refresh = ()=>{this.refresh();}
                         this.toNextPage(params)
-                    }} loan_id={this.props.loan_id} loan_number={this.props.loan_number}  tabLabel="ios-paper"/>
+                    }} loan_id={this.props.loan_id} loan_number={this.props.loan_number}
+                                               refreshListPage={()=>{this.backPage(); this.props.refreshListPage();}}
+                                               tabLabel="ios-paper"/>
 
                     <PlanInfoScene planid={this.props.planid} ref="planinfoscene" callBack={(params)=>{
                         params.params.refresh = ()=>{this.refresh();}

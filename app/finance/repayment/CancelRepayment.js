@@ -101,15 +101,16 @@ export  default class CancelRepayment extends BaseComponent {
                     moneyList.push({name:'还息费率',data:movies.rate+'%'});
                     moneyList.push({name: '利息总额', data: movies.test_coupon_info.interest_total});
                     moneyList.push({name: '已还利息', data: movies.test_coupon_info.interest});
-                    moneyList.push({name: '贷款利息', data: movies.test_coupon_info.interest_other})
+                    moneyList.push({name: '贷款利息', data: movies.test_coupon_info.interest_other});
                     moneyList.push({name: '服务费', data: movies.test_coupon_info.all_fee});
+                    moneyList.push({name: '保证金', data: movies.money});
 
                     nameList.push({name: '渠道名称', data: movies.test_coupon_info.qvdaoname});
                     nameList.push({name: '还款账户', data: movies.test_coupon_info.bank_info.repaymentaccount});
                     nameList.push({name: '开户行', data: movies.test_coupon_info.bank_info.bank});
                     nameList.push({name: '开户支行', data: movies.test_coupon_info.bank_info.branch});
                     nameList.push({name: '还款账号', data: movies.test_coupon_info.bank_info.repaymentnumber});
-                    nameList.push({name: '保证金', data: movies.money});
+
 
                     adjustLsit.push({name: '使用优惠券数量', data: movies.test_coupon_info.coupon_info.coupon_number});
                     adjustLsit.push({name: '使用优惠券金额', data: movies.test_coupon_info.coupon_info.coupon_usable});
@@ -151,39 +152,38 @@ export  default class CancelRepayment extends BaseComponent {
                 console.log(response+'----')
                 if(response.mjson.code=='1'){
                     this.props.showToast(response.mjson.msg);
-                    //this.allRefresh();
-                    this.toNextPage({name:'RepaymentSence',component:RepaymentSence,
-                        params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
-                    })
+                    this.backPage();
+                    this.props.refreshListPage();
                 }
             },(error)=>{
                 this.props.showModal(false);
-                if(error.mjson.code=='-2005105'){
-                    this.props.showToast(error.mjson.msg);
-                    if(this.props.from=='SingleRepaymentPage'){
-                        this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
-                            params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
-                        })
-                    }else if(this.props.from=='InventoryRepaymentPage'){
-                        this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
-                            params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
-                        })
-                    }else if(this.props.from=='PurchaseRepaymentPage'){
-                        this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
-                            params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
-                        })
-                    }else{
-                        this.toNextPage({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
-                            params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
-                        })
-                    }
-
-                } else {
-                    this.props.showToast(error.mjson.msg);
-                    this.toNextPage({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,
-                        params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
-                    })
-                }
+                this.props.showToast(error.mjson.msg);
+                // if(error.mjson.code=='-2005105'){
+                //     this.props.showToast(error.mjson.msg);
+                //     if(this.props.from=='SingleRepaymentPage'){
+                //         this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
+                //             params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                //         })
+                //     }else if(this.props.from=='InventoryRepaymentPage'){
+                //         this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
+                //             params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                //         })
+                //     }else if(this.props.from=='PurchaseRepaymentPage'){
+                //         this.toNextPage({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
+                //             params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                //         })
+                //     }else{
+                //         this.toNextPage({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
+                //             params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                //         })
+                //     }
+                //
+                // } else {
+                //     this.props.showToast(error.mjson.msg);
+                //     this.toNextPage({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,
+                //         params:{loan_number:this.props.loan_number,payment_number:this.props.payment_number}
+                //     })
+                // }
             });
     }
 
@@ -234,7 +234,10 @@ export  default class CancelRepayment extends BaseComponent {
             )
         } else if (rowId == 1) {
             return (
-                <RepaymentInfoDateItem loanday={movies.days} status={movies.test_coupon_info.paymen_status} callBack={(time)=>{
+                <RepaymentInfoDateItem loanday={movies.days} time={movies.repayment_time}
+                                       hideHint={true}
+                                       status={movies.test_coupon_info.paymen_status}
+                                       callBack={(time)=>{
                     let selecttime = time/1000;
                     let lasttime = parseFloat(Date.parse(movies.list[0].dead_line)/1000);
                     let firsttime = parseFloat(movies.loan_time);
@@ -281,25 +284,25 @@ export  default class CancelRepayment extends BaseComponent {
             )
         } else if (rowId == 5) {
             let name = '';
-            let money = 0;
+            let money = movies.total_repayment_money;
             let formula = '';
             if(parseFloat(movies.test_coupon_info.all_fee)>0){
-                money = (parseFloat(movies.money)
-                +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
-                this.state.loan_day-parseFloat(movies.money)-parseFloat(movies.test_coupon_info.interest)
-                +parseFloat(movies.test_coupon_info.all_fee)).toFixed(2);
-                name = '应还总额=本金+本金*还息费率/360*计息天数-保证金-已还利息'+'+服务费';
+                // money = (parseFloat(movies.money)
+                // +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
+                // this.state.loan_day-parseFloat(movies.money)-parseFloat(movies.test_coupon_info.interest)
+                // +parseFloat(movies.test_coupon_info.all_fee)).toFixed(2);
+                name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息+服务费-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
-                    +movies.money+'*'+movies.rate/100+'/360*'
-                    +this.state.loan_day+'-'+movies.money+'-'+movies.test_coupon_info.interest+'+'+movies.test_coupon_info.all_fee
+                    +movies.money+'*'+movies.rate/100+'/'+movies.test_coupon_info.change_day+'*'
+                    +this.state.loan_day+movies.test_coupon_info.interest+'+'+movies.test_coupon_info.all_fee
+                    +'-'+movies.true_bondmny+'-'
+                    +movies.test_coupon_info.coupon_info.coupon_repayment;
             }else{
-                money = (parseFloat(movies.money)
-                +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
-                this.state.loan_day-parseFloat(movies.money)-parseFloat(movies.test_coupon_info.interest)).toFixed(2);
-                name = '应还总额=本金+本金*还息费率/360*计息天数-保证金-已还利息';
+                name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
-                    +movies.money+'*'+movies.rate/100+'/360*'
-                    +this.state.loan_day+'-'+movies.money+'-'+movies.test_coupon_info.interest;
+                    +movies.money+'*'+movies.rate/100+'/'+movies.test_coupon_info.change_day+'*'
+                    +this.state.loan_day+movies.test_coupon_info.interest+'-'+movies.true_bondmny+'-'
+                    +movies.test_coupon_info.coupon_info.coupon_repayment;
             }
             return (
                 <RepaymentInfoBottomItem ref="RepaymentInfoBottomItem"
