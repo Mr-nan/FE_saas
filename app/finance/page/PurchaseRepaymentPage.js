@@ -219,7 +219,7 @@ export  default class PurchaseRepaymentPage extends BaseComponent {
                         <Text allowFontScaling={false}  style={[styles.centerBottomText, {
                             color: fontAndColor.COLORB2
                         }]}>
-                            {movie.total_repayment}
+                            {parseFloat(movie.total_repayment).toFixed(2)}
                         </Text>
                     </View>
                 </View>

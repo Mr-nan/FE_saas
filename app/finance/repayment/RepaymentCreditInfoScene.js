@@ -28,6 +28,7 @@ import RepaymentInfoBottomItem from './component/RepaymentInfoBottomItem';
 import AllBottomItem from './component/AllBottomItem';
 import MyButton from '../../component/MyButton';
 import ServerMoneyListModal from '../../component/ServerMoneyListModal';
+import AccountModalApply from './component/AccountModalApply';
 let moneyList = [];
 let nameList = [];
 let adjustLsit = [];
@@ -35,9 +36,7 @@ let adjustLsit = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import RepaymentModal from '../../component/RepaymentModal';
-import CancelRepayment from './CancelRepayment';
-import RepaymentInfoPage from './RepaymentCreditInfoScene';
-import RepaymentSence from './RepaymentScene';
+
 export  default class PurchaseLoanStatusScene extends BaseComponent {
 
     constructor(props) {
@@ -135,13 +134,18 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 use_time:movies.repayment_time,
                 // use_time:'2018-03-23',
             };
+
             request(Urls.FINANCE, 'Post', maps)
                 .then((response) => {
                     this.props.showModal(false);
                         if(response.mjson.code =='1'){
-                            this.props.showToast(response.mjson.msg);
-                            this.backPage();
-                            this.props.refreshListPage();
+                            let content = "提前还款申请已提交！请以充值、转账的方式，保证"+movies.repayment_time+"  15：00之前账户余额不低于待还总额"
+                            this.refs.accountmodal.changeShowType(true,
+                                content,
+                                '好的', '', () => {
+                                    this.backPage();
+                                    this.props.refreshListPage();
+                                });
                         }
                     },(error)=>{
                     this.props.showModal(false);
@@ -174,6 +178,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                 />
+                <AccountModalApply ref="accountmodal"/>
                 <MyButton {...this.buttonParams}/>
              {/*   {movies.paymen_status == '0' ? this.props.from == 'SingleRepaymentPage' ?
                         <MyButton {...this.buttonParams}/> : <View/> : <View/>}*/}
@@ -261,7 +266,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息+服务费-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.test_coupon_info.change_day+'*'
-                    +this.state.loan_day+movies.test_coupon_info.interest+'+'+movies.test_coupon_info.all_fee
+                    +this.state.loan_day+'-'+movies.test_coupon_info.interest+'+'+movies.test_coupon_info.all_fee
                     +'-'+movies.true_bondmny+'-'
                     +movies.test_coupon_info.coupon_info.coupon_repayment;
             }else{
@@ -271,7 +276,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.test_coupon_info.change_day+'*'
-                    +this.state.loan_day+movies.test_coupon_info.interest+'-'+movies.true_bondmny+'-'
+                    +this.state.loan_day+'-'+movies.test_coupon_info.interest+'-'+movies.true_bondmny+'-'
                     +movies.test_coupon_info.coupon_info.coupon_repayment;
             }
             return (

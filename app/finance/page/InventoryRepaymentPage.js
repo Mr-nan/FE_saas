@@ -203,12 +203,24 @@ export  default class InventoryRepaymentPage extends BaseComponent {
                 <View style={[styles.line]}></View>
                 <View
                     style={[styles.centerView]}>
-                    <View style={[styles.centerChild, styles.margin, {alignItems: 'center',flexDirection:'row',justifyContent:'flex-start'}]}>
-                        <Text allowFontScaling={false}  style={[styles.centerText,{color: fontAndColor.COLORA1}]}>
-                            到账日期:
+                    <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-start'}]}>
+                        <Text allowFontScaling={false}  style={styles.centerText}>
+                            到账日期
                         </Text>
-                        <Text allowFontScaling={false}  style={[styles.centerText,{color: fontAndColor.COLORA0}]}>
+                        <Text allowFontScaling={false}  style={[styles.centerBottomText, {
+                            color: fontAndColor.COLORA0
+                        }]}>
                             {movie.dead_line_str}
+                        </Text>
+                    </View>
+                    <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-end'}]}>
+                        <Text allowFontScaling={false}  style={styles.centerText}>
+                            本息合计
+                        </Text>
+                        <Text allowFontScaling={false}  style={[styles.centerBottomText, {
+                            color: fontAndColor.COLORB2
+                        }]}>
+                            {parseFloat(movie.total_repayment).toFixed(2)}
                         </Text>
                     </View>
                 </View>
