@@ -158,6 +158,8 @@ export  default class CancelRepayment extends BaseComponent {
             },(error)=>{
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
+                this.backPage();
+                this.props.refreshListPage();
                 // if(error.mjson.code=='-2005105'){
                 //     this.props.showToast(error.mjson.msg);
                 //     if(this.props.from=='SingleRepaymentPage'){
