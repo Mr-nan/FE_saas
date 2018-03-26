@@ -41,7 +41,7 @@ export  default class RepaymentInfoBottomItem extends PureComponent {
 
     render() {
         return (
-            <View style={[{width: width, backgroundColor: '#ffffff',height:Pixel.getPixel(124)},styles.padding]}>
+            <View style={[{width: width, backgroundColor: '#ffffff',height:Pixel.getPixel(144)},styles.padding]}>
                 <View style={styles.itemStyle}>
                     <Text allowFontScaling={false}  style={styles.loanCodeStyle}>计算公式</Text>
                 </View>
@@ -51,7 +51,7 @@ export  default class RepaymentInfoBottomItem extends PureComponent {
                         style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA1}}>
                         {this.state.formulaStr}
                     </Text>
-                    <View style={{marginTop:Pixel.getPixel(15),flexDirection:'row'}}>
+                    <View style={{marginTop:Pixel.getPixel(10),flexDirection:'row'}}>
                         <Text allowFontScaling={false} 
                             style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORB2}}>
                             {this.state.allMoney}
