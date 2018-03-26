@@ -153,6 +153,8 @@ export  default class CancelRepayment extends BaseComponent {
             },(error)=>{
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
+                this.backPage();
+                this.props.refreshListPage();
                 // if(error.mjson.code=='-2005105'){
                 //     this.props.showToast(error.mjson.msg);
                 //     if(this.props.from=='SingleRepaymentPage'){
@@ -296,7 +298,7 @@ export  default class CancelRepayment extends BaseComponent {
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.test_coupon_info.change_day+'*'
-                    +this.state.loan_day+'-'+movies.test_coupon_info.interest+'-'+movies.true_bondmny+'-'
+                    +this.state.loan_day+ '-'+movies.test_coupon_info.interest+'-'+movies.true_bondmny+'-'
                     +movies.test_coupon_info.coupon_info.coupon_repayment;
             }
             return (
