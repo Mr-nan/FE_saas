@@ -65,19 +65,25 @@ export  default class RepaymentScene extends BaseComponent {
                     locked={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资",'采购融资','车抵贷']}/>}
                 >
-                    <SingleRepaymentPage customerName={this.props.customerName} callBack={
+                    <SingleRepaymentPage customerName={this.props.customerName}
+                                         showModal={(show)=>{this.props.showModal(show);}}
+                                         callBack={
                     (loan_id,loan_number,type,payment_number,payment_status,refreshListPage)=>
                     {this.toNext({name:'RepaymentInfoScene',component:RepaymentInfoScene,
                         params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'SingleRepaymentPage',refreshListPage:refreshListPage}},
                         loan_id,loan_number,type,payment_number,payment_status,'SingleRepaymentPage',refreshListPage)}} tabLabel="ios-paper"/>
 
-                    <InventoryRepaymentPage customerName={this.props.customerName} callBack={
+                    <InventoryRepaymentPage customerName={this.props.customerName}
+                                            showModal={(show)=>{this.props.showModal(show);}}
+                                            callBack={
                         (loan_id,loan_number,payment_number,type,planid,payment_status,refreshListPage)=>
                         {this.toNext({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
                             params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'InventoryRepaymentPage',planid:planid,refreshListPage:refreshListPage}},
                             loan_id,loan_number,type,payment_number,payment_status,'InventoryRepaymentPage',refreshListPage)}} tabLabel="ios-people"/>
 
-                    <PurchaseRepaymentPage customerName={this.props.customerName} callBack={
+                    <PurchaseRepaymentPage customerName={this.props.customerName}
+                                           showModal={(show)=>{this.props.showModal(show);}}
+                                           callBack={
                         (loan_id,loan_number,payment_number,type,payment_status,refreshListPage)=>
                         {this.toNext({name:'NewPurchaseRepaymentInfoScene',component:NewPurchaseRepaymentInfoScene,
                         params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'PurchaseRepaymentPage',refreshListPage:refreshListPage}},
@@ -85,6 +91,7 @@ export  default class RepaymentScene extends BaseComponent {
                     } tabLabel="ios-chatboxes"/>
 
                     <ChedidaiRepaymentPage customerName={this.props.customerName}
+                                           showModal={(show)=>{this.props.showModal(show);}}
                                            callBack={(loan_id,loan_number,payment_number,type,planid,payment_status,refreshListPage)=>
                                            {this.toNext({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
                         params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'ChedidaiRepaymentPage',planid:planid,refreshListPage:refreshListPage}},

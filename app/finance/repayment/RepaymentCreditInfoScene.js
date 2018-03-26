@@ -35,6 +35,7 @@ let adjustLsit = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import RepaymentModal from '../../component/RepaymentModal';
+import CancelRepayment from './CancelRepayment';
 import RepaymentInfoPage from './RepaymentCreditInfoScene';
 import RepaymentSence from './RepaymentScene';
 export  default class PurchaseLoanStatusScene extends BaseComponent {
@@ -199,7 +200,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <RepaymentInfoTopItem items={movies}/>
+                <RepaymentInfoTopItem items={movies} from={this.props.from}/>
             )
         } else if (rowId == 1) {
             return (

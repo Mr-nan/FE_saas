@@ -91,6 +91,36 @@ export  default class SingleRepaymentPage extends BaseComponent {
         this.getData();
     };
 
+    refreshingData2 = () => {
+        this.allList = [];
+        page = 1;
+        allPage = 1;
+        this.props.showModal(true);
+        this.getData2();
+    };
+
+    getData2 = () => {
+        let maps = {
+            api: Urls.REPAYMENT_GETLIST,
+            type: '2',
+            p: page
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.allList.push(...response.mjson.data.list);
+                    allPage = response.mjson.data.page;
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        source: ds.cloneWithRows(this.allList),
+                    });
+                },
+                (error) => {
+
+                });
+    }
+
+
     toEnd = () => {
         if (this.state.isRefreshing) {
 
@@ -161,7 +191,7 @@ export  default class SingleRepaymentPage extends BaseComponent {
 
         return (
             <TouchableOpacity onPress={()=>{
-                this.props.callBack(movie.loan_id,movie.loan_number,movie.type,movie.payment_number,movie.payment_status,this.refreshingData);
+                this.props.callBack(movie.loan_id,movie.loan_number,movie.type,movie.payment_number,movie.payment_status,this.refreshingData2);
             }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
