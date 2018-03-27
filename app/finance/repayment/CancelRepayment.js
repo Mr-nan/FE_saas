@@ -148,8 +148,13 @@ export  default class CancelRepayment extends BaseComponent {
                 console.log(response+'----')
                 if(response.mjson.code=='1'){
                     this.props.showToast(response.mjson.msg);
-                    this.backPage();
-                    this.props.refreshListPage();
+                    this.timer = setTimeout(
+                        () => {
+                            this.backPage();
+                            this.props.refreshListPage();
+                        },
+                        400
+                    );
                 }
             },(error)=>{
                 this.props.showModal(false);
@@ -158,7 +163,7 @@ export  default class CancelRepayment extends BaseComponent {
                     () => {
                         this.backPage();
                         this.props.refreshListPage();
-                    },
+                },
                     400
                 );
 

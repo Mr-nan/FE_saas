@@ -67,6 +67,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         moneyList = [];
         nameList = [];
         adjustLsit = [];
+        this.timer && clearTimeout(this.timer);
     }
 
     initFinish = () => {
@@ -153,8 +154,13 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                       this.allRefresh();
                     }else{
                         this.props.showToast(error.mjson.msg);
-                        this.backPage();
-                        this.props.callback();
+                        this.timer = setTimeout(
+                            () => {
+                                this.backPage();
+                                this.props.refreshListPage();
+                            },
+                            400
+                        );
                     }
                 });
         }
