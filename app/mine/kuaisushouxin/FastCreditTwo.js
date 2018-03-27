@@ -618,8 +618,6 @@ export default class FastCreditTwo extends BaseComponent {
 			this._showHint('请上传场地合同照片');
 			return;
 		}
-		// console.log('1111111111111111' , this.results)
-
 
 		let device_code = '';
 		if (Platform.OS === 'android') {

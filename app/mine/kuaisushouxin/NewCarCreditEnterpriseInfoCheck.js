@@ -444,14 +444,7 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 			</ScrollView>
 		)
 	}
-	_changdiTypePress = (type) => {
-		this.setState({
-			selectNO: type
-		})
-	}
-	_qiyemingchengChange = (text) => {
-		this.enterpriseData.qiyemingcheng = text;
-	};
+
 	isEmpty = (str) => {
 		if (typeof(str) != 'undefined' && str !== '' && str !== null) {
 			return false;
@@ -579,11 +572,6 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 		if(!this.state.isAgree){
 			return;
 		}
-		if (this.isEmpty(this.enterpriseData.qiyemingcheng) === true) {
-			this._showHint('请填写企业名称');
-			return;
-		}
-
 		if (this.isEmpty(idcardfront) === true) {
 			this._showHint('请上传借款人身份证正面');
 			return;
@@ -600,6 +588,109 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
 			this._showHint('请上传开户许可');
 			return;
 		}
+		/**
+		 *
+		 business_regional_id	               借款人所在大区ID		【必填】
+		 cityid	                               借款人所在区域城市ID		【必填】
+		 company_base_id	                   借款人所属企业服务平台base_id		【必填】
+		 company_name	                       借款人所属企业名称		【必填】
+		 company_regno	                       借款人所属企业营业执照号		【必填】
+		 control_cardid                     	企业实际控制人身份证号		【必填】
+		 control_name	                        企业实际控制人姓名		【必填】
+		 control_phone	                        企业实际控制人联系方式		【必填】
+		 controller_base_id	                    企业实际控制人服务平台base_id		【必填】
+		 deputy	                                企业法人姓名
+		 deputy_cardid	                        企业法人身份证号码
+		 deputy_phone	                        企业法人联系方式
+		 device_code			                                【必填】
+		 file_list['business_licence']	        营业执照号		【必填】 传file_id
+		 file_list['deputy_cardid_positive_identification']	法人身份证正面照片		【必填】 传file_id
+		 file_list['deputy_cardid_reverse_side_identity']	法人身份证反面照片		【必填】传file_id
+		 file_list['site_contract']	                        场地合同		        【必填】 传file_id
+		 manager_id	                                        市场客户经理ID		    【必填】
+		 provid	                                            借款人所在区域省市ID	【必填】
+		 token			                                    【必填】
+		 *
+		 *
+		 * */
+		let maps = {
+
+		}
+		request(AppUrls.CHECKCAPTCHA, 'Post', {img_code: verifycode, img_sid: imgSid})
+			.then((response) => {
+					this.setState({
+						loading: false,
+					});
+					if (this.props.FromScene == 'kuaisu') {
+						this.toNextPage({
+							name: 'FastCreditOne',
+							component: FastCreditOne,
+							params: {
+								FromScene: 'kuaisu'
+							},
+						})
+					} else if (this.props.FromScene == 'xinchedingdan') {
+						this.toNextPage({
+							name: 'NewCarCreditEnterpriseInfoCheck',
+							component: NewCarCreditEnterpriseInfoCheck,
+							params: {
+								FromScene: 'xinchedingdan'
+							},
+						})
+					}
+				},
+				// {
+				// 	this.setState({
+				// 		loading: false,
+				// 	});
+				// 	if (response.mjson.data.check_result == 0) {//验证验证码成功
+				// 		request(AppUrls.APPLYCHECKFOUR, 'Post', maps)//申请验四
+				// 			.then((response) => {
+				// 				this.setState({
+				// 					loading: false,
+				// 				});
+				// 				if (response.mjson.data.fourElementCheckFlags !== "T") {//申请验四通过
+				// 					console.log('1111111111111111111111111111111111111111111111', response.mjson.data.fourElementCheckFlags);
+				// 					if (this.props.FromScene == 'kuaisu') {
+				// 						this.toNextPage({
+				// 							name: 'FastCreditOne',
+				// 							component: FastCreditOne,
+				// 							params: {
+				// 								FromScene: 'xinchedingdan'
+				// 							},
+				// 						})
+				// 					} else if (this.props.FromScene == 'xinchedingdan') {
+				// 						this.toNextPage({
+				// 							name: 'NewCarCreditEnterpriseInfoCheck',
+				// 							component: NewCarCreditEnterpriseInfoCheck,
+				// 							params: {
+				// 								FromScene: 'xinchedingdan'
+				// 							},
+				// 						})
+				// 					}
+				//
+				// 				} else {//申请验四不通过原因
+				// 					this.props.showToast(response.mjson.data.fourElementCheckRemark + "");
+				// 				}
+				// 			}, (error) => {//申请验四接口报错
+				// 				this.setState({
+				// 					loading: false,
+				// 				});
+				//
+				// 			});
+				//
+				//
+				// 	}
+				// 	else {//验证验证码失败
+				// 		this.props.showToast(response.mjson.data.msg + "");
+				// 	}
+				// },
+				(error) => {//验证验证码接口报错
+					this.setState({
+						loading: false,
+					});
+
+				});
 	}
 }
 

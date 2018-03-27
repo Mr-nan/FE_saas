@@ -20,7 +20,9 @@ import QuotaApplication from './QuotaApplication';
 import FastCreditTwo from '../mine/kuaisushouxin/NewCarCreditEnterpriseInfoCheck'
 import Authentication from '../mine/kuaisushouxin/Authentication'
 
+import FinanceCreditApplyScene from "../main/FinanceCreditApplyScene";
 import NonCreditScene from "../main/NonCreditScene";
+
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -78,7 +80,7 @@ export default class LoginAndRegister extends BaseComponent {
                           childStyle={styles.buttonTextStyle} mOnPress={() => {
                     this.toNextPage({
                         name: 'LoginScene',
-                        component: NonCreditScene,
+                        component: LoginScene,
                         params: {},
                     })
                 }}/>

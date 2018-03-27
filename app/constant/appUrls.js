@@ -510,6 +510,36 @@ export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
 export const GETFUNCTIONBYTOKENENTER = BASEURL + 'v1/user/getFunctionByTokenEnter';
 
 /**
+ * from @yujinzhong
+ *
+ * 获取借款人当前授信类型的授信状态
+ **/
+export const GETCREDITSTATUSBYMERGE = BASEURL + 'v2/credit.quick/getCreditStatusByMerge';
+/**
+ * from @yujinzhong
+ *
+ * 判断验四
+ **/
+export const CHECKFOUR = BASEURL + 'v2/credit.quick/checkFour';
+/**
+ * from @yujinzhong
+ *
+ * 验四 获取验证码
+ **/
+export const GET_CAPTCHA = BASEURL + 'v2/credit.quick/captcha';
+/**
+ * from @yujinzhong
+ *
+ * 验四 验证验证码
+ **/
+export const CHECKCAPTCHA = BASEURL + 'v2/credit.quick/checkCaptcha';
+/**
+* from @yujinzhong
+*
+* 申请验四
+**/
+export const APPLYCHECKFOUR = BASEURL + 'v2/credit.quick/applycheckFour';
+/**
  * from @zhaojian
  *
  * 获取账户管理首页

@@ -34,6 +34,7 @@ import LoginGesture from '../login/LoginGesture';
 import * as fontAndClolr from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 import NonCreditScene from './NonCreditScene';
+import BlankFinanceScene from './BlankFinanceScene';
 import LoginScene from '../login/LoginScene';
 import AllSelectCompanyScene from '../main/AllSelectCompanyScene';
 let tabArray = [];
@@ -131,7 +132,8 @@ export default class MainPage extends BaseComponent {
                 //         this.setState({mb_one: true,})
                 //     }
                 // })
-            } else if (data == '已激活') {
+            }
+            else if (data == '已激活') {
 
 
                 StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
@@ -163,7 +165,8 @@ export default class MainPage extends BaseComponent {
                 //         this.setState({mb_three: true,})
                 //     }
                 // })
-            } else if (data == '未绑卡') {
+            }
+            else if (data == '未绑卡') {
 
                 StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                     if (data.code == 1) {
@@ -192,7 +195,8 @@ export default class MainPage extends BaseComponent {
                 //         this.setState({mb_tow: true,})
                 //     }
                 // })
-            } else if (data == '完成') {
+            }
+            else if (data == '完成') {
                 this.setState({mbShow: true});
             }
         })
@@ -238,6 +242,29 @@ export default class MainPage extends BaseComponent {
                 this.setState({renderPlaceholderOnly: 'error'});
             }
         });
+	    StorageUtil.mGetItem(storageKeyNames.ENTERPRISE_LIST, (childdata) => {
+
+		    if (childdata.code == 1) {
+
+
+
+			     let childdatas = JSON.parse(childdata.result);
+
+			    this.role_type = childdatas[0].role_type[0];
+
+			    console.log('111111111111111111111111111111111111111111111111111111111111111111111111111111111',this.role_type)
+		    } else {
+			    this.setState({renderPlaceholderOnly: 'error'});
+		    }
+	    });
+	    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata) => {
+		    if (childdata.code == 1) {
+			    let childdatas = JSON.parse(childdata.result);
+			    this.boss_id = childdatas.boss_id;
+		    } else {
+			    this.setState({renderPlaceholderOnly: 'error'});
+		    }
+	    });
     }
 
     allRefresh = () => {
@@ -366,7 +393,7 @@ export default class MainPage extends BaseComponent {
                                         }}
                                     source={require('../../images/tishimengban/zhgl_wkhwbk.png')}/>
                             </TouchableWithoutFeedback>
-                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,0.7)'}}/>
                         </View> : null
                 }
                 {
@@ -517,17 +544,14 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }}/>
         } else if (ref == 'financePage') {
-            if (this.is_done_credit == 0) {
-                return <NonCreditScene/>
-            } else {
-                return <FinanceSence backToLogin={()=>{
-                            this.backToLogin({name:'LoginScene',component:LoginScene});
-                        }} showModal={(value)=>{
-                        this.props.showModal(value);
-                        }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
-                        this.toNextPage(params);
+
+	        return <BlankFinanceScene  MAPS = {{base_id: global.companyBaseID ,controller_base_id:this.boss_id,}}
+                                       ROLE_TYPE = {this.role_type}
+                                       IS_DONE_CREDIT = {this.is_done_credit}
+                                       showModal={(value)=>{this.props.showModal(value);}}
+                                       showToast={(content)=>{this.props.showToast(content)}}
+                                       toNextPage={(params) => {this.toNextPage(params);
                 }}/>
-            }
         } else {
             return <MineSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
