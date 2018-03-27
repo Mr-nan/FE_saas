@@ -47,7 +47,7 @@ export  default class RepaymentInfoBottomItem extends PureComponent {
                 </View>
                 <View style={styles.lineStyle}/>
                 <View style={{flex:1,justifyContent:'center'}}>
-                    <Text allowFontScaling={false} 
+                    <Text allowFontScaling={false}
                         style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA1}}>
                         {this.state.formulaStr}
                     </Text>
@@ -55,11 +55,12 @@ export  default class RepaymentInfoBottomItem extends PureComponent {
                         <Text allowFontScaling={false} 
                             style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORB2}}>
                             {this.state.allMoney}
+                            <Text allowFontScaling={false}
+                                  style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA0}}>
+                                {this.state.formula}
+                            </Text>
                         </Text>
-                        <Text allowFontScaling={false} 
-                            style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA0}}>
-                            {this.state.formula}
-                        </Text>
+
                     </View>
                 </View>
             </View>
