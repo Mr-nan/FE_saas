@@ -157,7 +157,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                         this.timer = setTimeout(
                             () => {
                                 this.backPage();
-                                this.props.refreshListPage();
+                                this.props.callback();
                             },
                             400
                         );
