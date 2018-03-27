@@ -1,13 +1,12 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
-
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
@@ -510,6 +509,36 @@ export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
  **/
 export const GETFUNCTIONBYTOKENENTER = BASEURL + 'v1/user/getFunctionByTokenEnter';
 
+/**
+ * from @yujinzhong
+ *
+ * 获取借款人当前授信类型的授信状态
+ **/
+export const GETCREDITSTATUSBYMERGE = BASEURL + 'v2/credit.quick/getCreditStatusByMerge';
+/**
+ * from @yujinzhong
+ *
+ * 判断验四
+ **/
+export const CHECKFOUR = BASEURL + 'v2/credit.quick/checkFour';
+/**
+ * from @yujinzhong
+ *
+ * 验四 获取验证码
+ **/
+export const GET_CAPTCHA = BASEURL + 'v2/credit.quick/captcha';
+/**
+ * from @yujinzhong
+ *
+ * 验四 验证验证码
+ **/
+export const CHECKCAPTCHA = BASEURL + 'v2/credit.quick/checkCaptcha';
+/**
+* from @yujinzhong
+*
+* 申请验四
+**/
+export const APPLYCHECKFOUR = BASEURL + 'v2/credit.quick/applycheckFour';
 /**
  * from @zhaojian
  *
@@ -1451,3 +1480,150 @@ export const SUPERVISE_PAY = BASEURL + V + "finance.supervise/pay";
  * 监管费支付
  */
 export const ACCOUNT_HOME = BASEURL  + "v2/account.home/index";
+/**
+ *
+ * 提车人列表
+ */
+export const GET_GETER_LIST = BASEURL + "v2/order.car_picker/lists";
+/**
+ *
+ * 新增提车人
+ */
+export const ADD_GETER = BASEURL + "v2/order.car_picker/save";
+/**
+ *
+ * 编辑提车人
+ */
+export const PUT_GETER = BASEURL + "v2/order.car_picker/save";
+/**
+ *
+ * 设置默认提车人
+ */
+export const SET_DEFAULT_GETER = BASEURL + "v2/order.car_picker/setDefault";
+/**
+ *
+ * 删除提车人
+ */
+export const DEL_GETER = BASEURL + "v2/order.car_picker/delete";
+/**
+ *
+ * 地址列表
+ */
+export const GET_FLOWSOTHER_LIST = BASEURL + "v2/order.address/lists";
+/**
+ *
+ * 新增收发车地址
+ */
+export const ADD_ADDRESS = BASEURL + "v2/order.address/save";
+/**
+ *
+ * 编辑地址
+ */
+export const PUT_ADDRESS = BASEURL+ "v2/order.address/save";
+/**
+ *
+ * 设置默认地址
+ */
+export const SET_DEFAULT_ADDRESS = BASEURL + "v2/order.address/setDefault";
+/**
+ *
+ * 删除地址
+ */
+export const DEL_ADDRESS = BASEURL + "v2/order.address/delete";
+/**
+ *
+ * 获取城市下区域列表
+ */
+export const GET_DIST_LIST = BASEURL + "v2/home.index/getDistList";
+/**
+ *
+ * 物流填写订单
+ */
+export const WAYBILL = BASEURL  + "v2/order.logistics/waybill";
+/**
+ *
+ * 物流运单订单(运单详情)
+ */
+export const WAYBILL_DETAIL = BASEURL  + "v2/order.logistics/detail";
+/**
+ *
+ *物流运价数据检查（获取运输类型对应的费）
+ */
+export const CHECKTRANSTYPE = BASEURL  + "v2/order.logistics/check";
+/**
+ *
+ *获取发票信息
+ */
+export const GETINVOICEINFO = BASEURL  + "v2/order.invoice/info";
+/**
+ *  支付尾款跳转
+ */
+export const PAY_BALANCE = BASEURL  + "v2/order.pay/balance";
+/**
+ *  微服务获取区县
+ */
+export const REGION_COUNTY = BASEURL  + "v2/api.region/county";
+/**
+ *  微服务获取区县
+ */
+export const REGION_CITY = BASEURL  + "v2/api.region/city";
+/**
+ *  微服务获取区县
+ */
+export const REGION_PROVINCE = BASEURL  + "v2/api.region/province";
+/**
+ *  物流提交数据
+ */
+export const SUBMITTRANFERINFO = BASEURL  + "v2/order.logistics/submit";
+/**
+ *  保存发票信息
+ */
+export const SAVEINVOICE = BASEURL  + "v2/order.invoice/add";
+/**
+ *   获取仓库所在地址
+ **/
+export const GETWAREHOUSEINFO = BASEURL  + "v2/order.home/getWarehouseInfo";
+/**
+ *   车是否在店审核
+ **/
+export const IS_CAR_STORE_CHECK = BASEURL  + "v2/order.home/isCarStoreCheck";
+/**
+ *  支付库到店的物流和仓储费
+ */
+export const PAY_WAREHOUSE_TO_STORE_AMOUNT = BASEURL  + "v2/order.home/payWarehouseToStoreAmount";
+/**
+ *  申请提车函后支付仓储费
+ */
+export const PAY_STORE_AMOUNT = BASEURL  + "v2/order.home/payStoreAmount";
+/**
+ *  申请提车函后支付仓储费回调
+ */
+export const PAY_STORE_AMOUNT_CALLBACK = BASEURL  + "v2/order.home/payStoreAmountCallback";
+/**
+ *  支付库到店的物流和仓储费回调
+ */
+export const PAY_WAREHOUSE_TO_STORE_AMOUNT_CALLBACK = BASEURL  + "v2/order.home/payWarehouseToStoreAmountCallback";
+/**
+ *  转单车
+ */
+export const CHANGE_CAR_SINGLE_FINANCE = BASEURL  + "v2/order.home/changeCarSingleFinance";
+/**
+ *  申请提车函
+ */
+export const APPLY_GET_CAR_LETTER = BASEURL  + "v2/order.home/applyGetCarLetter";
+/**
+ *  获取运输类型
+ */
+export const GETTRANSTYPE = BASEURL  + "v2/order.home/getTransType";
+/**
+ *   2月8日物流项目入口开关
+ */
+export const LOGISTICS_SWITCH = BASEURL  + "v2/index/status";
+/**
+ *   添加运单提车人
+ **/
+export const STORE_GETER_REQUEST = BASEURL  + "v2/order.home/storeGeterRequest";
+/**
+ *   运单提车人信息
+ **/
+export const GETSTOREGETER = BASEURL  + "v2/order.home/getStoreGeter";

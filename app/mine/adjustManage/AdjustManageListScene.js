@@ -113,7 +113,7 @@ export  default class AdjustManageListScene extends BaseComponent {
         let money = '';
         if(movie.used_status=='0'){
             money = '';
-        }else if(movie.used_status=='1'){
+        }else if(movie.used_status=='1'|| movie.used_status == '4'){
             money = '已使用';
         }else if(movie.used_status=='2'){
             money = '已过期';

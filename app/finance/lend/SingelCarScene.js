@@ -89,7 +89,15 @@ export default class SingelCarSence extends BaseComponent {
     }
 
     initFinish() {
-
+        PostData = {
+            dateLimit: '',
+            rate: '',
+            loan_life_type: '',
+            apply_type: '2',
+            loan_mny: '',
+            use_time: '',
+            remark: '',
+        };
         this.getLendinfo();
     }
 
@@ -291,7 +299,7 @@ export default class SingelCarSence extends BaseComponent {
                         <LendUseful onEndEidt={(text) => {
                             PostData.remark = text
                         }}/>
-                        <LendRate rate={this.state.rate}/>
+                        {PostData.dateLimit !== '' && (<LendRate rate={this.state.rate}/>)}
                     </KeyboardAvoidingView>
                 </ScrollView>
                 <CommenButton

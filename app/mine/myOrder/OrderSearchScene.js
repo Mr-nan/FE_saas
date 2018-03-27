@@ -289,7 +289,8 @@ export default class OrderSearchScene extends BaseComponent {
                                 name: 'ProcurementOrderDetailScene',
                                 component: ProcurementOrderDetailScene,
                                 params: {
-                                    orderId: rowData.order.id
+                                    orderId: rowData.order.id,
+                                    singleCar: this.props.singleCar
                                 }
                             });
                         } else {

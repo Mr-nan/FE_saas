@@ -58,7 +58,13 @@ export  default class AccountWebScene extends BaseComponent {
             this.props.callBack();
             this.backPage();
         } else {
-            this.refs.www.goBack();
+            try {
+                this.refs.www.goBack();
+            } catch (e) {
+
+            } finally {
+
+            }
         }
         return true;
     }

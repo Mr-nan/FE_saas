@@ -182,17 +182,17 @@ export default class NewCarCreditVerification extends BaseComponent {
 					</Text>
 
 					<Text style={{height:Pixel.getPixel(22),marginTop:Pixel.getPixel(7),color:fontAndColor.COLORA2,fontSize:Pixel.getPixel(14)}}>
-						您已获得新车订单贷额度500万元
+						您已获得新车订单贷额度200万元
 					</Text>
 					<View style={{height:Pixel.getBottomPixel(0.5),width:Pixel.getPixel(width-30),backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getPixel(36)}}/>
 
 					<View style={{marginTop:Pixel.getPixel(28),width:Pixel.getPixel(width-30)}}>
 						<TouchableOpacity style={styles.btnOk} activeOpacity={0.6} onPress={this._onContinuePress}>
-							<Text allowFontScaling={false} style={styles.btnFont}>继续申请快速授信</Text>
+							<Text allowFontScaling={false} style={styles.btnFont}>继续申请小额授信</Text>
 						</TouchableOpacity>
 					</View>
 					<Text style={{height:Pixel.getPixel(17),marginTop:Pixel.getPixel(17),color:fontAndColor.COLORA2,fontSize:Pixel.getPixel(12)}}>
-						您还可以在线完善信息，通过"快速授信"获取更多金融服务
+						您还可以在线完善信息，通过"小额授信"获取更多金融服务
 					</Text>
 
 				</ScrollView>

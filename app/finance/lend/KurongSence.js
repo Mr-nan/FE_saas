@@ -69,6 +69,13 @@ export default class KurongSence extends BaseComponent {
     ];
     dateBlob =['30天','90天','180天','360天'];
     initFinish() {
+        PostData = {
+            apply_type: '4',
+            loan_mny: '',
+            loan_life:'',
+            use_time: '',
+            remark: '',
+        };
         this.getData('');
 
     }

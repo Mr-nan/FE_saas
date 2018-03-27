@@ -11,6 +11,7 @@ import {
 	TouchableOpacity,
 	NativeModules,
 	NativeAppEventEmitter,
+	Image,
 } from "react-native";
 import BaseComponent from "../../component/BaseComponent";
 import * as FontAndColor from "../../constant/fontAndColor";
@@ -22,7 +23,8 @@ import PixelUtil from "../../utils/PixelUtil";
 
 import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
-import md5 from "react-native-md5";
+import FastCreditOne from "./FastCreditOne";
+import NewCarCreditEnterpriseInfoCheck from "./NewCarCreditEnterpriseInfoCheck";
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
@@ -32,6 +34,8 @@ let imgSid: '';
 let uid: '';
 
 const dismissKeyboard = require('dismissKeyboard');
+const agree_icon = require('../kuaisushouxin/kuaisushouxin_images/agree_icon.png');
+const disagree = require('../kuaisushouxin/kuaisushouxin_images/disagree.png');
 
 var Platform = require('Platform');
 const IS_ANDROID = Platform.OS === 'android';
@@ -40,33 +44,24 @@ export default class Authentication extends BaseComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-
 			businessLicense: null,
 			verifyCode: null,
 			renderPlaceholderOnly: true,
 			keyboardOffset: -Pixel.getPixel(100),
+			isAgree: false,
 
 		}
 		this.id;
 		this.timer = null;
-		this.locateDate = {
-			address: '',
-			city_id: '',
-			city_name: '',
-			street_name: '',
-			province_name: '',
-			area_name: '',
-		}
 
 	}
 
 	initFinish = () => {
 		InteractionManager.runAfterInteractions(() => {
 			this.setState({renderPlaceholderOnly: false});
+
 			//获取图形验证码
 			this.Verifycode();
-			//拿到当前位置的定位
-			this.getCurrentLocation();
 		});
 	}
 
@@ -83,7 +78,7 @@ export default class Authentication extends BaseComponent {
 						leftTextShow={true}
 						leftText={""}
 						rightText={""}
-					    centerText={'身份验证'}
+						centerText={'身份验证'}
 					/>
 				</View>
 			</TouchableWithoutFeedback>);
@@ -126,27 +121,29 @@ export default class Authentication extends BaseComponent {
 				<View style={styles.inputTextLine}/>
 				<View style={styles.inputTextsStyle}>
 					<LoginInputTextYU
+						editable={false}
 						ref="BorrowerName"
-						leftText = {'借款人姓名'}
+						leftText={'借款人姓名'}
 						textPlaceholder={'请输入'}
 						viewStytle={styles.itemStyel}
 						inputTextStyle={styles.inputTextStyle}
 						leftIcon={false}
-						clearValue={true}
+						clearValue={false}
 						import={false}
-						defaultValue={'zhangqilong'}
+						defaultValue={this.props.DATA.borrower_name}
 						rightIcon={false}/>
 					<LoginInputTextYU
+						editable={false}
 						ref="BorrowerID"
-						leftText = {'借款人身份证号'}
+						leftText={'借款人身份证号'}
 						textPlaceholder={'请输入'}
 						viewStytle={[styles.itemStyel, {borderBottomWidth: 0,}]}
 						inputTextStyle={styles.inputTextStyle}
 						secureTextEntry={false}
-						clearValue={true}
+						clearValue={false}
 						leftIcon={false}
 						import={false}
-						defaultValue={'zhangqilong'}
+						defaultValue={this.props.DATA.borrower_cardid}
 						maxLength={18}//身份证限制18位或者15位
 						rightIcon={false}/>
 
@@ -157,7 +154,7 @@ export default class Authentication extends BaseComponent {
 				<View style={styles.inputTextsStyle}>
 					<LoginInputTextYU
 						ref="BorrowerBankNO"
-						leftText = {'借款人银行卡号'}
+						leftText={'借款人银行卡号'}
 						textPlaceholder={'请输入'}
 						viewStytle={styles.itemStyel}
 						inputTextStyle={styles.inputTextStyle}
@@ -168,7 +165,7 @@ export default class Authentication extends BaseComponent {
 						rightIcon={false}/>
 					<LoginInputTextYU
 						ref="BankPhone"
-						leftText = {'银行预留手机号'}
+						leftText={'银行预留手机号'}
 						textPlaceholder={'请输入'}
 						viewStytle={styles.itemStyel}
 						inputTextStyle={styles.inputTextStyle}
@@ -181,9 +178,9 @@ export default class Authentication extends BaseComponent {
 					/>
 					<LoginInputTextYU
 						ref="verifycode"
-						leftText = {'图形验证码'}
+						leftText={'图形验证码'}
 						textPlaceholder={'请输入'}
-						viewStytle={styles.itemStyel}
+						viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
 						inputTextStyle={styles.inputTextStyle}
 						leftIcon={false}
 						import={false}
@@ -191,46 +188,76 @@ export default class Authentication extends BaseComponent {
 						rightIconClick={this.Verifycode}
 						rightIconStyle={{width: Pixel.getPixel(100)}}
 						rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
-					<LoginInputTextYU
-						ref="smsCode"
-						leftText = {'手机验证码'}
-						textPlaceholder={'请输入'}
-						viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-						inputTextStyle={styles.inputTextStyle}
-						rightButton={true}
-						rightIcon={false}
-						import={false}
-						callBackSms={this.sendSms}
-						keyboardType={'phone-pad'}
-						leftIcon={false}/>
+					{/*<LoginInputTextYU*/}
+					{/*ref="smsCode"*/}
+					{/*leftText = {'手机验证码'}*/}
+					{/*textPlaceholder={'请输入'}*/}
+					{/*viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}*/}
+					{/*inputTextStyle={styles.inputTextStyle}*/}
+					{/*rightButton={true}*/}
+					{/*rightIcon={false}*/}
+					{/*import={false}*/}
+					{/*callBackSms={this.sendSms}*/}
+					{/*keyboardType={'phone-pad'}*/}
+					{/*leftIcon={false}/>*/}
 				</View>
 				<View style={styles.inputTextLine}/>
 
 				<View style={styles.inputTextsStyle}>
 					<LoginInputTextYU
 						ref="BorrowerPhone"
-						leftText = {'借款人手机号'}
+						leftText={'借款人手机号'}
 						textPlaceholder={'请输入'}
 						viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
 						inputTextStyle={styles.inputTextStyle}
 						leftIcon={false}
 						import={false}
-						defaultValue={'zhangqilong'}
+						defaultValue={this.props.DATA.borrower_tel}
 						clearValue={true}
 						keyboardType={'phone-pad'}
 						maxLength={11}//手机号限制11位
 						rightIcon={false}/>
 				</View>
 				<View style={styles.inputTextLine}/>
+
+				{/*===============================授信协议===========================*/}
+
+				<View style={{alignItems: 'center', flexDirection: 'row',marginTop: Pixel.getPixel(10),}}>
+					<TouchableOpacity activeOpacity={1} onPress={() => {
+                        this.setState({
+                            isAgree: !this.state.isAgree
+                        });
+                    }}>
+						<View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginLeft: Pixel.getPixel(15)
+                        }}>
+							<Image source={this.state.isAgree ? agree_icon : disagree}
+							       style={{marginRight: Pixel.getPixel(3)}}>
+
+							</Image>
+							<Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(12)}}>我已阅读并同意授权</Text>
+						</View>
+					</TouchableOpacity>
+					<TouchableOpacity activeOpacity={0.8} onPress={() => {
+                        this.toNextPage({
+                                         name: 'WebScene',
+                                         component: WebScene,
+                                         params: {webUrl: 'http://www.dycd.com'}
+                            })
+                    }}>
+						<Text style={{color: FontAndColor.COLORB4, fontSize: Pixel.getPixel(12),}}>《三方征信授权书》</Text>
+					</TouchableOpacity>
+				</View>
 				<View style={styles.imagebuttonok}>
 
-					<TouchableOpacity onPress={() => {
-                                this.register();
-                            }} activeOpacity={0.8} style={{
+					<TouchableOpacity onPress={() => { this.register()}} activeOpacity={this.state.isAgree? 0.7 : 1}
+					                  style={{
                                 marginTop: Pixel.getPixel(7),
                                 width: width - Pixel.getPixel(30),
                                 height: Pixel.getPixel(44),
-                                backgroundColor: FontAndColor.COLORB0,
+                                backgroundColor: this.state.isAgree? FontAndColor.COLORB0 : FontAndColor.COLORA4,
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
@@ -239,36 +266,51 @@ export default class Authentication extends BaseComponent {
                                     fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT28)
                                 }}>下一步</Text>
 					</TouchableOpacity>
+
 				</View>
 			</ScrollView>
 		)
 	}
 	register = () => {
+		if (!this.state.isAgree) {
+			return;
+		}
 
-		let userName = this.refs.userName.getInputTextValue();
-		let smsCode = this.refs.smsCode.getInputTextValue();
-		let password = this.refs.password.getInputTextValue();
-		let passwoedAgain = this.refs.passwoedAgain.getInputTextValue();
-		let name = this.refs.name.getInputTextValue();
-		let businessName = this.refs.businessName.getInputTextValue();
-		if (typeof(userName) == "undefined" || userName == "") {
-			this.props.showToast("手机号码不能为空");
-		} else if (userName.length != 11) {
-			this.props.showToast("请输入正确的手机号");
-		} else if (typeof(smsCode) == "undefined" || smsCode == "") {
-			this.props.showToast("验证码不能为空");
-		} else if (typeof(password) == "undefined" || password == "") {
-			this.props.showToast("密码不能为空");
-		} else if (typeof(password) == "undefined" || password == "") {
-			this.props.showToast("密码不能为空");
-		} else if (passwoedAgain.length < 6) {
-			this.props.showToast("密码必须为6~16位");
-		} else if (typeof(name) == "undefined" || name == "") {
-			this.props.showToast("用户名不能为空");
-		} else if (typeof(businessName) == "undefined" || businessName == "") {
-			this.props.showToast("商家名称不能为空");
-		} else if (password !== passwoedAgain) {
-			this.props.showToast("两次密码输入不一致");
+		let BorrowerBankNO = this.refs.BorrowerBankNO.getInputTextValue();//借款人银行卡号
+		let BankPhone = this.refs.BankPhone.getInputTextValue();          //银行预留手机号
+		let BorrowerPhone = this.refs.BorrowerPhone.getInputTextValue();  //借款人手机号
+
+		let verifycode = this.refs.verifycode.getInputTextValue();        //图形验证码
+		// let smsCode = this.refs.smsCode.getInputTextValue();              //手机验证码
+		/**
+		 *
+		 borrower_bank    借款人银行卡号        【必填】
+		 borrower_bank_phone    银行预留手机号        【必填】
+		 borrower_base_id    借款人服务平台base_id        【必填】
+		 borrower_cardid    借款人身份证号        【必填】
+		 borrower_name    借款人姓名        【必填】
+		 borrower_phone    借款人手机号        【必填】
+		 *
+		 **/
+
+
+		if (typeof(BorrowerBankNO) == "undefined" || BorrowerBankNO == "") {
+			this.props.showToast("请输入借款人银行卡号");
+		}
+		else if (typeof(BankPhone) == "undefined" || BankPhone == "") {
+			this.props.showToast("银行预留手机号不能为空");
+		}
+		else if (BankPhone.length != 11) {
+			this.props.showToast("请输入正确的银行预留手机号");
+		}
+		else if (typeof(verifycode) == "undefined" || verifycode == "") {
+			this.props.showToast("图形验证码不能为空");
+		}
+		else if (typeof(BorrowerPhone) == "undefined" || BorrowerPhone == "") {
+			this.props.showToast("借款人手机号不能为空");
+		}
+		else if (BorrowerPhone.length != 11) {
+			this.props.showToast("请输入正确的银行预留手机号");
 		}
 
 		else {
@@ -279,63 +321,98 @@ export default class Authentication extends BaseComponent {
 				device_code = 'dycd_platform_ios';
 			}
 
-
 			let maps = {
 				device_code: device_code,
-				user_name: name,
-				phone: userName,
-				pwd: md5.hex_md5(password),
-				confirm_pwd: md5.hex_md5(passwoedAgain),
-				merchant_name: businessName,
-				code: smsCode,
+				borrower_bank: BorrowerBankNO,
+				borrower_bank_phone: BankPhone,
+				borrower_base_id: global.companyBaseID,
+				borrower_cardid: this.props.DATA.borrower_cardid,
+				borrower_phone: BorrowerPhone,
+				borrower_name: this.props.DATA.borrower_name,
 
-				address: this.locateDate.address,
-				city_id: this.locateDate.city_id,
-				city_name: this.locateDate.city_name,
-				street_name: this.locateDate.street_name,
-				province_name: this.locateDate.province_name,
-				area_name: this.locateDate.area_name,
+
 			};
 			this.setState({
 				loading: true,
 			});
-			request(AppUrls.ZHUCE, 'Post', maps)
+			request(AppUrls.CHECKCAPTCHA, 'Post', {img_code: verifycode, img_sid: imgSid})
 				.then((response) => {
-					this.setState({
-						loading: false,
+						this.setState({
+							loading: false,
+						});
+						if (this.props.FromScene == 'kuaisu') {
+							this.toNextPage({
+								name: 'FastCreditOne',
+								component: FastCreditOne,
+								params: {
+									FromScene: 'kuaisu'
+								},
+							})
+						} else if (this.props.FromScene == 'xinchedingdan') {
+							this.toNextPage({
+								name: 'NewCarCreditEnterpriseInfoCheck',
+								component: NewCarCreditEnterpriseInfoCheck,
+								params: {
+									FromScene: 'xinchedingdan'
+								},
+							})
+						}
+					},
+					// {
+					// 	this.setState({
+					// 		loading: false,
+					// 	});
+					// 	if (response.mjson.data.check_result == 0) {//验证验证码成功
+					// 		request(AppUrls.APPLYCHECKFOUR, 'Post', maps)//申请验四
+					// 			.then((response) => {
+					// 				this.setState({
+					// 					loading: false,
+					// 				});
+					// 				if (response.mjson.data.fourElementCheckFlags !== "T") {//申请验四通过
+					// 					console.log('1111111111111111111111111111111111111111111111', response.mjson.data.fourElementCheckFlags);
+					// 					if (this.props.FromScene == 'kuaisu') {
+					// 						this.toNextPage({
+					// 							name: 'FastCreditOne',
+					// 							component: FastCreditOne,
+					// 							params: {
+					// 								FromScene: 'xinchedingdan'
+					// 							},
+					// 						})
+					// 					} else if (this.props.FromScene == 'xinchedingdan') {
+					// 						this.toNextPage({
+					// 							name: 'NewCarCreditEnterpriseInfoCheck',
+					// 							component: NewCarCreditEnterpriseInfoCheck,
+					// 							params: {
+					// 								FromScene: 'xinchedingdan'
+					// 							},
+					// 						})
+					// 					}
+					//
+					// 				} else {//申请验四不通过原因
+					// 					this.props.showToast(response.mjson.data.fourElementCheckRemark + "");
+					// 				}
+					// 			}, (error) => {//申请验四接口报错
+					// 				this.setState({
+					// 					loading: false,
+					// 				});
+					//
+					// 			});
+					//
+					//
+					// 	}
+					// 	else {//验证验证码失败
+					// 		this.props.showToast(response.mjson.data.msg + "");
+					// 	}
+					// },
+					(error) => {//验证验证码接口报错
+						this.setState({
+							loading: false,
+						});
+
 					});
-					if (response.mycode == "1") {
-						uid = response.mjson.data.uid;
-						this.props.showToast("注册成功");
-						// this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
-					} else {
-						this.props.showToast(response.mjson.msg + "");
-					}
-				}, (error) => {
-					this.setState({
-						loading: false,
-					});
-					if (error.mycode == -300 || error.mycode == -500) {
-						this.props.showToast("注册失败");
-					} else if (error.mycode == 7040004) {
-						this.Verifycode();
-						this.props.showToast(error.mjson.msg + "");
-					} else {
-						this.props.showToast(error.mjson.msg + "");
-					}
-				});
 		}
 	}
 
-
-	exitPage = (mProps) => {
-		const navigator = this.props.navigator;
-		if (navigator) {
-			navigator.immediatelyResetRouteStack([{
-				...mProps
-			}])
-		}
-	}
 
 	//获取图形验证码
 	Verifycode = () => {
@@ -349,8 +426,9 @@ export default class Authentication extends BaseComponent {
 		let maps = {
 			device_code: device_code,
 		};
-		request(AppUrls.IDENTIFYING, 'Post', maps)
+		request(AppUrls.GET_CAPTCHA, 'Post', maps)
 			.then((response) => {
+				console.log('1111111111111111111111111111111111111111111111', response);
 				this.refs.verifycode.lodingStatus(false);
 				imgSrc = response.mjson.data.img_src;
 				imgSid = response.mjson.data.img_sid;
@@ -363,103 +441,12 @@ export default class Authentication extends BaseComponent {
 				this.setState({
 					verifyCode: null,
 				});
-				if (error.mycode == -300 || error.mycode == -500) {
-					this.props.showToast("获取失败");
-				} else {
-					this.props.showToast(error.mjson.msg + "");
-				}
 			});
 	}
 
-
-	//拿到当前位置的定位
-	getCurrentLocation = () => {
-		if (Platform.OS === 'android') {
-			NativeModules.QrScan.lbsStart();
-			NativeAppEventEmitter
-				.addListener('onReceiveBDLocation', (loc) => {
-					console.log(loc);
-					this.locateDate.address = loc.addr;
-					this.locateDate.city_id = loc.city_code;
-					this.locateDate.city_name = loc.city;
-					this.locateDate.street_name = loc.street;
-					this.locateDate.province_name = loc.province;
-					this.locateDate.area_name = loc.district;
-				});
-		} else {
-			NativeModules.Location.Location().then((vl) => {
-				console.log(vl.address);
-				this.locateDate.address = vl.address;
-				this.locateDate.city_id = vl.city_id;
-				this.locateDate.city_name = vl.city_name;
-				this.locateDate.street_name = vl.street_name;
-				this.locateDate.province_name = vl.province_name;
-				this.locateDate.area_name = vl.area_name;
-
-
-			}, (error) => {
-				console.log("没有获取到定位");
-
-			});
-		}
-	}
 
 	componentWillUnmount = () => {
 
-	}
-
-	//获取短信验证码
-	sendSms = () => {
-		let userName = this.refs.userName.getInputTextValue();
-		let verifyCode = this.refs.verifycode.getInputTextValue();
-		if (typeof(verifyCode) == "undefined" || verifyCode == "") {
-			this.props.showToast("验证码不能为空");
-		} else if (typeof(userName) == "undefined" || userName == "") {
-			this.props.showToast("请输入手机号");
-		} else {
-			let device_code = '';
-			if (Platform.OS === 'android') {
-				device_code = 'dycd_platform_android';
-			} else {
-				device_code = 'dycd_platform_ios';
-			}
-			let maps = {
-				device_code: device_code,
-				img_code: verifyCode,
-				img_sid: imgSid,
-				phone: userName,
-				type: "1",
-			};
-			// this.props.showModal(true);
-			this.setState({
-				loading: true,
-			});
-			request(AppUrls.SEND_SMS, 'Post', maps)
-				.then((response) => {
-					// this.props.showModal(false);
-					this.setState({
-						loading: false,
-					});
-					if (response.mjson.code == "1") {
-						this.refs.smsCode.StartCountDown();
-					} else {
-						this.props.showToast(response.mjson.msg);
-					}
-				}, (error) => {
-					this.setState({
-						loading: false,
-					});
-					this.Verifycode();
-					if (error.mycode == -300 || error.mycode == -500) {
-						this.props.showToast("短信验证码获取失败");
-					} else if (error.mycode == 7040012) {
-						this.Verifycode();
-						this.props.showToast(error.mjson.msg + "");
-					} else {
-						this.props.showToast(error.mjson.msg + "");
-					}
-				});
-		}
 	}
 
 
