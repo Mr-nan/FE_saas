@@ -64,7 +64,7 @@ export default class BlankFinanceScene extends BaseComponent {
 	 *   初始化
 	 **/
 	initFinish = () => {
-		if (this.props.ROLE_TYPE == 1) {//实际控制人登录
+		if (this.props.BASE_USER_ID == this.props.MAPS.controller_base_id) {//实际控制人登录
 
 
 			request(Urls.GETCREDITSTATUSBYMERGE, 'Post', this.props.MAPS)

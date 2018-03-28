@@ -340,70 +340,49 @@ export default class Authentication extends BaseComponent {
 						this.setState({
 							loading: false,
 						});
-						if (this.props.FromScene == 'kuaisu') {
-							this.toNextPage({
-								name: 'FastCreditOne',
-								component: FastCreditOne,
-								params: {
-									FromScene: 'kuaisu'
-								},
-							})
-						} else if (this.props.FromScene == 'xinchedingdan') {
-							this.toNextPage({
-								name: 'NewCarCreditEnterpriseInfoCheck',
-								component: NewCarCreditEnterpriseInfoCheck,
-								params: {
-									FromScene: 'xinchedingdan'
-								},
-							})
+
+						if (response.mjson.data.check_result == 1) {//验证验证码成功
+							request(AppUrls.APPLYCHECKFOUR, 'Post', maps)//申请验四
+								.then((response) => {
+									this.setState({
+										loading: false,
+									});
+									if (response.mjson.data.fourElementCheckFlags == "T") {//申请验四通过
+										console.log('1111111111111111111111111111111111111111111111', response.mjson.data.fourElementCheckFlags);
+										if (this.props.FromScene == 'kuaisu') {
+											this.toNextPage({
+												name: 'FastCreditOne',
+												component: FastCreditOne,
+												params: {
+													FromScene: 'xinchedingdan'
+												},
+											})
+										} else if (this.props.FromScene == 'xinchedingdan') {
+											this.toNextPage({
+												name: 'NewCarCreditEnterpriseInfoCheck',
+												component: NewCarCreditEnterpriseInfoCheck,
+												params: {
+													FromScene: 'xinchedingdan'
+												},
+											})
+										}
+
+									} else {//申请验四不通过原因
+										this.props.showToast(response.mjson.data.fourElementCheckRemark + "");
+									}
+								}, (error) => {//申请验四接口报错
+									this.setState({
+										loading: false,
+									});
+
+								});
+
+
+						}
+						else {//验证验证码失败
+							this.props.showToast(response.mjson.data.msg + "");
 						}
 					},
-					// {
-					// 	this.setState({
-					// 		loading: false,
-					// 	});
-					// 	if (response.mjson.data.check_result == 0) {//验证验证码成功
-					// 		request(AppUrls.APPLYCHECKFOUR, 'Post', maps)//申请验四
-					// 			.then((response) => {
-					// 				this.setState({
-					// 					loading: false,
-					// 				});
-					// 				if (response.mjson.data.fourElementCheckFlags !== "T") {//申请验四通过
-					// 					console.log('1111111111111111111111111111111111111111111111', response.mjson.data.fourElementCheckFlags);
-					// 					if (this.props.FromScene == 'kuaisu') {
-					// 						this.toNextPage({
-					// 							name: 'FastCreditOne',
-					// 							component: FastCreditOne,
-					// 							params: {
-					// 								FromScene: 'xinchedingdan'
-					// 							},
-					// 						})
-					// 					} else if (this.props.FromScene == 'xinchedingdan') {
-					// 						this.toNextPage({
-					// 							name: 'NewCarCreditEnterpriseInfoCheck',
-					// 							component: NewCarCreditEnterpriseInfoCheck,
-					// 							params: {
-					// 								FromScene: 'xinchedingdan'
-					// 							},
-					// 						})
-					// 					}
-					//
-					// 				} else {//申请验四不通过原因
-					// 					this.props.showToast(response.mjson.data.fourElementCheckRemark + "");
-					// 				}
-					// 			}, (error) => {//申请验四接口报错
-					// 				this.setState({
-					// 					loading: false,
-					// 				});
-					//
-					// 			});
-					//
-					//
-					// 	}
-					// 	else {//验证验证码失败
-					// 		this.props.showToast(response.mjson.data.msg + "");
-					// 	}
-					// },
 					(error) => {//验证验证码接口报错
 						this.setState({
 							loading: false,

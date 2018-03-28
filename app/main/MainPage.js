@@ -242,25 +242,13 @@ export default class MainPage extends BaseComponent {
                 this.setState({renderPlaceholderOnly: 'error'});
             }
         });
-	    StorageUtil.mGetItem(storageKeyNames.ENTERPRISE_LIST, (childdata) => {
 
-		    if (childdata.code == 1) {
-
-
-
-			     let childdatas = JSON.parse(childdata.result);
-
-			    this.role_type = childdatas[0].role_type[0];
-
-			    console.log('111111111111111111111111111111111111111111111111111111111111111111111111111111111',this.role_type)
-		    } else {
-			    this.setState({renderPlaceholderOnly: 'error'});
-		    }
-	    });
 	    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata) => {
 		    if (childdata.code == 1) {
 			    let childdatas = JSON.parse(childdata.result);
 			    this.boss_id = childdatas.boss_id;
+			    this.base_user_id = childdatas.base_user_id;
+
 		    } else {
 			    this.setState({renderPlaceholderOnly: 'error'});
 		    }
@@ -546,7 +534,7 @@ export default class MainPage extends BaseComponent {
         } else if (ref == 'financePage') {
 
 	        return <BlankFinanceScene  MAPS = {{base_id: global.companyBaseID ,controller_base_id:this.boss_id,}}
-                                       ROLE_TYPE = {this.role_type}
+                                       BASE_USER_ID = {this.base_user_id}
                                        IS_DONE_CREDIT = {this.is_done_credit}
                                        showModal={(value)=>{this.props.showModal(value);}}
                                        showToast={(content)=>{this.props.showToast(content)}}

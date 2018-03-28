@@ -30,7 +30,7 @@ import  PixelUtil from '../utils/PixelUtil'
 let Pixel = new PixelUtil();
 import AllNavigationView from '../component/AllNavigationView';
 
-import ZongheCreditApply from '../mine/kuaisushouxin/CredictManageScene';//综合授信
+import ZongheCreditApply from '../mine/kuaisushouxin/ZongheCreditApply';//综合授信申请
 import Authentication from '../mine/kuaisushouxin/Authentication';//申请验四页面
 import NewCarCreditEnterpriseInfoCheck from '../mine/kuaisushouxin/NewCarCreditEnterpriseInfoCheck';//申请新车订单授信页面
 import FastCreditOne from '../mine/kuaisushouxin/FastCreditOne';//申请验四页面
