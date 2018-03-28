@@ -76,7 +76,6 @@ export  default class RepaymentInfoPage extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     movies = response.mjson.data.payment_info;
-                    movies = response.mjson.data.payment_info;
                     moneyList.push({name:'逾期情况',data:movies.payment_isoverdue_status});
                     moneyList.push({name: '利息总额', data: movies.totalInterest});
                     moneyList.push({name: '已还利息', data: movies.ready_interest});
