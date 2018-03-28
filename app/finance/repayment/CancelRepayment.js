@@ -142,15 +142,19 @@ export  default class CancelRepayment extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                this.props.showModal(false);
                 console.log(response+'----')
-                this.props.showToast(response.mjson.msg);
                 if(response.mjson.code=='1'){
-                    this.backPage();
-                    this.props.refreshListPage();
+                    this.props.showToast(response.mjson.msg);
+                    this.timer = setTimeout(
+                        () => {
+                            this.backPage();
+                            this.props.refreshListPage();
+                        },
+                        1500
+                    );
                 }
             },(error)=>{
-                this.props.showModal(false);
+                this.props.showToast(response.mjson.msg);
                 this.timer = setTimeout(
                     () => {
                         this.backPage();
