@@ -104,12 +104,14 @@ export  default class PurchaseRepaymentPage extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    this.props.showModal(false);
+                    this.allList = [];
                     this.allList.push(...response.mjson.data.list);
                     allPage = response.mjson.data.page
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         source: ds.cloneWithRows(this.allList),
+                    },()=>{
+                        this.props.showModal(false);
                     });
                 },
                 (error) => {

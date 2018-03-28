@@ -93,7 +93,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
         this.allList = [];
         this.props.showModal(true);
         page = 1;
-        this.getData();
+        this.getData2();
     };
     getData2 = () => {
         let maps = {
@@ -103,12 +103,14 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    this.props.showModal(false);
+                    this.allList = [];
                     this.allList.push(...response.mjson.data.list);
                     allPage = response.mjson.data.total/10;
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         source: ds.cloneWithRows(this.allList),
+                    },()=>{
+                        this.props.showModal(false);
                     });
                 },
                 (error) => {
