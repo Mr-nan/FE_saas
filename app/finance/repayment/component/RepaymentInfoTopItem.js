@@ -32,6 +32,40 @@ export  default class RepaymentInfoTopItem extends PureComponent {
         };
     }
 
+    /**
+     * 非空判断
+     * @param content  任意类型值
+     */
+    isNull = (content) => {
+        try {
+            if (content == undefined) {
+                return true;
+            }
+            if (content == null) {
+                return true;
+            }
+            if (content instanceof Array) {
+                if (content.length <= 0) {
+                    return true;
+                }
+            }
+            if (content instanceof Object) {
+                if (JSON.stringify(content) == '{}') {
+                    return true;
+                }
+            }
+            if (content == 'null') {
+                return true;
+            }
+            if ((content+'').trim() == '') {
+                return true;
+            }
+            return false;
+        } catch (e) {
+            return true;
+        }
+    }
+
     render() {
         return (
             <View style={[{width: width, backgroundColor: '#ffffff'},styles.padding]}>
@@ -72,7 +106,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                     this.state.model_show &&
                     <View style={styles.itemStyle}>
                         <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                            {this.props.items.car_info.model_name}
+                            {this.isNull(this.props.items.car_info) ? '' :this.props.items.car_info.model_name}
                         </Text>
                     </View>
                 }
