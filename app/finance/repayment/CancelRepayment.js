@@ -95,9 +95,9 @@ export  default class CancelRepayment extends BaseComponent {
                     moneyList.push({name: '计息天数', data: movies.days+'天'});
                     moneyList.push({name: '综合费率', data: movies.payment_rate_str});
                     moneyList.push({name:'还息费率',data:movies.rate+'%'});
-                    moneyList.push({name: '利息总额', data: movies.test_coupon_info.interest_total});
-                    moneyList.push({name: '已还利息', data: movies.test_coupon_info.interest});
-                    moneyList.push({name: '贷款利息', data: movies.test_coupon_info.interest_other});
+                    moneyList.push({name: '利息总额', data: movies.totalInterest});
+                    moneyList.push({name: '已还利息', data: movies.ready_interest});
+                    moneyList.push({name: '待还利息', data: movies.prepaymentInterest});
                     moneyList.push({name: '服务费', data: movies.test_coupon_info.all_fee});
                     moneyList.push({name: '保证金', data: movies.true_bondmny});
 
@@ -108,9 +108,9 @@ export  default class CancelRepayment extends BaseComponent {
                     nameList.push({name: '还款账号', data: movies.test_coupon_info.bank_info.repaymentnumber});
 
 
-                    adjustLsit.push({name: '使用优惠券数量', data: movies.test_coupon_info.coupon_info.coupon_number});
-                    adjustLsit.push({name: '使用优惠券金额', data: movies.test_coupon_info.coupon_info.coupon_usable});
-                    adjustLsit.push({name: '优惠券还息金额', data: movies.test_coupon_info.coupon_info.coupon_repayment});
+                    adjustLsit.push({name: '使用优惠券数量', data: movies.coupon_number});
+                    adjustLsit.push({name: '使用优惠券金额', data: movies.coupon_usable});
+                    adjustLsit.push({name: '优惠券还息金额', data: movies.coupon_repayment});
                     this.setState({renderPlaceholderOnly: 'success', loan_day: movies.days});
                 },
                 (error) => {
@@ -272,15 +272,15 @@ export  default class CancelRepayment extends BaseComponent {
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息+服务费-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.test_coupon_info.change_day+'*'
-                    +this.state.loan_day+'-'+movies.test_coupon_info.interest+'+'+movies.test_coupon_info.all_fee
+                    +this.state.loan_day+'-'+movies.ready_interest+'+'+movies.test_coupon_info.all_fee
                     +'-'+movies.true_bondmny+'-'
-                    +movies.test_coupon_info.coupon_info.coupon_repayment;
+                    +movies.coupon_repayment;
             }else{
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.test_coupon_info.change_day+'*'
-                    +this.state.loan_day+'-'+movies.test_coupon_info.interest+'-'+movies.true_bondmny+'-'
-                    +movies.test_coupon_info.coupon_info.coupon_repayment;
+                    +this.state.loan_day+'-'+movies.ready_interest+'-'+movies.true_bondmny+'-'
+                    +movies.coupon_repayment;
             }
             return (
                 <RepaymentInfoBottomItem ref="RepaymentInfoBottomItem"

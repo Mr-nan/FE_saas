@@ -76,9 +76,9 @@ export  default class RepaymentInfoPage extends BaseComponent {
             .then((response) => {
                     movies = response.mjson.data.payment_info;
                     moneyList.push({name:'逾期情况',data:movies.payment_isoverdue_status});
-                    moneyList.push({name: '利息总额', data: movies.total_interest});
-                    moneyList.push({name: '已还利息', data: movies.test_coupon_info.interest});
-                    moneyList.push({name: '待还利息', data: movies.test_coupon_info.interest_other});
+                    moneyList.push({name: '利息总额', data: movies.totalInterest});
+                    moneyList.push({name: '已还利息', data: movies.ready_interest});
+                    moneyList.push({name: '待还利息', data: movies.prepaymentInterest});
                     moneyList.push({name: '使用优惠券数量', data: movies.test_coupon_info.coupon_info.coupon_number});
                     moneyList.push({name: '使用优惠券金额', data: movies.test_coupon_info.coupon_info.coupon_usable});
                     moneyList.push({name: '优惠券还息金额', data: movies.test_coupon_info.coupon_info.coupon_repayment});
