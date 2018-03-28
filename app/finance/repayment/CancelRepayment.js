@@ -93,13 +93,13 @@ export  default class CancelRepayment extends BaseComponent {
                     movies = response.mjson.data.payment_info;
                     moneyList.push({name: '贷款本金', data: movies.money});
                     moneyList.push({name: '计息天数', data: movies.days+'天'});
-                    moneyList.push({name: '综合费率', data: movies.rate+'%'});
+                    moneyList.push({name: '综合费率', data: movies.payment_rate_str});
                     moneyList.push({name:'还息费率',data:movies.rate+'%'});
                     moneyList.push({name: '利息总额', data: movies.test_coupon_info.interest_total});
                     moneyList.push({name: '已还利息', data: movies.test_coupon_info.interest});
                     moneyList.push({name: '贷款利息', data: movies.test_coupon_info.interest_other});
                     moneyList.push({name: '服务费', data: movies.test_coupon_info.all_fee});
-                    moneyList.push({name: '保证金', data: movies.money});
+                    moneyList.push({name: '保证金', data: movies.true_bondmny});
 
                     nameList.push({name: '渠道名称', data: movies.test_coupon_info.qvdaoname});
                     nameList.push({name: '还款账户', data: movies.test_coupon_info.bank_info.repaymentaccount});
