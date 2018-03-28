@@ -149,7 +149,7 @@ export  default class CancelRepayment extends BaseComponent {
                             this.backPage();
                             this.props.refreshListPage();
                         },
-                        1500
+                        1000
                     );
                 }
             },(error)=>{
@@ -159,7 +159,7 @@ export  default class CancelRepayment extends BaseComponent {
                         this.backPage();
                         this.props.refreshListPage();
                 },
-                    1500
+                    1000
                 );
 
             });
