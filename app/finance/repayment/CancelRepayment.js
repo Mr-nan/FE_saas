@@ -91,13 +91,11 @@ export  default class CancelRepayment extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     movies = response.mjson.data.payment_info;
-                    moneyList.push({name: '贷款本金', data: movies.money});
                     moneyList.push({name: '计息天数', data: movies.days+'天'});
                     moneyList.push({name: '综合费率', data: movies.payment_rate_str});
                     moneyList.push({name:'还息费率',data:movies.rate+'%'});
                     moneyList.push({name: '利息总额', data: movies.totalInterest});
                     moneyList.push({name: '已还利息', data: movies.ready_interest});
-                    moneyList.push({name: '待还利息', data: movies.prepaymentInterest});
                     moneyList.push({name: '服务费', data: movies.test_coupon_info.all_fee});
                     moneyList.push({name: '保证金', data: movies.true_bondmny});
 
@@ -146,14 +144,13 @@ export  default class CancelRepayment extends BaseComponent {
             .then((response) => {
                 this.props.showModal(false);
                 console.log(response+'----')
+                this.props.showToast(response.mjson.msg);
                 if(response.mjson.code=='1'){
-                    this.props.showToast(response.mjson.msg);
                     this.backPage();
                     this.props.refreshListPage();
                 }
             },(error)=>{
                 this.props.showModal(false);
-                this.props.showToast(error.mjson.msg);
                 this.timer = setTimeout(
                     () => {
                         this.backPage();
