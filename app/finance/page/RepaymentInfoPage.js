@@ -79,16 +79,16 @@ export  default class RepaymentInfoPage extends BaseComponent {
                     moneyList.push({name: '利息总额', data: movies.totalInterest});
                     moneyList.push({name: '已还利息', data: movies.ready_interest});
                     moneyList.push({name: '待还利息', data: movies.prepaymentInterest});
-                    moneyList.push({name: '使用优惠券数量', data: movies.test_coupon_info.coupon_info.coupon_number});
-                    moneyList.push({name: '使用优惠券金额', data: movies.test_coupon_info.coupon_info.coupon_usable});
-                    moneyList.push({name: '优惠券还息金额', data: movies.test_coupon_info.coupon_info.coupon_repayment});
+                    moneyList.push({name: '使用优惠券数量', data: movies.coupon_number});
+                    moneyList.push({name: '使用优惠券金额', data: movies.coupon_usable});
+                    moneyList.push({name: '优惠券还息金额', data: movies.coupon_repayment});
 
-                    nameList.push({name: '渠道名称', data: movies.test_coupon_info.qvdaoname});
-                    nameList.push({name:'利息转换天数',data:movies.test_coupon_info.change_day + '天'});
-                    nameList.push({name: '还款账户', data: movies.test_coupon_info.bank_info.repaymentaccount});
-                    nameList.push({name: '开户行', data: movies.test_coupon_info.bank_info.bank});
-                    nameList.push({name: '开户支行', data: movies.test_coupon_info.bank_info.branch});
-                    nameList.push({name: '还款账号', data: movies.test_coupon_info.bank_info.repaymentnumber});
+                    nameList.push({name: '渠道名称', data: movies.trench_name});
+                    nameList.push({name:'利息转换天数',data:movies.changeDays + '天'});
+                    nameList.push({name: '还款账户', data: movies.payment_bankusername});
+                    nameList.push({name: '开户行', data: movies.payment_bankname});
+                    nameList.push({name: '开户支行', data: movies.payment_branch});
+                    nameList.push({name: '还款账号', data: movies.payment_bankaccount});
                     this.setState({renderPlaceholderOnly: 'success'});
                 },
                 (error) => {

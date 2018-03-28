@@ -100,11 +100,11 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     moneyList.push({name: '已还利息', data: movies.ready_interest});
                     moneyList.push({name: '服务费', data: movies.all_fee});
                     moneyList.push({name: '保证金', data: movies.true_bondmny});
-                    nameList.push({name: '渠道名称', data: movies.test_coupon_info.qvdaoname});
-                    nameList.push({name: '还款账户', data: movies.test_coupon_info.bank_info.repaymentaccount});
-                    nameList.push({name: '开户行', data: movies.test_coupon_info.bank_info.bank});
-                    nameList.push({name: '开户支行', data: movies.test_coupon_info.bank_info.branch});
-                    nameList.push({name: '还款账号', data: movies.test_coupon_info.bank_info.repaymentnumber});
+                    nameList.push({name: '渠道名称', data: movies.trench_name});
+                    nameList.push({name: '还款账户', data: movies.payment_bankusername});
+                    nameList.push({name: '开户行', data: movies.payment_bankname});
+                    nameList.push({name: '开户支行', data: movies.payment_branch});
+                    nameList.push({name: '还款账号', data: movies.payment_bankaccount});
 
 
                     adjustLsit.push({name: '使用优惠券数量', data: movies.coupon_number});
@@ -268,7 +268,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     +parseFloat(movies.test_coupon_info.all_fee)).toFixed(2);*/
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息+服务费-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
-                    +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.test_coupon_info.change_day+'*'
+                    +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.changeDays+'*'
                     +this.state.loan_day+'-'+movies.ready_interest+'+'+movies.all_fee
                     +'-'+movies.true_bondmny+'-' +movies.coupon_repayment;
             }else{
@@ -277,7 +277,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 this.state.loan_day-parseFloat(movies.true_bondmny)-parseFloat(movies.test_coupon_info.interest)).toFixed(2);*/
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
-                    +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.test_coupon_info.change_day+'*'
+                    +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.changeDays+'*'
                     +this.state.loan_day+'-'+movies.ready_interest+'-'+movies.true_bondmny+'-' +movies.coupon_repayment;
             }
             return (
