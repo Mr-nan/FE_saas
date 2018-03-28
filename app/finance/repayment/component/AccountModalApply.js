@@ -47,9 +47,6 @@ export default class AccountModalApply extends Component {
             >
                 <TouchableOpacity
                     onPress={()=>{
-                        this.setState({
-                            isShow: false
-                        });
                     }}
                     activeOpacity={1}
                     style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'rgba(0,0,0,0.3)'}}>
