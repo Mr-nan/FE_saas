@@ -6,7 +6,7 @@
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
@@ -16,7 +16,7 @@
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
 /**
@@ -182,6 +182,11 @@ export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
  * 获取我的车源-已上架/下架
  */
 export const CAR_USER_CAR = BASEURL + V + 'user/car';
+
+/**
+ * 根据车型名获取车型信息
+ */
+export const CAR_SEARCH_MODELS = BASEURL + V + 'home/searchModels';
 
 /**
  * 获取库存车辆列表

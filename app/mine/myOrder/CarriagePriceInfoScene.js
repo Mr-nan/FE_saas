@@ -130,7 +130,6 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
     }
 
     loadData=()=>{
-
         const paramsData= {
             carCount:this.props.carCount,
             carPrice:this.props.carPrice,

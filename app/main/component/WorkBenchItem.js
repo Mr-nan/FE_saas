@@ -48,14 +48,14 @@ export default class HomeJobItem extends PureComponent {
         }
         let index = Math.ceil(firstChild.length / 4);
         for (let i = 0; i < index; i++) {
-            if (i == 0) {
+            if (i!=index-1) {
                 let child = [];
-                for (let j = 0; j < firstChild.length; j++) {
+                for (let j = i * 4; j < 4+i*4; j++) {
                     child.push(firstChild[j]);
                 }
-                if (child.length > 4) {
-                    child.splice(4, child.length);
-                }
+                // if (child.length > 4) {
+                //     child.splice(4, child.length);
+                // }
                 itemList.push(<View key={'view'+i} style={[{marginTop:Pixel.getPixel(15),width:width,
                 flexDirection: 'row'},i==index-1?{marginBottom:Pixel.getPixel(20)}:{}]}>
                     {child}
@@ -65,9 +65,9 @@ export default class HomeJobItem extends PureComponent {
                 for (let j = i * 4; j < firstChild.length; j++) {
                     child.push(firstChild[j]);
                 }
-                if (child.length > 4) {
-                    child.splice(3, child.length);
-                }
+                // if (child.length > 4) {
+                //     child.splice(3, child.length);
+                // }
                 itemList.push(<View key={'view'+i} style={[{marginTop:Pixel.getPixel(22),width:width,
                 flexDirection: 'row'},i==index-1?{marginBottom:Pixel.getPixel(20)}:{}]}>
                     {child}
