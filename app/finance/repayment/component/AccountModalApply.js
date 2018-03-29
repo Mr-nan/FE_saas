@@ -52,11 +52,13 @@ export default class AccountModalApply extends Component {
                     style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'rgba(0,0,0,0.3)'}}>
                     <View style={{width:width-width/4,height:Pixel.getPixel(155),backgroundColor:'#fff',
                         paddingLeft:Pixel.getPixel(20),paddingRight:Pixel.getPixel(20),alignItems: 'center',borderRadius:4}}>
-                        <Text allowFontScaling={false}  style={{textAlign: 'center',fontSize:Pixel.getPixel(14),color:'#000',marginTop: Pixel.getPixel(35)}}>
-                            {this.state.content}
-                        </Text>
-                        <View style={{width:width-width/4-Pixel.getPixel(40),height:Pixel.getPixel(35),flexDirection:'row',
-                            position: 'absolute',bottom:Pixel.getPixel(20),left: Pixel.getPixel(20)}}>
+                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                            <Text allowFontScaling={false}  style={{textAlign: 'center',fontSize:Pixel.getPixel(14),color:'#000'}}>
+                                {this.state.content}
+                            </Text>
+                        </View>
+
+                        <View style={{width:width-width/4-Pixel.getPixel(40),height:Pixel.getPixel(35),flexDirection:'row',marginBottom:Pixel.getPixel(20)}}>
                             <TouchableOpacity onPress={()=>{
                                 this.state.callBack();
                                 this.setState({

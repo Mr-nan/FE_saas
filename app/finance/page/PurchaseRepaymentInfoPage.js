@@ -26,6 +26,7 @@ import RepaymentInfoContentItem from '../repayment/component/RepaymentInfoConten
 import AllBottomItem from '../repayment/component/AllBottomItem';
 import RepaymentCreditInfoScene from '../repayment/RepaymentCreditInfoScene';
 import ServerMoneyListModal from '../../component/ServerMoneyListModal';
+import AccountModalApply from '../repayment/component/AccountModalApply';
 let moneyList = [];
 let nameList = [];
 
@@ -118,6 +119,15 @@ export  default class PurchaseRepaymentInfoPage extends BaseComponent {
                 loan_number:this.props.loan_number,payment_number:this.props.payment_number,from:'PurchaseRepaymentPage',
                 loan_id:this.props.loan_id
             }});
+        }
+        else if(movies.apply_status.code == 1){
+            let content = "您已提交过提前还款申请，请勿重复申请。";
+            this.refs.accountmodal.changeShowType(true,
+                content,
+                '好的', '', () => {
+                    this.backPage();
+                    this.props.refreshListPage();
+                });
         }else{
             this.props.showToast(movies.apply_status.msg);
         }
@@ -137,6 +147,7 @@ export  default class PurchaseRepaymentInfoPage extends BaseComponent {
                     renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                 />
+                <AccountModalApply ref="accountmodal"/>
                 <MyButton {...this.buttonParams}/>
                 <ServerMoneyListModal ref="servermoneylistmodal"/>
             </View>
@@ -154,7 +165,7 @@ export  default class PurchaseRepaymentInfoPage extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <NewRepaymentInfoTopItem items={movies.test_coupon_info} item={movies} loan_number={this.props.loan_number}/>
+                <NewRepaymentInfoTopItem  items={movies} loan_number={this.props.loan_number}/>
             )
         } else if(rowId == 1){
             return (

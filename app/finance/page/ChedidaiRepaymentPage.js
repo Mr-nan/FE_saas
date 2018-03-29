@@ -209,7 +209,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
                         <Text allowFontScaling={false}  style={[styles.centerBottomText, {
                             color: fontAndColor.COLORA0
                         }]}>
-                            {dead_line_str}
+                            {movie.dead_line_str}
                         </Text>
                     </View>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-end'}]}>
@@ -219,7 +219,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
                         <Text allowFontScaling={false}  style={[styles.centerBottomText, {
                             color: fontAndColor.COLORB2
                         }]}>
-                            {parseFloat(movie.normal_repayment_moneyt).toFixed(2)}
+                            {parseFloat(movie.total_repayment).toFixed(2)}
                         </Text>
                     </View>
                 </View>

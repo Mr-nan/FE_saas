@@ -38,7 +38,7 @@ export  default class NewRepaymentInfoTopItem extends PureComponent {
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
                         <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                            放款日期:{this.props.items.loan_time_str}
+                            放款日期:{this.props.items.loan_time}
                         </Text>
                     </View>
                 </View>
@@ -49,7 +49,7 @@ export  default class NewRepaymentInfoTopItem extends PureComponent {
                             借款金额:
                         </Text>
                         <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0),color:fontAndColor.COLORA0}]}>
-                            {this.props.items.loan_mny_str} | {this.props.item.loanperiodstr}
+                            {this.props.items.payment_loanmny_str} | {this.props.items.loanperiodstr}
                         </Text>
                     </View>
 

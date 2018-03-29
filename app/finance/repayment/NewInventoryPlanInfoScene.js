@@ -67,9 +67,9 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
                         this.props.showToast(content)
                     }} showModal={(value)=>{
                         this.props.showModal(value);
-                    }}  loan_id={this.props.loan_id}
+                    }}  loan_id={this.props.loan_id} payment_number={this.props.payment_number}
                                     loan_number={this.props.loan_number}
-                                    tabLabel="ios-paper1"></PlanInfoScene>
+                                    tabLabel="ios-paper1"/>
                 </ScrollableTabView>
                 <NavigationView
                     title="还款详情"
