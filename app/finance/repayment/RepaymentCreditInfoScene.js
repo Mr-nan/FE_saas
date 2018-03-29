@@ -135,7 +135,6 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
 
             request(Urls.FINANCE, 'Post', maps)
                 .then((response) => {
-                    this.props.showModal(false);
                         if(response.mjson.code =='1'){
                             let content = "提前还款申请已提交！请以充值、转账的方式，保证"+movies.repayment_time+"  15：00之前账户余额不低于待还总额"
                             this.refs.accountmodal.changeShowType(true,
@@ -146,7 +145,6 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                                 });
                         }
                     },(error)=>{
-                    this.props.showModal(false);
                     if(error.mjson.code=='-2005013'){
                       this.allRefresh();
                     }else{

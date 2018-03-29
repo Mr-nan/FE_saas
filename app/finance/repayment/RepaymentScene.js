@@ -74,7 +74,7 @@ export  default class RepaymentScene extends BaseComponent {
                         loan_id,loan_number,type,payment_number,payment_status,'SingleRepaymentPage',refreshListPage)}} tabLabel="ios-paper"/>
 
                     <InventoryRepaymentPage customerName={this.props.customerName}
-                                            showModal={(show)=>{this.props.showModal(show);}}
+                                             showModal={(show)=>{this.props.showModal(show);}}
                                             callBack={
                         (loan_id,loan_number,payment_number,type,planid,payment_status,refreshListPage)=>
                         {this.toNext({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
