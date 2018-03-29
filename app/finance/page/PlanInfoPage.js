@@ -281,13 +281,13 @@ const styles = StyleSheet.create({
     },
 
     headerTextStyle1: {
-        width: (width - viewWidth) / 5.0 + 10,
+        width: (width - viewWidth) / 5.0 + 15,
         textAlign: 'center',
         fontSize: Pixel.getFontPixel(fontAndClolr.CONTENTFONT24),
         color: fontAndClolr.COLORA1
     },
     rowTextStyle1: {
-        width: (width - viewWidth) / 5.0 + 10,
+        width: (width - viewWidth) / 5.0 + 15,
         textAlign: 'center',
         fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
         color: fontAndClolr.COLORA0
