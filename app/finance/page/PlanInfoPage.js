@@ -104,20 +104,9 @@ export default class PlanInfoPage extends BaseComponent {
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}
                         renderHeader={this._renderHeader}
+                        renderFooter={this._renderFooter}
                     />
-                <View style={{width:width,height:Pixel.getPixel(68),backgroundColor:'#fff',
-                    borderBottomColor:fontAndClolr.COLORA4,borderBottomWidth:Pixel.getPixel(1),borderStyle:'solid',justifyContent:'center'}}>
-                    <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),borderBottomColor:fontAndClolr.COLORA4,
-                        borderBottomWidth:Pixel.getPixel(1),borderStyle:'solid',marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
-                        <Text style={{flex:1}}>总共应还</Text>
-                        <Text style={{flex:1,textAlign:'right'}}>{movies.total_m_i}</Text>
-                    </View>
 
-                    <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
-                        <Text style={{flex:1}}>未还利息</Text>
-                        <Text style={{flex:1,textAlign:'right'}}>{movies.total_interest}</Text>
-                    </View>
-                </View>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'使用优惠券'}
                           parentStyle={styles.loginBtnStyle}
@@ -173,7 +162,7 @@ export default class PlanInfoPage extends BaseComponent {
 
                               }}>
                 <View style={styles.textAllStyle}>
-                    <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.enddate}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowTextStyle1}>{rowData.enddate}</Text>
                     <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.repaymentmny}</Text>
                     <TouchableOpacity activeOpacity={1} onPress={() => {
                         if(rowData.adjustmoney!='0'&&rowData.relist){
@@ -219,7 +208,7 @@ export default class PlanInfoPage extends BaseComponent {
         return (
             <View style={styles.listHeader}>
                 <View style={styles.textAllStyle}>
-                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>到期日</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle1}>到期日</Text>
                     <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整前</Text>
                     <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整金额</Text>
                     <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整后</Text>
@@ -227,6 +216,24 @@ export default class PlanInfoPage extends BaseComponent {
                 </View>
 
 
+            </View>
+        );
+    }
+    // Footer
+    _renderFooter = () => {
+        return (
+            <View style={{width:width,height:Pixel.getPixel(68),backgroundColor:'#fff',marginTop:Pixel.getPixel(10),
+                borderBottomColor:fontAndClolr.COLORA4,borderBottomWidth:Pixel.getPixel(1),borderStyle:'solid',justifyContent:'center'}}>
+                <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),borderBottomColor:fontAndClolr.COLORA4,
+                    borderBottomWidth:Pixel.getPixel(1),borderStyle:'solid',marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
+                    <Text style={{flex:1}}>总共应还</Text>
+                    <Text style={{flex:1,textAlign:'right'}}>{movies.total_m_i}</Text>
+                </View>
+
+                <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
+                    <Text style={{flex:1}}>未还利息</Text>
+                    <Text style={{flex:1,textAlign:'right'}}>{movies.total_interest}</Text>
+                </View>
             </View>
         );
     }
@@ -273,6 +280,18 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(20)
     },
 
+    headerTextStyle1: {
+        width: (width - viewWidth) / 5.0 + 10,
+        textAlign: 'center',
+        fontSize: Pixel.getFontPixel(fontAndClolr.CONTENTFONT24),
+        color: fontAndClolr.COLORA1
+    },
+    rowTextStyle1: {
+        width: (width - viewWidth) / 5.0 + 10,
+        textAlign: 'center',
+        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
+        color: fontAndClolr.COLORA0
+    },
     headerTextStyle: {
         width: (width - viewWidth) / 5.0,
         textAlign: 'center',
