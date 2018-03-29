@@ -122,22 +122,24 @@ export default class RootScene extends BaseComponent {
         //如果获取模拟器错误日志，需将下面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
 
 
-        ErrorUtils.setGlobalHandler((e) => {　//发生异常的处理方法,当然如果是打包好的话可能你找都找不到是哪段代码出问题了
-            this.props.showToast('' + e);
-            StorageUtil.mGetItem(KeyNames.PHONE, (data) => {
-                let maps = {
-                    phone: data.result,
-                    message: '' + e
-                };
-                request(Urls.ADDACCOUNTMESSAGEINFO, 'Post', maps)
-                    .then((response) => {
-
-                        },
-                        (error) => {
-                        });
-            });
-
-        });
+        // ErrorUtils.setGlobalHandler((e) => {　//发生异常的处理方法,当然如果是打包好的话可能你找都找不到是哪段代码出问题了
+        //     this.props.showToast('' + e);
+        //     StorageUtil.mGetItem(KeyNames.PHONE, (data) => {
+        //
+        //         if(data.code != 1 || !data.result) return;
+        //         let maps = {
+        //             phone: data.result,
+        //             message: '' + e
+        //         };
+        //         request(Urls.ADDACCOUNTMESSAGEINFO, 'Post', maps)
+        //             .then((response) => {
+        //
+        //                 },
+        //                 (error) => {
+        //                 });
+        //     });
+        //
+        // });
 
         //如果获取模拟器错误日志，需将上面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
 
@@ -227,12 +229,17 @@ export default class RootScene extends BaseComponent {
                 StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                     if (res.result !== StorageUtil.ERRORCODE) {
                         if (res.result == null) {
-                            that.navigatorParams.component = LoginAndRegister;
-                            that.navigatorParams.name = 'LoginAndRegister';
+                            // that.navigatorParams.component = LoginAndRegister;
+                            // that.navigatorParams.name = 'LoginAndRegister';
+                            // that.toNextPage(that.navigatorParams);
+
+
+                            that.navigatorParams.component = MainPage;
+                            that.navigatorParams.name = 'MainPage';
                             that.toNextPage(that.navigatorParams);
+
                         } else {
                             if (res.result == "true") {
-
                                 StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
                                     let datas = JSON.parse(data.result);
                                     if (datas.user_level == 2) {
@@ -260,8 +267,12 @@ export default class RootScene extends BaseComponent {
                                     }
                                 });
                             } else {
-                                that.navigatorParams.component = LoginAndRegister;
-                                that.navigatorParams.name = 'LoginAndRegister';
+                                // that.navigatorParams.component = LoginAndRegister;
+                                // that.navigatorParams.name = 'LoginAndRegister';
+                                // that.toNextPage(that.navigatorParams);
+
+                                that.navigatorParams.component = MainPage;
+                                that.navigatorParams.name = 'MainPage';
                                 that.toNextPage(that.navigatorParams);
                             }
                         }

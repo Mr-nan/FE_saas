@@ -25,6 +25,7 @@ import LoginAndRegister from "../../login/LoginAndRegister";
 import YJZButton from '../../mine/setting/YJZButton';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import LoginScene from "../../login/LoginScene";
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
@@ -126,13 +127,16 @@ export default class Setting extends BaseComponent {
 
     loginOut = () => {
 
-        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+        StorageUtil.mRemoveItem(StorageKeyNames.ISLOGIN);
+        StorageUtil.mRemoveItem(StorageKeyNames.USER_INFO);
+        StorageUtil.mRemoveItem(StorageKeyNames.TOKEN);
+        StorageUtil.mRemoveItem(StorageKeyNames.LOAN_SUBJECT);
         if (Platform.OS === 'android') {
             NativeModules.GrowingIOModule.setCS1("user_id", null);
         } else {
             // NativeModules.growingSetCS1("user_id", null);
         }
-        this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
+        this.exitPage({name: 'LoginScene', component: LoginScene});
 
     }
 

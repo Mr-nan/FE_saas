@@ -277,7 +277,9 @@ export default class HomeScene extends BaseComponet {
     loadData = () => {
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != '') {
+
+            console.log('==========Loan_SUBJECT',data);
+            if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 this.getData(enters.prov_id);
 
@@ -296,42 +298,24 @@ export default class HomeScene extends BaseComponet {
             this.props.backToLogin()
         })
             .then((response) => {
-                    // allList.push(...response.mjson.data.carList.list);
-                    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
-                        if (data.code == 1) {
-                            let datas = JSON.parse(data.result);
-                            if (datas.user_level == 2) {
-                                if (datas.enterprise_list[0].role_type == '1' || datas.enterprise_list[0].role_type == '6') {
-                                } else if (datas.enterprise_list[0].role_type == '2') {
+                    if (allList.length <= 0) {
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            isRefreshing: false,
+                            allData: response.mjson.data
+                        });
+                    } else {
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            isRefreshing: false,
+                            allData: response.mjson.data
+                        });
+                    }
+                    this.carArray = []; // 初始化车源订阅数据
+                    this.getCarData(6);
+                    this.getCarSubscriptionData(5);
+                    this.getCarSubscriptionData(7);
 
-                                } else {
-
-                                }
-                            } else if (datas.user_level == 1) {
-
-                            } else {
-
-                            }
-                            if (allList.length <= 0) {
-                                this.setState({
-                                    renderPlaceholderOnly: 'success',
-                                    isRefreshing: false,
-                                    allData: response.mjson.data
-                                });
-                            } else {
-                                this.setState({
-                                    renderPlaceholderOnly: 'success',
-                                    isRefreshing: false,
-                                    allData: response.mjson.data
-                                });
-                            }
-                            this.carArray = []; // 初始化车源订阅数据
-                            this.getCarData(6);
-                            this.getCarSubscriptionData(5);
-                            this.getCarSubscriptionData(7);
-
-                        }
-                    });
                     status = response.mjson.data.carList.pageCount;
                 },
                 (error) => {

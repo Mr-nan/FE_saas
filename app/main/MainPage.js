@@ -105,7 +105,7 @@ export default class MainPage extends BaseComponent {
             if (data == '未开通') {
 
                 StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                    if (data.code == 1) {
+                    if (data.code == 1  && data.result) {
                         let userData = JSON.parse(data.result);
                         StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                             if (subData.code == 1) {
@@ -132,10 +132,8 @@ export default class MainPage extends BaseComponent {
                 //     }
                 // })
             } else if (data == '已激活') {
-
-
                 StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                    if (data.code == 1) {
+                    if (data.code == 1  && data.result) {
                         let userData = JSON.parse(data.result);
                         StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                             if (subData.code == 1) {
@@ -164,9 +162,8 @@ export default class MainPage extends BaseComponent {
                 //     }
                 // })
             } else if (data == '未绑卡') {
-
                 StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                    if (data.code == 1) {
+                    if (data.code == 1  && data.result) {
                         let userData = JSON.parse(data.result);
                         StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                             if (subData.code == 1) {
@@ -198,7 +195,7 @@ export default class MainPage extends BaseComponent {
         })
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-            if (data.code == 1) {
+            if (data.code == 1 && data.result) {
                 let userData = JSON.parse(data.result);
                 StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                     if (subData.code == 1) {
@@ -229,15 +226,33 @@ export default class MainPage extends BaseComponent {
 
 
     initFinish = () => {
-        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
-            if (childdata.code == 1) {
-                let childdatas = JSON.parse(childdata.result);
-                this.is_done_credit = childdatas.is_done_credit;
-                this.getUserPermission(childdatas.company_base_id);
-            } else {
-                this.setState({renderPlaceholderOnly: 'error'});
+
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+
+            console.log(res,'==============sss======');
+            if (res.result !== StorageUtil.ERRORCODE) {
+                if (!res.result) {
+
+                    this.getTouristPermission();
+
+                } else {
+
+                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
+                        if (childdata.code == 1) {
+                            let childdatas = JSON.parse(childdata.result);
+                            this.is_done_credit = childdatas.is_done_credit;
+                            this.getUserPermission(childdatas.company_base_id);
+                        } else {
+                            this.setState({renderPlaceholderOnly: 'error'});
+                        }
+                    });
+                }
+            }else {
+                this.getTouristPermission();
             }
         });
+
+
     }
 
     allRefresh = () => {
@@ -250,6 +265,40 @@ export default class MainPage extends BaseComponent {
             enterprise_uid: id
         };
         request(Urls.GETFUNCTIONBYTOKENENTER, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
+                        this.setState({
+                            renderPlaceholderOnly: 'null',
+                        });
+                    } else {
+                        StorageUtil.mSetItem(storageKeyNames.GET_USER_PERMISSION,
+                            JSON.stringify(response.mjson), () => {
+                                GetPermission.getFirstList((list) => {
+                                    for (let i = 0; i < list.length; i++) {
+                                        tabArray.push(new tableItemInfo(list[i].ref, list[i].key, list[i].name, list[i].image,
+                                            list[i].unImage, this.getTopView(list[i].ref)));
+                                    }
+                                    this.setState({
+                                        selectedTab: tabArray[0].ref,
+                                        renderPlaceholderOnly: 'success'
+                                    });
+                                });
+                            });
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
+    }
+
+    /*
+     *
+     * 获取游客身份权限
+     *
+     */
+
+    getTouristPermission=()=>{
+        request(Urls.GET_TOURIST_BYTOKENENTER, 'Post', {})
             .then((response) => {
                     if (response.mjson.data == null || response.mjson.data.length <= 0) {
                         this.setState({

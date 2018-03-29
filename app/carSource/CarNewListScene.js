@@ -200,7 +200,7 @@ export  default  class CarNewListScene extends BaseComponent {
         StorageUtil.mSetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,'false');
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
-            if(data.code == 1 && data.result != '')
+            if(data.code == 1 && data.result)
             {
                 let enters = JSON.parse(data.result);
                 this.prov_id = enters.prov_id;

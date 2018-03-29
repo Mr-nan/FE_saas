@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -16,7 +16,7 @@
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
 /**
@@ -513,6 +513,14 @@ export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
  * 获取用户功能权限
  **/
 export const GETFUNCTIONBYTOKENENTER = BASEURL + 'v1/user/getFunctionByTokenEnter';
+
+
+/**
+ * from @zhaojian
+ *
+ * 获取游客功能权限
+ **/
+export const GET_TOURIST_BYTOKENENTER = BASEURL + 'v2/user.guest/getFunctionByTokenEnter';
 
 /**
  * from @zhaojian
