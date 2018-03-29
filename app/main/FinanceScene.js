@@ -683,6 +683,7 @@ export default class FinanceSence extends BaseComponet {
                         purchase_archives_after_status: mnyData.purchase_archives_after_status,
                         purchase_archives_first_status: mnyData.purchase_archives_first_status,
                         purchase_status: mnyData.purchase_status,
+                        car_loan_status:mnyData.car_loan_status,
                         customerName: this.state.customerName,
                         backRefresh: () => {
                             this.allRefresh()
