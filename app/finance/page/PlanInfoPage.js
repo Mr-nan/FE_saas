@@ -23,6 +23,7 @@ import * as Urls from '../../constant/appUrls';
 let viewWidth = Pixel.getPixel(40);
 let list = [];
 let relist = [];
+let movies;
 import AdjustListScene from '../repayment/AdjustListScene';
 import  AllLoading from '../../component/AllLoading';
 import  AdjustListModal from '../../component/AdjustListModal';
@@ -64,8 +65,9 @@ export default class PlanInfoPage extends BaseComponent {
 
     getData = () => {
         let maps = {
-            api: Urls.REPAYMENT_GET_ADJUST_INFO,
+            api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
             loan_number: this.props.loan_number,
+            loan_code:this.props.payment_number,
             type: '3',
         };
         if(this.props.planid){
@@ -74,8 +76,9 @@ export default class PlanInfoPage extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    list = response.mjson.data.list;
-                    relist = response.mjson.data.relist;
+                    list = response.mjson.data.repayment_plan;
+                    relist = response.mjson.data.repayment_plan.relist;
+                    movies = response.mjson.data.payment_info;
                     if (list != null && list.length > 0) {
                         this.setState({renderPlaceholderOnly: 'success', dataSource: ds.cloneWithRows(list),xuanzhong:''});
                     } else {
@@ -95,13 +98,26 @@ export default class PlanInfoPage extends BaseComponent {
         }
         return (
             <View style={styles.container}>
-                <ListView
-                    removeClippedSubviews={false}
-                    contentContainerStyle={styles.listStyle}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderRow}
-                    renderHeader={this._renderHeader}
-                />
+                    <ListView
+                        removeClippedSubviews={false}
+                        contentContainerStyle={styles.listStyle}
+                        dataSource={this.state.dataSource}
+                        renderRow={this._renderRow}
+                        renderHeader={this._renderHeader}
+                    />
+                <View style={{width:width,height:Pixel.getPixel(68),backgroundColor:'#fff',
+                    borderBottomColor:fontAndClolr.COLORA4,borderBottomWidth:Pixel.getPixel(1),borderStyle:'solid',justifyContent:'center'}}>
+                    <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),borderBottomColor:fontAndClolr.COLORA4,
+                        borderBottomWidth:Pixel.getPixel(1),borderStyle:'solid',marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
+                        <Text style={{flex:1}}>总共应还</Text>
+                        <Text style={{flex:1,textAlign:'right'}}>{movies.total_m_i}</Text>
+                    </View>
+
+                    <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
+                        <Text style={{flex:1}}>未还利息</Text>
+                        <Text style={{flex:1,textAlign:'right'}}>{movies.total_interest}</Text>
+                    </View>
+                </View>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'使用优惠券'}
                           parentStyle={styles.loginBtnStyle}
@@ -157,7 +173,7 @@ export default class PlanInfoPage extends BaseComponent {
 
                               }}>
                 <View style={styles.textAllStyle}>
-                    <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.dead_line}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.enddate}</Text>
                     <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.repaymentmny}</Text>
                     <TouchableOpacity activeOpacity={1} onPress={() => {
                         if(rowData.adjustmoney!='0'&&rowData.relist){
@@ -165,11 +181,13 @@ export default class PlanInfoPage extends BaseComponent {
                             this._moneyAdjustClick(rowID)
                         }
                     }}>
-                        <Text allowFontScaling={false} 
-                            style={[styles.rowTextStyle,rowData.adjustmoney!='0'?styles.textColors:{}]}>{rowData.adjustmoney}</Text>
+                        <Text allowFontScaling={false}
+                              style={[styles.rowTextStyle,rowData.adjustmoney!='0'?styles.textColors:{}]}>{rowData.adjustmoney}</Text>
                     </TouchableOpacity>
 
                     <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.aftermny}</Text>
+
+                    <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.status}</Text>
                 </View>
 
 
@@ -181,6 +199,7 @@ export default class PlanInfoPage extends BaseComponent {
                 </View>
             </TouchableOpacity>
         );
+
     }
     _rowClick = (rowID) => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -204,6 +223,7 @@ export default class PlanInfoPage extends BaseComponent {
                     <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整前</Text>
                     <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整金额</Text>
                     <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整后</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>状态</Text>
                 </View>
 
 
@@ -215,12 +235,12 @@ export default class PlanInfoPage extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
-
         flex: 1,
         marginTop: Pixel.getPixel(0),
         backgroundColor: fontAndClolr.COLORA3,
     },
-    listStyle: {},
+    listStyle: {
+    },
 
     rowView: {
         height: Pixel.getPixel(44),
@@ -254,13 +274,13 @@ const styles = StyleSheet.create({
     },
 
     headerTextStyle: {
-        width: (width - viewWidth) / 4.0,
+        width: (width - viewWidth) / 5.0,
         textAlign: 'center',
         fontSize: Pixel.getFontPixel(fontAndClolr.CONTENTFONT24),
         color: fontAndClolr.COLORA1
     },
     rowTextStyle: {
-        width: (width - viewWidth) / 4.0,
+        width: (width - viewWidth) / 5.0,
         textAlign: 'center',
         fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
         color: fontAndClolr.COLORA0
