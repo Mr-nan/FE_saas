@@ -69,7 +69,8 @@ export  default class ChedidaiInventoryPlanInfoScene extends BaseComponent {
                         this.props.showModal(value);
                     }}  loan_id={this.props.loan_id}
                                     loan_number={this.props.loan_number} payment_number={this.props.payment_number}
-                                    tabLabel="ios-paper1"/>
+                                   from={this.props.from}
+                                    tabLabel="ios-paper1" />
                 </ScrollableTabView>
                 <NavigationView
                     title="还款详情"

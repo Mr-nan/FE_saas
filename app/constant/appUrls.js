@@ -580,6 +580,7 @@ export const USER_ACCOUNT_WITHDRAW = BASEURL + 'v1/user.account/withdraw';
  **/
 export const USER_BANK_QUERY = BASEURL + 'v1/user.bank/query';
 
+
 /**
  * from @zhaojian
  *
@@ -649,6 +650,13 @@ export const PURCHAAUTO_GETPURCHAAUTOPICCATE = 'api/v2/purchaAuto/getPurchaAutoP
  * 获取还款详情
  **/
 export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
+
+/**
+ * from @marongting
+ *
+ * 获取采购贷还款详情数据
+ **/
+export const RECEIVABLE_LOAN_INFO = 'api/V3/receivable/loan_info';
 
 /**
  * from @zhaojian

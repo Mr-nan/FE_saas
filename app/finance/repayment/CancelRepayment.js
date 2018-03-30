@@ -81,13 +81,25 @@ export  default class CancelRepayment extends BaseComponent {
     }
 
     getData = () => {
-        let maps = {
-            api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
-            loan_id: this.props.loan_id,
-            type: '2',
-            loan_number: this.props.loan_number,
-            loan_code:this.props.payment_number,
-        };
+        let maps;
+        if(this.props.from === 'ChedidaiRepaymentPage'){
+             maps = {
+                api: Urls.RECEIVABLE_LOAN_INFO,
+                loan_id: this.props.loan_id,
+                type: '2',
+                loan_number: this.props.loan_number,
+                loan_code:this.props.payment_number,
+            };
+        }else{
+             maps = {
+                api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
+                loan_id: this.props.loan_id,
+                type: '2',
+                loan_number: this.props.loan_number,
+                loan_code:this.props.payment_number,
+            };
+        }
+
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     movies = response.mjson.data.payment_info;
@@ -208,12 +220,12 @@ export  default class CancelRepayment extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <RepaymentInfoTopItem items={movies}  from={this.props.from}/>
+                <RepaymentInfoTopItem items={movies}  from={this.props.from} loan_number={this.props.loan_number}/>
             )
         } else if (rowId == 1) {
             return (
                 <RepaymentInfoDateItem loanday={movies.days} time={movies.repayment_time}
-                                       status={movies.test_coupon_info.paymen_status}
+                                      /* status={movies.test_coupon_info.paymen_status}*/
                                        callBack={(time)=>{
                     let selecttime = time/1000;
                     let lasttime = parseFloat(Date.parse(movies.list[0].dead_line)/1000);
@@ -263,7 +275,7 @@ export  default class CancelRepayment extends BaseComponent {
             let name = '';
             let money = movies.total_repayment_money;
             let formula = '';
-            if(parseFloat(movies.test_coupon_info.all_fee)>0){
+            if(parseFloat(movies.all_fee)>0){
                 // money = (parseFloat(movies.money)
                 // +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
                 // this.state.loan_day-parseFloat(movies.money)-parseFloat(movies.test_coupon_info.interest)

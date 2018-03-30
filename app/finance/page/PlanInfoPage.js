@@ -64,12 +64,23 @@ export default class PlanInfoPage extends BaseComponent {
     }
 
     getData = () => {
-        let maps = {
-            api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
-            loan_number: this.props.loan_number,
-            loan_code:this.props.payment_number,
-            type: '3',
-        };
+        let maps;
+        if(this.props.from === 'ChedidaiInventoryPlanInfoScene'){
+             maps = {
+                api: Urls.RECEIVABLE_LOAN_INFO,
+                loan_number: this.props.loan_number,
+                loan_code:this.props.payment_number,
+                type: '8',
+            };
+        }else{
+            maps = {
+                api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
+                loan_number: this.props.loan_number,
+                loan_code:this.props.payment_number,
+                type: '3',
+            };
+        }
+
         if(this.props.planid){
             maps.planid=this.props.planid
         }

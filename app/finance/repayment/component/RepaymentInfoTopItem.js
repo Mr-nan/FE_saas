@@ -71,7 +71,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
             <View style={[{width: width, backgroundColor: '#ffffff'},styles.padding]}>
                 <View style={{flex:1,height:Pixel.getPixel(144)}}>
                     <Text allowFontScaling={false} 
-                        style={styles.loanCodeStyle}>单号：{this.props.items.test_coupon_info.loan_number}</Text>
+                        style={styles.loanCodeStyle}>单号：{this.props.loan_number}</Text>
                     <View
                         style={{flex: 1,
                         marginTop:Pixel.getPixel(1),
@@ -92,12 +92,12 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                             借款金额:
                         </Text>
                         <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0),color:fontAndColor.COLORA0}]}>
-                            {this.props.items.test_coupon_info.loan_mny_str} | {this.props.items.loanperiodstr}
+                            {this.props.items.payment_loanmny_str} | {this.props.items.loanperiodstr}
                         </Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
                         <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                            放款日期:{this.props.items.test_coupon_info.loan_time_str}
+                            放款日期:{this.props.items.loan_time}
                         </Text>
                     </View>
                 </View>
@@ -106,7 +106,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                     this.state.model_show &&
                     <View style={styles.itemStyle}>
                         <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                            {this.isNull(this.props.items.car_info) ? '' :this.props.items.car_info.model_name}
+                            {this.isNull(this.props.items.car_info.model_name)}
                         </Text>
                     </View>
                 }
