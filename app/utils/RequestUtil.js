@@ -35,7 +35,7 @@ const request = (url, method, params, backToLogin) => {
             } else {
                 device_code = 'dycd_platform_ios';
             }
-            // token="5fab93e0d61f7cbfda542aafac0a138e"
+
             console.log(url + '?token=' + token + '&device_code=' + device_code+
                 '&version='+StorageKeyNames.VERSON_CODE+'&'+body);
 

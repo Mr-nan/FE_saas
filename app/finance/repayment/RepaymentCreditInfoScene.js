@@ -101,6 +101,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 loan_code:this.props.payment_number,
             };
         }
+
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     movies = response.mjson.data.payment_info;
