@@ -108,7 +108,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     moneyList.push({name: '计息天数', data: movies.days+'天'});
                     moneyList.push({name: '综合费率', data: movies.payment_rate_str});
                     moneyList.push({name:'还息费率',data:movies.rate+'%'});
-                    moneyList.push({name: '利息总额', data: movies.totalInterest});
+                    moneyList.push({name: '利息总额', data: movies.total_interest});
                     moneyList.push({name: '已还利息', data: movies.ready_interest});
                     moneyList.push({name: '服务费', data: movies.all_fee});
                     moneyList.push({name: '保证金', data: movies.true_bondmny});
