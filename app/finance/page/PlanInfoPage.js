@@ -163,7 +163,7 @@ export default class PlanInfoPage extends BaseComponent {
         return (
             <TouchableOpacity style={styles.rowView}
                               onPress={() => {
-                                  if(rowData.adjustmoney!='0'){
+                                  if(rowData.adjustmoney!='0.00'){
                                       if(rowData.relist){
                                           this._moneyAdjustClick(rowID)
                                       }
@@ -176,13 +176,13 @@ export default class PlanInfoPage extends BaseComponent {
                     <Text allowFontScaling={false}  style={styles.rowTextStyle1}>{rowData.enddate}</Text>
                     <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.repaymentmny}</Text>
                     <TouchableOpacity activeOpacity={1} onPress={() => {
-                        if(rowData.adjustmoney!='0'&&rowData.relist){
+                        if(rowData.adjustmoney!='0.00'&&rowData.relist){
                             console.log('123123');
                             this._moneyAdjustClick(rowID)
                         }
                     }}>
                         <Text allowFontScaling={false}
-                              style={[styles.rowTextStyle,rowData.adjustmoney!='0'?styles.textColors:{}]}>{rowData.adjustmoney}</Text>
+                              style={[styles.rowTextStyle,rowData.adjustmoney!='0.00'?styles.textColors:{}]}>{rowData.adjustmoney}</Text>
                     </TouchableOpacity>
 
                     <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.aftermny}</Text>
@@ -238,12 +238,12 @@ export default class PlanInfoPage extends BaseComponent {
                 <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),borderBottomColor:fontAndClolr.COLORA4,
                     borderBottomWidth:Pixel.getPixel(1),borderStyle:'solid',marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
                     <Text style={{flex:1}}>总共应还</Text>
-                    <Text style={{flex:1,textAlign:'right'}}>{movies.total_m_i}</Text>
+                    <Text style={{flex:1,textAlign:'right'}}>{movies.total_repayment_money}</Text>
                 </View>
 
                 <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
                     <Text style={{flex:1}}>未还利息</Text>
-                    <Text style={{flex:1,textAlign:'right'}}>{movies.total_interest}</Text>
+                    <Text style={{flex:1,textAlign:'right'}}>{movies.interest_other}</Text>
                 </View>
             </View>
         );
