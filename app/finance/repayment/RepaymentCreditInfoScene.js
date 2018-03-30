@@ -83,13 +83,25 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     }
 
     getData = () => {
-        let maps = {
-            api: Urls.RECEIVABLE_LOAN_INFO,
-            loan_id: this.props.loan_id,
-            type: '2',
-            loan_number: this.props.loan_number,
-            loan_code:this.props.payment_number,
-        };
+        let maps;
+        if(this.props.from === 'ChedidaiRepaymentPage'){
+             maps = {
+                api: Urls.RECEIVABLE_LOAN_INFO,
+                loan_id: this.props.loan_id,
+                type: '2',
+                loan_number: this.props.loan_number,
+                loan_code:this.props.payment_number,
+            };
+        }else{
+            maps = {
+                api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
+                loan_id: this.props.loan_id,
+                type: '2',
+                loan_number: this.props.loan_number,
+                loan_code:this.props.payment_number,
+            };
+        }
+
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     movies = response.mjson.data.payment_info;
