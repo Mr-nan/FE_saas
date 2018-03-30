@@ -83,13 +83,24 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     }
 
     getData = () => {
-        let maps = {
-            api: Urls.RECEIVABLE_LOAN_INFO,
-            loan_id: this.props.loan_id,
-            type: '2',
-            loan_number: this.props.loan_number,
-            loan_code:this.props.payment_number,
-        };
+        let maps;
+        if(this.props.from === 'ChedidaiRepaymentPage'){
+            maps = {
+                api: Urls.CARLOAN_LOAN_INFO,
+                loan_id: this.props.loan_id,
+                type: '2',
+                loan_number: this.props.loan_number,
+                loan_code:this.props.payment_number,
+            };
+        }else{
+            maps = {
+                api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
+                loan_id: this.props.loan_id,
+                type: '2',
+                loan_number: this.props.loan_number,
+                loan_code:this.props.payment_number,
+            };
+        }
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     movies = response.mjson.data.payment_info;
@@ -147,6 +158,14 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     },(error)=>{
                     if(error.mjson.code=='-2005013'){
                       this.allRefresh();
+                    }else if(error.mjson.code=='-2005008'){
+                        this.timer = setTimeout(
+                            () => {
+                                this.backPage();
+                                this.props.refreshListPage();
+                            },
+                            400
+                        );
                     }else{
                         this.props.showToast(error.mjson.msg);
                         this.timer = setTimeout(
@@ -270,15 +289,15 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.changeDays+'*'
                     +this.state.loan_day+'-'+movies.ready_interest+'+'+movies.all_fee
-                    +'-'+movies.true_bondmny+'-' +movies.coupon_repayment;
+                    +'-'+Math.abs(parseFloat(movies.true_bondmny))+'-' +movies.coupon_repayment;
             }else{
                /* money = (parseFloat(movies.money)
                 +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
                 this.state.loan_day-parseFloat(movies.true_bondmny)-parseFloat(movies.test_coupon_info.interest)).toFixed(2);*/
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
-                    +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.test_coupon_info.change_day+'*'
-                    +this.state.loan_day+'-'+movies.ready_interest+'-'+movies.true_bondmny+'-' +movies.coupon_repayment;
+                    +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.changeDays+'*'
+                    +this.state.loan_day+'-'+movies.ready_interest+'-'+Math.abs(parseFloat(movies.true_bondmny))+'-' +movies.coupon_repayment;
             }
             return (
                 <RepaymentInfoBottomItem ref="RepaymentInfoBottomItem"

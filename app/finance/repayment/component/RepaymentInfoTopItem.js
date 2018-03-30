@@ -106,7 +106,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                     this.state.model_show &&
                     <View style={styles.itemStyle}>
                         <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                            {this.isNull(this.props.items.car_info.model_name)}
+                            {this.isNull(this.props.items.car_info)?'':this.props.items.car_info.model_name}
                         </Text>
                     </View>
                 }

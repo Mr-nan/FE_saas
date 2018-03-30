@@ -51,6 +51,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
          page = 1;
          allPage = 1;
         this.allList = [];
+        this.timer && clearTimeout(this.timer);
     }
 
     initFinish = () => {
@@ -91,9 +92,16 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
     };
     refreshingData2 = () => {
         this.allList = [];
-        this.props.showModal(true);
         page = 1;
-        this.getData2();
+        this.props.showModal(true);
+        this.timer = setTimeout(
+            () => {
+                this.getData2();
+            },
+            500
+        );
+
+
     };
     getData2 = () => {
         let maps = {

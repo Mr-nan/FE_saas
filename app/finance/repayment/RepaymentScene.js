@@ -52,6 +52,10 @@ export  default class RepaymentScene extends BaseComponent {
             this.toNextPage({name:'CancelRepayment',component:CancelRepayment,
                 params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:from,refreshListPage:refreshListPage}});
         }
+
+        // this.toNextPage({name:'CancelRepayment',component:CancelRepayment,
+        //     params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:from,refreshListPage:refreshListPage}});
+
     };
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {

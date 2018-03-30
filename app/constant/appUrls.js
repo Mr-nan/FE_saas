@@ -651,12 +651,6 @@ export const PURCHAAUTO_GETPURCHAAUTOPICCATE = 'api/v2/purchaAuto/getPurchaAutoP
  **/
 export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
 
-/**
- * from @marongting
- *
- * 获取采购贷还款详情数据
- **/
-export const RECEIVABLE_LOAN_INFO = 'api/V3/receivable/loan_info';
 
 /**
  * from @zhaojian

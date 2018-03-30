@@ -65,9 +65,9 @@ export default class PlanInfoPage extends BaseComponent {
 
     getData = () => {
         let maps;
-        if(this.props.from === 'ChedidaiInventoryPlanInfoScene'){
-             maps = {
-                api: Urls.RECEIVABLE_LOAN_INFO,
+        if(this.props.from === 'ChedidaiRepaymentPage'){
+            maps = {
+                api: Urls.CARLOAN_LOAN_INFO,
                 loan_number: this.props.loan_number,
                 loan_code:this.props.payment_number,
                 type: '8',

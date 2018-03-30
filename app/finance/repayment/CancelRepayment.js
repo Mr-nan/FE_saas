@@ -84,7 +84,7 @@ export  default class CancelRepayment extends BaseComponent {
         let maps;
         if(this.props.from === 'ChedidaiRepaymentPage'){
              maps = {
-                api: Urls.RECEIVABLE_LOAN_INFO,
+                api: Urls.CARLOAN_LOAN_INFO,
                 loan_id: this.props.loan_id,
                 type: '2',
                 loan_number: this.props.loan_number,
@@ -284,13 +284,13 @@ export  default class CancelRepayment extends BaseComponent {
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.changeDays+'*'
                     +this.state.loan_day+'-'+movies.ready_interest+'+'+movies.all_fee
-                    +'-'+movies.true_bondmny+'-'
+                    +'-'+Math.abs(parseFloat(movies.true_bondmny))+'-'
                     +movies.coupon_repayment;
             }else{
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.changeDays+'*'
-                    +this.state.loan_day+'-'+movies.ready_interest+'-'+movies.true_bondmny+'-'
+                    +this.state.loan_day+'-'+movies.ready_interest+'-'+Math.abs(parseFloat(movies.true_bondmny))+'-'
                     +movies.coupon_repayment;
             }
             return (

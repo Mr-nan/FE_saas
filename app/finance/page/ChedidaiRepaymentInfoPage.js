@@ -69,7 +69,7 @@ export  default class ChedidaiRepaymentInfoPage extends BaseComponent {
 
     getData = () => {
         let maps = {
-            api: Urls.RECEIVABLE_LOAN_INFO,
+            api: Urls.CARLOAN_LOAN_INFO,
             loan_number: this.props.loan_number,
             loan_code:this.props.payment_number,
             type: '8',
