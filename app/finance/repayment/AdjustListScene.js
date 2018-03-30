@@ -68,7 +68,7 @@ export  default class AdjustListScene extends BaseComponent {
                 let data = JSON.parse(datas.result);
                 let maps = {
                     api: Urls.REPAYMENT_GET_ADJUST_USE,
-                    planid: this.props.items.planid,
+                    planid: this.props.items.repaymentplan_id,
                     user_id: data.base_user_id,
                 };
                 request(Urls.FINANCE, 'Post', maps)

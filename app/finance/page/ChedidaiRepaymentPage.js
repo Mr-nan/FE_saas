@@ -33,8 +33,9 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
         super(props);
         // 初始状态
         this.allList=[];
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.payment_status !== r2.payment_status});
         this.state = {
-            source: [],
+            source: ds.cloneWithRows(this.allList),
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
         };
@@ -51,7 +52,6 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
          page = 1;
          allPage = 1;
         this.allList = [];
-        this.timer && clearTimeout(this.timer);
     }
 
     initFinish = () => {
@@ -68,9 +68,8 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
             .then((response) => {
                     this.allList.push(...response.mjson.data.list);
                     allPage = response.mjson.data.total/10;
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
-                        source: ds.cloneWithRows(this.allList),
+                        source: this.state.source.cloneWithRows(this.allList),
                         renderPlaceholderOnly: 'success',
                         isRefreshing: false
                     });
@@ -94,14 +93,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
         this.allList = [];
         page = 1;
         this.props.showModal(true);
-        this.timer = setTimeout(
-            () => {
-                this.getData2();
-            },
-            500
-        );
-
-
+        this.getData2();
     };
     getData2 = () => {
         let maps = {
@@ -111,12 +103,10 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    this.allList = [];
                     this.allList.push(...response.mjson.data.list);
                     allPage = response.mjson.data.total/10;
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
-                        source: ds.cloneWithRows(this.allList),
+                        source: this.state.source.cloneWithRows(this.allList),
                     },()=>{
                         this.props.showModal(false);
                     });
@@ -217,7 +207,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
                         <Text allowFontScaling={false}  style={[styles.centerBottomText, {
                             color: fontAndColor.COLORA0
                         }]}>
-                            {movie.dead_line_str}
+                            {movie.loanmakedate_str}
                         </Text>
                     </View>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-end'}]}>
