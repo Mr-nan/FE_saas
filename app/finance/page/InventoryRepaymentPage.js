@@ -106,13 +106,17 @@ export  default class InventoryRepaymentPage extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    this.allList = [];
-                    this.allList.push(...response.mjson.data.list);
-                    allPage = response.mjson.data.total/10;
                     this.setState({
-                        source: this.state.source.cloneWithRows(this.allList)
+                        source: this.state.source.cloneWithRows([])
                     },()=>{
-                        this.props.showModal(false);
+                        this.allList = [];
+                        this.allList.push(...response.mjson.data.list);
+                        allPage = response.mjson.data.total/10;
+                        this.setState({
+                            source: this.state.source.cloneWithRows(this.allList)
+                        },()=>{
+                            this.props.showModal(false);
+                        });
                     });
                 },
                 (error) => {
