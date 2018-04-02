@@ -105,6 +105,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     movies = response.mjson.data.payment_info;
+                    let bankInfo = response.mjson.data.channel_bank_info;
                     moneyList.push({name: '计息天数', data: movies.days+'天'});
                     moneyList.push({name: '综合费率', data: movies.payment_rate_str});
                     moneyList.push({name:'还息费率',data:movies.rate+'%'});
@@ -112,11 +113,11 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     moneyList.push({name: '已还利息', data: movies.ready_interest});
                     moneyList.push({name: '服务费', data: movies.all_fee});
                     moneyList.push({name: '保证金', data: movies.true_bondmny});
-                    nameList.push({name: '渠道名称', data: movies.trench_name});
-                    nameList.push({name: '还款账户', data: movies.payment_bankusername});
-                    nameList.push({name: '开户行', data: movies.payment_bankname});
-                    nameList.push({name: '开户支行', data: movies.payment_branch});
-                    nameList.push({name: '还款账号', data: movies.payment_bankaccount});
+                    nameList.push({name: '渠道名称', data: bankInfo.channelname});
+                    nameList.push({name: '还款账户', data: bankInfo.repaymentaccount});
+                    nameList.push({name: '开户行', data: bankInfo.bank});
+                    nameList.push({name: '开户支行', data: bankInfo.branch});
+                    nameList.push({name: '还款账号', data: bankInfo.repaymentnumber});
 
 
                     adjustLsit.push({name: '使用优惠券数量', data: movies.coupon_number});
