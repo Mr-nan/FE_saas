@@ -229,7 +229,6 @@ export default class MainPage extends BaseComponent {
 
         StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
 
-            console.log(res,'==============sss======');
             if (res.result !== StorageUtil.ERRORCODE) {
                 if (!res.result) {
 

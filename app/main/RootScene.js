@@ -106,7 +106,6 @@ export default class RootScene extends BaseComponent {
 
             }
 
-            console.log(message);
 
         });
     }
