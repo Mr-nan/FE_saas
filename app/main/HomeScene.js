@@ -367,6 +367,7 @@ export default class HomeScene extends BaseComponet {
             .then((response) => {
                     // this.carData = response.mjson.data.list;
                     if (type == 6) {
+
                         this.setState({
                             newData: response.mjson.data,
                         });
