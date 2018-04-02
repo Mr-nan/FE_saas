@@ -209,7 +209,7 @@ export  default class PurchaseRepaymentPage extends BaseComponent {
                     style={[styles.centerView]}>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-start'}]}>
                         <Text allowFontScaling={false}  style={styles.centerText}>
-                            放款日期
+                            到账日期
                         </Text>
                         <Text allowFontScaling={false}  style={[styles.centerBottomText, {
                             color: fontAndColor.COLORA0
