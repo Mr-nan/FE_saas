@@ -87,7 +87,7 @@ export default class CarNewInfoScene extends BaseComponent {
         this.isUserBoss = false;
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-            if (data.code == 1 && data.result != '') {
+            if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 for (let item of enters.enterprise_list[0].role_type){
                     if(item ==1 || item==6){
@@ -124,7 +124,7 @@ export default class CarNewInfoScene extends BaseComponent {
 
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
-            if (data.code == 1 && data.result != '') {
+            if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 let company_base_ids = '';
                 for (let index in enters) {

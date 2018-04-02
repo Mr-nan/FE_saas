@@ -106,7 +106,7 @@ export  default  class CarNewListScene extends BaseComponent {
         super(props);
         // 初始状态
         const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
-
+        this.prov_id = 0;
         this.isLoadCarInfo = false;
         this.state = {
             isRefreshing: false,
