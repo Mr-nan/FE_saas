@@ -517,29 +517,23 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.props.showToast('选择出厂日期');
             return;
         }
-
-        if(this.carData.v_type==1){
-
-            if(!this.carData.init_reg)
-            {
-                this.props.showToast('选择初登日期');
-                return;
-            }
-
-            let manufactureData = new  Date(this.carData.manufacture);
-            let initReg = new  Date(this.carData.init_reg);
-            if(manufactureData.getTime() > initReg.getTime())
-            {
-                this.props.showToast('初登日期不得早于出厂日期');
-                return;
-            }
-
+        if(!this.carData.init_reg)
+        {
+            this.props.showToast('选择初登日期');
+            return;
         }
 
-        if(this.carData.v_type!==1){
-            this.carData.init_reg = '';
-            this.titleData1[1][1].value = '请选择';
+        let manufactureData = new  Date(this.carData.manufacture);
+        let initReg = new  Date(this.carData.init_reg);
+        if(manufactureData.getTime() > initReg.getTime())
+        {
+            this.props.showToast('初登日期不得早于出厂日期');
+            return;
         }
+
+
+
+
 
 
         let navigatorParams = {
@@ -614,10 +608,6 @@ export default class CarPublishFirstScene extends BaseComponent{
 
             this.titleData1[0][1].value = this.modelData[index].model_name;
             this.titleData1[0][3].value = this.modelData[index].model_emission_standard;
-            this.titleData1[1][0].value = this.modelData[index].model_year+'-06-01';
-            this.titleData1[1][1].value = this.modelData[index].model_year+'-06-01';
-
-            this.carData['manufacture'] = this.modelData[index].model_year+'-06-01';
             this.carData['model_id'] = this.modelData[index].model_id;
             this.carData['emission_standards'] = this.modelData[index].model_emission_standard;
             this.carData['series_id'] = this.modelData[index].series_id;
@@ -626,14 +616,6 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.carData['brand_name'] = this.modelData[index].brand_name;
             this.carData['series_name'] = this.modelData[index].series_name;
 
-            if(this.carType=='二手车')
-            {
-                this.carData['init_reg'] = this.modelData[index].model_year+'-06-01';
-
-            }else {
-                this.carData['init_reg'] = '';
-                this.titleData1[1][1].value = '请选择';
-            }
 
             if(this.modelData[index].model_liter){
                 this.carData['displacement']=this.modelData[index].model_liter;
@@ -658,8 +640,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                         this.titleData1[0][0].subTitle='';
                         this.titleData1[0][1].value = '请选择';
                         this.titleData1[0][3].value = '请选择';
-                        this.titleData1[1][0].value = '请选择';
-                        this.titleData1[1][1].value = '请选择';
+
 
                         this.carData['vin'] = text;
                         this.carData['model_id'] = '';
@@ -685,19 +666,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
                                         this.titleData1[0][1].value = rd[0].model_name;
                                         this.titleData1[0][3].value = rd[0].model_emission_standard;
-                                        this.titleData1[1][0].value = rd[0].model_year+'-06-01';
-                                        this.titleData1[1][1].value = rd[0].model_year+'-06-01';
 
-                                        this.carData['manufacture'] = rd[0].model_year+'-06-01';
-                                        if(this.carType=='二手车')
-                                        {
-                                            this.carData['init_reg'] = rd[0].model_year+'-06-01';
-
-                                        }else {
-                                            this.carData['init_reg'] = '';
-                                            this.titleData1[1][1].value = '请选择';
-
-                                        }
                                         this.carData['model_id'] = rd[0].model_id;
                                         this.carData['emission_standards'] = rd[0].model_emission_standard;
                                         this.carData['series_id'] = rd[0].series_id;
@@ -804,11 +773,6 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.titleData1[0][0].subTitle='';
         this.titleData1[0][1].value = carObject.model_name;
         this.titleData1[0][2].value = carObject.discharge_standard;
-
-
-
-        this.carData['manufacture'] = carObject.model_year+'-06-01';
-        this.carData['init_reg'] = carObject.model_year+'-06-01';
         this.carData['model_id'] = carObject.model_id;
         this.carData['emission_standards'] = carObject.discharge_standard;
         this.carData['series_id'] = carObject.series_id;
