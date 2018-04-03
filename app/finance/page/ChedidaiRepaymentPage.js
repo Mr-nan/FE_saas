@@ -106,13 +106,21 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
                     this.setState({
                         source: this.state.source.cloneWithRows([]),
                     },()=>{
-                        this.allList.push(...response.mjson.data.list);
-                        allPage = response.mjson.data.total/10;
-                        this.setState({
-                            source: this.state.source.cloneWithRows(this.allList),
-                        },()=>{
-                            this.props.showModal(false);
-                        });
+
+                        this.timer = setTimeout(
+                            () => {
+                                this.allList.push(...response.mjson.data.list);
+                                allPage = response.mjson.data.total/10;
+                                this.setState({
+                                    source: this.state.source.cloneWithRows(this.allList),
+                                },()=>{
+                                    this.props.showModal(false);
+                                });
+                            },
+                            1000
+                        );
+
+
                     });
                 },
                 (error) => {
