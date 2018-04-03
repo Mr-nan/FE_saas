@@ -72,6 +72,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
             api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
             loan_number: this.props.loan_number,
             loan_code:this.props.payment_number,
+            page_type:'1'
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {

@@ -73,6 +73,7 @@ export  default class ChedidaiRepaymentInfoPage extends BaseComponent {
             loan_number: this.props.loan_number,
             loan_code:this.props.payment_number,
             type: '8',
+            page_type:'1'
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {

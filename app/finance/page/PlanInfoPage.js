@@ -71,6 +71,7 @@ export default class PlanInfoPage extends BaseComponent {
                 loan_number: this.props.loan_number,
                 loan_code:this.props.payment_number,
                 type: '8',
+                page_type:'1'
             };
         }else{
             maps = {
@@ -78,6 +79,7 @@ export default class PlanInfoPage extends BaseComponent {
                 loan_number: this.props.loan_number,
                 loan_code:this.props.payment_number,
                 type: '3',
+                page_type:'1'
             };
         }
 

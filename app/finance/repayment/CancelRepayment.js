@@ -89,6 +89,7 @@ export  default class CancelRepayment extends BaseComponent {
                 type: '2',
                 loan_number: this.props.loan_number,
                 loan_code:this.props.payment_number,
+                 page_type:'2'
             };
         }else{
              maps = {
@@ -97,6 +98,7 @@ export  default class CancelRepayment extends BaseComponent {
                 type: '2',
                 loan_number: this.props.loan_number,
                 loan_code:this.props.payment_number,
+                 page_type:'2'
             };
         }
 

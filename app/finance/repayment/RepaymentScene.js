@@ -45,7 +45,7 @@ export  default class RepaymentScene extends BaseComponent {
     }
 
     toNext = (detail_page,loan_id,loan_number,type,payment_number,payment_status,from,refreshListPage) => {
-       // this.toNextPage(detail_page);
+       // this.toNextPage(detail_page
         if(payment_status == 0){
             this.toNextPage(detail_page);
         }else{
