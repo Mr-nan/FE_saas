@@ -82,6 +82,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
                     moneyList.push({name: '利息总额', data: movies.total_interest});
                     moneyList.push({name: '已还利息', data: movies.ready_interest});
                     moneyList.push({name: '待还利息', data: movies.interest_other});
+                    moneyList.push({name: '服务费', data: movies.all_fee});
                     moneyList.push({name: '使用优惠券数量', data: movies.coupon_number});
                     moneyList.push({name: '使用优惠券金额', data: movies.coupon_usable});
                     moneyList.push({name: '优惠券还息金额', data: movies.coupon_repayment});
