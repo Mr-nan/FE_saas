@@ -52,7 +52,6 @@ const request = (url, method, params, backToLogin) => {
                     } else {
                         isOk = false;
                     }
-                    console.log(response);
                     return response.json();
                 })
                 .then((responseData) => {
@@ -65,13 +64,17 @@ const request = (url, method, params, backToLogin) => {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
                             if (responseData.code == 7040011 || responseData.code == 7040020) {
-                                // StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, '');
-                                // StorageUtil.mSetItem(StorageKeyNames.NEED_TOAST_ERROR, responseData.msg + '');
-                                // if (all) {
-                                //     all.immediatelyResetRouteStack([{
-                                //         ...loginSuccess
-                                //     }])
-                                // }
+                                StorageUtil.mSetItem(StorageKeyNames.NEED_TOAST_ERROR, responseData.msg + '');
+                                StorageUtil.mRemoveItem(StorageKeyNames.ISLOGIN);
+                                StorageUtil.mRemoveItem(StorageKeyNames.USER_INFO);
+                                StorageUtil.mRemoveItem(StorageKeyNames.TOKEN);
+                                StorageUtil.mRemoveItem(StorageKeyNames.LOAN_SUBJECT);
+                                StorageUtil.mRemoveItem(StorageKeyNames.ENTERPRISE_LIST);
+                                if (all) {
+                                    all.immediatelyResetRouteStack([{
+                                        ...loginSuccess
+                                    }])
+                                }
                             } else {
                                 if(responseData.msg.length>=40){
                                     responseData.msg = '系统异常'

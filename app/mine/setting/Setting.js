@@ -131,6 +131,7 @@ export default class Setting extends BaseComponent {
         StorageUtil.mRemoveItem(StorageKeyNames.USER_INFO);
         StorageUtil.mRemoveItem(StorageKeyNames.TOKEN);
         StorageUtil.mRemoveItem(StorageKeyNames.LOAN_SUBJECT);
+        StorageUtil.mRemoveItem(StorageKeyNames.ENTERPRISE_LIST);
         if (Platform.OS === 'android') {
             NativeModules.GrowingIOModule.setCS1("user_id", null);
         } else {

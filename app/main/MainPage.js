@@ -496,7 +496,7 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
-                }} jumpScene={(ref,openSelectBranch)=>{
+                }} showLoginModal={this.props.showLoginModal} jumpScene={(ref,openSelectBranch)=>{
 
                     if(openSelectBranch=='true'){
 
@@ -555,7 +555,7 @@ export default class MainPage extends BaseComponent {
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
 
                     this.toNextPage(params);
-                }}/>
+                }} showLoginModal={this.props.showLoginModal}/>
         } else if (ref == 'sendpage') {
             return <WorkBenchScene backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
@@ -563,7 +563,7 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
-                }}/>
+                }} showLoginModal={this.props.showLoginModal}/>
         } else if (ref == 'financePage') {
             if (this.is_done_credit == 0) {
                 return <NonCreditScene/>
@@ -574,7 +574,7 @@ export default class MainPage extends BaseComponent {
                         this.props.showModal(value);
                         }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
                         this.toNextPage(params);
-                }}/>
+                }} showLoginModal={this.props.showLoginModal}/>
             }
         } else {
             return <MineSence backToLogin={()=>{
@@ -583,7 +583,7 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
-                }} toSelect={()=>{
+                }} showLoginModal={this.props.showLoginModal} toSelect={()=>{
                 let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
                 const navigator = this.props.navigator;
                 if (navigator) {

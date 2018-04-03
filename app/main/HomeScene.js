@@ -138,36 +138,44 @@ export default class HomeScene extends BaseComponet {
 
     //认证功能验证
     _checkAuthen = (params) => {
+        StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                if (res.result) {
+                    this.props.callBack(params);
+                    return;
+                    this.isHomeJobItemLose = true;
+                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+                        if (data.code == 1 && data.result) {
+                            let datas = JSON.parse(data.result);
+                            let maps = {
+                                enterprise_id: datas.company_base_id,
+                                function_id: params.id,
+                                type: 'app'
+                            };
+                            request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                                this.isHomeJobItemLose = false;
+                                this.orderListData = response.mjson.data.items;
+                                if (response.mjson.data.auth == 0) {
+                                    this.props.callBack(params);
+                                } else {
+                                    this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth + '']);
+                                }
+                            }, (error) => {
+                                this.isHomeJobItemLose = false;
+                                this.props.showToast(error.msg);
+                            });
+                        } else {
+                            this.isHomeJobItemLose = false;
+                            this.props.showToast('获取企业信息失败');
+                        }
+                    });
 
-        this.props.callBack(params);
-        return;
-
-        this.isHomeJobItemLose = true;
-        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    enterprise_id: datas.company_base_id,
-                    function_id: params.id,
-                    type: 'app'
-                };
-                request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
-                    this.isHomeJobItemLose = false;
-                    this.orderListData = response.mjson.data.items;
-                    if (response.mjson.data.auth == 0) {
-                        this.props.callBack(params);
-                    } else {
-                        this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth + '']);
+                }else {
+                       this.props.showLoginModal();
                     }
-                }, (error) => {
-                    this.isHomeJobItemLose = false;
-                    this.props.showToast(error.msg);
-                });
-            } else {
-                this.isHomeJobItemLose = false;
-                this.props.showToast('获取企业信息失败');
             }
-        });
+        );
+
+
     }
 
     _renderHeader = () => {

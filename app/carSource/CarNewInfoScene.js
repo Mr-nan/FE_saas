@@ -695,57 +695,79 @@ export default class CarNewInfoScene extends BaseComponent {
     // 添加收藏
     addStoreAction = (isStoreClick) => {
 
-        let url = AppUrls.BASEURL + 'v1/user.favorites/create';
-        request(url, 'post', {
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                if (res.result) {
+                    let url = AppUrls.BASEURL + 'v1/user.favorites/create';
+                    request(url, 'post', {
 
-            id: this.state.carData.id,
+                        id: this.state.carData.id,
 
-        }).then((response) => {
+                    }).then((response) => {
 
-            if (response.mycode == 1) {
+                        if (response.mycode == 1) {
 
-                isStoreClick(true);
-                this.props.showToast('收藏成功');
-            } else {
+                            isStoreClick(true);
+                            this.props.showToast('收藏成功');
+                        } else {
 
-                this.props.showToast(response.mycode.msg);
+                            this.props.showToast(response.mycode.msg);
+                        }
+
+                    }, (error) => {
+
+                        this.props.showToast('收藏失败');
+
+                    });
+                }else {
+                    this.isWorkBenchItemLose = false;
+                    this.props.showLoginModal();
+                }
             }
+        );
 
-        }, (error) => {
 
-            this.props.showToast('收藏失败');
-
-        });
 
     }
 
     // 取消收藏
     cancelStoreAction = (isStoreClick) => {
 
-        let url = AppUrls.BASEURL + 'v1/user.favorites/delete';
-        request(url, 'post', {
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                if (res.result) {
+                    let url = AppUrls.BASEURL + 'v1/user.favorites/delete';
+                    request(url, 'post', {
 
-            id: this.state.carData.id,
+                        id: this.state.carData.id,
 
-        }).then((response) => {
+                    }).then((response) => {
 
-            if (response.mycode == 1) {
+                        if (response.mycode == 1) {
 
-                isStoreClick(false);
-                this.props.showToast('取消收藏');
+                            isStoreClick(false);
+                            this.props.showToast('取消收藏');
 
-            } else {
+                        } else {
 
-                this.props.showToast(response.mycode.msg);
+                            this.props.showToast(response.mycode.msg);
+                        }
+
+                    }, (error) => {
+
+                        this.props.showToast('取消收藏失败');
+
+                    });
+                }else {
+                    this.isWorkBenchItemLose = false;
+                    this.props.showLoginModal();
+                }
             }
+        );
 
-        }, (error) => {
 
-            this.props.showToast('取消收藏失败');
-
-        });
 
     }
+
+
 
     setNavitgationBackgroundColor = (event) => {
 
