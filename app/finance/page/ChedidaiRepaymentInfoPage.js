@@ -80,7 +80,7 @@ export  default class ChedidaiRepaymentInfoPage extends BaseComponent {
                     movies = response.mjson.data.payment_info;
                     let bankInfo = response.mjson.data.channel_bank_info;
                     moneyList.push({name:'逾期情况',data:movies.payment_isoverdue_status});
-                    moneyList.push({name: '利息总额', data: movies.total_interest});
+                    moneyList.push({name: '利息总额', data: movies.totalInterest});
                     moneyList.push({name: '已还利息', data: movies.ready_interest});
                     moneyList.push({name: '待还利息', data: movies.interest_other});
                     moneyList.push({name: '服务费', data: movies.all_fee});
