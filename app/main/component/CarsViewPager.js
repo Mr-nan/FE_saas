@@ -41,6 +41,7 @@ export default class CarsViewPager extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+
         alldata = nextProps.items;
         let imageItems = [];
         if (alldata.list == null || alldata.list.length <= 0) {
