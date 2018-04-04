@@ -171,7 +171,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                                 this.backPage();
                                 this.props.refreshListPage();
                             },
-                            400
+                            600
                         );
                     }else{
                         this.showToast(error.mjson.msg);
@@ -180,7 +180,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                                 this.backPage();
                                 this.props.callback();
                             },
-                            400
+                            600
                         );
                     }
                 });

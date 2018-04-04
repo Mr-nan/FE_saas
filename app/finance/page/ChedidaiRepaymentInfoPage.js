@@ -31,6 +31,8 @@ let nameList = [];
 
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import ServerMoneyListModal from '../../component/ServerMoneyListModal';
+
 export  default class ChedidaiRepaymentInfoPage extends BaseComponent {
 
     constructor(props) {
@@ -153,6 +155,7 @@ export  default class ChedidaiRepaymentInfoPage extends BaseComponent {
                 />
                 <AccountModalApply ref="accountmodal"/>
                 <MyButton {...this.buttonParams}/>
+                <ServerMoneyListModal ref="servermoneylistmodal"/>
             </View>
         );
     }
@@ -176,7 +179,9 @@ export  default class ChedidaiRepaymentInfoPage extends BaseComponent {
             )
         }else if(rowId == 2){
             return (
-                <RepaymentInfoContentItem items={moneyList}/>
+                <RepaymentInfoContentItem items={moneyList} onPress={()=>{
+                    this.refs.servermoneylistmodal.changeShowType(true,movies.list_fee);
+                }}/>
             )
         }else{
             return (
