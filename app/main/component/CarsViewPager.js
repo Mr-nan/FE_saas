@@ -102,7 +102,7 @@ export default class CarsViewPager extends Component {
         if (data.id == '-200') {
             return (
                 <Image style={{width: width,height: Pixel.getPixel(100), resizeMode: 'stretch'}}
-                       source={require('../../../images/mainImage/homebanner.png')}
+                       source={require('../../../images/mainImage/homebanners.png')}
                 />
             );
         } else {
