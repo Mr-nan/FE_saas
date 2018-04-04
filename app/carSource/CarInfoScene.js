@@ -844,7 +844,6 @@ export default class CarInfoScene extends BaseComponent {
 
                     });
                 }else {
-                    this.isWorkBenchItemLose = false;
                     this.props.showLoginModal();
                 }
             }
@@ -882,7 +881,6 @@ export default class CarInfoScene extends BaseComponent {
 
                     });
                 }else {
-                    this.isWorkBenchItemLose = false;
                     this.props.showLoginModal();
                 }
             }

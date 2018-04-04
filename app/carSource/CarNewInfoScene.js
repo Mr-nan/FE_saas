@@ -672,8 +672,18 @@ export default class CarNewInfoScene extends BaseComponent {
 
     // 查看更多推荐车型
     pushCarMoreScene=()=>{
-        this.backToTop();
-        DeviceEventEmitter.emit('pushNewCarListScene');
+
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                if (res.result) {
+                    this.backToTop();
+                    DeviceEventEmitter.emit('pushNewCarListScene');
+                }else {
+                    this.props.showLoginModal();
+                }
+            }
+        );
+
+
     }
 
     carCellOnPres = (carID) => {
@@ -719,7 +729,6 @@ export default class CarNewInfoScene extends BaseComponent {
 
                     });
                 }else {
-                    this.isWorkBenchItemLose = false;
                     this.props.showLoginModal();
                 }
             }
@@ -757,7 +766,6 @@ export default class CarNewInfoScene extends BaseComponent {
 
                     });
                 }else {
-                    this.isWorkBenchItemLose = false;
                     this.props.showLoginModal();
                 }
             }
