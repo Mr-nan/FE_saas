@@ -35,6 +35,7 @@ let adjustLsit = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import RepaymentModal from '../../component/RepaymentModal';
+import ShowToast from "../../component/toast/ShowToast";
 export  default class CancelRepayment extends BaseComponent {
 
     constructor(props) {
@@ -146,7 +147,7 @@ export  default class CancelRepayment extends BaseComponent {
         }
     }
     confirm=()=>{
-        this.props.showModal(true);
+        this.showModal(true);
         let maps = {
             api: Urls.PREPAYMENT_CANCEL_REPAYMENT,
             /*loan_id: this.props.loan_id,
@@ -158,7 +159,7 @@ export  default class CancelRepayment extends BaseComponent {
             .then((response) => {
                 console.log(response+'----')
                 if(response.mjson.code=='1'){
-                    this.props.showToast(response.mjson.msg);
+                    this.showToast(response.mjson.msg);
                     this.timer = setTimeout(
                         () => {
                             this.backPage();
@@ -168,7 +169,7 @@ export  default class CancelRepayment extends BaseComponent {
                     );
                 }
             },(error)=>{
-                this.props.showToast(error.mjson.msg);
+                this.showToast(error.mjson.msg);
                 this.timer = setTimeout(
                     () => {
                         this.backPage();
@@ -178,7 +179,15 @@ export  default class CancelRepayment extends BaseComponent {
                 );
 
             });
-    }
+    };
+
+    showToast = (content) => {
+        this.refs.toast.changeType(ShowToast.TOAST, content);
+    };
+
+    showModal = (value) => {
+        this.refs.toast.showModal(value);
+    };
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -204,6 +213,7 @@ export  default class CancelRepayment extends BaseComponent {
                 <RepaymentModal ref="repaymentmodal" callBack={()=>{
                     this.allRefresh();
                 }}/>
+                <ShowToast ref='toast' msg={''}></ShowToast>
             </View>
         );
     }

@@ -36,6 +36,7 @@ let adjustLsit = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import RepaymentModal from '../../component/RepaymentModal';
+import ShowToast from "../../component/toast/ShowToast";
 
 export  default class PurchaseLoanStatusScene extends BaseComponent {
 
@@ -139,17 +140,17 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         opacity: 0.7,
         content: '申请提前还款',
         mOnPress: () => {
-            this.props.showModal(true);
+            this.showModal(true);
             let maps = {
                 api: Urls.PREPAYMENT_APPLY,
                 loan_number: this.props.loan_number,
                 payment_number:this.props.payment_number,
-                use_time:movies.repayment_time,
-                // use_time:'2018-03-23',
+                use_time:movies.repayment_time
             };
 
             request(Urls.FINANCE, 'Post', maps)
                 .then((response) => {
+                        this.showModal(false);
                         if(response.mjson.code =='1'){
                             let content = "提前还款申请已提交！请以充值、转账的方式，保证"+movies.repayment_time+"  15：00之前账户余额不低于待还总额"
                             this.refs.accountmodal.changeShowType(true,
@@ -160,9 +161,11 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                                 });
                         }
                     },(error)=>{
+                    this.showModal(false);
                     if(error.mjson.code=='-2005013'){
                       this.allRefresh();
                     }else if(error.mjson.code=='-2005008'){
+                        this.showToast(error.mjson.msg);
                         this.timer = setTimeout(
                             () => {
                                 this.backPage();
@@ -171,7 +174,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                             400
                         );
                     }else{
-                        this.props.showToast(error.mjson.msg);
+                        this.showToast(error.mjson.msg);
                         this.timer = setTimeout(
                             () => {
                                 this.backPage();
@@ -183,6 +186,14 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 });
         }
     }
+
+    showToast = (content) => {
+        this.refs.toast.changeType(ShowToast.TOAST, content);
+    };
+
+    showModal = (value) => {
+        this.refs.toast.showModal(value);
+    };
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -210,6 +221,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 <RepaymentModal ref="repaymentmodal" callBack={()=>{
                     this.allRefresh();
                 }}/>
+                <ShowToast ref='toast' msg={''}></ShowToast>
             </View>
         );
     }
