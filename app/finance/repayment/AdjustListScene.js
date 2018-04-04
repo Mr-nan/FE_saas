@@ -179,6 +179,7 @@ export  default class AdjustListScene extends BaseComponent {
 
     sendContent = () => {
         this.props.showModal(true);
+
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (datas) => {
             if (datas.code == 1) {
                 let data = JSON.parse(datas.result);
