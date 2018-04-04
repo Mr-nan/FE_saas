@@ -73,7 +73,6 @@ export default  class ShowToast extends PureComponent {
 
     showLoginViewAction=()=>{
 
-        console.log('===========showToast---showLoginViewAction');
         this.setState({height: height},() => {
             this.showLoginView &&   this.showLoginView.showAction();
         });

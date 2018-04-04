@@ -66,8 +66,6 @@ export default class root extends Component {
         this.refs.toast.showModal(value);
     }
     showLoginModal=()=>{
-
-        console.log('=========showLoginModel');
         this.refs.toast  && this.refs.toast.showLoginViewAction();
     }
 
