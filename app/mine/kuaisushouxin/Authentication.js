@@ -343,7 +343,7 @@ export default class Authentication extends BaseComponent {
 									this.setState({
 										loading: false,
 									});
-									if (response.mjson.data.fourElementCheckFlags !== "T") {//申请验四通过
+									if (response.mjson.data.fourElementCheckFlags == "T") {//申请验四通过
 										if (this.props.FromScene == 'kuaisu') {
 											this.toNextPage({
 												name: 'FastCreditOne',
