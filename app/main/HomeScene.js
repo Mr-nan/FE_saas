@@ -214,7 +214,16 @@ export default class HomeScene extends BaseComponet {
                         }}> 搜索您要找的车</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=> {
-                        this.props.callBack({name:'messagelistscene',component:MessageListScene,params:{}});
+
+                        StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                                if (res.result) {
+                                    this.props.callBack({name:'messagelistscene',component:MessageListScene,params:{}});
+                                }else {
+                                    this.props.showLoginModal();
+                                }
+                            }
+                        );
+
                     }} activeOpacity={0.8} style={{
                         backgroundColor: '#00000000',
                         width: Pixel.getPixel(25),
@@ -246,12 +255,12 @@ export default class HomeScene extends BaseComponet {
                 }
                 {
                     this.state.oldData.list.length == 0 && this.state.newData.list.length == 0 ?null:
-                    <CarsViewPager items={this.state.oldData} toNext={(id)=>{
-                       this.pushUserCarInfoScene(id);
-                    }} more={()=>{
-                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
-                    }} title="推荐二手车源" type="8"
-                    />
+                        <CarsViewPager items={this.state.oldData} toNext={(id)=>{
+                            this.pushUserCarInfoScene(id);
+                        }} more={()=>{
+                            this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
+                        }} title="推荐二手车源" type="8"
+                        />
                 }
                 <HomeAdvertisementButton click={()=>{
                        this.props.callBack( {name: 'WebScene', component: WebScene, params: {webUrl: "http://u5559609.viewer.maka.im/k/9XENK1GL",title:'车行老板们想有钱有面儿有B格?'}});
