@@ -31,9 +31,9 @@ let Pixel = new PixelUtil();
 import AllNavigationView from '../component/AllNavigationView';
 
 import ZongheCreditApply from '../mine/kuaisushouxin/ZongheCreditApply';//综合授信申请
-import Authentication from '../mine/kuaisushouxin/Authentication';//申请验四页面
+import Authentication from '../mine/kuaisushouxin/Authentication';//申请   验四页面
 import NewCarCreditEnterpriseInfoCheck from '../mine/kuaisushouxin/NewCarCreditEnterpriseInfoCheck';//申请新车订单授信页面
-import FastCreditOne from '../mine/kuaisushouxin/FastCreditOne';//申请验四页面
+import FastCreditOne from '../mine/kuaisushouxin/FastCreditOne';//申请   小额授信页面
 
 
 export default class FinanceCreditApplyScene extends BaseComponent {
@@ -50,7 +50,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 		this.state = {
 			renderPlaceholderOnly: 'loading',
 			successCredit: 0,
-			APPEAR : true,
+			APPEAR : this.props.appear,
 			xiaoeCreditStatus:this.props.data.halfpenny.credit_application_status, //0是未申请,1是审核中,2是审核通过,3是审核未通过
 			xincheCreditStatus:this.props.data.newcar.credit_application_status,
 			zongheCreditStatus:this.props.data.comprehensive.credit_application_status,
@@ -339,40 +339,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 			</ScrollView>
 		)
 	}
-	/*
-	 * 主界面2
-	 * */
-	// loadScrollViewSuccess = () => {
-	// 	return (
-	// 		<ScrollView keyboardDismissMode={IS_ANDROID?'none':'on-drag'} contentContainerStyle={{alignItems:'center'}}
-	// 		            scrollEnabled={false}>
-	// 			<Image
-	// 				source={require('../mine/kuaisushouxin/kuaisushouxin_images/kuaisu.png')}
-	// 				style={{
-     //                        width: Pixel.getPixel(170),
-     //                        height: Pixel.getPixel(119),
-     //                        resizeMode: 'stretch',
-     //                        marginTop:Pixel.getPixel(65),
-	//
-     //                    }}
-	// 			/>
-	//
-	// 			<Text allowFontScaling={false} style={{
-	// 			    marginTop:Pixel.getPixel(20),
-	// 				fontSize: Pixel.getFontPixel(20),
-	// 				color: 'black'
-	//
-	// 			}}>申请提交成功</Text>
-	// 			<Text allowFontScaling={false} style={{
-	// 				fontSize: Pixel.getFontPixel(14),
-	// 				color: 'gray',
-	// 				marginTop:Pixel.getPixel(10),
-	//
-	// 			}}>专属市场经理将会尽快与您联系！</Text>
-	//
-	// 		</ScrollView>
-	// 	)
-	// }
+
 	_applyCredit = (type,status) => {
 		if(status == 1){//申请审核中
 			this.props.showToast('您提交的申请正在审核中，请稍后')
@@ -381,12 +348,19 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 		if(status == 0 || status == 4){//未申请  或者  申请未通过
 			if(this.state.YANSI_Result){//验四通过，申请跳到填写资料界面
 				if(type == 'xinchedingdan'){
+					if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
+					{
+                        this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
+                        return;
+					}
 					this.props.toNextPage({
 						name: 'NewCarCreditEnterpriseInfoCheck',
 						component: NewCarCreditEnterpriseInfoCheck,
 						params: {
-							FromScene:'xinchedingdan'
-						},
+							FromScene:'xinchedingdan',
+                            callBackRefresh:this.props.callBackRefresh,
+
+                        },
 					})
 				}
 				if(type == 'kuaisu'){
@@ -402,13 +376,19 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 			else {//验四没有通过，申请跳转到验四界面
 
 				if(type == 'xinchedingdan'){
+                    if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
+                    {
+                        this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
+                        return;
+                    }
 					this.props.toNextPage({
 						name: 'Authentication',
 						component: Authentication,
 						params: {
 							FromScene:'xinchedingdan',
-							DATA : this.personData
-						},
+							DATA : this.personData,
+                            callBackRefresh:this.props.callBackRefresh,
+                        },
 					})
 				}
 				if(type == 'kuaisu'){
@@ -417,8 +397,9 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 						component: Authentication,
 						params: {
 							FromScene:'kuaisu',
-							DATA : this.personData
-						},
+							DATA : this.personData,
+                            callBackRefresh:this.props.callBackRefresh,
+                        },
 					})
 				}
 			}
@@ -429,13 +410,41 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 			this.props.toNextPage({
 				name: 'ZongheCreditApply',
 				component: ZongheCreditApply,
-				params: {},
+				params: {
+                    callBackShuaxin : this._getCreditTypeAndStatus,
+                    callBackRefresh:this.props.callBackRefresh,
+				},
 			})
 		}
-
-
 	}
 
+    _getCreditTypeAndStatus = () =>{
+
+        request(Urls.GETCREDITSTATUSBYMERGE, 'Post', this.props.maps)
+            .then((response) => {
+                    let DATA2 = response.mjson.data.credit;
+                    let ZongheStatus = DATA2.comprehensive.credit_application_status;
+                    let XiaoeheStatus = DATA2.halfpenny.credit_application_status;
+                    let DancheStatus = DATA2.newcar.credit_application_status;
+                    if (ZongheStatus == 3 ||XiaoeheStatus == 3 || DancheStatus == 3 ){
+                        //任意一种未通过
+                        this.Appear = true;
+                    }else {
+                        this.Appear = false;
+                    }
+                    this.setState({
+                        xiaoeCreditStatus:this.props.data.halfpenny.credit_application_status, //0是未申请,1是审核中,2是审核通过,3是审核未通过
+                        xincheCreditStatus:this.props.data.newcar.credit_application_status,
+                        zongheCreditStatus:this.props.data.comprehensive.credit_application_status,
+						APPEAR:this.Appear
+					});
+
+
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
+	}
 }
 
 const styles = StyleSheet.create({

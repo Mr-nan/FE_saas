@@ -524,13 +524,13 @@ export const CHECKFOUR = BASEURL + 'v2/credit.quick/checkFour';
 /**
  * from @yujinzhong
  *
- * 验四 获取验证码
+ * 验四 获取 验证码
  **/
 export const GET_CAPTCHA = BASEURL + 'v2/credit.quick/captcha';
 /**
  * from @yujinzhong
  *
- * 验四 验证验证码
+ * 验四 验证 验证码
  **/
 export const CHECKCAPTCHA = BASEURL + 'v2/credit.quick/checkCaptcha';
 /**
@@ -540,6 +540,37 @@ export const CHECKCAPTCHA = BASEURL + 'v2/credit.quick/checkCaptcha';
 **/
 export const APPLYCHECKFOUR = BASEURL + 'v2/credit.quick/applycheckFour';
 /**
+ * from @yujinzhong
+ *
+ * 综合授信  获取实际控制人信息及企业信息
+ **/
+export const GETENTERPRISEBYEUID = BASEURL + 'v2/user.home/getEnterpriseByEuid';
+/**
+ * from @yujinzhong
+ *
+ * 综合授信  提交申请
+ **/
+export const GETMULTIPLECREDITPHONE = BASEURL + 'v2/credit.quick/getMultipleCreditPhone';
+/**
+ * from @yujinzhong
+ *
+ * 新车订单授信  提交申请
+ **/
+export const SPECIALCREDIT = BASEURL + 'v2/credit.quick/specialCredit';
+
+/**
+ * from @yujinzhong
+ *
+ * 快速授信  小额  提交申请
+ **/
+export const FASTCREDIT = BASEURL + 'v2/credit.quick/fastCredit';
+/**
+ * from @yujinzhong
+ *
+ * 获取实际控制人的授信数据
+ **/
+export const GETCREDITBYREAL = BASEURL + 'v2/credit.quick/getCreditByReal';
+ /**
  * from @zhaojian
  *
  * 获取账户管理首页

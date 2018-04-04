@@ -336,34 +336,33 @@ export default class Authentication extends BaseComponent {
 				loading: true,
 			});
 			request(AppUrls.CHECKCAPTCHA, 'Post', {img_code: verifycode, img_sid: imgSid})
-				.then((response) => {
-						this.setState({
-							loading: false,
-						});
-
-						if (response.mjson.data.check_result == 1) {//验证验证码成功
+				.then((response11) => {
+						if (response11.mjson.data.check_result == 1) {//验证验证码成功
 							request(AppUrls.APPLYCHECKFOUR, 'Post', maps)//申请验四
 								.then((response) => {
 									this.setState({
 										loading: false,
 									});
-									if (response.mjson.data.fourElementCheckFlags == "T") {//申请验四通过
-										console.log('1111111111111111111111111111111111111111111111', response.mjson.data.fourElementCheckFlags);
+									if (response.mjson.data.fourElementCheckFlags !== "T") {//申请验四通过
 										if (this.props.FromScene == 'kuaisu') {
 											this.toNextPage({
 												name: 'FastCreditOne',
 												component: FastCreditOne,
 												params: {
-													FromScene: 'xinchedingdan'
-												},
+													FromScene: 'xinchedingdan',
+                                                    callBackRefresh:this.props.callBackRefresh,
+
+                                                },
 											})
 										} else if (this.props.FromScene == 'xinchedingdan') {
 											this.toNextPage({
 												name: 'NewCarCreditEnterpriseInfoCheck',
 												component: NewCarCreditEnterpriseInfoCheck,
 												params: {
-													FromScene: 'xinchedingdan'
-												},
+													FromScene: 'xinchedingdan',
+                                                    callBackRefresh:this.props.callBackRefresh,
+
+                                                },
 											})
 										}
 
@@ -380,13 +379,17 @@ export default class Authentication extends BaseComponent {
 
 						}
 						else {//验证验证码失败
-							this.props.showToast(response.mjson.data.msg + "");
+							this.props.showToast(response11.mjson.data.msg + "");
+                            this.setState({
+                                loading: false,
+                            });
 						}
 					},
 					(error) => {//验证验证码接口报错
 						this.setState({
 							loading: false,
 						});
+                        this.props.showToast(response11.mjson.msg + "");
 
 					});
 		}

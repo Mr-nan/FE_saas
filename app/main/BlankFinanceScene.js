@@ -27,6 +27,7 @@ import FinanceScene from './FinanceScene'
 import NonCreditScene from './NonCreditScene'
 import FinanceCreditApplyScene from './FinanceCreditApplyScene'
 import SQLiteUtil from "../utils/SQLiteUtil";
+import FastCreditTwo from "../mine/kuaisushouxin/FastCreditTwo";
 const SQLite = new SQLiteUtil();
 const versionCode = 33.0;
 let Platform = require('Platform');
@@ -74,6 +75,13 @@ export default class BlankFinanceScene extends BaseComponent {
 						let XiaoeheStatus = DATA.halfpenny.credit_application_status;
 						let DancheStatus = DATA.newcar.credit_application_status;
 
+                        if (ZongheStatus == 3 ||XiaoeheStatus == 3 || DancheStatus == 3 ){
+                            //任意一种未通过
+							this.Appear = true;
+                        }else {
+                            this.Appear = false;
+                        }
+
 						if (ZongheStatus == 2 ||XiaoeheStatus == 2 || DancheStatus == 2 ){
 							//任意一种通过，就跳到授信额度页面
 							this.setState({showType: 2, renderPlaceholderOnly: 'success'});
@@ -115,10 +123,20 @@ export default class BlankFinanceScene extends BaseComponent {
 
 		} else if (this.state.showType == 3) {
 			return (<View style={{flex:1}}>
-				<FinanceCreditApplyScene  showModal={(value)=>{this.props.showModal(value);}}
+				<FinanceCreditApplyScene  callBackRefresh={()=>{
+					//刷新
+					this.setState({
+                        renderPlaceholderOnly: 'loading',
+					},() => {
+						this.initFinish();
+					})
+				}}  showModal={(value)=>{this.props.showModal(value);}}
 				                          showToast={(content)=>{this.props.showToast(content);}}
 				                          toNextPage={(params) => {this.props.toNextPage(params);}}
-				                          data = {this.state.creditStatusAndType} />
+				                          data = {this.state.creditStatusAndType}
+										  maps = {this.props.MAPS}
+										  appear = {this.Appear}
+				/>
 			</View>)
 
 		} else {
