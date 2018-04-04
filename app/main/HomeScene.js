@@ -80,7 +80,9 @@ export default class HomeScene extends BaseComponet {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             headSource: [],
-            pageData: []
+            pageData: [],
+            newData:{list:[]},
+            oldData:{list:[]}
         };
         this.authenOptions = {
             '1': [true, '请先完成认证后再进行操作', '取消', '', '个人认证', this._gerenrenzheng],
@@ -235,7 +237,8 @@ export default class HomeScene extends BaseComponet {
                     />
                 }
                 {
-                    this.state.oldData && <CarsViewPager items={this.state.oldData} toNext={(id)=>{
+                    this.state.oldData.list.length == 0 && this.state.newData.list.length == 0 ?null:
+                    <CarsViewPager items={this.state.oldData} toNext={(id)=>{
                        this.pushUserCarInfoScene(id);
                     }} more={()=>{
                         this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
