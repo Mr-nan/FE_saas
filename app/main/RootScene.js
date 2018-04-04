@@ -20,7 +20,7 @@ import LoginAndRegister from '../login/LoginAndRegister';
 import StorageUtil from '../utils/StorageUtil';
 import * as KeyNames from '../constant/storageKeyNames';
 import WelcomScene from './WelcomScene';
-import LoginGesture from '../login/LoginGesture';
+
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import  UpLoadScene from './UpLoadScene';
@@ -31,13 +31,14 @@ import SQLiteUtil from "../utils/SQLiteUtil";
 import PromotionScene from "./PromotionScene";
 import FastCreditTwo from "../mine/kuaisushouxin/FastCreditTwo";
 const SQLite = new SQLiteUtil();
-const versionCode = 33.0;
+const versionCode = 35.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
 import ErrorUtils from "ErrorUtils"
 import UmengPush from 'react-native-umeng-push';
 import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi';
+import LoginGesture from '../login/LoginGesture';
 const IS_ANDROID = Platform.OS === 'android';
 
 export default class RootScene extends BaseComponent {
