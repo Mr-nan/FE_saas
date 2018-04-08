@@ -132,16 +132,18 @@ export  default class CarriagePriceInfoScene extends BaseComponent {
     loadData=()=>{
         const paramsData= {
             carCount:this.props.carCount,
-            carPrice:this.props.carPrice,
             carType:this.props.carType,
             endAddr:this.props.endAddr,
             endAddrRegionId:this.props.endAddrRegionId,
-            model_id:this.props.model_id,
             startAddr:this.props.startAddr,
             startAddrRegionId:this.props.startAddrRegionId,
             transportType:this.props.transportType,
-            company_id:global.companyBaseID};
+            company_id:global.companyBaseID,
+            model_data:JSON.stringify(this.props.model_data),
+        };
 
+
+        console.log(paramsData);
         this.props.showModal(true);
         Net.request(AppUrls.ORDER_LOGISTICS_QUERY,'post',paramsData).then((response) => {
             this.props.showModal(false);

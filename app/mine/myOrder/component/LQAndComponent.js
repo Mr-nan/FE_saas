@@ -22,13 +22,29 @@ export  default class LQAndComponent extends PureComponent {
 
     constructor(props) {
         super(props);
+
         this.state = {
-            number: 1
+            number:props.value,
         }
     }
 
+    componentWillReceiveProps(props) {
+
+        console.log(props)
+
+
+        this.setState({
+            number:props.value,
+        })
+    }
+    // componentDidMount() {
+    //     this.setState({
+    //         number:1
+    //     })
+    // }
 
     render() {
+
         return (
             <View style={{width:width,height:Pixel.getPixel(49),paddingLeft:Pixel.getPixel(15),
             paddingRight: Pixel.getPixel(15),flexDirection: 'row',backgroundColor:'#fff'}}>
@@ -61,6 +77,10 @@ export  default class LQAndComponent extends PureComponent {
                             </Text>
                         </View>
                         <TouchableOpacity onPress={()=>{
+
+                            if (this.state.number>=99){
+                                return;
+                            }
                             this.setState({number:this.state.number+1},()=>{
                                 this.props.changeNumber(this.state.number);
                             });
