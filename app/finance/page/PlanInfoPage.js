@@ -240,7 +240,7 @@ export default class PlanInfoPage extends BaseComponent {
                 <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),borderBottomColor:fontAndClolr.COLORA4,
                     borderBottomWidth:Pixel.getPixel(1),borderStyle:'solid',marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
                     <Text style={{flex:1}}>总共应还</Text>
-                    <Text style={{flex:1,textAlign:'right'}}>{movies.total_repayment_money}</Text>
+                    <Text style={{flex:1,textAlign:'right'}}>{movies.total_m_i}</Text>
                 </View>
 
                 <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
