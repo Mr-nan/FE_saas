@@ -387,6 +387,8 @@ export default class FastCreditOne extends BaseComponent {
                                         });
                                     }}
                                 />
+                                <Text allowFontScaling={false} style={styles.leftFont}>万元</Text>
+
                             </View>
                         </View>
                         :
@@ -420,6 +422,7 @@ export default class FastCreditOne extends BaseComponent {
                                         });
                                     }}
                                 />
+                                <Text allowFontScaling={false} style={styles.leftFont}>万元</Text>
                             </View>
                         </View>
                 }
@@ -452,7 +455,9 @@ export default class FastCreditOne extends BaseComponent {
                 name: 'SelectDJRScene',
                 component: SelectDJRScene,
                 params: {
-                    regShowData: ['50万以下', '50万 ~ 100万', '100万 ~ 150万', '150万 ~ 200万', '200万 ~ 300万', '300万 ~ 400万', '400万 ~ 500万', '500万以上'],
+                    regShowData:
+                        ['50万以下', '50万 ~ 100万', '100万 ~ 150万', '150万 ~ 200万',
+                        '200万 ~ 300万', '300万 ~ 400万', '400万 ~ 500万', '500万以上'],
                     title: '选择房屋价值',
                     callBack: (name, index) => {
                         this.setState({
