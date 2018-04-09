@@ -28,7 +28,9 @@ let Pixel = new PixelUtil();
 import AllNavigationView from '../../component/AllNavigationView';
 
 import ZongheCreditApply from '../../mine/kuaisushouxin/CredictManageScene';//综合授信
-import Authentication from '../../mine/kuaisushouxin/Authentication';//验四页面
+import Authentication from '../../mine/kuaisushouxin/Authentication';
+import StorageUtil from "../../utils/StorageUtil";
+//验四页面
 
 
 export default class MineCreditApplyScene extends BaseComponent {
