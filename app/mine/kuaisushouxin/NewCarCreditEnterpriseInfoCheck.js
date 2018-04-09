@@ -137,7 +137,7 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
                 let childdatas = JSON.parse(childdata.result);
                 this.setState({
                     renderPlaceholderOnly: 'success',
-                    qiyemingcheng: childdatas.name,
+                    qiyemingcheng: childdatas.companyname,
 
                 })
             } else {
@@ -251,7 +251,6 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
                         style={[styles.inputHintFont, styles.fillSpace]}
                         underlineColorAndroid='transparent'
                         onChangeText={this._qiyemingchengChange}
-                        placeholder='请输入'
                         defaultValue={this.state.qiyemingcheng}
                         placeholderTextColor={FontAndColor.COLORA1}
                         editable={false}
@@ -371,7 +370,7 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
                             color: 'black',
                             fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
                         }}>
-                            营业执照
+                            上传营业执照
                         </Text>
                         <View>
                             <MyButton buttonType={MyButton.IMAGEBUTTON}
@@ -483,7 +482,7 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
                                    style={{marginRight: Pixel.getPixel(3)}}>
 
                             </Image>
-                            <Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(12)}}>我已授权三方征信查询</Text>
+                            <Text style={{color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(12)}}>我已阅读并同意授权</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.8} onPress={() => {
