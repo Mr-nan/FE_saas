@@ -55,6 +55,10 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 			xincheCreditStatus:this.props.data.newcar.credit_application_status,
 			zongheCreditStatus:this.props.data.comprehensive.credit_application_status,
 			YANSI_Result:false,
+			ZongheResult:this.props.data.comprehensive.remark,
+			XiaoeResult:this.props.data.halfpenny.remark,
+			DancheResult:this.props.data.newcar.remark,
+
 		};
 
 	}
@@ -168,13 +172,27 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 						style={{color: 'black',fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34), lineHeight:24,marginTop:Pixel.getPixel(11)}}>
 						金融
 					</Text>
+
 					{this.state.APPEAR ?
 						<TouchableOpacity  onPress ={()=>{this._disappear()}}
-					                                         style={{backgroundColor:'rgba(255,255,208,1.00)',borderColor:'rgba(255,255,255,0.30)',
-					                   width:Pixel.getPixel(336),padding:Pixel.getPixel(10),marginTop:Pixel.getPixel(24)}}>
+						                   style={{backgroundColor:'rgba(255,255,208,1.00)',borderColor:'rgba(255,255,255,0.30)',
+					                   width:Pixel.getPixel(336),padding:Pixel.getPixel(10),marginTop:Pixel.getPixel(10)}}>
+
+
 							<Text allowFontScaling={false}
-							      style={{color:'rgba(237,120,92,1.00)',fontSize: Pixel.getFontPixel(14)}} >
-								立即申请立即申请立即申请立即申请立即申请立即申请立即申请立即立即申请立即申请立即申请立即申请立</Text>
+							      style={{color:'rgba(237,120,92,1.00)',fontSize: Pixel.getFontPixel(14),marginTop:Pixel.getPixel(0)}} >
+								{this.state.DancheResult}
+							</Text>
+							<Text allowFontScaling={false}
+							      style={{color:'rgba(237,120,92,1.00)',fontSize: Pixel.getFontPixel(14),marginTop:Pixel.getPixel(10)}} >
+								{this.state.XiaoeResult}
+							</Text>
+							<Text allowFontScaling={false}
+							      style={{color:'rgba(237,120,92,1.00)',fontSize: Pixel.getFontPixel(14),marginTop:Pixel.getPixel(10)}} >
+								{this.state.ZongheResult}</Text>
+
+
+
 						</TouchableOpacity>
 						:null}
 
