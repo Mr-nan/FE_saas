@@ -356,9 +356,9 @@ export  default  class CGDLendScenes extends BaseComponent {
                 car_lists: carIdList,
                 archives_type: PostData.archives_type,
                 loan_code: this.props.loan_code,
+                loan_life: PostData.dateLimit,
                 loan_life_type: PostData.loan_life_type,
                 rate: PostData.rate,
-                loan_life: PostData.dateLimit,
             }
             this.props.showModal(true);
             request(apis.FINANCE, 'Post', maps)

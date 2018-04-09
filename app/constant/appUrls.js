@@ -18,7 +18,6 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
  */
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
 
-
 /**
  * 预发布地址
  */
@@ -182,6 +181,11 @@ export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
  * 获取我的车源-已上架/下架
  */
 export const CAR_USER_CAR = BASEURL + V + 'user/car';
+
+/**
+ * 根据车型名获取车型信息
+ */
+export const CAR_SEARCH_MODELS = BASEURL + V + 'home/searchModels';
 
 /**
  * 获取库存车辆列表
@@ -510,6 +514,67 @@ export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
 export const GETFUNCTIONBYTOKENENTER = BASEURL + 'v1/user/getFunctionByTokenEnter';
 
 /**
+ * from @yujinzhong
+ *
+ * 获取借款人当前授信类型的授信状态
+ **/
+export const GETCREDITSTATUSBYMERGE = BASEURL + 'v2/credit.quick/getCreditStatusByMerge';
+/**
+ * from @yujinzhong
+ *
+ * 判断验四
+ **/
+export const CHECKFOUR = BASEURL + 'v2/credit.quick/checkFour';
+/**
+ * from @yujinzhong
+ *
+ * 验四 获取 验证码
+ **/
+export const GET_CAPTCHA = BASEURL + 'v2/credit.quick/captcha';
+/**
+ * from @yujinzhong
+ *
+ * 验四 验证 验证码
+ **/
+export const CHECKCAPTCHA = BASEURL + 'v2/credit.quick/checkCaptcha';
+/**
+* from @yujinzhong
+*
+* 申请验四
+**/
+export const APPLYCHECKFOUR = BASEURL + 'v2/credit.quick/applycheckFour';
+/**
+ * from @yujinzhong
+ *
+ * 综合授信  获取实际控制人信息及企业信息
+ **/
+export const GETENTERPRISEBYEUID = BASEURL + 'v2/user.home/getEnterpriseByEuid';
+/**
+ * from @yujinzhong
+ *
+ * 综合授信  提交申请
+ **/
+export const GETMULTIPLECREDITPHONE = BASEURL + 'v2/credit.quick/getMultipleCreditPhone';
+/**
+ * from @yujinzhong
+ *
+ * 新车订单授信  提交申请
+ **/
+export const SPECIALCREDIT = BASEURL + 'v2/credit.quick/specialCredit';
+
+/**
+ * from @yujinzhong
+ *
+ * 快速授信  小额  提交申请
+ **/
+export const FASTCREDIT = BASEURL + 'v2/credit.quick/fastCredit';
+/**
+ * from @yujinzhong
+ *
+ * 获取实际控制人的授信数据
+ **/
+export const GETCREDITBYREAL = BASEURL + 'v2/credit.quick/getCreditByReal';
+ /**
  * from @zhaojian
  *
  * 获取账户管理首页
@@ -529,6 +594,13 @@ export const USER_ACCOUNT_PAYLOG = BASEURL + 'v1/user.account/payLog';
  * 获取交易流水
  **/
 export const ACCOUNT_PAYLOG = BASEURL + 'v2/user.account/payLog';
+
+/**
+ * from @huangning
+ *
+ * 获取运输类型
+ **/
+export const GETTRANSPORTTYPE = BASEURL + 'v2/order.logistics/getTransportType';
 
 /**
  * from @zhaojian
@@ -1520,6 +1592,12 @@ export const WAYBILL_DETAIL = BASEURL  + "v2/order.logistics/detail";
  *物流运价数据检查（获取运输类型对应的费）
  */
 export const CHECKTRANSTYPE = BASEURL  + "v2/order.logistics/check";
+
+/**
+ *
+ *物流运价查询
+ */
+export const ORDER_LOGISTICS_QUERY = BASEURL  + "v2//order.logistics/query";
 /**
  *
  *获取发票信息

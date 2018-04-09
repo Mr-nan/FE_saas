@@ -41,22 +41,76 @@ export default class BusinessAddress extends BaseComponent {
 			xiangxidizhi: '',//详细地址
 			provinceName: '',//省
 			cityName: ''//市
-
-
 		};
+        this.locateDate = {
+            address: '',
+            city_id: '',
+            city_name: '',
+            street_name: '',
+            province_name: '',
+            area_name: '',
+        };
 
 		this.state = {
 			selectNO: 'own',//'rent'
 			business_home: '请选择',//经营地址
 			fangwujiazhi: '请选择',//房屋价值
 			keyboardOffset: -Pixel.getPixel(64),
-			renderPlaceholderOnly: 'success'
+			renderPlaceholderOnly: 'success',
+            xiangxidizhi:'',
 		};
 	}
 
 	initFinish = () => {
-	};
 
+    };
+//拿到当前位置的定位
+    getCurrentLocation = () => {
+        this.setState({
+            loading: true,
+        });
+        if (Platform.OS === 'android') {
+            NativeModules.QrScan.lbsStart();
+            NativeAppEventEmitter
+                .addListener('onReceiveBDLocation', (loc) => {
+                    this.setState({
+                        loading: false,
+                    });
+                    console.log(loc);
+                    this.locateDate.address = loc.addr;
+                    this.locateDate.city_id = loc.city_code;
+                    this.locateDate.city_name = loc.city;
+                    this.locateDate.street_name = loc.street;
+                    this.locateDate.province_name = loc.province;
+                    this.locateDate.area_name = loc.district;
+                    this.setState({
+                        xiangxidizhi:loc.addr,
+                    });
+                    this.enterpriseData.xiangxidizhi = loc.addr;
+                });
+        } else {
+            NativeModules.Location.Location().then((vl) => {
+                this.setState({
+                    loading: false,
+                });
+                console.log(vl.address);
+                this.locateDate.address = vl.address;
+                this.locateDate.city_id = vl.city_id;
+                this.locateDate.city_name = vl.city_name;
+                this.locateDate.street_name = vl.street_name;
+                this.locateDate.province_name = vl.province_name;
+                this.locateDate.area_name = vl.area_name;
+                this.setState({
+					xiangxidizhi:vl.address,
+				});
+                this.enterpriseData.xiangxidizhi = vl.address;
+
+            }, (error) => {
+            	this.props.showToast("没有获取到定位")
+
+            });
+        }
+    }
 	componentDidMount() {
 
 	}
@@ -104,7 +158,7 @@ export default class BusinessAddress extends BaseComponent {
 	};
 
 	_dingweiPress = () => {
-		alert('dingwei')
+        this.getCurrentLocation();
 	}
 	/*
 	 * 导航栏左侧按钮点击
@@ -133,18 +187,16 @@ export default class BusinessAddress extends BaseComponent {
 	 * 完成点击
 	 * */
 	_onCompletePress = () => {
-		alert('wancheng')
+        if (this.props.callBackRefresh) {
+            this.props.callBackRefresh(this.enterpriseData.xiangxidizhi);
+        }
+		this._onBack();
 		// this.toNextPage({
 		// 		name: 'CarInitialTaskScene',
 		// 		component: CarInitialTaskScene,
 		// 		params: {}
 		// 	}
 		// );
-
-		// if (this.isEmpty(businessid) === true) {
-		// 	this._showHint('请上传营业执照');
-		// 	return;
-		// }
 
 	};
 
@@ -229,7 +281,7 @@ export default class BusinessAddress extends BaseComponent {
 					underlineColorAndroid='transparent'
 					onChangeText={this._xiangxidizhiChange}
 					placeholder='请输入详细地址(100字以内)'
-					defaultValue={this.enterpriseData.xiangxidizhi}
+					defaultValue={this.state.xiangxidizhi}
 					placeholderTextColor={fontAndColor.COLORA1}
 					maxLength = {100}
 					multiline = {true}
