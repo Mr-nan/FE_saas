@@ -42,7 +42,8 @@ export default class BusinessAddress extends BaseComponent {
 		this.enterpriseData = {
 			xiangxidizhi: '',//详细地址
 			provinceName: '',//省
-			cityName: ''//市
+			cityName: '',//市
+			business_home:'',
 		};
         this.locateDate = {
             address: '',
@@ -147,6 +148,7 @@ export default class BusinessAddress extends BaseComponent {
 				business_home: cityType.provice_name + ' ' + cityType.city_name
 			}
 		);
+		this.enterpriseData.business_home = this.state.business_home;
 	}
 	/*
 	 * 判断非空函数
@@ -190,7 +192,7 @@ export default class BusinessAddress extends BaseComponent {
 	 * */
 	_onCompletePress = () => {
         if (this.props.callBackRefresh) {
-            this.props.callBackRefresh(this.enterpriseData.xiangxidizhi);
+            this.props.callBackRefresh(this.enterpriseData);
         }
 		this._onBack();
 		// this.toNextPage({
