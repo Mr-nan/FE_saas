@@ -340,10 +340,11 @@ export default class Authentication extends BaseComponent {
 						if (response11.mjson.data.check_result == 1) {//验证验证码成功
 							request(AppUrls.APPLYCHECKFOUR, 'Post', maps)//申请验四
 								.then((response) => {
-									this.setState({
-										loading: false,
-									});
+
 									if (response.mjson.data.fourElementCheckFlags == "T") {//申请验四通过
+										this.setState({
+											loading: false,
+										});
 										if (this.props.FromScene == 'kuaisu') {
 											this.toNextPage({
 												name: 'FastCreditOne',

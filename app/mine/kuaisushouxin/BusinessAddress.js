@@ -15,6 +15,8 @@ import {
 	KeyboardAvoidingView,
 	Dimensions,
 	TouchableWithoutFeedback,
+	NativeAppEventEmitter
+
 }from 'react-native';
 let {width} = Dimensions.get('window');
 
