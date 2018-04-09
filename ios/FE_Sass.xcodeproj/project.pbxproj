@@ -23,6 +23,8 @@
 		124A591B1E9CA419007C1C15 /* 相机蒙版.png in Resources */ = {isa = PBXBuildFile; fileRef = 124A591A1E9CA419007C1C15 /* 相机蒙版.png */; };
 		124A591D1E9CAC8F007C1C15 /* xiangjianniu.png in Resources */ = {isa = PBXBuildFile; fileRef = 124A591C1E9CAC8F007C1C15 /* xiangjianniu.png */; };
 		124A591F1E9CACA3007C1C15 /* shift.png in Resources */ = {isa = PBXBuildFile; fileRef = 124A591E1E9CACA3007C1C15 /* shift.png */; };
+		127DBA9C207B05200029D178 /* libGrowing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 127DBA9A207B05200029D178 /* libGrowing.a */; };
+		127DBA9D207B05210029D178 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 127DBA9B207B05200029D178 /* VERSION */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -34,8 +36,6 @@
 		1510B5451F2057B40046BBD8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5441F2057B40046BBD8 /* libsqlite3.tbd */; };
 		1510B5471F2057D50046BBD8 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5461F2057D50046BBD8 /* libicucore.tbd */; };
 		1510B5491F2058080046BBD8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5481F2058080046BBD8 /* Security.framework */; };
-		1510B5531F2067570046BBD8 /* libGrowing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5511F2067570046BBD8 /* libGrowing.a */; };
-		1510B5541F2067570046BBD8 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 1510B5521F2067570046BBD8 /* VERSION */; };
 		16FB421C1EF23352006C6077 /* SystomTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 16FB421B1EF23352006C6077 /* SystomTools.m */; };
 		245A5B321FB9793300B70104 /* LLMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 245A5B251FB9793300B70104 /* LLMapViewController.m */; };
 		245A5B331FB9793300B70104 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 245A5B271FB9793300B70104 /* Location.m */; };
@@ -164,6 +164,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = FE_Sass;
+		};
+		127DBA88207B050B0029D178 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A08B9B7AF08C41A082FB247D /* RCTWeChat.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 10D6D7A41F160C250066F0F3;
+			remoteInfo = RCTWeChatTests;
+		};
+		127DBA95207B050B0029D178 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 641194871EC9FD4A00D4FC03;
+			remoteInfo = "RNSpinkit-tvOS";
 		};
 		12B036D51E7FDC4A005E5D3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -395,6 +409,9 @@
 		124A591A1E9CA419007C1C15 /* 相机蒙版.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "相机蒙版.png"; sourceTree = "<group>"; };
 		124A591C1E9CAC8F007C1C15 /* xiangjianniu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiangjianniu.png; sourceTree = "<group>"; };
 		124A591E1E9CACA3007C1C15 /* shift.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shift.png; sourceTree = "<group>"; };
+		127DBA99207B05200029D178 /* Growing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Growing.h; sourceTree = "<group>"; };
+		127DBA9A207B05200029D178 /* libGrowing.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGrowing.a; sourceTree = "<group>"; };
+		127DBA9B207B05200029D178 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* FE_Sass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FE_Sass.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -407,9 +424,6 @@
 		1510B5441F2057B40046BBD8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		1510B5461F2057D50046BBD8 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		1510B5481F2058080046BBD8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		1510B5501F2067570046BBD8 /* Growing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Growing.h; sourceTree = "<group>"; };
-		1510B5511F2067570046BBD8 /* libGrowing.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGrowing.a; sourceTree = "<group>"; };
-		1510B5521F2067570046BBD8 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
 		16FB421A1EF23352006C6077 /* SystomTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystomTools.h; sourceTree = "<group>"; };
 		16FB421B1EF23352006C6077 /* SystomTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystomTools.m; sourceTree = "<group>"; };
 		1F2A351FE20A472BABAB3F42 /* RCTBEEPickerManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTBEEPickerManager.xcodeproj; path = "../node_modules/react-native-picker/ios/RCTBEEPickerManager.xcodeproj"; sourceTree = "<group>"; };
@@ -527,6 +541,7 @@
 			files = (
 				24C8C64F20510C6400144BEB /* BaiduMapAPI_Base.framework in Frameworks */,
 				7D83AEBF1FA2CC3B001A24F7 /* libSVehicleLicense.a in Frameworks */,
+				127DBA9C207B05200029D178 /* libGrowing.a in Frameworks */,
 				24C8C65020510C6400144BEB /* BaiduMapAPI_Cloud.framework in Frameworks */,
 				EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */,
 				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
@@ -567,7 +582,6 @@
 				24C8C65520510C6400144BEB /* BaiduMapAPI_Utils.framework in Frameworks */,
 				2C1964C803524664A77CBF9E /* libRCTWeChat.a in Frameworks */,
 				24C8C65720510C6400144BEB /* libcrypto.a in Frameworks */,
-				1510B5531F2067570046BBD8 /* libGrowing.a in Frameworks */,
 				8764F52B800544BDB35F20A3 /* libRCTBEEPickerManager.a in Frameworks */,
 				57AE4D60A14A49F3BFB62E1A /* libRNSpinkit.a in Frameworks */,
 				24C8C65420510C6400144BEB /* BaiduMapAPI_Search.framework in Frameworks */,
@@ -683,6 +697,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		127DBA98207B05200029D178 /* GrowingIO-iOS-SDK */ = {
+			isa = PBXGroup;
+			children = (
+				127DBA99207B05200029D178 /* Growing.h */,
+				127DBA9A207B05200029D178 /* libGrowing.a */,
+				127DBA9B207B05200029D178 /* VERSION */,
+			);
+			name = "GrowingIO-iOS-SDK";
+			path = "FE_Sass/GrowingIO-iOS-SDK";
+			sourceTree = "<group>";
+		};
 		12B036D21E7FDC49005E5D3D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -712,10 +737,10 @@
 		13B07FAE1A68108700A75B9A /* FE_Sass */ = {
 			isa = PBXGroup;
 			children = (
+				127DBA98207B05200029D178 /* GrowingIO-iOS-SDK */,
 				7DC7F8D12005E9AA008267A5 /* ZNMapTool */,
 				7D017DCE1F8E217800ED740C /* FE_Sass.entitlements */,
 				247AE7131FA3311C0039B52A /* LocationManger */,
-				1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */,
 				7DB2CBB31E779DDF00DE146C /* OCRSCancer */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -740,16 +765,6 @@
 				3DAD3EAF1DF850E9000B6D8A /* libjschelpers.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */ = {
-			isa = PBXGroup;
-			children = (
-				1510B5501F2067570046BBD8 /* Growing.h */,
-				1510B5511F2067570046BBD8 /* libGrowing.a */,
-				1510B5521F2067570046BBD8 /* VERSION */,
-			);
-			path = "GrowingIO-iOS-SDK";
 			sourceTree = "<group>";
 		};
 		245A5B231FB9793300B70104 /* BaiduLocation */ = {
@@ -824,6 +839,7 @@
 			isa = PBXGroup;
 			children = (
 				7D769F0F1E6572180039526C /* libRNSpinkit.a */,
+				127DBA96207B050B0029D178 /* libRNSpinkit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1022,6 +1038,7 @@
 			isa = PBXGroup;
 			children = (
 				E3B816F81E613DD400279287 /* libRCTWeChat.a */,
+				127DBA89207B050B0029D178 /* RCTWeChatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1280,6 +1297,20 @@
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		127DBA89207B050B0029D178 /* RCTWeChatTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RCTWeChatTests.xctest;
+			remoteRef = 127DBA88207B050B0029D178 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		127DBA96207B050B0029D178 /* libRNSpinkit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSpinkit.a;
+			remoteRef = 127DBA95207B050B0029D178 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		12B036D61E7FDC4A005E5D3D /* libCodePush.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1510,8 +1541,8 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7DB2CBD51E779DDF00DE146C /* change_btn@2x.png in Resources */,
 				7DB2CBD81E779DDF00DE146C /* flash_off@3x.png in Resources */,
-				1510B5541F2067570046BBD8 /* VERSION in Resources */,
 				7DC7F9242006022D008267A5 /* mapapi.bundle in Resources */,
+				127DBA9D207B05210029D178 /* VERSION in Resources */,
 				124A59131E9C8B24007C1C15 /* Icon_SaoYiSao@2x.png in Resources */,
 				7DB2CBD71E779DDF00DE146C /* flash_off@2x.png in Resources */,
 			);
@@ -1744,6 +1775,7 @@
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
+					"$(PROJECT_DIR)/FE_Sass/GrowingIO-iOS-SDK",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1797,6 +1829,7 @@
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
+					"$(PROJECT_DIR)/FE_Sass/GrowingIO-iOS-SDK",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1887,6 +1920,7 @@
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
+					"$(PROJECT_DIR)/FE_Sass/GrowingIO-iOS-SDK",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
