@@ -75,7 +75,7 @@ export default class FastCreditOne extends BaseComponent {
             if (childdata.code == 1) {
 
                 let childdatas = JSON.parse(childdata.result);
-                this.enterpriseData.qiyemingcheng = childdatas.name;
+                this.enterpriseData.qiyemingcheng = childdatas.companyname;
 
                 request(AppUrls.GETENTERPRISEBYEUID, 'Post', {enterprise_user_id: global.companyBaseID})//通过商户ID获取商户详细信息
                     .then((response11) => {
@@ -244,7 +244,6 @@ export default class FastCreditOne extends BaseComponent {
                         style={[styles.inputHintFont, styles.fillSpace]}
                         underlineColorAndroid='transparent'
                         onChangeText={this._qiyemingchengChange}
-                        placeholder='请输入'
                         defaultValue={this.enterpriseData.qiyemingcheng}
                         placeholderTextColor={fontAndColor.COLORA1}
                         editable={false}
@@ -272,7 +271,6 @@ export default class FastCreditOne extends BaseComponent {
                         style={[styles.inputHintFont, styles.fillSpace]}
                         underlineColorAndroid='transparent'
                         onChangeText={this._xinyongdaimaChange}
-                        placeholder='请输入'
                         defaultValue={this.enterpriseData.xinyongdaima}
                         maxLength={18}
                         placeholderTextColor={fontAndColor.COLORA1}
