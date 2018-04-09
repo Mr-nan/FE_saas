@@ -132,10 +132,10 @@ export default class FastCreditOne extends BaseComponent {
             component: BusinessAddress,
             params: {
 
-                callBackRefresh: (enterpriseData) => {
-                    this.enterpriseData.business_home = enterpriseData.business_home +''+enterpriseData.xiangxidizhi;
+                callBackRefresh: (Data) => {
+                    this.enterpriseData.business_home = Data.business_home +''+ Data.xiangxidizhi;
                     this.setState({
-                        business_home: xiangxidizhi,
+                        business_home: this.enterpriseData.business_home,
                     });
 
                 }

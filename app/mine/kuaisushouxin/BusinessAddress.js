@@ -192,7 +192,7 @@ export default class BusinessAddress extends BaseComponent {
 	 * */
 	_onCompletePress = () => {
         if (this.props.callBackRefresh) {
-            this.props.callBackRefresh(this.enterpriseData);
+	        this.props.callBackRefresh(this.enterpriseData);
         }
 		this._onBack();
 		// this.toNextPage({
