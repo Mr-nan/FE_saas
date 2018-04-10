@@ -43,7 +43,6 @@ export default class FastCreditOne extends BaseComponent {
         this.enterpriseData = {
             qiyemingcheng: '',//企业名称
             xinyongdaima: '',//统一社会信用代码
-
             business_home: '',//经营地址
 
             selectOWNorRENT: '',//自由 租赁
@@ -71,35 +70,25 @@ export default class FastCreditOne extends BaseComponent {
         this._getQiYeCode();
     };
     _getQiYeCode = () => {
-        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
-            if (childdata.code == 1) {
 
-                let childdatas = JSON.parse(childdata.result);
-                this.enterpriseData.qiyemingcheng = childdatas.companyname;
+	    request(AppUrls.GETENTERPRISEBYEUID, 'Post', {enterprise_user_id: global.companyBaseID})//通过商户ID获取商户详细信息
+		    .then((response11) => {
+				    let BUSINESS_LICENSE = response11.mjson.data.business_license;
+				    this.enterpriseData.xinyongdaima = BUSINESS_LICENSE;
+				    this.enterpriseData.qiyemingcheng =  response11.mjson.data.enterprise_name;
 
-                request(AppUrls.GETENTERPRISEBYEUID, 'Post', {enterprise_user_id: global.companyBaseID})//通过商户ID获取商户详细信息
-                    .then((response11) => {
-                            let BUSINESS_LICENSE = response11.mjson.data.business_license;
-                            this.enterpriseData.xinyongdaima = BUSINESS_LICENSE;
-                            this.setState(
-                                {
-                                    renderPlaceholderOnly: 'success',
-                                    xinyongdaima: BUSINESS_LICENSE,
-                                    qiyemingcheng: childdatas.name,
+				    this.setState(
+					    {
+						    renderPlaceholderOnly: 'success',
+						    xinyongdaima: BUSINESS_LICENSE,
+						    qiyemingcheng:response11.mjson.data.enterprise_name,
 
-                                })
-                        },
-                        (error) => {
-                            this.setState({renderPlaceholderOnly: 'error'});
+					    })
+			    },
+			    (error) => {
+				    this.setState({renderPlaceholderOnly: 'error'});
 
-                        });
-
-            } else {
-
-                this.setState({renderPlaceholderOnly: 'error'});
-            }
-        });
-
+			    });
 
     }
 

@@ -118,34 +118,66 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
     }
 
     initFinish = () => {
-        this._getCompanyName();
+	    this.setState({renderPlaceholderOnly: 'loading'});
+	    this._getCompanyName();
     }
     _getCompanyName = () => {
-        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
-            if (childdata.code == 1) {
 
-                StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata22) => {
-                    if (childdata22.code == 1) {
-                        let childdatas33 = JSON.parse(childdata22.result);
-                        this.boss_id = childdatas33.boss_id;//企业实际控制人 base_id
+        //
+        // StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
+        //     if (childdata.code == 1) {
+        //
+        //         StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata22) => {
+        //             if (childdata22.code == 1) {
+        //                 let childdatas33 = JSON.parse(childdata22.result);
+        //                 this.boss_id = childdatas33.boss_id;//企业实际控制人 base_id
+        //
+        //             } else {
+        //                 this.setState({renderPlaceholderOnly: 'error'});
+        //             }
+        //         });
+        //
+        //         let childdatas = JSON.parse(childdata.result);
+        //         this.setState({
+        //             renderPlaceholderOnly: 'success',
+        //             qiyemingcheng: childdatas.companyname,
+        //
+        //         })
+        //     } else {
+        //         this.setState({renderPlaceholderOnly: 'error'});
+        //     }
+        // });
 
-                    } else {
-                        this.setState({renderPlaceholderOnly: 'error'});
-                    }
-                });
-
-                let childdatas = JSON.parse(childdata.result);
-                this.setState({
-                    renderPlaceholderOnly: 'success',
-                    qiyemingcheng: childdatas.companyname,
-
-                })
-            } else {
-                this.setState({renderPlaceholderOnly: 'error'});
-            }
-        });
+	    request(AppUrls.GETENTERPRISEBYEUID, 'Post', {enterprise_user_id: global.companyBaseID})//通过商户ID获取商户详细信息
+		    .then((response11) => {
 
 
+				    this.enterpriseData.qiyemingcheng =  response11.mjson.data.enterprise_name;
+
+				    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata22) => {
+					    if (childdata22.code == 1) {
+						    let childdatas33 = JSON.parse(childdata22.result);
+						    this.boss_id = childdatas33.boss_id;//企业实际控制人 base_id
+
+						    this.setState(
+							    {
+								    renderPlaceholderOnly: 'success',
+								    qiyemingcheng:response11.mjson.data.enterprise_name,
+
+							    })
+
+					    } else {
+						    this.setState({renderPlaceholderOnly: 'error'});
+					    }
+				    });
+
+
+
+			    },
+			    (error) => {
+				    this.setState({renderPlaceholderOnly: 'error'});
+
+			    });
 
 
     }
