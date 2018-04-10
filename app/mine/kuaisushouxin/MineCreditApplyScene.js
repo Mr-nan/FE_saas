@@ -30,6 +30,11 @@ import AllNavigationView from '../../component/AllNavigationView';
 import ZongheCreditApply from '../../mine/kuaisushouxin/CredictManageScene';//综合授信
 import Authentication from '../../mine/kuaisushouxin/Authentication';
 import StorageUtil from "../../utils/StorageUtil";
+import * as storageKeyNames from "../../constant/storageKeyNames";
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
+
+
 //验四页面
 
 
@@ -42,7 +47,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 			renderPlaceholderOnly: 'loading',
 			successCredit: 0,
 			xiaoeCreditStatus:1, //0是未申请,1是审核中,2是审核通过,3是审核未通过
-			APPEAR : true,
+			APPEAR : false,
 			xincheCreditStatus:1,
 			zongheCreditStatus:0,
             ZongheResult:'',
