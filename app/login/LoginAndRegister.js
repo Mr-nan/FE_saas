@@ -22,6 +22,7 @@ import Authentication from '../mine/kuaisushouxin/Authentication'
 
 import FinanceCreditApplyScene from "../main/FinanceCreditApplyScene";
 import NonCreditScene from "../main/NonCreditScene";
+import BusinessAddress from "../mine/kuaisushouxin/BusinessAddress";
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');

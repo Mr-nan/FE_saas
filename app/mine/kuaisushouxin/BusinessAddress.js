@@ -143,12 +143,12 @@ export default class BusinessAddress extends BaseComponent {
 	_checkedCityClick = (cityType) => {
 		city_ID = cityType.city_id;
 		prov_ID = cityType.provice_id;
+		this.enterpriseData.business_home = cityType.provice_name + ' ' + cityType.city_name;
 		this.setState(
 			{
-				business_home: cityType.provice_name + ' ' + cityType.city_name
+				business_home: cityType.provice_name +''+ cityType.city_name
 			}
 		);
-		this.enterpriseData.business_home = this.state.business_home;
 	}
 	/*
 	 * 判断非空函数
