@@ -173,7 +173,7 @@ export default class HomeScene extends BaseComponet {
 
                 }else {
                        this.props.showLoginModal();
-                    }
+                }
             }
         );
 
