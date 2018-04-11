@@ -106,8 +106,6 @@
 		7DC7F9212006019F008267A5 /* BaiduMapAPI_Radar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC7F9172006019E008267A5 /* BaiduMapAPI_Radar.framework */; };
 		7DC7F9222006019F008267A5 /* BaiduMapAPI_Cloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC7F9182006019E008267A5 /* BaiduMapAPI_Cloud.framework */; };
 		7DC7F9242006022D008267A5 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7DC7F9232006022D008267A5 /* mapapi.bundle */; };
-		7DF62B01206C949B00FAF432 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 7DF62AFF206C949B00FAF432 /* VERSION */; };
-		7DF62B02206C949B00FAF432 /* libGrowing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DF62B00206C949B00FAF432 /* libGrowing.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8764F52B800544BDB35F20A3 /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82B903BCC1514330B41DB29B /* libRCTBEEPickerManager.a */; };
 		A71F92341425474AB56D2770 /* libSQLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1229226735478EA2FEAE52 /* libSQLite.a */; };
@@ -166,20 +164,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = FE_Sass;
-		};
-		12205D0D205F90CF002EA3E6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A08B9B7AF08C41A082FB247D /* RCTWeChat.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 10D6D7A41F160C250066F0F3;
-			remoteInfo = RCTWeChatTests;
-		};
-		12205D1A205F90CF002EA3E6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 641194871EC9FD4A00D4FC03;
-			remoteInfo = "RNSpinkit-tvOS";
 		};
 		12B036D51E7FDC4A005E5D3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -503,9 +487,6 @@
 		7DC7F9172006019E008267A5 /* BaiduMapAPI_Radar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Radar.framework; sourceTree = "<group>"; };
 		7DC7F9182006019E008267A5 /* BaiduMapAPI_Cloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Cloud.framework; sourceTree = "<group>"; };
 		7DC7F9232006022D008267A5 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = mapapi.bundle; sourceTree = "<group>"; };
-		7DF62AFE206C949B00FAF432 /* Growing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Growing.h; sourceTree = "<group>"; };
-		7DF62AFF206C949B00FAF432 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
-		7DF62B00206C949B00FAF432 /* libGrowing.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGrowing.a; sourceTree = "<group>"; };
 		82B903BCC1514330B41DB29B /* libRCTBEEPickerManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTBEEPickerManager.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8798090ED4424DBAA65E137A /* RCTUmengPush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTUmengPush.xcodeproj; path = "../node_modules/react-native-umeng-push/ios/RCTUmengPush.xcodeproj"; sourceTree = "<group>"; };
@@ -817,7 +798,6 @@
 			isa = PBXGroup;
 			children = (
 				7D769F0F1E6572180039526C /* libRNSpinkit.a */,
-				12205D1B205F90CF002EA3E6 /* libRNSpinkit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -936,16 +916,6 @@
 			path = thirdlibs;
 			sourceTree = "<group>";
 		};
-		7DF62AFD206C949B00FAF432 /* GrowingIO-iOS-SDK */ = {
-			isa = PBXGroup;
-			children = (
-				7DF62AFE206C949B00FAF432 /* Growing.h */,
-				7DF62AFF206C949B00FAF432 /* VERSION */,
-				7DF62B00206C949B00FAF432 /* libGrowing.a */,
-			);
-			path = "GrowingIO-iOS-SDK";
-			sourceTree = "<group>";
-		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -1051,7 +1021,6 @@
 			isa = PBXGroup;
 			children = (
 				E3B816F81E613DD400279287 /* libRCTWeChat.a */,
-				12205D0E205F90CF002EA3E6 /* RCTWeChatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1155,7 +1124,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 8RXU2MG5MH;
+						DevelopmentTeam = 3BH2YRLSPK;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -1308,20 +1277,6 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		12205D0E205F90CF002EA3E6 /* RCTWeChatTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = RCTWeChatTests.xctest;
-			remoteRef = 12205D0D205F90CF002EA3E6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		12205D1B205F90CF002EA3E6 /* libRNSpinkit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNSpinkit.a;
-			remoteRef = 12205D1A205F90CF002EA3E6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		12B036D61E7FDC4A005E5D3D /* libCodePush.a */ = {
@@ -1758,7 +1713,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 8RXU2MG5MH;
+				DEVELOPMENT_TEAM = 3BH2YRLSPK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1790,14 +1745,13 @@
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
-
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1814,7 +1768,7 @@
 				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8RXU2MG5MH;
+				DEVELOPMENT_TEAM = 3BH2YRLSPK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1846,14 +1800,13 @@
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
-
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1907,7 +1860,7 @@
 				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8RXU2MG5MH;
+				DEVELOPMENT_TEAM = 3BH2YRLSPK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1939,14 +1892,13 @@
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
-
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
