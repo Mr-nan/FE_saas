@@ -765,7 +765,7 @@ export default class FastCreditTwo extends BaseComponent {
                     this.setState({
                         loading: false,
                     });
-                    this.props.showToast(response.mjson.msg + "");
+                    this.props.showToast(error.mjson.msg + "");
 
                 });
 
