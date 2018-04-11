@@ -39,6 +39,7 @@ const IS_ANDROID = Platform.OS === 'android';
 export default class BusinessAddress extends BaseComponent {
 	constructor(props) {
 		super(props);
+		console.log('11111111111111111111111111');
 		this.enterpriseData = {
 			xiangxidizhi: '',//详细地址
 			provinceName: '',//省
@@ -116,6 +117,12 @@ export default class BusinessAddress extends BaseComponent {
     }
 	componentDidMount() {
 
+	}
+
+	componentWillUnmount(){
+        if (Platform.OS === 'android') {
+            NativeModules.QrScan.lbsStop();
+        }
 	}
 
 	//提示信息
