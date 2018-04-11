@@ -366,10 +366,10 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 		if(status == 0 || status == 4){//未申请  或者  申请未通过
 			if(this.state.YANSI_Result){//验四通过，申请跳到填写资料界面
 				if(type == 'xinchedingdan'){
-					if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
+					if(global.ISCOMPANY == 0 )//选1 公司的时候，选的0是个人
 					{
                         this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
-                        // return;
+                        return;
 					}
 					this.props.toNextPage({
 						name: 'NewCarCreditEnterpriseInfoCheck',
@@ -394,10 +394,10 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 			else {//验四没有通过，申请跳转到验四界面
 
 				if(type == 'xinchedingdan'){
-                    if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
+                    if(global.ISCOMPANY == 0 )//选公司 1 的时候，选的是 个人 0
                     {
                         this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
-                        // return;
+                        return;
                     }
 					this.props.toNextPage({
 						name: 'Authentication',
