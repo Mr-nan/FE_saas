@@ -339,7 +339,7 @@ export default class FastCreditOne extends BaseComponent {
                                 <TouchableOpacity onPress={this._onJiaZhiPress}>
                                     <View style={styles.rightContainer}>
                                         <Text allowFontScaling={false}
-                                              ref='business_home'
+                                              ref='fangwujaizhi'
                                               style={styles.selectHintFont}>{this.state.fangwujiazhi}
                                         </Text>
                                         <Image style={styles.selectImage} source={selectImg}/>
