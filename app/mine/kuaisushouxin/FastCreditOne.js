@@ -280,16 +280,18 @@ export default class FastCreditOne extends BaseComponent {
                 {/*经营地址view*/}
                 <View style={styles.itemBackground}>
                     <Text allowFontScaling={false} style={styles.leftFont}>经营地址</Text>
-                    <View style={styles.fillSpace}/>
-                    <TouchableOpacity onPress={this._onCityPress}>
-                        <View style={styles.rightContainer}>
-                            <Text allowFontScaling={false}
+
+                    <TouchableOpacity onPress={this._onCityPress} style={[styles.rightContainer,{flex:1}]}>
+
+                            <Text
+                                numberOfLines={1}
+                                allowFontScaling={false}
                                   ref='business_home'
                                   style={styles.selectHintFont}>{this.state.business_home}</Text>
 
 
                             <Image style={styles.selectImage} source={selectImg}/>
-                        </View>
+
                     </TouchableOpacity>
                 </View>
                 <View style={{width: width, height: Pixel.getPixel(10), backgroundColor: fontAndColor.COLORA3}}/>
@@ -491,12 +493,13 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     fillSpace: {
-        flex: 1
+        flex: 1,
     },
     selectHintFont: {
         fontSize: Pixel.getFontPixel(14),
         color: fontAndColor.COLORA2,
-        textAlign: 'right'
+        textAlign: 'right',
+        width:width - Pixel.getPixel(120)
     },
     inputHintFont: {
         fontSize: Pixel.getFontPixel(14),
@@ -516,7 +519,8 @@ const styles = StyleSheet.create({
     rightContainer: {
         height: Pixel.getPixel(44),
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent:'flex-end'
     },
     rightHintFont: {
         fontSize: Pixel.getFontPixel(14),
