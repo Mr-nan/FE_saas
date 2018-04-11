@@ -341,10 +341,10 @@ export default class Authentication extends BaseComponent {
 							request(AppUrls.APPLYCHECKFOUR, 'Post', maps)//申请验四
 								.then((response) => {
 
+									this.setState({
+										loading: false,
+									});
 									if (response.mjson.data.fourElementCheckFlags == "T") {//申请验四通过
-										this.setState({
-											loading: false,
-										});
 										if (this.props.FromScene == 'kuaisu') {
 											this.toNextPage({
 												name: 'FastCreditOne',
@@ -369,6 +369,7 @@ export default class Authentication extends BaseComponent {
 
 									} else {//申请验四不通过原因
 										this.props.showToast(response.mjson.data.fourElementCheckRemark + "");
+
 									}
 								}, (error) => {//申请验四接口报错
 									this.setState({
@@ -383,19 +384,22 @@ export default class Authentication extends BaseComponent {
 							this.props.showToast(response11.mjson.data.msg + "");
                             this.setState({
                                 loading: false,
+                            },()=>{
+	                            this.Verifycode();
                             });
 						}
 					},
 					(error) => {//验证验证码接口报错
 						this.setState({
 							loading: false,
+						},()=>{
+							this.Verifycode();
 						});
-                        this.props.showToast(response11.mjson.msg + "");
+                        this.props.showToast(error.mjson.msg + "");
 
 					});
 		}
 	}
-
 
 	//获取图形验证码
 	Verifycode = () => {
@@ -411,7 +415,6 @@ export default class Authentication extends BaseComponent {
 		};
 		request(AppUrls.GET_CAPTCHA, 'Post', maps)
 			.then((response) => {
-				console.log('1111111111111111111111111111111111111111111111', response);
 				this.refs.verifycode.lodingStatus(false);
 				imgSrc = response.mjson.data.img_src;
 				imgSid = response.mjson.data.img_sid;

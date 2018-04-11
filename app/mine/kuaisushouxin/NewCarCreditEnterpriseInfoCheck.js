@@ -672,7 +672,6 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
                     this.props.showToast(response.mjson.msg + "!");
                 }
             }, (error) => {
-                console.log(error);
                 this.props.showToast("图片上传失败");
             });
     }
@@ -758,7 +757,7 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
                     this.setState({
                         loading: false,
                     });
-                    this.props.showToast(response.mjson.msg + "");
+                    this.props.showToast(error.mjson.msg + "");
 
                 });
     }
