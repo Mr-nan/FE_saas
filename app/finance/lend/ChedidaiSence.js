@@ -35,7 +35,7 @@ import Picker from 'react-native-picker';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import {LendSuccessAlert} from './component/ModelComponent'
-const PostData = {
+let PostData = {
     apply_type: '8',
     loan_mny: '',
     loan_life: '',
@@ -43,7 +43,7 @@ const PostData = {
     remark: '',
 }
 
-const ShowData = {
+let ShowData = {
     companyName: '',
     lendType: '',
     type: '',
@@ -52,7 +52,7 @@ const ShowData = {
     tempMin: '',
     tempMax: ''
 }
-const verificationtips = {
+let verificationtips = {
     loan_mny: '请输入借款金额',
     remark: '请输入借款用途',
     use_time: '请选择用款时间',

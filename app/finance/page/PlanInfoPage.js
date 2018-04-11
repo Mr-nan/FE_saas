@@ -54,8 +54,8 @@ export default class PlanInfoPage extends BaseComponent {
 
     componentDidMount() {
         //InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'});
-            this.initFinish();
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.initFinish();
         //});
     }
 
@@ -93,7 +93,11 @@ export default class PlanInfoPage extends BaseComponent {
                     relist = response.mjson.data.repayment_plan.relist;
                     movies = response.mjson.data.payment_info;
                     if (list != null && list.length > 0) {
-                        this.setState({renderPlaceholderOnly: 'success', dataSource: ds.cloneWithRows(list),xuanzhong:''});
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            dataSource: ds.cloneWithRows(list),
+                            xuanzhong: ''
+                        });
                     } else {
                         this.setState({renderPlaceholderOnly: 'null'});
                     }
@@ -150,7 +154,7 @@ export default class PlanInfoPage extends BaseComponent {
         if (this.state.xuanzhong == '') {
             this.props.showToast('请选择还款计划');
         } else {
-           this.refs.allloading.changeShowType(true,'如果该笔融资发生提前还款导致已使用优惠券作废，将不予退还！');
+            this.refs.allloading.changeShowType(true, '请注意优惠券绑定的还款计划，一旦绑定，将只能用于此笔还款，使用后不找零不退款！');
         }
     }
     // 每一行中的数据
@@ -214,7 +218,7 @@ export default class PlanInfoPage extends BaseComponent {
     }
     _moneyAdjustClick = (rowID) => {
         console.log('321321321');
-        this.refs.showadjust.changeShowType(true,list[rowID].relist);
+        this.refs.showadjust.changeShowType(true, list[rowID].relist);
     }
     // Header
     _renderHeader = () => {

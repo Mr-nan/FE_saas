@@ -67,7 +67,6 @@ export default class CarNewInfoScene extends BaseComponent {
         this.state = {
             imageArray: new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
-            residualsData: [],
             carData: {imgs: []},
             currentImageIndex: 1,
             switchoverCarInfo: 0,
@@ -75,13 +74,20 @@ export default class CarNewInfoScene extends BaseComponent {
             carDetailData:[],
         };
     }
+    componentDidMount() {
+
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
 
     initFinish = () => {
         carConfigurationData = [];
         this.isUserBoss = false;
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-            if (data.code == 1 && data.result != '') {
+            if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 for (let item of enters.enterprise_list[0].role_type){
                     if(item ==1 || item==6){
@@ -118,7 +124,7 @@ export default class CarNewInfoScene extends BaseComponent {
 
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
-            if (data.code == 1 && data.result != '') {
+            if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 let company_base_ids = '';
                 for (let index in enters) {
@@ -146,7 +152,6 @@ export default class CarNewInfoScene extends BaseComponent {
         }).then((response) => {
 
             let carData = response.mjson.data;
-            this.loadCarResidualsData(carData);
             this.loadCarConfigurationData(carData);
             this.loadCarDetailData(carData);
             if (carData.imgs.length <= 0) {
@@ -667,8 +672,18 @@ export default class CarNewInfoScene extends BaseComponent {
 
     // 查看更多推荐车型
     pushCarMoreScene=()=>{
-        this.backToTop();
-        DeviceEventEmitter.emit('pushNewCarListScene');
+
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                if (res.result) {
+                    this.backToTop();
+                    DeviceEventEmitter.emit('pushNewCarListScene');
+                }else {
+                    this.props.showLoginModal();
+                }
+            }
+        );
+
+
     }
 
     carCellOnPres = (carID) => {
@@ -690,57 +705,77 @@ export default class CarNewInfoScene extends BaseComponent {
     // 添加收藏
     addStoreAction = (isStoreClick) => {
 
-        let url = AppUrls.BASEURL + 'v1/user.favorites/create';
-        request(url, 'post', {
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                if (res.result) {
+                    let url = AppUrls.BASEURL + 'v1/user.favorites/create';
+                    request(url, 'post', {
 
-            id: this.state.carData.id,
+                        id: this.state.carData.id,
 
-        }).then((response) => {
+                    }).then((response) => {
 
-            if (response.mycode == 1) {
+                        if (response.mycode == 1) {
 
-                isStoreClick(true);
-                this.props.showToast('收藏成功');
-            } else {
+                            isStoreClick(true);
+                            this.props.showToast('收藏成功');
+                        } else {
 
-                this.props.showToast(response.mycode.msg);
+                            this.props.showToast(response.mycode.msg);
+                        }
+
+                    }, (error) => {
+
+                        this.props.showToast('收藏失败');
+
+                    });
+                }else {
+                    this.props.showLoginModal();
+                }
             }
+        );
 
-        }, (error) => {
 
-            this.props.showToast('收藏失败');
-
-        });
 
     }
 
     // 取消收藏
     cancelStoreAction = (isStoreClick) => {
 
-        let url = AppUrls.BASEURL + 'v1/user.favorites/delete';
-        request(url, 'post', {
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                if (res.result) {
+                    let url = AppUrls.BASEURL + 'v1/user.favorites/delete';
+                    request(url, 'post', {
 
-            id: this.state.carData.id,
+                        id: this.state.carData.id,
 
-        }).then((response) => {
+                    }).then((response) => {
 
-            if (response.mycode == 1) {
+                        if (response.mycode == 1) {
 
-                isStoreClick(false);
-                this.props.showToast('取消收藏');
+                            isStoreClick(false);
+                            this.props.showToast('取消收藏');
 
-            } else {
+                        } else {
 
-                this.props.showToast(response.mycode.msg);
+                            this.props.showToast(response.mycode.msg);
+                        }
+
+                    }, (error) => {
+
+                        this.props.showToast('取消收藏失败');
+
+                    });
+                }else {
+                    this.props.showLoginModal();
+                }
             }
+        );
 
-        }, (error) => {
 
-            this.props.showToast('取消收藏失败');
-
-        });
 
     }
+
+
 
     setNavitgationBackgroundColor = (event) => {
 

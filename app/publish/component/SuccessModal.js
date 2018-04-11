@@ -76,14 +76,14 @@ const styles = StyleSheet.create({
     },
     contentContainer:{
         width:Pixel.getPixel(260),
-        height:Pixel.getPixel(310),
         borderRadius:Pixel.getPixel(2),
         marginTop:Pixel.getPixel(157),
         alignItems:'center',
-        backgroundColor:'#FFFFFF'
+        backgroundColor:'#FFFFFF',
+        paddingVertical:Pixel.getPixel(15)
     },
     imgLogo:{
-        marginTop:Pixel.getPixel(28),
+        marginTop:Pixel.getPixel(10),
         width:Pixel.getPixel(142),
         height:Pixel.getPixel(112)
     },
@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
         borderRadius:Pixel.getPixel(2),
         alignItems:'center',
         justifyContent:'center',
-        marginBottom:Pixel.getPixel(17)
     },
     okText:{
         fontSize:Pixel.getFontPixel(15),

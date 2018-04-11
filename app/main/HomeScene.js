@@ -80,7 +80,9 @@ export default class HomeScene extends BaseComponet {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             headSource: [],
-            pageData: []
+            pageData: [],
+            newData:{list:[]},
+            oldData:{list:[]}
         };
         this.authenOptions = {
             '1': [true, '请先完成认证后再进行操作', '取消', '', '个人认证', this._gerenrenzheng],
@@ -138,36 +140,44 @@ export default class HomeScene extends BaseComponet {
 
     //认证功能验证
     _checkAuthen = (params) => {
+        StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                if (res.result) {
+                    this.props.callBack(params);
+                    return;
+                    this.isHomeJobItemLose = true;
+                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+                        if (data.code == 1 && data.result) {
+                            let datas = JSON.parse(data.result);
+                            let maps = {
+                                enterprise_id: datas.company_base_id,
+                                function_id: params.id,
+                                type: 'app'
+                            };
+                            request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                                this.isHomeJobItemLose = false;
+                                this.orderListData = response.mjson.data.items;
+                                if (response.mjson.data.auth == 0) {
+                                    this.props.callBack(params);
+                                } else {
+                                    this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth + '']);
+                                }
+                            }, (error) => {
+                                this.isHomeJobItemLose = false;
+                                this.props.showToast(error.msg);
+                            });
+                        } else {
+                            this.isHomeJobItemLose = false;
+                            this.props.showToast('获取企业信息失败');
+                        }
+                    });
 
-        this.props.callBack(params);
-        return;
-
-        this.isHomeJobItemLose = true;
-        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    enterprise_id: datas.company_base_id,
-                    function_id: params.id,
-                    type: 'app'
-                };
-                request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
-                    this.isHomeJobItemLose = false;
-                    this.orderListData = response.mjson.data.items;
-                    if (response.mjson.data.auth == 0) {
-                        this.props.callBack(params);
-                    } else {
-                        this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth + '']);
-                    }
-                }, (error) => {
-                    this.isHomeJobItemLose = false;
-                    this.props.showToast(error.msg);
-                });
-            } else {
-                this.isHomeJobItemLose = false;
-                this.props.showToast('获取企业信息失败');
+                }else {
+                       this.props.showLoginModal();
+                }
             }
-        });
+        );
+
+
     }
 
     _renderHeader = () => {
@@ -204,7 +214,16 @@ export default class HomeScene extends BaseComponet {
                         }}> 搜索您要找的车</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=> {
-                        this.props.callBack({name:'messagelistscene',component:MessageListScene,params:{}});
+
+                        StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                                if (res.result) {
+                                    this.props.callBack({name:'messagelistscene',component:MessageListScene,params:{}});
+                                }else {
+                                    this.props.showLoginModal();
+                                }
+                            }
+                        );
+
                     }} activeOpacity={0.8} style={{
                         backgroundColor: '#00000000',
                         width: Pixel.getPixel(25),
@@ -235,12 +254,13 @@ export default class HomeScene extends BaseComponet {
                     />
                 }
                 {
-                    this.state.oldData && <CarsViewPager items={this.state.oldData} toNext={(id)=>{
-                       this.pushUserCarInfoScene(id);
-                    }} more={()=>{
-                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
-                    }} title="推荐二手车源" type="8"
-                    />
+                    this.state.oldData.list.length == 0 && this.state.newData.list.length == 0 ?null:
+                        <CarsViewPager items={this.state.oldData} toNext={(id)=>{
+                            this.pushUserCarInfoScene(id);
+                        }} more={()=>{
+                            this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
+                        }} title="推荐二手车源" type="8"
+                        />
                 }
                 <HomeAdvertisementButton click={()=>{
                        this.props.callBack( {name: 'WebScene', component: WebScene, params: {webUrl: "http://u5559609.viewer.maka.im/k/9XENK1GL",title:'车行老板们想有钱有面儿有B格?'}});
@@ -277,7 +297,9 @@ export default class HomeScene extends BaseComponet {
     loadData = () => {
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != '') {
+
+            console.log('==========Loan_SUBJECT',data);
+            if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 this.getData(enters.prov_id);
 
@@ -296,42 +318,24 @@ export default class HomeScene extends BaseComponet {
             this.props.backToLogin()
         })
             .then((response) => {
-                    // allList.push(...response.mjson.data.carList.list);
-                    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
-                        if (data.code == 1) {
-                            let datas = JSON.parse(data.result);
-                            if (datas.user_level == 2) {
-                                if (datas.enterprise_list[0].role_type == '1' || datas.enterprise_list[0].role_type == '6') {
-                                } else if (datas.enterprise_list[0].role_type == '2') {
+                    if (allList.length <= 0) {
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            isRefreshing: false,
+                            allData: response.mjson.data
+                        });
+                    } else {
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            isRefreshing: false,
+                            allData: response.mjson.data
+                        });
+                    }
+                    this.carArray = []; // 初始化车源订阅数据
+                    this.getCarData(6);
+                    this.getCarSubscriptionData(5);
+                    this.getCarSubscriptionData(7);
 
-                                } else {
-
-                                }
-                            } else if (datas.user_level == 1) {
-
-                            } else {
-
-                            }
-                            if (allList.length <= 0) {
-                                this.setState({
-                                    renderPlaceholderOnly: 'success',
-                                    isRefreshing: false,
-                                    allData: response.mjson.data
-                                });
-                            } else {
-                                this.setState({
-                                    renderPlaceholderOnly: 'success',
-                                    isRefreshing: false,
-                                    allData: response.mjson.data
-                                });
-                            }
-                            this.carArray = []; // 初始化车源订阅数据
-                            this.getCarData(6);
-                            this.getCarSubscriptionData(5);
-                            this.getCarSubscriptionData(7);
-
-                        }
-                    });
                     status = response.mjson.data.carList.pageCount;
                 },
                 (error) => {
@@ -367,6 +371,7 @@ export default class HomeScene extends BaseComponet {
             .then((response) => {
                     // this.carData = response.mjson.data.list;
                     if (type == 6) {
+
                         this.setState({
                             newData: response.mjson.data,
                         });
