@@ -106,6 +106,8 @@
 		7DC7F9212006019F008267A5 /* BaiduMapAPI_Radar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC7F9172006019E008267A5 /* BaiduMapAPI_Radar.framework */; };
 		7DC7F9222006019F008267A5 /* BaiduMapAPI_Cloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC7F9182006019E008267A5 /* BaiduMapAPI_Cloud.framework */; };
 		7DC7F9242006022D008267A5 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7DC7F9232006022D008267A5 /* mapapi.bundle */; };
+		7DF62B01206C949B00FAF432 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 7DF62AFF206C949B00FAF432 /* VERSION */; };
+		7DF62B02206C949B00FAF432 /* libGrowing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DF62B00206C949B00FAF432 /* libGrowing.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8764F52B800544BDB35F20A3 /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82B903BCC1514330B41DB29B /* libRCTBEEPickerManager.a */; };
 		A71F92341425474AB56D2770 /* libSQLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1229226735478EA2FEAE52 /* libSQLite.a */; };
@@ -501,6 +503,9 @@
 		7DC7F9172006019E008267A5 /* BaiduMapAPI_Radar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Radar.framework; sourceTree = "<group>"; };
 		7DC7F9182006019E008267A5 /* BaiduMapAPI_Cloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Cloud.framework; sourceTree = "<group>"; };
 		7DC7F9232006022D008267A5 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = mapapi.bundle; sourceTree = "<group>"; };
+		7DF62AFE206C949B00FAF432 /* Growing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Growing.h; sourceTree = "<group>"; };
+		7DF62AFF206C949B00FAF432 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
+		7DF62B00206C949B00FAF432 /* libGrowing.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGrowing.a; sourceTree = "<group>"; };
 		82B903BCC1514330B41DB29B /* libRCTBEEPickerManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTBEEPickerManager.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8798090ED4424DBAA65E137A /* RCTUmengPush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTUmengPush.xcodeproj; path = "../node_modules/react-native-umeng-push/ios/RCTUmengPush.xcodeproj"; sourceTree = "<group>"; };
@@ -929,6 +934,16 @@
 				7DC7F9122006019E008267A5 /* libssl.a */,
 			);
 			path = thirdlibs;
+			sourceTree = "<group>";
+		};
+		7DF62AFD206C949B00FAF432 /* GrowingIO-iOS-SDK */ = {
+			isa = PBXGroup;
+			children = (
+				7DF62AFE206C949B00FAF432 /* Growing.h */,
+				7DF62AFF206C949B00FAF432 /* VERSION */,
+				7DF62B00206C949B00FAF432 /* libGrowing.a */,
+			);
+			path = "GrowingIO-iOS-SDK";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -1775,6 +1790,7 @@
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
+
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1830,6 +1846,7 @@
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
+
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1922,6 +1939,7 @@
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
 					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
+
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
