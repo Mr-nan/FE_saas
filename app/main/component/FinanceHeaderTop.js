@@ -21,18 +21,32 @@ const GetPermission = new GetPermissionUtil();
 import Switch from '../../mine/accountManage/component/Switch';
 
 let titleText = ['综合授信额度(万)', '贷款余额(万)', '可用余额', '微众可用余额(万)'];
-let newCarTitleText = ['新车授信额度(万)', '专项贷款余额(万)', '专项可用余额'];
+let newCarTitleText = ['新车订单额度(万)', '新车贷款余额(万)', '新车可用余额(万)'];
+let mnyData={};
+// multiple_credit_type	授信类型	string	1 综合授信 2 小额授信
+// newcar_creditmny	新车授信额度	string	单位 元
+// newcar_loanbalance	新车贷款余额	string	单位 元
+// newcar_maxloanmny   新车可借额度
 export default class HomeJobItem extends PureComponent {
 
     constructor(props) {
         super(props);
         this.isOpen = true;
-        this.type = this.props.type;
-        this.allData = {
-            credit_mny: this.props.allData.credit_mny,
-            credit_maxloanmny: this.props.allData.credit_maxloanmny,
-            loan_balance_mny: this.props.allData.loan_balance_mny,
+        this.type = this.props.type;//新车为2
+        mnyData=this.props.allData;
+        if(mnyData.multiple_credit_type==2){
+            titleText[0]=='小额授信额度(万)'
         }
+        this.allData = {
+            credit_mny: this.type==1?mnyData.credit_mny / 10000:mnyData.newcar_creditmny/10000,//授信额度
+            credit_maxloanmny: this.type==1?mnyData.credit_maxloanmny / 10000 : mnyData.newcar_maxloanmny,//可用余额
+            loan_balance_mny: this.type==1?mnyData.loan_balance_mny / 10000 : mnyData.newcar_loanbalance,//贷款余额
+            microchinese_mny: mnyData.microchinese_mny / 10000,//微众额度
+            is_microchinese_mny:mnyData.is_microchinese_mny,//3审核通过，5关闭
+            microchinese_mny:mnyData.is_microchinese_mny == 5 ?0 :mnyData.microchinese_mny/10000,//微众额度
+
+        }
+
         this.state = {
             type: this.type,
             allData: this.allData,
@@ -60,6 +74,7 @@ export default class HomeJobItem extends PureComponent {
                     credit_mny: '*******',
                     credit_maxloanmny: '*****',
                     loan_balance_mny: '*****',
+                    microchinese_mny:'*****'
                 }
             });
         }
@@ -113,11 +128,11 @@ export default class HomeJobItem extends PureComponent {
                                     fontSize: Pixel.getPixel(32), color: '#fff', fontWeight: 'bold'
                                     , backgroundColor: '#00000000', marginTop: Pixel.getPixel(4)
                                 }}> {this.state.allData.credit_mny}</Text>
-                            <Text
-                                style={{
-                                    fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'
-                                    , backgroundColor: '#00000000'
-                                }}>{' >'}</Text>
+                            {/*<Text*/}
+                                {/*style={{*/}
+                                    {/*fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'*/}
+                                    {/*, backgroundColor: '#00000000'*/}
+                                {/*}}>{' >'}</Text>*/}
                         </TouchableOpacity>
                     </View>
                     <View style={{width: Pixel.getPixel(290), height: 1, backgroundColor: 'rgba(255,255,255,0.3)'}}>
@@ -163,18 +178,18 @@ export default class HomeJobItem extends PureComponent {
                                             fontWeight: 'bold',
                                             marginRight: Pixel.getPixel(4)
                                         }}>{this.state.allData.credit_maxloanmny}</Text>
-                                        <Text
-                                            style={{
-                                                fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'
-                                                , backgroundColor: '#00000000'
-                                            }}>{' >'}</Text>
+                                        {/*<Text*/}
+                                            {/*style={{*/}
+                                                {/*fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'*/}
+                                                {/*, backgroundColor: '#00000000'*/}
+                                            {/*}}>{' >'}</Text>*/}
                                     </View>
                                 </View>
 
                             </View>
                         </TouchableOpacity>
 
-                        {this.state.titleText.length > 3 &&
+                        {this.state.titleText.length > 3 &&(this.allData.is_microchinese_mny == 3 || this.allData.is_microchinese_mny == 5)&&
                         <TouchableOpacity activeOpacity={0.8} style={{flex: 1}} onPress={() => {
                             this.props.weizongPop()
                         }}>
@@ -199,12 +214,12 @@ export default class HomeJobItem extends PureComponent {
                                     <Text style={{
                                         fontSize: Pixel.getPixel(17), color: '#fff',
                                         backgroundColor: '#00000000', fontWeight: 'bold', marginRight: Pixel.getPixel(4)
-                                    }}>{this.state.allData.credit_maxloanmny}</Text>
-                                    <Text
-                                        style={{
-                                            fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'
-                                            , backgroundColor: '#00000000'
-                                        }}>{' >'}</Text>
+                                    }}>{this.state.allData.microchinese_mny}</Text>
+                                    {/*<Text*/}
+                                        {/*style={{*/}
+                                            {/*fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'*/}
+                                            {/*, backgroundColor: '#00000000'*/}
+                                        {/*}}>{' >'}</Text>*/}
                                     </View>
                                 </View>
                             </View>
@@ -221,7 +236,7 @@ export default class HomeJobItem extends PureComponent {
                     <Text style={{
                         fontSize: Pixel.getFontPixel(11), color: '#fff',
                         backgroundColor: '#00000000', marginTop: Pixel.getPixel(10)
-                    }}>新车订单额度 2000万</Text>
+                    }}>{this.type==1? '综合授信额度 '+mnyData.credit_mny / 10000: '新车订单额度 '+mnyData.newcar_creditmny/10000}万</Text>
                 </TouchableOpacity>
 
             );

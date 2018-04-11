@@ -42,7 +42,6 @@ export default class FinanceScreenPop extends PureComponent {
         for (let i = 0; i < this.selects.length; i++) {
             viewList.push(<TouchableOpacity onPress={()=>{
                 this.props.hidden(i);
-                this.setState({select:i});
             }} activeOpacity={0.8} key={i+'123'}
                                             style={{flex:1,flexDirection: 'row'}}>
                 <View style={{flex:1,justifyContent:'center'}}>

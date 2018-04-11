@@ -69,21 +69,34 @@ import FinanceGuide from './component/FinanceGuide';
 let contentData = [{title: '保证金额度', value: '100万'}, {title: '保证金余度', value: '100万'}];
 let firstType = '-1';
 let lastType = '-1';
+let names = '';
 export default class NewFinanceScene extends BaseComponet {
 
     constructor(props) {
         super(props);
         this.allData1 = {};
-        this.allData = [this.allData1, 2, 3, 4, 5,];
+        this.type = 0;
+        this.allData=[];
+        this.time_order = 'asc';
+        this.allData = [this.allData1, 1,2,3];
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.isShow = false;
         this.state = {
             renderPlaceholderOnly: 'loading',
             isRefreshing: false,
-            source: this.ds.cloneWithRows(this.allData)
+            source: this.ds.cloneWithRows(this.allData),
+            customerName: ''
         }
         ;
     }
+
+    isEmpty = (str) => {
+        if (typeof(str) != 'undefined' && str !== null && str !== '') {
+            return false;
+        } else {
+            return true;
+        }
+    };
 
     handleBack = () => {
         NativeModules.VinScan.goBack();
@@ -138,34 +151,86 @@ export default class NewFinanceScene extends BaseComponet {
         })
             .then((response) => {
                     mnyData = response.mjson.data;
+                    // multiple_credit_type	授信类型	string	1 综合授信 2 小额授信
+                    // newcar_creditmny	新车授信额度	string	单位 元
+                    // newcar_loanbalance	新车贷款余额	string	单位 元
+                    // newcar_maxloanmny   新车可借额度
+
                     this.allData1 = {
-                        credit_mny: mnyData.credit_mny / 10000,
-                        credit_maxloanmny: mnyData.credit_maxloanmny / 10000,
-                        loan_balance_mny: mnyData.loan_balance_mny / 10000,
-                        bond_total_mny: mnyData.bond_total_mny/ 10000,
+                        bond_total_mny: mnyData.bond_total_mny / 10000,
                         bond_mny: mnyData.bond_mny / 10000,
                     }
 
-                    contentData[0].value=this.allData1.bond_total_mny;
-                    contentData[1].value=this.allData1.bond_mny;
+                    contentData[0].value = this.allData1.bond_total_mny;
+                    contentData[1].value = this.allData1.bond_mny;
 
-                    this.allData[0] = this.allData1;
+                    this.allData[0] = mnyData;
                     console.log('-----', this.allData)
-                    this.setState({
-                        source: this.ds.cloneWithRows(this.allData),
-                        renderPlaceholderOnly: 'success'
-                    })
-                    //     mnyData: mnyData,
-                    // });
-                    // that.getApplyData();
+                    this.getApplyData();
                 }
                 ,
                 (error) => {
-                    this
-                        .setState({renderPlaceholderOnly: 'error'});
+                    this.setState({renderPlaceholderOnly: 'error'});
                 }
             )
         ;
+    }
+
+    getApplyData = () => {
+        //0全部,2单车;3采购贷(旧);4库存融资;5采购贷6订单融资8车抵贷
+
+        let maps = {
+            api: Urls.GET_APPLY_LIST,
+            p: page,
+            loan_type: this.type,
+            time_order: this.time_order,
+
+        };
+        request(Urls.FINANCE, 'Post', maps, () => {
+            this.props.backToLogin();
+        })
+            .then((response) => {
+                    this.props.showModal(false);
+                    movies.push(...response.mjson.data.list);
+                    this.allData[3]=movies;
+                    allPage = response.mjson.data.page;
+                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+                        if (data.code == 1) {
+                            let datas = JSON.parse(data.result);
+                            if (datas.companyname == null || datas.companyname == '') {
+                                names = datas.name;
+                            } else {
+                                names = datas.companyname;
+                            }
+                            this.setState({
+                                renderPlaceholderOnly: 'success',
+                                source: this.ds.cloneWithRows(this.allData),
+                                isRefreshing: false,
+                                customerName: names
+                            });
+                        }
+                    })
+
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    if (error.mycode == '-2100045') {
+                        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+                            if (data.code == 1) {
+                                let datas = JSON.parse(data.result);
+                                this.setState({
+                                    isRefreshing: false,
+                                    renderPlaceholderOnly: 'success',
+                                    source: ds.cloneWithRows(['1']),
+                                    customerName: datas.companyname
+                                });
+                            }
+                        })
+
+                    } else {
+                        this.setState({renderPlaceholderOnly: 'error'});
+                    }
+                });
     }
 
     toPage = () => {
@@ -239,25 +304,43 @@ export default class NewFinanceScene extends BaseComponet {
         } else {
             if (page < allPage) {
                 page++;
+                this.getApplyData();
             }
         }
 
     };
 
     allRefresh = () => {
+        firstType = '-1';
+        lastType = '-1';
+        this.allData=[];
         movies = [];
         page = 1;
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.getMnyData();
     }
+    /**
+     *   更新 lastType;
+     **/
+    updateType = (newLastType) => {
+        lastType = newLastType;
+        //firstType = newLastType;
+        //console.log('firstType=======',firstType);
+    };
+
 
     componentDidUpdate() {
 
     }
 
     refreshingData = () => {
+        firstType = '-1';
+        lastType = '-1';
         movies = [];
         page = 1;
-        this.getMnyData();
         this.setState({isRefreshing: true});
+        this.getMnyData();
+        this.getAccountInfo();
     };
 
     render() {
@@ -275,6 +358,10 @@ export default class NewFinanceScene extends BaseComponet {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     scrollEnabled={true}
+                    renderFooter={
+                        this.renderListFooter
+                    }
+                    onEndReached={this.toEnd}
                     showsVerticalScrollIndicator={false}
                     refreshControl={
                         <RefreshControl
@@ -287,8 +374,32 @@ export default class NewFinanceScene extends BaseComponet {
                 />
                 <FinanceScreenPop ref="financescreenpop" hidden={(select) => {
                     if (select != 'null') {
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        this.setState({source: ds.cloneWithRows([1, 2, select, 4, 5, 6, 7, 8, 9, 0, 11, 11, 11, 11, 11, 11])});
+                        movies=[];
+                        page=1;
+                        switch (select) {
+                            case 0:
+                                this.type = 0;//全部
+                                break;
+                            case 1:
+                                this.type = 2;//单车
+                                break;
+                            case 2:
+                                this.type = 4;//库容
+                                break;
+                            case 3:
+                                this.type = 5;//采购贷
+                                break;
+                            case 4:
+                                this.type = 8;//车抵贷
+                                break;
+                            case 5:
+                                this.type = 6;//订单融资
+                                break;
+                        }
+                        this.props.showModal(true);
+                        this.getApplyData();
+                        this.financeScreen.setSelect(select);
+                        this.refs.financescreenpop.changeSelect(select);
                     }
                     this.closePop();
                 }}/>
@@ -305,6 +416,78 @@ export default class NewFinanceScene extends BaseComponet {
         this.refs.listview.setNativeProps({scrollEnabled: true});
     }
 
+    navigatorParams = {
+        name: 'LendMoneySence',
+        component: LendMoneySence,
+        params: {}
+    }
+
+    itemClick=(data,nextPage)=>{
+        console.log(nextPage);
+        if (nextPage === CGDDetailSence) {//采购贷
+            if (data.payment_status == '31') {//审核未通过
+                this.navigatorParams.name = 'CGDLendScenes';
+                this.navigatorParams.component = CGDLendScenes;
+                this.navigatorParams.params = {
+                    loan_code: data.loan_code,
+                    backRefresh: () => {
+                        this.allRefresh()
+                    }, customerName: this.state.customerName,
+                }
+            } else {
+                this.navigatorParams.name = 'DetaileSence';
+                this.navigatorParams.component = nextPage;
+                this.navigatorParams.params = {
+                    loanNumber: data.loan_code,
+                    backRefresh: () => {
+                        this.allRefresh()
+                    }
+                }
+            }
+        }
+        else if (nextPage === DDDetailScene) {//订单融资
+            if (data.payment_status == '31') {//审核未通过
+                this.navigatorParams.name = 'DDApplyLendScene';
+                this.navigatorParams.component = DDApplyLendScene;
+                this.navigatorParams.params = {
+                    sceneName:"FinanceScene",
+                    loan_code: data.loan_code,//借款单号
+                    orderNo: data.order_number,//平台订单号
+                    orderId: data.order_id,
+
+                    callBack: () => {
+                        this.allRefresh()
+                    }, customerName: this.state.customerName,
+                }
+            } else {
+                this.navigatorParams.name = 'DDDetailScene';
+                this.navigatorParams.component = nextPage;
+                this.navigatorParams.params = {
+                    financeNo: data.loan_code,//借款单号
+                    orderNo: data.order_number,//平台订单号
+                    FromScene:"FinanceScene",
+
+                    backRefresh: () => {
+                        this.allRefresh()
+                    }
+                }
+            }
+        }
+        else {
+            this.navigatorParams.name = 'DetaileSence';
+            this.navigatorParams.component = nextPage;
+            this.navigatorParams.params = {
+                loanNumber: data.loan_code,
+                backRefresh: () => {
+                    this.allRefresh()
+                }
+            }
+
+        }
+        this.props.callBack(this.navigatorParams);
+
+    }
+
 
     renderListFooter = () => {
         if (this.state.isRefreshing) {
@@ -318,24 +501,50 @@ export default class NewFinanceScene extends BaseComponet {
         if (rowId == 0) {
             return ( <FinanceHeader
                 allData1={movie}
-                depositPop={()=>{this.refs.loanModal.changeShowType(true, '保证金', '知道了', contentData, [])}}
-                creditPop={()=>{}}
-                balancePop={()=>{}}
-                weizongPop={()=>{}}/>);
+
+                depositPop={() => {
+                    this.refs.loanModal.changeShowType(true, '保证金', '知道了', contentData, [])
+                }}
+                creditPop={() => {
+                }}
+                balancePop={() => {
+                }}
+                weizongPop={() => {
+                }}/>);
         } else if (rowId == 1) {
             return (<FinanceButton borrowBt={() => {
-                this.refs.loanModal.changeShowType(true, '保证金', '知道了', contentData, []);
-            }} payBt={
-                () => {
-                    this.refs.loanModal.changeShowType(true, '提示', '确定', contentData, contentData);
+                this.homeItemOnPress('借款');
+            }} payBt={() => {
+                this.homeItemOnPress('还款');
+                    // this.refs.loanModal.changeShowType(true, '提示', '确定', contentData, contentData);
                 }
             }/>);
         } else if (rowId == 2) {
             return (
-                <FinanceScreen onCheck={(select) => {
-                    this.refs.financescreenpop.changeSelect(select);
-                    this.closePop();
-                }} select={movie} onPress={(y) => {
+                <FinanceScreen
+                    ref={(ref)=>{this.financeScreen=ref}}
+                    onCheck={(select) => {
+                        movies=[];
+                        page=1;
+                        switch (select) {
+                            case 0:
+                                this.type = 0;//全部
+                                break;
+                            case 1:
+                                this.type = 2;//单车
+                                break;
+                            case 2:
+                                this.type = 4;//库容
+                                break;
+                        }
+                        this.props.showModal(true);
+                        this.getApplyData();
+                        this.financeScreen.setSelect(select);
+                        this.refs.financescreenpop.changeSelect(select);
+                        this.closePop();
+                    }}
+                    select={0}
+                    onPress={(y) => {
                     if (this.isShow) {
                         this.closePop();
                     } else {
@@ -350,9 +559,28 @@ export default class NewFinanceScene extends BaseComponet {
                         this.refs.listview.setNativeProps({scrollEnabled: false});
                     }
 
-                }}/>);
+                }}
+                    timeOrderClick={(isTop) => {
+                        if (isTop) {
+                            this.time_order = 'asc';
+                        } else {
+                            this.time_order = 'desc';
+                        }
+                        this.props.showModal(true);
+                        this.getApplyData();
+                    }}
+                />);
         } else {
-            return (<FinanceItem/>);
+            
+            return (<View>
+                    {movie.map((data,index)=>{
+                        return(<FinanceItem key={index+'item'} data={data}
+                                            customerName={this.state.customerName}
+                                            itemClick={this.itemClick}
+                        />)
+                        
+                    })}
+                </View>);
         }
 
     }

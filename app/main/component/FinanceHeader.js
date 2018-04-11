@@ -42,7 +42,6 @@ export default class FinanceHeader extends PureComponent {
     }
 
     render() {
-        console.log('123');
         console.log(this.props.allData1);
         return (
             <View style={{backgroundColor: '#fff', width: width, height: Pixel.getTitlePixel(235)}}>

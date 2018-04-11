@@ -29,14 +29,12 @@ export default class FinanceScreen extends PureComponent {
 
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({selectId: nextProps.select});
+    setSelect=(select)=> {
+
+        this.setState({selectId: select});
     }
 
     render() {
-        console.log('--------------');
-        console.log(this.state.selectId+'--------------');
-        console.log('--------------');
         let viewList = [];
         for (let i = 0; i < this.selects.length; i++) {
             let flex = 3;
@@ -69,7 +67,9 @@ export default class FinanceScreen extends PureComponent {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>{
+                    let isTop=!this.state.isTop;
                     this.setState({isTop:!this.state.isTop});
+                    this.props.timeOrderClick(isTop);
                 }} activeOpacity={0.8} style={{flex:4,alignItems:'center',flexDirection:'row'}}>
                     <View style={{width:Pixel.getPixel(2),height:Pixel.getPixel(20),
                     backgroundColor:'#d8d8d8'}}></View>
