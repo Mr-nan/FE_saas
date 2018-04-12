@@ -140,6 +140,8 @@ export default class HomeScene extends BaseComponet {
 
     //认证功能验证
     _checkAuthen = (params) => {
+        this.props.callBack(params);
+return;
         StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
                 if (res.result) {
                     this.isHomeJobItemLose = true;
