@@ -231,7 +231,7 @@ export default class RootScene extends BaseComponent {
                 StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                     if (res.result !== StorageUtil.ERRORCODE) {
                         if (res.result == null) {
-                            that.navigatorParams.component = NewFinanceScene;
+                            that.navigatorParams.component = LoginAndRegister;
                             that.navigatorParams.name = 'LoginAndRegister';
                             that.toNextPage(that.navigatorParams);
                         } else {
@@ -264,7 +264,7 @@ export default class RootScene extends BaseComponent {
                                     }
                                 });
                             } else {
-                                that.navigatorParams.component = NewFinanceScene;
+                                that.navigatorParams.component = LoginAndRegister;
                                 that.navigatorParams.name = 'LoginAndRegister';
                                 that.toNextPage(that.navigatorParams);
                             }

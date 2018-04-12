@@ -214,14 +214,16 @@ export default class NewFinanceScene extends BaseComponet {
                 },
                 (error) => {
                     this.props.showModal(false);
+
                     if (error.mycode == '-2100045') {
+                        this.allData[3]=[];
                         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
                             if (data.code == 1) {
                                 let datas = JSON.parse(data.result);
                                 this.setState({
                                     isRefreshing: false,
                                     renderPlaceholderOnly: 'success',
-                                    source: ds.cloneWithRows(['1']),
+                                    source: this.ds.cloneWithRows(this.allData),
                                     customerName: datas.companyname
                                 });
                             }
