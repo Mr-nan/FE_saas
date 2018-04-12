@@ -23,7 +23,8 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
-import FinanceScene from './FinanceScene'
+// import FinanceScene from './FinanceScene'
+import FinanceScene from './NewFinanceScene'
 import NonCreditScene from './NonCreditScene'
 import FinanceCreditApplyScene from './FinanceCreditApplyScene'
 import SQLiteUtil from "../utils/SQLiteUtil";
