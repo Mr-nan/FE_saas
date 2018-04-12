@@ -23,6 +23,7 @@ import * as Urls from '../../constant/appUrls';
 let viewWidth = Pixel.getPixel(40);
 let list = [];
 let relist = [];
+let movies;
 import AdjustListScene from '../repayment/AdjustListScene';
 import  AllLoading from '../../component/AllLoading';
 import  AdjustListModal from '../../component/AdjustListModal';
@@ -53,8 +54,8 @@ export default class PlanInfoPage extends BaseComponent {
 
     componentDidMount() {
         //InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'});
-            this.initFinish();
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.initFinish();
         //});
     }
 
@@ -63,21 +64,40 @@ export default class PlanInfoPage extends BaseComponent {
     }
 
     getData = () => {
-        let maps = {
-            api: Urls.REPAYMENT_GET_ADJUST_INFO,
-            loan_number: this.props.loan_number,
-            type: '3',
-        };
+        let maps;
+        if(this.props.from === 'ChedidaiRepaymentPage'){
+            maps = {
+                api: Urls.CARLOAN_LOAN_INFO,
+                loan_number: this.props.loan_number,
+                loan_code:this.props.payment_number,
+                type: '8',
+                page_type:'1'
+            };
+        }else{
+            maps = {
+                api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
+                loan_number: this.props.loan_number,
+                loan_code:this.props.payment_number,
+                type: '3',
+                page_type:'1'
+            };
+        }
+
         if(this.props.planid){
             maps.planid=this.props.planid
         }
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    list = response.mjson.data.list;
-                    relist = response.mjson.data.relist;
+                    list = response.mjson.data.repayment_plan;
+                    relist = response.mjson.data.repayment_plan.relist;
+                    movies = response.mjson.data.payment_info;
                     if (list != null && list.length > 0) {
-                        this.setState({renderPlaceholderOnly: 'success', dataSource: ds.cloneWithRows(list),xuanzhong:''});
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            dataSource: ds.cloneWithRows(list),
+                            xuanzhong: ''
+                        });
                     } else {
                         this.setState({renderPlaceholderOnly: 'null'});
                     }
@@ -95,13 +115,15 @@ export default class PlanInfoPage extends BaseComponent {
         }
         return (
             <View style={styles.container}>
-                <ListView
-                    removeClippedSubviews={false}
-                    contentContainerStyle={styles.listStyle}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderRow}
-                    renderHeader={this._renderHeader}
-                />
+                    <ListView
+                        removeClippedSubviews={false}
+                        contentContainerStyle={styles.listStyle}
+                        dataSource={this.state.dataSource}
+                        renderRow={this._renderRow}
+                        renderHeader={this._renderHeader}
+                        renderFooter={this._renderFooter}
+                    />
+
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'使用优惠券'}
                           parentStyle={styles.loginBtnStyle}
@@ -132,7 +154,7 @@ export default class PlanInfoPage extends BaseComponent {
         if (this.state.xuanzhong == '') {
             this.props.showToast('请选择还款计划');
         } else {
-           this.refs.allloading.changeShowType(true,'如果该笔融资发生提前还款导致已使用优惠券作废，将不予退还！');
+            this.refs.allloading.changeShowType(true, '请注意优惠券绑定的还款计划，一旦绑定，将只能用于此笔还款，使用后不找零不退款！');
         }
     }
     // 每一行中的数据
@@ -147,7 +169,7 @@ export default class PlanInfoPage extends BaseComponent {
         return (
             <TouchableOpacity style={styles.rowView}
                               onPress={() => {
-                                  if(rowData.adjustmoney!='0'){
+                                  if(rowData.adjustmoney!='0.00'){
                                       if(rowData.relist){
                                           this._moneyAdjustClick(rowID)
                                       }
@@ -157,19 +179,21 @@ export default class PlanInfoPage extends BaseComponent {
 
                               }}>
                 <View style={styles.textAllStyle}>
-                    <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.dead_line}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowTextStyle1}>{rowData.enddate}</Text>
                     <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.repaymentmny}</Text>
                     <TouchableOpacity activeOpacity={1} onPress={() => {
-                        if(rowData.adjustmoney!='0'&&rowData.relist){
+                        if(rowData.adjustmoney!='0.00'&&rowData.relist){
                             console.log('123123');
                             this._moneyAdjustClick(rowID)
                         }
                     }}>
-                        <Text allowFontScaling={false} 
-                            style={[styles.rowTextStyle,rowData.adjustmoney!='0'?styles.textColors:{}]}>{rowData.adjustmoney}</Text>
+                        <Text allowFontScaling={false}
+                              style={[styles.rowTextStyle,rowData.adjustmoney!='0.00'?styles.textColors:{}]}>{rowData.adjustmoney}</Text>
                     </TouchableOpacity>
 
                     <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.aftermny}</Text>
+
+                    <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.status}</Text>
                 </View>
 
 
@@ -181,6 +205,7 @@ export default class PlanInfoPage extends BaseComponent {
                 </View>
             </TouchableOpacity>
         );
+
     }
     _rowClick = (rowID) => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -193,20 +218,39 @@ export default class PlanInfoPage extends BaseComponent {
     }
     _moneyAdjustClick = (rowID) => {
         console.log('321321321');
-        this.refs.showadjust.changeShowType(true,list[rowID].relist);
+        this.refs.showadjust.changeShowType(true, list[rowID].relist);
     }
     // Header
     _renderHeader = () => {
         return (
             <View style={styles.listHeader}>
                 <View style={styles.textAllStyle}>
-                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>到期日</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle1}>到期日</Text>
                     <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整前</Text>
                     <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整金额</Text>
                     <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整后</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>状态</Text>
                 </View>
 
 
+            </View>
+        );
+    }
+    // Footer
+    _renderFooter = () => {
+        return (
+            <View style={{width:width,height:Pixel.getPixel(68),backgroundColor:'#fff',marginTop:Pixel.getPixel(10),
+                borderBottomColor:fontAndClolr.COLORA4,borderBottomWidth:Pixel.getPixel(1),borderStyle:'solid',justifyContent:'center'}}>
+                <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),borderBottomColor:fontAndClolr.COLORA4,
+                    borderBottomWidth:Pixel.getPixel(1),borderStyle:'solid',marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
+                    <Text style={{flex:1}}>总共应还</Text>
+                    <Text style={{flex:1,textAlign:'right'}}>{movies.total_m_i}</Text>
+                </View>
+
+                <View style={{flex:1,flexDirection:'row',height:Pixel.getPixel(34),marginHorizontal:Pixel.getPixel(10),alignItems:'center'}}>
+                    <Text style={{flex:1}}>未还利息</Text>
+                    <Text style={{flex:1,textAlign:'right'}}>{movies.interest_other}</Text>
+                </View>
             </View>
         );
     }
@@ -215,12 +259,12 @@ export default class PlanInfoPage extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
-
         flex: 1,
         marginTop: Pixel.getPixel(0),
         backgroundColor: fontAndClolr.COLORA3,
     },
-    listStyle: {},
+    listStyle: {
+    },
 
     rowView: {
         height: Pixel.getPixel(44),
@@ -253,14 +297,26 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(20)
     },
 
+    headerTextStyle1: {
+        width: (width - viewWidth) / 5.0 + 15,
+        textAlign: 'center',
+        fontSize: Pixel.getFontPixel(fontAndClolr.CONTENTFONT24),
+        color: fontAndClolr.COLORA1
+    },
+    rowTextStyle1: {
+        width: (width - viewWidth) / 5.0 + 15,
+        textAlign: 'center',
+        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
+        color: fontAndClolr.COLORA0
+    },
     headerTextStyle: {
-        width: (width - viewWidth) / 4.0,
+        width: (width - viewWidth) / 5.0,
         textAlign: 'center',
         fontSize: Pixel.getFontPixel(fontAndClolr.CONTENTFONT24),
         color: fontAndClolr.COLORA1
     },
     rowTextStyle: {
-        width: (width - viewWidth) / 4.0,
+        width: (width - viewWidth) / 5.0,
         textAlign: 'center',
         fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
         color: fontAndClolr.COLORA0

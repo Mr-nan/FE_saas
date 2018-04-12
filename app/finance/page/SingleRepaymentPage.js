@@ -21,7 +21,7 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import MyButton from '../../component/MyButton';
 import BaseComponent from '../../component/BaseComponent';
-let allList = [];
+//let allList = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import  LoadMoreFooter from '../../component/LoadMoreFooter';
@@ -32,8 +32,10 @@ export  default class SingleRepaymentPage extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
+        this.allList=[];
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.payment_status !== r2.payment_status});
         this.state = {
-            source: [],
+            source: ds.cloneWithRows(this.allList),
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
         };
@@ -47,7 +49,7 @@ export  default class SingleRepaymentPage extends BaseComponent {
     }
 
     componentWillUnmount() {
-        allList = [];
+        this.allList = [];
         page = 1;
         allPage = 1;
     }
@@ -64,11 +66,10 @@ export  default class SingleRepaymentPage extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    allList.push(...response.mjson.data.list);
+                    this.allList.push(...response.mjson.data.list);
                     allPage = response.mjson.data.page;
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
-                        source: ds.cloneWithRows(allList),
+                        source: this.state.source.cloneWithRows(this.allList),
                         renderPlaceholderOnly: 'success',
                         isRefreshing: false
                     });
@@ -83,12 +84,47 @@ export  default class SingleRepaymentPage extends BaseComponent {
     }
 
     refreshingData = () => {
-        allList = [];
+        this.allList = [];
         this.setState({isRefreshing: true});
         page = 1;
         allPage = 1;
         this.getData();
     };
+
+    refreshingData2 = () => {
+        this.allList = [];
+        page = 1;
+        allPage = 1;
+        this.props.showModal(true);
+        this.getData2();
+    };
+
+    getData2 = () => {
+        let maps = {
+            api: Urls.REPAYMENT_GETLIST,
+            type: '2',
+            p: page
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.setState({
+                        source: this.state.source.cloneWithRows([]),
+                    },()=>{
+                        this.allList.push(...response.mjson.data.list);
+                        allPage = response.mjson.data.page;
+                        this.setState({
+                            source: this.state.source.cloneWithRows(this.allList),
+                        },()=>{
+                            this.props.showModal(false);
+                        });
+                    });
+
+                },
+                (error) => {
+
+                });
+    }
+
 
     toEnd = () => {
         if (this.state.isRefreshing) {
@@ -109,6 +145,7 @@ export  default class SingleRepaymentPage extends BaseComponent {
             return (<LoadMoreFooter isLoadAll={page>=allPage?true:false}/>)
         }
     }
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -159,7 +196,7 @@ export  default class SingleRepaymentPage extends BaseComponent {
 
         return (
             <TouchableOpacity onPress={()=>{
-                this.props.callBack(movie.loan_id,movie.loan_number,movie.type);
+                this.props.callBack(movie.loan_id,movie.loan_number,movie.type,movie.payment_number,movie.payment_status,this.refreshingData2);
             }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
@@ -183,7 +220,7 @@ export  default class SingleRepaymentPage extends BaseComponent {
                         <Text allowFontScaling={false}  style={[styles.centerBottomText, {
                             color: fontAndColor.COLORA0
                         }]}>
-                            {movie.loan_time_str}
+                            {movie.loanmakedate_str}
                         </Text>
                     </View>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-end'}]}>
@@ -193,7 +230,7 @@ export  default class SingleRepaymentPage extends BaseComponent {
                         <Text allowFontScaling={false}  style={[styles.centerBottomText, {
                             color: fontAndColor.COLORB2
                         }]}>
-                            {movie.total_repayment}
+                            {parseFloat(movie.normal_repayment_money).toFixed(2)}
                         </Text>
                     </View>
                 </View>

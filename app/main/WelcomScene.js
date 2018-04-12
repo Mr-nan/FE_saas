@@ -23,6 +23,7 @@ import LoginAndRegister from '../login/LoginAndRegister';
 let Pixel = new PixelUtil();
 import StorageUtil from '../utils/StorageUtil';
 import * as KeyNames from '../constant/storageKeyNames';
+import MainPage from "./MainPage";
 
 export  default class WelcomScene extends BaseComponent {
 
@@ -80,7 +81,7 @@ export  default class WelcomScene extends BaseComponent {
                                tabLabel="ios-paper4"/>
                         <TouchableOpacity onPress={()=>{
                              StorageUtil.mSetItem(KeyNames.FIRST_INTO,'false');
-                             this.loginPage({name:'LoginAndRegister',component:LoginAndRegister,params:{}});
+                             this.loginPage({name:'MainPage',component:MainPage,params:{}});
                         }} activeOpacity={0.8} style={{width:Pixel.getPixel(121),
                         height:Pixel.getPixel(37),position:'absolute',
                         bottom: Pixel.getPixel(22),

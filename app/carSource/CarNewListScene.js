@@ -106,7 +106,7 @@ export  default  class CarNewListScene extends BaseComponent {
         super(props);
         // 初始状态
         const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
-
+        this.prov_id = 0;
         this.isLoadCarInfo = false;
         this.state = {
             isRefreshing: false,
@@ -200,7 +200,7 @@ export  default  class CarNewListScene extends BaseComponent {
         StorageUtil.mSetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,'false');
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
-            if(data.code == 1 && data.result != '')
+            if(data.code == 1 && data.result)
             {
                 let enters = JSON.parse(data.result);
                 this.prov_id = enters.prov_id;

@@ -50,10 +50,15 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
                     locked={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["还款详情", "还款计划"]}/>}
                 >
-                    <InventoryPlanInfoPage planid={this.props.planid} ref="inventoryplaninfopage" callBack={(params)=>{
+                    <InventoryPlanInfoPage planid={this.props.planid} ref="inventoryplaninfopage"
+                                           showToast={(text)=>{this.props.showToast(text)}}
+                                           callBack={(params)=>{
                         params.params.refresh = ()=>{this.refresh();}
                         this.toNextPage(params)
-                    }} loan_id={this.props.loan_id} loan_number={this.props.loan_number}  tabLabel="ios-paper"/>
+                    }} loan_id={this.props.loan_id} loan_number={this.props.loan_number}
+                                           payment_number={this.props.payment_number}
+                                           refreshListPage={()=>{this.backPage(); this.props.refreshListPage();}}
+                                           tabLabel="ios-paper"/>
 
                     <PlanInfoScene planid={this.props.planid} ref="planinfoscene" callBack={(params)=>{
                         params.params.refresh = ()=>{this.refresh();}
@@ -62,9 +67,9 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
                         this.props.showToast(content)
                     }} showModal={(value)=>{
                         this.props.showModal(value);
-                    }}  loan_id={this.props.loan_id}
-                                    loan_number={this.props.loan_number}
-                                    tabLabel="ios-paper1"></PlanInfoScene>
+                    }}  loan_id={this.props.loan_id} payment_number={this.props.payment_number}
+                                    loan_number={this.props.loan_number} from={this.props.from}
+                                    tabLabel="ios-paper1"/>
                 </ScrollableTabView>
                 <NavigationView
                     title="还款详情"

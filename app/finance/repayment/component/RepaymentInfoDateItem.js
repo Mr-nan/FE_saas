@@ -15,6 +15,7 @@ import {
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
+let currentdate;
 import * as fontAndColor from '../../../constant/fontAndColor';
 import DateTimePicker from 'react-native-modal-datetime-picker'
 export  default class RepaymentInfoDateItem extends PureComponent {
@@ -31,34 +32,48 @@ export  default class RepaymentInfoDateItem extends PureComponent {
         if (strDate >= 0 && strDate <= 9) {
             strDate = "0" + strDate;
         }
-        let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+        currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+        let currentM = Date.parse(currentdate)/1000;
+        let selectM = Date.parse(this.props.time)/1000;
+        let showHint = currentM !== selectM;
+        if(this.props.hideHint) showHint = false;
         this.state = {
             show: 'row',
-            isDateTimePickerVisible:false,
-            selectTime:currentdate
+            isDateTimePickerVisible:showHint,
+            selectTime:this.props.time,
         };
+
     }
 
+    componentWillMount(){
+        console.log('---------------',currentdate,this.state.selectTime)
+        // if(currentdate != this.state.selectTime){
+        //     this.setState({
+        //         isDateTimePickerVisible:true
+        //     })
+        // }
+    }
     render() {
         return (
-            <View style={styles.itemStyle}>
-                <View style={{flex:1,justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
-                    <Text allowFontScaling={false}  style={[styles.loanCodeStyle]}>还款日期</Text>
-                </View>
-                <TouchableOpacity onPress={()=>{
-                    if(this.props.status=='0'){
-                        this.setState({
-                     isDateTimePickerVisible:true
-                 });
-                    }
+            <View style={{flexDirection:'column'}}>
+                <View style={styles.itemStyle}>
+                    <View style={{flex:1,justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle]}>提前还款日期</Text>
+                    </View>
+                    <TouchableOpacity onPress={()=>{
+                        {/*if(this.props.status=='0'){*/}
+                            {/*this.setState({*/}
+                                {/*isDateTimePickerVisible:true*/}
+                            {/*});*/}
+                        {/*}*/}
 
-                }} activeOpacity={0.8}
-                                  style={{flex:1,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
-                    <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{color:fontAndColor.COLORA2,marginRight:Pixel.getPixel(10)}]}>{this.state.selectTime}</Text>
-                    <Image style={[{width:Pixel.getPixel(22),height:Pixel.getPixel(22)}]}
-                           source={require('../../../../images/financeImages/dateIcon.png')}/>
-                </TouchableOpacity>
-                <DateTimePicker
+                    }} activeOpacity={0.8}
+                                      style={{flex:1,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{color:fontAndColor.COLORA2,marginRight:Pixel.getPixel(14)}]}>{this.state.selectTime}</Text>
+                        {/*  <Image style={[{width:Pixel.getPixel(22),height:Pixel.getPixel(22)}]}
+                           source={require('../../../../images/financeImages/dateIcon.png')}/>*/}
+                    </TouchableOpacity>
+                    {/*    <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this._handleDatePicked}
                     minimumDate={new Date()}
@@ -66,8 +81,16 @@ export  default class RepaymentInfoDateItem extends PureComponent {
                     titleIOS="请选择日期"
                     confirmTextIOS='确定'
                     cancelTextIOS='取消'
-                />
+                />*/}
+                </View>
+                {this.state.isDateTimePickerVisible ? <View style={{width:width,backgroundColor:fontAndColor.COLORA3,paddingLeft:Pixel.getPixel(10),
+                    paddingTop:Pixel.getPixel(10),paddingRight:Pixel.getPixel(10)}}>
+                    <Text style={{fontSize:Pixel.getFontPixel(13),color:fontAndColor.COLORA2}}>提示：当日14：00之后，提前还款日期将为您自动顺延至下一个工作日。</Text>
+                </View> :null
+                    }
+
             </View>
+
         );
     }
 
