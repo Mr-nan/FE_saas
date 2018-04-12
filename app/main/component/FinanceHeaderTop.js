@@ -35,7 +35,7 @@ export default class HomeJobItem extends PureComponent {
         this.type = this.props.type;//新车为2
         mnyData=this.props.allData;
         if(mnyData.multiple_credit_type==2){
-            titleText[0]=='小额授信额度(万)'
+            titleText[0]='小额授信额度(万)'
         }
         this.allData = {
             credit_mny: this.type==1?mnyData.credit_mny / 10000:mnyData.newcar_creditmny/10000,//授信额度
@@ -236,7 +236,7 @@ export default class HomeJobItem extends PureComponent {
                     <Text style={{
                         fontSize: Pixel.getFontPixel(11), color: '#fff',
                         backgroundColor: '#00000000', marginTop: Pixel.getPixel(10)
-                    }}>{this.type==1? '综合授信额度 '+mnyData.credit_mny / 10000: '新车订单额度 '+mnyData.newcar_creditmny/10000}万</Text>
+                    }}>{this.type==1?  titleText[0]+mnyData.credit_mny / 10000: '新车订单额度 '+mnyData.newcar_creditmny/10000}万</Text>
                 </TouchableOpacity>
 
             );
