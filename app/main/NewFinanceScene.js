@@ -607,7 +607,7 @@ export default class NewFinanceScene extends BaseComponet {
                     this.navigatorParams.name = 'LendMoneySence';
                     this.navigatorParams.component = LendMoneySence;
                     this.navigatorParams.params = {
-                        credit_status: mnyData.credit_status,
+                        // credit_status: mnyData.credit_status,
                         inventory_financing_status: mnyData.inventory_financing_status,
                         purchase_archives_after_status: mnyData.purchase_archives_after_status,
                         purchase_archives_first_status: mnyData.purchase_archives_first_status,

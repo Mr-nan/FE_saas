@@ -118,7 +118,9 @@ export default class BlankFinanceScene extends BaseComponent {
 			return (<View style={{flex:1}}>
 				<FinanceScene  showModal={(value)=>{this.props.showModal(value);}}
 				               showToast={(content)=>{this.props.showToast(content)}}
-				               toNextPage={(params) => {this.props.toNextPage(params);
+							   callBack={(params)=> {
+
+                                   this.props.toNextPage(params);
                 }}/>
 			</View>)
 
