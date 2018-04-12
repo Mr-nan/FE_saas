@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
@@ -1390,6 +1390,13 @@ export const ZS_SUB_BANK = BASEURL + "v1/bankRoute.query/findChildBankNo";
  *   获取用户的账户详情(我的账户页面-卡片页  调用)
  */
 export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccountDetail";
+
+
+/**
+ *   判断是否在信托白名单
+ */
+export const CAN_XINTUO = BASEURL + "v2/account.xt/getUidExistWhiteList";
+
 /**
  *   信托开户
  */

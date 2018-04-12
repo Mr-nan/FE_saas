@@ -33,8 +33,11 @@ import * as StorageKeyNames from "../../constant/storageKeyNames";
 import MyAccountItem from "./component/MyAccountItem";
 import AccountManageScene from "./AccountManageScene";
 import * as Urls from '../../constant/appUrls';
+import OpenTrustAccountView from './component/OpenTrustAccountView'
 
 var Pixel = new PixelUtil();
+
+let dataList = [];
 
 export default class MyAccountScene extends BaseComponent {
 
@@ -49,6 +52,7 @@ export default class MyAccountScene extends BaseComponent {
         super(props);
         this.hengFengInfo = {};
         this.zheShangInfo = {};
+        this.xintuoInfo = {};
         this.lastType = '-1';
         this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(25) : height;
         this.state = {
@@ -71,6 +75,12 @@ export default class MyAccountScene extends BaseComponent {
             this.initFinish();
             //});
         }
+    }
+
+    componentWillUnmount(){
+
+        dataList = [];
+
     }
 
     initFinish = () => {
@@ -129,6 +139,9 @@ export default class MyAccountScene extends BaseComponent {
      *   页面起调，浙商开关接口
      **/
     loadData = () => {
+
+
+
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
@@ -147,6 +160,15 @@ export default class MyAccountScene extends BaseComponent {
                             isRefreshing: false
                         });
                     });
+
+
+                /******     关于信托的     ******/
+
+                request(Urls.CAN_XINTUO,'POST', {enter_base_id:datas.company_base_id,type:1}).then((response)=>{
+                    dataList.push('zsyxt')
+                }, (error)=>{
+                    console.log(error)
+                })
             } else {
                 this.props.showModal(false);
                 this.props.showToast('用户信息查询失败');
@@ -156,6 +178,11 @@ export default class MyAccountScene extends BaseComponent {
                 });
             }
         });
+
+
+
+
+
     };
 
     /**
@@ -279,11 +306,12 @@ export default class MyAccountScene extends BaseComponent {
                     }
                 }
                 this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
-                let dataList = [];
+
                 if (bankId) {
                     dataList.push(bankId);
                 } else {
-                    dataList = ['315', '316'];
+                    dataList.splice(0,0, '315','316');
+
                 }
                 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                 this.setState({
@@ -334,6 +362,11 @@ export default class MyAccountScene extends BaseComponent {
                                   colors={[fontAndColor.COLORA3]}
                               />
                           }/>
+
+                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}
+                                      showModal={this.props.showModal}
+                                      navigator={this.props.navigator}/>
+
                 {
                     this.state.mbWKHShow == 1 ?
                         <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
@@ -434,6 +467,27 @@ export default class MyAccountScene extends BaseComponent {
         }
     }
 
+    clickCallBack = ()=>{
+
+      //  if (this.state.trustAccountState == 0) {
+            this.props.showModal(true);
+            let maps = {
+                source_type: '3',
+                fund_channel: '信托'
+            };
+            request(Urls.AGREEMENT_LISTS, 'Post', maps)
+                .then((response) => {
+                    this.props.showModal(false);
+                    this.contractList = response.mjson.data.list;
+                    this.refs.openAccount.changeStateWithData(true, this.contractList);
+                }, (error) => {
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+       // }
+
+    }
+
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
         return (
             <View
@@ -446,11 +500,14 @@ export default class MyAccountScene extends BaseComponent {
         let info = {};
         if (rowData == '315') {
             info = this.hengFengInfo;
-        } else {
+        } else if (rowData == '316'){
+            info = this.zheShangInfo;
+        }else {
             info = this.zheShangInfo;
         }
         return (
             <MyAccountItem
+                clickCallBack={this.clickCallBack}
                 showQuestion = {rowData == 315?true:false}
                 navigator={this.props.navigator}
                 showToast={this.props.showToast}

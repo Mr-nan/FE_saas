@@ -11,7 +11,7 @@ import {
     Image,
     Dimensions,
     TextInput
-} from  'react-native'
+} from 'react-native'
 
 const {width, height} = Dimensions.get('window');
 import * as fontAndColor from '../../../constant/fontAndColor';
@@ -28,7 +28,8 @@ import * as Urls from '../../../constant/appUrls';
 import ZheShangAccountScene from "../zheshangAccount/ZheShangAccountScene";
 import ZSAccountTypeSelectScene from "../zheshangAccount/ZSAccountTypeSelectScene";
 import WebScene from '../../../main/WebScene';
-import {BASEURL}  from '../../../constant/appUrls';
+import {BASEURL} from '../../../constant/appUrls';
+import XintuoAccountScene from '../xintuo/XintuoAccountScene'
 
 const Pixel = new PixelUtil();
 
@@ -103,7 +104,7 @@ export default class MyAccountItem extends BaseComponent {
                     break;
             }
             this.toNextPage(this.navigatorParams);
-        } else {
+        } else if (type == '316') {
             switch (state) {
                 case 0://未开户
                     this.navigatorParams.name = 'ZSAccountTypeSelectScene';
@@ -132,6 +133,15 @@ export default class MyAccountItem extends BaseComponent {
                     this.toNextPage(this.navigatorParams);
                     break;
             }
+        } else {
+            this.navigatorParams.name = 'XintuoAccountScene';
+            this.navigatorParams.component = XintuoAccountScene;
+            this.navigatorParams.params = {
+                callBack: () => {
+                    this.props.callBack();
+                }
+            };
+            this.toNextPage(this.navigatorParams);
         }
     };
 
@@ -162,7 +172,7 @@ export default class MyAccountItem extends BaseComponent {
                     this.props.showToast('用户信息查询失败');
                 }
             });
-        } else {
+        } else if (type == '316') {
             this.props.showModal(true);
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code == 1) {
@@ -187,6 +197,11 @@ export default class MyAccountItem extends BaseComponent {
                     this.props.showToast('用户信息查询失败');
                 }
             });
+        } else {
+
+            this.pageDispense()
+
+            //this.props.clickCallBack();
         }
     };
 
@@ -200,21 +215,30 @@ export default class MyAccountItem extends BaseComponent {
         let accountState = ''; //账户状态
         let bankNo = ''; // 资金账号
         let bindBankName = '**********'; // 绑定银行卡开户行
-        if (this.props.type == '315') {
+        if (this.props.type == '315') {   //恒丰
             back = require('../../../../images/account/hengfengback.png');
             bank = require('../../../../images/account/hengfengbank.png');
             bankName = '恒丰银行';
-            bankNo = this.state.data.bank_card_no && this.state.data.status != 0 ? this.state.data.bank_card_no :
-                '***** ***** ***** ***** *****';
-        } else {
-            back = require('../../../../images/account/zheshangback.png');
+            bankNo = this.state.data.bank_card_no && this.state.data.status != 0 ? this.state.data.bank_card_no.replace(/^(....).*(....)$/, "$1****$2") :
+                '***** ***** *****';
+        } else if (this.props.type == '316') {  //浙商
+            back = require('../../../../images/account/zheshangback@2x.png');
             bank = require('../../../../images/account/zheshangbank.png');
             bankName = '浙商银行';
 
-            let b =  (this.state.data.bind_bank_card_type === 1&&this.state.data.account_open_type ===1)?this.state.data.bank_card_no:this.state.data.cz_elec_account
+            let b = (this.state.data.bind_bank_card_type === 1 && this.state.data.account_open_type === 1) ? this.state.data.bank_card_no : this.state.data.cz_elec_account
 
             bankNo = b && this.state.data.status != 0 ? b :
-                '***** ***** ***** ***** *****';
+                '***** ***** *****';
+        } else {   // 信托
+            back = require('../../../../images/account/xintuo_background.png');
+            bank = require('../../../../images/account/xintuo.png');
+            bankName = '信托资金';
+
+            let b = (this.state.data.bind_bank_card_type === 1 && this.state.data.account_open_type === 1) ? this.state.data.bank_card_no : this.state.data.cz_elec_account
+
+            bankNo = b && this.state.data.status != 0 ? b :
+                '***** ***** *****';
         }
         if (this.state.data.status === 0 || !this.state.data.status) {
             accountState = '未开户';
@@ -230,15 +254,15 @@ export default class MyAccountItem extends BaseComponent {
         return (
             <View style={{alignItems: 'center'}}>
                 <Image
-                    style={{width: Pixel.getPixel(345), height: Pixel.getPixel(238)}}
+                    style={{width: Pixel.getPixel(345), height: Pixel.getPixel(205), resizeMode: "stretch"}}
                     source={back}>
                     <TouchableOpacity
                         style={{
                             //backgroundColor: '#ffdaff',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            marginTop: Pixel.getPixel(30),
-                            height: Pixel.getPixel(72),
+                            height: Pixel.getPixel(62),
+                            marginTop: Pixel.getPixel(5)
                         }}
                         onPress={() => {
                             this.jumpDetailPage(this.props.type);
@@ -253,31 +277,16 @@ export default class MyAccountItem extends BaseComponent {
                             justifyContent: 'center',
                         }}>
                             <Image source={bank}/>
-                            <View style={{
-                                width: Pixel.getPixel(120),
-                                //alignItems: 'center',
-                                marginLeft: Pixel.getPixel(12),
-                                //justifyContent: 'center',
-                                backgroundColor: '#ffffff'
-                            }}>
-                                <Text
-                                    allowFontScaling={false}
-                                    style={{
-                                        includeFontPadding: false,
-                                        textAlign: 'left',
-                                        fontSize: Pixel.getPixel(15),
-                                        color: fontAndColor.COLORA0
-                                    }}>{bankName}</Text>
-                                <Text allowFontScaling={false}
-                                      numberOfLines={2}
-                                      style={{
-                                          includeFontPadding: false,
-                                          marginTop: Pixel.getPixel(3),
-                                          textAlign: 'left',
-                                          fontSize: Pixel.getPixel(12),
-                                          color: fontAndColor.COLORA1
-                                      }}>{bindBankName}</Text>
-                            </View>
+                            <Text
+                                allowFontScaling={false}
+                                style={{
+                                    backgroundColor: 'white',
+                                    marginLeft: Pixel.getPixel(10),
+                                    includeFontPadding: false,
+                                    textAlign: 'left',
+                                    fontSize: Pixel.getPixel(15),
+                                    color: fontAndColor.COLORA0
+                                }}>{bankName}</Text>
                             {!this.state.data.status || this.state.data.status === 0 || this.state.data.status === 1 || this.state.data.status === 2 ?
                                 <Text
                                     allowFontScaling={false}
@@ -301,18 +310,18 @@ export default class MyAccountItem extends BaseComponent {
                                     <Text
                                         allowFontScaling={false}
                                         style={{
-                                        textAlign: 'right',
-                                        fontSize: Pixel.getPixel(15),
-                                        color: fontAndColor.COLORA0
-                                    }}>{this.state.data.balance}</Text>
+                                            textAlign: 'right',
+                                            fontSize: Pixel.getPixel(15),
+                                            color: fontAndColor.COLORA0
+                                        }}>{this.state.data.balance}</Text>
                                     <Text
                                         allowFontScaling={false}
                                         style={{
-                                        marginTop: Pixel.getPixel(3),
-                                        textAlign: 'right',
-                                        fontSize: Pixel.getPixel(12),
-                                        color: fontAndColor.COLORA1
-                                    }}>账户总额</Text>
+                                            marginTop: Pixel.getPixel(3),
+                                            textAlign: 'right',
+                                            fontSize: Pixel.getPixel(12),
+                                            color: fontAndColor.COLORA1
+                                        }}>账户总额</Text>
                                 </View>
                             }
                             <Image source={cellJianTou}/>
@@ -320,37 +329,61 @@ export default class MyAccountItem extends BaseComponent {
                     </TouchableOpacity>
                     <View style={{
                         backgroundColor: fontAndColor.COLORA4,
-                        height: Pixel.getPixel(1),
+                        height: StyleSheet.hairlineWidth,
                         marginLeft: Pixel.getPixel(20),
-                        marginRight: Pixel.getPixel(20),
-                        //marginTop: Pixel.getPixel(12)
+                        marginRight: Pixel.getPixel(20)
                     }}/>
                     <View style={{
                         height: Pixel.getPixel(46),
                         marginTop: Pixel.getPixel(18),
-                        alignItems: 'flex-start',
+                        alignItems: 'center',
                         marginLeft: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(20),
-                        justifyContent: 'center',
-                        backgroundColor: 'transparent'
+                        justifyContent: 'space-between',
+                        backgroundColor: 'transparent',
+                        flexDirection:'row',
                     }}>
-                        <Text
-                            allowFontScaling={false}
-                            style={{
-                            includeFontPadding: false,
-                            textAlign: 'left',
-                            fontSize: Pixel.getPixel(12),
-                            color: fontAndColor.COLORA1
-                        }}>资金账号</Text>
-                        <Text
-                            allowFontScaling={false}
-                            style={{
-                            includeFontPadding: false,
-                            marginTop: Pixel.getPixel(3),
-                            textAlign: 'left',
-                            fontSize: Pixel.getPixel(20),
-                            color: fontAndColor.COLORA0
-                        }}>{bankNo}</Text>
+                        {
+                            this.props.type != 'zsyxt'? <View>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            includeFontPadding: false,
+                                            textAlign: 'left',
+                                            fontSize: Pixel.getPixel(12),
+                                            color: fontAndColor.COLORA1
+                                        }}>账号余额（元）</Text>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            includeFontPadding: false,
+                                            marginTop: Pixel.getPixel(3),
+                                            textAlign: 'left',
+                                            fontSize: Pixel.getPixel(25),
+                                            color: fontAndColor.COLORA0
+                                        }}>{this.state.data.balance}</Text>
+
+                                </View> :<View/>
+                        }
+                        {
+
+                            this.props.showQuestion == true ?
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        let url = BASEURL == 'https://gatewayapi.dycd.com/' ? 'http://bms.dycd.com/platform/activity_newhand.html' : 'http://test.bms.dycd.com/platform/activity_newhand.html';
+                                        this.toNextPage({
+                                            component: WebScene,
+                                            name: 'WebScene',
+                                            params: {webUrl: url, title: '新手指引'}
+                                        })
+                                    }}
+                                >
+                                    <Image style={{width: Pixel.getPixel(15), height: Pixel.getPixel(15), padding: 10}}
+                                           source={require('../../../../images/account/question.png')}/>
+
+                                </TouchableOpacity>
+                                : null
+                        }
 
                     </View>
                     <View style={{
@@ -361,16 +394,64 @@ export default class MyAccountItem extends BaseComponent {
                         marginRight: Pixel.getPixel(20),
                         justifyContent: 'center',
                         backgroundColor: 'transparent',
-                        flexDirection:'row'
+                        flexDirection: 'row'
                     }}>
+                        {
+                            this.props.type != "zsyxt"?
+                                <View
+                                    style={{flex: 2}}
+                                >
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            includeFontPadding: false,
+                                            textAlign: 'left',
+                                            fontSize: Pixel.getPixel(12),
+                                            color: fontAndColor.COLORA1
+                                        }}>资金账号</Text>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            includeFontPadding: false,
+                                            marginTop: Pixel.getPixel(3),
+                                            textAlign: 'left',
+                                            fontSize: Pixel.getPixel(21),
+                                            color: fontAndColor.COLORA1
+                                        }}>{bankNo}</Text>
+
+                                </View>
+                                : <View
+                                    style={{flex: 2}}
+                                >
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            includeFontPadding: false,
+                                            textAlign: 'left',
+                                            fontSize: Pixel.getPixel(12),
+                                            color: fontAndColor.COLORA1
+                                        }}>账号余额（元）</Text>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            includeFontPadding: false,
+                                            marginTop: Pixel.getPixel(3),
+                                            textAlign: 'left',
+                                            fontSize: Pixel.getPixel(25),
+                                            color: fontAndColor.COLORA0
+                                        }}>{this.state.data.balance}</Text>
+
+                                </View>
+                        }
+
                         <View
-                            style={{flex:1}}
+                            style={{flex: 1}}
                         >
                             <Text
                                 allowFontScaling={false}
                                 style={{
                                     includeFontPadding: false,
-                                    textAlign: 'left',
+                                    textAlign: 'right',
                                     fontSize: Pixel.getPixel(12),
                                     color: fontAndColor.COLORA1
                                 }}>开通时间</Text>
@@ -379,33 +460,13 @@ export default class MyAccountItem extends BaseComponent {
                                 style={{
                                     includeFontPadding: false,
                                     marginTop: Pixel.getPixel(3),
-                                    textAlign: 'left',
+                                    textAlign: 'right',
                                     fontSize: Pixel.getPixel(15),
                                     color: fontAndColor.COLORA0
                                 }}>{!this.state.data.account_open_date || this.state.data.account_open_date.substr(0, 10) === '0000-00-00' ?
                                 '****-**-**' : this.state.data.account_open_date.substr(0, 10)}</Text>
 
                         </View>
-
-                        {
-                            this.props.showQuestion == true?
-                                <TouchableOpacity
-                                    onPress={()=>{
-                                        let url = BASEURL== 'https://gatewayapi.dycd.com/'? 'http://bms.dycd.com/platform/activity_newhand.html':'http://test.bms.dycd.com/platform/activity_newhand.html';
-                                        this.toNextPage({
-                                            component: WebScene,
-                                            name: 'WebScene',
-                                            params: {webUrl:url, title: '新手指引'}
-                                        })
-                                    }}
-                                >
-                                    <Image style={{width:Pixel.getPixel(15), height:Pixel.getPixel(15), padding:10}} source={require('../../../../images/account/question.png')}/>
-
-                                </TouchableOpacity>
-                                :null
-
-                        }
-
                     </View>
                 </Image>
             </View>
