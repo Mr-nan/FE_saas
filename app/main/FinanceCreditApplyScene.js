@@ -363,10 +363,10 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 			this.props.showToast('您提交的申请正在审核中，请稍后')
 			return;
 		}
-		if(status == 0 || status == 4){//未申请  或者  申请未通过
+		if(status == 0 || status == 3){//未申请  或者  申请未通过
 			if(this.state.YANSI_Result){//验四通过，申请跳到填写资料界面
 				if(type == 'xinchedingdan'){
-					if(global.ISCOMPANY == 0 )//选1 公司的时候，选的0是个人
+					if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
 					{
                         this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
                         return;
@@ -375,7 +375,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 						name: 'NewCarCreditEnterpriseInfoCheck',
 						component: NewCarCreditEnterpriseInfoCheck,
 						params: {
-							FromScene:'xinchedingdan',
+							FromScene:'xinchedingdanANDfinance',
                             callBackRefresh:this.props.callBackRefresh,
 
                         },
@@ -386,7 +386,9 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 						name: 'FastCreditOne',
 						component: FastCreditOne,
 						params: {
-							FromScene:'kuaisu'
+							FromScene:'kuaisuANDfinance',
+							callBackRefresh:this.props.callBackRefresh,
+
 						},
 					})
 				}
@@ -394,7 +396,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 			else {//验四没有通过，申请跳转到验四界面
 
 				if(type == 'xinchedingdan'){
-                    if(global.ISCOMPANY == 0 )//选公司 1 的时候，选的是 个人 0
+                    if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
                     {
                         this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
                         return;
@@ -403,7 +405,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 						name: 'Authentication',
 						component: Authentication,
 						params: {
-							FromScene:'xinchedingdan',
+							FromScene:'xinchedingdanANDfinance',
 							DATA : this.personData,
                             callBackRefresh:this.props.callBackRefresh,
                         },
@@ -414,7 +416,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 						name: 'Authentication',
 						component: Authentication,
 						params: {
-							FromScene:'kuaisu',
+							FromScene:'kuaisuANDfinance',
 							DATA : this.personData,
                             callBackRefresh:this.props.callBackRefresh,
                         },
@@ -429,40 +431,12 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 				name: 'ZongheCreditApply',
 				component: ZongheCreditApply,
 				params: {
-                    callBackShuaxin : this._getCreditTypeAndStatus,
                     callBackRefresh:this.props.callBackRefresh,
 				},
 			})
 		}
 	}
 
-    _getCreditTypeAndStatus = () =>{
-
-        request(Urls.GETCREDITSTATUSBYMERGE, 'Post', this.props.maps)
-            .then((response) => {
-                    let DATA2 = response.mjson.data.credit;
-                    let ZongheStatus = DATA2.comprehensive.credit_application_status;
-                    let XiaoeheStatus = DATA2.halfpenny.credit_application_status;
-                    let DancheStatus = DATA2.newcar.credit_application_status;
-                    if (ZongheStatus == 3 ||XiaoeheStatus == 3 || DancheStatus == 3 ){
-                        //任意一种未通过
-                        this.Appear = true;
-                    }else {
-                        this.Appear = false;
-                    }
-                    this.setState({
-                        xiaoeCreditStatus:this.props.data.halfpenny.credit_application_status, //0是未申请,1是审核中,2是审核通过,3是审核未通过
-                        xincheCreditStatus:this.props.data.newcar.credit_application_status,
-                        zongheCreditStatus:this.props.data.comprehensive.credit_application_status,
-						APPEAR:this.Appear
-					});
-
-
-                },
-                (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
-                });
-	}
 }
 
 const styles = StyleSheet.create({

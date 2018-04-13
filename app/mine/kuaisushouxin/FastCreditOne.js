@@ -438,6 +438,9 @@ export default class FastCreditOne extends BaseComponent {
             return true;
         }
     };
+	/**
+	 * 房屋价值选择点击事件
+	 */
     _onJiaZhiPress = () => {
         this.toNextPage(
             {
@@ -457,6 +460,10 @@ export default class FastCreditOne extends BaseComponent {
                 }
             })
     }
+
+	/**
+     * 场地类型切换  按钮点击事件
+	 */
     _changdiTypePress = (type) => {
         this.setState({
             selectNO: type
