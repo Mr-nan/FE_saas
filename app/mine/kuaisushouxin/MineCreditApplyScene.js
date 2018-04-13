@@ -241,7 +241,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 						</TouchableOpacity>
 						: null}
 
-					{this.state.xincheCreditStatus == 2 || global.ISCOMPANY == 0 ?
+					{this.state.xincheCreditStatus == 2  ?
 						null :
 						<Image source={require('../kuaisushouxin/kuaisushouxin_images/jinrongbeijinglanqian.png')}
 						       style={{width:Pixel.getPixel(350),height:Pixel.getPixel(170),marginTop:Pixel.getPixel(20)}}>
