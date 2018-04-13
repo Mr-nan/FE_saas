@@ -122,7 +122,11 @@ export  default class ZongheCreditApply extends BaseComponent {
                     }
                     this.timer = setTimeout(
                         () => {
-                            this.backPage();
+                            if(this.props.FromScene == 'mineZongApply'){
+                                this.backToTop();
+                            }else {
+	                            this.backPage();
+                            }
                         },
                         200
                     );

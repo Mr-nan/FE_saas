@@ -431,7 +431,8 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 				name: 'ZongheCreditApply',
 				component: ZongheCreditApply,
 				params: {
-                    callBackRefresh:this.props.callBackRefresh,
+					FromScene:'financeZongApply',
+					callBackRefresh:this.props.callBackRefresh,
 				},
 			})
 		}

@@ -27,12 +27,14 @@ import  PixelUtil from '../../utils/PixelUtil'
 let Pixel = new PixelUtil();
 import AllNavigationView from '../../component/AllNavigationView';
 
-import ZongheCreditApply from '../../mine/kuaisushouxin/CredictManageScene';//综合授信
+import ZongheCreditApply from '../../mine/kuaisushouxin/ZongheCreditApply';//综合授信
 import Authentication from '../../mine/kuaisushouxin/Authentication';
 import StorageUtil from "../../utils/StorageUtil";
 import * as storageKeyNames from "../../constant/storageKeyNames";
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import NewCarCreditEnterpriseInfoCheck from "./NewCarCreditEnterpriseInfoCheck";
+import FastCreditOne from "./FastCreditOne";
 
 
 //验四页面
@@ -429,7 +431,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 						this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
 						return;
 					}
-					this.props.toNextPage({
+					this.toNextPage({
 						name: 'NewCarCreditEnterpriseInfoCheck',
 						component: NewCarCreditEnterpriseInfoCheck,
 						params: {
@@ -440,7 +442,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 					})
 				}
 				if(type == 'kuaisu'){
-					this.props.toNextPage({
+					this.toNextPage({
 						name: 'FastCreditOne',
 						component: FastCreditOne,
 						params: {
@@ -458,7 +460,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 						this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
 						return;
 					}
-					this.props.toNextPage({
+					this.toNextPage({
 						name: 'Authentication',
 						component: Authentication,
 						params: {
@@ -469,7 +471,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 					})
 				}
 				if(type == 'kuaisu'){
-					this.props.toNextPage({
+					this.toNextPage({
 						name: 'Authentication',
 						component: Authentication,
 						params: {
@@ -489,7 +491,10 @@ export default class MineCreditApplyScene extends BaseComponent {
 			this.toNextPage({
 				name: 'ZongheCreditApply',
 				component: ZongheCreditApply,
-				params: {},
+				params: {
+					FromScene:'mineZongApply',
+
+				},
 			})
 		}
 
