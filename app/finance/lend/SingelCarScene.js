@@ -114,7 +114,7 @@ export default class SingelCarSence extends BaseComponent {
 
                     showData.companyName = this.props.customerName;
                     showData.lendType = tempjson.product_type;
-                    showData.rateAndLifeAndType = tempjson.product_period;
+                    showData.rateAndLifeAndType = this.isNull(tempjson.product_period)?[]:tempjson.product_period;
                     showData.maxMoney = changeToMillion(tempjson.min_loanmny) + '-' + changeToMillion(tempjson.max_loanmny) + '万';
                     showData.tempMin = changeToMillion(tempjson.min_loanmny);
                     showData.tempMax = changeToMillion(tempjson.max_loanmny);
