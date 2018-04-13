@@ -89,6 +89,7 @@ export default class SingelCarSence extends BaseComponent {
     }
 
     initFinish() {
+        // noinspection JSAnnotator
         PostData = {
             dateLimit: '',
             rate: '',
