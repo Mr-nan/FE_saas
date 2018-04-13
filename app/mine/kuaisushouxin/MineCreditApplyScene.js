@@ -101,6 +101,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 				let maps = {
 					base_id: global.companyBaseID,	//借款人服务平台base_id
 					controller_base_id: childdatas.boss_id,    //借款人身份证号
+					merge_id:global.MERGE_ID,
 				}
 
 				request(Urls.GETCREDITSTATUSBYMERGE, 'Post', maps)

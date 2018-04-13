@@ -120,6 +120,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
         global.companyBaseID = movie.company_base_id;
         global.ISCOMPANY = movie.iscompany;
+	    global.MERGE_ID = movie.merge_id;
         request(Urls.USER_GET_SELECT_ENTERPRISE_INFO, 'Post', {
             enterprise_id:movie.company_base_id
         })
@@ -178,7 +179,8 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
         global.companyBaseID = movie.company_base_id;
         global.ISCOMPANY = movie.iscompany;
-        this.props.showModal(true);
+	    global.MERGE_ID = movie.merge_id;
+	    this.props.showModal(true);
         request(Urls.USER_GET_SELECT_ENTERPRISE_INFO, 'Post', {
             enterprise_id:movie.company_base_id
         })

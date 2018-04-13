@@ -80,7 +80,7 @@ export  default class CredictManageScene extends BaseComponent {
                 let childdatas = JSON.parse(childdata.result);
                 this.boss_id = childdatas.boss_id;
                 this.boss_name = childdatas.boss_name;
-                RequestUtil.request(appUrls.GETCREDITBYREAL, 'post', {'controller_base_id': this.boss_id})
+                RequestUtil.request(appUrls.GETCREDITBYREAL, 'post', {'controller_base_id': this.boss_id,'merge_id':global.MERGE_ID,'company_base_id':global.companyBaseID})
                     .then((response) => {
 
                         if (response) {

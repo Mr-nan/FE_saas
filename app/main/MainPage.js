@@ -533,7 +533,7 @@ export default class MainPage extends BaseComponent {
                 }}/>
         } else if (ref == 'financePage') {
 
-	        return <BlankFinanceScene  MAPS = {{base_id: global.companyBaseID ,controller_base_id:this.boss_id,}}
+	        return <BlankFinanceScene  MAPS = {{base_id: global.companyBaseID ,controller_base_id:this.boss_id,merge_id:global.MERGE_ID}}
                                        BASE_USER_ID = {this.base_user_id}
                                        IS_DONE_CREDIT = {this.is_done_credit}
                                        showModal={(value)=>{this.props.showModal(value);}}
