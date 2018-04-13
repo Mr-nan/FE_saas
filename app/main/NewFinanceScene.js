@@ -161,8 +161,8 @@ export default class NewFinanceScene extends BaseComponet {
                         bond_mny: mnyData.bond_mny / 10000,
                     }
 
-                    contentData[0].value = this.allData1.bond_total_mny;
-                    contentData[1].value = this.allData1.bond_mny;
+                    contentData[0].value = this.allData1.bond_total_mny+'万';
+                    contentData[1].value = this.allData1.bond_mny+'万';
 
                     this.allData[0] = mnyData;
                     console.log('-----', this.allData)
