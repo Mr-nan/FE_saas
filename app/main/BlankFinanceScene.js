@@ -23,7 +23,8 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
-import FinanceScene from './FinanceScene'
+// import FinanceScene from './FinanceScene'
+import FinanceScene from './NewFinanceScene'
 import NonCreditScene from './NonCreditScene'
 import FinanceCreditApplyScene from './FinanceCreditApplyScene'
 import SQLiteUtil from "../utils/SQLiteUtil";
@@ -117,7 +118,9 @@ export default class BlankFinanceScene extends BaseComponent {
 			return (<View style={{flex:1}}>
 				<FinanceScene  showModal={(value)=>{this.props.showModal(value);}}
 				               showToast={(content)=>{this.props.showToast(content)}}
-				               toNextPage={(params) => {this.props.toNextPage(params);
+							   callBack={(params)=> {
+
+                                   this.props.toNextPage(params);
                 }}/>
 			</View>)
 

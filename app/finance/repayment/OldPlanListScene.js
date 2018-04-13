@@ -93,7 +93,6 @@ export  default class OldPlanListScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         return (
             <PlanParentItem items={movie} mOnPress={(loan_id) => {
-                alert(loan_id);
             }}/>
         )
     }
