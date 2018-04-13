@@ -368,8 +368,8 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 				if(type == 'xinchedingdan'){
 					if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
 					{
-                        this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
-                        return;
+                        // this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
+                        // return;
 					}
 					this.props.toNextPage({
 						name: 'NewCarCreditEnterpriseInfoCheck',
@@ -398,8 +398,8 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 				if(type == 'xinchedingdan'){
                     if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
                     {
-                        this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
-                        return;
+                        // this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
+                        // return;
                     }
 					this.props.toNextPage({
 						name: 'Authentication',

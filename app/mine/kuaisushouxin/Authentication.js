@@ -25,6 +25,7 @@ import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
 import FastCreditOne from "./FastCreditOne";
 import NewCarCreditEnterpriseInfoCheck from "./NewCarCreditEnterpriseInfoCheck";
+import WebScene from "../../finance/lend/CarTrackScene";
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
@@ -241,10 +242,14 @@ export default class Authentication extends BaseComponent {
 						</View>
 					</TouchableOpacity>
 					<TouchableOpacity activeOpacity={0.8} onPress={() => {
+						let url = BASEURL== 'https://gatewayapi.dycd.com/'?
+						'http://dms.dycd.com/Uploads/agreement/kuaisushouxin_xieyi.html'
+						:'http://test.dms.dycd.com/Uploads/agreement/kuaisushouxin_xieyi.html';
+
                         this.toNextPage({
                                          name: 'WebScene',
                                          component: WebScene,
-                                         params: {webUrl: 'http://www.dycd.com'}
+                                         params: {webUrl: url}
                             })
                     }}>
 						<Text style={{color: FontAndColor.COLORB4, fontSize: Pixel.getPixel(12),}}>《三方征信授权书》</Text>
