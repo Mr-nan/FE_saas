@@ -519,7 +519,7 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.8} onPress={() => {
                         let url = BASEURL== 'https://gatewayapi.dycd.com/'?
-						'http://bms.dycd.com/Uploads/agreement/kuaisushouxin_xieyi.html'
+						'http://dms.dycd.com/Uploads/agreement/kuaisushouxin_xieyi.html'
 						:'http://test.dms.dycd.com/Uploads/agreement/kuaisushouxin_xieyi.html';
                         this.toNextPage({
                             name: 'WebScene',
