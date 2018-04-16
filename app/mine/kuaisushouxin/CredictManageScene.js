@@ -220,7 +220,7 @@ export  default class CredictManageScene extends BaseComponent {
                     <Text allowFontScaling={false}
                           style={[styles.cellContent, {color: fontAndColor.COLORA1}]}>{this._creditTypeString(rowData.credit_request_type)}</Text>
                     <Text allowFontScaling={false}
-                          style={[styles.cellContent, {color: fontAndColor.COLORA1}]}>{this._getCreditNum_Time(rowData.credit_request_type,rowData.zh_mny,rowData.credit_begindate,rowData.credit_enddate)}</Text>
+                          style={[styles.cellContent, {color: fontAndColor.COLORA1}]}>{this._getCreditNum_Time(rowData.credit_request_type,rowData.zh_mny/10000 +'万',rowData.credit_begindate,rowData.credit_enddate)}</Text>
                 </View>
 
             </View>
