@@ -24,7 +24,7 @@ import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
 import FastCreditOne from "./FastCreditOne";
 import NewCarCreditEnterpriseInfoCheck from "./NewCarCreditEnterpriseInfoCheck";
-import WebScene from "../../finance/lend/CarTrackScene";
+import WebScene from "../../main/WebSceneYU";
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
