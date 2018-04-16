@@ -23,6 +23,7 @@ import * as FontAndColor from "../../constant/fontAndColor";
 import LoginInputTextYU  from "../../login/component/LoginInputTextYU"
 import MyButton from "../../component/MyButton";
 import CarUpImageCell from '../../../app/carSource/znComponent/CarUpImageCell';
+import {BASEURL}  from '../../constant/appUrls';
 
 import ImagePicker from "react-native-image-picker";
 

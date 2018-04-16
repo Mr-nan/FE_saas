@@ -16,8 +16,7 @@ import {
 import BaseComponent from "../../component/BaseComponent";
 import * as FontAndColor from "../../constant/fontAndColor";
 import LoginInputTextYU  from "../../login/component/LoginInputTextYU"
-
-
+import {BASEURL}  from '../../constant/appUrls';
 import NavigationBar from "../../component/NavigationBar";
 import PixelUtil from "../../utils/PixelUtil";
 
