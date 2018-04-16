@@ -427,11 +427,11 @@ export default class MineCreditApplyScene extends BaseComponent {
 		if(status == 0 || status == 3){//未申请  或者  申请未通过
 			if(this.state.YANSI_Result){//验四通过，申请跳到填写资料界面
 				if(type == 'xinchedingdan'){
-					if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
-					{
-						this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
-						return;
-					}
+					// if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
+					// {
+					// 	this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
+					// 	return;
+					// }
 					this.toNextPage({
 						name: 'NewCarCreditEnterpriseInfoCheck',
 						component: NewCarCreditEnterpriseInfoCheck,
@@ -456,11 +456,11 @@ export default class MineCreditApplyScene extends BaseComponent {
 			else {//验四没有通过，申请跳转到验四界面
 
 				if(type == 'xinchedingdan'){
-					if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
-					{
-						this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
-						return;
-					}
+					// if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
+					// {
+					// 	this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
+					// 	return;
+					// }
 					this.toNextPage({
 						name: 'Authentication',
 						component: Authentication,
