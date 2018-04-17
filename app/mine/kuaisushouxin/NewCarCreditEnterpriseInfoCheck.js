@@ -20,9 +20,8 @@ import {
 } from "react-native";
 import BaseComponent from "../../component/BaseComponent";
 import * as FontAndColor from "../../constant/fontAndColor";
-import LoginInputTextYU  from "../../login/component/LoginInputTextYU"
 import MyButton from "../../component/MyButton";
-import CarUpImageCell from '../../../app/carSource/znComponent/CarUpImageCell';
+import {BASEURL}  from '../../constant/appUrls';
 
 import ImagePicker from "react-native-image-picker";
 
@@ -32,8 +31,7 @@ import ImageSource from "../../publish/component/ImageSource";
 import * as ImageUpload from "../../utils/ImageUpload";
 import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
-import md5 from "react-native-md5";
-import WebScene from "../../main/WebScene";
+import WebScene from "../../main/WebSceneYU";
 import  StorageUtil from '../../utils/StorageUtil';
 import * as storageKeyNames from '../../constant/storageKeyNames';
 let Dimensions = require('Dimensions');

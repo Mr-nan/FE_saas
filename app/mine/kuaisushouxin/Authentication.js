@@ -16,8 +16,7 @@ import {
 import BaseComponent from "../../component/BaseComponent";
 import * as FontAndColor from "../../constant/fontAndColor";
 import LoginInputTextYU  from "../../login/component/LoginInputTextYU"
-
-
+import {BASEURL}  from '../../constant/appUrls';
 import NavigationBar from "../../component/NavigationBar";
 import PixelUtil from "../../utils/PixelUtil";
 
@@ -25,7 +24,7 @@ import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
 import FastCreditOne from "./FastCreditOne";
 import NewCarCreditEnterpriseInfoCheck from "./NewCarCreditEnterpriseInfoCheck";
-import WebScene from "../../finance/lend/CarTrackScene";
+import WebScene from "../../main/WebSceneYU";
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
