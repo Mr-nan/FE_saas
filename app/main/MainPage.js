@@ -26,7 +26,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import HomeSence  from './HomeScene'
 import CarSourceSence from '../carSource/CarSourceListScene'
 import MineSence from './MineScene'
-import FinanceSence from './FinanceScene'
+import FinanceSence from './NewFinanceScene'
 import PublishModal from './PublishModal'
 import  StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
@@ -34,6 +34,7 @@ import LoginGesture from '../login/LoginGesture';
 import * as fontAndClolr from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 import NonCreditScene from './NonCreditScene';
+import BlankFinanceScene from './BlankFinanceScene';
 import LoginScene from '../login/LoginScene';
 import AllSelectCompanyScene from '../main/AllSelectCompanyScene';
 let tabArray = [];
@@ -105,7 +106,7 @@ export default class MainPage extends BaseComponent {
             if (data == '未开通') {
 
                 StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                    if (data.code == 1  && data.result) {
+                    if (data.code == 1) {
                         let userData = JSON.parse(data.result);
                         StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                             if (subData.code == 1) {
@@ -131,9 +132,12 @@ export default class MainPage extends BaseComponent {
                 //         this.setState({mb_one: true,})
                 //     }
                 // })
-            } else if (data == '已激活') {
+            }
+            else if (data == '已激活') {
+
+
                 StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                    if (data.code == 1  && data.result) {
+                    if (data.code == 1) {
                         let userData = JSON.parse(data.result);
                         StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                             if (subData.code == 1) {
@@ -161,9 +165,11 @@ export default class MainPage extends BaseComponent {
                 //         this.setState({mb_three: true,})
                 //     }
                 // })
-            } else if (data == '未绑卡') {
+            }
+            else if (data == '未绑卡') {
+
                 StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                    if (data.code == 1  && data.result) {
+                    if (data.code == 1) {
                         let userData = JSON.parse(data.result);
                         StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                             if (subData.code == 1) {
@@ -189,13 +195,14 @@ export default class MainPage extends BaseComponent {
                 //         this.setState({mb_tow: true,})
                 //     }
                 // })
-            } else if (data == '完成') {
+            }
+            else if (data == '完成') {
                 this.setState({mbShow: true});
             }
         })
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-            if (data.code == 1 && data.result) {
+            if (data.code == 1) {
                 let userData = JSON.parse(data.result);
                 StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                     if (subData.code == 1) {
@@ -226,32 +233,26 @@ export default class MainPage extends BaseComponent {
 
 
     initFinish = () => {
-
-        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
-
-            if (res.result !== StorageUtil.ERRORCODE) {
-                if (!res.result) {
-
-                    this.getTouristPermission();
-
-                } else {
-
-                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
-                        if (childdata.code == 1) {
-                            let childdatas = JSON.parse(childdata.result);
-                            this.is_done_credit = childdatas.is_done_credit;
-                            this.getUserPermission(childdatas.company_base_id);
-                        } else {
-                            this.setState({renderPlaceholderOnly: 'error'});
-                        }
-                    });
-                }
-            }else {
-                this.getTouristPermission();
+        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
+            if (childdata.code == 1) {
+                let childdatas = JSON.parse(childdata.result);
+                this.is_done_credit = childdatas.is_done_credit;
+                this.getUserPermission(childdatas.company_base_id);
+            } else {
+                this.setState({renderPlaceholderOnly: 'error'});
             }
         });
 
+	    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata) => {
+		    if (childdata.code == 1) {
+			    let childdatas = JSON.parse(childdata.result);
+			    this.boss_id = childdatas.boss_id;
+			    this.base_user_id = childdatas.base_user_id;
 
+		    } else {
+			    this.setState({renderPlaceholderOnly: 'error'});
+		    }
+	    });
     }
 
     allRefresh = () => {
@@ -264,40 +265,6 @@ export default class MainPage extends BaseComponent {
             enterprise_uid: id
         };
         request(Urls.GETFUNCTIONBYTOKENENTER, 'Post', maps)
-            .then((response) => {
-                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
-                        this.setState({
-                            renderPlaceholderOnly: 'null',
-                        });
-                    } else {
-                        StorageUtil.mSetItem(storageKeyNames.GET_USER_PERMISSION,
-                            JSON.stringify(response.mjson), () => {
-                                GetPermission.getFirstList((list) => {
-                                    for (let i = 0; i < list.length; i++) {
-                                        tabArray.push(new tableItemInfo(list[i].ref, list[i].key, list[i].name, list[i].image,
-                                            list[i].unImage, this.getTopView(list[i].ref)));
-                                    }
-                                    this.setState({
-                                        selectedTab: tabArray[0].ref,
-                                        renderPlaceholderOnly: 'success'
-                                    });
-                                });
-                            });
-                    }
-                },
-                (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
-                });
-    }
-
-    /*
-     *
-     * 获取游客身份权限
-     *
-     */
-
-    getTouristPermission=()=>{
-        request(Urls.GET_TOURIST_BYTOKENENTER, 'Post', {})
             .then((response) => {
                     if (response.mjson.data == null || response.mjson.data.length <= 0) {
                         this.setState({
@@ -414,7 +381,7 @@ export default class MainPage extends BaseComponent {
                                         }}
                                     source={require('../../images/tishimengban/zhgl_wkhwbk.png')}/>
                             </TouchableWithoutFeedback>
-                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,0.7)'}}/>
                         </View> : null
                 }
                 {
@@ -496,7 +463,7 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
-                }} showLoginModal={this.props.showLoginModal} jumpScene={(ref,openSelectBranch)=>{
+                }} jumpScene={(ref,openSelectBranch)=>{
 
                     if(openSelectBranch=='true'){
 
@@ -555,7 +522,7 @@ export default class MainPage extends BaseComponent {
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
 
                     this.toNextPage(params);
-                }} showLoginModal={this.props.showLoginModal}/>
+                }}/>
         } else if (ref == 'sendpage') {
             return <WorkBenchScene backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
@@ -563,19 +530,16 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
-                }} showLoginModal={this.props.showLoginModal}/>
+                }}/>
         } else if (ref == 'financePage') {
-            if (this.is_done_credit == 0) {
-                return <NonCreditScene/>
-            } else {
-                return <FinanceSence backToLogin={()=>{
-                            this.backToLogin({name:'LoginScene',component:LoginScene});
-                        }} showModal={(value)=>{
-                        this.props.showModal(value);
-                        }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
-                        this.toNextPage(params);
-                }} showLoginModal={this.props.showLoginModal}/>
-            }
+
+	        return <BlankFinanceScene  MAPS = {{base_id: global.companyBaseID ,controller_base_id:this.boss_id,merge_id:global.MERGE_ID}}
+                                       BASE_USER_ID = {this.base_user_id}
+                                       IS_DONE_CREDIT = {this.is_done_credit}
+                                       showModal={(value)=>{this.props.showModal(value);}}
+                                       showToast={(content)=>{this.props.showToast(content)}}
+                                       toNextPage={(params) => {this.toNextPage(params);
+                }}/>
         } else {
             return <MineSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
@@ -583,7 +547,7 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
-                }} showLoginModal={this.props.showLoginModal} toSelect={()=>{
+                }} toSelect={()=>{
                 let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
                 const navigator = this.props.navigator;
                 if (navigator) {

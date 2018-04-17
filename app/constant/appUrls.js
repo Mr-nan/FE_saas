@@ -6,7 +6,7 @@
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
@@ -16,7 +16,7 @@
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -537,6 +537,67 @@ export const GETFUNCTIONBYTOKENENTER = BASEURL + 'v1/user/getFunctionByTokenEnte
 export const GET_TOURIST_BYTOKENENTER = BASEURL + 'v2/user.guest/getFunctionByTokenEnter';
 
 /**
+ * from @yujinzhong
+ *
+ * 获取借款人当前授信类型的授信状态
+ **/
+export const GETCREDITSTATUSBYMERGE = BASEURL + 'v2/credit.quick/getCreditStatusByMerge';
+/**
+ * from @yujinzhong
+ *
+ * 判断验四
+ **/
+export const CHECKFOUR = BASEURL + 'v2/credit.quick/checkFour';
+/**
+ * from @yujinzhong
+ *
+ * 验四 获取 验证码
+ **/
+export const GET_CAPTCHA = BASEURL + 'v2/credit.quick/captcha';
+/**
+ * from @yujinzhong
+ *
+ * 验四 验证 验证码
+ **/
+export const CHECKCAPTCHA = BASEURL + 'v2/credit.quick/checkCaptcha';
+/**
+* from @yujinzhong
+*
+* 申请验四
+**/
+export const APPLYCHECKFOUR = BASEURL + 'v2/credit.quick/applycheckFour';
+/**
+ * from @yujinzhong
+ *
+ * 综合授信  获取实际控制人信息及企业信息
+ **/
+export const GETENTERPRISEBYEUID = BASEURL + 'v2/user.home/getEnterpriseByEuid';
+/**
+ * from @yujinzhong
+ *
+ * 综合授信  提交申请
+ **/
+export const GETMULTIPLECREDITPHONE = BASEURL + 'v2/credit.quick/getMultipleCreditPhone';
+/**
+ * from @yujinzhong
+ *
+ * 新车订单授信  提交申请
+ **/
+export const SPECIALCREDIT = BASEURL + 'v2/credit.quick/specialCredit';
+
+/**
+ * from @yujinzhong
+ *
+ * 快速授信  小额  提交申请
+ **/
+export const FASTCREDIT = BASEURL + 'v2/credit.quick/fastCredit';
+/**
+ * from @yujinzhong
+ *
+ * 获取实际控制人的授信数据
+ **/
+export const GETCREDITBYREAL = BASEURL + 'v2/credit.quick/getCreditByReal';
+ /**
  * from @zhaojian
  *
  * 获取账户管理首页
