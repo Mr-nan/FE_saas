@@ -58,6 +58,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 			ZongheResult: this.props.data.comprehensive.remark,
 			XiaoeResult: this.props.data.halfpenny.remark,
 			DancheResult: this.props.data.newcar.remark,
+			isRefreshing: false,
 
 		};
 
@@ -155,12 +156,33 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 		);
 	}
 
+	/**
+	 *   下拉刷新数据
+	 **/
+	refreshingData = () => {
+		this.setState(
+			{isRefreshing: true},
+			() => {
+				this.props.callBackRefresh();
+			}
+		);
+
+	}
+
 	/*
 	 * 主界面1
 	 * */
 	loadScrollView = () => {
 		return (
-			<ScrollView style={{backgroundColor:'white'}}>
+			<ScrollView style={{backgroundColor:'white'}}
+			            refreshControl={
+                              <RefreshControl
+                                  refreshing={this.state.isRefreshing}
+                                  onRefresh={this.refreshingData}
+                                  tintColor={[fontAndColor.COLORB0]}
+                                  colors={[fontAndColor.COLORB0]}
+                              />
+                          }>
 
 				{IS_ANDROID ? null : <StatusBar barStyle={'default'}/>}
 
