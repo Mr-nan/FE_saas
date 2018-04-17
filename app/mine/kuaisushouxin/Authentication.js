@@ -349,25 +349,45 @@ export default class Authentication extends BaseComponent {
 										loading: false,
 									});
 									if (response.mjson.data.fourElementCheckFlags == "T") {//申请验四通过
-										if (this.props.FromScene == 'kuaisu') {
+										if (this.props.FromScene == 'kuaisuANDfinance') {
 											this.toNextPage({
 												name: 'FastCreditOne',
 												component: FastCreditOne,
 												params: {
-													FromScene: 'xinchedingdan',
+													FromScene: 'kuaisuANDfinance',
                                                     callBackRefresh:this.props.callBackRefresh,
 
                                                 },
 											})
-										} else if (this.props.FromScene == 'xinchedingdan') {
+										} else if (this.props.FromScene == 'xinchedingdanANDfinance') {
 											this.toNextPage({
 												name: 'NewCarCreditEnterpriseInfoCheck',
 												component: NewCarCreditEnterpriseInfoCheck,
 												params: {
-													FromScene: 'xinchedingdan',
+													FromScene: 'xinchedingdanANDfinance',
                                                     callBackRefresh:this.props.callBackRefresh,
 
                                                 },
+											})
+										}else if (this.props.FromScene == 'xinchedingdanANDmine') {
+											this.toNextPage({
+												name: 'NewCarCreditEnterpriseInfoCheck',
+												component: NewCarCreditEnterpriseInfoCheck,
+												params: {
+													FromScene: 'xinchedingdanANDmine',
+													// callBackRefresh:this.props.callBackRefresh,
+
+												},
+											})
+										}else if (this.props.FromScene == 'kuaisuANDmine') {
+											this.toNextPage({
+												name: 'FastCreditOne',
+												component: FastCreditOne,
+												params: {
+													FromScene: 'kuaisuANDmine',
+													// callBackRefresh:this.props.callBackRefresh,
+
+												},
 											})
 										}
 
@@ -434,10 +454,6 @@ export default class Authentication extends BaseComponent {
 			});
 	}
 
-
-	componentWillUnmount = () => {
-
-	}
 
 
 }

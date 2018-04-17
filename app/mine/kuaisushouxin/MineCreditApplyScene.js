@@ -439,7 +439,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 						name: 'NewCarCreditEnterpriseInfoCheck',
 						component: NewCarCreditEnterpriseInfoCheck,
 						params: {
-							FromScene:'xinchedingdan',
+							FromScene:'xinchedingdanANDmine',
 							// callBackRefresh:this.props.callBackRefresh,
 
 						},
@@ -450,7 +450,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 						name: 'FastCreditOne',
 						component: FastCreditOne,
 						params: {
-							FromScene:'kuaisu',
+							FromScene:'kuaisuANDmine',
 							// callBackRefresh:this.props.callBackRefresh,
 						},
 					})
