@@ -14,7 +14,8 @@ import {
 	ScrollView,
 	Image,
 	KeyboardAvoidingView,
-	StatusBar
+	StatusBar,
+	RefreshControl
 } from 'react-native';
 
 import {request} from '../utils/RequestUtil';
