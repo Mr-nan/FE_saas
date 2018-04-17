@@ -66,7 +66,7 @@ import FinanceScreenPop from './component/FinanceScreenPop';
 import FinanceItem from './component/FinanceItem';
 import FinanceGuide from './component/FinanceGuide';
 
-let contentData = [{title: '保证金额度', value: '100万'}, {title: '保证金余度', value: '100万'}];
+let contentData = [{title: '保证金额度', value: '100万'}, {title: '保证金额度', value: '100万'}];
 let firstType = '-1';
 let lastType = '-1';
 let names = '';

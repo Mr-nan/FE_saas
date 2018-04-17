@@ -20,7 +20,7 @@ import GetPermissionUtil from '../../utils/GetPermissionUtil';
 const GetPermission = new GetPermissionUtil();
 import Switch from '../../mine/accountManage/component/Switch';
 
-let titleText = ['综合授信额度(万)', '贷款余额(万)', '可用余额(万)', '微众可用余额(万)'];
+let titleText = ['综合授信额度(万)', '贷款余额(万)', '可用额度(万)', '微众可用余额(万)'];
 let newCarTitleText = ['新车订单额度(万)', '新车贷款余额(万)', '新车可用余额(万)'];
 let mnyData={};
 // multiple_credit_type	授信类型	string	1 综合授信 2 小额授信
