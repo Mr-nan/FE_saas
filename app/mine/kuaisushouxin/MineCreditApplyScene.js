@@ -166,12 +166,15 @@ export default class MineCreditApplyScene extends BaseComponent {
 		});
 	}
 	_creditStatusForButton = (status) => {
-		if (status == 0) {
-			return '立即申请';
-		}
+		// if (status == 0) {
+		// 	return '立即申请';
+		// }
 		if (status == 1) {
 			return '审核中'
+		}else {
+			return '立即申请'
 		}
+
 
 	}
 	_getYanSiResult = (YANSI_Result) =>{
