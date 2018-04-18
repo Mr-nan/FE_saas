@@ -46,7 +46,14 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 			borrower_cardid: '', //借款人身份证号
 			borrower_name: '',    //借款人姓名
 			borrower_tel: '',     //借款人手机号
+			base_user_id: '',      //用户base_id
 		}
+
+		this.renzhengData = {
+			enterpriseRenZheng: '',//企业是否认证 	0-> 未审核 1->审核中 2->通过  3->未通过
+			personRenZheng: '',//个人是否认证  0-> 未审核 1->审核中 2->通过  3->未通过
+
+		};
 
 		this.state = {
 			renderPlaceholderOnly: 'loading',
@@ -84,7 +91,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 	}
 
 	initFinish = () => {
-		this._ISCheckFour();//判断是否验四
+		this._ISCheckFour();//判断是否验四，判断是否经过认证
 
 	}
 	_ISCheckFour = () => {
@@ -96,21 +103,51 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 				this.personData.borrower_cardid = childdatas.boss_idcard;    //借款人身份证号
 				this.personData.borrower_name = childdatas.boss_name;	    //借款人姓名
 				this.personData.borrower_tel = childdatas.boss_tel;	    //借款人电话
-
+				this.personData.base_user_id = childdatas.base_user_id;  //用户base_id
 				let maps = {
 					borrower_base_id: global.companyBaseID,	//借款人服务平台base_id
 					borrower_cardid: childdatas.boss_idcard,    //借款人身份证号
 					borrower_name: childdatas.boss_name,	    //借款人姓名
 				}
+				let BASE_ID = [];
+				BASE_ID.push(global.companyBaseID);
+				BASE_ID.push(this.personData.base_user_id);
+
+				let maps2 = {
+					base_id: BASE_ID,
+				}
 				request(Urls.CHECKFOUR, 'Post', maps)
 					.then((response) => {
+							request(Urls.GETCHECKSTATUS, 'post', maps2).then((response11) => {
 
-							let YANSI_Result = response.mjson.data.fourElementCheckFlags;
-							this.setState(
-								{
-									renderPlaceholderOnly: 'success',
-									YANSI_Result: this._getYanSiResult(YANSI_Result)
+
+								if (response11.mycode == "1") {
+									let dataResult = response11.mjson.data;
+
+									this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
+									this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
+
+									let YANSI_Result = response.mjson.data.fourElementCheckFlags;
+									this.setState(
+										{
+											renderPlaceholderOnly: 'success',
+											YANSI_Result: this._getYanSiResult(YANSI_Result)
+										});
+
+								} else {
+									this.setState({
+										renderPlaceholderOnly: 'error',
+										isRefreshing: false
+									});
+								}
+							}, (error) => {
+								this.props.showToast(error.msg);
+								this.setState({
+									renderPlaceholderOnly: 'error',
+									isRefreshing: false
 								});
+							});
+
 						},
 						(error) => {
 							this.setState({renderPlaceholderOnly: 'error'});
@@ -386,6 +423,10 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 	}
 
 	_applyCredit = (type, status) => {
+		if (this.renzhengData.enterpriseRenZheng !== 2){
+			this.props.showToast('授信前需已完成企业认证，请进入“我的”页面进行企业认证，谢谢！')
+			return;
+		}
 		if (status == 1) {//申请审核中
 			this.props.showToast('您提交的申请正在审核中，请稍后')
 			return;

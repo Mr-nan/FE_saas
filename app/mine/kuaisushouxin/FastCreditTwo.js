@@ -113,14 +113,53 @@ export default class FastCreditTwo extends BaseComponent {
             if (childdata.code == 1) {
 
                 let childdatas = JSON.parse(childdata.result);
-                this.setState(
-                    {
-                        renderPlaceholderOnly: 'success',
-                        boss_idcard: childdatas.boss_idcard,
-                        boss_name: childdatas.boss_name,
-                        boss_tel: childdatas.boss_tel,
 
-                    })
+
+	            this.boss_id = childdatas.boss_id;
+	            this.base_user_id = childdatas.base_user_id;
+
+	            if (this.isNull( childdatas.boss_idcard))//没有获取到身份证号码
+	            {
+		            if (Platform.OS === 'android') {
+			            device_code = 'dycd_platform_android';
+		            } else {
+			            device_code = 'dycd_platform_ios';
+		            }
+		            let maps = {
+			            device_code: device_code,
+		            };
+		            request(AppUrls.USER_GETINFO, 'Post', maps)
+			            .then((response) => {
+				            this.idcard_number = response.mjson.data.idcard_number;
+				            // this.refs.controllerID.setInputTextValue(this.idcard_number);
+
+				            this.setState(
+					            {
+						            renderPlaceholderOnly: 'success',
+						            boss_idcard: this.idcard_number,
+						            boss_name: childdatas.boss_name,
+						            boss_tel: childdatas.boss_tel,
+
+					            })
+
+			            }, (error) => {
+				            this.props.showToast(error.mjson.msg + "");
+			            });
+
+	            }
+	            else {
+
+		            this.setState(
+			            {
+				            renderPlaceholderOnly: 'success',
+				            boss_idcard: childdatas.boss_idcard,
+				            boss_name: childdatas.boss_name,
+				            boss_tel: childdatas.boss_tel,
+
+			            })
+
+                }
+
 
             }
             else {
@@ -128,16 +167,16 @@ export default class FastCreditTwo extends BaseComponent {
                 this.setState({renderPlaceholderOnly: 'error'});
             }
         });
-        StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata) => {
-            if (childdata.code == 1) {
-                let childdatas = JSON.parse(childdata.result);
-                this.boss_id = childdatas.boss_id;
-                this.base_user_id = childdatas.base_user_id;
-
-            } else {
-                this.setState({renderPlaceholderOnly: 'error'});
-            }
-        });
+        // StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata) => {
+        //     if (childdata.code == 1) {
+        //         let childdatas = JSON.parse(childdata.result);
+        //         this.boss_id = childdatas.boss_id;
+        //         this.base_user_id = childdatas.base_user_id;
+        //
+        //     } else {
+        //         this.setState({renderPlaceholderOnly: 'error'});
+        //     }
+        // });
 
     }
 

@@ -60,8 +60,33 @@ export default class Authentication extends BaseComponent {
 		InteractionManager.runAfterInteractions(() => {
 			this.setState({renderPlaceholderOnly: false});
 
-			//获取图形验证码
-			this.Verifycode();
+			if (this.isNull(this.props.DATA.borrower_cardid))//没有获取到身份证号码
+			{
+				if (Platform.OS === 'android') {
+					device_code = 'dycd_platform_android';
+				} else {
+					device_code = 'dycd_platform_ios';
+				}
+				let maps = {
+					device_code: device_code,
+				};
+				request(AppUrls.USER_GETINFO, 'Post', maps)
+					.then((response) => {
+						this.idcard_number = response.mjson.data.idcard_number;
+						this.refs.BorrowerID.setInputTextValue(this.idcard_number);
+						//获取图形验证码
+						this.Verifycode();
+					}, (error) => {
+						this.props.showToast(error.mjson.msg + "");
+					});
+
+			} else {
+				this.idcard_number = this.props.DATA.borrower_cardid;
+				//获取图形验证码
+				this.Verifycode();
+			}
+
+
 		});
 	}
 
@@ -136,15 +161,13 @@ export default class Authentication extends BaseComponent {
 						editable={false}
 						ref="BorrowerID"
 						leftText={'借款人身份证号'}
-						textPlaceholder={'请输入'}
 						viewStytle={[styles.itemStyel, {borderBottomWidth: 0,}]}
 						inputTextStyle={styles.inputTextStyle}
 						secureTextEntry={false}
 						clearValue={false}
 						leftIcon={false}
 						import={false}
-						defaultValue={this.props.DATA.borrower_cardid}
-						maxLength={18}//身份证限制18位或者15位
+						defaultValue={this.idcard_number}
 						rightIcon={false}/>
 
 				</View>
@@ -330,7 +353,7 @@ export default class Authentication extends BaseComponent {
 				borrower_bank: BorrowerBankNO,
 				borrower_bank_phone: BankPhone,
 				borrower_base_id: global.companyBaseID,
-				borrower_cardid: this.props.DATA.borrower_cardid,
+				borrower_cardid: this.idcard_number,
 				borrower_phone: BorrowerPhone,
 				borrower_name: this.props.DATA.borrower_name,
 
@@ -355,9 +378,9 @@ export default class Authentication extends BaseComponent {
 												component: FastCreditOne,
 												params: {
 													FromScene: 'kuaisuANDfinance',
-                                                    callBackRefresh:this.props.callBackRefresh,
+													callBackRefresh: this.props.callBackRefresh,
 
-                                                },
+												},
 											})
 										} else if (this.props.FromScene == 'xinchedingdanANDfinance') {
 											this.toNextPage({
@@ -365,11 +388,11 @@ export default class Authentication extends BaseComponent {
 												component: NewCarCreditEnterpriseInfoCheck,
 												params: {
 													FromScene: 'xinchedingdanANDfinance',
-                                                    callBackRefresh:this.props.callBackRefresh,
+													callBackRefresh: this.props.callBackRefresh,
 
-                                                },
+												},
 											})
-										}else if (this.props.FromScene == 'xinchedingdanANDmine') {
+										} else if (this.props.FromScene == 'xinchedingdanANDmine') {
 											this.toNextPage({
 												name: 'NewCarCreditEnterpriseInfoCheck',
 												component: NewCarCreditEnterpriseInfoCheck,
@@ -379,7 +402,7 @@ export default class Authentication extends BaseComponent {
 
 												},
 											})
-										}else if (this.props.FromScene == 'kuaisuANDmine') {
+										} else if (this.props.FromScene == 'kuaisuANDmine') {
 											this.toNextPage({
 												name: 'FastCreditOne',
 												component: FastCreditOne,
@@ -406,20 +429,20 @@ export default class Authentication extends BaseComponent {
 						}
 						else {//验证验证码失败
 							this.props.showToast(response11.mjson.data.msg + "");
-                            this.setState({
-                                loading: false,
-                            },()=>{
-	                            this.Verifycode();
-                            });
+							this.setState({
+								loading: false,
+							}, () => {
+								this.Verifycode();
+							});
 						}
 					},
 					(error) => {//验证验证码接口报错
 						this.setState({
 							loading: false,
-						},()=>{
+						}, () => {
 							this.Verifycode();
 						});
-                        this.props.showToast(error.mjson.msg + "");
+						this.props.showToast(error.mjson.msg + "");
 
 					});
 		}
@@ -453,7 +476,6 @@ export default class Authentication extends BaseComponent {
 				});
 			});
 	}
-
 
 
 }
