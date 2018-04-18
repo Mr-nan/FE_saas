@@ -91,72 +91,11 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 	}
 
 	initFinish = () => {
-		this._ISCheckFour();//判断是否验四，判断是否经过认证
+		// this._ISCheckFour();//判断是否验四，判断是否经过认证
+		this.setState({renderPlaceholderOnly: 'success'});
 
 	}
-	_ISCheckFour = () => {
-		StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata) => {
-			if (childdata.code == 1) {
-				let childdatas = JSON.parse(childdata.result);
 
-				this.personData.borrower_base_id = global.companyBaseID;	//借款人服务平台base_id
-				this.personData.borrower_cardid = childdatas.boss_idcard;    //借款人身份证号
-				this.personData.borrower_name = childdatas.boss_name;	    //借款人姓名
-				this.personData.borrower_tel = childdatas.boss_tel;	    //借款人电话
-				this.personData.base_user_id = childdatas.base_user_id;  //用户base_id
-				let maps = {
-					borrower_base_id: global.companyBaseID,	//借款人服务平台base_id
-					borrower_cardid: childdatas.boss_idcard,    //借款人身份证号
-					borrower_name: childdatas.boss_name,	    //借款人姓名
-				}
-				let BASE_ID = [];
-				BASE_ID.push(global.companyBaseID);
-				BASE_ID.push(this.personData.base_user_id);
-
-				let maps2 = {
-					base_id: BASE_ID,
-				}
-				request(Urls.CHECKFOUR, 'Post', maps)
-					.then((response) => {
-							request(Urls.GETCHECKSTATUS, 'post', maps2).then((response11) => {
-
-
-								if (response11.mycode == "1") {
-									let dataResult = response11.mjson.data;
-
-									this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
-									this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
-
-									let YANSI_Result = response.mjson.data.fourElementCheckFlags;
-									this.setState(
-										{
-											renderPlaceholderOnly: 'success',
-											YANSI_Result: this._getYanSiResult(YANSI_Result)
-										});
-
-								} else {
-									this.setState({
-										renderPlaceholderOnly: 'error',
-										isRefreshing: false
-									});
-								}
-							}, (error) => {
-								this.props.showToast(error.msg);
-								this.setState({
-									renderPlaceholderOnly: 'error',
-									isRefreshing: false
-								});
-							});
-
-						},
-						(error) => {
-							this.setState({renderPlaceholderOnly: 'error'});
-						});
-			} else {
-				this.setState({renderPlaceholderOnly: 'error'});
-			}
-		});
-	}
 	_getYanSiResult = (YANSI_Result) => {
 		if (YANSI_Result == 'F') {
 			return false;
@@ -423,87 +362,337 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 	}
 
 	_applyCredit = (type, status) => {
-		if (this.renzhengData.enterpriseRenZheng !== 2){
-			this.props.showToast('授信前需已完成企业认证，请进入“我的”页面进行企业认证，谢谢！')
-			return;
-		}
+
+
 		if (status == 1) {//申请审核中
 			this.props.showToast('您提交的申请正在审核中，请稍后')
 			return;
 		}
-		if (status == 0 || status == 3) {//未申请  或者  申请未通过
-			if (this.state.YANSI_Result) {//验四通过，申请跳到填写资料界面
-				if (type == 'xinchedingdan') {
-					if (global.ISCOMPANY == 0)//选公司的时候，选的是个人
-					{
-						// this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
-						// return;
+
+		StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata) => {
+			if (childdata.code == 1) {
+				let childdatas = JSON.parse(childdata.result);
+
+
+				if (this.isNull(childdatas.boss_idcard))//没有获取到身份证号码
+				{
+					if (Platform.OS === 'android') {
+						device_code = 'dycd_platform_android';
+					} else {
+						device_code = 'dycd_platform_ios';
 					}
-					this.props.toNextPage({
-						name: 'NewCarCreditEnterpriseInfoCheck',
-						component: NewCarCreditEnterpriseInfoCheck,
-						params: {
-							FromScene: 'xinchedingdanANDfinance',
-							callBackRefresh: this.props.callBackRefresh,
+					let maps = {
+						device_code: device_code,
+					};
+					this.setState({
+						loading: true,
+					});
+					request(Urls.USER_GETINFO, 'Post', maps)
+						.then((response) => {
+							this.idcard_number = response.mjson.data.idcard_number;
+							this.personData.borrower_base_id = global.companyBaseID;	//借款人服务平台base_id
+							this.personData.borrower_cardid = this.idcard_number;    //借款人身份证号
+							this.personData.borrower_name = childdatas.boss_name;	    //借款人姓名
+							this.personData.borrower_tel = childdatas.boss_tel;	    //借款人电话
+							this.personData.base_user_id = childdatas.base_user_id;  //用户base_id
+							let maps = {
+								borrower_base_id: global.companyBaseID,	//借款人服务平台base_id
+								borrower_cardid: this.idcard_number,    //借款人身份证号
+								borrower_name: childdatas.boss_name,	    //借款人姓名
+							}
+							let BASE_ID = [];
+							BASE_ID.push(global.companyBaseID);
+							BASE_ID.push(this.personData.base_user_id);
 
-						},
-					})
+							let maps2 = {
+								base_id: BASE_ID,
+							}
+							request(Urls.GETCHECKSTATUS, 'post', maps2).then((response11) => {
+									if (response11.mycode == "1") {
+
+
+										let dataResult = response11.mjson.data;
+
+										this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
+										this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
+
+
+										if (this.renzhengData.enterpriseRenZheng !== 2) {
+											this.setState({
+												loading: false,
+											});
+											this.props.showToast('授信前需已完成企业认证，请进入“我的”页面进行企业认证，谢谢！')
+											return;
+										}
+
+										if (type == 'zonghe') {
+											this.setState({
+												loading: false,
+											});
+											this.props.toNextPage({
+												name: 'ZongheCreditApply',
+												component: ZongheCreditApply,
+												params: {
+													FromScene: 'financeZongApply',
+													callBackRefresh: this.props.callBackRefresh,
+												},
+											})
+										}
+										else {
+
+											request(Urls.CHECKFOUR, 'Post', maps)
+												.then((response22) => {
+														this.setState({
+															loading: false,
+														});
+														let YANSI_Result = this._getYanSiResult(response22.mjson.data.fourElementCheckFlags);
+
+														if (YANSI_Result) {//验四通过，申请跳到填写资料界面
+															if (type == 'xinchedingdan') {
+																if (global.ISCOMPANY == 0)//选公司的时候，选的是个人
+																{
+																	// this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
+																	// return;
+																}
+																this.props.toNextPage({
+																	name: 'NewCarCreditEnterpriseInfoCheck',
+																	component: NewCarCreditEnterpriseInfoCheck,
+																	params: {
+																		FromScene: 'xinchedingdanANDfinance',
+																		callBackRefresh: this.props.callBackRefresh,
+
+																	},
+																})
+															}
+															if (type == 'kuaisu') {
+																this.props.toNextPage({
+																	name: 'FastCreditOne',
+																	component: FastCreditOne,
+																	params: {
+																		FromScene: 'kuaisuANDfinance',
+																		callBackRefresh: this.props.callBackRefresh,
+
+																	},
+																})
+															}
+														}
+														else {//验四没有通过，申请跳转到验四界面
+
+															if (type == 'xinchedingdan') {
+																if (global.ISCOMPANY == 0)//选公司的时候，选的是个人
+																{
+																	// this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
+																	// return;
+																}
+																this.props.toNextPage({
+																	name: 'Authentication',
+																	component: Authentication,
+																	params: {
+																		FromScene: 'xinchedingdanANDfinance',
+																		DATA: this.personData,
+																		callBackRefresh: this.props.callBackRefresh,
+																	},
+																})
+															}
+															if (type == 'kuaisu') {
+																this.props.toNextPage({
+																	name: 'Authentication',
+																	component: Authentication,
+																	params: {
+																		FromScene: 'kuaisuANDfinance',
+																		DATA: this.personData,
+																		callBackRefresh: this.props.callBackRefresh,
+																	},
+																})
+															}
+														}
+
+													},
+													(error) => {
+														this.props.showToast(error.msg);
+														this.setState({
+															loading: false,
+														});
+													});
+										}
+
+									} else {
+										this.setState({
+											loading: false,
+										});
+									}
+								},
+								(error) => {
+									this.props.showToast(error.msg);
+									this.setState({
+										loading: false,
+									});
+								});
+
+
+						}, (error) => {
+							this.props.showToast(error.mjson.msg + "");
+							this.setState({
+								loading: false,
+							});
+						});
+
 				}
-				if (type == 'kuaisu') {
-					this.props.toNextPage({
-						name: 'FastCreditOne',
-						component: FastCreditOne,
-						params: {
-							FromScene: 'kuaisuANDfinance',
-							callBackRefresh: this.props.callBackRefresh,
 
-						},
-					})
-				}
-			}
-			else {//验四没有通过，申请跳转到验四界面
 
-				if (type == 'xinchedingdan') {
-					if (global.ISCOMPANY == 0)//选公司的时候，选的是个人
-					{
-						// this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
-						// return;
+				else {
+					this.idcard_number = childdatas.boss_idcard;
+					this.personData.borrower_base_id = global.companyBaseID;	//借款人服务平台base_id
+					this.personData.borrower_cardid = this.idcard_number;    //借款人身份证号
+					this.personData.borrower_name = childdatas.boss_name;	    //借款人姓名
+					this.personData.borrower_tel = childdatas.boss_tel;	    //借款人电话
+					this.personData.base_user_id = childdatas.base_user_id;  //用户base_id
+					let maps = {
+						borrower_base_id: global.companyBaseID,	//借款人服务平台base_id
+						borrower_cardid: this.idcard_number,    //借款人身份证号
+						borrower_name: childdatas.boss_name,	    //借款人姓名
 					}
-					this.props.toNextPage({
-						name: 'Authentication',
-						component: Authentication,
-						params: {
-							FromScene: 'xinchedingdanANDfinance',
-							DATA: this.personData,
-							callBackRefresh: this.props.callBackRefresh,
+					let BASE_ID = [];
+					BASE_ID.push(global.companyBaseID);
+					BASE_ID.push(this.personData.base_user_id);
+
+					let maps2 = {
+						base_id: BASE_ID,
+					}
+					request(Urls.GETCHECKSTATUS, 'post', maps2).then((response11) => {
+							if (response11.mycode == "1") {
+
+
+								let dataResult = response11.mjson.data;
+
+								this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
+								this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
+
+
+								if (this.renzhengData.enterpriseRenZheng !== 2) {
+									this.setState({
+										loading: false,
+									});
+									this.props.showToast('授信前需已完成企业认证，请进入“我的”页面进行企业认证，谢谢！')
+									return;
+								}
+
+								if (type == 'zonghe') {
+									this.setState({
+										loading: false,
+									});
+									this.props.toNextPage({
+										name: 'ZongheCreditApply',
+										component: ZongheCreditApply,
+										params: {
+											FromScene: 'financeZongApply',
+											callBackRefresh: this.props.callBackRefresh,
+										},
+									})
+								}
+								else {
+
+									request(Urls.CHECKFOUR, 'Post', maps)
+										.then((response22) => {
+												this.setState({
+													loading: false,
+												});
+												let YANSI_Result = this._getYanSiResult(response22.mjson.data.fourElementCheckFlags);
+
+												if (YANSI_Result) {//验四通过，申请跳到填写资料界面
+													if (type == 'xinchedingdan') {
+														if (global.ISCOMPANY == 0)//选公司的时候，选的是个人
+														{
+															// this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
+															// return;
+														}
+														this.props.toNextPage({
+															name: 'NewCarCreditEnterpriseInfoCheck',
+															component: NewCarCreditEnterpriseInfoCheck,
+															params: {
+																FromScene: 'xinchedingdanANDfinance',
+																callBackRefresh: this.props.callBackRefresh,
+
+															},
+														})
+													}
+													if (type == 'kuaisu') {
+														this.props.toNextPage({
+															name: 'FastCreditOne',
+															component: FastCreditOne,
+															params: {
+																FromScene: 'kuaisuANDfinance',
+																callBackRefresh: this.props.callBackRefresh,
+
+															},
+														})
+													}
+												}
+												else {//验四没有通过，申请跳转到验四界面
+
+													if (type == 'xinchedingdan') {
+														if (global.ISCOMPANY == 0)//选公司的时候，选的是个人
+														{
+															// this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
+															// return;
+														}
+														this.props.toNextPage({
+															name: 'Authentication',
+															component: Authentication,
+															params: {
+																FromScene: 'xinchedingdanANDfinance',
+																DATA: this.personData,
+																callBackRefresh: this.props.callBackRefresh,
+															},
+														})
+													}
+													if (type == 'kuaisu') {
+														this.props.toNextPage({
+															name: 'Authentication',
+															component: Authentication,
+															params: {
+																FromScene: 'kuaisuANDfinance',
+																DATA: this.personData,
+																callBackRefresh: this.props.callBackRefresh,
+															},
+														})
+													}
+												}
+
+											},
+											(error) => {
+												this.props.showToast(error.msg);
+												this.setState({
+													loading: false,
+												});
+											});
+								}
+
+							} else {
+								this.setState({
+									loading: false,
+								});
+							}
 						},
-					})
+						(error) => {
+							this.props.showToast(error.msg);
+							this.setState({
+								loading: false,
+							});
+						});
+
+
 				}
-				if (type == 'kuaisu') {
-					this.props.toNextPage({
-						name: 'Authentication',
-						component: Authentication,
-						params: {
-							FromScene: 'kuaisuANDfinance',
-							DATA: this.personData,
-							callBackRefresh: this.props.callBackRefresh,
-						},
-					})
-				}
+
+
+			} else {
+				this.setState({
+					loading: false,
+				});
 			}
+		});
 
-		}
 
-		if (type == 'zonghe') {
-			this.props.toNextPage({
-				name: 'ZongheCreditApply',
-				component: ZongheCreditApply,
-				params: {
-					FromScene: 'financeZongApply',
-					callBackRefresh: this.props.callBackRefresh,
-				},
-			})
-		}
 	}
 
 }

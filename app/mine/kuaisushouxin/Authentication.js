@@ -57,11 +57,14 @@ export default class Authentication extends BaseComponent {
 	}
 
 	initFinish = () => {
+
 		InteractionManager.runAfterInteractions(() => {
 			this.setState({renderPlaceholderOnly: false});
 
 			if (this.isNull(this.props.DATA.borrower_cardid))//没有获取到身份证号码
 			{
+				console.log('00000000000000000000');
+
 				if (Platform.OS === 'android') {
 					device_code = 'dycd_platform_android';
 				} else {
@@ -73,6 +76,7 @@ export default class Authentication extends BaseComponent {
 				request(AppUrls.USER_GETINFO, 'Post', maps)
 					.then((response) => {
 						this.idcard_number = response.mjson.data.idcard_number;
+
 						this.refs.BorrowerID.setInputTextValue(this.idcard_number);
 						//获取图形验证码
 						this.Verifycode();
@@ -81,7 +85,10 @@ export default class Authentication extends BaseComponent {
 					});
 
 			} else {
+
 				this.idcard_number = this.props.DATA.borrower_cardid;
+				this.refs.BorrowerID.setInputTextValue(this.idcard_number);
+
 				//获取图形验证码
 				this.Verifycode();
 			}
@@ -149,7 +156,6 @@ export default class Authentication extends BaseComponent {
 						editable={false}
 						ref="BorrowerName"
 						leftText={'借款人姓名'}
-						textPlaceholder={'请输入'}
 						viewStytle={styles.itemStyel}
 						inputTextStyle={styles.inputTextStyle}
 						leftIcon={false}
