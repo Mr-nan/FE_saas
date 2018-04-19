@@ -315,7 +315,8 @@ export default class NewFinanceScene extends BaseComponet {
     allRefresh = () => {
         firstType = '-1';
         lastType = '-1';
-        this.allData=[];
+        this.allData1=[];
+        this.allData = [this.allData1, 1,2,3];
         movies = [];
         page = 1;
         this.setState({renderPlaceholderOnly: 'loading'});
