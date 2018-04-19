@@ -88,11 +88,11 @@ export default class ZheShangAccountScene extends BaseComponent {
                 let maps = {
                     enter_base_ids: datas.company_base_id,
                     child_type: '1',
-                    bank_id: 316
+                    bank_id: 'zsyxt'
                 };
                 request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
                     .then((response) => {
-                            account = response.mjson.data['316'][0];
+                            account = response.mjson.data['zsyxt'][0];
                             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                             this.setState({
                                 renderPlaceholderOnly: 'success',
@@ -150,9 +150,6 @@ export default class ZheShangAccountScene extends BaseComponent {
                 }}>
                     <TouchableOpacity onPress={() => {  // 提现
 
-
-
-
                         this.props.showModal(true)
                         request(Urls.ZS_IN_SERVICE, 'POST', {}).then((response) => {
                             this.props.showModal(false)
@@ -185,11 +182,11 @@ export default class ZheShangAccountScene extends BaseComponent {
                                           backgroundColor: '#fff'
                                       }}>
                         <Text allowFontScaling={false}
-                              style={{color: fontAndColor.COLORB0, fontSize: Pixel.getFontPixel(15)}}>粮票转入银行卡</Text>
+                              style={{color: fontAndColor.COLORB0, fontSize: Pixel.getFontPixel(15)}}>粮票提现</Text>
                     </TouchableOpacity>
                 </View>
                 <NavigationView
-                    title="粮票账户"
+                    title="车贷粮票"
                     backIconClick={this.backPage}
                 />
 
@@ -297,75 +294,6 @@ export default class ZheShangAccountScene extends BaseComponent {
     _renderHeader = () => {
         return (
             <ZheShangAccountTitle info={this.state.info}
-                                  bankCard={() => {  //更换银行卡
-
-                                      this.props.showModal(true)
-                                      request(Urls.ZS_IN_SERVICE, 'POST', {}).then((response) => {
-                                          this.props.showModal(false)
-                                          if (response.mjson.data.out_service === 0) {
-
-                                              StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                                                  if (data.code === 1 && data.result !== null) {
-                                                      let datas = JSON.parse(data.result);
-                                                      let maps = {
-                                                          enter_base_id: datas.company_base_id,
-                                                          bank_id: 316,
-                                                          operate_type: account.user_type === 1 ? 19 : 18
-                                                      };
-
-                                                      this.props.showModal(true)
-                                                      request(Urls.ZS_FETCH_STATUS, 'Post', maps)
-                                                          .then((response) => {
-                                                              this.props.showModal(false)
-                                                              if(response.mjson.data.transfer_status === 1){
-                                                                  this.toNextPage({
-                                                                      name: 'ModifyBankCard',
-                                                                      component: ModifyBankCard,
-                                                                      params: {account: account, callBack:this.refreshingData}
-                                                                  })
-                                                              }else if(response.mjson.data.transfer_status === 0) {
-                                                                  this.props.showToast(response.mjson.data.transfer_msg)
-                                                              }
-                                                          }, (error) => {
-                                                              this.props.showModal(false)
-                                                              this.toNextPage({
-                                                                  name: 'ModifyBankCard',
-                                                                  component: ModifyBankCard,
-                                                                  params: {account: account,callBack:this.refreshingData}
-                                                              })
-
-                                                          });
-                                                  } else {
-                                                      this.props.showModal(false)
-                                                      this.toNextPage({
-                                                          name: 'ModifyBankCard',
-                                                          component: ModifyBankCard,
-                                                          params: {
-                                                              account: account,
-                                                              callBack:this.refreshingData
-                                                          }
-                                                      })
-                                                  }
-                                              })
-
-                                          } else {
-                                              this.setState({
-                                                  service_in: response.mjson.data.in_time,
-                                                  service_out: response.mjson.data.out_time,
-                                                  alert: true
-                                              })
-                                          }
-                                      }, (error) => {
-                                          this.props.showModal(false)
-                                          this.props.showToast(error.mjson.msg)
-
-                                      })
-
-
-
-                                  }}
-
-
 
                                   flow={() => {  //流水
 
@@ -376,98 +304,14 @@ export default class ZheShangAccountScene extends BaseComponent {
                                           }
                                       })
                                   }}
-                                  changePhone={() => { //修改银行预留手机号码
 
-
-                                      this.props.showModal(true)
-                                      request(Urls.ZS_IN_SERVICE, 'POST', {}).then((response) => {
-                                          this.props.showModal(false)
-                                          if (response.mjson.data.out_service === 0) {
-
-                                              StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                                                  if (data.code === 1 && data.result !== null) {
-                                                      let datas = JSON.parse(data.result);
-                                                      let maps = {
-                                                          enter_base_id: datas.company_base_id,
-                                                          bank_id: 316,
-                                                          operate_type: account.user_type === 1 ? 8 : 7
-                                                      };
-
-                                                      this.props.showModal(true)
-                                                      request(Urls.ZS_FETCH_STATUS, 'Post', maps)
-                                                          .then((response) => {
-                                                              this.props.showModal(false)
-                                                              if (response.mjson.data.transfer_status === 1) {
-                                                                  this.toNextPage({
-                                                                      name: 'InformationFillScene',
-                                                                      component: InformationFillScene,
-                                                                      params: {
-                                                                          account: account,
-                                                                          callBack:this.refreshingData
-                                                                      }
-                                                                  })
-                                                              } else if(response.mjson.data.transfer_status === 0) {
-                                                                  this.props.showToast(response.mjson.data.transfer_msg)
-                                                              }
-                                                          }, (error) => {
-                                                              this.props.showModal(false)
-                                                              this.toNextPage({
-                                                                  name: 'InformationFillScene',
-                                                                  component: InformationFillScene,
-                                                                  params: {
-                                                                      account: account,
-                                                                      callBack:this.refreshingData
-                                                                  }
-                                                              })
-
-                                                          });
-                                                  } else {
-                                                      this.props.showModal(false)
-                                                      this.toNextPage({
-                                                          name: 'InformationFillScene',
-                                                          component: InformationFillScene,
-                                                          params: {
-                                                              account: account,
-                                                              callBack:this.refreshingData
-                                                          }
-                                                      })
-                                                  }
-                                              })
-
-
-
-                                          } else {
-                                              this.setState({
-                                                  service_in: response.mjson.data.in_time,
-                                                  service_out: response.mjson.data.out_time,
-                                                  alert: true
-                                              })
-                                          }
-                                      }, (error) => {
-                                          this.props.showModal(false)
-                                          this.props.showToast(error.mjson.msg)
-
-                                      })
-
-
-
-
-
-
-                                  }}
                                   moreFlow={() => {
                                       /*this.toNextPage({
                                           name: 'AccountFlowScene',
                                           component: AccountFlowScene, params: {}
                                       })*/
                                   }}
-                                  frozen={() => {
-                                      {/*this.toNextPage({name:'FrozenScene',component:FrozenScene,params:{}})*/
-                                      }
-                                  }}
-                                  copy={(number) => {
-                                      this.props.showToast(number);
-                                  }}
+
             />
         )
     };

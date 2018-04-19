@@ -28,29 +28,63 @@ import InformationInputItem from './component/InformationInputItem'
 import LicenseImageScene from './component/LicenseImageScene'
 import SaasText from "../../zheshangAccount/component/SaasText";
 import MyButton from '../../../../component/MyButton'
-
+import * as ImageUpload from "../../../../utils/ImageUpload";
+import ImageSourceSample from '../../../../publish/component/ImageSourceSample'
+import ImagePicker from "react-native-image-picker";
+import ResultIndicativeScene from '../ResultIndicativeScene';
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
 let Pixel = new PixelUtil();
 let Platform = require('Platform');
 
-let image = require('../../../../../images/banner1.png')
+const options = {
+    //弹出框选项
+    title: '请选择',
+    cancelButtonTitle: '取消',
+    takePhotoButtonTitle: '拍照',
+    chooseFromLibraryButtonTitle: '选择相册',
+    allowsEditing: false,
+    noData: false,
+    quality: 1.0,
+    maxWidth: 480,
+    maxHeight: 800,
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    }
+};
+
 
 export default class OpenAccountBaseScene extends BaseComponent {
 
     constructor(props) {
         super(props)
 
-        props.data={
-            isCombination:true
-        }
-
         this.state = {
             renderPlaceholderOnly: 'loading',
-            isCombination:false
+            
+            legal_picurl: null,
+            legal_opposite_picurl: null,
+            community_credit_picurl: null,
+            organization_code_picurl: null,
+            cert_url: null,
+            tax_register_picurl: null,
+
         }
+
     }
+
+
+    componentWillUnmount(){
+            delete this.props.model.legal_picurl;
+            delete this.props.model.legal_opposite_picurl;
+            delete this.props.model.community_credit_picurl;
+            delete this.props.model.organization_code_picurl;
+            delete this.props.model.cert_url;
+            delete this.props.model.tax_register_picurl;
+    }
+
 
 
     initFinish() {
@@ -66,9 +100,9 @@ export default class OpenAccountBaseScene extends BaseComponent {
                     leftImageShow={false}
                     leftTextShow={true}
                     leftText={""}
-                    centerText={'开通企业账户'}
+                    centerText={'开通车贷粮票'}
                     rightText={""}
-
+                    leftImageCallBack={this.backPage}
                 />
             </View>
         }
@@ -79,8 +113,9 @@ export default class OpenAccountBaseScene extends BaseComponent {
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
-                    centerText={'开通企业账户'}
+                    centerText={'开通车贷粮票'}
                     rightText={""}
+                    leftImageCallBack={this.backPage}
                 />
 
                 <ScrollView>
@@ -101,13 +136,33 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                 paddingVertical: Pixel.getPixel(15)
                             }}
                         >
-
                             <LicenseImageScene
+                                ref={'id_front'}
                                 title={'身份证-正面'}
-                                image = {image}
+                                image={this.state.legal_picurl}
+                                onPress={() => {
+                                    this._rePhoto('legal_picurl')
+                                }}
+                                onDelete={() => {
+                                    this.props.model.legal_picurl = null;
+                                    this.setState({
+                                        legal_picurl:null
+                                    })
+                                }}
                             />
                             <LicenseImageScene
-                                title={'身份证-正面'}
+                                ref={'id_back'}
+                                title={'身份证-背面'}
+                                image={this.state.legal_opposite_picurl}
+                                onPress={() => {
+                                    this._rePhoto('legal_opposite_picurl')
+                                }}
+                                onDelete={() => {
+                                    this.props.model.legal_opposite_picurl = null;
+                                    this.setState({
+                                        legal_opposite_picurl:null
+                                    })
+                                }}
                             />
 
                         </View>
@@ -131,24 +186,67 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                 paddingVertical: Pixel.getPixel(15)
                             }}
                         >
-
                             {
-                                this.state.isCombination?
+                                this.props.model.is_three_certificates_joined == 2 ?
 
                                     <LicenseImageScene
+                                        image={this.state.community_credit_picurl}
+                                        ref={'union_num'}
                                         title={'社会统一代码'}
+                                        onPress={() => {
+                                            this._rePhoto('community_credit_picurl')
+                                        }}
+                                        onDelete={() => {
+                                            this.props.model.community_credit_picurl = null;
+                                            this.setState({
+                                                community_credit_picurl:null
+                                            })
+                                        }}
 
                                     />
 
-                                    :<View style={{flexDirection:'row'}} >
+                                    : <View style={{flexDirection: 'row'}}>
                                         <LicenseImageScene
-                                            title={'组织机构代码'}
+                                            ref={'orgenization_num'}
+                                            title={'组织机构'}
+                                            image={this.state.organization_code_picurl}
+                                            onPress={() => {
+                                                this._rePhoto('organization_code_picurl')
+                                            }}
+                                            onDelete={() => {
+                                                this.props.model.organization_code_picurl = null;
+                                                this.setState({
+                                                    organization_code_picurl:null
+                                                })
+                                            }}
                                         />
-                                     <LicenseImageScene
-                                            title={'营业执照号码'}
+                                        <LicenseImageScene
+                                            ref={'license_num'}
+                                            title={'营业执照'}
+                                            image={this.state.cert_url}
+                                            onPress={() => {
+                                                this._rePhoto('cert_url')
+                                            }}
+                                            onDelete={() => {
+                                                this.props.model.cert_url = null;
+                                                this.setState({
+                                                    cert_url:null
+                                                })
+                                            }}
                                         />
-                                     <LicenseImageScene
-                                            title={'税务登记证号码'}
+                                        <LicenseImageScene
+                                            ref={'tax_num'}
+                                            title={'税务登记证'}
+                                            image={this.state.tax_register_picurl}
+                                            onPress={() => {
+                                                this._rePhoto('tax_register_picurl')
+                                            }}
+                                            onDelete={() => {
+                                                this.props.model.tax_register_picurl = null;
+                                                this.setState({
+                                                    tax_register_picurl:null
+                                                })
+                                            }}
                                         />
                                     </View>
                             }
@@ -163,19 +261,249 @@ export default class OpenAccountBaseScene extends BaseComponent {
                         parentStyle={styles.next_parentStyle}
                         childStyle={styles.next_childStyle}
                         mOnPress={() => {
-
+                            if(this.verify()){
+                                  this.openAccount()
+                            }
                         }}/>
 
                 </ScrollView>
+                <ImageSourceSample
 
+                    galleryClick={this._photoClick}
+                    cameraClick={this._cameraClick}
+                    ref={(modal) => {
+                        this.imageSource = modal
+                    }}/>
 
             </View>
-
-
         )
+    }
+
+
+
+    ///开户
+    openAccount = () =>{
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code === 1 && data.result !== null) {
+                let datas = JSON.parse(data.result);
+
+                this.props.model.enter_base_id = datas.company_base_id;
+
+                this.props.showModal(true)
+
+                request(AppUrls.OPEN_ENTER_TRUST_ACCOUNT, 'Post', this.props.model)
+                    .then((response) => {
+
+                        this.props.showModal(false)
+
+                        this.toNextPage({
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type:1,
+                                status: 1,
+                                params: this.props.model,
+                                append: this.state.bankName,
+                                callBack: this.props.callBack
+                            }
+                        })
+
+                    }, (error) => {
+
+                        this.props.showModal(false);
+                        if(error.mycode === 8050324){  // 不在服务时间内
+                            this.setState({
+                                out_of_service_msg:error.mjson.msg,
+                                alert:true
+                            })
+                            return
+                        }
+                        if (error.mycode === 8010007) {  // 存疑
+
+                            this.toNextPage({
+                                component: ResultIndicativeScene,
+                                name: 'ResultIndicativeScene',
+                                params: {
+                                    type:  1,
+                                    status: 0,
+                                    params: this.props.model,
+                                    error: error.mjson,
+                                    callBack:  this.props.callBack
+                                }
+                            })
+                        } else if (error.mycode === -500 || error.mycode === -300) {
+                            this.props.showToast(error.mycode)
+                        } else { // 开户失败
+                            this.toNextPage({
+                                component: ResultIndicativeScene,
+                                name: 'ResultIndicativeScene',
+                                params: {
+                                    type: 1,
+                                    status: 2,
+                                    params: this.props.model,
+                                    error: error.mjson,
+                                    callBack:  this.props.callBack
+                                }
+                            })
+                        }
+                    });
+            } else {
+
+            }
+        })
+    }
+
+    verify=()=>{
+
+        // legal_picurl: null,
+        //     legal_opposite_picurl: null,
+        //     community_credit_picurl: null,
+        //     organization_code_picurl: null,
+        //     cert_url: null,
+        //     tax_register_picurl: null,
+
+        if(this.props.model.legal_picurl == null){
+            this.props.showToast('请上传身份证正面')
+            return false
+        }else if (this.props.model.legal_opposite_picurl == null){
+            this.props.showToast('请上传身份证背面')
+            return false
+        }
+
+        if (this.props.model.is_three_certificates_joined == 1){
+            if (this.props.organization_code_picurl == null){
+                this.props.showToast('请上传组织机构照片')
+                return false
+            }else if (this.props.model.cert_url == null){
+                this.props.showToast('请上传营业执照')
+                return false
+            }else if (this.props.model.tax_register_picurl == null){
+                this.props.showToast('请上传税务登记证')
+                return false
+            }
+        }else {
+            if (this.props.model.community_credit_picurl == null){
+                this.props.showToast('请上传')
+                return false
+            }
+        }
+
+        return true
 
     }
 
+    _rePhoto = (ID) => {
+
+        this.id = ID;
+
+        this.imageSource.openModal('', '', null);
+
+
+    };
+    /*
+        * 相机点击
+        * */
+    _cameraClick = () => {
+        this.timer = setTimeout(
+            () => {
+                ImagePicker.launchCamera(options, (response) => {
+                    if (response.didCancel) {
+                    } else if (response.error) {
+                    } else if (response.customButton) {
+                    } else {
+                        this.uploadImage(response, this.id);
+                    }
+                });
+            },
+            200
+        );
+
+
+    }
+
+    /*
+     * 相册点击
+     * */
+    _photoClick = () => {
+        this.timer = setTimeout(
+            () => {
+                ImagePicker.launchImageLibrary(options, (response) => {
+                    if (response.didCancel) {
+                    } else if (response.error) {
+                    } else if (response.customButton) {
+                    } else {
+                        this.uploadImage(response, this.id);
+                    }
+                });
+            },
+            200
+        );
+
+    }
+    /*
+     * 图片上传
+     * */
+    uploadImage = (response, id) => {
+        let params = {
+            base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
+        };
+        this.props.showModal(true);
+
+        ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
+            .then((response) => {
+
+                this.props.showModal(false);
+                
+                if (response.mycode == 1) {
+                    let source = {uri: response.mjson.data.icon};
+
+                    this.props.model[id] = response.mjson.data.url;
+
+                    switch (id) {
+                        
+                        case 'legal_picurl':
+                            this.setState({
+                                legal_picurl:source
+                            })
+                            break;
+                        case 'legal_opposite_picurl':
+                            this.setState({
+                                legal_opposite_picurl:source
+                            })
+                            break;
+                        case 'community_credit_picurl':
+                            this.setState({
+                                community_credit_picurl:source
+                            })
+                            break;
+                        case 'organization_code_picurl':
+                            this.setState({
+                                organization_code_picurl:source
+                            })
+                            break;
+                        case 'cert_url':
+                            this.setState({
+                                cert_url:source
+                            })
+                            break;
+                        case 'tax_register_picurl':
+                            this.setState({
+                                tax_register_picurl:source
+                            })
+                            break;
+                        default:
+                    }
+
+                } else {
+                    this.props.showToast(response.mjson.msg + "!");
+                }
+            }, (error) => {
+                this.props.showModal(false);
+
+                this.props.showToast("图片上传失败");
+            });
+    }
 
 }
 

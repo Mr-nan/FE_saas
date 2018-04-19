@@ -9,7 +9,7 @@ import {
     View,
     TextInput,
     Image,
-    TouchableWithoutFeedback,
+    TouchableOpacity,
     ActivityIndicator,
     PixelRatio
 } from "react-native";
@@ -41,15 +41,13 @@ export default class InformationInputItem extends Component{
         editable:true,
         value:null,
         title:'标题',
-        rightButton: false,
         clearValue: false,
         maxLength: 100,
-        annotation:null,
         textPlaceholder: null,
         keyboardType: 'default',
-        secureTextEntry: false,//设置是否为密码安全输入框	bool，默认为false
         separator:true,
         onChangeText:null,
+        rightCallBack:null,
 
     };
 
@@ -62,16 +60,14 @@ export default class InformationInputItem extends Component{
         value:PropTypes.string,
         title:PropTypes.string,
         separator:PropTypes.bool,
-        rightButton: PropTypes.bool,
         clearValue: PropTypes.bool,//清除输入框内容
-        annotation:PropTypes.string,
         maxLength: PropTypes.number,//限制文本输入框最大的输入字符长度
         textPlaceholder: PropTypes.string,
         keyboardType: PropTypes.string,  //键盘类型：用来选择默认弹出键盘类型
         inputTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         viewStytle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         titleStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
-        callBackSms: PropTypes.func,//发送短语验证码
+        rightCallBack:PropTypes.func,
     }
 
     StartCountDown = () => {
@@ -95,63 +91,67 @@ export default class InformationInputItem extends Component{
         return(
 
             <View style = {{backgroundColor:'white'}}>
-                <View style = {[styles.container, this.props.separator?{borderBottomColor: FontAndColor.COLORA4}:{borderBottomColor:'white'}]}>
-                    <SText
-                        style={[styles.title, this.props.titleStyle]}
-                    >{this.props.title}</SText>
-                    <TextInput
-                        ref="inputText"
-                        underlineColorAndroid={"#00000000"}
-                        keyboardType = {this.props.keyboardType}
-                        placeholder = {'请输入'}
-                        style={[styles.textInputStyle, this.props.inputTextStyle]}
-                        maxLength={this.props.maxLength}
-                        secureTextEntry={this.props.secureTextEntry}
-                        value={this.state.value}
-                        editable = {this.props.editable}
-                        onChangeText={(text) => {
-                            this.setState({
-                                value: text
-                            });
+                <TouchableOpacity
+                    activeOpacity={this.props.rightIcon?.6:1}
+                    onPress={()=>{
+                        this.props.rightCallBack()
+                    }}
+                >
+                    <View style = {[styles.container, this.props.separator?{borderBottomColor: FontAndColor.COLORA4}:{borderBottomColor:'white'}]}>
+                        <SText
+                            style={[styles.title, this.props.titleStyle]}
+                        >{this.props.title}</SText>
 
-                            if(this.props.onChangeText){
-                                this.props.onChangeText(text)
-                            }
+                        {
+                            !this.props.rightIcon?
+                            <TextInput
+                                ref="inputText"
+                                underlineColorAndroid={"#00000000"}
+                                keyboardType = {this.props.keyboardType}
+                                placeholder = {'请输入'}
+                                style={[styles.textInputStyle, this.props.inputTextStyle]}
+                                maxLength={this.props.maxLength}
+                                secureTextEntry={this.props.secureTextEntry}
+                                value={this.state.value}
+                                editable = {this.props.editable}
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        value: text
+                                    });
 
-                        }}
-                    />
+                                    if(this.props.onChangeText){
+                                        this.props.onChangeText(text)
+                                    }
 
-                    {
-                        this.props.loading?
-
-                            <ActivityIndicator size='small'/>
-
-                            :null
-                    }
-
-                    {
-                        this.props.rightIcon?
-                            <Image source = {require('../../../../../../images/mainImage/celljiantou.png')}/>
-                            :null
-                    }
-                    {
-                        this.props.rightButton ?
-                            <SendMmsCountDown ref="sendMms" callBackSms={this.props.callBackSms}/> : null
-                    }
-                    {
-                        this.props.annotation?
-                            <SText
+                                }}
+                            />
+                            :<SText
                                 style={styles.annotation}
-                            >{this.props.annotation}</SText> : null
-                    }
+                            >{this.props.value}</SText>
+                        }
 
-                </View>
+                        {
+                            this.props.rightIcon?
+                                <Image source = {require('../../../../../../images/mainImage/celljiantou.png')}/>
+                                :null
+                        }
+                        {
+                            this.props.annotation?
+                                <SText
+                                    style={styles.annotation}
+                                >{this.props.annotation}</SText> : null
+                        }
+
+                    </View>
+
+
+                </TouchableOpacity>
+
 
             </View>
 
         )
     }
-
 }
 
 
@@ -186,7 +186,9 @@ const styles = StyleSheet.create({
 
     annotation:{
         fontSize:15,
-        color:FontAndColor.COLORA2
+        color:FontAndColor.COLORA2,
+        flex:1,
+        textAlign:'right'
     }
 
 });

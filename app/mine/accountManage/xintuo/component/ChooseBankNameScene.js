@@ -25,7 +25,6 @@ import * as AppUrls from "../../../../constant/appUrls";
 import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import TextInputItem from './TextInputItem'
-import CardPhoneSmsScene from '../openAccount/CardPhoneSmsScene'
 import ProvinceListScene from '../../../../carSource/ProvinceListScene'
 import * as fontAndColor from '../../../../constant/fontAndColor';
 import SText from './SaasText'
@@ -118,7 +117,7 @@ export default class ChooseBankNameScene extends BaseComponent {
                             this.props.showToast('请选择开户行名称');
                             return;
                         }
-                        this.props.callBack(selectedBank, selectedHeadBank);
+                        this.props.callBack(Object.assign(selectedBank, selectedCity));
                         this.backPage();
                     }}
                     leftImageCallBack={this.backPage}

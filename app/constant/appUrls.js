@@ -1391,6 +1391,10 @@ export const ZS_SUB_BANK = BASEURL + "v1/bankRoute.query/findChildBankNo";
  */
 export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccountDetail";
 
+/**
+ *   信托提现
+ */
+export const XINTUO_WITHDRAW = BASEURL + "v2/account.xt/appWithdrawal"
 
 /**
  *   判断是否在信托白名单
@@ -1398,9 +1402,15 @@ export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccount
 export const CAN_XINTUO = BASEURL + "v2/account.xt/getUidExistWhiteList";
 
 /**
- *   信托开户
+ *   信托开户（个人）
  */
 export const OPEN_PERSON_TRUST_ACCOUNT = BASEURL + "v1/account.zsyxt/openPersonAccount";
+
+/**
+ *   信托开户(企业)
+ */
+export const OPEN_ENTER_TRUST_ACCOUNT = BASEURL + "v2/account.xt/openEnterpriseAccount";
+
 /**
  *   微众借据详情API(信托开户)
  */

@@ -26,6 +26,8 @@ import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import SText from '../component/SaasText'
 import SmsFillScene from './SmsFillScene'
 import ZSBaseComponent from  '../component/ZSBaseComponent'
+import  ResultIndicativeScene from '../ResultIndicativeScene'
+
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -44,7 +46,7 @@ export default class WithdrawScene extends ZSBaseComponent {
     }
 
     initFinish() {
-        this.loadInstruction()
+        //this.loadInstruction()
         this.setState({
             renderPlaceholderOnly: false,
         })
@@ -82,6 +84,8 @@ export default class WithdrawScene extends ZSBaseComponent {
 
     render() {
 
+
+
         if (this.state.renderPlaceholderOnly) {
             return (
                 <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
@@ -89,31 +93,21 @@ export default class WithdrawScene extends ZSBaseComponent {
                         leftImageShow={false}
                         leftTextShow={true}
                         leftText={""}
-                        centerText={'提现'}
+                        centerText={'粮票提现'}
                         rightText={""}
 
                     />
                 </View>
             )
         }
-
-
-        let a = Array.from(this.props.account.bind_bank_card_no)
-        let s = '';
-        for (let i = 0; i < a.length; i++) {
-            if (i >= 4 && i < a.length - 4) {
-                s += '*'
-            } else {
-                s += a[i];
-            }
-        }
+        let s = this.props.account.bind_bank_card_no.replace(/^(....).*(....)$/, "$1****$2")
 
         return (
             <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
-                    centerText={'提现'}
+                    centerText={'粮票提现'}
                     rightText={''}
                     leftImageCallBack={() => {
                         this.props.callBack()
@@ -136,9 +130,9 @@ export default class WithdrawScene extends ZSBaseComponent {
                         <Image source={require('../../../../../images/account/zheshang_bank.png')}
                                style={{width: 55, height: 55, marginHorizontal: 15}}/>
                         <View>
-                            <SText style={{fontSize: 17, marginBottom: 10}}>{this.props.account.bind_sub_bank_name}</SText>
+                            <SText style={{fontSize: 17, marginBottom: 10}}>{this.props.account.bind_bank_name}</SText>
                             <SText
-                                style={{color: FontAndColor.COLORA1}}>{this.props.account.bind_bank_card_name}{s}</SText>
+                                style={{color: FontAndColor.COLORA1}}>{this.props.account.bank_name}{s}</SText>
                         </View>
                     </View>
 
@@ -170,26 +164,22 @@ export default class WithdrawScene extends ZSBaseComponent {
                                     />
                                 </View>
                             </View>
-                            <View style={{paddingVertical: 10}}>
-                                <View style={{flexDirection: 'row', marginBottom: 5}}>
-                                    <SText
-                                        style={{color: FontAndColor.COLORA1}}>{this.props.account.bank_name}现金余额:</SText>
+                            <View style={{paddingVertical: 15, flexDirection:"row"}}>
+
+                                <View style={{flexDirection: 'row'}}>
+                                    <SText style={{color: FontAndColor.COLORA1}}>可用余额:</SText>
                                     <SText>{this.props.account.balance}元</SText>
+                                </View>
+
                                     <SText
                                         style={{color: FontAndColor.COLORB4, fontSize: 16, textAlign: 'right', flex: 1}}
                                         onPress={() => {
 
                                             this.setState({
-                                                money_input: this.state.allow_withdraw_amount,
+                                                money_input: this.props.account.balance,
                                             })
                                         }}
                                     >全部提现</SText>
-
-                                </View>
-                                <View style={{flexDirection: 'row'}}>
-                                    <SText style={{color: FontAndColor.COLORA1}}>可取余额:</SText>
-                                    <SText>{this.state.allow_withdraw_amount}元</SText>
-                                </View>
 
                             </View>
                         </View>
@@ -198,12 +188,12 @@ export default class WithdrawScene extends ZSBaseComponent {
 
                     <MyButton
                         buttonType={MyButton.TEXTBUTTON}
-                        content={'确认提现'}
+                        content={'粮票提现'}
                         parentStyle={styles.next_button_parent}
                         childStyle={{fontSize: 18, color: 'white'}}
                         mOnPress={() => {
 
-                            if (parseFloat(this.state.allow_withdraw_amount) < parseFloat(this.state.money_input)) {
+                            if (parseFloat( this.props.account.balance) < parseFloat(this.state.money_input)) {
                                 this.props.showToast('可提余额不足');
                                 return;
                             }
@@ -212,52 +202,24 @@ export default class WithdrawScene extends ZSBaseComponent {
                                 this.props.showToast('请输入金额')
                                 return;
                             }
-                            this.setState({
-                                sms_pad: true
-                            })
+
+                            this.withdraw();
+
+
                         }}
 
                     />
 
-                    <View style={{marginHorizontal: 30, marginVertical: 40}}>
-                        <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
-                            <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginRight: 15}}/>
-                            <SText style={{color: FontAndColor.COLORA1}}>温馨提示</SText>
-                            <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginLeft: 15}}/>
-                        </View>
-                        <SText style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>1  个人7*24小时，实时到账。</SText>
-
-                        <SText style={{color: FontAndColor.COLORA1, lineHeight: 20}}>{"2  企业工作日 9:00-16:30实时到账，其他时间单笔  <=5w 实时到账"}</SText>
-
-
-                    </View>
 
                 </ScrollView>
 
-
-                {this.state.sms_pad ?
-                    <SmsFillScene
-                        showModal={this.props.showModal}
-                        showToast={this.props.showToast}
-                        money={parseFloat(this.state.money_input)}
-                        type={1}
-                        account={this.props.account}
-                        closeCallBack={() => {
-                            this.setState({
-                                sms_pad: false
-                            })
-                        }}
-                        codeCallBack={this.withdraw}
-                    />
-                    : null
-                }
                 {this.out_of_service()}
             </View>
 
         )
     }
 
-    withdraw = (sms_code, sms_no) => {
+    withdraw = () => {
 
         this.props.showModal(true)
         this.dismissKeyboard();
@@ -265,14 +227,13 @@ export default class WithdrawScene extends ZSBaseComponent {
             if (data.code === 1) {
                 let result = JSON.parse(data.result)
                 let params = {
+                    account_type_id:this.props.account.account_id,
                     amount: parseFloat(this.state.money_input),
                     enter_base_id: result.company_base_id,
-                    sub_acct_no: this.props.account.bank_card_no,
-                    sms_code: sms_code,
-                    sms_no: sms_no?sms_no:"000000"
+                    bank_id:'zsyxt'
                 }
 
-                request(AppUrls.ZS_WITHDRAW, 'POST', params).then((response) => {
+                request(AppUrls.XINTUO_WITHDRAW, 'POST', params).then((response) => {
                     this.props.showModal(false)
                     this.setState({
                         sms_pad: false

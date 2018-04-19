@@ -34,10 +34,16 @@ import MyAccountItem from "./component/MyAccountItem";
 import AccountManageScene from "./AccountManageScene";
 import * as Urls from '../../constant/appUrls';
 import OpenTrustAccountView from './component/OpenTrustAccountView'
+import OpenAccountBaseScene from './xintuo/openAccount/OpenAccountBaseScene'
+import ResultIndicativeScene from './xintuo/ResultIndicativeScene'
 
 var Pixel = new PixelUtil();
 
 let dataList = [];
+
+let flag1 = 0;
+let flag2 = 0;
+let flag3 = 0;
 
 export default class MyAccountScene extends BaseComponent {
 
@@ -52,7 +58,9 @@ export default class MyAccountScene extends BaseComponent {
         super(props);
         this.hengFengInfo = {};
         this.zheShangInfo = {};
+        this.is_zheshang_in_whitelist = false;
         this.xintuoInfo = {};
+        this.is_xintuo_in_whitelist = false;
         this.lastType = '-1';
         this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(25) : height;
         this.state = {
@@ -78,17 +86,13 @@ export default class MyAccountScene extends BaseComponent {
     }
 
     componentWillUnmount(){
-
         dataList = [];
-
+         flag1 = 0;
+         flag2 = 0;
+         flag3 = 0;
     }
 
     initFinish = () => {
-        /*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-         this.setState({
-         dataSource: ds.cloneWithRows(['0', '1']),
-         renderPlaceholderOnly: 'success'
-         });*/
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
             if (data.code == 1) {
@@ -140,18 +144,26 @@ export default class MyAccountScene extends BaseComponent {
      **/
     loadData = () => {
 
-
-
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
+                
                 let datas = JSON.parse(data.result);
-                request(Urls.ZS_BANK_IS_SHOW, 'Post', {})
+
+                this.getAccountInfo(datas.company_base_id);
+                
+                request(Urls.IS_IN_WHITE_LIST, 'Post', {enter_base_id:datas.company_base_id})
                     .then((response) => {
-                        if (response.mjson.data.status === 1) {
-                            this.getIsInWhiteList(datas.company_base_id);
-                        } else {
-                            this.getAccountInfo(datas.company_base_id, 315);
+                        let isWhiteList = response.mjson.data.status;
+
+                        if (isWhiteList === 0) {  //0 不在白名单中
+                            this.is_zheshang_in_whitelist = false;
+                            flag2 = 1;
+                            this.renderUI();
+                        } else {   //1 在白名单中，
+                            this.isZSshow()
                         }
+                       
+
                     }, (error) => {
                         this.props.showModal(false);
                         this.props.showToast(error.mjson.msg);
@@ -161,14 +173,22 @@ export default class MyAccountScene extends BaseComponent {
                         });
                     });
 
-
-                /******     关于信托的     ******/
+                /******     信托白名单查询     ******/
 
                 request(Urls.CAN_XINTUO,'POST', {enter_base_id:datas.company_base_id,type:1}).then((response)=>{
-                    dataList.push('zsyxt')
+
+                    this.is_xintuo_in_whitelist = true;
+                    flag3 = 1;
+                    this.renderUI();
                 }, (error)=>{
+                    
+                    this.is_xintuo_in_whitelist = false;
+                    flag3 = 1;
+                    this.renderUI()
                     console.log(error)
                 })
+
+
             } else {
                 this.props.showModal(false);
                 this.props.showToast('用户信息查询失败');
@@ -186,21 +206,21 @@ export default class MyAccountScene extends BaseComponent {
     };
 
     /**
-     *  查询是否在(浙商)白名单
-     * @returns {XML}
+     *  查询是否显示浙商账户
      **/
-    getIsInWhiteList = (companyBaseId) => {
-        let maps = {
-            enter_base_id: companyBaseId
-        };
-        request(Urls.IS_IN_WHITE_LIST, 'Post', maps)
+    isZSshow = () => {
+        
+        /******     浙商账户是否可见     ******/
+        
+        request(Urls.ZS_BANK_IS_SHOW, 'Post', {})
             .then((response) => {
-                let isWhiteList = response.mjson.data.status;
-                if (isWhiteList === 0) {  //1 在白名单中，0 不在白名单中
-                    this.getAccountInfo(companyBaseId, 315);
+                if (response.mjson.data.status === 1) {
+                    this.is_zheshang_in_whitelist = true
                 } else {
-                    this.getAccountInfo(companyBaseId);
+                    this.is_zheshang_in_whitelist = false;
                 }
+                flag2 = 1;
+                this.renderUI();
             }, (error) => {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
@@ -209,6 +229,7 @@ export default class MyAccountScene extends BaseComponent {
                     isRefreshing: false
                 });
             });
+
     };
 
     /**
@@ -219,13 +240,15 @@ export default class MyAccountScene extends BaseComponent {
         let maps = {
             enter_base_ids: companyBaseId,
             child_type: '1',
-            bank_id: bankId ? bankId : ''
+            bank_id: ''
         };
         request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
             .then((response) => {
                 this.props.showModal(false);
-                //console.log('USER_ACCOUNT_INFO=====', response.mjson.data);
-                //this.hengFengInfo = response.mjson.data['315'][0] ? response.mjson.data['315'][0] : {};
+
+                this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
+                this.xintuoInfo = response.mjson.data['zsyxt'][0] ? response.mjson.data['zsyxt'][0] : {};
+                
                 if (response.mjson.data['315'][0]) {
                     this.hengFengInfo = response.mjson.data['315'][0];
 
@@ -305,21 +328,12 @@ export default class MyAccountScene extends BaseComponent {
                         this.props.callBack(this.lastType);
                     }
                 }
-                this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
-
-                if (bankId) {
-                    dataList.push(bankId);
-                } else {
-                    dataList.splice(0,0, '315','316');
-
-                }
-                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                this.setState({
-                    dataSource: ds.cloneWithRows(dataList),
-                    renderPlaceholderOnly: 'success',
-                    isRefreshing: false,
-                    backColor: fontAndColor.COLORB0
-                });
+               
+                
+                flag1 = 1;
+                this.renderUI();
+                
+                
             }, (error) => {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
@@ -329,6 +343,40 @@ export default class MyAccountScene extends BaseComponent {
                 });
             });
     };
+
+
+    renderUI = ()=>{
+        
+
+        if (flag1 == 1&& flag2==1 &&flag3==1){
+            
+            dataList = []
+            
+            dataList.push('315');
+            
+            if (this.is_zheshang_in_whitelist){
+                dataList.push('316');
+            }
+            if(this.is_xintuo_in_whitelist){
+                dataList.push('zsyxt');
+            }
+            
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                dataSource: ds.cloneWithRows(dataList),
+                renderPlaceholderOnly: 'success',
+                isRefreshing: false,
+                backColor: fontAndColor.COLORB0
+            });
+
+            flag1 = 0;
+            flag2 = 0;
+            flag3 = 0;
+        }
+
+    }
+
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -467,9 +515,107 @@ export default class MyAccountScene extends BaseComponent {
         }
     }
 
+
+    // 信托开户
+    openTrustAccount = ()=>{
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+
+                let params =  {enter_base_id:datas.company_base_id}
+
+                request(Urls.OPEN_PERSON_TRUST_ACCOUNT, 'Post',params)
+                    .then((response) => {
+                        this.props.showModal(false)
+                        this.toNextPage({
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type:0,
+                                status: 1,
+                                params: params,
+                                append: this.state.bankName,
+                                callBack: this.allRefresh
+                            }
+                        })
+
+
+                    }, (error) => {
+                        this.props.showModal(false);
+
+                        if(error.mycode === 8050324){  // 不在服务时间内
+                            this.setState({
+                                out_of_service_msg:error.mjson.msg,
+                                alert:true
+                            })
+                            return
+                        }
+                        if (error.mycode === 8010007) {  // 存疑
+
+                            this.toNextPage({
+                                component: ResultIndicativeScene,
+                                name: 'ResultIndicativeScene',
+                                params: {
+                                    type:  0,
+                                    status: 0,
+                                    params: params,
+                                    error: error.mjson,
+                                    callBack: this.allRefresh
+                                }
+                            })
+                        } else if (error.mycode === -500 || error.mycode === -300) {
+                            this.props.showToast(error.mycode)
+                        } else { // 开户失败
+                            this.toNextPage({
+                                component: ResultIndicativeScene,
+                                name: 'ResultIndicativeScene',
+                                params: {
+                                    type: 0,
+                                    status: 2,
+                                    params: params,
+                                    error: error.mjson,
+                                    callBack: this.allRefresh
+                                }
+                            })
+                        }
+
+
+
+                    });
+            }
+        })
+    }
+
+
+
     clickCallBack = ()=>{
 
-      //  if (this.state.trustAccountState == 0) {
+        // this.navigatorParams.name = 'OpenAccountBaseScene';
+        // this.navigatorParams.component = OpenAccountBaseScene;
+        // this.navigatorParams.params = {
+        //     showModal:this.props.showModal,
+        //     callBack: () => {
+        //         this.props.callBack();
+        //     }
+        // };
+        // this.toNextPage(this.navigatorParams);
+        // return;
+        
+
+        if(this.hengFengInfo.account_open_type == 1){  // 企业
+
+            this.navigatorParams.name = 'OpenAccountBaseScene';
+            this.navigatorParams.component = OpenAccountBaseScene;
+            this.navigatorParams.params = {
+                showModal:this.props.showModal,
+                callBack: this.allRefresh
+            };
+            this.toNextPage(this.navigatorParams);
+
+        }else if(this.hengFengInfo.account_open_type == 2){  //个人
+
             this.props.showModal(true);
             let maps = {
                 source_type: '3',
@@ -484,7 +630,7 @@ export default class MyAccountScene extends BaseComponent {
                     this.props.showModal(false);
                     this.props.showToast(error.mjson.msg);
                 });
-       // }
+        }
 
     }
 
@@ -503,7 +649,7 @@ export default class MyAccountScene extends BaseComponent {
         } else if (rowData == '316'){
             info = this.zheShangInfo;
         }else {
-            info = this.zheShangInfo;
+            info = this.xintuoInfo;
         }
         return (
             <MyAccountItem

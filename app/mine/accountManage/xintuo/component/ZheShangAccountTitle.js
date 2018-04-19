@@ -103,25 +103,18 @@ export  default class ZheShangAccountTitle extends PureComponent {
             </View>
         );*/
         return (
-            <View style={{width:width,height:Pixel.getPixel(584),backgroundColor:fontAndColor.COLORA3}}>
-                <View style={{width:width,height:Pixel.getPixel(211),backgroundColor:fontAndColor.COLORB0}}>
-                    <View style={{width:width,height:Pixel.getPixel(35),backgroundColor:'rgba(105,105,105,0.1)',
-                    flexDirection: 'row',alignItems:'center'}}>
-                        <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(20),color: '#fff',
-                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
-                            账户号码：{( this.props.info.bind_bank_card_type === 1&& this.props.info.account_open_type ===1)? this.props.info.bank_card_no: this.props.info.cz_elec_account}
-                        </Text>
-                        <View style={{flex:1}}></View>
-                    </View>
-                    <View style={{width:width,height:Pixel.getPixel(175)}}>
+            <View style={{width:width,height:Pixel.getPixel(549),backgroundColor:fontAndColor.COLORA3}}>
+                <View style={{width:width,height:Pixel.getPixel(211-35),backgroundColor:fontAndColor.COLORB0}}>
+
+                    <View style={{width:width,height:Pixel.getPixel(140)}}>
                         <View
                             style={{width:width,height:Pixel.getPixel(115),justifyContent:'center',alignItems:'center'}}>
-                            <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>账户总额(元)</Text>
+                            <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>粮票总额(元)</Text>
                             <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(18),color:'#fff',
                             fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>
                                 {/*{(parseFloat(this.props.info.balance) +*/}
                                 {/*parseFloat(this.props.info.frozen_balance)).toString().match(/^\d+(?:\.\d{0,2})?/)}*/}
-                                {this.toDecimal(parseFloat(this.props.info.balance) + parseFloat(this.props.info.frozen_balance))}
+                                {this.props.info.total}
 
                             </Text>
                         </View>

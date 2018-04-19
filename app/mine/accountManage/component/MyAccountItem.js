@@ -30,6 +30,7 @@ import ZSAccountTypeSelectScene from "../zheshangAccount/ZSAccountTypeSelectScen
 import WebScene from '../../../main/WebScene';
 import {BASEURL} from '../../../constant/appUrls';
 import XintuoAccountScene from '../xintuo/XintuoAccountScene'
+import OpenAccountBaseScene from '../xintuo/openAccount/OpenAccountBaseScene'
 
 const Pixel = new PixelUtil();
 
@@ -105,6 +106,7 @@ export default class MyAccountItem extends BaseComponent {
             }
             this.toNextPage(this.navigatorParams);
         } else if (type == '316') {
+
             switch (state) {
                 case 0://未开户
                     this.navigatorParams.name = 'ZSAccountTypeSelectScene';
@@ -133,15 +135,31 @@ export default class MyAccountItem extends BaseComponent {
                     this.toNextPage(this.navigatorParams);
                     break;
             }
-        } else {
-            this.navigatorParams.name = 'XintuoAccountScene';
-            this.navigatorParams.component = XintuoAccountScene;
-            this.navigatorParams.params = {
-                callBack: () => {
-                    this.props.callBack();
-                }
-            };
-            this.toNextPage(this.navigatorParams);
+        } else if(type == 'zsyxt') {
+
+            switch (state) {
+                case 0://未开户
+                    this.props.clickCallBack()
+
+                    break;
+                case 2: // 未激活
+                    // this.navigatorParams.name = 'WaitActivationAccountScene';
+                    // this.navigatorParams.component = WaitActivationAccountScene;
+                    // this.navigatorParams.params = {
+                    //     callBack: () => {
+                    //         this.props.callBack();
+                    //     }
+                    // };
+                    this.props.showToast('您的资料已经提交，请耐心等待');
+                    break;
+                default:  //已开户
+                    this.navigatorParams.name = 'XintuoAccountScene';
+                    this.navigatorParams.component = XintuoAccountScene;
+                    this.navigatorParams.params = {};
+                    this.toNextPage(this.navigatorParams);
+                    break;
+            }
+
         }
     };
 
@@ -150,11 +168,44 @@ export default class MyAccountItem extends BaseComponent {
      *   type 315恒丰 316浙商
      **/
     jumpDetailPage = (type) => {
+
+
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+
+                let maps = {
+                    enter_base_ids: datas.company_base_id,
+                    child_type: '1',
+                    bank_id: type
+                };
+                request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
+                    .then((response) => {
+                        this.props.showModal(false);
+                        //this.pageDispense(type, 0);
+                        this.pageDispense(type, response.mjson.data[type][0].status);
+
+                    }, (error) => {
+                        this.props.showModal(false);
+                        this.props.showToast('用户信息查询失败');
+                    });
+            } else {
+                this.props.showModal(false);
+                this.props.showToast('用户信息查询失败');
+            }
+        });
+
+        return;
+
         if (type == '315') {
             this.props.showModal(true);
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code == 1) {
                     let datas = JSON.parse(data.result);
+
+
+
                     let maps = {
                         enter_base_ids: datas.company_base_id,
                         child_type: '1'
@@ -177,16 +228,17 @@ export default class MyAccountItem extends BaseComponent {
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code == 1) {
                     let datas = JSON.parse(data.result);
+
                     let maps = {
                         enter_base_ids: datas.company_base_id,
                         child_type: '1',
-                        bank_id: 316
+                        bank_id: type
                     };
                     request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
                         .then((response) => {
                             this.props.showModal(false);
                             //this.pageDispense(type, 0);
-                            this.pageDispense(type, response.mjson.data['316'][0].status);
+                            this.pageDispense(type, response.mjson.data[type][0].status);
 
                         }, (error) => {
                             this.props.showModal(false);
@@ -197,11 +249,17 @@ export default class MyAccountItem extends BaseComponent {
                     this.props.showToast('用户信息查询失败');
                 }
             });
-        } else {
+        } else if(type == 'zsyxt'){
 
-            this.pageDispense()
 
-            //this.props.clickCallBack();
+            if(this.data.status = 'undefined'|| this.data == {} || this.data.state == 0){
+                this.props.clickCallBack();
+            }else {
+                this.pageDispense(type)
+            }
+
+
+
         }
     };
 
@@ -233,7 +291,7 @@ export default class MyAccountItem extends BaseComponent {
         } else {   // 信托
             back = require('../../../../images/account/xintuo_background.png');
             bank = require('../../../../images/account/xintuo.png');
-            bankName = '信托资金';
+            bankName = '车贷粮票';
 
             let b = (this.state.data.bind_bank_card_type === 1 && this.state.data.account_open_type === 1) ? this.state.data.bank_card_no : this.state.data.cz_elec_account
 
@@ -307,21 +365,6 @@ export default class MyAccountItem extends BaseComponent {
                                         justifyContent: 'center',
                                         backgroundColor: '#ffffff'
                                     }}>
-                                    <Text
-                                        allowFontScaling={false}
-                                        style={{
-                                            textAlign: 'right',
-                                            fontSize: Pixel.getPixel(15),
-                                            color: fontAndColor.COLORA0
-                                        }}>{this.state.data.balance}</Text>
-                                    <Text
-                                        allowFontScaling={false}
-                                        style={{
-                                            marginTop: Pixel.getPixel(3),
-                                            textAlign: 'right',
-                                            fontSize: Pixel.getPixel(12),
-                                            color: fontAndColor.COLORA1
-                                        }}>账户总额</Text>
                                 </View>
                             }
                             <Image source={cellJianTou}/>
@@ -352,7 +395,7 @@ export default class MyAccountItem extends BaseComponent {
                                             textAlign: 'left',
                                             fontSize: Pixel.getPixel(12),
                                             color: fontAndColor.COLORA1
-                                        }}>账号余额（元）</Text>
+                                        }}>{this.props.type == 'zsyxt'?"粮票余额（元）":  "账号余额（元）"}</Text>
                                     <Text
                                         allowFontScaling={false}
                                         style={{
@@ -430,7 +473,7 @@ export default class MyAccountItem extends BaseComponent {
                                             textAlign: 'left',
                                             fontSize: Pixel.getPixel(12),
                                             color: fontAndColor.COLORA1
-                                        }}>账号余额（元）</Text>
+                                        }}>{"什么是车贷粮票"}</Text>
                                     <Text
                                         allowFontScaling={false}
                                         style={{
@@ -439,7 +482,7 @@ export default class MyAccountItem extends BaseComponent {
                                             textAlign: 'left',
                                             fontSize: Pixel.getPixel(25),
                                             color: fontAndColor.COLORA0
-                                        }}>{this.state.data.balance}</Text>
+                                        }}>{this.state.data.total}</Text>
 
                                 </View>
                         }

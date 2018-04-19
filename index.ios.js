@@ -13,6 +13,6 @@ import Root from './app/root';
 import comp from './app/mine/accountManage/xintuo/openAccount/OpenAccountUploadScene'
 
 
-AppRegistry.registerComponent('FE_Sass', () => comp);
+AppRegistry.registerComponent('FE_Sass', () => Root);
 
 

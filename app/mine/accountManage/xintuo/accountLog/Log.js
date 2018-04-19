@@ -75,7 +75,7 @@ export default class Log extends BaseComponent {
                 let result = JSON.parse(data.result)
 
                 let params = {
-                    bank_id: 316,
+                    bank_id: "zsyxt",
                     enter_base_id: result.company_base_id,
                     transfer_type: type,
                     user_type: this.props.account.account_open_type,
@@ -443,15 +443,22 @@ export default class Log extends BaseComponent {
 class LogItem extends Component {
 
     render() {
-        let c, t;
-        if (this.props.item.t_operate_type === 3) {  //充值
-            c = FontAndColor.COLORB1
-            t = '充值'
-        }
-        if (this.props.item.t_operate_type === 4) {  //提现
+        let c, t;   //120 转入  104转入  123 转入  121冻结  4提现  3充值
+       if (this.props.item.t_operate_type === 4 ||this.props.item.t_operate_type === 105) {  //提现
             c = FontAndColor.COLORA2
             t = '提现'
+        }else if(this.props.item.t_operate_type === 3||this.props.item.t_operate_type === 120||this.props.item.t_operate_type === 104||this.props.item.t_operate_type === 123) {
+            c = FontAndColor.COLORB1
+            t = "充值"
+        }else if(this.props.item.t_operate_type === 121){
+            c = FontAndColor.COLORB0
+            t = "转账"
         }
+
+        console.log(this.props.item.t_operate_type);
+
+
+
         return (
             <View style={{flexDirection: 'row', alignItems: 'center', marginHorizontal: 15, paddingVertical: 20}}>
                 <View style={{
