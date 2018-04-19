@@ -36,7 +36,7 @@ export default class HomeJobItem extends PureComponent {
         mnyData=this.props.allData;
         if(mnyData.multiple_credit_type==2){
             titleText[0]='小额授信额度(万)';
-        }else if(mnyData.multiple_credit_type=='1'){
+        }else if(mnyData.multiple_credit_type==1){
             titleText[0]='综合授信额度(万)';
         }
         this.allData = {
