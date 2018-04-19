@@ -562,14 +562,23 @@ export default class MineCreditApplyScene extends BaseComponent {
 				})
 			}
 			if (type == 'kuaisu') {
-				this.toNextPage({
-					name: 'FastCreditOne',
-					component: FastCreditOne,
-					params: {
-						FromScene: 'kuaisuANDmine',
-						// callBackRefresh:this.props.callBackRefresh,
-					},
-				})
+				if(this.state.zongheCreditStatus == 2 ){
+					this.props.showToast('您的综合授信在有效期内，暂时无法申请小额授信')
+					return;
+
+				}else {
+					this.toNextPage({
+						name: 'FastCreditOne',
+						component: FastCreditOne,
+						params: {
+							FromScene: 'kuaisuANDmine',
+							// callBackRefresh:this.props.callBackRefresh,
+						},
+					})
+				}
+
+
+
 			}
 		}
 		else {//验四没有通过，申请跳转到验四界面
@@ -586,19 +595,23 @@ export default class MineCreditApplyScene extends BaseComponent {
 				})
 			}
 			if (type == 'kuaisu') {
-				this.toNextPage({
-					name: 'Authentication',
-					component: Authentication,
-					params: {
-						FromScene: 'kuaisu',
-						DATA: this.personData,
-						// callBackRefresh:this.props.callBackRefresh,
-					},
-				})
+				if(this.state.zongheCreditStatus == 2 ){
+					this.props.showToast('您的综合授信在有效期内，暂时无法申请小额授信')
+					return;
+
+				}else {
+					this.toNextPage({
+						name: 'Authentication',
+						component: Authentication,
+						params: {
+							FromScene: 'kuaisu',
+							DATA: this.personData,
+							// callBackRefresh:this.props.callBackRefresh,
+						},
+					})
+				}
 			}
 		}
-
-
 	}
 
 }
