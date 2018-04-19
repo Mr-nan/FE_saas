@@ -52,7 +52,7 @@ export default class HomeJobItem extends PureComponent {
         this.state = {
             type: this.type,
             allData: this.allData,
-            titleText: this.type == 1 ? titleText[0] : newCarTitleText[0]
+            titleText: this.type == 1 ? titleText : newCarTitleText
         };
     }
 
