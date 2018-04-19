@@ -84,8 +84,12 @@ export default class BlankFinanceScene extends BaseComponent {
                         }
 
 						if (ZongheStatus == 2 ||XiaoeheStatus == 2 || DancheStatus == 2 ){
-							//任意一种通过，就跳到授信额度页面
-							this.setState({showType: 2, renderPlaceholderOnly: 'success'});
+							//任意一种通过，就跳到选择公司页面！！！！！！！！！
+							//任意一种通过，就跳到选择公司页面！！！！！！！！！
+							//任意一种通过，就跳到选择公司页面！！！！！！！！！
+							this.props.toSelect();
+							//任意一种通过，就跳到选择公司页面！！！！！！！！！
+							//任意一种通过，就跳到选择公司页面！！！！！！！！！
 						}
 						else {
 
