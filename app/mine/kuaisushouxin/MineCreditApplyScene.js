@@ -588,7 +588,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 					name: 'Authentication',
 					component: Authentication,
 					params: {
-						FromScene: 'xinchedingdan',
+						FromScene: 'xinchedingdanANDmine',
 						DATA: this.personData,
 						// callBackRefresh:this.props.callBackRefresh,
 					},
@@ -604,7 +604,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 						name: 'Authentication',
 						component: Authentication,
 						params: {
-							FromScene: 'kuaisu',
+							FromScene: 'kuaisuANDmine',
 							DATA: this.personData,
 							// callBackRefresh:this.props.callBackRefresh,
 						},
