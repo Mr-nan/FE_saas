@@ -84,12 +84,54 @@ export default class BlankFinanceScene extends BaseComponent {
                         }
 
 						if (ZongheStatus == 2 ||XiaoeheStatus == 2 || DancheStatus == 2 ){
-							//任意一种通过，就跳到选择公司页面！！！！！！！！！
-							//任意一种通过，就跳到选择公司页面！！！！！！！！！
-							//任意一种通过，就跳到选择公司页面！！！！！！！！！
+							//任意一种通过，就跳到授信额度页面
+							this.setState({showType: 2, renderPlaceholderOnly: 'success'});
+						}
+						else {
+
+							this.setState({showType: 3, renderPlaceholderOnly: 'success',creditStatusAndType:DATA});
+						}
+
+					},
+					(error) => {
+						this.setState({renderPlaceholderOnly: 'error'});
+					});
+
+		}
+		else {//非实际控制人登录
+			if (this.props.IS_DONE_CREDIT == 0) {
+				this.setState({showType: 1, renderPlaceholderOnly: 'success'});
+			} else {
+				this.setState({showType: 2, renderPlaceholderOnly: 'success'});
+
+			}
+		}
+
+	}
+	/**
+	 *   金融申请授信通过后的刷新走这个方法
+	 **/
+	_refreshFinance = () => {
+		if (this.props.BASE_USER_ID == this.props.MAPS.controller_base_id) {//实际控制人登录
+
+
+			request(Urls.GETCREDITSTATUSBYMERGE, 'Post', this.props.MAPS)
+				.then((response) => {
+						let DATA = response.mjson.data.credit;
+						let ZongheStatus = DATA.comprehensive.credit_application_status;
+						let XiaoeheStatus = DATA.halfpenny.credit_application_status;
+						let DancheStatus = DATA.newcar.credit_application_status;
+
+						if (ZongheStatus == 3 ||XiaoeheStatus == 3 || DancheStatus == 3 ){
+							//任意一种未通过
+							this.Appear = true;
+						}else {
+							this.Appear = false;
+						}
+
+						if (ZongheStatus == 2 ||XiaoeheStatus == 2 || DancheStatus == 2 ){
+							//任意一种通过，就跳到授信额度页面
 							this.props.toSelect();
-							//任意一种通过，就跳到选择公司页面！！！！！！！！！
-							//任意一种通过，就跳到选择公司页面！！！！！！！！！
 						}
 						else {
 
@@ -113,7 +155,6 @@ export default class BlankFinanceScene extends BaseComponent {
 
 	}
 
-
 	render() {
 		if (this.state.renderPlaceholderOnly !== 'success') {
 			return this._renderPlaceholderView();
@@ -135,7 +176,7 @@ export default class BlankFinanceScene extends BaseComponent {
 					this.setState({
                         renderPlaceholderOnly: 'loading',
 					},() => {
-						this.initFinish();
+						this._refreshFinance();
 					})
 				}}  showModal={(value)=>{this.props.showModal(value);}}
 				                          showToast={(content)=>{this.props.showToast(content);}}
