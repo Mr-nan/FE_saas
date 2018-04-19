@@ -79,8 +79,11 @@ export default class MyCarCell extends Component {
 
         const {carCellData} = this.props;
         const carType = carCellData.status; // 1:审核中 2:已上架 3：已下架 4：已成交
-        console.log(carType);
-        const review_status = carCellData.review_status;
+        const review_status = carCellData.review_status;  // 0：未审核，1：通过，2：不通过
+        const in_valid_order = carCellData.in_valid_order; // 当前车辆是否在有效的订单中，0：否，1：是
+
+        console.log('carType:',carType,'review_status:',review_status);
+
         return(
             <TouchableOpacity onPress={()=>{this.cellClick(carCellData)}}>
                 <View style={[styles.container,styles.lineBottom]} >
@@ -156,7 +159,7 @@ export default class MyCarCell extends Component {
                             {
                                 <View style={{flexDirection:'row'}}>
                                     {
-                                        (carType==1&&carCellData.review_status==2) &&
+                                        (carType==1&&review_status==2) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('查看退回原因',this.props.type,carCellData)}}>
                                             <View style={[styles.cellFoot,{borderColor:fontAndColor.COLORB0}]}>
                                                 <Text allowFontScaling={false}  style={[styles.cellFootText,{color:fontAndColor.COLORB0}]}> 查看退回原因 </Text>
@@ -178,7 +181,7 @@ export default class MyCarCell extends Component {
                                         {/*</TouchableOpacity>*/}
                                     {/*}*/}
                                     {
-                                        ((carType==1&&carCellData.review_status==1)||carType==3 ) &&
+                                        ((carType==1&&review_status!=2)||carType==3 ) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>
                                             <View style={styles.cellFoot}>
                                                 <Text allowFontScaling={false}  style={styles.cellFootText}> 申请上架 </Text>
@@ -195,7 +198,7 @@ export default class MyCarCell extends Component {
                                         </TouchableOpacity>
                                     }
                                     {
-                                        (carType == 4 || carType == 3 ||  (carType==1&&carCellData.review_status==2))&&
+                                        (carType == 4)&&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('删除',this.props.type,carCellData)}}>
                                             <View style={styles.cellFoot}>
                                                 <Text allowFontScaling={false}  style={styles.cellFootText}>  删除  </Text>
@@ -204,7 +207,7 @@ export default class MyCarCell extends Component {
 
                                     }
                                     {
-                                        ((carType==1&&carCellData.review_status==2) || carType == 3) &&
+                                        (((carType==1&&review_status==2) || carType == 3) && in_valid_order==0) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
                                             <View style={styles.cellFoot}>
                                                 <Text allowFontScaling={false}  style={styles.cellFootText}>  编辑  </Text>
