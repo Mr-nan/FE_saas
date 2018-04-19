@@ -71,11 +71,17 @@ export default class FastCreditTwo extends BaseComponent {
      * */
     componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
+	    idcardfront = '';
+	    idcardback = '';
+	    businessid = '';
     }
 
     constructor(props) {
         super(props);
         this.results = [];
+	    idcardfront = '';
+	    idcardback = '';
+	    businessid = '';
         this.data = '';
         this.state = {
             selectNO: 'no',//yes 代表同步  no 不同步

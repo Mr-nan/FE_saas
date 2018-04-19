@@ -140,6 +140,13 @@ export default class MineCreditApplyScene extends BaseComponent {
 										} else {
 											this.Appear = false;
 										}
+										if(this.isNull(this.ZongheResult) && this.isNull(this.XiaoeResult) && this.isNull(this.DancheResult))
+										{
+											this.Appear = false;
+										}
+										else {
+											this.Appear = true;
+										}
 
 
 										let maps2 = {
