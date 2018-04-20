@@ -185,7 +185,7 @@ export  default class AdjustListScene extends BaseComponent {
                 let data = JSON.parse(datas.result);
                 let maps = {
                     api: Urls.REPAYMENT_GET_ADJUST_SAVE,
-                    planid: this.props.items.planid,
+                    planid: this.props.items.repaymentplan_id,
                     merge_id: data.base_user_id,
                     coupon_number: this.state.values != "" ? this.datas.coupon_code : movies.list[this.selected].coupon_code,
                     coupon_id: this.state.values != "" ? this.datas.coupon_id : movies.list[this.selected].coupon_id,
@@ -273,7 +273,7 @@ export  default class AdjustListScene extends BaseComponent {
                 let data = JSON.parse(datas.result);
                 let maps = {
                     api: Urls.REPAYMENT_GET_ADJUST_SAVE,
-                    plan_id: this.props.items.planid,
+                    plan_id: this.props.items.repaymentplan_id,
                     merge_id: data.base_user_id,
                     adjustmoney: this.adjustmoney,
                     coupon_id: this.coupon_id,
