@@ -135,7 +135,7 @@ export default class MyAccountItem extends BaseComponent {
                     this.toNextPage(this.navigatorParams);
                     break;
             }
-        } else if(type == 'zsyxt') {
+        } else if (type == 'zsyxt') {
 
             switch (state) {
                 case 0://未开户
@@ -205,7 +205,6 @@ export default class MyAccountItem extends BaseComponent {
                     let datas = JSON.parse(data.result);
 
 
-
                     let maps = {
                         enter_base_ids: datas.company_base_id,
                         child_type: '1'
@@ -249,15 +248,14 @@ export default class MyAccountItem extends BaseComponent {
                     this.props.showToast('用户信息查询失败');
                 }
             });
-        } else if(type == 'zsyxt'){
+        } else if (type == 'zsyxt') {
 
 
-            if(this.data.status = 'undefined'|| this.data == {} || this.data.state == 0){
+            if (this.data.status = 'undefined' || this.data == {} || this.data.state == 0) {
                 this.props.clickCallBack();
-            }else {
+            } else {
                 this.pageDispense(type)
             }
-
 
 
         }
@@ -384,30 +382,29 @@ export default class MyAccountItem extends BaseComponent {
                         marginRight: Pixel.getPixel(20),
                         justifyContent: 'space-between',
                         backgroundColor: 'transparent',
-                        flexDirection:'row',
+                        flexDirection: 'row',
                     }}>
-                        {
-                            this.props.type != 'zsyxt'? <View>
-                                    <Text
-                                        allowFontScaling={false}
-                                        style={{
-                                            includeFontPadding: false,
-                                            textAlign: 'left',
-                                            fontSize: Pixel.getPixel(12),
-                                            color: fontAndColor.COLORA1
-                                        }}>{this.props.type == 'zsyxt'?"粮票余额（元）":  "账号余额（元）"}</Text>
-                                    <Text
-                                        allowFontScaling={false}
-                                        style={{
-                                            includeFontPadding: false,
-                                            marginTop: Pixel.getPixel(3),
-                                            textAlign: 'left',
-                                            fontSize: Pixel.getPixel(25),
-                                            color: fontAndColor.COLORA0
-                                        }}>{this.state.data.balance}</Text>
+                        <View>
+                            <Text
+                                allowFontScaling={false}
+                                style={{
+                                    includeFontPadding: false,
+                                    textAlign: 'left',
+                                    fontSize: Pixel.getPixel(12),
+                                    color: fontAndColor.COLORA1
+                                }}>{this.props.type == 'zsyxt' ? "粮票余额（元）" : "账号余额（元）"}</Text>
+                            <Text
+                                allowFontScaling={false}
+                                style={{
+                                    includeFontPadding: false,
+                                    marginTop: Pixel.getPixel(3),
+                                    textAlign: 'left',
+                                    fontSize: Pixel.getPixel(25),
+                                    color: fontAndColor.COLORA0
+                                }}>{this.state.data.balance}</Text>
 
-                                </View> :<View/>
-                        }
+                        </View>
+
                         {
 
                             this.props.showQuestion == true ?
@@ -435,7 +432,7 @@ export default class MyAccountItem extends BaseComponent {
                         flexDirection: 'row'
                     }}>
                         {
-                            this.props.type != "zsyxt"?
+                            this.props.type != "zsyxt" ?
                                 <View
                                     style={{flex: 2}}
                                 >
@@ -468,16 +465,8 @@ export default class MyAccountItem extends BaseComponent {
                                             textAlign: 'left',
                                             fontSize: Pixel.getPixel(12),
                                             color: fontAndColor.COLORA1
-                                        }}>{"粮票余额"}</Text>
-                                    <Text
-                                        allowFontScaling={false}
-                                        style={{
-                                            includeFontPadding: false,
-                                            marginTop: Pixel.getPixel(3),
-                                            textAlign: 'left',
-                                            fontSize: Pixel.getPixel(25),
-                                            color: fontAndColor.COLORA0
-                                        }}>{this.state.data.total}</Text>
+                                        }}>什么是车贷粮票？</Text>
+
 
                                 </View>
                         }

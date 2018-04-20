@@ -55,7 +55,7 @@ export default class OpenTrustSubmit extends PureComponent {
                     <Text allowFontScaling={false} style={{
                         fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
                         color: this.state.canSubmit ? 'white' : fontAndColor.COLORA2
-                    }}>升级</Text>
+                    }}>开通</Text>
                 </View>
             </TouchableOpacity>
         );

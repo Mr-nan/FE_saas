@@ -33,8 +33,8 @@ export default class OpenTrustAccountView extends BaseComponent {
     constructor(props) {
         super(props);
         this.contractList = [];
-        this.agree_contract=false;
-        this.agree_default=false;
+        this.agree_contract=true;
+        this.agree_default=true;
         this.state = {
             isShow: false
         };
@@ -147,9 +147,26 @@ export default class OpenTrustAccountView extends BaseComponent {
                         marginLeft: Pixel.getPixel(20), marginRight: Pixel.getPixel(20),
                     }}>
 
+                        <View  style={{flexDirection:'row', alignItems:'center',marginBottom:Pixel.getPixel(15)}}>
+                            <SelectButton onPress={(flag)=>{
+                                this.agree_default = flag;
+                                this.openTrustSubmitRef.changeState(this.agree_contract&&this.agree_default)
+                            }}/>
+                            <Text
+                                allowFontScaling={false}
+                                style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: fontAndColor.COLORA1,
+                                    marginLeft:Pixel.getPixel(5),
+                                    marginTop:Pixel.getPixel(5),
+                                    textAlign:'center',
+                                }}>
+                                默认使用恒丰开户信息开通粮票
+                            </Text>
 
+                        </View>
                         <View
-                            style={{flexDirection:'row', marginBottom:Pixel.getPixel(15)}}
+                            style={{flexDirection:'row', }}
                         >
                             <SelectButton onPress={(flag)=>{
                                 this.agree_contract = flag;
@@ -171,24 +188,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                 </Text>
                             </View>
                         </View>
-                        <View  style={{flexDirection:'row', alignItems:'center'}}>
-                            <SelectButton onPress={(flag)=>{
-                                this.agree_default = flag;
-                                this.openTrustSubmitRef.changeState(this.agree_contract&&this.agree_default)
-                            }}/>
-                            <Text
-                                allowFontScaling={false}
-                                style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: fontAndColor.COLORA1,
-                                    marginLeft:Pixel.getPixel(5),
-                                    marginTop:Pixel.getPixel(5),
-                                    textAlign:'center',
-                                }}>
-                                  默认使用恒丰开户信息开通粮票
-                            </Text>
 
-                        </View>
 
                     </View>
                     <OpenTrustSubmit ref={(ref) => {this.openTrustSubmitRef = ref}} submit={this.openTrustSubmit}/>

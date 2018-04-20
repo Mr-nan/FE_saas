@@ -27,6 +27,9 @@ import SText from '../component/SaasText'
 import SmsFillScene from './SmsFillScene'
 import ZSBaseComponent from  '../component/ZSBaseComponent'
 import  ResultIndicativeScene from '../ResultIndicativeScene'
+import SaasText from "../../zheshangAccount/component/SaasText";
+import TrustAccountContractScene from "../../trustAccount/TrustAccountContractScene";
+import SelectButton from "../../component/SelectButton";
 
 
 let Dimensions = require('Dimensions');
@@ -209,7 +212,27 @@ export default class WithdrawScene extends ZSBaseComponent {
                         }}
 
                     />
+                    <View style={{ justifyContent:'center',alignItems:'center', marginTop:Pixel.getPixel(25)}}>
 
+
+                        <SelectButton onPress={(flag)=>{
+
+                        }}/>
+                        <SaasText
+                            onPress={()=>{
+                                this.toNextPage({
+                                    name: 'TrustAccountContractScene',
+                                    component: TrustAccountContractScene,
+                                    params: {
+                                        title: '信托利益分配申请',
+                                        webUrl: "https://www.baidu.com"
+                                    }
+                                })
+
+                            }}
+                            style={{color:FontAndColor.COLORA1, fontSize:13}}
+                        >《信托利益分配申请》</SaasText>
+                    </View>
 
                 </ScrollView>
 
