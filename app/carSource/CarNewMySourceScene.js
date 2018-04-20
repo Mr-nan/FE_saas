@@ -1426,7 +1426,7 @@ class ManageView extends  Component {
                             </TouchableOpacity>)
                         }
                         {
-                            (in_valid_order!=1)? (null): (
+                            (in_valid_order!=1)&& (
                                 <TouchableOpacity style={styles.sharedItemView} onPress={() => {
                                     this.btnClick('编辑');
                                 }}>

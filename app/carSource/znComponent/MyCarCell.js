@@ -184,7 +184,7 @@ export default class MyCarCell extends Component {
                                         ((carType==1&&review_status!=2)||carType==3 ) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>
                                             <View style={styles.cellFoot}>
-                                                <Text allowFontScaling={false}  style={styles.cellFootText}> 申请上架 </Text>
+                                                <Text allowFontScaling={false}  style={styles.cellFootText}> 上架 </Text>
                                             </View>
                                         </TouchableOpacity>
                                     }
