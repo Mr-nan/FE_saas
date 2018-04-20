@@ -19,8 +19,9 @@ import {
     BackAndroid,
     RefreshControl,
     Dimensions,
-    TouchableWithoutFeedback
-} from  'react-native'
+    TouchableWithoutFeedback,
+    Modal
+} from 'react-native'
 
 const {width, height} = Dimensions.get('window');
 import BaseComponent from "../../component/BaseComponent";
@@ -36,6 +37,8 @@ import * as Urls from '../../constant/appUrls';
 import OpenTrustAccountView from './component/OpenTrustAccountView'
 import OpenAccountBaseScene from './xintuo/openAccount/OpenAccountBaseScene'
 import ResultIndicativeScene from './xintuo/ResultIndicativeScene'
+import {BASEURL} from '../../constant/appUrls';
+import WebScene from '../../main/WebScene';
 
 var Pixel = new PixelUtil();
 
@@ -68,6 +71,7 @@ export default class MyAccountScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             backColor: fontAndColor.COLORA3,
+            isShow: false,
 
         };
     }
@@ -85,11 +89,11 @@ export default class MyAccountScene extends BaseComponent {
         }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         dataList = [];
-         flag1 = 0;
-         flag2 = 0;
-         flag3 = 0;
+        flag1 = 0;
+        flag2 = 0;
+        flag3 = 0;
     }
 
     initFinish = () => {
@@ -107,12 +111,13 @@ export default class MyAccountScene extends BaseComponent {
                             obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = 0;
                             obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = 0;
                             obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = 0;
-                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {})
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                            })
                         }
                         this.setState({
-                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
                             mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
-                            mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                            mbKTShow: obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
                         })
                     }
                 })
@@ -146,12 +151,12 @@ export default class MyAccountScene extends BaseComponent {
 
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
-                
+
                 let datas = JSON.parse(data.result);
 
                 this.getAccountInfo(datas.company_base_id);
-                
-                request(Urls.IS_IN_WHITE_LIST, 'Post', {enter_base_id:datas.company_base_id})
+
+                request(Urls.IS_IN_WHITE_LIST, 'Post', {enter_base_id: datas.company_base_id})
                     .then((response) => {
                         let isWhiteList = response.mjson.data.status;
 
@@ -162,7 +167,7 @@ export default class MyAccountScene extends BaseComponent {
                         } else {   //1 在白名单中，
                             this.isZSshow()
                         }
-                       
+
 
                     }, (error) => {
                         this.props.showModal(false);
@@ -175,13 +180,13 @@ export default class MyAccountScene extends BaseComponent {
 
                 /******     信托白名单查询     ******/
 
-                request(Urls.CAN_XINTUO,'POST', {enter_base_id:datas.company_base_id,type:1}).then((response)=>{
+                request(Urls.CAN_XINTUO, 'POST', {enter_base_id: datas.company_base_id, type: 1}).then((response) => {
 
                     this.is_xintuo_in_whitelist = true;
                     flag3 = 1;
                     this.renderUI();
-                }, (error)=>{
-                    
+                }, (error) => {
+
                     this.is_xintuo_in_whitelist = false;
                     flag3 = 1;
                     this.renderUI()
@@ -200,18 +205,15 @@ export default class MyAccountScene extends BaseComponent {
         });
 
 
-
-
-
     };
 
     /**
      *  查询是否显示浙商账户
      **/
     isZSshow = () => {
-        
+
         /******     浙商账户是否可见     ******/
-        
+
         request(Urls.ZS_BANK_IS_SHOW, 'Post', {})
             .then((response) => {
                 if (response.mjson.data.status === 1) {
@@ -248,7 +250,7 @@ export default class MyAccountScene extends BaseComponent {
 
                 this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
                 this.xintuoInfo = response.mjson.data['zsyxt'][0] ? response.mjson.data['zsyxt'][0] : {};
-                
+
                 if (response.mjson.data['315'][0]) {
                     this.hengFengInfo = response.mjson.data['315'][0];
 
@@ -262,14 +264,16 @@ export default class MyAccountScene extends BaseComponent {
                                     if (subData.code == 1) {
                                         let obj = JSON.parse(subData.result);
 
-                                        if (obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] == 2){return}
+                                        if (obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] == 2) {
+                                            return
+                                        }
                                         obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = 1;
                                         StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                         })
                                         this.setState({
-                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
                                             mbWBKShow: 0,
-                                            mbKTShow:  0,
+                                            mbKTShow: 0,
                                         })
                                     }
                                 })
@@ -284,14 +288,16 @@ export default class MyAccountScene extends BaseComponent {
                                 StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                                     if (subData.code == 1) {
                                         let obj = JSON.parse(subData.result);
-                                        if (obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] == 2){return}
+                                        if (obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] == 2) {
+                                            return
+                                        }
                                         obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = 1;
                                         StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                         })
                                         this.setState({
-                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
                                             mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
-                                            mbKTShow:  0,
+                                            mbKTShow: 0,
                                         })
                                     }
                                 })
@@ -306,14 +312,16 @@ export default class MyAccountScene extends BaseComponent {
                                 StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                                     if (subData.code == 1) {
                                         let obj = JSON.parse(subData.result);
-                                        if (obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] == 2){return}
+                                        if (obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] == 2) {
+                                            return
+                                        }
                                         obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = 1;
                                         StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                         })
                                         this.setState({
-                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
                                             mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
-                                            mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                            mbKTShow: obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
                                         })
                                     }
                                 })
@@ -328,12 +336,12 @@ export default class MyAccountScene extends BaseComponent {
                         this.props.callBack(this.lastType);
                     }
                 }
-               
-                
+
+
                 flag1 = 1;
                 this.renderUI();
-                
-                
+
+
             }, (error) => {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
@@ -345,22 +353,22 @@ export default class MyAccountScene extends BaseComponent {
     };
 
 
-    renderUI = ()=>{
-        
+    renderUI = () => {
 
-        if (flag1 == 1&& flag2==1 &&flag3==1){
-            
+
+        if (flag1 == 1 && flag2 == 1 && flag3 == 1) {
+
             dataList = []
-            
+
             dataList.push('315');
-            
-            if (this.is_zheshang_in_whitelist){
+
+            if (this.is_zheshang_in_whitelist) {
                 dataList.push('316');
             }
-            if(this.is_xintuo_in_whitelist){
+            if (this.is_xintuo_in_whitelist) {
                 dataList.push('zsyxt');
             }
-            
+
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 dataSource: ds.cloneWithRows(dataList),
@@ -375,7 +383,6 @@ export default class MyAccountScene extends BaseComponent {
         }
 
     }
-
 
 
     render() {
@@ -415,11 +422,72 @@ export default class MyAccountScene extends BaseComponent {
                                       showModal={this.props.showModal}
                                       navigator={this.props.navigator}/>
 
+
+                <Modal
+                    ref='loadingModal'
+                    animationType={"fade"}
+                    transparent={true}
+                    visible={this.state.isShow}
+
+                >
+                    <View
+                        style={{
+                            flex:1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: 'rgba(0,0,0,.3)'
+                        }}>
+                        <View style={{
+                            width: width - width / 4,
+                            height: Pixel.getPixel(175),
+                            backgroundColor: '#fff',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            paddingHorizontal:Pixel.getPixel(20),
+                            borderRadius:Pixel.getPixel(4)
+                        }}>
+                            <Text allowFontScaling={false} style={{
+                                fontSize: Pixel.getPixel(17),
+                                fontWeight: 'bold',
+                                color: '#000'
+                            }}>什么是车贷粮票?</Text>
+                            <Text allowFontScaling={false} style={{
+                                textAlign: 'center', fontSize: Pixel.getPixel(14),
+                                marginTop: Pixel.getPixel(11), color: fontAndColor.COLORA1
+                            }}>
+                                {"车贷粮票是第1车贷与中信信托\n联合推出的一款具有强大金融功能的信托服务账户。"}
+                            </Text>
+                            <TouchableOpacity onPress={() => {
+                                this.setState({
+                                    isShow: false
+                                });
+                                this.props.callBack();
+                            }} activeOpacity={0.9} style={{
+                                width: width - width / 4 - Pixel.getPixel(40),
+                                height: Pixel.getPixel(35),
+                                marginTop: Pixel.getPixel(16),
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: 3,
+                                borderWidth: 1,
+                                borderColor: fontAndColor.COLORB0
+                            }}>
+                                <Text allowFontScaling={false} style={{
+                                    fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+                                    color: fontAndColor.COLORB0
+                                }}>确定</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
+
                 {
                     this.state.mbWKHShow == 1 ?
-                        <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
+                        <View style={{position: 'absolute', bottom: 0, top: 0, width: width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{
+                                onPress={() => {
 
                                     StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                                         if (data.code == 1) {
@@ -431,9 +499,9 @@ export default class MyAccountScene extends BaseComponent {
                                                     StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                                     })
                                                     this.setState({
-                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
                                                         mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
-                                                        mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                                        mbKTShow: obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
                                                     })
                                                 }
                                             })
@@ -441,18 +509,17 @@ export default class MyAccountScene extends BaseComponent {
                                     })
 
 
-
                                 }}>
-                                <Image style={{width:width,flex:1,resizeMode:'stretch'}}
+                                <Image style={{width: width, flex: 1, resizeMode: 'stretch'}}
                                        source={require('../../../images/tishimengban/zhgl_wkhwbkyhk.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
                     this.state.mbWBKShow == 1 ?
-                        <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
+                        <View style={{position: 'absolute', bottom: 0, top: 0, width: width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{
+                                onPress={() => {
                                     StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                                         if (data.code == 1) {
                                             let userData = JSON.parse(data.result);
@@ -463,9 +530,9 @@ export default class MyAccountScene extends BaseComponent {
                                                     StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                                     })
                                                     this.setState({
-                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
                                                         mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
-                                                        mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                                        mbKTShow: obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
                                                     })
                                                 }
                                             })
@@ -475,16 +542,16 @@ export default class MyAccountScene extends BaseComponent {
                                 }}
 
                             >
-                                <Image style={{width:width,flex:1,resizeMode:'stretch'}}
+                                <Image style={{width: width, flex: 1, resizeMode: 'stretch'}}
                                        source={require('../../../images/tishimengban/zhgl_bky.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
                 {
                     this.state.mbKTShow == 1 ?
-                        <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
+                        <View style={{position: 'absolute', bottom: 0, top: 0, width: width}}>
                             <TouchableWithoutFeedback
-                                onPress={()=>{
+                                onPress={() => {
 
                                     StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                                         if (data.code == 1) {
@@ -496,9 +563,9 @@ export default class MyAccountScene extends BaseComponent {
                                                     StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
                                                     })
                                                     this.setState({
-                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] ,
+                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
                                                         mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
-                                                        mbKTShow:  obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                                        mbKTShow: obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
                                                     })
                                                 }
                                             })
@@ -506,7 +573,7 @@ export default class MyAccountScene extends BaseComponent {
                                     })
 
                                 }}>
-                                <Image style={{width:width,flex:1,resizeMode:'stretch'}}
+                                <Image style={{width: width, flex: 1, resizeMode: 'stretch'}}
                                        source={require('../../../images/tishimengban/zhgl_ykhybk.png')}/>
                             </TouchableWithoutFeedback>
                         </View> : null
@@ -517,23 +584,23 @@ export default class MyAccountScene extends BaseComponent {
 
 
     // 信托开户
-    openTrustAccount = ()=>{
+    openTrustAccount = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
 
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
 
-                let params =  {enter_base_id:datas.company_base_id}
+                let params = {enter_base_id: datas.company_base_id}
 
-                request(Urls.OPEN_PERSON_TRUST_ACCOUNT, 'Post',params)
+                request(Urls.OPEN_PERSON_TRUST_ACCOUNT, 'Post', params)
                     .then((response) => {
                         this.props.showModal(false)
                         this.toNextPage({
                             component: ResultIndicativeScene,
                             name: 'ResultIndicativeScene',
                             params: {
-                                type:0,
+                                type: 0,
                                 status: 1,
                                 params: params,
                                 append: this.state.bankName,
@@ -545,10 +612,10 @@ export default class MyAccountScene extends BaseComponent {
                     }, (error) => {
                         this.props.showModal(false);
 
-                        if(error.mycode === 8050324){  // 不在服务时间内
+                        if (error.mycode === 8050324) {  // 不在服务时间内
                             this.setState({
-                                out_of_service_msg:error.mjson.msg,
-                                alert:true
+                                out_of_service_msg: error.mjson.msg,
+                                alert: true
                             })
                             return
                         }
@@ -558,7 +625,7 @@ export default class MyAccountScene extends BaseComponent {
                                 component: ResultIndicativeScene,
                                 name: 'ResultIndicativeScene',
                                 params: {
-                                    type:  0,
+                                    type: 0,
                                     status: 0,
                                     params: params,
                                     error: error.mjson,
@@ -582,39 +649,25 @@ export default class MyAccountScene extends BaseComponent {
                         }
 
 
-
                     });
             }
         })
     }
 
 
+    clickCallBack = () => {
 
-    clickCallBack = ()=>{
-
-        // this.navigatorParams.name = 'OpenAccountBaseScene';
-        // this.navigatorParams.component = OpenAccountBaseScene;
-        // this.navigatorParams.params = {
-        //     showModal:this.props.showModal,
-        //     callBack: () => {
-        //         this.props.callBack();
-        //     }
-        // };
-        // this.toNextPage(this.navigatorParams);
-        // return;
-        
-
-        if(this.hengFengInfo.account_open_type == 1){  // 企业
+        if (this.hengFengInfo.account_open_type == 1) {  // 企业
 
             this.navigatorParams.name = 'OpenAccountBaseScene';
             this.navigatorParams.component = OpenAccountBaseScene;
             this.navigatorParams.params = {
-                showModal:this.props.showModal,
+                showModal: this.props.showModal,
                 callBack: this.allRefresh
             };
             this.toNextPage(this.navigatorParams);
 
-        }else if(this.hengFengInfo.account_open_type == 2){  //个人
+        } else if (this.hengFengInfo.account_open_type == 2) {  //个人
 
             this.props.showModal(true);
             let maps = {
@@ -646,15 +699,16 @@ export default class MyAccountScene extends BaseComponent {
         let info = {};
         if (rowData == '315') {
             info = this.hengFengInfo;
-        } else if (rowData == '316'){
+        } else if (rowData == '316') {
             info = this.zheShangInfo;
-        }else {
+        } else {
             info = this.xintuoInfo;
         }
         return (
             <MyAccountItem
+                questionClick={this.questionClick}
                 clickCallBack={this.clickCallBack}
-                showQuestion = {rowData == 315?true:false}
+                showQuestion={rowData == 315 || rowData == 'zsyxt' ? true : false}
                 navigator={this.props.navigator}
                 showToast={this.props.showToast}
                 showModal={this.props.showModal}
@@ -665,6 +719,25 @@ export default class MyAccountScene extends BaseComponent {
     }
 
 
+    questionClick = (type) => {
+
+        if (type == '315') {
+
+            let url = BASEURL == 'https://gatewayapi.dycd.com/' ? 'http://bms.dycd.com/platform/activity_newhand.html' : 'http://test.bms.dycd.com/platform/activity_newhand.html';
+            this.toNextPage({
+                component: WebScene,
+                name: 'WebScene',
+                params: {webUrl: url, title: '新手指引'}
+            })
+
+        } else if (type == 'zsyxt') {
+
+            this.setState({
+                isShow: true
+            })
+        }
+
+    }
 }
 
 const styles = StyleSheet.create({});

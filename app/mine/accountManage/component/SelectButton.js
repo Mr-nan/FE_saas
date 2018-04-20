@@ -48,7 +48,7 @@ export default class SelectButton extends PureComponent {
             <TouchableOpacity style={{marginTop: Pixel.getPixel(5)}}
                               onPress={() => {
                                   this.changeState(!this.state.isSelect);
-                                  this.props.link().changeState(!this.state.isSelect);
+                                  this.props.onPress(!this.state.isSelect)
                               }}>
                 <Image source={image}/>
             </TouchableOpacity>
