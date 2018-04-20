@@ -41,7 +41,7 @@ export default class HomeJobItem extends PureComponent {
         }
         this.allData = {
             credit_mny: this.type==1?mnyData.credit_mny / 10000:mnyData.newcar_creditmny/10000,//授信额度
-            credit_maxloanmny: this.type==1?mnyData.credit_maxloanmny / 10000 : mnyData.newcar_maxloanmny/1000,//可用余额
+            credit_maxloanmny: this.type==1?mnyData.credit_maxloanmny / 10000 : mnyData.newcar_maxloanmny/10000,//可用余额
             loan_balance_mny: this.type==1?mnyData.loan_balance_mny / 10000 : mnyData.newcar_loanbalance/10000,//贷款余额
             microchinese_mny: mnyData.microchinese_mny / 10000,//微众额度
             is_microchinese_mny:mnyData.is_microchinese_mny,//3审核通过，5关闭
