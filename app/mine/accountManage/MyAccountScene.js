@@ -721,22 +721,22 @@ export default class MyAccountScene extends BaseComponent {
 
     questionClick = (type) => {
 
-        this.props.showModal(true);
-        let maps = {
-            source_type: '3',
-            fund_channel: '信托'
-        };
-        request(Urls.AGREEMENT_LISTS, 'Post', maps)
-            .then((response) => {
-                this.props.showModal(false);
-                this.contractList = response.mjson.data.list;
-                this.refs.openAccount.changeStateWithData(true, this.contractList);
-            }, (error) => {
-                this.props.showModal(false);
-                this.props.showToast(error.mjson.msg);
-            });
-
-        return
+        //this.props.showModal(true);
+        // let maps = {
+        //     source_type: '3',
+        //     fund_channel: '信托'
+        // };
+        // request(Urls.AGREEMENT_LISTS, 'Post', maps)
+        //     .then((response) => {
+        //         //this.props.showModal(false);
+        //         this.contractList = response.mjson.data.list;
+        //         this.refs.openAccount.changeStateWithData(true, this.contractList);
+        //     }, (error) => {
+        //         //this.props.showModal(false);
+        //         this.props.showToast(error.mjson.msg);
+        //     });
+        //
+        // return
 
 
         if (type == '315') {

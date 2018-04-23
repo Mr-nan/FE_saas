@@ -10,7 +10,8 @@ import {
     Image,
     Text,
     TouchableOpacity,
-    InteractionManager
+    InteractionManager,
+    Animated,
 } from "react-native";
 
 const {width, height} = Dimensions.get('window');
@@ -22,6 +23,7 @@ import * as AppUrls from "../../../constant/appUrls";
 import TrustAccountContractScene from "../trustAccount/TrustAccountContractScene";
 import SelectButton from "./SelectButton";
 import OpenTrustSubmit from "./OpenTrustSubmit";
+
 const Pixel = new PixelUtil();
 
 export default class OpenTrustAccountView extends BaseComponent {
@@ -33,10 +35,12 @@ export default class OpenTrustAccountView extends BaseComponent {
     constructor(props) {
         super(props);
         this.contractList = [];
-        this.agree_contract=true;
-        this.agree_default=true;
+        this.agree_contract = true;
+        this.agree_default = true;
+
         this.state = {
-            isShow: false
+            isShow: false,
+            content_height: new Animated.Value(Pixel.getPixel(280))
         };
     }
 
@@ -73,14 +77,14 @@ export default class OpenTrustAccountView extends BaseComponent {
      *   跳转合同预览页
      **/
     openContractScene = (name, url) => {
-            this.toNextPage({
-                name: 'TrustAccountContractScene',
-                component: TrustAccountContractScene,
-                params: {
-                    title: name,
-                    webUrl: url
-                }
-            })
+        this.toNextPage({
+            name: 'TrustAccountContractScene',
+            component: TrustAccountContractScene,
+            params: {
+                title: name,
+                webUrl: url
+            }
+        })
     };
 
     /**
@@ -94,7 +98,7 @@ export default class OpenTrustAccountView extends BaseComponent {
      *   开通信托账户提交
      **/
     openTrustSubmit = () => {
-        if(this.agree_contract&&this.agree_default){
+        if (this.agree_contract && this.agree_default) {
             this.changeState(false);
             this.props.callBack();
         }
@@ -111,7 +115,10 @@ export default class OpenTrustAccountView extends BaseComponent {
                 contractList.push(<Text
                     key={i + 'contractList'}
                     allowFontScaling={false}
-                    onPress={() => {this.openContractScene('合同', this.contractList[i].url)}}
+                    onPress={() => {
+                        this.openContractScene('合同', this.contractList[i].url)
+                        console.log(this.contractList[i].url)
+                    }}
                     style={{
                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                         color: fontAndColor.COLORB4,
@@ -121,81 +128,138 @@ export default class OpenTrustAccountView extends BaseComponent {
                 </Text>);
                 //contractList.push({title: this.contractList[i].name, webUrl: this.contractList[i].url});
             }
-            return (<View style={styles.container}>
-                <TouchableOpacity  onPress={() => {
-                    this.changeState(false)
-                }}/>
-                <View style={{
-                    backgroundColor: '#ffffff',
-                    borderRadius: Pixel.getPixel(4),
-                    marginHorizontal:Pixel.getPixel(65),
-                    paddingBottom:Pixel.getPixel(20)
-                }}>
-                    <Text
-                        allowFontScaling={false}
-                        style={{
-                            marginTop: Pixel.getPixel(18),
-                            marginLeft: Pixel.getPixel(20),
-                            marginRight: Pixel.getPixel(20),
-                            color: '#000',
-                            fontSize: Pixel.getFontPixel(14),
-                            lineHeight: Pixel.getPixel(18),
-                            textAlign: 'center'
-                        }}>{"第1车贷与中信信托合作，\n为优质合作伙伴开通具备强大金融功能的信托服务账户“粮票”"}</Text>
-                    <View style={{
-                        marginTop: Pixel.getPixel(15), alignSelf: 'center',
-                        marginLeft: Pixel.getPixel(20), marginRight: Pixel.getPixel(20),
-                    }}>
+            return (
 
-                        <View  style={{flexDirection:'row', alignItems:'center',marginBottom:Pixel.getPixel(15)}}>
-                            <SelectButton onPress={(flag)=>{
-                                this.agree_default = flag;
-                                this.openTrustSubmitRef.changeState(this.agree_contract&&this.agree_default)
-                            }}/>
-                            <Text
-                                allowFontScaling={false}
-                                style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: fontAndColor.COLORA1,
-                                    marginLeft:Pixel.getPixel(5),
-                                    marginTop:Pixel.getPixel(5),
-                                    textAlign:'center',
-                                }}>
-                                默认使用恒丰开户信息开通粮票
-                            </Text>
-
-                        </View>
-                        <View
-                            style={{flexDirection:'row', }}
+                <View style={styles.container}>
+                    <TouchableOpacity
+                        style={{flex: 1, alignItems: 'center',}}
+                        onPress={() => {
+                            this.changeState(false)
+                        }}
+                    >
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            style={{
+                                marginTop:Pixel.getPixel(200),
+                            }}
+                            onPress={()=>{}}
                         >
-                            <SelectButton onPress={(flag)=>{
-                                this.agree_contract = flag;
-                                this.openTrustSubmitRef.changeState(this.agree_contract&&this.agree_default)
 
-                            }}/>
-                            <View style={{marginLeft: Pixel.getPixel(5),}}>
-                                <Text >
+
+                        <Animated.View style={{
+
+                            backgroundColor: '#ffffff',
+                            borderRadius: Pixel.getPixel(4),
+                            width: Pixel.getPixel(260),
+                            height: this.state.content_height,
+                            paddingBottom: Pixel.getPixel(15),
+                            overflow:"hidden",
+                        }}>
+
+                            <View
+                                style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    paddingVertical: Pixel.getPixel(50),
+                                    paddingHorizontal: Pixel.getPixel(20)
+                                }}
+                            >
+
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        color: '#000',
+                                        fontSize: Pixel.getFontPixel(15),
+                                        lineHeight: Pixel.getPixel(18),
+                                    }}
+                                >{"\t第1车贷与中信信托合作,为优质合作伙伴开通具备强大金融功能的信托服务账户“粮票”。"}</Text>
+
+                            </View>
+
+                            <View style={{
+                                marginTop: Pixel.getPixel(15), alignSelf: 'center',
+                                marginHorizontal: Pixel.getPixel(20),
+                            }}>
+                                <OpenTrustSubmit ref={(ref) => {
+                                    this.openTrustSubmitRef = ref
+                                }} submit={this.openTrustSubmit}/>
+
+                                <View style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    // marginBottom: Pixel.getPixel(5),
+                                    marginTop: Pixel.getPixel(15)
+                                }}>
+                                    <SelectButton onPress={(flag) => {
+                                        this.agree_default = flag;
+                                        this.openTrustSubmitRef.changeState(this.agree_contract && this.agree_default)
+                                    }}/>
                                     <Text
                                         allowFontScaling={false}
                                         style={{
                                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                             color: fontAndColor.COLORA1,
-                                            lineHeight: Pixel.getPixel(20)
+                                            marginLeft: Pixel.getPixel(5),
+                                            marginTop: Pixel.getPixel(5),
+                                            textAlign: 'center',
                                         }}>
-                                        我已经阅读并同意
+                                        默认使用恒丰开户信息开通粮票
                                     </Text>
-                                    {contractList}
-                                </Text>
+
+                                </View>
+
+
+                                <View
+                                    style={{flexDirection: 'row', alignItems: 'center'}}
+                                >
+                                    <SelectButton onPress={(flag) => {
+                                        this.agree_contract = flag;
+                                        this.openTrustSubmitRef.changeState(this.agree_contract && this.agree_default)
+
+                                    }}/>
+
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                            color: fontAndColor.COLORA1,
+                                            lineHeight: Pixel.getPixel(20),
+                                            marginLeft: Pixel.getPixel(5)
+                                        }}
+                                        onPress={() => {
+                                            Animated.timing(
+                                                this.state.content_height,
+                                                {
+                                                    toValue:Pixel.getPixel(390)
+                                                }
+                                            ).start()
+
+                                        }}
+                                    >
+
+                                        我已经阅读并同意以下协议,点击查看
+                                    </Text>
+
+                                </View>
+
+
                             </View>
-                        </View>
 
 
-                    </View>
-                    <OpenTrustSubmit ref={(ref) => {this.openTrustSubmitRef = ref}} submit={this.openTrustSubmit}/>
+                            <View style={{
+                                marginHorizontal:Pixel.getPixel(20),
+                                marginVertical:Pixel.getPixel(6),
+                            }}>
+                                {contractList}
+                            </View>
+                        </Animated.View>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
                 </View>
-            </View>);
+
+            );
         } else {
-            return (<View />);
+            return (<View/>);
         }
     }
 
@@ -209,7 +273,7 @@ const styles = StyleSheet.create({
         right: 0,
         position: 'absolute',
         bottom: 0,
-        justifyContent:'center',
-        alignItems:'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 });

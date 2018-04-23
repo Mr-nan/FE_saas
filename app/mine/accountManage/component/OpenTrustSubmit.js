@@ -35,7 +35,7 @@ export default class OpenTrustSubmit extends PureComponent {
 
     render() {
         return (
-            <TouchableOpacity style={{alignSelf: 'center', marginTop: Pixel.getPixel(25),}}
+            <TouchableOpacity style={{alignSelf: 'center'}}
                               onPress={() => {
                                   if (this.state.canSubmit) {
                                     this.props.submit();
