@@ -59,7 +59,7 @@ export  default class AdjustManageListScene extends BaseComponent {
 
     getData = () => {
         let maps = {
-            base_id: this.props.base_id
+            merge_id: this.props.merge_id
         };
         request(Urls.COUPON_LISTBYUID, 'Post', maps)
             .then((response) => {

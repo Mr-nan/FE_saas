@@ -148,7 +148,7 @@ export default class AdjustManageScene extends BaseComponent {
                 name: 'AdjustManageListScene',
                 component: AdjustManageListScene,
                 params: {
-                    base_id: rowData.user_id,
+                    merge_id: rowData.merge_id,
                 },
             })}}>
                 <View style={styles.rowView} >
