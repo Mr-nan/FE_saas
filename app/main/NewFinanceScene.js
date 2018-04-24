@@ -215,7 +215,8 @@ export default class NewFinanceScene extends BaseComponet {
                     this.props.showModal(false);
 
                     if (error.mycode == '-2100045') {
-                        this.allData = [this.allData1, 1, 2, []];
+                        movies=[];
+                        this.allData[3] = [];
                         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
                             if (data.code == 1) {
                                 let datas = JSON.parse(data.result);
