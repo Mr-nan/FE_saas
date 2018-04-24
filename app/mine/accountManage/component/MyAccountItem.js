@@ -462,6 +462,9 @@ export default class MyAccountItem extends BaseComponent {
                                 >
                                     <Text
                                         allowFontScaling={false}
+                                        onPress={()=>{
+                                            this.props.questionClick(this.props.type)
+                                        }}
                                         style={{
                                             includeFontPadding: false,
                                             textAlign: 'left',
