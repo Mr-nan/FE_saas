@@ -26,13 +26,12 @@ let allPage = 0;
 
 import  HomeHeaderItem from './component/HomeHeaderItem';
 import  PixelUtil from '../utils/PixelUtil'
-import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
-import ChedidaiDetaileScene from '../finance/lend/ChedidaiDetaileScene';
+import KurongDetaileScene from '../finance/lend/KurongDetaileSceneNew';
 import DDDetailScene from '../finance/lend/DDDetailScene';
 import DDApplyLendScene from '../finance/lend/DDApplyLendScene';
 
 import CGDDetailSence from '../finance/lend/CGDDetailSence';
-import SingDetaileSence from '../finance/lend/SingDetaileSence';
+import SingDetaileSence from '../finance/lend/SingDetaileSenceNew';
 import  StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 let Pixel = new PixelUtil();
@@ -173,10 +172,10 @@ export default class FinanceSence extends BaseComponet {
          *【0全部、2单车、3采购贷旧(信用贷)、4库融、5采购贷、7应收账款、8车抵贷】
          */
         let maps = {
-            api: Urls.GET_APPLY_LIST_NEW,
+            api: Urls.GET_APPLY_LIST,
             p: page,
             rows:10,
-            product_type_code产品类型:0,
+            product_type_cod:0,
         };
         request(Urls.FINANCE, 'Post', maps, () => {
             this.props.backToLogin();
