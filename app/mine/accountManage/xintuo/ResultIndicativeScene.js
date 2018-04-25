@@ -250,7 +250,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                         this.props.callBack()
 
                         });
-                        this.backN(4)  //开户成功跳卡片页
+                        this.backN(3)  //开户成功跳卡片页
                         this.props.callBack()
                     }
                         break;
@@ -260,7 +260,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                     }
                         break;
                     case 3: {
-                        this.backN(4)  //提交资料成功跳卡片页
+                        this.backN(3)  //提交资料成功跳卡片页
                     }
                         break
                 }

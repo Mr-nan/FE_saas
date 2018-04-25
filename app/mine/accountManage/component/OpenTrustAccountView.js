@@ -187,7 +187,6 @@ export default class OpenTrustAccountView extends BaseComponent {
                                 <View style={{
                                     flexDirection: 'row',
                                     alignItems: 'center',
-                                    // marginBottom: Pixel.getPixel(5),
                                     marginTop: Pixel.getPixel(15)
                                 }}>
                                     <SelectButton onPress={(flag) => {

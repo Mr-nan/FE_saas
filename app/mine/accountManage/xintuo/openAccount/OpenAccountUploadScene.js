@@ -32,6 +32,8 @@ import * as ImageUpload from "../../../../utils/ImageUpload";
 import ImageSourceSample from '../../../../publish/component/ImageSourceSample'
 import ImagePicker from "react-native-image-picker";
 import ResultIndicativeScene from '../ResultIndicativeScene';
+import TrustAccountContractScene from "../../trustAccount/TrustAccountContractScene";
+import SelectButton from "../../component/SelectButton";
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -60,10 +62,10 @@ export default class OpenAccountBaseScene extends BaseComponent {
 
     constructor(props) {
         super(props)
-
+        this.agree_contract = true;
+        this.agree_default = true;
         this.state = {
-            renderPlaceholderOnly: 'loading',
-            
+
             legal_picurl: null,
             legal_opposite_picurl: null,
             community_credit_picurl: null,
@@ -75,22 +77,42 @@ export default class OpenAccountBaseScene extends BaseComponent {
 
     }
 
-
-    componentWillUnmount(){
-            delete this.props.model.legal_picurl;
-            delete this.props.model.legal_opposite_picurl;
-            delete this.props.model.community_credit_picurl;
-            delete this.props.model.organization_code_picurl;
-            delete this.props.model.cert_url;
-            delete this.props.model.tax_register_picurl;
+    componentWillUnmount() {
+        delete this.props.model.legal_picurl;
+        delete this.props.model.legal_opposite_picurl;
+        delete this.props.model.community_credit_picurl;
+        delete this.props.model.organization_code_picurl;
+        delete this.props.model.cert_url;
+        delete this.props.model.tax_register_picurl;
     }
-
 
 
     initFinish() {
         this.setState({
-            renderPlaceholderOnly: 'success'
+            renderPlaceholderOnly: 'loading'
         })
+
+        this.props.showModal(true);
+        let maps = {
+            source_type: '3',
+            fund_channel: '信托'
+        };
+        request(AppUrls.AGREEMENT_LISTS, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                this.contractList = response.mjson.data.list;
+
+                this.setState({
+                    renderPlaceholderOnly: 'success'
+                })
+
+            }, (error) => {
+                this.setState({
+                    renderPlaceholderOnly: 'error'
+                })
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+            });
     }
 
     render() {
@@ -107,6 +129,26 @@ export default class OpenAccountBaseScene extends BaseComponent {
             </View>
         }
 
+
+        let contractList = [];
+        for (let i = 0; i < this.contractList.length; i++) {
+            contractList.push(<Text
+                key={i + 'contractList'}
+                allowFontScaling={false}
+                onPress={() => {
+                    this.openContractScene('合同', this.contractList[i].url)
+                    console.log(this.contractList[i].url)
+                }}
+                style={{
+                    fontSize: Pixel.getFontPixel(FontAndColor.CONTENTFONT24),
+                    color: FontAndColor.COLORB4,
+                    lineHeight: Pixel.getPixel(20)
+                }}>
+                《{this.contractList[i].name}》{i < this.contractList.length - 1 ? '、' : ''}
+            </Text>);
+            //contractList.push({title: this.contractList[i].name, webUrl: this.contractList[i].url});
+        }
+
         return (
             <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
 
@@ -120,7 +162,6 @@ export default class OpenAccountBaseScene extends BaseComponent {
 
                 <ScrollView>
 
-                    <ProcessIndicator step={3}/>
                     <View style={{marginTop: Pixel.getPixel(15)}}>
                         <SaasText style={{
                             color: FontAndColor.COLORA1,
@@ -146,7 +187,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                 onDelete={() => {
                                     this.props.model.legal_picurl = null;
                                     this.setState({
-                                        legal_picurl:null
+                                        legal_picurl: null
                                     })
                                 }}
                             />
@@ -160,7 +201,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                 onDelete={() => {
                                     this.props.model.legal_opposite_picurl = null;
                                     this.setState({
-                                        legal_opposite_picurl:null
+                                        legal_opposite_picurl: null
                                     })
                                 }}
                             />
@@ -187,7 +228,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                             }}
                         >
                             {
-                                this.props.model.is_three_certificates_joined == 2 ?
+                               this.props.model.is_three_certificates_joined == 2 ?
 
                                     <LicenseImageScene
                                         image={this.state.community_credit_picurl}
@@ -199,7 +240,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         onDelete={() => {
                                             this.props.model.community_credit_picurl = null;
                                             this.setState({
-                                                community_credit_picurl:null
+                                                community_credit_picurl: null
                                             })
                                         }}
 
@@ -216,7 +257,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                             onDelete={() => {
                                                 this.props.model.organization_code_picurl = null;
                                                 this.setState({
-                                                    organization_code_picurl:null
+                                                    organization_code_picurl: null
                                                 })
                                             }}
                                         />
@@ -230,7 +271,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                             onDelete={() => {
                                                 this.props.model.cert_url = null;
                                                 this.setState({
-                                                    cert_url:null
+                                                    cert_url: null
                                                 })
                                             }}
                                         />
@@ -244,7 +285,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                             onDelete={() => {
                                                 this.props.model.tax_register_picurl = null;
                                                 this.setState({
-                                                    tax_register_picurl:null
+                                                    tax_register_picurl: null
                                                 })
                                             }}
                                         />
@@ -261,11 +302,76 @@ export default class OpenAccountBaseScene extends BaseComponent {
                         parentStyle={styles.next_parentStyle}
                         childStyle={styles.next_childStyle}
                         mOnPress={() => {
-                            if(this.verify()){
-                                  this.openAccount()
+                            if (this.verify()) {
+                                this.openAccount()
                             }
                         }}/>
 
+                    <View style={{paddingLeft:Pixel.getPixel(15)}}>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginTop: Pixel.getPixel(15)
+                    }}>
+                        <SelectButton onPress={(flag) => {
+                            this.agree_default = flag;
+                        }}/>
+                        <Text
+                            allowFontScaling={false}
+                            style={{
+                                fontSize: Pixel.getFontPixel(FontAndColor.CONTENTFONT24),
+                                color: FontAndColor.COLORA1,
+                                marginLeft: Pixel.getPixel(5),
+                                marginTop: Pixel.getPixel(5),
+                                textAlign: 'center',
+                            }}>
+                            默认使用恒丰开户信息开通粮票
+                        </Text>
+
+                    </View>
+
+
+                    <View
+                        style={{flexDirection: 'row', alignItems: 'center'}}
+                    >
+                        <SelectButton onPress={(flag) => {
+                            this.agree_contract = flag;
+                        }}/>
+
+                        <Text
+                            allowFontScaling={false}
+                            style={{
+                                fontSize: Pixel.getFontPixel(FontAndColor.CONTENTFONT24),
+                                color: FontAndColor.COLORA1,
+                                lineHeight: Pixel.getPixel(20),
+                                marginLeft: Pixel.getPixel(5)
+                            }}
+                            onPress={() => {
+                                Animated.timing(
+                                    this.state.content_height,
+                                    {
+                                        toValue: Pixel.getPixel(390)
+                                    }
+                                ).start()
+
+                            }}
+                        >
+
+                            我已经阅读并同意以下协议,点击查看
+                        </Text>
+
+                    </View>
+
+
+                    <View style={{
+                        marginHorizontal: Pixel.getPixel(20),
+                        marginVertical: Pixel.getPixel(6),
+                    }}>
+                        {contractList}
+                    </View>
+
+                    </View>
                 </ScrollView>
                 <ImageSourceSample
 
@@ -275,14 +381,24 @@ export default class OpenAccountBaseScene extends BaseComponent {
                         this.imageSource = modal
                     }}/>
 
+
             </View>
         )
     }
 
-
+    openContractScene = (name, url) => {
+        this.toNextPage({
+            name: 'TrustAccountContractScene',
+            component: TrustAccountContractScene,
+            params: {
+                title: name,
+                webUrl: url
+            }
+        })
+    };
 
     ///开户
-    openAccount = () =>{
+    openAccount = () => {
 
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code === 1 && data.result !== null) {
@@ -301,7 +417,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                             component: ResultIndicativeScene,
                             name: 'ResultIndicativeScene',
                             params: {
-                                type:1,
+                                type: 1,
                                 status: 1,
                                 params: this.props.model,
                                 append: this.state.bankName,
@@ -312,10 +428,10 @@ export default class OpenAccountBaseScene extends BaseComponent {
                     }, (error) => {
 
                         this.props.showModal(false);
-                        if(error.mycode === 8050324){  // 不在服务时间内
+                        if (error.mycode === 8050324) {  // 不在服务时间内
                             this.setState({
-                                out_of_service_msg:error.mjson.msg,
-                                alert:true
+                                out_of_service_msg: error.mjson.msg,
+                                alert: true
                             })
                             return
                         }
@@ -325,11 +441,11 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                 component: ResultIndicativeScene,
                                 name: 'ResultIndicativeScene',
                                 params: {
-                                    type:  1,
+                                    type: 1,
                                     status: 0,
                                     params: this.props.model,
                                     error: error.mjson,
-                                    callBack:  this.props.callBack
+                                    callBack: this.props.callBack
                                 }
                             })
                         } else if (error.mycode === -500 || error.mycode === -300) {
@@ -343,7 +459,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                     status: 2,
                                     params: this.props.model,
                                     error: error.mjson,
-                                    callBack:  this.props.callBack
+                                    callBack: this.props.callBack
                                 }
                             })
                         }
@@ -354,7 +470,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
         })
     }
 
-    verify=()=>{
+    verify = () => {
 
         // legal_picurl: null,
         //     legal_opposite_picurl: null,
@@ -363,31 +479,42 @@ export default class OpenAccountBaseScene extends BaseComponent {
         //     cert_url: null,
         //     tax_register_picurl: null,
 
-        if(this.props.model.legal_picurl == null){
+        if (this.props.model.legal_picurl == null) {
             this.props.showToast('请上传身份证正面')
             return false
-        }else if (this.props.model.legal_opposite_picurl == null){
+        } else if (this.props.model.legal_opposite_picurl == null) {
             this.props.showToast('请上传身份证背面')
             return false
         }
 
-        if (this.props.model.is_three_certificates_joined == 1){
-            if (this.props.organization_code_picurl == null){
+        if (this.props.model.is_three_certificates_joined == 1) {
+            if (this.props.organization_code_picurl == null) {
                 this.props.showToast('请上传组织机构照片')
                 return false
-            }else if (this.props.model.cert_url == null){
+            } else if (this.props.model.cert_url == null) {
                 this.props.showToast('请上传营业执照')
                 return false
-            }else if (this.props.model.tax_register_picurl == null){
+            } else if (this.props.model.tax_register_picurl == null) {
                 this.props.showToast('请上传税务登记证')
                 return false
             }
-        }else {
-            if (this.props.model.community_credit_picurl == null){
+        } else {
+            if (this.props.model.community_credit_picurl == null) {
                 this.props.showToast('请上传')
                 return false
             }
         }
+
+        if(!this.agree_default){
+            this.props.showToast('请同意默认使用恒丰开户信息开通粮票')
+            return false;
+        }
+        if(!this.agree_contract){
+            this.props.showToast('请同意相关协议')
+            return false;
+        }
+
+
 
         return true
 
@@ -454,42 +581,42 @@ export default class OpenAccountBaseScene extends BaseComponent {
             .then((response) => {
 
                 this.props.showModal(false);
-                
+
                 if (response.mycode == 1) {
                     let source = {uri: response.mjson.data.icon};
 
                     this.props.model[id] = response.mjson.data.url;
 
                     switch (id) {
-                        
+
                         case 'legal_picurl':
                             this.setState({
-                                legal_picurl:source
+                                legal_picurl: source
                             })
                             break;
                         case 'legal_opposite_picurl':
                             this.setState({
-                                legal_opposite_picurl:source
+                                legal_opposite_picurl: source
                             })
                             break;
                         case 'community_credit_picurl':
                             this.setState({
-                                community_credit_picurl:source
+                                community_credit_picurl: source
                             })
                             break;
                         case 'organization_code_picurl':
                             this.setState({
-                                organization_code_picurl:source
+                                organization_code_picurl: source
                             })
                             break;
                         case 'cert_url':
                             this.setState({
-                                cert_url:source
+                                cert_url: source
                             })
                             break;
                         case 'tax_register_picurl':
                             this.setState({
-                                tax_register_picurl:source
+                                tax_register_picurl: source
                             })
                             break;
                         default:

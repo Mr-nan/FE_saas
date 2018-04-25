@@ -28,6 +28,7 @@ import InformationInputItem from './component/InformationInputItem'
 import SaasText from "../../zheshangAccount/component/SaasText";
 import MyButton from '../../../../component/MyButton'
 import OpenAccountInfo from './OpenAccountInfo'
+import OpenAccountUploadScene from './OpenAccountUploadScene';
 
 
 let Dimensions = require('Dimensions');
@@ -117,7 +118,6 @@ export default class OpenAccountBaseScene extends BaseComponent {
                 />
                 <ScrollView>
 
-                    <ProcessIndicator step={1}/>
                     <View style={{marginTop: Pixel.getPixel(15)}}>
                         <InformationInputItem
                             ref={'law_name'}
@@ -208,7 +208,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         onChangeText={(text)=>{
                                             this.model.organization_code = text
                                         }}
-                                        loading={this.state.loading_bank}
+
                                         annotation={this.state.bankName}
 
                                     />
@@ -254,8 +254,8 @@ export default class OpenAccountBaseScene extends BaseComponent {
                         mOnPress={() => {
                             if (this.verify()) {
                                 this.toNextPage({
-                                    name: OpenAccountInfo,
-                                    component: OpenAccountInfo,
+                                    name: OpenAccountUploadScene,
+                                    component: OpenAccountUploadScene,
                                     params: {model: this.model,showModal:this.props.showModal,callBack:this.props.callBack}
                                 })
                             }
