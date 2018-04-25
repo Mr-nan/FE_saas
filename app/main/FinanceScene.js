@@ -160,11 +160,23 @@ export default class FinanceSence extends BaseComponet {
 
     getApplyData = () => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        /**
+         * payment_number单号
+         * auto_vin车架号
+         * min_loanmny最小金额
+         * max_loanmny最大金额
+         * loanperiod期限
+         * logic_status 状态 全部all
+         * product_type_code产品类型 全部all
+         * 搜索字段
+         * @type {{api, p: number, rows: number, loan_type: number}}
+         *【0全部、2单车、3采购贷旧(信用贷)、4库融、5采购贷、7应收账款、8车抵贷】
+         */
         let maps = {
-            api: Urls.GET_APPLY_LIST,
+            api: Urls.GET_APPLY_LIST_NEW,
             p: page,
             rows:10,
-            loan_type:0,
+            product_type_code产品类型:0,
         };
         request(Urls.FINANCE, 'Post', maps, () => {
             this.props.backToLogin();
