@@ -61,7 +61,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                 rowHasChanged: (row1, row2) => row1 !== row2,
                 sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
             }
-        )//
+        )
         this.state = {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading
@@ -69,7 +69,6 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
     }
 
     initFinish() {
-
         this.getLendinfo();
     }
 
@@ -101,8 +100,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                         })
                     }
 
-                },
-                (error) => {
+                }, (error) => {
 
                     this.setState({
                         renderPlaceholderOnly: STATECODE.loadError,
@@ -135,24 +133,18 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                         dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfoJson, tempCarJson)),
                         renderPlaceholderOnly: STATECODE.loadSuccess
                     })
-                },
-
-                (error) => {
-
+                }, (error) => {
                     this.setState({
                         renderPlaceholderOnly: STATECODE.loadError,
                     })
                     if (error.mycode != -300 || error.mycode != -500) {
                         this.props.showToast(error.mjson.msg);
-
                     } else {
                         this.props.showToast('服务器连接有问题')
-
                     }
                 });
-
-
     }
+
     titleNameBlob = (jsonData, carData) => {
 
         let dataSource = {};
@@ -191,6 +183,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
 
         return dataSource;
     }
+
     getButtonStyleWithTitle = (title) => {
 
         switch (title) {
@@ -231,11 +224,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                 .then((response) => {
                         this.props.showModal(false);
                         this.change.setModelVisible(true)
-                    },
-                    (error) => {
-                        //需要做处理
-
-                    });
+                    }, (error) => {});
         }
     }
 
