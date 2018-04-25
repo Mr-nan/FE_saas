@@ -371,7 +371,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
     renderHeader = () => {
         return (
-            <View style={{flexDirection:'column'}}>
+            <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
                 <View style={{flexDirection:'row'}}>
                     <Text style={{flex:1}}>{this.tempjson.loan_code}</Text>
                     <Text style={{}}>{this.tempjson.repayment_type}</Text>
@@ -394,7 +394,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     <Text style={{flex:1}}>申请日期</Text>
                     <Text>{this.tempjson.createtimestr}</Text>
                 </View>
-                <Text>{'xxxxxxxxxxx'}</Text>
+                <Text style={{backgroundColor:'#d8d8d8'}}>{'xxxxxxxxxxx'}</Text>
             </View>
         )
     }
@@ -404,22 +404,22 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         //     return <LendCarItemCell onPress={()=>{this.getCarInfo(rowData)}} carName={rowData.model_name}
         //                             orderNum={rowData.loan_number} orderState={rowData.state} price={rowData.price}/>
         // }
-        return <View style={{flexDirection:'column'}}>
+        return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
                 <View style={{flexDirection:'row'}}>
-                    <Text>{rowData.model_name}</Text>
+                    <Text style={{flex:1}}>{rowData.model_name}</Text>
                     <Text>{rowData.auto_id}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
+                    <Text style={{flex:1}}>{rowData.loan_number}</Text>
+                    <Text>{'订单状态'}</Text>
+                </View>
+                <View style={{flexDirection:'row'}}>
+                    <Text style={{flex:1}}>{'合同放款额度'}</Text>
+                    <Text>{rowData.price}</Text>
+                </View>
+                <View style={{flexDirection:'row'}}>
+                    <Text style={{flex:1}}>{'放款日期'}</Text>
                     <Text>{rowData.loan_number}</Text>
-                    <Text>{'订单状态？'}</Text>
-                </View>
-                <View style={{flexDirection:'row'}}>
-                    <Text>{'合同放款额度'}</Text>
-                    <Text>{rowData.loan_mny}</Text>
-                </View>
-                <View style={{flexDirection:'row'}}>
-                    <Text>{'放款日期'}</Text>
-                    <Text>{rowData.type}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
 
@@ -429,18 +429,14 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
     renderSectionHeader = (sectionData, sectionID) => {
         return (
-            <View style={[sectionID !== 'section1' && {backgroundColor:PAGECOLOR.COLORA3, height: 20}]}></View>
+            <View style={[sectionID !== 'section1' && {backgroundColor:PAGECOLOR.COLORA3, height: 0}]}></View>
         )
     }
 
     renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
-        let separtrorHegigth = 1;
-        if (rowId === '5' || rowId === '6') {
-            separtrorHegigth = 10;
-        }
         return (
             <View key={`${sectionID}-${rowId}`}
-                  style={{height:separtrorHegigth, backgroundColor:PAGECOLOR.COLORA3}}></View>
+                  style={{height:10, backgroundColor:PAGECOLOR.COLORA3}}></View>
         )
     }
 
