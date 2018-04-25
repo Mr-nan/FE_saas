@@ -92,8 +92,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     controlCode.maxLend = changeToMillion(Maxmum)
                     if (carNum > 0) {
                         this.getOrderCarInfo(tempjson)
-                    }
-                    else {
+                    } else {
                         this.setState({
                             dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson, [])),
                             renderPlaceholderOnly: STATECODE.loadSuccess
@@ -129,7 +128,6 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
 
                     let tempCarJson = response.mjson.data.list
                     this.setState({
-
                         dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfoJson, tempCarJson)),
                         renderPlaceholderOnly: STATECODE.loadSuccess
                     })
