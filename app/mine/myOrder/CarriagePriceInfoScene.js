@@ -208,7 +208,7 @@ class AddressInfoItemView extends Component {
                             <Image
                                 source={type == 1 ? require('../../../images/carriagePriceImage/startLocation.png') : require('../../../images/carriagePriceImage/stopLocation.png')}
                                 style={{marginRight: Pixel.getPixel(5.5)}}/>
-                            <SaasText style={{fontWeight: '200', marginBottom: Pixel.getPixel(1)}}>始发地</SaasText>
+                            <SaasText style={{fontWeight: '200', marginBottom: Pixel.getPixel(1)}}>{text1}</SaasText>
                         </View>
 
                         <Text style={{
@@ -217,19 +217,25 @@ class AddressInfoItemView extends Component {
                             fontWeight: '200'
                         }}>山西省太远市和平区</Text>
                     </View>
-                    <View
-                        style={{flexDirection: 'row', alignItems: 'center', flex: 1}}
+                    <TouchableOpacity
+                        onPress={()=>{
+                            this.props.clickCallBack(text1)
+                        }}
+                        activeOpacity={1}
                     >
-                        <SaasText style={{
-                            color: fontAndColor.COLORA2,
-                            marginHorizontal: Pixel.getPixel(10),
-                            fontWeight: '200'
-                        }}>请填写发车人联系方式及详细地址</SaasText>
-                        <Image style={{width: Pixel.getPixel(10), height: Pixel.getPixel(10)}}
-                               source={require('../../../images/mainImage/celljiantou.png')}/>
-                    </View>
+                        <View
+                            style={{flexDirection: 'row', alignItems: 'center', flex: 1}}
+                        >
+                            <SaasText style={{
+                                color: fontAndColor.COLORA2,
+                                marginHorizontal: Pixel.getPixel(10),
+                                fontWeight: '200'
+                            }}>请填写发车人联系方式及详细地址</SaasText>
+                            <Image style={{width: Pixel.getPixel(10), height: Pixel.getPixel(10)}}
+                                   source={require('../../../images/mainImage/celljiantou.png')}/>
+                        </View>
 
-
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{
@@ -423,6 +429,9 @@ class InvoiceMarkItem extends Component {
 }
 
 class DeliverTypeItem extends Component {
+
+
+
 
     render() {
         return <View style={{flexDirection: 'row', alignItems: 'center'}}>
