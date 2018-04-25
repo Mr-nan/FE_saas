@@ -28,6 +28,7 @@ import BaseComponent from '../../component/BaseComponent';
 import * as Net from '../../utils/RequestUtil';
 import * as AppUrls from '../../constant/appUrls';
 import SaasText from "../accountManage/zheshangAccount/component/SaasText";
+import InformationInputItem from './component/InformationInputItem'
 
 export default class CarriagePriceInfoScene extends BaseComponent {
 
@@ -276,14 +277,15 @@ class InvoiceMarkItem extends Component {
     }
 
     render() {
-        return<View>
+        return<View style={{ marginBottom: Pixel.getPixel(10)}}>
             <View style={{
                 padding: Pixel.getPixel(15),
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 backgroundColor: 'white',
                 alignItems: 'center',
-                marginBottom: Pixel.getPixel(10)
+                borderBottomWidth:StyleSheet.hairlineWidth,
+                borderBottomColor:fontAndColor.COLORA4
             }}>
 
                 <SaasText style={{fontWeight: '200', fontSize: 15}}>开具发票</SaasText>
@@ -327,7 +329,85 @@ class InvoiceMarkItem extends Component {
                 <View
 
                 >
+                    <InformationInputItem
+                        ref={'organization'}
+                        title={'发票抬头'}
+                        textPlaceholder={'或选择历史记录'}
+                        keyboardType={'default'}
+                        rightIcon={true}
+                        value={'请输入或选择历史记录'}
+                        onChangeText={(text)=>{
 
+                        }}
+                        annotation={''}
+
+                    />
+
+                    <InformationInputItem
+                        ref={'organization'}
+                        title={'纳税人识别号'}
+                        textPlaceholder={'18位以内不包含汉子的识别号'}
+                        keyboardType={'default'}
+                        onChangeText={(text)=>{
+
+                        }}
+                        annotation={''}
+
+                    />
+                    <View style={{paddingVertical:Pixel.getPixel(8)}}>
+                        <SaasText style={{marginLeft:Pixel.getPixel(15), fontSize:12, color:fontAndColor.COLORA1}}>发票收取地址</SaasText>
+                    </View>
+                    <View style={{flexDirection:'row', borderBottomColor: fontAndColor.COLORA3, borderBottomWidth: Pixel.getPixel(1),justifyContent:'space-between',
+                        padding:Pixel.getPixel(15), backgroundColor:'white'}}>
+                        <SaasText style={{fontWeight:'200',fontSize:15,}}>发票收取地址与目的地址相同</SaasText>
+                        <Image style={{width:Pixel.getPixel(15),height:Pixel.getPixel(15)}} source={require('../../../images/carriagePriceImage/uncheck.png')}/>
+                    </View>
+
+                    <InformationInputItem
+                        ref={'organization'}
+                        title={'收件人'}
+                        textPlaceholder={' '}
+                        keyboardType={'default'}
+                        onChangeText={(text)=>{
+
+                        }}
+                        annotation={''}
+
+                    />
+                    <InformationInputItem
+                        ref={'organization'}
+                        title={'联系电话'}
+                        textPlaceholder={''}
+                        keyboardType={'default'}
+                        onChangeText={(text)=>{
+
+                        }}
+                        annotation={''}
+
+                    />
+                    <InformationInputItem
+                        ref={'organization'}
+                        title={'所在地区'}
+                        textPlaceholder={''}
+                        keyboardType={'default'}
+                        rightIcon={true}
+                        onChangeText={(text)=>{
+
+                        }}
+                        annotation={''}
+
+                    />
+                    <InformationInputItem
+                        ref={'organization'}
+                        title={'详细地址'}
+                        textPlaceholder={''}
+                        keyboardType={'default'}
+                        onChangeText={(text)=>{
+
+                        }}
+                        annotation={''}
+
+                    />
                 </View>
 
 
