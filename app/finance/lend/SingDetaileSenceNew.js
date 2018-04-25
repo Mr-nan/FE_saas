@@ -39,7 +39,6 @@ import RecognizedGains from '../../login/RecognizedGains';
 
 
 const controlCode = {
-
     stateCode: '',
     extendCode: '',
     lendType: '',
@@ -72,7 +71,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     }
 
     initFinish() {
-
         this.getLendinfo();
     }
 
@@ -84,7 +82,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-
                     let tempjson = response.mjson.data
                     let carNum = parseInt(tempjson.car_count)
                     controlCode.stateCode = tempjson.status
@@ -95,72 +92,54 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     controlCode.is_microchinese_contract = tempjson.is_microchinese_contract;
                     let Maxmum = parseFloat(tempjson.max_loanmny) + parseFloat(tempjson.payment_loanmny)
                     controlCode.maxLend = changeToMillion(Maxmum)
-
                     if (carNum > 0) {
-
                         this.getOrderCarInfo(tempjson)
                     }
                     else {
                         this.setState({
-
                             dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson, [])),
                             renderPlaceholderOnly: STATECODE.loadSuccess
                         })
                     }
-                },
-                (error) => {
-
+                }, (error) => {
                     this.setState({
-
                         renderPlaceholderOnly: STATECODE.loadError
                     })
                     if (error.mycode == -300 || error.mycode == -500) {
-
                         this.props.showToast('服务器连接有问题')
                     } else {
-
                         this.props.showToast(error.mjson.msg);
                     }
                 });
     }
+
     //车辆信息
     getOrderCarInfo = (lendInfoJson) => {
-
         let maps = {
             api: apis.GET_APPLY_CARLIST,
             loan_code: this.props.loanNumber
         }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-
                     let tempCarJson = response.mjson.data.list
                     this.setState({
-
                         dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfoJson, tempCarJson)),
                         renderPlaceholderOnly: STATECODE.loadSuccess
                     })
-                },
-
-                (error) => {
-
+                }, (error) => {
                     this.setState({
-
                         renderPlaceholderOnly: STATECODE.loadError
                     })
                     if (error.mycode == -300 || error.mycode == -500) {
-
                         this.props.showToast('服务器连接有问题')
                     } else {
-
                         this.props.showToast(error.mjson.msg);
                     }
                 });
-
-
     }
+
     // 数据初始化方法
     titleNameBlob = (jsonData, carData) => {
-
         let dataSource = {};
         if (jsonData.microchinese_single_status && jsonData.microchinese_single_status == '1') {
             dataSource['section1'] = [
@@ -189,11 +168,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             ]
         }
         if (carData.length > 0) {
-
             let tempCarDate = [];
-
             carData.map((item) => {
-
                 tempCarDate.push(
                     {
                         auto_id: item.auto_id,
@@ -208,7 +184,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             })
             dataSource['section2'] = tempCarDate;
         }
-
         return dataSource;
     }
 
@@ -216,7 +191,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     getControlTitleblob = (stateCode, extendCode, is_microchinese_contract) => {
 
         if (stateCode !== '' && extendCode !== '') {
-
             let tempTitle = []
             if (stateCode == '8') {
                 tempTitle = ['资金方签署中']
@@ -225,16 +199,11 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             } else if (stateCode == '2') {
                 tempTitle = ['签署合同', '取消借款']
             }
-            // else if (stateCode === '2') {
-            //     tempTitle = ['已取消借款']
-            // }
             else if (parseInt(stateCode) > 2 && stateCode != '5') {
                 tempTitle = ['查看合同']
             } else if (stateCode == '5') {
                 if (parseInt(extendCode) == 1) {
-                    // tempTitle = ['查看合同', '申请展期']
                     tempTitle = ['查看合同']
-
                 } else {
                     tempTitle = ['查看合同']
                 }
@@ -257,8 +226,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 return styles.controlButton
             case '查看合同':
                 return styles.cancelButton
-            // case '申请展期':
-            //     return styles.controlButton
             case '已取消借款':
                 return styles.canceledButton
             case '签署微单合同':
@@ -267,38 +234,29 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 return styles.cancelButton
             default:
                 return styles.cancelButton
-
         }
 
     }
 
-//取消借款
+    //取消借款
     cancleLoad = (setModelVis) => {
-
         setModelVis(false);
         this.props.showModal(true);
-
         let maps = {
             api: apis.CANCEL_LOAN,
             loan_code: this.props.loanNumber
         }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-
                     this.props.showModal(false);
                     this.successCancle.setModelVisible(true)
-
-                },
-                (error) => {
+                }, (error) => {
                     this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
-
                         this.props.showToast('服务器连接有问题')
                     } else {
-
                         this.props.showToast(error.mjson.msg);
                     }
-
                 });
     }
 
@@ -329,13 +287,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 component: ContractInfoScene,
                 params: {loan_code: this.props.loanNumber, showButton: false}
             });
-        }
-        // else if (title === "申请展期") {
-        //     this.toNextPage({
-        //         name: 'CarOverdue', component: CarOverdue, params: {loan_code: controlCode.loan_code}
-        //     });
-        // }
-        else if (title === "签署微单合同") {
+        } else if (title === "签署微单合同") {
             this.toNextPage({
                 name: 'RecognizedGains', component: RecognizedGains, params: {
                     loan_code: controlCode.loan_code,
@@ -350,26 +302,22 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 }
             });
         }
-
     }
+
     modifyLengNum = (callback) => {
-
-
         if (controlCode.changeMoney !== '') {
             let maps = {
                 api: apis.SET_APPLY_MNY,
                 loan_code: this.props.loanNumber,
                 loan_mny: controlCode.changeMoney,
             };
-
             callback(false);
             this.props.showModal(true);
             request(apis.FINANCE, 'Post', maps)
                 .then((response) => {
                         this.props.showModal(false);
                         this.change.setModelVisible(true)
-                    },
-                    (error) => {
+                    }, (error) => {
                         this.props.showModal(false);
                         if (error.mycode != -300 || error.mycode != -500) {
 
@@ -378,22 +326,15 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
                             this.props.showToast('服务器连接有问题')
                         }
-
-
                     });
 
         } else {
-
             this.props.showToast('请输入借款金额')
-
         }
-
-
     }
 
-//获取不同页面的颜色
+    //获取不同页面的颜色
     getStyle = (state) => {
-
         switch (state) {
             case '1':
                 return PAGECOLOR.COLORB3
@@ -407,7 +348,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     }
 
     getCarInfo = (rowData) => {
-
         let navigatorParams = {
             name: 'OrderCarDetailScene',
             component: OrderCarDetailScene,
@@ -417,15 +357,12 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             }
         }
         this.toNextPage(navigatorParams);
-
     }
 
 
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
-
         let Color = this.getStyle(controlCode.stateCode);
         if (sectionID === 'section2') {
-
             return <LendCarItemCell onPress={()=>{this.getCarInfo(rowData)}} carName={rowData.model_name}
                                     orderNum={rowData.loan_number} orderState={rowData.state} price={rowData.price}/>
         }
@@ -434,14 +371,15 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                              showValue={rowData.key}/>
         );
     }
+
     renderSectionHeader = (sectionData, sectionID) => {
         return (
 
             <View style={[sectionID !== 'section1' && {backgroundColor:PAGECOLOR.COLORA3, height: 20}]}></View>
         )
     }
-    renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
 
+    renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
         let separtrorHegigth = 1;
         if (rowId === '5' || rowId === '6') {
             separtrorHegigth = 10;
@@ -453,8 +391,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     }
 
     render() {
-
-
         if (this.state.renderPlaceholderOnly !== STATECODE.loadSuccess) {
             return (
                 <View style={styles.container}>
@@ -478,9 +414,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         )
 
         return (
-
             <View style={commnetStyle.container}>
-
                 <ListView
                     removeClippedSubviews={false}
                     style={[commnetStyle.ListWarp]}
@@ -531,12 +465,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
-
         flex: 1,
         backgroundColor: PAGECOLOR.COLORA3
-    },
-    buttonStyle: {
-
+    }, buttonStyle: {
         height: adapeSize(44),
         backgroundColor: '#05c5c2',
         justifyContent: 'center',
@@ -544,53 +475,39 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: adapeSize(1),
         width: width,
-    },
-    textStyle: {
-
+    }, textStyle: {
         fontSize: fontadapeSize(15),
         color: '#FFFFFF'
-    },
-    imageButton: {
+    }, imageButton: {
         width: 25,
         height: 25,
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: 10
-    },
-
-    cancelButton: {
-
+    }, cancelButton: {
         flex: 1,
         backgroundColor: PAGECOLOR.COLORA2,
         height: adapeSize(44),
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    canceledButton: {
-
+    }, canceledButton: {
         flex: 1,
         height: adapeSize(44),
         backgroundColor: PAGECOLOR.COLORA1,
         justifyContent: 'center',
         alignItems: 'center'
-
-    },
-    controlButton: {
+    }, controlButton: {
         flex: 1,
         height: adapeSize(44),
         backgroundColor: PAGECOLOR.COLORB0,
         justifyContent: 'center',
         alignItems: 'center'
-    },
-
-    buttontextStyle: {
+    }, buttontextStyle: {
 
         fontSize: fontadapeSize(15),
         color: 'white',
         textAlign: 'center',
     }
-
-
 });
 
 
