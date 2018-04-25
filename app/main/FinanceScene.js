@@ -162,7 +162,9 @@ export default class FinanceSence extends BaseComponet {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let maps = {
             api: Urls.GET_APPLY_LIST,
-            p: page
+            p: page,
+            rows:10,
+            loan_type:0,
         };
         request(Urls.FINANCE, 'Post', maps, () => {
             this.props.backToLogin();
