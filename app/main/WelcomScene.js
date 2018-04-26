@@ -65,29 +65,28 @@ export  default class WelcomScene extends BaseComponent {
                 >
 
                     <Image style={{resizeMode:'stretch',width:width,flex:1}}
-                           source={require('../../images/welcomFirst.png')}
+                           source={require('../../images/welcomFirst.jpg')}
                            tabLabel="ios-paper1"/>
 
                     <Image style={{resizeMode:'stretch',width:width,flex:1}}
-                           source={require('../../images/welcomSecond.png')}
+                           source={require('../../images/welcomSecond.jpg')}
                            tabLabel="ios-paper2"/>
 
                     <Image style={{resizeMode:'stretch',width:width,flex:1}}
-                           source={require('../../images/welcomThird.png')}
+                           source={require('../../images/welcomThird.jpg')}
                            tabLabel="ios-paper3"/>
                     <View style={{flex:1}}>
                         <Image style={{resizeMode:'stretch',width:width,flex:1}}
-                               source={require('../../images/welcomFourth.png')}
+                               source={require('../../images/welcomFourth.jpg')}
                                tabLabel="ios-paper4"/>
                         <TouchableOpacity onPress={()=>{
                              StorageUtil.mSetItem(KeyNames.FIRST_INTO,'false');
                              this.loginPage({name:'MainPage',component:MainPage,params:{}});
                         }} activeOpacity={0.8} style={{width:Pixel.getPixel(121),
-                        height:Pixel.getPixel(37),position:'absolute',
+                        height:Pixel.getPixel(55),position:'absolute',
                         bottom: Pixel.getPixel(22),
                             left:width/2-Pixel.getPixel(60)}}>
-                            <Image style={{width:Pixel.getPixel(121),height:Pixel.getPixel(37),resizeMode:'contain',
-                           }} source={require('../../images/welcomButton.png')}/>
+                            <Image style={{width:Pixel.getPixel(121),height:Pixel.getPixel(55),resizeMode:'contain'}}/>
                         </TouchableOpacity>
 
                     </View>
