@@ -81,17 +81,62 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-                    this.tempjson = response.mjson.data
-                    let carNum = parseInt( this.tempjson.car_count)
-                    controlCode.stateCode =  this.tempjson.status
-                    controlCode.extendCode = this.tempjson.is_extend;
-                    controlCode.lendType = this.tempjson.type;
-                    controlCode.minLend = changeToMillion(this.tempjson.min_loanmny);
-                    controlCode.loan_code = this.tempjson.loan_code;
-                    controlCode.is_microchinese_contract = this.tempjson.is_microchinese_contract;
-                    let Maxmum = parseFloat(this.tempjson.max_loanmny) + parseFloat(this.tempjson.payment_loanmny)
-                    controlCode.maxLend = changeToMillion(Maxmum)
-                    if (carNum > 0) {
+                    // this.tempjson = response.mjson.data
+                    this.tempjson = {
+                        "token": "",
+                        "code": 1,
+                        "msg": "ok",
+                        "data": {
+                            "request": {
+                                "device_code": "dycd_platform_finance_pc",
+                                "user_ip": "1"
+                            },
+                            "response": {
+                                "payment_number": "201709250019",
+                                "product_type_code": {
+                                    "product_type": "库存融资",
+                                    "product_code": 4
+                                },
+                                "merge_id": "2789",
+                                "loanperiod": "30",
+                                "loanmny": "3",
+                                "loanperiod_type": "天",
+                                "rate": "22",
+                                "payment_bankaccount": "6211 1111 1111 1111 111",
+                                "payment_bankusername": "王芳",
+                                "payment_bankname": "招商",
+                                "payment_branch": "北京",
+                                "paymenttype": "随借随还",
+                                "loan_time": "1970-01-01",
+                                "loantype": "131",
+                                "trenchtype": "1961",
+                                "lending_methods": "账户体系放款",
+                                "cancle_time": "1970-01-01",
+                                "logic_status": "70",
+                                "is_cancel_loan": 0,
+                                "is_sign_contract": 0,
+                                "is_confirm_iou": 0,
+                                "account": {
+                                    "payment_bankaccount": "85121001012280150600000027",
+                                    "payment_bankusername": "桃树",
+                                    "payment_bankname": "恒丰银行股份有限公司北京分行长安街支行",
+                                    "payment_branch": "恒丰银行股份有限公司重庆永川支行"
+                                },
+                                "finish_time": "1970-01-01"
+                            }
+                        }
+                    }
+
+                    let code =  this.tempjson.data.response.logic_status;
+                    // controlCode.stateCode =  this.tempjson.data.response.logic_status;
+                    // controlCode.extendCode = this.tempjson.is_extend;  查看合同
+                    // controlCode.lendType = this.tempjson.type;
+                    // controlCode.minLend = changeToMillion(this.tempjson.min_loanmny);
+                    // controlCode.loan_code = this.tempjson.loan_code;
+                    // controlCode.is_microchinese_contract = this.tempjson.is_microchinese_contract;
+                    // let Maxmum = parseFloat(this.tempjson.max_loanmny) + parseFloat(this.tempjson.payment_loanmny)
+                    // controlCode.maxLend = changeToMillion(Maxmum)
+                    if (code != 10 && code != 20 && code != 0) {
                         this.getOrderCarInfo()
                     } else {
                         this.setState({
@@ -119,7 +164,63 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-                    let tempCarJson = response.mjson.data.list
+                    // let tempCarJson = response.mjson.data.list
+                    let xxx = {
+                        "token": "",
+                        "code": 1,
+                        "msg": "ok",
+                        "data": {
+                            "request": {
+                                "device_code": "dycd_platform_finance_pc",
+                                "user_ip": "1",
+                                "payment_number": 201710180010
+                            },
+                            "response": [
+                                {
+                                    "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
+                                    "frame_number": "43434343233346666",
+                                    "loan_number": "20171018001002",
+                                    "loan_mny": "17000.00",
+                                    "loan_time": "2017-09-01",
+                                    "assess_time": "2017-10-18",
+                                    "assess_user_name": "admin",
+                                    "plate_number": "0",
+                                    "hq_assess_mny": 3.5,
+                                    "storage": "工行烫晚祁有限公司",
+                                    "lending_methods": "线下放款",
+                                    "channel_name": null,
+                                    "finish_time": null,
+                                    "child_loan_status": 30,
+                                    "child_loan_status_str": "渠道审核中",
+                                    "is_confirm_iou": 1,
+                                    "is_sign_contract": 1,
+                                    "is_cancel_loan": 1
+                                },
+                                {
+                                    "model_name": "2017款 奥迪A6L TFSI 技术型",
+                                    "frame_number": "34343434444555555",
+                                    "loan_number": "20171018001001",
+                                    "loan_mny": "24000.00",
+                                    "loan_time": "2017-09-01",
+                                    "assess_time": "2017-10-18",
+                                    "assess_user_name": "admin",
+                                    "plate_number": "0",
+                                    "hq_assess_mny": 3,
+                                    "storage": "工行烫晚祁有限公司",
+                                    "lending_methods": "线下放款",
+                                    "channel_name": null,
+                                    "finish_time": null,
+                                    "child_loan_status": 30,
+                                    "child_loan_status_str": "渠道审核中",
+                                    "is_confirm_iou": 1,
+                                    "is_sign_contract": 1,
+                                    "is_cancel_loan": 1
+                                }
+                            ]
+                        }
+                    }
+                    let tempCarJson = xxx.data.response
+
                     this.setState({
                         dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempCarJson)),
                         renderPlaceholderOnly: STATECODE.loadSuccess
@@ -142,29 +243,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         if (carData.length > 0) {
             let tempCarDate = [];
             carData.map((item) => {
-                tempCarDate.push(
-                    {
-                        auto_id: item.auto_id,
-                        model_name: item.model_name,
-                        state: item.status_str,
-                        order: item.frame_number,
-                        price: item.loan_mny,//放款额
-                        plate_number: item.plate_number,//车牌号
-                        loan_number: item.loan_number,
-                    }
-                )
-
-                tempCarDate.push(
-                    {
-                        auto_id: item.auto_id,
-                        model_name: item.model_name,
-                        state: item.status_str,
-                        order: item.frame_number,
-                        price: item.loan_mny,//放款额
-                        plate_number: item.plate_number,//车牌号
-                        loan_number: item.loan_number,
-                    }
-                )
+                tempCarDate.push(item)
             })
             dataSource['section2'] = tempCarDate;
         }
@@ -172,29 +251,35 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     }
 
 
-    getControlTitleblob = (stateCode, extendCode, is_microchinese_contract) => {
-
-        if (stateCode !== '' && extendCode !== '') {
+    getControlTitleblob = (stateCode) => {
+        if (stateCode !== '') {
             let tempTitle = []
-            if (stateCode == '8') {
-                tempTitle = ['资金方签署中']
-            } else if (stateCode == '1') {
+            if (stateCode == '10') {
+                tempTitle = ['评估监管中']
+            } else if (stateCode == '20') {
+                tempTitle = ['审核中']
+            } else if (stateCode == '30') {
+                // tempTitle = ['渠道审核中']
                 tempTitle = ['取消借款']
-            } else if (stateCode == '2') {
-                tempTitle = ['签署合同', '取消借款']
-            }
-            else if (parseInt(stateCode) > 2 && stateCode != '5') {
+            }else if (stateCode == '40') {
+                // tempTitle = ['待签合同']
+                tempTitle = ['取消借款','待签合同']
+            }else if (stateCode == '50') {
+                // tempTitle = ['待确认借据']
+                tempTitle = ['确认借据']
+            }else if (stateCode == '60') {
+                // tempTitle = ['处理中']
                 tempTitle = ['查看合同']
-            } else if (stateCode == '5') {
-                if (parseInt(extendCode) == 1) {
-                    tempTitle = ['查看合同']
-                } else {
-                    tempTitle = ['查看合同']
-                }
-            }
-
-            if (is_microchinese_contract == 1) {
-                tempTitle = ['签署微单合同']
+            }else if (stateCode == '70') {
+                // tempTitle = ['已放款']
+                tempTitle = ['查看合同']
+            }else if (stateCode == '80') {
+                // tempTitle = ['已还清']
+                tempTitle = ['查看合同']
+            }else if (stateCode == '21') {
+                // tempTitle = ['审核未通过']
+            }else if (stateCode == '0') {
+                // tempTitle = ['已取消']
             }
             return tempTitle;
         }
@@ -317,20 +402,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         }
     }
 
-    //获取不同页面的颜色
-    getStyle = (state) => {
-        switch (state) {
-            case '1':
-                return PAGECOLOR.COLORB3
-                break;
-            case '2':
-                return PAGECOLOR.COLORB0
-                break;
-            default:
-                return PAGECOLOR.COLORA1
-        }
-    }
-
     getCarInfo = (rowData) => {
         let navigatorParams = {
             name: 'OrderCarDetailScene',
@@ -347,40 +418,35 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
                 <View style={{flexDirection:'row'}}>
-                    <Text style={{flex:1}}>{this.tempjson.loan_code}</Text>
-                    <Text style={{}}>{this.tempjson.repayment_type}</Text>
+                    <Text style={{flex:1}}>{this.tempjson.data.response.payment_number}</Text>
+                    <Text style={{}}>{this.tempjson.data.response.paymenttype}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
                     <View style={{flexDirection:'column',flex:1,alignItems:"center"}}>
-                        <Text>{this.tempjson.payment_loanmny_str}</Text>
+                        <Text>{this.tempjson.data.response.loanmny + '万元'}</Text>
                         <Text>借款金额</Text>
                     </View>
                     <View style={{flexDirection:'column',flex:1,alignItems:"center"}}>
-                        <Text> {this.tempjson.payment_rate_str}</Text>
+                        <Text> {this.tempjson.data.response.rate +"%"}</Text>
                         <Text>综合费率</Text>
                     </View>
                     <View style={{flexDirection:'column',flex:1,alignItems:"center"}}>
-                        <Text>{this.tempjson.loanperiodstr}</Text>
+                        <Text>{this.tempjson.data.response.loanperiod +'天'}</Text>
                         <Text>借款期限</Text>
                     </View>
                 </View>
                 <View style={{flexDirection:'row'}}>
                     <Text style={{flex:1}}>申请日期</Text>
-                    <Text>{this.tempjson.createtimestr}</Text>
+                    <Text>{this.tempjson.data.response.loan_time}</Text>
                 </View>
-                <Text style={{backgroundColor:'#d8d8d8'}}>{'xxxxxxxxxxx'}</Text>
+                <Text style={{backgroundColor:'#d8d8d8'}}>{'资金渠道正在对您的借款进行审核，请耐心等待。'}</Text>
             </View>
         )
     }
 
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
-        // if (sectionID === 'section2') {
-        //     return <LendCarItemCell onPress={()=>{this.getCarInfo(rowData)}} carName={rowData.model_name}
-        //                             orderNum={rowData.loan_number} orderState={rowData.state} price={rowData.price}/>
-        // }
-
         let tempButtons = [];
-        let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode, controlCode.is_microchinese_contract);
+        let tempButtonTitles = this.getControlTitleblob(rowData.child_loan_status);
         tempButtonTitles.map((item) => {
                 tempButtons.push(<CommenButtonNew buttonStyle={this.getButtonStyleWithTitle(item)}
                                                textStyle={styles.buttontextStyle}
@@ -393,19 +459,19 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
                 <View style={{flexDirection:'row'}}>
                     <Text style={{flex:1}}>{rowData.model_name}</Text>
-                    <Text>{rowData.auto_id}</Text>
+                    <Text>{rowData.frame_number}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
                     <Text style={{flex:1}}>{rowData.loan_number}</Text>
-                    <Text>{'订单状态'}</Text>
+                    <Text>{rowData.child_loan_status_str}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
                     <Text style={{flex:1}}>{'合同放款额度'}</Text>
-                    <Text>{rowData.price}</Text>
+                    <Text>{rowData.loan_mny}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
                     <Text style={{flex:1}}>{'放款日期'}</Text>
-                    <Text>{rowData.loan_number}</Text>
+                    <Text>{rowData.assess_time}</Text>
                 </View>
                 <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingTop:10,paddingBottom:10}]}>
                         {tempButtons}
@@ -437,18 +503,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 </View>);
         }
 
-        // let tempButtons = [];
-        // let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode, controlCode.is_microchinese_contract);
-        // tempButtonTitles.map((item) => {
-        //         tempButtons.push(<CommenButtonNew buttonStyle={this.getButtonStyleWithTitle(item)}
-        //                                        textStyle={styles.buttontextStyle}
-        //                                        onPress={()=>{this.controsButtonClick(item)}}
-        //                                        title={item}
-        //                                        key={item}
-        //         />)
-        //     }
-        // )
-
         return (
             <View style={commnetStyle.container}>
                 <ListView
@@ -460,10 +514,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     renderSectionHeader={this.renderSectionHeader}
                     renderSeparator={this.renderSeparator}
                 />
-                {/*<View*/}
-                    {/*style={[commnetStyle.bottomWarp,{flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}]}>*/}
-                    {/*{tempButtons}*/}
-                {/*</View>*/}
 
                 <ModifyBorrowing ref={(model)=>{this.modifyb=model}}
                                  onchangeText={(text)=>{controlCode.changeMoney=text}}
@@ -471,6 +521,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                  maxLend={controlCode.maxLend}
                                  confimClick={this.modifyLengNum}
                                  cancleClick={(callback)=>{callback(false)}}/>
+
                 <LendSuccessAlert ref={(lend)=>{this.change=lend}} confimClick={()=>{
                     this.props.backRefresh();
                     this.backPage()}} title='修改成功' subtitle='恭喜您修改借款成功'/>
@@ -518,18 +569,15 @@ const styles = StyleSheet.create({
     }, cancelButton: {
         flex: 1,
         backgroundColor: PAGECOLOR.COLORA2,
-        height: adapeSize(44),
         justifyContent: 'center',
         alignItems: 'center'
     }, canceledButton: {
         flex: 1,
-        height: adapeSize(44),
         backgroundColor: PAGECOLOR.COLORA1,
         justifyContent: 'center',
         alignItems: 'center'
     }, controlButton: {
         flex: 1,
-        height: adapeSize(44),
         backgroundColor: PAGECOLOR.COLORB0,
         justifyContent: 'center',
         alignItems: 'center'
