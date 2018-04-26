@@ -36,6 +36,7 @@ import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ContractInfoScene from './ContractInfoScene';
+import ContractInfoSceneChildren from './ContractInfoSceneChildren';
 import RecognizedGains from '../../login/RecognizedGains';
 
 
@@ -286,7 +287,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 tempTitle = ['取消借款']
             }else if (stateCode == '40') {
                 // tempTitle = ['待签合同']
-                tempTitle = ['取消借款','待签合同']
+                tempTitle = ['取消借款','签署合同']
             }else if (stateCode == '50') {
                 // tempTitle = ['待确认借据']
                 tempTitle = ['确认借据']
@@ -358,8 +359,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             this.canleAlert.setModelVisible(true);
         } else if (title === '签署合同') {
             this.toNextPage({
-                name: 'ContractInfoScene',
-                component: ContractInfoScene,
+                name: 'ContractInfoSceneChildren',
+                component: ContractInfoSceneChildren,
                 params: {
                     loan_code: this.props.loanNumber, showButton: true, callbackfresh: () => {
                         this.initFinish();
@@ -369,14 +370,14 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             });
         } else if (title === '查看合同') {
             this.toNextPage({
-                name: 'ContractInfoScene',
-                component: ContractInfoScene,
+                name: 'ContractInfoSceneChildren',
+                component: ContractInfoSceneChildren,
                 params: {loan_code: this.props.loanNumber, showButton: false}
             });
         } else if (title === '资金方签署中') {
             this.toNextPage({
-                name: 'ContractInfoScene',
-                component: ContractInfoScene,
+                name: 'ContractInfoSceneChildren',
+                component: ContractInfoSceneChildren,
                 params: {loan_code: this.props.loanNumber, showButton: false}
             });
         } else if (title === "签署微单合同") {
@@ -582,7 +583,18 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     {
                         this.tempjson.data.response.is_sign_contract == 1?
                             <TouchableOpacity style={{height:40,width:width,position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',backgroundColor:'#05c5c2'}}
-                                              onPress={()=>{alert("批量签署")}}>
+                                              onPress={()=>{
+                                                   this.toNextPage({
+                                                        name: 'ContractInfoScene',
+                                                        component: ContractInfoScene,
+                                                        params: {
+                                                            loan_code: this.props.loanNumber, showButton: true, callbackfresh: () => {
+                                                                this.initFinish();
+                                                                this.props.backRefresh();
+                                                            }
+                                                        }
+                                                    });
+                                              }}>
                                 <Text style={{}}>批量签署</Text>
                             </TouchableOpacity>:null
                     }
