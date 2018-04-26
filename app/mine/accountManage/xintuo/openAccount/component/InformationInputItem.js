@@ -35,6 +35,12 @@ export default class InformationInputItem extends Component{
         }
     }
 
+    componentWillReceiveProps(props) {
+        this.state = {
+            value: props.value
+        }
+    }
+
     static defaultProps = {
         rightIcon:false,
         loading:false,

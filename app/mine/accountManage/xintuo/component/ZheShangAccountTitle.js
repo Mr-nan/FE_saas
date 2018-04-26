@@ -132,8 +132,7 @@ export  default class ZheShangAccountTitle extends PureComponent {
                                     冻结金额(元)</Text>
                                 <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(18),
                                 color:'#fff',marginTop:Pixel.getPixel(2)}}>
-                                    {this.toDecimal(parseFloat(this.props.info.frozen_balance) +
-                                        parseFloat(this.props.info.pending_balance))}</Text>
+                                    {this.toDecimal(parseFloat(this.props.info.frozen_balance))}</Text>
                             </View>
                         </View>
                     </View>

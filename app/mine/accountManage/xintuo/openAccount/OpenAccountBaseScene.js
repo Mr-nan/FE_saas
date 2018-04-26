@@ -196,6 +196,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         loading={this.state.loading_bank}
                                         annotation={this.state.bankName}
                                         separator={false}
+                                        value={this.model.community_credit_code}
                                     />
                                 </View>
 
@@ -208,9 +209,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         onChangeText={(text)=>{
                                             this.model.organization_code = text
                                         }}
-
-                                        annotation={this.state.bankName}
-
+                                        value={this.model.organization_code}
                                     />
                                     <InformationInputItem
                                         ref={'license'}
@@ -272,36 +271,34 @@ export default class OpenAccountBaseScene extends BaseComponent {
 
     verify = () => {
 
-        let t = typeof this.model.legal_real_name;
-
-        if ( this.model.legal_real_name === null||  this.model.legal_real_name.length <= 0) {
+        if (typeof this.model.legal_real_name === 'undefined'|| this.model.legal_real_name === null||  this.model.legal_real_name.length <= 0) {
             this.props.showToast('请输入法人姓名');
             return false;
-        } else if (  this.model.legal_cert_no == null||this.model.legal_cert_no.length <= 0) {
+        } else if (typeof this.model.legal_cert_no === 'undefined'|| this.model.legal_cert_no === null||this.model.legal_cert_no.length <= 0) {
             this.props.showToast('请输入身份证号')
             return false;
-        } else if (this.model.legal_cert_no.length != 18) {
+        } else if (this.model.legal_cert_no.length !== 18) {
             this.props.showToast('身份证号有误')
             return false;
         }
 
-        if (this.model.is_three_certificates_joined == 1) {  // 三证
+        if (this.model.is_three_certificates_joined === 1) {  // 三证
 
-            if ( this.model.organization_code == null ||this.model.organization_code.length <= 0) {
+            if (typeof this.model.organization_code === 'undefined'|| this.model.organization_code === null ||this.model.organization_code.length <= 0) {
                 this.props.showToast('请输入组织机构代码');
                 return false;
             }
-            if ( this.model.cert_no_1 == null|| this.model.cert_no_1.length <= 0) {
+            if (typeof this.model.cert_no_1 === 'undefined'|| this.model.cert_no_1 === null|| this.model.cert_no_1.length <= 0) {
                 this.props.showToast('请输入营业执照号');
                 return false;
             }
-            if ( this.model.tax_register_certificate == null|| this.model.tax_register_certificate.length <= 0) {
+            if (typeof this.model.tax_register_certificate === 'undefined'|| this.model.tax_register_certificate === null|| this.model.tax_register_certificate.length <= 0) {
                 this.props.showToast('请输入税务登记证号码');
                 return false;
             }
 
         } else {  // 一证
-            if ( this.model.community_credit_code == null|| this.model.community_credit_code.length <= 0) {
+            if ( typeof this.model.community_credit_code === 'undefined'||this.model.community_credit_code === null|| this.model.community_credit_code.length <= 0) {
                 this.props.showToast('请输入社会统一编码');
                 return false;
             }

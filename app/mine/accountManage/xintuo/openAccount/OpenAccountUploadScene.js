@@ -479,28 +479,28 @@ export default class OpenAccountBaseScene extends BaseComponent {
         //     cert_url: null,
         //     tax_register_picurl: null,
 
-        if (this.props.model.legal_picurl == null) {
+        if ( typeof this.props.model.legal_picurl === 'undefined'||this.props.model.legal_picurl === null) {
             this.props.showToast('请上传身份证正面')
             return false
-        } else if (this.props.model.legal_opposite_picurl == null) {
+        } else if (typeof this.props.model.legal_opposite_picurl === 'undefined'||this.props.model.legal_opposite_picurl === null) {
             this.props.showToast('请上传身份证背面')
             return false
         }
 
-        if (this.props.model.is_three_certificates_joined == 1) {
-            if (this.props.organization_code_picurl == null) {
+        if (this.props.model.is_three_certificates_joined === 1) {
+            if (typeof this.props.model.organization_code_picurl === 'undefined'||this.props.organization_code_picurl === null) {
                 this.props.showToast('请上传组织机构照片')
                 return false
-            } else if (this.props.model.cert_url == null) {
+            } else if (typeof this.props.model.cert_url === 'undefined'||this.props.model.cert_url === null) {
                 this.props.showToast('请上传营业执照')
                 return false
-            } else if (this.props.model.tax_register_picurl == null) {
+            } else if (typeof this.props.model.tax_register_picurl === 'undefined'||this.props.model.tax_register_picurl === null) {
                 this.props.showToast('请上传税务登记证')
                 return false
             }
         } else {
-            if (this.props.model.community_credit_picurl == null) {
-                this.props.showToast('请上传')
+            if (typeof this.props.model.community_credit_picurl === 'undefined'||this.props.model.community_credit_picurl === null) {
+                this.props.showToast('请上传社会统一代码证件')
                 return false
             }
         }
