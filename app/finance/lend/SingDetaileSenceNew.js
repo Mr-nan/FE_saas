@@ -439,7 +439,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     <Text style={{flex:1}}>申请日期</Text>
                     <Text>{this.tempjson.data.response.loan_time}</Text>
                 </View>
-                <Text style={{backgroundColor:'#d8d8d8'}}>{'资金渠道正在对您的借款进行审核，请耐心等待。'}</Text>
+                <Text style={{}}>{'资金渠道正在对您的借款进行审核，请耐心等待。'}</Text>
             </View>
         )
     }
@@ -481,7 +481,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
     renderSectionHeader = (sectionData, sectionID) => {
         return (
-            <View style={[sectionID !== 'section1' && {backgroundColor:PAGECOLOR.COLORA3, height: 0}]}></View>
+            <View style={[sectionID != 'section1' && {backgroundColor:PAGECOLOR.COLORA3, height: 10}]}></View>
         )
     }
 
