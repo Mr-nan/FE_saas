@@ -12,7 +12,7 @@ import {
 import {
     CommnetListItem,
     LendCarItemCell,
-    CommenButton,
+    CommenButtonNew,
     commnetStyle,
     ComentImageButton
 } from './component/ComponentBlob'
@@ -139,32 +139,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     // 数据初始化方法
     titleNameBlob = ( carData) => {
         let dataSource = {};
-        // if (jsonData.microchinese_single_status && jsonData.microchinese_single_status == '1') {
-        //     dataSource['section1'] = [
-        //         {title: '申请日期', key: jsonData.createtimestr},
-        //         {title: '借款金额', key: jsonData.payment_loanmny_str},
-        //         {title: '借款期限', key: jsonData.loanperiodstr},
-        //         {title: '借款单号', key: jsonData.loan_code},
-        //         {title: '综合费率', key: jsonData.payment_rate_str},
-        //         {title: '还款方式', key: jsonData.repayment_type},
-        //         {title: '状态', key: jsonData.status_str},
-        //         {title: '放款日期', key: jsonData.loan_time},
-        //         {title: '评估总额', key: jsonData.reassessed},
-        //     ]
-        // } else {
-        //     dataSource['section1'] = [
-        //         {title: '申请日期', key: jsonData.createtimestr},
-        //         {title: '借款金额', key: jsonData.payment_loanmny_str},
-        //         {title: '借款期限', key: jsonData.loanperiodstr},
-        //         {title: '借款单号', key: jsonData.loan_code},
-        //         {title: '综合费率', key: jsonData.payment_rate_str},
-        //         {title: '还款方式', key: jsonData.repayment_type},
-        //         {title: '状态', key: jsonData.status_str},
-        //         {title: '放款日期', key: jsonData.loan_time},
-        //         {title: '评估总额', key: jsonData.reassessed},
-        //         {title: '债权人', key: jsonData.credito},
-        //     ]
-        // }
         if (carData.length > 0) {
             let tempCarDate = [];
             carData.map((item) => {
@@ -404,6 +378,18 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         //     return <LendCarItemCell onPress={()=>{this.getCarInfo(rowData)}} carName={rowData.model_name}
         //                             orderNum={rowData.loan_number} orderState={rowData.state} price={rowData.price}/>
         // }
+
+        let tempButtons = [];
+        let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode, controlCode.is_microchinese_contract);
+        tempButtonTitles.map((item) => {
+                tempButtons.push(<CommenButtonNew buttonStyle={this.getButtonStyleWithTitle(item)}
+                                               textStyle={styles.buttontextStyle}
+                                               onPress={()=>{this.controsButtonClick(item)}}
+                                               title={item}
+                                               key={item}
+                />)
+            }
+        )
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
                 <View style={{flexDirection:'row'}}>
                     <Text style={{flex:1}}>{rowData.model_name}</Text>
@@ -421,8 +407,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     <Text style={{flex:1}}>{'放款日期'}</Text>
                     <Text>{rowData.loan_number}</Text>
                 </View>
-                <View style={{flexDirection:'row'}}>
-
+                <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingTop:10,paddingBottom:10}]}>
+                        {tempButtons}
                 </View>
         </View>
     }
@@ -454,7 +440,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         // let tempButtons = [];
         // let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode, controlCode.is_microchinese_contract);
         // tempButtonTitles.map((item) => {
-        //         tempButtons.push(<CommenButton buttonStyle={this.getButtonStyleWithTitle(item)}
+        //         tempButtons.push(<CommenButtonNew buttonStyle={this.getButtonStyleWithTitle(item)}
         //                                        textStyle={styles.buttontextStyle}
         //                                        onPress={()=>{this.controsButtonClick(item)}}
         //                                        title={item}
@@ -550,7 +536,6 @@ const styles = StyleSheet.create({
     }, buttontextStyle: {
         fontSize: fontadapeSize(15),
         color: 'white',
-        textAlign: 'center',
     }
 });
 
