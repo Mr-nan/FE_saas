@@ -238,7 +238,6 @@ export default class CarSeekScene extends BaseComponent {
 
     saveSeekData = (seekName) => {
 
-        console.log(seekName);
         let isEqual = false;
         let historySeekData = this.historySeekData;
         let newArray = new Array;
@@ -321,7 +320,6 @@ export default class CarSeekScene extends BaseComponent {
 
                 this.seekArray = [];
                 for (let i=0;i<cont;i++){
-                    console.log(data.result.rows.item(i));
                     this.seekArray.push(data.result.rows.item(i).car_name);
                 }
 

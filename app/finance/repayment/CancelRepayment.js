@@ -1,5 +1,5 @@
 /**
- * Created by lhc on 2017/2/15.
+ * Created by xujiaqi on 2018/3/20.
  */
 import React, {Component} from 'react';
 import {
@@ -28,17 +28,15 @@ import RepaymentInfoBottomItem from './component/RepaymentInfoBottomItem';
 import AllBottomItem from './component/AllBottomItem';
 import MyButton from '../../component/MyButton';
 import ServerMoneyListModal from '../../component/ServerMoneyListModal';
-import AccountModalApply from './component/AccountModalApply';
+import AccountModal from './component/AccountModal';
 let moneyList = [];
 let nameList = [];
 let adjustLsit = [];
-/*let currentdate;*/
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import RepaymentModal from '../../component/RepaymentModal';
 import ShowToast from "../../component/toast/ShowToast";
-
-export  default class PurchaseLoanStatusScene extends BaseComponent {
+export  default class CancelRepayment extends BaseComponent {
 
     constructor(props) {
         super(props);
@@ -55,12 +53,12 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         if (strDate >= 0 && strDate <= 9) {
             strDate = "0" + strDate;
         }
-         /*currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;*/
+        let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
         this.state = {
             source: ds.cloneWithRows(mList),
             renderPlaceholderOnly: 'blank',
             loan_day: '',
-            loan_dayStr: this.props.total_repayment_money
+            loan_dayStr: currentdate
         };
     }
 
@@ -86,22 +84,22 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     getData = () => {
         let maps;
         if(this.props.from === 'ChedidaiRepaymentPage'){
-            maps = {
+             maps = {
                 api: Urls.CARLOAN_LOAN_INFO,
                 loan_id: this.props.loan_id,
                 type: '2',
                 loan_number: this.props.loan_number,
                 loan_code:this.props.payment_number,
-                page_type:'2'
+                 page_type:'2'
             };
         }else{
-            maps = {
+             maps = {
                 api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
                 loan_id: this.props.loan_id,
                 type: '2',
                 loan_number: this.props.loan_number,
                 loan_code:this.props.payment_number,
-                page_type:'2'
+                 page_type:'2'
             };
         }
 
@@ -138,54 +136,50 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         parentStyle: styles.parentStyle,
         childStyle: styles.childStyle,
         opacity: 0.7,
-        content: '申请提前还款',
+        content: '取消提前还款',
         mOnPress: () => {
-            this.showModal(true);
-            let maps = {
-                api: Urls.PREPAYMENT_APPLY,
-                loan_number: this.props.loan_number,
-                payment_number:this.props.payment_number,
-                use_time:movies.repayment_time
-            };
-
-            request(Urls.FINANCE, 'Post', maps)
-                .then((response) => {
-                        this.showModal(false);
-                        if(response.mjson.code =='1'){
-                            let content = "提前还款申请已提交！请以充值、转账的方式，保证"+movies.repayment_time+"  15：00之前账户余额不低于待还总额"
-                            this.refs.accountmodal.changeShowType(true,
-                                content,
-                                '好的', '', () => {
-                                    this.backPage();
-                                    this.props.refreshListPage();
-                                });
-                        }
-                    },(error)=>{
-                    this.showModal(false);
-                    if(error.mjson.code=='-2005013'){
-                      this.allRefresh();
-                    }else if(error.mjson.code=='-2005008'){
-                        this.showToast(error.mjson.msg);
-                        this.timer = setTimeout(
-                            () => {
-                                this.backPage();
-                                this.props.refreshListPage();
-                            },
-                            600
-                        );
-                    }else{
-                        this.showToast(error.mjson.msg);
-                        this.timer = setTimeout(
-                            () => {
-                                this.backPage();
-                                this.props.callback();
-                            },
-                            600
-                        );
-                    }
+            this.refs.accountmodal.changeShowType(true,
+                '确认取消提前还款申请?',
+                '确定', '取消', () => {
+                    this.confirm();
                 });
+
         }
     }
+    confirm=()=>{
+        this.showModal(true);
+        let maps = {
+            api: Urls.PREPAYMENT_CANCEL_REPAYMENT,
+            /*loan_id: this.props.loan_id,
+            type: '2',*/
+            loan_number: this.props.loan_number,
+            payment_number:this.props.payment_number,
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                console.log(response+'----')
+                if(response.mjson.code=='1'){
+                    this.showToast(response.mjson.msg);
+                    this.timer = setTimeout(
+                        () => {
+                            this.backPage();
+                            this.props.refreshListPage();
+                        },
+                        500
+                    );
+                }
+            },(error)=>{
+                this.showToast(error.mjson.msg);
+                this.timer = setTimeout(
+                    () => {
+                        this.backPage();
+                        this.props.refreshListPage();
+                },
+                    500
+                );
+
+            });
+    };
 
     showToast = (content) => {
         this.refs.toast.changeType(ShowToast.TOAST, content);
@@ -213,10 +207,8 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                 />
-                <AccountModalApply ref="accountmodal"/>
+                <AccountModal ref="accountmodal"/>
                 <MyButton {...this.buttonParams}/>
-             {/*   {movies.paymen_status == '0' ? this.props.from == 'SingleRepaymentPage' ?
-                        <MyButton {...this.buttonParams}/> : <View/> : <View/>}*/}
                 <ServerMoneyListModal ref="servermoneylistmodal"/>
                 <RepaymentModal ref="repaymentmodal" callBack={()=>{
                     this.allRefresh();
@@ -241,20 +233,20 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <RepaymentInfoTopItem items={movies} from={this.props.from} loan_number={this.props.loan_number}/>
+                <RepaymentInfoTopItem items={movies}  from={this.props.from} loan_number={this.props.loan_number}/>
             )
         } else if (rowId == 1) {
             return (
                 <RepaymentInfoDateItem loanday={movies.days} time={movies.repayment_time}
-            /*status={movies.test_coupon_info.paymen_status}*/
-        callBack={(time)=>{
+                                      /* status={movies.test_coupon_info.paymen_status}*/
+                                       callBack={(time)=>{
                     let selecttime = time/1000;
                     let lasttime = parseFloat(Date.parse(movies.list[0].dead_line)/1000);
                     let firsttime = parseFloat(movies.loan_time);
                     if(selecttime>=lasttime){
                         selecttime = lasttime-(60*60*24)
                     }else{
-                       if(selecttime-firsttime<(10*60*60*24)){
+                        if(selecttime-firsttime<(10*60*60*24)){
                             selecttime = firsttime+(10*60*60*24);
                         }
                     }
@@ -271,17 +263,17 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
                     let newList = ['1', '2', '3', '4', '5', '6','7'];
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    {/*this.setState({*/}
-                        {/*source: ds.cloneWithRows(newList),*/}
-                        {/*loan_day:Math.ceil((selecttime-parseFloat(movies.loan_time))/60/60/24),*/}
-                        {/*loan_dayStr:currentdate*/}
-                    {/*});*/}
+                    this.setState({
+                        source: ds.cloneWithRows(newList),
+                        loan_day:Math.ceil((selecttime-parseFloat(movies.loan_time))/60/60/24),
+                        loan_dayStr:currentdate
+                    });
                 }}/>
             )
         } else if (rowId == 2) {
             return (
                 <RepaymentInfoContentItem items={moneyList} onPress={()=>{
-                        this.refs.servermoneylistmodal.changeShowType(true,movies.list_fee);
+                    this.refs.servermoneylistmodal.changeShowType(true,movies.list_fee);
                 }}/>
             )
         }else if (rowId == 3) {
@@ -297,23 +289,22 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             let money = movies.total_repayment_money;
             let formula = '';
             if(parseFloat(movies.all_fee)>0){
-                /*money = (parseFloat(movies.money)
-                +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
-                this.state.loan_day-parseFloat(movies.true_bondmny)-parseFloat(movies.test_coupon_info.interest)
-                    +parseFloat(movies.test_coupon_info.all_fee)).toFixed(2);*/
+                // money = (parseFloat(movies.money)
+                // +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
+                // this.state.loan_day-parseFloat(movies.money)-parseFloat(movies.test_coupon_info.interest)
+                // +parseFloat(movies.test_coupon_info.all_fee)).toFixed(2);
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息+服务费-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.changeDays+'*'
                     +this.state.loan_day+'-'+movies.ready_interest+'+'+movies.all_fee
-                    +'-'+Math.abs(parseFloat(movies.true_bondmny))+'-' +movies.coupon_repayment;
+                    +'-'+Math.abs(parseFloat(movies.true_bondmny))+'-'
+                    +movies.coupon_repayment;
             }else{
-               /* money = (parseFloat(movies.money)
-                +parseFloat(movies.money)*parseFloat(movies.rate)/100/360*
-                this.state.loan_day-parseFloat(movies.true_bondmny)-parseFloat(movies.test_coupon_info.interest)).toFixed(2);*/
                 name = '应还总额=本金+本金*还息费率/利息转换天数*计息天数-已还利息-保证金-优惠券还息金额';
                 formula = '='+movies.money+'+'
                     +movies.money+'*'+(movies.rate/100).toFixed(4)+'/'+movies.changeDays+'*'
-                    +this.state.loan_day+'-'+movies.ready_interest+'-'+Math.abs(parseFloat(movies.true_bondmny))+'-' +movies.coupon_repayment;
+                    +this.state.loan_day+'-'+movies.ready_interest+'-'+Math.abs(parseFloat(movies.true_bondmny))+'-'
+                    +movies.coupon_repayment;
             }
             return (
                 <RepaymentInfoBottomItem ref="RepaymentInfoBottomItem"

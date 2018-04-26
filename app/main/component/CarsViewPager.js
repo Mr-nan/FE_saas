@@ -41,6 +41,7 @@ export default class CarsViewPager extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+
         alldata = nextProps.items;
         let imageItems = [];
         if (alldata.list == null || alldata.list.length <= 0) {
@@ -101,8 +102,8 @@ export default class CarsViewPager extends Component {
     _renderPage = (data) => {
         if (data.id == '-200') {
             return (
-                <Image style={{width: width,height: Pixel.getPixel(225), resizeMode: 'stretch'}}
-                       source={require('../../../images/mainImage/homebanner.png')}
+                <Image style={{width: width,height: Pixel.getPixel(100), resizeMode: 'stretch'}}
+                       source={require('../../../images/mainImage/homebanners.png')}
                 />
             );
         } else {

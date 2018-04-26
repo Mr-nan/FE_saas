@@ -30,6 +30,7 @@ export default class SelectPickUp extends BaseComponent {
     constructor(props) {
         super(props);
         this.pickups = [];
+        this.isSelected=this.props.isSelect;
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: false,
@@ -193,7 +194,7 @@ export default class SelectPickUp extends BaseComponent {
 
                 </View>
 
-                <MyButton buttonType={MyButton.TEXTBUTTON}
+                {!this.isSelected&&<MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'确定'}
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
@@ -204,7 +205,7 @@ export default class SelectPickUp extends BaseComponent {
                                   this.props.showToast('请选择提车人');
                               }
 
-                          }}/>
+                          }}/>}
             </View>
         );
 

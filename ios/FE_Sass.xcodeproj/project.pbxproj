@@ -13,6 +13,8 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* FE_SassTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FE_SassTests.m */; };
+		120E15FC2072257C00A298B1 /* libGrowing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 120E15FA2072257C00A298B1 /* libGrowing.a */; };
+		120E15FD2072257C00A298B1 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 120E15FB2072257C00A298B1 /* VERSION */; };
 		124A58E81E9C6D48007C1C15 /* QrScan.m in Sources */ = {isa = PBXBuildFile; fileRef = 124A58E71E9C6D48007C1C15 /* QrScan.m */; };
 		124A590B1E9C700F007C1C15 /* OBDScanController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124A590A1E9C700F007C1C15 /* OBDScanController.m */; };
 		124A590F1E9C8B12007C1C15 /* Icon_SaoLine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 124A590E1E9C8B12007C1C15 /* Icon_SaoLine@2x.png */; };
@@ -34,8 +36,6 @@
 		1510B5451F2057B40046BBD8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5441F2057B40046BBD8 /* libsqlite3.tbd */; };
 		1510B5471F2057D50046BBD8 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5461F2057D50046BBD8 /* libicucore.tbd */; };
 		1510B5491F2058080046BBD8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5481F2058080046BBD8 /* Security.framework */; };
-		1510B5531F2067570046BBD8 /* libGrowing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5511F2067570046BBD8 /* libGrowing.a */; };
-		1510B5541F2067570046BBD8 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 1510B5521F2067570046BBD8 /* VERSION */; };
 		16FB421C1EF23352006C6077 /* SystomTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 16FB421B1EF23352006C6077 /* SystomTools.m */; };
 		245A5B321FB9793300B70104 /* LLMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 245A5B251FB9793300B70104 /* LLMapViewController.m */; };
 		245A5B331FB9793300B70104 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 245A5B271FB9793300B70104 /* Location.m */; };
@@ -394,6 +394,9 @@
 		00E356EE1AD99517003FC87E /* FE_SassTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FE_SassTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* FE_SassTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FE_SassTests.m; sourceTree = "<group>"; };
+		120E15F92072257C00A298B1 /* Growing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Growing.h; sourceTree = "<group>"; };
+		120E15FA2072257C00A298B1 /* libGrowing.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGrowing.a; sourceTree = "<group>"; };
+		120E15FB2072257C00A298B1 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
 		121CE05A1EA88EE5003CA579 /* CodePush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CodePush.h; path = "../node_modules/react-native-code-push/ios/CodePush/CodePush.h"; sourceTree = "<group>"; };
 		124A58E61E9C6D48007C1C15 /* QrScan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QrScan.h; sourceTree = "<group>"; };
 		124A58E71E9C6D48007C1C15 /* QrScan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QrScan.m; sourceTree = "<group>"; };
@@ -421,9 +424,6 @@
 		1510B5441F2057B40046BBD8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		1510B5461F2057D50046BBD8 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		1510B5481F2058080046BBD8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		1510B5501F2067570046BBD8 /* Growing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Growing.h; sourceTree = "<group>"; };
-		1510B5511F2067570046BBD8 /* libGrowing.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGrowing.a; sourceTree = "<group>"; };
-		1510B5521F2067570046BBD8 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
 		16FB421A1EF23352006C6077 /* SystomTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystomTools.h; sourceTree = "<group>"; };
 		16FB421B1EF23352006C6077 /* SystomTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystomTools.m; sourceTree = "<group>"; };
 		1F2A351FE20A472BABAB3F42 /* RCTBEEPickerManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTBEEPickerManager.xcodeproj; path = "../node_modules/react-native-picker/ios/RCTBEEPickerManager.xcodeproj"; sourceTree = "<group>"; };
@@ -541,6 +541,7 @@
 			files = (
 				7D83AEBF1FA2CC3B001A24F7 /* libSVehicleLicense.a in Frameworks */,
 				EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */,
+				120E15FC2072257C00A298B1 /* libGrowing.a in Frameworks */,
 				7DC7F91C2006019F008267A5 /* libssl.a in Frameworks */,
 				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
 				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
@@ -582,7 +583,6 @@
 				6B4FBA6C55A04B9CA9AED806 /* libRCTBEEPickerManager.a in Frameworks */,
 				400052FA1E8E478F9E60534C /* libRCTUmengPush.a in Frameworks */,
 				2C1964C803524664A77CBF9E /* libRCTWeChat.a in Frameworks */,
-				1510B5531F2067570046BBD8 /* libGrowing.a in Frameworks */,
 				8764F52B800544BDB35F20A3 /* libRCTBEEPickerManager.a in Frameworks */,
 				57AE4D60A14A49F3BFB62E1A /* libRNSpinkit.a in Frameworks */,
 				4F901FA6C8544C1C9AE1F413 /* libCodePush.a in Frameworks */,
@@ -697,6 +697,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		120E15F82072257C00A298B1 /* GrowingIO-iOS-SDK */ = {
+			isa = PBXGroup;
+			children = (
+				120E15F92072257C00A298B1 /* Growing.h */,
+				120E15FA2072257C00A298B1 /* libGrowing.a */,
+				120E15FB2072257C00A298B1 /* VERSION */,
+			);
+			path = "GrowingIO-iOS-SDK";
+			sourceTree = "<group>";
+		};
 		12B036D21E7FDC49005E5D3D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -726,10 +736,10 @@
 		13B07FAE1A68108700A75B9A /* FE_Sass */ = {
 			isa = PBXGroup;
 			children = (
+				120E15F82072257C00A298B1 /* GrowingIO-iOS-SDK */,
 				7DC7F8D12005E9AA008267A5 /* ZNMapTool */,
 				7D017DCE1F8E217800ED740C /* FE_Sass.entitlements */,
 				247AE7131FA3311C0039B52A /* LocationManger */,
-				1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */,
 				7DB2CBB31E779DDF00DE146C /* OCRSCancer */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -754,16 +764,6 @@
 				3DAD3EAF1DF850E9000B6D8A /* libjschelpers.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */ = {
-			isa = PBXGroup;
-			children = (
-				1510B5501F2067570046BBD8 /* Growing.h */,
-				1510B5511F2067570046BBD8 /* libGrowing.a */,
-				1510B5521F2067570046BBD8 /* VERSION */,
-			);
-			path = "GrowingIO-iOS-SDK";
 			sourceTree = "<group>";
 		};
 		245A5B231FB9793300B70104 /* BaiduLocation */ = {
@@ -1539,8 +1539,8 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7DB2CBD51E779DDF00DE146C /* change_btn@2x.png in Resources */,
 				7DB2CBD81E779DDF00DE146C /* flash_off@3x.png in Resources */,
-				1510B5541F2067570046BBD8 /* VERSION in Resources */,
 				7DC7F9242006022D008267A5 /* mapapi.bundle in Resources */,
+				120E15FD2072257C00A298B1 /* VERSION in Resources */,
 				124A59131E9C8B24007C1C15 /* Icon_SaoYiSao@2x.png in Resources */,
 				7DB2CBD71E779DDF00DE146C /* flash_off@2x.png in Resources */,
 			);
@@ -1775,6 +1775,8 @@
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
+					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
+					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1830,6 +1832,8 @@
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
+					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
+					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1922,6 +1926,8 @@
 					"$(PROJECT_DIR)/FE_Sass/BaiduLocation/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/FE_Sass/Baidu_SDK/thirdlibs",
 					"$(PROJECT_DIR)/Baidu_SDK/thirdlibs",
+					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
+					"$(PROJECT_DIR)/GrowingIO-iOS-SDK\\ 3",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",

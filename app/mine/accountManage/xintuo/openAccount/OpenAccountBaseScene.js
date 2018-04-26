@@ -129,6 +129,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                             }}
                             loading={this.state.loading_bank}
                             annotation={this.state.bankName}
+                            value={this.model.legal_real_name}
                         />
 
                         <InformationInputItem
@@ -142,6 +143,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                             loading={this.state.loading_bank}
                             annotation={this.state.bankName}
                             separator={false}
+                            value={this.model.legal_cert_no}
                         />
 
                     </View>
@@ -221,6 +223,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         }}
                                         loading={this.state.loading_bank}
                                         annotation={this.state.bankName}
+                                        value={this.model.cert_no_1}
 
                                     />
                                     <InformationInputItem
@@ -234,6 +237,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         loading={this.state.loading_bank}
                                         annotation={this.state.bankName}
                                         separator={false}
+                                        value={this.model.tax_register_certificate}
                                     />
 
 

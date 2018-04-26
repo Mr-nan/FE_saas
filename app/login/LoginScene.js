@@ -22,7 +22,7 @@ import MainPage from "../main/MainPage";
 // import LoginFail from "./LoginFail";
 import * as FontAndColor from "../constant/fontAndColor";
 import Register from "./Register";
-import NavigationBar from "../component/NavigationBar";
+import NavigationBar from "../component/AllNavigationView";
 import PixelUtil from "../utils/PixelUtil";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
@@ -42,6 +42,7 @@ var imgSid: '';
 var smsCode: '';
 var userNames = [];
 var Platform = require('Platform');
+
 let androidPhoneVersion = '';
 import ErrorBackToast from './component/ErrorBackToast';
 export default class LoginScene extends BaseComponent {
@@ -126,12 +127,26 @@ export default class LoginScene extends BaseComponent {
             }}>
                 <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                     <NavigationBar
-                        leftImageShow={false}
-                        leftTextShow={true}
-                        leftText={""}
-                        centerText={"登录"}
-                        rightText={""}
-                    />
+                        title={"登录"}
+                        backIconClick={()=>{
+                            this.toNextPage({
+                                name: 'MainPage',
+                                component: MainPage,
+                                params: {},
+                            })
+                        }}renderRihtFootView={()=>{
+                        return(
+                            <TouchableOpacity onPress={()=>{
+                                this.toNextPage({
+                                    name: 'Register',
+                                    component: Register,
+                                    params: {},
+                                })
+                            }}>
+                                <Text style={{color:'white',fontSize:Pixel.getFontPixel(FontAndColor.LITTLEFONT28)}}>注册</Text>
+                            </TouchableOpacity>
+                        )
+                    }}/>
                 </View>
             </TouchableWithoutFeedback>);
         }
@@ -161,19 +176,27 @@ export default class LoginScene extends BaseComponent {
             }}>
                 <View style={styles.container}>
                     <NavigationBar
-                        leftImageShow={false}
-                        leftTextShow={true}
-                        centerText={"登录"}
-                        rightText={"注册"}
-                        leftTextCallBack={this.backPage}
-                        rightTextCallBack={() => {
+                        title="登录"
+                        backIconClick={()=>{
                             this.toNextPage({
-                                name: 'Register',
-                                component: Register,
+                                name: 'MainPage',
+                                component: MainPage,
                                 params: {},
                             })
                         }}
-                    />
+                        renderRihtFootView={()=>{
+                        return(
+                            <TouchableOpacity onPress={()=>{
+                                this.toNextPage({
+                                    name: 'Register',
+                                    component: Register,
+                                    params: {},
+                                })
+                            }}>
+                                <Text style={{color:'white',fontSize:Pixel.getFontPixel(FontAndColor.LITTLEFONT28)}}>注册</Text>
+                            </TouchableOpacity>
+                        )
+                    }}/>
 
                     <View style={styles.inputTextSytle}>
                         <LoginAutoSearchInputText
@@ -254,7 +277,6 @@ export default class LoginScene extends BaseComponent {
                     </View>
 
                     <View style={{flex: 1}}/>
-
                     <Image source={require('./../../images/login/login_bg.png')}
                            style={{width: width, height: Pixel.getPixel(175)}}/>
 
@@ -578,6 +600,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: FontAndColor.COLORA3,
+        paddingTop:Pixel.getTitlePixel(64),
     },
     loginBtnStyle: {
         height: Pixel.getPixel(44),
