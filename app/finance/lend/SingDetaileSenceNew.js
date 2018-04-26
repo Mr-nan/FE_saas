@@ -7,12 +7,14 @@ import {
     View,
     ListView,
     Text,
+    TouchableOpacity
 } from 'react-native';
 
 import {
     CommnetListItem,
     LendCarItemCell,
     CommenButtonNew,
+    CommenButton,
     commnetStyle,
     ComentImageButton
 } from './component/ComponentBlob'
@@ -112,7 +114,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 "trenchtype": "1961",
                                 "lending_methods": "账户体系放款",
                                 "cancle_time": "1970-01-01",
-                                "logic_status": "70",
+                                "logic_status": "10",
                                 "is_cancel_loan": 0,
                                 "is_sign_contract": 0,
                                 "is_confirm_iou": 0,
@@ -176,6 +178,46 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 "payment_number": 201710180010
                             },
                             "response": [
+                                {
+                                    "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
+                                    "frame_number": "43434343233346666",
+                                    "loan_number": "20171018001002",
+                                    "loan_mny": "17000.00",
+                                    "loan_time": "2017-09-01",
+                                    "assess_time": "2017-10-18",
+                                    "assess_user_name": "admin",
+                                    "plate_number": "0",
+                                    "hq_assess_mny": 3.5,
+                                    "storage": "工行烫晚祁有限公司",
+                                    "lending_methods": "线下放款",
+                                    "channel_name": null,
+                                    "finish_time": null,
+                                    "child_loan_status": 30,
+                                    "child_loan_status_str": "渠道审核中",
+                                    "is_confirm_iou": 1,
+                                    "is_sign_contract": 1,
+                                    "is_cancel_loan": 1
+                                },
+                                {
+                                    "model_name": "2017款 奥迪A6L TFSI 技术型",
+                                    "frame_number": "34343434444555555",
+                                    "loan_number": "20171018001001",
+                                    "loan_mny": "24000.00",
+                                    "loan_time": "2017-09-01",
+                                    "assess_time": "2017-10-18",
+                                    "assess_user_name": "admin",
+                                    "plate_number": "0",
+                                    "hq_assess_mny": 3,
+                                    "storage": "工行烫晚祁有限公司",
+                                    "lending_methods": "线下放款",
+                                    "channel_name": null,
+                                    "finish_time": null,
+                                    "child_loan_status": 30,
+                                    "child_loan_status_str": "渠道审核中",
+                                    "is_confirm_iou": 1,
+                                    "is_sign_contract": 1,
+                                    "is_cancel_loan": 1
+                                },
                                 {
                                     "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
                                     "frame_number": "43434343233346666",
@@ -479,6 +521,14 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         </View>
     }
 
+    renderFooter = () => {
+        return (
+            <View style={{flexDirection:'column',height:40}}>
+
+            </View>
+        )
+    }
+
     renderSectionHeader = (sectionData, sectionID) => {
         return (
             <View style={[sectionID != 'section1' && {backgroundColor:PAGECOLOR.COLORA3, height: 10}]}></View>
@@ -513,8 +563,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     renderHeader={this.renderHeader}
                     renderSectionHeader={this.renderSectionHeader}
                     renderSeparator={this.renderSeparator}
+                    renderFooter={this.renderFooter}
                 />
-
                 <ModifyBorrowing ref={(model)=>{this.modifyb=model}}
                                  onchangeText={(text)=>{controlCode.changeMoney=text}}
                                  minLend={controlCode.minLend}
@@ -540,6 +590,22 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         }else {
                             return null;
                         }}}/>
+
+                    {
+                        this.tempjson.data.response.logic_status == 10?
+                            <TouchableOpacity  style={{height:40,width:width,position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',backgroundColor:'#05c5c2'}}
+                                           onPress={()=>{alert("取消借款")}}>
+                                <Text style={{}}>取消借款</Text>
+                            </TouchableOpacity>:null
+                    }
+                    {
+                        this.tempjson.data.response.is_sign_contract == 1?
+                            <TouchableOpacity style={{height:40,width:width,position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',backgroundColor:'#05c5c2'}}
+                                              onPress={()=>{alert("批量签署")}}>
+                                <Text style={{}}>批量签署</Text>
+                            </TouchableOpacity>:null
+                    }
+
             </View>
         );
     }
