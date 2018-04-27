@@ -126,13 +126,18 @@ export default class OpenAccountBaseScene extends BaseComponent {
                             textPlaceholder={''}
                             keyboardType={'default'}
                             onChangeText={(text) => {
+                                console.log(text)
 
-                                let re = /[\u4e00-\u9fa5|a-zA-Z]/;
-                                if (re.test(text)) {
+                                let re = /^[\u4e00-\u9fa5a-zA-Z]+$/;
+                                let flag = re.test(text);
+                                    console.log(flag)
+                                if (flag) {
                                     this.model.legal_real_name = text
-                                    return true;
+                                    console.log('true')
                                 }
-                                return false;
+                                console.log('false')
+                                return this.model.legal_real_name?this.model.legal_real_name:""
+
                             }}
                             loading={this.state.loading_bank}
                             annotation={this.state.bankName}
@@ -146,7 +151,6 @@ export default class OpenAccountBaseScene extends BaseComponent {
                             keyboardType={'default'}
                             onChangeText={(text) => {
                                 this.model.legal_cert_no = text;
-                                return true;
                             }}
                             loading={this.state.loading_bank}
                             annotation={this.state.bankName}
@@ -221,7 +225,6 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         keyboardType={'default'}
                                         onChangeText={(text) => {
                                             this.model.community_credit_code = text
-                                            return true;
                                         }}
                                         loading={this.state.loading_bank}
                                         annotation={this.state.bankName}
@@ -239,7 +242,6 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         keyboardType={'default'}
                                         onChangeText={(text) => {
                                             this.model.organization_code = text
-                                            return true;
                                         }}
                                         value={this.model.organization_code}
                                     />
@@ -250,7 +252,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         keyboardType={'default'}
                                         onChangeText={(text) => {
                                             this.model.cert_no_1 = text
-                                            return true;
+
                                         }}
                                         loading={this.state.loading_bank}
                                         annotation={this.state.bankName}
@@ -264,7 +266,6 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         keyboardType={'default'}
                                         onChangeText={(text) => {
                                             this.model.tax_register_certificate = text
-                                            return true;
                                         }}
                                         loading={this.state.loading_bank}
                                         annotation={this.state.bankName}

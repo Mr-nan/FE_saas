@@ -113,24 +113,29 @@ export default class OpenTrustAccountView extends BaseComponent {
             let contractList = [];
             for (let i = 0; i < this.contractList.length; i++) {
 
-                if (this.state.contractList[i].name.indexOf('机动车辆买卖合同') !== -1 || this.state.contractList[i].name.indexOf('信托利益分配申请及代为支付指令函')!==-1){
+                if (this.contractList[i].name.indexOf('机动车辆买卖合同') !== -1 || this.contractList[i].name.indexOf('信托利益分配申请及代为支付指令函')!==-1){
                     contractList.push(<Text
                         key={i + 'contractList'}
                         allowFontScaling={false}
                         onPress={() => {
-                            this.openContractScene('合同', this.state.contractList[i].url)
-                            console.log(this.state.contractList[i].url)
+                            this.openContractScene('合同', this.contractList[i].url)
+                            console.log(this.contractList[i].url)
                         }}
                         style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORB4,
                             lineHeight: Pixel.getPixel(20)
                         }}>
-                        《{this.contractList[i].name}》{i < this.contractList.length - 1 ? '、' : ''}
+                        《{this.contractList[i].name}》
                     </Text>);
 
                 }
             }
+
+            let a = contractList[contractList.length - 1];
+            contractList.splice(0, 0, a);
+            contractList.pop()
+
             return (
 
                 <View style={styles.container}>
@@ -232,7 +237,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                             Animated.timing(
                                                 this.state.content_height,
                                                 {
-                                                    toValue:Pixel.getPixel(390)
+                                                    toValue:Pixel.getPixel(360)
                                                 }
                                             ).start()
 
@@ -249,8 +254,8 @@ export default class OpenTrustAccountView extends BaseComponent {
 
 
                             <View style={{
-                                marginHorizontal:Pixel.getPixel(20),
-                                marginVertical:Pixel.getPixel(6),
+                                marginHorizontal:Pixel.getPixel(15),
+                                marginVertical:Pixel.getPixel(9),
                             }}>
                                 {contractList}
                             </View>

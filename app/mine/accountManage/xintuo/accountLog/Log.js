@@ -253,7 +253,7 @@ export default class Log extends BaseComponent {
                                             onPress={() => {
                                                 this.props.showModal(true)
                                                 log_data = []
-                                                type = 3
+                                                type = '3,120'
                                                 page = 1
                                                 old_date = ''
                                                 rows = []
@@ -284,7 +284,7 @@ export default class Log extends BaseComponent {
                                                 this.props.showModal(true)
                                                 log_data = []
                                                 page = 1;
-                                                type = 4;
+                                                type = '4,122';
                                                 old_date = ''
                                                 rows = []
                                                 this.loadLog()
@@ -444,16 +444,16 @@ class LogItem extends Component {
 
     render() {
         let c, t;   //120 转入  104转入  123 转入  121冻结  4提现  3充值
-       if (this.props.item.t_operate_type === 4) {  //提现
+       if (this.props.item.t_operate_type === 4||this.props.item.t_operate_type === 122) {  //提现
             c = FontAndColor.COLORA2
             t = '提现'
         }else if(this.props.item.t_operate_type === 3||this.props.item.t_operate_type === 120) {
             c = FontAndColor.COLORB1
             t = "充值"
-        }else if(this.props.item.t_operate_type === 123){
+        }else if(this.props.item.t_operate_type === 123||this.props.item.t_operate_type === 105){
             c = FontAndColor.COLORB0
             t = "转账"
-        }else if(this.props.item.t_operate_type === 104||this.props.item.t_operate_type === 105){
+        }else if(this.props.item.t_operate_type === 104||this.props.item.t_operate_type === 121){
            c = FontAndColor.COLORB0
            t = "交易"
        }

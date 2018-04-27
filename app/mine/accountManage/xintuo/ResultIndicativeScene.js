@@ -320,7 +320,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                 let datas = JSON.parse(data.result);
                 let maps = {
                     enter_base_id: datas.company_base_id,
-                    bank_id: 316,
+                    bank_id: 'zsyxt',
                     serial_no: this.props.error.data.serial_no,
                 };
 

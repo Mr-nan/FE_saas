@@ -124,18 +124,12 @@ export default class InformationInputItem extends Component {
                                     value={this.state.value}
                                     editable={this.props.editable}
                                     onChangeText={(text) => {
-                                        if (this.props.onChangeText) {
-                                            if(this.props.onChangeText(text)){
+                                            let t = this.props.onChangeText(text)
+                                            if(typeof t !== 'undefined'){
                                                 this.setState({
-                                                    value: text
+                                                    value: t
                                                 });
                                             }
-                                        }else {
-                                            this.setState({
-                                                value: text
-                                            });
-                                        }
-
                                     }}
                                 />
                                 : <SText

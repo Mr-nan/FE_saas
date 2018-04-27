@@ -137,8 +137,8 @@ export default class MyAccountItem extends BaseComponent {
             }
         } else if (type == 'zsyxt') {
 
-            this.props.clickCallBack()
-            return
+            // this.props.clickCallBack()
+            // return
 
             switch (state) {
                 case 0://未开户
