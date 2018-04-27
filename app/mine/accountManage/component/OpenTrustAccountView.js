@@ -112,21 +112,24 @@ export default class OpenTrustAccountView extends BaseComponent {
         if (this.state.isShow) {
             let contractList = [];
             for (let i = 0; i < this.contractList.length; i++) {
-                contractList.push(<Text
-                    key={i + 'contractList'}
-                    allowFontScaling={false}
-                    onPress={() => {
-                        this.openContractScene('合同', this.contractList[i].url)
-                        console.log(this.contractList[i].url)
-                    }}
-                    style={{
-                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                        color: fontAndColor.COLORB4,
-                        lineHeight: Pixel.getPixel(20)
-                    }}>
-                    《{this.contractList[i].name}》{i < this.contractList.length - 1 ? '、' : ''}
-                </Text>);
-                //contractList.push({title: this.contractList[i].name, webUrl: this.contractList[i].url});
+
+                if (this.state.contractList[i].name.indexOf('机动车辆买卖合同') !== -1 || this.state.contractList[i].name.indexOf('信托利益分配申请及代为支付指令函')!==-1){
+                    contractList.push(<Text
+                        key={i + 'contractList'}
+                        allowFontScaling={false}
+                        onPress={() => {
+                            this.openContractScene('合同', this.state.contractList[i].url)
+                            console.log(this.state.contractList[i].url)
+                        }}
+                        style={{
+                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                            color: fontAndColor.COLORB4,
+                            lineHeight: Pixel.getPixel(20)
+                        }}>
+                        《{this.contractList[i].name}》{i < this.contractList.length - 1 ? '、' : ''}
+                    </Text>);
+
+                }
             }
             return (
 

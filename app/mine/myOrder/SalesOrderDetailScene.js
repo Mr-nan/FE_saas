@@ -70,13 +70,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.modelInfo = {};
         this.isCheckPrice = -1;
         this.carData = {'v_type': 1};
-
+        this.contractList=[];
         this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}];
 
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
+            isRefreshing: false,
         }
     }
 
@@ -381,9 +381,33 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     loadData = () => {
+
+
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
+
                 let datas = JSON.parse(data.result);
+                /******     信托白名单查询     ******/
+
+                request(AppUrls.CAN_XINTUO, 'POST', {enter_base_id: datas.company_base_id, type: 0}).then((response) => {
+
+                    let maps = {
+                        source_type: '3',
+                        fund_channel: '信托'
+                    };
+
+                    request(AppUrls.AGREEMENT_LISTS, 'Post', maps)
+                        .then((response) => {
+                                this.contractList=response.mjson.data.list;
+
+                        }, (error) => {
+
+                        });
+
+                }, (error) => {
+                    console.log(error.msg)
+                })
+
                 let maps = {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
@@ -1037,7 +1061,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     this.mList = ['0', '1', '5', '7', '9'];
                     this.contactData = {
                         layoutTitle: '已完成',
-                        layoutContent: '车款可提现。',
+                        layoutContent: '车款可提现哦。',
                         setPrompt: false
                     };
                 }
@@ -1348,6 +1372,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
         } else if (rowData === '1') {
             return (
                 <ContactLayout
+                    toNextPage = {this.toNextPage}
+                    contractList = {this.contractList}
                     layoutTitle={this.contactData.layoutTitle ? this.contactData.layoutTitle : ''}
                     layoutContent={this.contactData.layoutContent ? this.contactData.layoutContent : ''}
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}

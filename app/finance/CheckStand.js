@@ -32,6 +32,9 @@ import * as webBackUrl from "../constant/webBackUrl";
 import AccountWebScene from "../mine/accountManage/AccountWebScene";
 import DDApplyLendScene from "./lend/DDApplyLendScene";
 import ChooseModal from "../mine/myOrder/component/ChooseModal";
+import SaasText from "../mine/accountManage/zheshangAccount/component/SaasText";
+import TrustAccountContractScene from "../mine/accountManage/trustAccount/TrustAccountContractScene";
+
 const Pixel = new PixelUtil();
 
 export default class CheckStand extends BaseComponent {
@@ -43,10 +46,13 @@ export default class CheckStand extends BaseComponent {
         this.isShowFinancing = 0;
         this.creditBalanceMny = 0;
         this.isConfigUserAuth = 0;
+        this.contractList = []
         this.state = {
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
+            isRefreshing: false,
+
         }
+
     }
 
     componentDidMount() {
@@ -64,10 +70,33 @@ export default class CheckStand extends BaseComponent {
         this.loadData();
     };
 
+    componentWillUnmount() {
+    }
+
+
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
+
                 let datas = JSON.parse(data.result);
+                // this.props.showModal(true);
+
+                if (this.props.payType == 2) {
+                    request(AppUrls.CAN_XINTUO, 'POST', {
+                        enter_base_id: datas.company_base_id,
+                        type: 0
+                    }).then((response) => {
+
+                        this.loadContractList()
+
+                    }, (error) => {
+                        console.log(error.msg)
+                    })
+                } else {
+                    this.loadContractList()
+                }
+
+
                 this.isDoneCredit = datas.is_done_credit;
                 this.creditBalanceMny = datas.credit_balance_mny;
                 let maps = {
@@ -83,7 +112,7 @@ export default class CheckStand extends BaseComponent {
                         } else {
                             this.setState({
                                 isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
+                                renderPlaceholderOnly: 'success',
                             });
                         }
                     } else {
@@ -105,6 +134,46 @@ export default class CheckStand extends BaseComponent {
             }
         });
     };
+
+    loadContractList = () => {
+
+        request(AppUrls.AGREEMENT_LISTS, 'Post', {
+            source_type: '3',
+            fund_channel: '信托'
+        })
+            .then((response) => {
+                // this.props.showModal(false);
+                for (let i = 0; i < response.mjson.data.list.length; i++) {
+                    if (response.mjson.data.list[i].name.indexOf('机动车辆买卖合同') !== -1 || response.mjson.data.list[i].name.indexOf('信托利益分配申请及代为支付指令函') !== -1) {
+                        this.contractList.push(<Text
+                            key={i + 'contractList'}
+                            allowFontScaling={false}
+                            onPress={() => {
+                                this.openContractScene('合同', response.mjson.data.list[i].url)
+                                console.log(response.mjson.data.list[i].url)
+                            }}
+                            style={{
+                                fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                color: fontAndColor.COLORB4,
+                                lineHeight: Pixel.getPixel(20)
+                            }}>
+                            《{response.mjson.data.list[i].name}》
+                        </Text>);
+
+                    }
+
+                }
+                let a = this.contractList[this.contractList.length - 1];
+                this.contractList.splice(0, 0, a);
+                this.contractList.pop()
+
+            }, (error) => {
+                //this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+            });
+
+    }
+
 
     /**
      *   检查此订单卖家是否是"线下支付"白名单用户
@@ -254,20 +323,23 @@ export default class CheckStand extends BaseComponent {
                             this.isShowFinancing = 1;
                             this.setState({
                                 isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
+                                renderPlaceholderOnly: 'success',
+
                             });
                         } else {
                             this.isShowFinancing = 0;
                             this.setState({
                                 isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
+                                renderPlaceholderOnly: 'success',
+
                             });
                         }
                     }, (error) => {
                         this.isShowFinancing = 0;
                         this.setState({
                             isRefreshing: false,
-                            renderPlaceholderOnly: 'success'
+                            renderPlaceholderOnly: 'success',
+
                         });
                     });
                 }
@@ -275,7 +347,8 @@ export default class CheckStand extends BaseComponent {
                 this.isShowFinancing = 0;
                 this.setState({
                     isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
+                    renderPlaceholderOnly: 'success',
+
                 });
             }
         });
@@ -309,8 +382,10 @@ export default class CheckStand extends BaseComponent {
                     <Text allowFontScaling={false} style={styles.title}>运单费用：</Text>
                     <Text allowFontScaling={false} style={styles.content}>{this.props.transAmount}元</Text>
                 </View>
-                <View style={{height: Pixel.getPixel(10),
-                    backgroundColor: fontAndColor.COLORA3}}/>
+                <View style={{
+                    height: Pixel.getPixel(10),
+                    backgroundColor: fontAndColor.COLORA3
+                }}/>
                 <View style={styles.accountBar}>
                     <Text allowFontScaling={false} style={styles.title}>账户：</Text>
                     <Text allowFontScaling={false}
@@ -420,8 +495,23 @@ export default class CheckStand extends BaseComponent {
         //return this.normalPay();
     };
 
+    /**
+     *   跳转合同预览页
+     **/
+    openContractScene = (name, url) => {
+        this.toNextPage({
+            name: 'TrustAccountContractScene',
+            component: TrustAccountContractScene,
+            params: {
+                title: name,
+                webUrl: url
+            }
+        })
+    };
+
 
     render() {
+
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
                 {this.loadView()}
@@ -438,6 +528,29 @@ export default class CheckStand extends BaseComponent {
                                   parentStyle={styles.loginBtnStyle}
                                   childStyle={styles.loginButtonTextStyle}
                                   mOnPress={this.goPay}/>
+
+                        {
+                            this.contractList.length > 0 ?
+                                <View
+                                    style={{marginHorizontal: Pixel.getPixel(15), marginBottom: Pixel.getPixel(35)}}
+                                >
+                                    <SaasText>
+                                        <SaasText
+                                            style={{
+                                                color: fontAndColor.COLORA1,
+                                                fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
+                                            }}
+                                        >
+                                            付款即表示您已阅读
+                                        </SaasText>
+                                        {this.contractList}
+                                    </SaasText>
+                                </View>
+
+
+                                : null
+                        }
+
                         {this.props.isSellerFinance == 0 && this.props.payType == 2 && !this.props.logisticsType &&
                         (<MyButton buttonType={MyButton.TEXTBUTTON}
                                    content={'鼎诚融资代付'}
@@ -497,7 +610,7 @@ export default class CheckStand extends BaseComponent {
                                 color: fontAndColor.COLORA1,
                                 marginTop: Pixel.getPixel(10)
                             }}>车辆交易背景下的，基于车辆买卖订单的，对买车人购车的融资业务。</Text>
-                        </View> }
+                        </View>}
                         <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton}
                                       textStyle={styles.expText}
                                       text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
@@ -680,15 +793,15 @@ export default class CheckStand extends BaseComponent {
      *  支付分发
      */
     goPay = () => {
-/*        if (this.props.payType == 1 || this.props.payType == 2) {
-            if (this.props.payFull) {
-                this.goFullPay();
-            } else {
-                this.goDepositPay();
-            }
-        } else {
-            this.goInitialPay();
-        }*/
+        /*        if (this.props.payType == 1 || this.props.payType == 2) {
+                    if (this.props.payFull) {
+                        this.goFullPay();
+                    } else {
+                        this.goDepositPay();
+                    }
+                } else {
+                    this.goInitialPay();
+                }*/
         if (this.props.payType == 1) {
             this.goDepositPay();
         } else if (this.props.payType == 2) {
@@ -917,7 +1030,7 @@ const styles = StyleSheet.create({
         width: width - Pixel.getPixel(30),
         backgroundColor: fontAndColor.COLORB0,
         marginTop: Pixel.getPixel(30),
-        marginBottom: Pixel.getPixel(30),
+        marginBottom: Pixel.getPixel(10),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),

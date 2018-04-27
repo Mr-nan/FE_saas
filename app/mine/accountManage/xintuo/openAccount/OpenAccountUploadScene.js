@@ -347,15 +347,6 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                 lineHeight: Pixel.getPixel(20),
                                 marginLeft: Pixel.getPixel(5)
                             }}
-                            onPress={() => {
-                                Animated.timing(
-                                    this.state.content_height,
-                                    {
-                                        toValue: Pixel.getPixel(390)
-                                    }
-                                ).start()
-
-                            }}
                         >
 
                             我已经阅读并同意以下协议,点击查看
