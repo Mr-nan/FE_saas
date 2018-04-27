@@ -29,7 +29,7 @@ import {
     getSectionData,
     changeToMillion
 } from './component/MethodComponent'
-import {ModifyBorrowing, LendSuccessAlert, ModalAlert} from './component/ModelComponent'
+import {ModifyBorrowing, LendSuccessAlert, ModalAlert, MMSModalAlert} from './component/ModelComponent'
 import  OrderCarDetailScene from './OrderCarDetailScene'
 import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
@@ -556,9 +556,16 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                   title='修改成功' subtitle='恭喜您修改借款成功'/>
 
                 <ModalAlert title='取消借款' subtitle="您确定要取消借款吗"
-                            ref={(cancle)=>{this.canleAlert = cancle}}
-                            confimClick={this.cancleLoad}
-                            cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
+                               ref={(cancle)=>{this.canleAlert = cancle}}
+                               confimClick={(setmodilVis)=>{
+                                   setmodilVis(false)
+                                   this.MMScanleAlert.setModelVisible(true);
+                               }}
+                               cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
+
+                <MMSModalAlert ref={(cancle)=>{this.MMScanleAlert = cancle}}
+                               confimClick={this.cancleLoad}
+                               cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
 
                 <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}}
                                   confimClick={()=>{this.props.backRefresh();this.backPage()}}

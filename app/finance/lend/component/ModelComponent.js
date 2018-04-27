@@ -21,6 +21,10 @@ import { PAGECOLOR,adapeSize,fontadapeSize,width } from './MethodComponent'
 import {CommenButton} from './ComponentBlob'
 
 import dismissKeyboard from 'dismissKeyboard';
+import LoginInputText from '../../../login/component/LoginInputText';
+var Platform = require('Platform');
+import {request} from "../../../utils/RequestUtil";
+import * as AppUrls from "../../../constant/appUrls";
 
 
 export class LendSuccessAlert extends Component{
@@ -336,6 +340,105 @@ export class ModalAlert extends PureComponent{
     }
 
 
+}
+
+
+export class MMSModalAlert extends PureComponent{
+    state={
+        show:false,
+    }
+
+    setModelVisible=(value)=>{
+        this.setState({
+            show:value
+        })
+    }
+
+    confimClick=()=>{
+        const {confimClick} =this.props;
+        confimClick(this.setModelVisible)
+    }
+
+    cancleClick=()=>{
+        const {cancleClick} =this.props;
+        cancleClick(this.setModelVisible)
+    }
+    render(){
+        const {title,subtitle,confimTitle}=this.props;
+        return(
+            <Modal animationType='none'
+                   transparent={true}
+                   visible={this.state.show}
+                   onShow={() => {
+                        this.Verifycode()
+                   }}
+                   onRequestClose={() => {
+                   }}
+            >
+                <TouchableOpacity
+                    style={commentAlertStyle.mask}
+                    activeOpacity={1}
+                    onPress={()=>{dismissKeyboard();}}>
+                    <View style={commentAlertStyle.container}>
+                        <Text allowFontScaling={false}  style={commentAlertStyle.title}>{'验证码'}</Text>
+                        <View style={{width:adapeSize(200)}}>
+                            <LoginInputText
+                                ref="loginVerifycode"
+                                textPlaceholder={'请输入验证码'}
+                                inputTextStyle={{}}
+                                viewStytle={{width:adapeSize(200)}}
+                                leftIcon={false}
+                                rightIconClick={this.Verifycode}
+                                keyboardType={'phone-pad'}
+                                rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}
+                                rightIconStyle={{width: adapeSize(100), height: adapeSize(32)}}/>
+                        </View>
+                        <View style={commentAlertStyle.buttonsWarp}>
+                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]}
+                                          onPress={this.confimClick}
+                                          title={"确定"}/>
+                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,commentAlertStyle.buttonRight]}
+                                          onPress={this.cancleClick}
+                                          title="取消"/>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
+        )
+    }
+
+    //获取图形验证码
+    Verifycode = (flag) => {
+        this.refs.loginVerifycode.lodingStatus(true);
+        let device_code = '';
+        if (Platform.OS === 'android') {
+            device_code = 'dycd_platform_android';
+        } else {
+            device_code = 'dycd_platform_ios';
+        }
+        let maps = {
+            device_code: device_code,
+        };
+        request(AppUrls.IDENTIFYING, 'Post', maps)
+            .then((response) => {
+                this.refs.loginVerifycode.lodingStatus(false);
+                this.imgSrc = response.mjson.data.img_src;
+                this.imgSid = response.mjson.data.img_sid;
+                this.setState({
+                    verifyCode: {uri: this.imgSrc},
+                });
+            }, (error) => {
+                this.refs.loginVerifycode.lodingStatus(false);
+                this.setState({
+                    verifyCode: null,
+                });
+                if (error.mycode == -300 || error.mycode == -500) {
+                    this.props.showToast("获取失败");
+                } else {
+                    this.props.showToast(error.mjson.msg + "");
+                }
+            });
+    }
 }
 
 export class DDModalAlert extends PureComponent{
