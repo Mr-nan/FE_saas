@@ -86,7 +86,7 @@ export default class ContactLayout extends Component {
 
 
             for (let i = 0; i < this.props.contractList.length; i++) {
-                if (this.props.contractList[i].name.indexOf('机动车辆买卖合同') !== -1 || this.props.contractList[i].name.indexOf('信托利益分配申请及代为支付指令函') !== -1) {
+                if (this.props.contractList[i].name.indexOf('机动车辆买卖合同') !== -1 || this.props.contractList[i].name.indexOf('标的债权清单') !== -1) {
                     contractList.push(<Text
                         key={i + 'contractList'}
                         allowFontScaling={false}
@@ -104,9 +104,10 @@ export default class ContactLayout extends Component {
                 }
             }
 
-            let a = contractList[contractList.length - 1];
-            contractList.splice(0, 0, a);
-            contractList.pop()
+            let a = contractList[0];
+            let b = contractList[contractList.length-1];
+            contractList[0] = b;
+            contractList[contractList.length-1] = a
 
         }
 
