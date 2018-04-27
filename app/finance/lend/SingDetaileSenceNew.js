@@ -193,7 +193,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                     "lending_methods": "线下放款",
                                     "channel_name": null,
                                     "finish_time": null,
-                                    "child_loan_status": 30,
+                                    "child_loan_status": 60,
                                     "child_loan_status_str": "渠道审核中",
                                     "is_confirm_iou": 1,
                                     "is_sign_contract": 1,
