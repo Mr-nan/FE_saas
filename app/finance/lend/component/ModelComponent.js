@@ -355,8 +355,11 @@ export class MMSModalAlert extends PureComponent{
     }
 
     confimClick=()=>{
-        const {confimClick} =this.props;
-        confimClick(this.setModelVisible)
+        let verifyCode = this.refs.loginVerifycode.getInputTextValue();
+        if(verifyCode != ''){
+            const {confimClick} = this.props;
+            confimClick(this.setModelVisible,this.imgSid,verifyCode)
+        }
     }
 
     cancleClick=()=>{
@@ -369,12 +372,8 @@ export class MMSModalAlert extends PureComponent{
             <Modal animationType='none'
                    transparent={true}
                    visible={this.state.show}
-                   onShow={() => {
-                        this.Verifycode()
-                   }}
-                   onRequestClose={() => {
-                   }}
-            >
+                   onShow={() => { this.Verifycode() }}
+                   onRequestClose={() => { }}>
                 <TouchableOpacity
                     style={commentAlertStyle.mask}
                     activeOpacity={1}
@@ -384,7 +383,7 @@ export class MMSModalAlert extends PureComponent{
                         <View style={{width:adapeSize(200)}}>
                             <LoginInputText
                                 ref="loginVerifycode"
-                                textPlaceholder={'请输入验证码'}
+                                textPlaceholder={'请输入'}
                                 inputTextStyle={{}}
                                 viewStytle={{width:adapeSize(200)}}
                                 leftIcon={false}
@@ -408,7 +407,7 @@ export class MMSModalAlert extends PureComponent{
     }
 
     //获取图形验证码
-    Verifycode = (flag) => {
+    Verifycode = () => {
         this.refs.loginVerifycode.lodingStatus(true);
         let device_code = '';
         if (Platform.OS === 'android') {

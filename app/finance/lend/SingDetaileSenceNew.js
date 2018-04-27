@@ -115,7 +115,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 "trenchtype": "1961",
                                 "lending_methods": "账户体系放款",
                                 "cancle_time": "1970-01-01",
-                                "logic_status": "10",
+                                "logic_status": "70",
                                 "is_cancel_loan": 0,
                                 "is_sign_contract": 0,
                                 "is_confirm_iou": 0,
@@ -233,7 +233,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                     "lending_methods": "线下放款",
                                     "channel_name": null,
                                     "finish_time": null,
-                                    "child_loan_status": 30,
+                                    "child_loan_status": 40,
                                     "child_loan_status_str": "渠道审核中",
                                     "is_confirm_iou": 1,
                                     "is_sign_contract": 1,
@@ -331,9 +331,32 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
     }
 
-    //取消借款
-    cancleLoad = (setModelVis) => {
-        setModelVis(false);
+    //取消借款  子单
+    cancleLoadC = (imgSid,code) => {
+        this.props.showModal(true);
+        let maps = {
+            api: apis.CANCEL_LOAN,
+            payment_number : this.props.loanNumber, //主单号
+            loan_number :this.cancleid,
+            img_sid : imgSid,
+            img_code : code,
+        }
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                this.successCancle.setModelVisible(true)
+            }, (error) => {
+                this.props.showModal(false);
+                if (error.mycode == -300 || error.mycode == -500) {
+                    this.props.showToast('服务器连接有问题')
+                } else {
+                    this.props.showToast(error.mjson.msg);
+                }
+            });
+    }
+
+    //取消借款  主单
+    cancleLoad = () => {
         this.props.showModal(true);
         let maps = {
             api: apis.CANCEL_LOAN,
@@ -353,9 +376,11 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 });
     }
 
-    controsButtonClick = (title) => {
+    controsButtonClick = (title,id) => {
 
         if (title === '取消借款') {
+            this.cancleid = id;
+            this.cancleFlag = '取消子单'
             this.canleAlert.setModelVisible(true);
         } else if (title === '签署合同') {
             this.toNextPage({
@@ -474,7 +499,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         tempButtonTitles.map((item) => {
                 tempButtons.push(<CommenButtonNew buttonStyle={this.getButtonStyleWithTitle(item)}
                                                textStyle={styles.buttontextStyle}
-                                               onPress={()=>{this.controsButtonClick(item)}}
+                                               onPress={()=>{this.controsButtonClick(item,rowData.frame_number)}}
                                                title={item}
                                                key={item}
                 />)
@@ -552,7 +577,10 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                  cancleClick={(callback)=>{callback(false)}}/>
 
                 <LendSuccessAlert ref={(lend)=>{this.change=lend}}
-                                  confimClick={()=>{  this.props.backRefresh(); this.backPage()}}
+                                  confimClick={()=>{
+                                      this.props.backRefresh();
+                                      this.getLendinfo();
+                                  }}
                                   title='修改成功' subtitle='恭喜您修改借款成功'/>
 
                 <ModalAlert title='取消借款' subtitle="您确定要取消借款吗"
@@ -564,11 +592,25 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
 
                 <MMSModalAlert ref={(cancle)=>{this.MMScanleAlert = cancle}}
-                               confimClick={this.cancleLoad}
+                               confimClick={(setModelVis,imgSid,code)=>{
+                                   setModelVis(false);
+                                   if(this.cancleFlag =='取消主单'){
+                                        this.cancleLoad()
+                                   } else {
+                                        this.cancleLoadC(imgSid,code)
+                                   }
+                               }}
                                cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
 
                 <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}}
-                                  confimClick={()=>{this.props.backRefresh();this.backPage()}}
+                                  confimClick={()=>{
+                                      this.props.backRefresh();
+                                      if(this.cancleFlag == '取消主单'){
+                                        this.backPage()
+                                      }else {
+                                        this.getOrderCarInfo()
+                                      }
+                                  }}
                                   title='取消成功' subtitle='取消借款成功'/>
 
                 <AllNavigationView
@@ -580,7 +622,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 <ComentImageButton btnStyle={styles.imageButton}
                                     ImgSource={require('../../../images/financeImages/modif.png')}
                                     onPress={()=>{this.modifyb.setModelVisible(true)}}/>
-                                )
+                            )
                         }else {
                             return null;
                         }}}/>
@@ -588,7 +630,10 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     {
                         this.tempjson.data.response.logic_status == 10?
                             <TouchableOpacity  style={{height:40,width:width,position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',backgroundColor:'#05c5c2'}}
-                                           onPress={()=>{ this.canleAlert.setModelVisible(true);}}>
+                                           onPress={()=>{
+                                               this.cancleFlag = '取消主单'
+                                               this.canleAlert.setModelVisible(true);
+                                           }}>
                                 <Text style={{}}>取消借款</Text>
                             </TouchableOpacity>:null
                     }
