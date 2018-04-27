@@ -519,8 +519,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
     renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
         return (
-            <View key={`${sectionID}-${rowId}`}
-                  style={{height:10, backgroundColor:PAGECOLOR.COLORA3}}></View>
+            <View key={`${sectionID}-${rowId}`} style={{height:10, backgroundColor:PAGECOLOR.COLORA3}}></View>
         )
     }
 
@@ -529,9 +528,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             return (
                 <View style={styles.container}>
                     {this.loadView()}
-                    <AllNavigationView title='借款详情' backIconClick={()=> {
-                        this.backPage();
-                    }}/>
+                    <AllNavigationView title='借款详情' backIconClick={()=> { this.backPage(); }}/>
                 </View>);
         }
 

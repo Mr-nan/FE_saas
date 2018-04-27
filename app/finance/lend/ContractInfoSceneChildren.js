@@ -107,11 +107,11 @@ export  default class ContractInfoScene extends BaseComponent {
                         color:'#fff',width:width/2-Pixel.getPixel(Pixel.getPixel(28)),marginLeft:Pixel.getPixel(5)}}>
                             {RJson.data[numberPage].contract[namePage].name}</Text>
                     </TouchableOpacity>
-                    {this.props.showButton == true ? <TouchableOpacity onPress={()=>{
+                    {
+                        this.props.showButton == true ? <TouchableOpacity onPress={()=>{
                        this.contractSign();
                     }
-                    } activeOpacity={0.8} style={{flex:1,backgroundColor:fontAndColor.COLORB0,justifyContent:'center'
-                    ,alignItems:'center'}}>
+                    } activeOpacity={0.8} style={{flex:1,backgroundColor:fontAndColor.COLORB0,justifyContent:'center',alignItems:'center'}}>
                             <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:'#fff'}}>签署合同</Text>
                         </TouchableOpacity> : <View/>}
