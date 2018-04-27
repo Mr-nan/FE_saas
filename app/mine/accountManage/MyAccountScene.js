@@ -657,14 +657,14 @@ export default class MyAccountScene extends BaseComponent {
 
     clickCallBack = () => {
 
-        // this.navigatorParams.name = 'OpenAccountBaseScene';
-        // this.navigatorParams.component = OpenAccountBaseScene;
-        // this.navigatorParams.params = {
-        //     showModal: this.props.showModal,
-        //     callBack: this.allRefresh
-        // };
-        // this.toNextPage(this.navigatorParams);
-        // return
+        this.navigatorParams.name = 'OpenAccountBaseScene';
+        this.navigatorParams.component = OpenAccountBaseScene;
+        this.navigatorParams.params = {
+            showModal: this.props.showModal,
+            callBack: this.allRefresh
+        };
+        this.toNextPage(this.navigatorParams);
+        return
 
         if (this.hengFengInfo.account_open_type == 1) {  // 企业
 

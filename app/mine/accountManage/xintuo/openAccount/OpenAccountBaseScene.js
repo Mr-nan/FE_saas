@@ -45,6 +45,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: 'loading',
             isCombination: true,  /// 是否是三证合一
+            on: true
         }
 
 
@@ -124,8 +125,14 @@ export default class OpenAccountBaseScene extends BaseComponent {
                             title={'法人姓名'}
                             textPlaceholder={''}
                             keyboardType={'default'}
-                            onChangeText={(text)=>{
-                                this.model.legal_real_name = text
+                            onChangeText={(text) => {
+
+                                let re = /[\u4e00-\u9fa5|a-zA-Z]/;
+                                if (re.test(text)) {
+                                    this.model.legal_real_name = text
+                                    return true;
+                                }
+                                return false;
                             }}
                             loading={this.state.loading_bank}
                             annotation={this.state.bankName}
@@ -137,8 +144,9 @@ export default class OpenAccountBaseScene extends BaseComponent {
                             title={'身份证号码'}
                             textPlaceholder={''}
                             keyboardType={'default'}
-                            onChangeText={(text)=>{
-                                this.model.legal_cert_no = text
+                            onChangeText={(text) => {
+                                this.model.legal_cert_no = text;
+                                return true;
                             }}
                             loading={this.state.loading_bank}
                             annotation={this.state.bankName}
@@ -152,33 +160,52 @@ export default class OpenAccountBaseScene extends BaseComponent {
                         style={{
                             backgroundColor: 'white',
                             flexDirection: 'row',
-                            paddingLeft: Pixel.getPixel(15),
+                            paddingHorizontal: Pixel.getPixel(15),
                             paddingVertical: Pixel.getPixel(15),
                             marginTop: Pixel.getPixel(15),
                             alignItems: 'center'
                         }}
                     >
                         <SaasText style={{flex: 1}}>三证合一</SaasText>
-                        <MyButton buttonType={MyButton.TEXTBUTTON}
-                                  content={'是'}
-                                  parentStyle={this.state.isCombination ? styles.parentStyle_selected : styles.parentStyle_unselected}
-                                  childStyle={this.state.isCombination ? styles.childStyle_selecte : styles.childStyle_unselecte}
-                                  mOnPress={() => {
-                                      this.model.is_three_certificates_joined = 2;
-                                      this.setState({
-                                          isCombination: true,
-                                      })
-                                  }}/>
-                        <MyButton buttonType={MyButton.TEXTBUTTON}
-                                  content={'否'}
-                                  parentStyle={!this.state.isCombination ? styles.parentStyle_selected : styles.parentStyle_unselected}
-                                  childStyle={!this.state.isCombination ? styles.childStyle_selecte : styles.childStyle_unselecte}
-                                  mOnPress={() => {
-                                      this.model.is_three_certificates_joined = 1;
-                                      this.setState({
-                                          isCombination: false,
-                                      })
-                                  }}/>
+
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => {
+                                this.setState({
+                                    on: !this.state.on,
+                                    isCombination: !this.state.on
+                                })
+                                if (this.state.on) {
+                                    this.model.is_three_certificates_joined = 2;
+                                } else {
+                                    this.model.is_three_certificates_joined = 1;
+                                }
+
+
+                            }}>
+                            <View style={{
+                                height: Pixel.getPixel(22),
+                                width: Pixel.getPixel(37),
+                                borderRadius: Pixel.getPixel(20),
+                                borderColor: this.state.on ? FontAndColor.COLORB0 : FontAndColor.COLORA1,
+                                //borderColor:this.state.borderColor,
+                                borderWidth: Pixel.getPixel(1),
+                                backgroundColor: this.state.on ? FontAndColor.COLORB0 : FontAndColor.COLORA1,
+                                //backgroundColor: this.state.backgroundColor,
+                                flexDirection: 'row',
+                                justifyContent: this.state.on ? 'flex-start' : 'flex-end',
+                                //justifyContent:this.state.justifyContent,
+                                alignItems: 'center'
+                            }}>
+                                <View
+                                    style={{
+                                        width: Pixel.getPixel(20),
+                                        height: Pixel.getPixel(20),
+                                        borderRadius: Pixel.getPixel(10),
+                                        backgroundColor: 'white',
+                                    }}/>
+                            </View>
+                        </TouchableOpacity>
 
                     </View>
 
@@ -192,13 +219,15 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         title={'社会统一编码'}
                                         textPlaceholder={''}
                                         keyboardType={'default'}
-                                        onChangeText={(text)=>{
+                                        onChangeText={(text) => {
                                             this.model.community_credit_code = text
+                                            return true;
                                         }}
                                         loading={this.state.loading_bank}
                                         annotation={this.state.bankName}
                                         separator={false}
                                         value={this.model.community_credit_code}
+
                                     />
                                 </View>
 
@@ -208,8 +237,9 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         title={'组织机构代码'}
                                         textPlaceholder={''}
                                         keyboardType={'default'}
-                                        onChangeText={(text)=>{
+                                        onChangeText={(text) => {
                                             this.model.organization_code = text
+                                            return true;
                                         }}
                                         value={this.model.organization_code}
                                     />
@@ -218,8 +248,9 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         title={'营业执照代码'}
                                         textPlaceholder={''}
                                         keyboardType={'default'}
-                                        onChangeText={(text)=>{
+                                        onChangeText={(text) => {
                                             this.model.cert_no_1 = text
+                                            return true;
                                         }}
                                         loading={this.state.loading_bank}
                                         annotation={this.state.bankName}
@@ -231,8 +262,9 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                         title={'税务登记证号码'}
                                         textPlaceholder={''}
                                         keyboardType={'default'}
-                                        onChangeText={(text)=>{
+                                        onChangeText={(text) => {
                                             this.model.tax_register_certificate = text
+                                            return true;
                                         }}
                                         loading={this.state.loading_bank}
                                         annotation={this.state.bankName}
@@ -259,7 +291,11 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                 this.toNextPage({
                                     name: OpenAccountUploadScene,
                                     component: OpenAccountUploadScene,
-                                    params: {model: this.model,showModal:this.props.showModal,callBack:this.props.callBack}
+                                    params: {
+                                        model: this.model,
+                                        showModal: this.props.showModal,
+                                        callBack: this.props.callBack
+                                    }
                                 })
                             }
 
@@ -275,10 +311,10 @@ export default class OpenAccountBaseScene extends BaseComponent {
 
     verify = () => {
 
-        if (typeof this.model.legal_real_name === 'undefined'|| this.model.legal_real_name === null||  this.model.legal_real_name.length <= 0) {
+        if (typeof this.model.legal_real_name === 'undefined' || this.model.legal_real_name === null || this.model.legal_real_name.length <= 0) {
             this.props.showToast('请输入法人姓名');
             return false;
-        } else if (typeof this.model.legal_cert_no === 'undefined'|| this.model.legal_cert_no === null||this.model.legal_cert_no.length <= 0) {
+        } else if (typeof this.model.legal_cert_no === 'undefined' || this.model.legal_cert_no === null || this.model.legal_cert_no.length <= 0) {
             this.props.showToast('请输入身份证号')
             return false;
         } else if (this.model.legal_cert_no.length !== 18) {
@@ -288,21 +324,21 @@ export default class OpenAccountBaseScene extends BaseComponent {
 
         if (this.model.is_three_certificates_joined === 1) {  // 三证
 
-            if (typeof this.model.organization_code === 'undefined'|| this.model.organization_code === null ||this.model.organization_code.length <= 0) {
+            if (typeof this.model.organization_code === 'undefined' || this.model.organization_code === null || this.model.organization_code.length <= 0) {
                 this.props.showToast('请输入组织机构代码');
                 return false;
             }
-            if (typeof this.model.cert_no_1 === 'undefined'|| this.model.cert_no_1 === null|| this.model.cert_no_1.length <= 0) {
+            if (typeof this.model.cert_no_1 === 'undefined' || this.model.cert_no_1 === null || this.model.cert_no_1.length <= 0) {
                 this.props.showToast('请输入营业执照号');
                 return false;
             }
-            if (typeof this.model.tax_register_certificate === 'undefined'|| this.model.tax_register_certificate === null|| this.model.tax_register_certificate.length <= 0) {
+            if (typeof this.model.tax_register_certificate === 'undefined' || this.model.tax_register_certificate === null || this.model.tax_register_certificate.length <= 0) {
                 this.props.showToast('请输入税务登记证号码');
                 return false;
             }
 
         } else {  // 一证
-            if ( typeof this.model.community_credit_code === 'undefined'||this.model.community_credit_code === null|| this.model.community_credit_code.length <= 0) {
+            if (typeof this.model.community_credit_code === 'undefined' || this.model.community_credit_code === null || this.model.community_credit_code.length <= 0) {
                 this.props.showToast('请输入社会统一编码');
                 return false;
             }

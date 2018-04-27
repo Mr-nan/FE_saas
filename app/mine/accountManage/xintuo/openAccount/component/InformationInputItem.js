@@ -25,10 +25,9 @@ let onePT = 1 / PixelRatio.get(); //一个像素
 import SText from './../../../zheshangAccount/component/SaasText'
 
 
+export default class InformationInputItem extends Component {
 
-export default class InformationInputItem extends Component{
-
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             value: this.props.value
@@ -42,30 +41,30 @@ export default class InformationInputItem extends Component{
     }
 
     static defaultProps = {
-        rightIcon:false,
-        loading:false,
-        editable:true,
-        value:null,
-        title:'标题',
+        rightIcon: false,
+        loading: false,
+        editable: true,
+        value: null,
+        title: '标题',
         clearValue: false,
         maxLength: 100,
         textPlaceholder: null,
         keyboardType: 'default',
-        separator:true,
-        onChangeText:null,
-        rightCallBack:null,
+        separator: true,
+        onChangeText: null,
+        rightCallBack: null,
 
     };
 
     static propTypes = {
 
-        rightIcon:PropTypes.bool,
-        loading:PropTypes.bool,
-        onChangeText:PropTypes.func,
-        editable:PropTypes.bool,
-        value:PropTypes.string,
-        title:PropTypes.string,
-        separator:PropTypes.bool,
+        rightIcon: PropTypes.bool,
+        loading: PropTypes.bool,
+        onChangeText: PropTypes.func,
+        editable: PropTypes.bool,
+        value: PropTypes.string,
+        title: PropTypes.string,
+        separator: PropTypes.bool,
         clearValue: PropTypes.bool,//清除输入框内容
         maxLength: PropTypes.number,//限制文本输入框最大的输入字符长度
         textPlaceholder: PropTypes.string,
@@ -73,7 +72,7 @@ export default class InformationInputItem extends Component{
         inputTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         viewStytle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         titleStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
-        rightCallBack:PropTypes.func,
+        rightCallBack: PropTypes.func,
     }
 
     StartCountDown = () => {
@@ -83,6 +82,7 @@ export default class InformationInputItem extends Component{
             alert("您没有开启此功能哦")
         }
     }
+
     getInputTextValue() {
         return this.state.value;
     }
@@ -93,56 +93,63 @@ export default class InformationInputItem extends Component{
         });
     }
 
-    render(){
-        return(
+    render() {
+        return (
 
-            <View style = {{backgroundColor:'white'}}>
+            <View style={{backgroundColor: 'white'}}>
                 <TouchableOpacity
-                    activeOpacity={this.props.rightIcon?.6:1}
-                    onPress={()=>{
-                        this.props.rightCallBack()
+                    activeOpacity={this.props.rightIcon ? .6 : 1}
+                    onPress={() => {
+                        if (this.props.rightCallBack) {
+                            this.props.rightCallBack()
+                        }
                     }}
                 >
-                    <View style = {[styles.container, this.props.separator?{borderBottomColor: FontAndColor.COLORA4}:{borderBottomColor:'white'}]}>
+                    <View
+                        style={[styles.container, this.props.separator ? {borderBottomColor: FontAndColor.COLORA4} : {borderBottomColor: 'white'}]}>
                         <SText
                             style={[styles.title, this.props.titleStyle]}
                         >{this.props.title}</SText>
 
                         {
-                            !this.props.rightIcon?
-                            <TextInput
-                                ref="inputText"
-                                underlineColorAndroid={"#00000000"}
-                                keyboardType = {this.props.keyboardType}
-                                placeholder = {'请输入'}
-                                style={[styles.textInputStyle, this.props.inputTextStyle]}
-                                maxLength={this.props.maxLength}
-                                secureTextEntry={this.props.secureTextEntry}
-                                value={this.state.value}
-                                editable = {this.props.editable}
-                                onChangeText={(text) => {
-                                    this.setState({
-                                        value: text
-                                    });
+                            !this.props.rightIcon ?
+                                <TextInput
+                                    ref="inputText"
+                                    underlineColorAndroid={"#00000000"}
+                                    keyboardType={this.props.keyboardType}
+                                    placeholder={'请输入'}
+                                    style={[styles.textInputStyle, this.props.inputTextStyle]}
+                                    maxLength={this.props.maxLength}
+                                    secureTextEntry={this.props.secureTextEntry}
+                                    value={this.state.value}
+                                    editable={this.props.editable}
+                                    onChangeText={(text) => {
+                                        if (this.props.onChangeText) {
+                                            if(this.props.onChangeText(text)){
+                                                this.setState({
+                                                    value: text
+                                                });
+                                            }
+                                        }else {
+                                            this.setState({
+                                                value: text
+                                            });
+                                        }
 
-                                    if(this.props.onChangeText){
-                                        this.props.onChangeText(text)
-                                    }
-
-                                }}
-                            />
-                            :<SText
-                                style={styles.annotation}
-                            >{this.props.value}</SText>
+                                    }}
+                                />
+                                : <SText
+                                    style={styles.annotation}
+                                >{this.props.value}</SText>
                         }
 
                         {
-                            this.props.rightIcon?
-                                <Image source = {require('../../../../../../images/mainImage/celljiantou.png')}/>
-                                :null
+                            this.props.rightIcon ?
+                                <Image source={require('../../../../../../images/mainImage/celljiantou.png')}/>
+                                : null
                         }
                         {
-                            this.props.annotation?
+                            this.props.annotation ?
                                 <SText
                                     style={styles.annotation}
                                 >{this.props.annotation}</SText> : null
@@ -163,12 +170,12 @@ export default class InformationInputItem extends Component{
 
 const styles = StyleSheet.create({
 
-    title:{
-        fontSize:14,
-        color:FontAndColor.COLORA0
+    title: {
+        fontSize: 14,
+        color: FontAndColor.COLORA0
     },
     container: {
-        marginHorizontal:15,
+        marginHorizontal: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -190,11 +197,11 @@ const styles = StyleSheet.create({
         color: FontAndColor.COLORA0,
     },
 
-    annotation:{
-        fontSize:15,
-        color:FontAndColor.COLORA2,
-        flex:1,
-        textAlign:'right'
+    annotation: {
+        fontSize: 15,
+        color: FontAndColor.COLORA2,
+        flex: 1,
+        textAlign: 'right'
     }
 
 });

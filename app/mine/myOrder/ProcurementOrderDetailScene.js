@@ -885,6 +885,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                                     parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
                                             orderId: this.props.orderId,
                                             orderNo: this.orderDetail.order_no,
+                                            seller_company_id:this.orderDetail.seller_company_id,
                                             payType: this.orderState,
                                             payFull: this.orderDetail.totalpay_amount > 0,
                                             sellerId: this.orderDetail.seller_id,

@@ -162,7 +162,7 @@ export default class ContactLayout extends Component {
                     <MakePhoneModal ref='mkcModal'/>
                 </View>
                 {
-                   typeof this.props.contractList !== 'undefined' &&this.props.contractList.length>0?
+                   typeof this.props.contractList !== 'undefined' &&this.props.contractList.length>0&&this.props.layoutTitle==='已完成'?
                     <View
                         style={{marginHorizontal: Pixel.getPixel(15), marginBottom: Pixel.getPixel(5)}}
                     >

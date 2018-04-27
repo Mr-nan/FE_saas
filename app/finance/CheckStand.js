@@ -46,6 +46,11 @@ export default class CheckStand extends BaseComponent {
         this.isShowFinancing = 0;
         this.creditBalanceMny = 0;
         this.isConfigUserAuth = 0;
+
+        this.is_seller_inWhite = false;
+        this.is_buyer_inWhite = false;
+
+
         this.contractList = []
         this.state = {
             renderPlaceholderOnly: 'blank',
@@ -79,22 +84,28 @@ export default class CheckStand extends BaseComponent {
             if (data.code == 1 && data.result != null) {
 
                 let datas = JSON.parse(data.result);
-                // this.props.showModal(true);
 
-                if (this.props.payType == 2) {
-                    request(AppUrls.CAN_XINTUO, 'POST', {
-                        enter_base_id: datas.company_base_id,
-                        type: 0
-                    }).then((response) => {
-
-                        this.loadContractList()
-
-                    }, (error) => {
-                        console.log(error.msg)
-                    })
-                } else {
+                request(AppUrls.CAN_XINTUO, 'POST', {
+                    enter_base_id: datas.company_base_id,
+                    type: 0
+                }).then((response) => {
+                    this.is_buyer_inWhite = true;
                     this.loadContractList()
-                }
+
+                }, (error) => {
+                    console.log(error.msg)
+                })
+
+                request(AppUrls.CAN_XINTUO, 'POST', {
+                    enter_base_id: this.props.seller_company_id,
+                    type: 0
+                }).then((response) => {
+                    this.is_seller_inWhite = true;
+                    this.loadContractList()
+
+                }, (error) => {
+                    console.log(error.msg)
+                })
 
 
                 this.isDoneCredit = datas.is_done_credit;
@@ -137,41 +148,42 @@ export default class CheckStand extends BaseComponent {
 
     loadContractList = () => {
 
-        request(AppUrls.AGREEMENT_LISTS, 'Post', {
-            source_type: '3',
-            fund_channel: '信托'
-        })
-            .then((response) => {
-                // this.props.showModal(false);
-                for (let i = 0; i < response.mjson.data.list.length; i++) {
-                    if (response.mjson.data.list[i].name.indexOf('机动车辆买卖合同') !== -1 || response.mjson.data.list[i].name.indexOf('信托利益分配申请及代为支付指令函') !== -1) {
-                        this.contractList.push(<Text
-                            key={i + 'contractList'}
-                            allowFontScaling={false}
-                            onPress={() => {
-                                this.openContractScene('合同', response.mjson.data.list[i].url)
-                                console.log(response.mjson.data.list[i].url)
-                            }}
-                            style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                color: fontAndColor.COLORB4,
-                                lineHeight: Pixel.getPixel(20)
-                            }}>
-                            《{response.mjson.data.list[i].name}》
-                        </Text>);
+        if (this.is_buyer_inWhite && this.is_seller_inWhite) {
+            request(AppUrls.AGREEMENT_LISTS, 'Post', {
+                source_type: '3',
+                fund_channel: '信托'
+            })
+                .then((response) => {
+                    // this.props.showModal(false);
+                    for (let i = 0; i < response.mjson.data.list.length; i++) {
+                        if (response.mjson.data.list[i].name.indexOf('机动车辆买卖合同') !== -1 || response.mjson.data.list[i].name.indexOf('信托利益分配申请及代为支付指令函') !== -1) {
+                            this.contractList.push(<Text
+                                key={i + 'contractList'}
+                                allowFontScaling={false}
+                                onPress={() => {
+                                    this.openContractScene('合同', response.mjson.data.list[i].url)
+                                    console.log(response.mjson.data.list[i].url)
+                                }}
+                                style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: fontAndColor.COLORB4,
+                                    lineHeight: Pixel.getPixel(20)
+                                }}>
+                                《{response.mjson.data.list[i].name}》
+                            </Text>);
+
+                        }
 
                     }
+                    let a = this.contractList[this.contractList.length - 1];
+                    this.contractList.splice(0, 0, a);
+                    this.contractList.pop()
 
-                }
-                let a = this.contractList[this.contractList.length - 1];
-                this.contractList.splice(0, 0, a);
-                this.contractList.pop()
-
-            }, (error) => {
-                //this.props.showModal(false);
-                this.props.showToast(error.mjson.msg);
-            });
-
+                }, (error) => {
+                    //this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+        }
     }
 
 
