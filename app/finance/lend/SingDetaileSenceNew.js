@@ -115,7 +115,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 "trenchtype": "1961",
                                 "lending_methods": "账户体系放款",
                                 "cancle_time": "1970-01-01",
-                                "logic_status": "70",
+                                "logic_status": "10",
                                 "is_cancel_loan": 0,
                                 "is_sign_contract": 0,
                                 "is_confirm_iou": 0,
@@ -130,7 +130,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         }
                     }
 
-                    let code =  this.tempjson.data.response.logic_status;
+                    this.stateCode =  this.tempjson.data.response.logic_status;
                     // controlCode.stateCode =  this.tempjson.data.response.logic_status;
                     // controlCode.extendCode = this.tempjson.is_extend;  查看合同
                     // controlCode.lendType = this.tempjson.type;
@@ -139,7 +139,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     // controlCode.is_microchinese_contract = this.tempjson.is_microchinese_contract;
                     // let Maxmum = parseFloat(this.tempjson.max_loanmny) + parseFloat(this.tempjson.payment_loanmny)
                     // controlCode.maxLend = changeToMillion(Maxmum)
-                    if (code != 10 && code != 20 && code != 0) {
+                    if (this.stateCode != 10 && this.stateCode != 20 && this.stateCode != 0) {
                         this.getOrderCarInfo()
                     } else {
                         this.setState({
@@ -551,21 +551,29 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                  confimClick={this.modifyLengNum}
                                  cancleClick={(callback)=>{callback(false)}}/>
 
-                <LendSuccessAlert ref={(lend)=>{this.change=lend}} confimClick={()=>{
-                    this.props.backRefresh();
-                    this.backPage()}} title='修改成功' subtitle='恭喜您修改借款成功'/>
-                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗" ref={(cancle)=>{this.canleAlert=cancle}}
-                            confimClick={this.cancleLoad} cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
-                <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}} confimClick={()=>{
-                    this.props.backRefresh();
-                    this.backPage()}} title='取消成功' subtitle='取消借款成功'/>
+                <LendSuccessAlert ref={(lend)=>{this.change=lend}}
+                                  confimClick={()=>{  this.props.backRefresh(); this.backPage()}}
+                                  title='修改成功' subtitle='恭喜您修改借款成功'/>
+
+                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗"
+                            ref={(cancle)=>{this.canleAlert = cancle}}
+                            confimClick={this.cancleLoad}
+                            cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
+
+                <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}}
+                                  confimClick={()=>{this.props.backRefresh();this.backPage()}}
+                                  title='取消成功' subtitle='取消借款成功'/>
+
                 <AllNavigationView
                     title="借款详情"
                     backIconClick={this.backPage}
                     renderRihtFootView={()=>{
-                        if(controlCode.stateCode==='1'){
-                            return (<ComentImageButton btnStyle={styles.imageButton} ImgSource={require('../../../images/financeImages/modif.png')}
-                                                       onPress={()=>{this.modifyb.setModelVisible(true)}}/>)
+                        if(this.stateCode == '10'){
+                            return (
+                                <ComentImageButton btnStyle={styles.imageButton}
+                                    ImgSource={require('../../../images/financeImages/modif.png')}
+                                    onPress={()=>{this.modifyb.setModelVisible(true)}}/>
+                                )
                         }else {
                             return null;
                         }}}/>
@@ -573,7 +581,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     {
                         this.tempjson.data.response.logic_status == 10?
                             <TouchableOpacity  style={{height:40,width:width,position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',backgroundColor:'#05c5c2'}}
-                                           onPress={()=>{alert("取消借款")}}>
+                                           onPress={()=>{ this.canleAlert.setModelVisible(true);}}>
                                 <Text style={{}}>取消借款</Text>
                             </TouchableOpacity>:null
                     }
