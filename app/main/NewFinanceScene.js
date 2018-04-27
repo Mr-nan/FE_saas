@@ -77,6 +77,7 @@ export default class NewFinanceScene extends BaseComponet {
         this.allData1 = {};
         this.type = 0;
         this.time_order = 'asc';
+        movies=[];
         this.allData = [this.allData1, 1, 2, []];
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.isShow = false;
@@ -315,8 +316,6 @@ export default class NewFinanceScene extends BaseComponet {
     allRefresh = () => {
         firstType = '-1';
         lastType = '-1';
-        this.allData1 = [];
-        this.allData = [this.allData1, 1, 2, []];
         movies = [];
         page = 1;
         this.setState({renderPlaceholderOnly: 'loading'});
