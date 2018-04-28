@@ -12,6 +12,7 @@ let DeployData = {};
  * @param showLoadAction
  * @param showToastAction
  * @param fetchDeployDataAction
+ * "residualsData":
  */
 export const getCarDeployData =(showLoadAction,showToastAction,fetchDeployDataAction)=>{
 

@@ -104,7 +104,14 @@ export default class CheckWaybill extends BaseComponent {
                             feeDatas.push({title: '下单时间', value: data.created_trans_time});
                             feeDatas.push({title: '物流费', value: data.logistics_amount + '元'});
                             feeDatas.push({title: '运输类型', value: trans_type});
+                            if(data.trans_type == 1){
+                                if(data.get_type==0){
+                                    feeDatas.push({title: '运输方式', value: '平台上门取车'});
+                                }else{
+                                    feeDatas.push({title: '运输方式', value: '客户送车到网点'});
+                                }
 
+                            }
 
                             if (this.isShowPay) {
                                 accoutInfo.push({title: '仓库名称', value: data.end_warehouse_address});

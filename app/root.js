@@ -29,7 +29,7 @@ export default class root extends Component {
                 <StatusBar barStyle="light-content"/>
                 <MyNavigator showToast={(content)=>{
                     this.showToast(content)
-                }} showModal={(value)=>{this.showModal(value)}}/>
+                }}showModal={(value)=>{this.showModal(value)}} showLoginModal={this.showLoginModal}/>
                 <ShowToast ref='toast' msg={''}></ShowToast>
             </View>
         );
@@ -64,6 +64,9 @@ export default class root extends Component {
 
     showModal = (value) => {
         this.refs.toast.showModal(value);
+    }
+    showLoginModal=()=>{
+        this.refs.toast  && this.refs.toast.showLoginViewAction();
     }
 
 

@@ -21,7 +21,7 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import MyButton from '../../component/MyButton';
 import BaseComponent from '../../component/BaseComponent';
-let allList = [];
+//let allList = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import  LoadMoreFooter from '../../component/LoadMoreFooter';
@@ -32,8 +32,10 @@ export  default class InventoryRepaymentPage extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
+        this.allList = [];
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.payment_status !== r2.payment_status});
         this.state = {
-            source: [],
+            source: ds.cloneWithRows(this.allList),
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
         };
@@ -49,7 +51,7 @@ export  default class InventoryRepaymentPage extends BaseComponent {
     componentWillUnmount() {
          page = 1;
          allPage = 1;
-        allList = [];
+        this.allList = [];
     }
 
     initFinish = () => {
@@ -64,11 +66,10 @@ export  default class InventoryRepaymentPage extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    allList.push(...response.mjson.data.list);
+                    this.allList.push(...response.mjson.data.list);
                     allPage = response.mjson.data.total/10;
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
-                        source: ds.cloneWithRows(allList),
+                        source: this.state.source.cloneWithRows(this.allList),
                         renderPlaceholderOnly: 'success',
                         isRefreshing: false
                     });
@@ -83,12 +84,44 @@ export  default class InventoryRepaymentPage extends BaseComponent {
     }
 
     refreshingData = () => {
-        allList = [];
+        this.allList = [];
         this.setState({isRefreshing: true});
         page = 1;
         this.getData();
     };
 
+
+    refreshingData2 = () => {
+        this.allList = [];
+        this.props.showModal(true);
+        page = 1;
+        this.getData2();
+    };
+
+    getData2 = () => {
+        let maps = {
+            api: Urls.REPAYMENT_GETLIST,
+            type: '4',
+            p: page
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.setState({
+                        source: this.state.source.cloneWithRows([])
+                    },()=>{
+                        this.allList = [];
+                        this.allList.push(...response.mjson.data.list);
+                        allPage = response.mjson.data.total/10;
+                        this.setState({
+                            source: this.state.source.cloneWithRows(this.allList)
+                        },()=>{
+                            this.props.showModal(false);
+                        });
+                    });
+                },
+                (error) => {
+                });
+    }
     toEnd = () => {
         if (this.state.isRefreshing) {
 
@@ -158,7 +191,7 @@ export  default class InventoryRepaymentPage extends BaseComponent {
 
         return (
             <TouchableOpacity onPress={()=>{
-                     this.props.callBack(movie.loan_id,movie.loan_number,movie.type,movie.planid);
+                     this.props.callBack(movie.loan_id,movie.loan_number,movie.payment_number,movie.type,movie.planid,movie.payment_status,this.refreshingData2);
             }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
@@ -175,12 +208,24 @@ export  default class InventoryRepaymentPage extends BaseComponent {
                 <View style={[styles.line]}></View>
                 <View
                     style={[styles.centerView]}>
-                    <View style={[styles.centerChild, styles.margin, {alignItems: 'center',flexDirection:'row',justifyContent:'flex-start'}]}>
-                        <Text allowFontScaling={false}  style={[styles.centerText,{color: fontAndColor.COLORA1}]}>
-                            到账日期:
+                    <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-start'}]}>
+                        <Text allowFontScaling={false}  style={styles.centerText}>
+                            到账日期
                         </Text>
-                        <Text allowFontScaling={false}  style={[styles.centerText,{color: fontAndColor.COLORA0}]}>
-                            {movie.dead_line_str}
+                        <Text allowFontScaling={false}  style={[styles.centerBottomText, {
+                            color: fontAndColor.COLORA0
+                        }]}>
+                            {movie.loanmakedate_str}
+                        </Text>
+                    </View>
+                    <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-end'}]}>
+                        <Text allowFontScaling={false}  style={styles.centerText}>
+                            本息合计
+                        </Text>
+                        <Text allowFontScaling={false}  style={[styles.centerBottomText, {
+                            color: fontAndColor.COLORB2
+                        }]}>
+                            {parseFloat(movie.normal_repayment_money).toFixed(2)}
                         </Text>
                     </View>
                 </View>
