@@ -135,8 +135,13 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                     this.model.legal_real_name = text
                                     console.log('true')
                                 }
+
+                                if(text === ''){
+                                    this.model.legal_real_name = text
+                                }
+
                                 console.log('false')
-                                return this.model.legal_real_name?this.model.legal_real_name:""
+                                return this.model.legal_real_name
 
                             }}
                             loading={this.state.loading_bank}
