@@ -322,6 +322,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                     enter_base_id: datas.company_base_id,
                     bank_id: 'zsyxt',
                     serial_no: this.props.error.data.serial_no,
+                    operate_type: this.state.type === 0||this.state.type === 1 ?'99':null
                 };
 
                 this.setState({

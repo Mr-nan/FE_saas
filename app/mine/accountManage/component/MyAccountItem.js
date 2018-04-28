@@ -376,15 +376,14 @@ export default class MyAccountItem extends BaseComponent {
                     <View style={{
                         backgroundColor: fontAndColor.COLORA4,
                         height: StyleSheet.hairlineWidth,
-                        marginLeft: Pixel.getPixel(20),
-                        marginRight: Pixel.getPixel(20)
+                        marginHorizontal: Pixel.getPixel(20),
+
                     }}/>
                     <View style={{
-                        height: Pixel.getPixel(46),
-                        marginTop: Pixel.getPixel(18),
+                        height: Pixel.getPixel(50),
+                        marginTop: Pixel.getPixel(15),
                         alignItems: 'center',
-                        marginLeft: Pixel.getPixel(20),
-                        marginRight: Pixel.getPixel(20),
+                        marginHorizontal: Pixel.getPixel(20),
                         justifyContent: 'space-between',
                         backgroundColor: 'transparent',
                         flexDirection: 'row',
@@ -427,14 +426,14 @@ export default class MyAccountItem extends BaseComponent {
 
                     </View>
                     <View style={{
-                        height: Pixel.getPixel(38),
-                        marginTop: Pixel.getPixel(18),
+                        height: Pixel.getPixel(45),
+                        marginTop: Pixel.getPixel(15),
                         alignItems: 'center',
                         marginLeft: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(20),
                         justifyContent: 'center',
                         backgroundColor: 'transparent',
-                        flexDirection: 'row'
+                        flexDirection: 'row',
                     }}>
                         {
                             this.props.type != "zsyxt" ?
