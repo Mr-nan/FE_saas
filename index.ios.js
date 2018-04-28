@@ -10,7 +10,7 @@ import {
 
 import Root from './app/root';
 
-import comp from  './app/mine/myOrder/CarriagePriceInfoScene'
+import comp from  './app/mine/myOrder/orderwuliu/InformationEnter'
 
 AppRegistry.registerComponent('FE_Sass', () => comp);
 

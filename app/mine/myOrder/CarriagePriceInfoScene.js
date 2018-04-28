@@ -221,6 +221,7 @@ class AddressInfoItemView extends Component {
                         onPress={()=>{
                             this.props.clickCallBack(text1)
                         }}
+                        style={{flex:1}}
                         activeOpacity={1}
                     >
                         <View
@@ -248,7 +249,7 @@ class AddressInfoItemView extends Component {
                     <DeliverTypeItem/>
                 </View>
                 {
-                    <View style={{
+                   text1 === "到达地"? <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
                         paddingVertical: Pixel.getPixel(18),
@@ -259,7 +260,7 @@ class AddressInfoItemView extends Component {
                         <TextInput
 
                         />
-                    </View>
+                    </View>:null
                 }
 
 
