@@ -81,6 +81,12 @@ export default class InformationInputItem extends Component{
         return this.state.value;
     }
 
+    componentWillReceiveProps(props) {
+        // this.setState({
+        //     value: props.value
+        // });
+    }
+
     setInputTextValue = (text) => {
         this.setState({
             value: text

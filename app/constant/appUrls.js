@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -1579,7 +1579,7 @@ export const CHECKTRANSTYPE = BASEURL + "v2/order.logistics/check";
  *物流运价查询
  */
 export const ORDER_LOGISTICS_QUERY = BASEURL  + "v2/order.logistics_flows/getFreight";
-//export const ORDER_LOGISTICS_QUERY = BASEURL + "v2//order.logistics/query";
+//export const ORDER_LOGISTICS_QUERY = BASEURL + "v2/order.logistics/query";
 
 /**
  *

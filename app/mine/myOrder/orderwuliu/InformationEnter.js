@@ -26,16 +26,42 @@ import * as AppUrls from '../../../constant/appUrls';
 import SaasText from "../../accountManage/zheshangAccount/component/SaasText";
 import InformationInputItem from './../component/InformationInputItem'
 import MyButton from '../../../component/MyButton'
+import ProvinceListScene from "../../../carSource/ProvinceListScene";
 
 export default class InformationEnter extends BaseComponent {
 
     constructor(props) {
         super(props);
-
+        this.state ={
+            region:null
+        }
+        this.info={
+            name:null,
+            phone:null,
+            region:null,
+            address:null,
+            id:null
+        }
 
     }
 
+    callBack = ()=>{
+        this.props.callBack(this.info)
+        this.backPage()
+    }
 
+    checkedCityClick = (region) => {
+
+        let temp = {}
+        for (let k in region) {
+            temp[k] = region[k]
+        }
+
+       this.info.region = temp;
+       this.setState({
+           region:region.provice_name + " " + region.city_name
+       })
+    }
 
 
     render() {
@@ -53,72 +79,74 @@ export default class InformationEnter extends BaseComponent {
                     style={{paddingTop:Pixel.getPixel(10)}}
                     onScroll={this.onScroll}>
                     <InformationInputItem
-                        ref={'organization'}
+                        ref={'name'}
                         title={'姓名'}
                         textPlaceholder={'真实姓名'}
                         keyboardType={'default'}
                         onChangeText={(text) => {
-
+                            this.info.name=text
                         }}
-                        annotation={''}
 
                     />
                     <InformationInputItem
-                        ref={'organization'}
+                        ref={'number'}
                         title={'联系方式'}
                         textPlaceholder={'手机号或固话'}
-                        keyboardType={'default'}
-
+                        keyboardType={'numeric'}
                         onChangeText={(text) => {
-
+                            this.info.phone = text
                         }}
-                        annotation={''}
-
                     />
                     <InformationInputItem
-                        ref={'organization'}
+                        ref={'rigon'}
                         title={'所在地区'}
                         textPlaceholder={''}
                         keyboardType={'default'}
                         rightIcon={true}
+                        value={this.state.region}
                         rightCallBack={()=>{
-                        }}
-                        annotation={''}
+                            this.toNextPage({
 
+                                component: ProvinceListScene,
+                                name: 'ProvinceListScene',
+                                params: {
+                                    isZs: true,
+                                    checkedCityClick: this.checkedCityClick,
+                                    unlimitedAction: this.cityUnlimitedAction,
+                                    isSelectProvince: true,
+                                }
+                            })
+
+                        }}
                     />
                     <InformationInputItem
-                        ref={'organization'}
+                        ref={'address'}
                         title={'详细地址'}
                         textPlaceholder={''}
                         keyboardType={'default'}
                         onChangeText={(text) => {
-
+                            this.info.address =text
                         }}
-                        annotation={''}
-
                     />
                     {
                         this.props.from==='收车人'?
                             <InformationInputItem
-                                ref={'organization'}
+                                ref={'id'}
                                 title={'身份证号码'}
                                 textPlaceholder={'身份证号码'}
                                 keyboardType={'default'}
                                 onChangeText={(text) => {
-
+                                    this.info.id = text
                                 }}
-                                annotation={''}
                                 separator={false}
-
                             />:null
 
                     }
 
-
                     <MyButton
                         buttonType={MyButton.TEXTBUTTON}
                         mOnPress={() => {
-                            this.backPage()
+                            this.callBack()
                         }}
                         parentStyle={{
                             justifyContent: 'center',
