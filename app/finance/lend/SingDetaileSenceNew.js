@@ -7,7 +7,8 @@ import {
     View,
     ListView,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native';
 
 import {
@@ -39,7 +40,7 @@ import ContractInfoScene from './ContractInfoScene';
 import ContractInfoSceneChildren from './ContractInfoSceneChildren';
 import RecognizedGains from '../../login/RecognizedGains';
 
-
+const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 const controlCode = {
     stateCode: '',
     extendCode: '',
@@ -467,7 +468,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
-                    <Text style={{flex:1,fontSize:adapeSize(14)}}>{this.tempjson.data.response.payment_number}</Text>
+                    <Text style={{backgroundColor:'#05c5c2',color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1)}}>单</Text>
+                    <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{'单号：' + this.tempjson.data.response.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(15)}}>{this.tempjson.data.response.paymenttype}</Text>
                 </View>
                 <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
@@ -487,12 +489,13 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 </View>
                 <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
-                    <Text style={{flex:1,fontSize:adapeSize(13),color:"#9E9E9E"}}>申请日期</Text>
+                    <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.data.response.paymenttype}</Text>
+                    <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}> | 申请日期:</Text>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.data.response.loan_time}</Text>
                 </View>
                 <Text style={{fontSize:adapeSize(12),color:"#846545",backgroundColor:'#FFF8EA',
-                paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(15),
-                paddingBottom:adapeSize(15)}}>{'资金渠道正在对您的借款进行审核，请耐心等待。'}</Text>
+                paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),
+                paddingBottom:adapeSize(10)}}>{'资金渠道正在对您的借款进行审核，请耐心等待。'}</Text>
             </View>
         )
     }
@@ -510,13 +513,14 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             }
         )
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
-                    <View style={{flexDirection:'column',flex:1}}>
-                        <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.model_name}</Text>
-                        <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.frame_number}</Text>
+                    <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
+                        <View style={{flexDirection:'column',flex:1}}>
+                            <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.model_name}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.frame_number}</Text>
+                        </View>
+                        <Text style={{fontSize:adapeSize(14),color:'#05C5C2'}}>{rowData.child_loan_status_str}</Text>
+                        <Image source={cellJianTou} style={{ width: adapeSize(15), height: adapeSize(15), marginRight: adapeSize(15)}}/>
                     </View>
-                    <Text style={{fontSize:adapeSize(14),color:'#05C5C2'}}>{rowData.child_loan_status_str}</Text>
-                </View>
                 <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
@@ -592,7 +596,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                   }}
                                   title='修改成功' subtitle='恭喜您修改借款成功'/>
 
-                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗"
+                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗？"
                                ref={(cancle)=>{this.canleAlert = cancle}}
                                confimClick={(setmodilVis)=>{
                                    setmodilVis(false)
