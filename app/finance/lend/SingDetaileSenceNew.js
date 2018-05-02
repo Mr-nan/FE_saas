@@ -466,29 +466,33 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     renderHeader = () => {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{flex:1}}>{this.tempjson.data.response.payment_number}</Text>
-                    <Text style={{}}>{this.tempjson.data.response.paymenttype}</Text>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                    <Text style={{flex:1,fontSize:adapeSize(14)}}>{this.tempjson.data.response.payment_number}</Text>
+                    <Text style={{fontSize:adapeSize(15)}}>{this.tempjson.data.response.paymenttype}</Text>
                 </View>
-                <View style={{flexDirection:'row'}}>
-                    <View style={{flexDirection:'column',flex:1,alignItems:"center"}}>
-                        <Text>{this.tempjson.data.response.loanmny + '万元'}</Text>
-                        <Text>借款金额</Text>
+                <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                    <View style={{flexDirection:'column',flex:1,alignItems:"flex-start"}}>
+                        <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{this.tempjson.data.response.loanmny + '万元'}</Text>
+                        <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>借款金额</Text>
                     </View>
                     <View style={{flexDirection:'column',flex:1,alignItems:"center"}}>
-                        <Text> {this.tempjson.data.response.rate +"%"}</Text>
-                        <Text>综合费率</Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}> {this.tempjson.data.response.rate +"%"}</Text>
+                        <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>综合费率</Text>
                     </View>
-                    <View style={{flexDirection:'column',flex:1,alignItems:"center"}}>
-                        <Text>{this.tempjson.data.response.loanperiod +'天'}</Text>
-                        <Text>借款期限</Text>
+                    <View style={{flexDirection:'column',flex:1,alignItems:"flex-end"}}>
+                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}>{this.tempjson.data.response.loanperiod +'天'}</Text>
+                        <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>借款期限</Text>
                     </View>
                 </View>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{flex:1}}>申请日期</Text>
-                    <Text>{this.tempjson.data.response.loan_time}</Text>
+                <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                    <Text style={{flex:1,fontSize:adapeSize(13),color:"#9E9E9E"}}>申请日期</Text>
+                    <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.data.response.loan_time}</Text>
                 </View>
-                <Text style={{}}>{'资金渠道正在对您的借款进行审核，请耐心等待。'}</Text>
+                <Text style={{fontSize:adapeSize(12),color:"#846545",backgroundColor:'#FFF8EA',
+                paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(15),
+                paddingBottom:adapeSize(15)}}>{'资金渠道正在对您的借款进行审核，请耐心等待。'}</Text>
             </View>
         )
     }
@@ -506,23 +510,30 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             }
         )
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{flex:1}}>{rowData.model_name}</Text>
-                    <Text>{rowData.frame_number}</Text>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
+                    <View style={{flexDirection:'column',flex:1}}>
+                        <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.model_name}</Text>
+                        <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.frame_number}</Text>
+                    </View>
+                    <Text style={{fontSize:adapeSize(14),color:'#05C5C2'}}>{rowData.child_loan_status_str}</Text>
                 </View>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{flex:1}}>{rowData.loan_number}</Text>
-                    <Text>{rowData.child_loan_status_str}</Text>
+                <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
+                <View style={{flexDirection:"row",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
+                    <View style={{flexDirection:'column',width:adapeSize(100)}}>
+                        <Text style={{fontSize:adapeSize(20),color:'#FA5741'}}>{rowData.loan_mny}</Text>
+                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'合同放款额度'}</Text>
+                    </View>
+                    <View style={{flexDirection:'column',width:adapeSize(100)}}>
+                        <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.assess_time}</Text>
+                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'放款日期'}</Text>
+                    </View>
+                    <View style={{flexDirection:'column'}}>
+                        <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.loan_number}</Text>
+                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'资产编号'}</Text>
+                    </View>
                 </View>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{flex:1}}>{'合同放款额度'}</Text>
-                    <Text>{rowData.loan_mny}</Text>
-                </View>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{flex:1}}>{'放款日期'}</Text>
-                    <Text>{rowData.assess_time}</Text>
-                </View>
-                <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingTop:10,paddingBottom:10}]}>
+                <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
                         {tempButtons}
                 </View>
         </View>
