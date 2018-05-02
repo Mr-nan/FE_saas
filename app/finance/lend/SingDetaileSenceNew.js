@@ -468,7 +468,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
-                    <Text style={{backgroundColor:'#05c5c2',color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1)}}>单</Text>
+                    <Text style={{backgroundColor:'#05c5c2',color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),paddingLeft:adapeSize(3),paddingRight:adapeSize(3),height:adapeSize(18)}}>单</Text>
                     <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{'单号：' + this.tempjson.data.response.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(15)}}>{this.tempjson.data.response.paymenttype}</Text>
                 </View>
@@ -513,14 +513,16 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             }
         )
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
+                <TouchableOpacity onPress={()=>{  alert("xx")  }} >
                     <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
                         <View style={{flexDirection:'column',flex:1}}>
                             <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.model_name}</Text>
                             <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.frame_number}</Text>
                         </View>
                         <Text style={{fontSize:adapeSize(14),color:'#05C5C2'}}>{rowData.child_loan_status_str}</Text>
-                        <Image source={cellJianTou} style={{ width: adapeSize(15), height: adapeSize(15), marginRight: adapeSize(15)}}/>
+                        <Image source={cellJianTou} style={{ width: adapeSize(15), height: adapeSize(15)}}/>
                     </View>
+                </TouchableOpacity>
                 <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
