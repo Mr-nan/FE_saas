@@ -518,17 +518,15 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     <Text style={{fontSize:adapeSize(14),color:'#05C5C2'}}>{rowData.child_loan_status_str}</Text>
                 </View>
                 <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
-                <View style={{flexDirection:"row",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
-                    <View style={{flexDirection:'column',width:adapeSize(100)}}>
-                        <Text style={{fontSize:adapeSize(20),color:'#FA5741'}}>{rowData.loan_mny}</Text>
-                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'合同放款额度'}</Text>
-                    </View>
-                    <View style={{flexDirection:'column',width:adapeSize(100)}}>
-                        <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.assess_time}</Text>
-                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'放款日期'}</Text>
-                    </View>
-                    <View style={{flexDirection:'column'}}>
+                <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                    <View style={{flexDirection:'row',alignItems:'center'}}>
+                        <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(100)}}>{rowData.loan_mny}</Text>
+                        <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{rowData.assess_time}</Text>
                         <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.loan_number}</Text>
+                    </View>
+                    <View style={{flexDirection:'row'}}>
+                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(100)}}>{'合同放款额度'}</Text>
+                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(100)}}>{'放款日期'}</Text>
                         <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'资产编号'}</Text>
                     </View>
                 </View>
@@ -697,20 +695,27 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: PAGECOLOR.COLORA2,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius:adapeSize(3),
+        marginLeft:adapeSize(10),
     }, canceledButton: {
         flex: 1,
         backgroundColor: PAGECOLOR.COLORA1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius:adapeSize(3),
+        marginLeft:adapeSize(10),
     }, controlButton: {
         flex: 1,
         backgroundColor: PAGECOLOR.COLORB0,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius:adapeSize(3),
+        marginLeft:adapeSize(10),
     }, buttontextStyle: {
-        fontSize: fontadapeSize(15),
+        fontSize: fontadapeSize(14),
         color: 'white',
+        padding:adapeSize(5),
     }
 });
 
