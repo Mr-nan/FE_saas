@@ -469,24 +469,24 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     renderHeader = () => {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
-                    <Text style={{backgroundColor:'#05c5c2',color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),paddingLeft:adapeSize(3),paddingRight:adapeSize(3),height:adapeSize(18)}}>单</Text>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
+                    <Text style={{backgroundColor:'#05c5c2',color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),paddingLeft:adapeSize(3),paddingRight:adapeSize(3),height:adapeSize(16)}}>单</Text>
                     <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{'单号：' + this.tempjson.data.response.payment_number}</Text>
-                    <Text style={{fontSize:adapeSize(15)}}>{this.tempjson.data.response.paymenttype}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:"#FA5741"}}>{this.tempjson.data.response.paymenttype}</Text>
                 </View>
                 <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-start"}}>
-                        <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{this.tempjson.data.response.loanmny + '万元'}</Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{this.tempjson.data.response.loanmny}<Text style={{fontSize:adapeSize(12)}}>万</Text></Text>
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>借款金额</Text>
                     </View>
                     <View style={{flexDirection:'column',flex:1,alignItems:"center"}}>
-                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}> {this.tempjson.data.response.rate +"%"}</Text>
-                        <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>综合费率</Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}>{this.tempjson.data.response.loanperiod}<Text style={{fontSize:adapeSize(12)}}>天</Text></Text>
+                        <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>借款期限</Text>
                     </View>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-end"}}>
-                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}>{this.tempjson.data.response.loanperiod +'天'}</Text>
-                        <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>借款期限</Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}> {this.tempjson.data.response.rate}<Text style={{fontSize:adapeSize(12)}}>%</Text></Text>
+                        <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>综合费率</Text>
                     </View>
                 </View>
                 <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
