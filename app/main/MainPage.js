@@ -65,6 +65,8 @@ export default class MainPage extends BaseComponent {
 
 	/**
 	 * 根据传过来的属性,判断身份
+	 *
+	 *
 	 */
 	static defaultProps = {
 		identity: 'boss'
