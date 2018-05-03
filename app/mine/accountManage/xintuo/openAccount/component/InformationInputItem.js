@@ -125,7 +125,13 @@ export default class InformationInputItem extends Component {
                                     editable={this.props.editable}
                                     onChangeText={(text) => {
                                             let t = this.props.onChangeText(text)
-                                            if(typeof t !== 'undefined'){
+
+                                            console.log(typeof t);
+                                            if(typeof t === 'undefined'){
+                                                this.setState({
+                                                    value: text
+                                                });
+                                            }else {
                                                 this.setState({
                                                     value: t
                                                 });

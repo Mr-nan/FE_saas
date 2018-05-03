@@ -69,7 +69,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
             // legal_cert_valid: null,    //	法人证件有效期【选填】
             // legal_opposite_picurl: null,    //	法人身份证反面图片地址【必填】
             // legal_picurl: null,    //	法人证件照片		【必填】
-            // legal_real_name: null,    //	法人姓名		【必填】
+             legal_real_name: '',    //	法人姓名		【必填】
             // office_address: null,    //	办公地址【选填】
             // organization_code: null,    //	组织机构代码【选填】
             // organization_code_picurl: null,    //	组织机构代码证图片地址【选填】
@@ -127,22 +127,22 @@ export default class OpenAccountBaseScene extends BaseComponent {
                             keyboardType={'default'}
                             onChangeText={(text) => {
                                 console.log(text)
+                                console.log(typeof text)
 
                                 let re = /^[\u4e00-\u9fa5a-zA-Z]+$/;
                                 let flag = re.test(text);
-                                    console.log(flag)
+
+                                console.log(flag)
                                 if (flag) {
-                                    this.model.legal_real_name = text
-                                    console.log('true')
+                                    return this.model.legal_real_name = text
+                                } else {
+                                    if (text === '') {
+                                        return this.model.legal_real_name = text
+
+                                    } else {
+                                        return this.model.legal_real_name
+                                    }
                                 }
-
-                                if(text === ''){
-                                    this.model.legal_real_name = text
-                                }
-
-                                console.log('false')
-                                return this.model.legal_real_name
-
                             }}
                             loading={this.state.loading_bank}
                             annotation={this.state.bankName}
@@ -183,12 +183,14 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                 this.setState({
                                     on: !this.state.on,
                                     isCombination: !this.state.on
+                                },()=>{
+                                    if (this.state.on) {
+                                        this.model.is_three_certificates_joined = 2;
+                                    } else {
+                                        this.model.is_three_certificates_joined = 1;
+                                    }
                                 })
-                                if (this.state.on) {
-                                    this.model.is_three_certificates_joined = 2;
-                                } else {
-                                    this.model.is_three_certificates_joined = 1;
-                                }
+
 
 
                             }}>

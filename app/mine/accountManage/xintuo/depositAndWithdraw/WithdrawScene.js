@@ -40,6 +40,7 @@ let Platform = require('Platform');
 export default class WithdrawScene extends ZSBaseComponent {
     constructor(props) {
         super(props)
+        this.check_contact = true
         this.state = {
             renderPlaceholderOnly: true,
             sms_pad: false,
@@ -122,18 +123,17 @@ export default class WithdrawScene extends ZSBaseComponent {
                     showsVerticalScrollIndicator={false}
                 >
 
-
                     <View style={{
                         flexDirection: 'row',
-                        alignItems: 'center',
                         backgroundColor: 'white',
                         marginTop: 15,
-                        paddingVertical: 20
+                        paddingVertical: 20,
                     }}>
                         <Image source={require('../../../../../images/account/zheshang_bank.png')}
                                style={{width: 55, height: 55, marginHorizontal: 15}}/>
-                        <View>
-                            <SText style={{fontSize: 17, marginBottom: 10}}>{this.props.account.bind_bank_name}</SText>
+                        <View style={{flex:1}}>
+
+                            <SText style={{fontSize: 17, marginBottom: 10, marginRight:20}}>{this.props.account.bind_bank_name}</SText>
                             <SText
                                 style={{color: FontAndColor.COLORA1}}>{this.props.account.bank_name}{s}</SText>
                         </View>
@@ -205,6 +205,11 @@ export default class WithdrawScene extends ZSBaseComponent {
                                 this.props.showToast('请输入金额')
                                 return;
                             }
+                            if(!this.check_contact){
+                                this.props.showToast('请输同意信托利益分配申请')
+                                return;
+                            }
+
 
                             this.withdraw();
 
@@ -212,11 +217,11 @@ export default class WithdrawScene extends ZSBaseComponent {
                         }}
 
                     />
-                    <View style={{ justifyContent:'center',alignItems:'center', marginTop:Pixel.getPixel(25)}}>
+                    <View style={{ flexDirection:'row',alignItems:'center', marginTop:Pixel.getPixel(25), alignSelf:'center'}}>
 
 
                         <SelectButton onPress={(flag)=>{
-
+                            this.check_contact = flag;
                         }}/>
                         <SaasText
                             onPress={()=>{

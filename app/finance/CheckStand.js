@@ -85,6 +85,7 @@ export default class CheckStand extends BaseComponent {
 
                 let datas = JSON.parse(data.result);
 
+                // 查看买家是否在信托白名单
                 request(AppUrls.CAN_XINTUO, 'POST', {
                     enter_base_id: datas.company_base_id,
                     type: 0
@@ -96,6 +97,7 @@ export default class CheckStand extends BaseComponent {
                     console.log(error.msg)
                 })
 
+                // 查看卖家是否在信托白名单
                 request(AppUrls.CAN_XINTUO, 'POST', {
                     enter_base_id: this.props.seller_company_id,
                     type: 0
