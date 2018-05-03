@@ -116,7 +116,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 "trenchtype": "1961",
                                 "lending_methods": "账户体系放款",
                                 "cancle_time": "1970-01-01",
-                                "logic_status": "70",
+                                "logic_status": "10",
                                 "is_cancel_loan": 0,
                                 "is_sign_contract": 0,
                                 "is_confirm_iou": 0,
@@ -132,6 +132,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     }
 
                     this.stateCode =  this.tempjson.data.response.logic_status;
+                    this.minLend =  this.tempjson.data.response.loanmny;
+                    this.maxLend = changeToMillion( parseFloat(this.tempjson.data.response.loanmny) + parseFloat(this.tempjson.data.response.loanperiod));
                     // controlCode.stateCode =  this.tempjson.data.response.logic_status;
                     // controlCode.extendCode = this.tempjson.is_extend;  查看合同
                     // controlCode.lendType = this.tempjson.type;
@@ -586,8 +588,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 />
                 <ModifyBorrowing ref={(model)=>{this.modifyb=model}}
                                  onchangeText={(text)=>{controlCode.changeMoney=text}}
-                                 minLend={controlCode.minLend}
-                                 maxLend={controlCode.maxLend}
+                                 minLend={this.minLend}
+                                 maxLend={this.maxLend}
                                  confimClick={this.modifyLengNum}
                                  cancleClick={(callback)=>{callback(false)}}/>
 
@@ -630,31 +632,29 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
                 <AllNavigationView
                     title="借款详情"
-                    backIconClick={this.backPage}
-                    renderRihtFootView={()=>{
-                        if(this.stateCode == '10'){
-                            return (
-                                <ComentImageButton btnStyle={styles.imageButton}
-                                    ImgSource={require('../../../images/financeImages/modif.png')}
-                                    onPress={()=>{this.modifyb.setModelVisible(true)}}/>
-                            )
-                        }else {
-                            return null;
-                        }}}/>
+                    backIconClick={this.backPage}/>
+                <View style={{position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',flexDirection:'row',width:width}}>
 
                     {
                         this.tempjson.data.response.logic_status == 10?
-                            <TouchableOpacity  style={{height:40,width:width,position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',backgroundColor:'#05c5c2'}}
+                            <TouchableOpacity  style={{height:40,flex:1,backgroundColor:'#90A1B5',justifyContent:'center',alignItems:'center'}}
                                            onPress={()=>{
                                                this.cancleFlag = '取消主单'
                                                this.canleAlert.setModelVisible(true);
                                            }}>
-                                <Text style={{}}>取消借款</Text>
+                                <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>取消借款</Text>
+                            </TouchableOpacity>:null
+                    }
+                    {
+                        this.stateCode == '10'?
+                            <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
+                                              onPress={()=>{ this.modifyb.setModelVisible(true)  }}>
+                                <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>修改借款金额</Text>
                             </TouchableOpacity>:null
                     }
                     {
                         this.tempjson.data.response.is_sign_contract == 1?
-                            <TouchableOpacity style={{height:40,width:width,position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',backgroundColor:'#05c5c2'}}
+                            <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{
                                                    this.toNextPage({
                                                         name: 'ContractInfoScene',
@@ -667,9 +667,10 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                                         }
                                                     });
                                               }}>
-                                <Text style={{}}>批量签署</Text>
+                                <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>批量签署</Text>
                             </TouchableOpacity>:null
                     }
+                </View>
 
             </View>
         );
