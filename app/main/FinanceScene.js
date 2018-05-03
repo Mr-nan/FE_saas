@@ -313,6 +313,7 @@ export default class FinanceSence extends BaseComponet {
         return (
             <View style={cellSheet.container}>
                 <ListView
+                    scrollEnabled={true}
                     removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -361,6 +362,7 @@ export default class FinanceSence extends BaseComponet {
                 />
                 <AccountModal ref="accountmodal"/>
                 <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微单可用额度只适用于单车产品'}/>
+                <FinanceSeekContentView/>
             </View>
         )
     }
@@ -649,7 +651,6 @@ export default class FinanceSence extends BaseComponet {
         let items = [];
         tablist.map((data) => {
             let tabItem;
-
             tabItem = <HomeHeaderItem
                 ref={data.ref}
                 key={data.key}
@@ -835,8 +836,132 @@ export default class FinanceSence extends BaseComponet {
                 <View style={cellSheet.header}>
                     {items}
                 </View>
+                <FinanceTypeSeekView seekClick={}/>
             </View>
 
+        )
+    }
+}
+
+class FinanceTypeSeekView extends  Component{
+
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {};
+
+      }
+
+    render(){
+        this.subItem=[];
+        return(
+            <View style={{flex:1, height:Pixel.getPixel(49), backgroundColor:'white', flexDirection:'row', alignItems:'center',justifyContent:'space-between',borderBottomColor:fontAndColor.COLORA4,borderBottomWidth:Pixel.getPixel(1),
+            }}>
+                <FinaceTypeSeekItem ref={(ref)=>{ref && this.subItem.push(ref)}} type={0} title={'全部借款'} seekClick={this.seekClick}/>
+                <FinaceTypeSeekItem ref={(ref)=>{ ref && this.subItem.push(ref)}} type={1} title={'状态'} seekClick={this.seekClick}/>
+                <FinaceTypeSeekItem ref={(ref)=>{ref && this.subItem.push(ref)}} type={2} title={'期限'} seekClick={this.seekClick}/>
+                <View style={{width:Pixel.getPixel(1),height:Pixel.getPixel(15), backgroundColor:fontAndColor.COLORA4}}/>
+                <FinaceTypeSeekItem ref={(ref)=>{ ref && this.subItem.push(ref)}} type={3} title={'更多'} seekClick={this.seekClick}/>
+            </View>
+        )
+    }
+
+    seekClick=(type,isSelect)=>{
+
+        this.props.se
+        if(isSelect){
+
+            if( this.currentSelectType!=type && this.currentSelectType != null){
+
+                this.subItem[this.currentSelectType].setSelectType(false);
+
+            }
+            this.currentSelectType = type;
+
+
+        }else {
+           this.currentSelectType = null;
+        }
+
+    }
+
+}
+
+class FinaceTypeSeekItem extends  Component{
+
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+            isSelect:false,
+        };
+      }
+
+    setSelectType=(type)=>{
+        this.setState({
+            isSelect:type,
+        });
+    }
+
+    render(){
+        return(
+            <TouchableOpacity style={{width:(width-Pixel.getPixel(1))/Pixel.getPixel(4),height:Pixel.getPixel(49),
+                alignItems:'center',justifyContent:'center'
+            }} activeOpacity={1} onPress={()=>{
+
+                if(this.props.type == 3){
+                    this.props.seekClick && this.props.seekClick(this.props.type,true);
+
+                }else {
+                    this.props.seekClick && this.props.seekClick(this.props.type,!this.state.isSelect);
+                    this.setSelectType(!this.state.isSelect);
+                }
+
+
+            }}>
+                <Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28), color:this.state.isSelect?fontAndColor.COLORB0:fontAndColor.COLORA1}}>{this.props.title}</Text>
+            </TouchableOpacity>
+        )
+    }
+}
+
+class FinanceSeekContentView extends Component{
+
+    // 构造
+      constructor(props) {
+        super(props);
+
+        let ds = new  ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
+        this.state = {
+            dataSource:ds.cloneWithRows(['全部产品类型','库融产品','单车产品','采购贷']),
+        };
+      }
+    render(){
+        return(
+            <View style={{top:Pixel.getPixel(364), backgroundColor:'rgba(0, 0, 0,0.3)', left: 0, right: 0, position: 'absolute', bottom:0}}>
+                <ListView dataSource={this.state.dataSource}
+                          renderRow={(rowDate)=>{
+                              return(
+                                  <View style={{width:width,height:Pixel.getPixel(44), backgroundColor:'white',
+                                      paddingHorizontal:Pixel.getPixel(15), flexDirection:'row', alignItems:'center'
+                                  }}>
+                                      <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.CONTENTFONT24)}}>{rowDate}</Text>
+                                  </View>
+                              )
+                          }}
+                          renderSeparator={this._renderSeparator}
+                />
+            </View>
+        )
+    }
+
+    _renderSeparator(sectionId, rowId) {
+
+        return (
+            <View style={cellSheet.Separator} key={sectionId + rowId}>
+            </View>
         )
     }
 }
@@ -844,7 +969,6 @@ export default class FinanceSence extends BaseComponet {
 const cellSheet = StyleSheet.create({
     header: {
         flex: 1,
-
         backgroundColor: fontAndColor.COLORA3,
         flexDirection: 'row',
         flexWrap: 'wrap',
