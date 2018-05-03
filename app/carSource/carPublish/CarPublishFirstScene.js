@@ -531,11 +531,6 @@ export default class CarPublishFirstScene extends BaseComponent{
             return;
         }
 
-
-
-
-
-
         let navigatorParams = {
             name: "CarPublishSecondScene",
             component: CarPublishSecondScene,
