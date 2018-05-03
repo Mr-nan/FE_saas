@@ -116,7 +116,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 "trenchtype": "1961",
                                 "lending_methods": "账户体系放款",
                                 "cancle_time": "1970-01-01",
-                                "logic_status": "10",
+                                "logic_status": "70",
                                 "is_cancel_loan": 0,
                                 "is_sign_contract": 0,
                                 "is_confirm_iou": 0,
@@ -720,7 +720,7 @@ const styles = StyleSheet.create({
         borderRadius:adapeSize(3),
         marginLeft:adapeSize(10),
     }, buttontextStyle: {
-        fontSize: fontadapeSize(14),
+        fontSize: fontadapeSize(12),
         color: 'white',
         padding:adapeSize(5),
     }
