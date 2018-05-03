@@ -30,7 +30,7 @@ import {
     getSectionData,
     changeToMillion
 } from './component/MethodComponent'
-import {ModifyBorrowing, LendSuccessAlert, ModalAlert, MMSModalAlert} from './component/ModelComponent'
+import {ModifyBorrowing, ModifyBorrowingNew, LendSuccessAlert, ModalAlert, MMSModalAlert} from './component/ModelComponent'
 import  OrderCarDetailScene from './OrderCarDetailScene'
 import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
@@ -116,7 +116,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 "trenchtype": "1961",
                                 "lending_methods": "账户体系放款",
                                 "cancle_time": "1970-01-01",
-                                "logic_status": "70",
+                                "logic_status": "10",
                                 "is_cancel_loan": 0,
                                 "is_sign_contract": 0,
                                 "is_confirm_iou": 0,
@@ -586,7 +586,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     renderSeparator={this.renderSeparator}
                     renderFooter={this.renderFooter}
                 />
-                <ModifyBorrowing ref={(model)=>{this.modifyb=model}}
+                <ModifyBorrowingNew ref={(model)=>{this.modifyb=model}}
                                  onchangeText={(text)=>{controlCode.changeMoney=text}}
                                  minLend={this.minLend}
                                  maxLend={this.maxLend}
@@ -600,7 +600,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                   }}
                                   title='修改成功' subtitle='恭喜您修改借款成功'/>
 
-                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗？"
+                <ModalAlert title='' subtitle="您确定要取消借款吗？"
                                ref={(cancle)=>{this.canleAlert = cancle}}
                                confimClick={(setmodilVis)=>{
                                    setmodilVis(false)
