@@ -561,6 +561,12 @@ export const GET_CAPTCHA = BASEURL + 'v2/credit.quick/captcha';
  **/
 export const CHECKCAPTCHA = BASEURL + 'v2/credit.quick/checkCaptcha';
 /**
+ * from @yujinzhong
+ *
+ * 验四 验证 验证码
+ **/
+export const USER_GETINFO = BASEURL + 'v1/user/getInfo';
+/**
 * from @yujinzhong
 *
 * 申请验四

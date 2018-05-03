@@ -35,12 +35,14 @@ export default class HomeJobItem extends PureComponent {
         this.type = this.props.type;//新车为2
         mnyData=this.props.allData;
         if(mnyData.multiple_credit_type==2){
-            titleText[0]='小额授信额度(万)'
+            titleText[0]='小额授信额度(万)';
+        }else if(mnyData.multiple_credit_type==1){
+            titleText[0]='综合授信额度(万)';
         }
         this.allData = {
             credit_mny: this.type==1?mnyData.credit_mny / 10000:mnyData.newcar_creditmny/10000,//授信额度
-            credit_maxloanmny: this.type==1?mnyData.credit_maxloanmny / 10000 : mnyData.newcar_maxloanmny,//可用余额
-            loan_balance_mny: this.type==1?mnyData.loan_balance_mny / 10000 : mnyData.newcar_loanbalance,//贷款余额
+            credit_maxloanmny: this.type==1?mnyData.credit_maxloanmny / 10000 : mnyData.newcar_maxloanmny/10000,//可用余额
+            loan_balance_mny: this.type==1?mnyData.loan_balance_mny / 10000 : mnyData.newcar_loanbalance/10000,//贷款余额
             microchinese_mny: mnyData.microchinese_mny / 10000,//微众额度
             is_microchinese_mny:mnyData.is_microchinese_mny,//3审核通过，5关闭
             microchinese_mny:mnyData.is_microchinese_mny == 5 ?0 :mnyData.microchinese_mny/10000,//微众额度

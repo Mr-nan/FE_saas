@@ -91,69 +91,181 @@ export default class MineCreditApplyScene extends BaseComponent {
 		StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata) => {
 			if (childdata.code == 1) {
 				let childdatas = JSON.parse(childdata.result);
-				this.boss_id = childdatas.boss_id;
-
-				this.personData.borrower_base_id = global.companyBaseID;	//借款人服务平台base_id
-				this.personData.borrower_cardid = childdatas.boss_idcard;    //借款人身份证号
-				this.personData.borrower_name = childdatas.boss_name;	    //借款人姓名
-				this.personData.borrower_tel = childdatas.boss_tel;	    //借款人电话
-
-				let maps = {
-					base_id: global.companyBaseID,	//借款人服务平台base_id
-					controller_base_id: childdatas.boss_id,    //借款人身份证号
-					merge_id:global.MERGE_ID,
-				}
-
-				request(Urls.GETCREDITSTATUSBYMERGE, 'Post', maps)
-					.then((response) => {
-							let DATA = response.mjson.data.credit;
-							let ZongheStatus = DATA.comprehensive.credit_application_status;
-							let XiaoeheStatus = DATA.halfpenny.credit_application_status;
-							let DancheStatus = DATA.newcar.credit_application_status;
 
 
-							this.ZongheResult = DATA.comprehensive.remark;
-							this.XiaoeResult = DATA.halfpenny.remark;
-							this.DancheResult = DATA.newcar.remark;
+				if (this.isNull(childdatas.boss_idcard))//没有获取到身份证号码
+				{
+					if (Platform.OS === 'android') {
+						device_code = 'dycd_platform_android';
+					} else {
+						device_code = 'dycd_platform_ios';
+					}
+					let maps = {
+						device_code: device_code,
+					};
+					this.setState({
+						loading: true,
+					});
+					request(Urls.USER_GETINFO, 'Post', maps)
+						.then((response111) => {
+							this.idcard_number = response111.mjson.data.idcard_number;
+							this.personData.borrower_cardid = childdatas.boss_idcard;    //借款人身份证号
+							this.boss_id = childdatas.boss_id;
+							this.personData.borrower_base_id = global.companyBaseID;	//借款人服务平台base_id
+							this.personData.borrower_name = childdatas.boss_name;	    //借款人姓名
+							this.personData.borrower_tel = childdatas.boss_tel;	    //借款人电话
 
-							if (ZongheStatus == 3 || XiaoeheStatus == 3 || DancheStatus == 3) {
-								//任意一种未通过
-								this.Appear = true;
-
-							} else {
-								this.Appear = false;
+							let maps = {
+								base_id: global.companyBaseID,	//借款人服务平台base_id
+								controller_base_id: childdatas.boss_id,    //借款人身份证号
+								merge_id: global.MERGE_ID,
 							}
 
+							request(Urls.GETCREDITSTATUSBYMERGE, 'Post', maps)
+								.then((response) => {
+										let DATA = response.mjson.data.credit;
+										let ZongheStatus = DATA.comprehensive.credit_application_status;
+										let XiaoeheStatus = DATA.halfpenny.credit_application_status;
+										let DancheStatus = DATA.newcar.credit_application_status;
 
-							let maps2 = {
-								borrower_base_id: global.companyBaseID,	//借款人服务平台base_id
-								borrower_cardid: childdatas.boss_idcard,    //借款人身份证号
-								borrower_name: childdatas.boss_name,	    //借款人姓名
-							}
-							request(Urls.CHECKFOUR, 'Post', maps2)
-								.then((response22) => {
 
-										let YANSI_Result = response22.mjson.data.fourElementCheckFlags;
-										this.setState(
-											{
-												renderPlaceholderOnly: 'success',
-												YANSI_Result: this._getYanSiResult(YANSI_Result),
-												xiaoeCreditStatus: XiaoeheStatus,
-												xincheCreditStatus: DancheStatus,
-												zongheCreditStatus: ZongheStatus,
-												renderPlaceholderOnly: 'success',
-											});
+										this.ZongheResult = DATA.comprehensive.remark;
+										this.XiaoeResult = DATA.halfpenny.remark;
+										this.DancheResult = DATA.newcar.remark;
+
+										if (ZongheStatus == 3 || XiaoeheStatus == 3 || DancheStatus == 3) {
+											//任意一种未通过
+											this.Appear = true;
+
+										} else {
+											this.Appear = false;
+										}
+										if(this.isNull(this.ZongheResult) && this.isNull(this.XiaoeResult) && this.isNull(this.DancheResult))
+										{
+											this.Appear = false;
+										}
+										else {
+											this.Appear = true;
+										}
+
+
+										let maps2 = {
+											borrower_base_id: global.companyBaseID,	//借款人服务平台base_id
+											borrower_cardid: this.boss_idcard,    //借款人身份证号
+											borrower_name: childdatas.boss_name,	    //借款人姓名
+										}
+										request(Urls.CHECKFOUR, 'Post', maps2)
+											.then((response22) => {
+
+													let YANSI_Result = response22.mjson.data.fourElementCheckFlags;
+													this.setState(
+														{
+															renderPlaceholderOnly: 'success',
+															YANSI_Result: this._getYanSiResult(YANSI_Result),
+															xiaoeCreditStatus: XiaoeheStatus,
+															xincheCreditStatus: DancheStatus,
+															zongheCreditStatus: ZongheStatus,
+															renderPlaceholderOnly: 'success',
+															APPEAR:this.Appear,
+
+														});
+												},
+												(error) => {
+													this.setState({renderPlaceholderOnly: 'error'});
+												});
+
 									},
 									(error) => {
 										this.setState({renderPlaceholderOnly: 'error'});
 									});
 
-						},
-						(error) => {
-							this.setState({renderPlaceholderOnly: 'error'});
+						}, (error) => {
+							this.props.showToast(error.mjson.msg + "");
+							this.setState({
+								renderPlaceholderOnly: 'error',
+							});
 						});
 
-			} else {
+
+				}
+				else
+				{
+					this.idcard_number = childdatas.boss_idcard;
+					this.personData.borrower_cardid = childdatas.boss_idcard;    //借款人身份证号
+					this.boss_id = childdatas.boss_id;
+					this.personData.borrower_base_id = global.companyBaseID;	//借款人服务平台base_id
+					this.personData.borrower_name = childdatas.boss_name;	    //借款人姓名
+					this.personData.borrower_tel = childdatas.boss_tel;	    //借款人电话
+
+					let maps = {
+						base_id: global.companyBaseID,	//借款人服务平台base_id
+						controller_base_id: childdatas.boss_id,    //借款人身份证号
+						merge_id: global.MERGE_ID,
+					}
+
+					request(Urls.GETCREDITSTATUSBYMERGE, 'Post', maps)
+						.then((response) => {
+								let DATA = response.mjson.data.credit;
+								let ZongheStatus = DATA.comprehensive.credit_application_status;
+								let XiaoeheStatus = DATA.halfpenny.credit_application_status;
+								let DancheStatus = DATA.newcar.credit_application_status;
+
+
+								this.ZongheResult = DATA.comprehensive.remark;
+								this.XiaoeResult = DATA.halfpenny.remark;
+								this.DancheResult = DATA.newcar.remark;
+
+								if (ZongheStatus == 3 || XiaoeheStatus == 3 || DancheStatus == 3) {
+									//任意一种未通过
+									this.Appear = true;
+
+								} else {
+									this.Appear = false;
+								}
+
+
+								let maps2 = {
+									borrower_base_id: global.companyBaseID,	//借款人服务平台base_id
+									borrower_cardid: childdatas.boss_idcard,    //借款人身份证号
+									borrower_name: childdatas.boss_name,	    //借款人姓名
+								}
+								request(Urls.CHECKFOUR, 'Post', maps2)
+									.then((response22) => {
+
+											let YANSI_Result = response22.mjson.data.fourElementCheckFlags;
+											this.setState(
+												{
+													renderPlaceholderOnly: 'success',
+													YANSI_Result: this._getYanSiResult(YANSI_Result),
+													xiaoeCreditStatus: XiaoeheStatus,
+													xincheCreditStatus: DancheStatus,
+													zongheCreditStatus: ZongheStatus,
+													renderPlaceholderOnly: 'success',
+													APPEAR:this.Appear,
+												});
+										},
+										(error) => {
+											this.setState({renderPlaceholderOnly: 'error'});
+										});
+
+							},
+							(error) => {
+								this.setState({renderPlaceholderOnly: 'error'});
+							});
+
+				}
+
+
+
+
+			}
+
+
+
+
+
+
+			else {
 				this.setState({renderPlaceholderOnly: 'error'});
 			}
 		});
@@ -166,18 +278,21 @@ export default class MineCreditApplyScene extends BaseComponent {
 		});
 	}
 	_creditStatusForButton = (status) => {
-		if (status == 0) {
-			return '立即申请';
-		}
+		// if (status == 0) {
+		// 	return '立即申请';
+		// }
 		if (status == 1) {
 			return '审核中'
+		} else {
+			return '立即申请'
 		}
 
+
 	}
-	_getYanSiResult = (YANSI_Result) =>{
-		if(YANSI_Result == 'F'){
+	_getYanSiResult = (YANSI_Result) => {
+		if (YANSI_Result == 'F') {
 			return false;
-		}else {
+		} else {
 			return true;
 		}
 
@@ -242,7 +357,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 						</TouchableOpacity>
 						: null}
 
-					{this.state.xincheCreditStatus == 2  ?
+					{this.state.xincheCreditStatus == 2 ?
 						null :
 						<Image source={require('../kuaisushouxin/kuaisushouxin_images/jinrongbeijinglanqian.png')}
 						       style={{width:Pixel.getPixel(350),height:Pixel.getPixel(170),marginTop:Pixel.getPixel(20)}}>
@@ -423,83 +538,80 @@ export default class MineCreditApplyScene extends BaseComponent {
 			this.props.showToast('您提交的申请正在审核中，请稍后')
 			return;
 		}
-
-		if(status == 0 || status == 3){//未申请  或者  申请未通过
-			if(this.state.YANSI_Result){//验四通过，申请跳到填写资料界面
-				if(type == 'xinchedingdan'){
-					// if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
-					// {
-					// 	this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
-					// 	return;
-					// }
-					this.toNextPage({
-						name: 'NewCarCreditEnterpriseInfoCheck',
-						component: NewCarCreditEnterpriseInfoCheck,
-						params: {
-							FromScene:'xinchedingdan',
-							// callBackRefresh:this.props.callBackRefresh,
-
-						},
-					})
-				}
-				if(type == 'kuaisu'){
-					this.toNextPage({
-						name: 'FastCreditOne',
-						component: FastCreditOne,
-						params: {
-							FromScene:'kuaisu',
-							// callBackRefresh:this.props.callBackRefresh,
-						},
-					})
-				}
-			}
-			else {//验四没有通过，申请跳转到验四界面
-
-				if(type == 'xinchedingdan'){
-					// if(global.ISCOMPANY == 0 )//选公司的时候，选的是个人
-					// {
-					// 	this.props.showToast('您选择的公司为个人，无法申请新车订单授信')
-					// 	return;
-					// }
-					this.toNextPage({
-						name: 'Authentication',
-						component: Authentication,
-						params: {
-							FromScene:'xinchedingdan',
-							DATA : this.personData,
-							// callBackRefresh:this.props.callBackRefresh,
-						},
-					})
-				}
-				if(type == 'kuaisu'){
-					this.toNextPage({
-						name: 'Authentication',
-						component: Authentication,
-						params: {
-							FromScene:'kuaisu',
-							DATA : this.personData,
-							// callBackRefresh:this.props.callBackRefresh,
-						},
-					})
-				}
-			}
-
-		}
-
-
-
 		if (type == 'zonghe') {
 			this.toNextPage({
 				name: 'ZongheCreditApply',
 				component: ZongheCreditApply,
 				params: {
-					FromScene:'mineZongApply',
+					FromScene: 'mineZongApply',
 
 				},
 			})
 		}
 
+		if (this.state.YANSI_Result) {//验四通过，申请跳到填写资料界面
+			if (type == 'xinchedingdan') {
+				this.toNextPage({
+					name: 'NewCarCreditEnterpriseInfoCheck',
+					component: NewCarCreditEnterpriseInfoCheck,
+					params: {
+						FromScene: 'xinchedingdanANDmine',
+						// callBackRefresh:this.props.callBackRefresh,
 
+					},
+				})
+			}
+			if (type == 'kuaisu') {
+				if(this.state.zongheCreditStatus == 2 ){
+					this.props.showToast('您的综合授信在有效期内，暂时无法申请小额授信')
+					return;
+
+				}else {
+					this.toNextPage({
+						name: 'FastCreditOne',
+						component: FastCreditOne,
+						params: {
+							FromScene: 'kuaisuANDmine',
+							// callBackRefresh:this.props.callBackRefresh,
+						},
+					})
+				}
+
+
+
+			}
+		}
+		else {//验四没有通过，申请跳转到验四界面
+
+			if (type == 'xinchedingdan') {
+				this.toNextPage({
+					name: 'Authentication',
+					component: Authentication,
+					params: {
+						FromScene: 'xinchedingdanANDmine',
+						DATA: this.personData,
+						// callBackRefresh:this.props.callBackRefresh,
+					},
+				})
+			}
+			if (type == 'kuaisu') {
+				if(this.state.zongheCreditStatus == 2 ){
+					this.props.showToast('您的综合授信在有效期内，暂时无法申请小额授信')
+					return;
+
+				}else {
+					this.toNextPage({
+						name: 'Authentication',
+						component: Authentication,
+						params: {
+							FromScene: 'kuaisuANDmine',
+							DATA: this.personData,
+							// callBackRefresh:this.props.callBackRefresh,
+						},
+					})
+				}
+			}
+		}
 	}
 
 }

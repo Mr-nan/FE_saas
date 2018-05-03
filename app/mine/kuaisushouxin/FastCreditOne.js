@@ -168,17 +168,25 @@ export default class FastCreditOne extends BaseComponent {
         this.enterpriseData.selectOWNorRENT = this.state.selectNO;
         this.enterpriseData.business_home = this.state.business_home;
         this.enterpriseData.fangwujiazhi = this.state.fangwujiazhi;
+        let  PARAMS ;
+        if (this.props.FromScene == 'kuaisuANDmine'){
+	        PARAMS = {
+		        fastOneData:this.enterpriseData,
 
+	        }
+        }else {
+	        PARAMS = {
+		        callBackRefresh:this.props.callBackRefresh,
+		        fastOneData:this.enterpriseData,
+
+	        }
+        }
 
 
         this.toNextPage({
             name: 'FastCreditTwo',
             component: FastCreditTwo,
-            params: {
-                callBackRefresh:this.props.callBackRefresh,
-                fastOneData:this.enterpriseData,
-
-            },
+            params: PARAMS,
         });
 
     }

@@ -722,9 +722,16 @@ export default class MineScene extends BaseComponent {
                 return;
                 break;
 	        case 74:
-		        this.navigatorParams.name = 'CredictManageScene'
-		        this.navigatorParams.component = CredictManageScene
-		        break;
+	            if(this.renzhengData.enterpriseRenZheng !== 2){
+		            this.props.showToast('授信前需已完成企业认证，请先完成企业认证，谢谢！');
+		            return;
+		            break;
+	            }else {
+		            this.navigatorParams.name = 'CredictManageScene'
+		            this.navigatorParams.component = CredictManageScene
+		            break;
+                }
+
             case 49:
                 this.props.toSelect();
                 return;

@@ -48,8 +48,7 @@ let openAccountLicenseID;
 let idcardfront;
 let idcardback;
 let businessid;
-let city_ID;
-let prov_ID;
+
 
 //===============================相机参数设置================================
 const options = {
@@ -77,12 +76,19 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
      * */
     componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
+        openAccountLicenseID = '';
+        idcardfront = '';
+        idcardback = '';
+        businessid = '';
     }
 
     constructor(props) {
         super(props);
-        this.results = [];
         this.data = '';
+	    openAccountLicenseID = '';
+	    idcardfront = '';
+	    idcardback = '';
+	    businessid = '';
         this.state = {
             selectNO: 'GeRen',//GeRen 个人授信类型  QiYe 企业授信类型
             businessLicense: null,
@@ -680,19 +686,19 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
         if (!this.state.isAgree) {
             return;
         }
-        if (this.isEmpty(idcardfront) === true) {
+        if (this.isNull(idcardfront) === true) {
             this._showHint('请上传借款人身份证正面');
             return;
         }
-        if (this.isEmpty(idcardback) === true) {
+        if (this.isNull(idcardback) === true) {
             this._showHint('请上传借款人身份证反面');
             return;
         }
-        if (this.isEmpty(businessid) === true) {
+        if (this.isNull(businessid) === true) {
             this._showHint('请上传营业执照');
             return;
         }
-        if (this.isEmpty(openAccountLicenseID) === true) {
+        if (this.isNull(openAccountLicenseID) === true) {
             this._showHint('请上传开户许可');
             return;
         }
@@ -711,20 +717,10 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
         let maps = {
             company_base_id: global.companyBaseID,
             controller_base_id: this.boss_id,
-            // "file_list['business_licence']":businessid,
-            // "file_list['card_license']":openAccountLicenseID,
-            // "file_list['cardid_positive_identification']":idcardfront,
-            // "file_list['cardid_reverse_side_identity']":idcardback,
-
             'business_licence': businessid,
             'card_license': openAccountLicenseID,
             'cardid_positive_identification': idcardfront,
             'cardid_reverse_side_identity': idcardback,
-            // file_list:JSON.stringify({
-            //     'business_licence': businessid,
-            //     'card_license': openAccountLicenseID,
-            //     'cardid_positive_identification': idcardfront,
-            //     'cardid_reverse_side_identity': idcardback,})
 
         }
         this.setState({

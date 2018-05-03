@@ -42,7 +42,7 @@ export default class FinanceHeader extends PureComponent {
     }
 
     render() {
-        console.log(this.props.allData1);
+        console.log('------',global.ISCOMPANY==0);
         return (
             <View style={{backgroundColor: '#fff', width: width, height: Pixel.getTitlePixel(235)}}>
                 <Animated.Image style={{
@@ -65,7 +65,7 @@ export default class FinanceHeader extends PureComponent {
                                       weizongPop={()=>{this.props.weizongPop()}}
                     />
                 </Animated.Image>
-                <Animated.Image style={{
+                {global.ISCOMPANY!==0&&<Animated.Image style={{
                     width: this.state.bottomWidth,
                     height: this.state.bottomHeight, resizeMode: 'stretch',
                     position: 'absolute',
@@ -80,7 +80,7 @@ export default class FinanceHeader extends PureComponent {
                                       balancePop={()=>{this.props.balancePop()}}
                                       weizongPop={()=>{this.props.weizongPop()}}
                     />
-                </Animated.Image>
+                </Animated.Image>}
             </View>
         );
     }
