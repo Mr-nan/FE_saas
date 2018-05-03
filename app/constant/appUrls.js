@@ -873,6 +873,22 @@ export const CARLOAN_CANCEL_LOAN = 'api/v3/carloan/cancel_loan'
 export const GET_APPLY_LIST = 'api/v3/account/get_apply_list';
 
 /**
+ * from @huangning
+ *
+ * 获取借款记录
+ *
+ * payment_number单号
+ * auto_vin车架号
+ * min_loanmny最小金额
+ * max_loanmny最大金额
+ * loanperiod期限
+ * logic_status状态 全部all
+ * product_type_code产品类型 全部all
+ * 搜索字段
+ **/
+export const GET_APPLY_LIST_NEW = 'api/v6/account/get_apply_list_new';
+
+/**
  * from @zhaojian
  *
  * 选择借款主体

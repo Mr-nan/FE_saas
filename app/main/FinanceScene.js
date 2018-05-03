@@ -26,13 +26,12 @@ let allPage = 0;
 
 import  HomeHeaderItem from './component/HomeHeaderItem';
 import  PixelUtil from '../utils/PixelUtil'
-import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
-import ChedidaiDetaileScene from '../finance/lend/ChedidaiDetaileScene';
+import KurongDetaileScene from '../finance/lend/KurongDetaileSceneNew';
 import DDDetailScene from '../finance/lend/DDDetailScene';
 import DDApplyLendScene from '../finance/lend/DDApplyLendScene';
 
 import CGDDetailSence from '../finance/lend/CGDDetailSence';
-import SingDetaileSence from '../finance/lend/SingDetaileSence';
+import SingDetaileSence from '../finance/lend/SingDetaileSenceNew';
 import  StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 let Pixel = new PixelUtil();
@@ -160,9 +159,23 @@ export default class FinanceSence extends BaseComponet {
 
     getApplyData = () => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        /**
+         * payment_number单号
+         * auto_vin车架号
+         * min_loanmny最小金额
+         * max_loanmny最大金额
+         * loanperiod期限
+         * logic_status 状态 全部all
+         * product_type_code产品类型 全部all
+         * 搜索字段
+         * @type {{api, p: number, rows: number, loan_type: number}}
+         *【0全部、2单车、3采购贷旧(信用贷)、4库融、5采购贷、7应收账款、8车抵贷】
+         */
         let maps = {
             api: Urls.GET_APPLY_LIST,
-            p: page
+            p: page,
+            rows:10,
+            product_type_cod:0,
         };
         request(Urls.FINANCE, 'Post', maps, () => {
             this.props.backToLogin();
@@ -259,88 +272,6 @@ export default class FinanceSence extends BaseComponet {
         //firstType = lastType;
         this.props.callBack(this.navigatorParams);
     };
-/*    toPage = () => {
-        if (lastType == '0') {
-            this.props.callBack({
-                name: 'AccountTypeSelectScene',
-                component: AccountTypeSelectScene, params: {
-                    callBack: () => {
-                    }
-                }
-            });
-        } else if (lastType == '1') {
-            this.props.callBack({
-                name: 'BindCardScene', component: BindCardScene, params: {
-                    callBack: () => {
-                    }
-                }
-            });
-        } else if (lastType == '2') {
-            this.props.callBack({
-                name: 'WaitActivationAccountScene',
-                component: WaitActivationAccountScene,
-                params: {
-                    callBack: () => {
-                    }
-                }
-            });
-        }
-    }*/
-
-    // componentDidUpdate() {
-    //
-    //     if (this.state.renderPlaceholderOnly == 'success') {
-    //         if (firstType != lastType) {
-    //             if (lastType != 3) {
-    //                 StorageUtil.mGetItem(storageKeyNames.ENTERPRISE_LIST, (data) => {
-    //                     if (data.code == 1) {
-    //                         let datas = JSON.parse(data.result);
-    //                         console.log(datas);
-    //                         if (datas[0].role_type == '1') {
-    //                             StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (datac) => {
-    //                                 if (datac.code == 1) {
-    //                                     let datasc = JSON.parse(datac.result);
-    //                                     let maps = {
-    //                                         enter_base_ids: datasc.company_base_id,
-    //                                         child_type: '1'
-    //                                     };
-    //                                     request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-    //                                         .then((response) => {
-    //                                                 lastType = response.mjson.data.account.status;
-    //                                                 if (lastType == '0') {
-    //                                                     this.refs.accountmodal.changeShowType(true,
-    //                                                         '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-    //                                                         '请尽快开通！', '去开户', '看看再说', () => {
-    //                                                             this.toPage();
-    //                                                         });
-    //                                                 } else if (lastType == '1') {
-    //                                                     this.refs.accountmodal.changeShowType(true,
-    //                                                         '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-    //                                                         , '去绑卡', '看看再说', () => {
-    //                                                             this.toPage();
-    //                                                         });
-    //                                                 } else if (lastType == '2') {
-    //                                                     this.refs.accountmodal.changeShowType(true,
-    //                                                         '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-    //                                                         , '去激活', '看看再说', () => {
-    //                                                             this.toPage();
-    //                                                         });
-    //                                                 }
-    //                                                 firstType = lastType;
-    //                                             },
-    //                                             (error) => {
-    //
-    //                                             });
-    //                                 }
-    //                             });
-    //
-    //                         }
-    //                     }
-    //                 });
-    //             }
-    //         }
-    //     }
-    // }
 
     // 构造
     constructor(props) {
@@ -666,6 +597,7 @@ export default class FinanceSence extends BaseComponet {
         component: LendMoneySence,
         params: {}
     }
+
     /**
      * from @zhaojian
      *
@@ -909,10 +841,7 @@ export default class FinanceSence extends BaseComponet {
     }
 }
 
-
 const cellSheet = StyleSheet.create({
-
-
     header: {
         flex: 1,
 

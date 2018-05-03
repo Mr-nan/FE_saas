@@ -122,6 +122,26 @@ export class CommenButton extends PureComponent {
 
 }
 
+export class CommenButtonNew extends PureComponent {
+
+    static propTypes = {
+        onPress: PropTypes.func.isRequired,
+        title: PropTypes.string.isRequired,
+    }
+
+    render() {
+        const {buttonStyle, textStyle, onPress, title}=this.props;
+        return (
+            <View >
+                <TouchableOpacity style={buttonStyle} onPress={onPress} activeOpacity={0.8}>
+                    <Text allowFontScaling={false}  style={[{fontSize: Pixel.getPixel(15), color: '#fff'}, textStyle]}>{title}</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+}
+
 export class LendCarItemCell extends PureComponent {
 
 
