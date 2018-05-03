@@ -22,7 +22,7 @@ const {width, height} = Dimensions.get('window');
 import  PixelUtil from '../utils/PixelUtil'
 let Pixel = new PixelUtil();
 import TabNavigator from 'react-native-tab-navigator';
-
+import BlankFinanceScene from './BlankFinanceScene'
 import HomeSence  from './HomeScene'
 import CarSourceSence from '../carSource/CarSourceListScene'
 import MineSence from './MineScene'
@@ -567,17 +567,26 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }} showLoginModal={this.props.showLoginModal}/>
         } else if (ref == 'financePage') {
-            if (this.is_done_credit == 0) {
-                return <NonCreditScene/>
-            } else {
-                return <FinanceSence backToLogin={()=>{
-                            this.backToLogin({name:'LoginScene',component:LoginScene});
-                        }} showModal={(value)=>{
-                        this.props.showModal(value);
-                        }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
-                        this.toNextPage(params);
-                }} showLoginModal={this.props.showLoginModal}/>
-            }
+
+                return  <BlankFinanceScene
+					MAPS={{base_id: global.companyBaseID ,controller_base_id:this.boss_id,merge_id:global.MERGE_ID}}
+					BASE_USER_ID={this.base_user_id}
+					IS_DONE_CREDIT={this.is_done_credit}
+					showModal={(value)=>{this.props.showModal(value);}}
+					showToast={(content)=>{this.props.showToast(content)}}
+					toNextPage={(params) => {this.toNextPage(params); }}
+					toSelect={()=>{
+                        let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
+
+                        const navigator = this.props.navigator;
+
+                        if (navigator) {
+
+                            navigator.immediatelyResetRouteStack([{
+                                ...mProps
+
+                            }]) }
+                    }}showLoginModal={this.props.showLoginModal}/>
         } else {
             return <MineSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
