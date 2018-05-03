@@ -116,7 +116,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 "trenchtype": "1961",
                                 "lending_methods": "账户体系放款",
                                 "cancle_time": "1970-01-01",
-                                "logic_status": "10",
+                                "logic_status": "80",
                                 "is_cancel_loan": 0,
                                 "is_sign_contract": 0,
                                 "is_confirm_iou": 0,
@@ -216,7 +216,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                     "lending_methods": "线下放款",
                                     "channel_name": null,
                                     "finish_time": null,
-                                    "child_loan_status": 30,
+                                    "child_loan_status": 70,
                                     "child_loan_status_str": "渠道审核中",
                                     "is_confirm_iou": 1,
                                     "is_sign_contract": 1,
@@ -236,7 +236,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                     "lending_methods": "线下放款",
                                     "channel_name": null,
                                     "finish_time": null,
-                                    "child_loan_status": 40,
+                                    "child_loan_status": 80,
                                     "child_loan_status_str": "渠道审核中",
                                     "is_confirm_iou": 1,
                                     "is_sign_contract": 1,
@@ -538,7 +538,31 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'资产编号'}</Text>
                     </View>
                 </View>
-                <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                {
+                    rowData.child_loan_status == 70 ?
+                    <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                        <View style={{flexDirection:'row',alignItems:'center'}}>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{'线下放款'}</Text>
+                        </View>
+                        <View style={{flexDirection:'row'}}>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(100)}}>{'鼎诚易融'}</Text>
+                        </View>
+                    </View>:null
+                }
+            {
+                rowData.child_loan_status == 80 ?
+                    <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                        <View style={{flexDirection:'row',alignItems:'center'}}>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{'线下放款'}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{rowData.assess_time}</Text>
+                        </View>
+                        <View style={{flexDirection:'row'}}>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(100)}}>{'鼎诚易融'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(100)}}>{'结清日期'}</Text>
+                        </View>
+                    </View>:null
+            }
+                <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
                 <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
                         {tempButtons}
                 </View>
