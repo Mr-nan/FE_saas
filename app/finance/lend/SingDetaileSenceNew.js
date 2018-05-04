@@ -31,7 +31,7 @@ import {
     changeToMillion
 } from './component/MethodComponent'
 import {ModifyBorrowing, ModifyBorrowingNew, LendSuccessAlert, ModalAlert, MMSModalAlert} from './component/ModelComponent'
-import  OrderCarDetailScene from './OrderCarDetailScene'
+import  OrderCarDetailSceneNew from './OrderCarDetailSceneNew'
 import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
@@ -484,10 +484,10 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
     getCarInfo = (rowData) => {
         let navigatorParams = {
-            name: 'OrderCarDetailScene',
-            component: OrderCarDetailScene,
+            name: 'OrderCarDetailSceneNew',
+            component: OrderCarDetailSceneNew,
             params: {
-                auto_id: rowData.loan_number,
+                rowData: rowData,
                 type: '2'
             }
         }
