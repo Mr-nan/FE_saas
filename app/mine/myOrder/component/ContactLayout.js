@@ -36,6 +36,16 @@ export default class ContactLayout extends Component {
         };
     }
 
+    componentWillReceiveProps(props) {
+        this.showShopId = this.props.showShopId;
+        this.setState({
+            layoutContent: props.layoutContent
+        });
+
+    }
+
+
+
     /**
      *   更新文字内容
      **/
