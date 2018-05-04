@@ -60,6 +60,7 @@ import AccountTypeSelectScene from '../mine/accountManage/AccountTypeSelectScene
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import BindCardScene from '../mine/accountManage/BindCardScene'
 import MyAccountScene from "../mine/accountManage/MyAccountScene";
+import FinanceSeekMoreScene from "../finance/lend/FinanceSeekMoreScene";
 let firstType = '-1';
 let lastType = '-1';
 
@@ -292,8 +293,21 @@ export default class FinanceSence extends BaseComponet {
             mnyData: mnyData,
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
-            customerName: ''
+            customerName: '',
+            seekData:[]
         };
+
+        this.seekParameter={
+            number:'',
+            min_loanmny:'',
+            max_loanmny:'',
+            loanperiod:'',
+            logic_status:'',
+            product_type_code:'',
+            min_date:'',
+            max_date:''
+        };
+        this.offY = 0;
     }
 
     refreshingData = () => {
@@ -313,7 +327,7 @@ export default class FinanceSence extends BaseComponet {
         return (
             <View style={cellSheet.container}>
                 <ListView
-                    scrollEnabled={true}
+                    scrollEnabled={this.state.seekData.length>0?false:true}
                     removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -331,6 +345,9 @@ export default class FinanceSence extends BaseComponet {
                             colors={[fontAndColor.COLORB0]}
                         />
                     }
+                    onScroll={(event)=>{
+                        this.offY = Pixel.getPixel(event.nativeEvent.contentOffset.y);
+                    }}
                 />
                 <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref='cgdModal'
                                   confimClick={() => {
@@ -362,7 +379,16 @@ export default class FinanceSence extends BaseComponet {
                 />
                 <AccountModal ref="accountmodal"/>
                 <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微单可用额度只适用于单车产品'}/>
-                <FinanceSeekContentView/>
+                {
+                   this.state.seekData.length >0 && <FinanceSeekContentView ref={(ref)=>{this.FinanceSeekContentView = ref}}
+                                                                            data={this.state.seekData}
+                                                                            currentTitle={this.seekCurrentTitle}
+                                                                            seekSelectContentClick={this.seekSelectContentClick}
+                                                                            cancel={this.seekCancelClick}
+                                                                            offY={this.offY}
+                   />
+                }
+
             </View>
         )
     }
@@ -836,10 +862,85 @@ export default class FinanceSence extends BaseComponet {
                 <View style={cellSheet.header}>
                     {items}
                 </View>
-                <FinanceTypeSeekView seekClick={}/>
+                <FinanceTypeSeekView ref={(ref)=>{this.financeTypeSeekView=ref}} seekClick={this.seekAction}/>
             </View>
 
         )
+    }
+
+    seekAction=(type,isSelect)=>{
+
+        this.currentSeekType = type;
+        let  seekData = [];
+        if(isSelect){
+            if(type==0){
+              seekData = ['库存融资','单车融资','车抵贷','采购贷'];
+              this.seekCurrentTitle = this.seekParameter.product_type_code;
+            }else if(type==1){
+                seekData = ['评估监控中','审核中','渠道审核中','待签合同','待确认借据','处理中','已放款','已还清','已取消'];
+                this.seekCurrentTitle = this.seekParameter.logic_status;
+
+            }else if(type==2){
+                seekData = ['30天','60天','90天','180天'];
+                this.seekCurrentTitle = this.seekParameter.loanperiod;
+            }
+        }
+
+        this.setState({
+            seekData:seekData
+        });
+
+        if(type==3){
+            let navigationParams={
+                name: "FinanceSeekMoreScene",
+                component: FinanceSeekMoreScene,
+                params: {
+                    seekParameter:{...this.seekParameter},
+                    confirmClick:this.financeSeekMoreConfirmClick
+                }
+            }
+            this.props.callBack(navigationParams);
+        }
+
+    }
+
+    financeSeekMoreConfirmClick=(parameter)=>{
+
+        console.log('=======',parameter);
+        this.seekParameter.number = parameter.number;
+        this.seekParameter.min_loanmny = parameter.minPrice;
+        this.seekParameter.max_loanmny = parameter.maxPrice;
+        this.seekParameter.min_date = parameter.minDate;
+        this.seekParameter.max_date = parameter.maxDate;
+
+        console.log(this.seekParameter);
+
+    }
+
+    seekSelectContentClick=(title)=>{
+
+        if(this.currentSeekType==0){
+
+            this.seekParameter.product_type_code = title;
+
+        }else if(this.currentSeekType==1){
+
+            this.seekParameter.logic_status = title;
+
+        }else if(this.currentSeekType==2){
+
+            this.seekParameter.loanperiod = title;
+
+        }
+
+    }
+
+    seekCancelClick=()=>{
+
+        this.setState({
+            seekData:[]
+        });
+        this.financeTypeSeekView && this.financeTypeSeekView.seekViewCancel();
     }
 }
 
@@ -867,9 +968,17 @@ class FinanceTypeSeekView extends  Component{
         )
     }
 
+    seekViewCancel=()=>{
+
+        if(this.currentSelectType != null){
+            this.subItem[this.currentSelectType].setSelectType(false);
+            this.currentSelectType = null;
+        }
+    }
+
     seekClick=(type,isSelect)=>{
 
-        this.props.se
+        this.props.seekClick(type,isSelect);
         if(isSelect){
 
             if( this.currentSelectType!=type && this.currentSelectType != null){
@@ -885,6 +994,8 @@ class FinanceTypeSeekView extends  Component{
         }
 
     }
+
+
 
 }
 
@@ -935,25 +1046,51 @@ class FinanceSeekContentView extends Component{
 
         let ds = new  ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
         this.state = {
-            dataSource:ds.cloneWithRows(['全部产品类型','库融产品','单车产品','采购贷']),
+            dataSource:ds.cloneWithRows(this.props.data),
         };
+        this.currentTitle = this.props.currentTitle;
+
       }
+
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows(newProps.data)
+        });
+        this.currentTitle = newProps.currentTitle;
+
+    }
+
     render(){
         return(
-            <View style={{top:Pixel.getPixel(364), backgroundColor:'rgba(0, 0, 0,0.3)', left: 0, right: 0, position: 'absolute', bottom:0}}>
+            <TouchableOpacity activeOpacity={1} onPress={this.props.cancel} style={{top:Pixel.getPixel(364)-this.props.offY, backgroundColor:'rgba(0, 0, 0,0.3)', left: 0, right: 0, position: 'absolute', bottom:0,paddingTop:Pixel.getPixel(1)}}>
                 <ListView dataSource={this.state.dataSource}
                           renderRow={(rowDate)=>{
                               return(
-                                  <View style={{width:width,height:Pixel.getPixel(44), backgroundColor:'white',
-                                      paddingHorizontal:Pixel.getPixel(15), flexDirection:'row', alignItems:'center'
+                                  <TouchableOpacity activeOpacity={1} onPress={()=>{
+
+                                      if(this.currentTitle == rowDate){
+                                          this.props.seekSelectContentClick('');
+                                      }else {
+                                          this.props.seekSelectContentClick(rowDate);
+
+                                      }
+                                      this.props.cancel();
+
+                                  }} style={{width:width,height:Pixel.getPixel(44), backgroundColor:'white',
+                                      paddingHorizontal:Pixel.getPixel(15), flexDirection:'row', alignItems:'center',justifyContent:'space-between'
                                   }}>
-                                      <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.CONTENTFONT24)}}>{rowDate}</Text>
-                                  </View>
+                                      <Text style={{color:this.currentTitle==rowDate? fontAndColor.COLORB0 : fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.CONTENTFONT24)}}>{rowDate}</Text>
+
+                                      {
+                                          this.currentTitle==rowDate ? (<Image source={require('../../images/publish/hot-label.png')}/>):(<View style={{width:Pixel.getPixel(1),height:Pixel.getPixel(1)}}/>)
+                                      }
+
+                                  </TouchableOpacity>
                               )
                           }}
                           renderSeparator={this._renderSeparator}
                 />
-            </View>
+            </TouchableOpacity>
         )
     }
 
