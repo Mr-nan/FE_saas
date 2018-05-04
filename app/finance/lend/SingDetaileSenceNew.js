@@ -557,7 +557,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
                         <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(100)}}>{rowData.loan_mny}</Text>
-                        <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{rowData.assess_time}</Text>
+                        <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{rowData.loan_time}</Text>
                         <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.loan_number}</Text>
                     </View>
                     <View style={{flexDirection:'row'}}>
@@ -570,26 +570,26 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     rowData.child_loan_status == 70 ?
                     <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{'线下放款'}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{rowData.lending_methods}</Text>
                         </View>
                         <View style={{flexDirection:'row'}}>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(100)}}>{'鼎诚易融'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(100)}}>{rowData.channel_name}</Text>
                         </View>
                     </View>:null
                 }
-            {
-                rowData.child_loan_status == 80 ?
+                {
+                    rowData.child_loan_status == 80 ?
                     <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{'线下放款'}</Text>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{rowData.assess_time}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{rowData.lending_methods}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{rowData.finish_time}</Text>
                         </View>
                         <View style={{flexDirection:'row'}}>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(100)}}>{'鼎诚易融'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(100)}}>{rowData.channel_name}</Text>
                             <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(100)}}>{'结清日期'}</Text>
                         </View>
                     </View>:null
-            }
+                }
                 <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
                 <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
                         {tempButtons}
