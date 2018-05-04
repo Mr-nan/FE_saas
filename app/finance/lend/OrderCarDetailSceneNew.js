@@ -20,23 +20,20 @@ import *as apis from '../../constant/appUrls'
 import ImagePageView from 'react-native-viewpager'
 
 const ImageSouce= {
-
     imageSouce:[]
-
 }
 export default class OrderCarDetailScene extends BaseComponent{
 
     constructor(props) {
         super(props);
         // 初始状态
-        const ds = new ListView.DataSource(
-            {
+        const ds = new ListView.DataSource({
                 getRowData: getRowData,
                 getSectionHeaderData: getSectionData,
                 rowHasChanged: (row1, row2) => row1 !== row2,
                 sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
             }
-        )//
+        )
         const ImageData = new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({},[])),
@@ -46,8 +43,12 @@ export default class OrderCarDetailScene extends BaseComponent{
     }
 
     initFinish() {
-
-        this.getCarInfo();
+        // this.getCarInfo();
+        this.setState({
+            renderPlaceholderOnly: STATECODE.loadSuccess,
+            dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(this.props.rowData,[])),
+            imagePikerData:this.state.imagePikerData.cloneWithPages(ImageSouce.imageSouce),
+        })
     }
 
     getCarInfo=()=>{
@@ -62,20 +63,15 @@ export default class OrderCarDetailScene extends BaseComponent{
             .then((response) => {
 
                     let tempjson = response.mjson.data
-
                     tempjson.img_list.map((item)=>{
-
                         ImageSouce.imageSouce.push(item.fileurl)
                     })
-
-
                     this.setState({
                         renderPlaceholderOnly: STATECODE.loadSuccess,
                         dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,tempjson.img_list)),
                         imagePikerData:this.state.imagePikerData.cloneWithPages(ImageSouce.imageSouce),
                     })
-                },
-                (error) => {
+                }, (error) => {
                     this.setState({
                         renderPlaceholderOnly:STATECODE.loadError,
                     })
@@ -94,46 +90,35 @@ export default class OrderCarDetailScene extends BaseComponent{
 
         let dataSource = {};
         let section1=[
-            {title: '评估日期', key: jsonData.reassessed_time},
-            {title:'评估师',key:jsonData.reassessed_username},
+            {title: '评估日期', key: jsonData.assess_time},
+            {title:'评估师',key:jsonData.assess_user_name},
             {title: '车型', key: jsonData.model_name},
             {title: '车牌号', key: jsonData.plate_number},
             {title: '车架号', key: jsonData.frame_number},
-            // {title: '车身颜色', key: jsonData.car_color},
-            // {title: '内饰颜色', key: jsonData.trim_color},
-            {title: '监管地点',     key: jsonData.rp_name},
-            {title: '评估金额', key: changeToMillion(jsonData.lend_mny)+'万元'},
-            {title: '放款金额', key: changeToMillion(jsonData.loan_mny_fk)+'万元'},
-            {title: '在库天数', key: jsonData.library_day+'天'},
+            {title: '监管地点',     key: jsonData.storage},
+            {title: '评估金额', key: changeToMillion(jsonData.hq_assess_mny)+'万元'},
+            {title: '合同放款额度', key: changeToMillion(jsonData.loan_mny)+'万元'},
+            // {title: '在库天数', key: jsonData.library_day+'天'},
         ]
-        if (jsonData.isextension==='1'){
-
-            section1.push({title: '保证金', key: jsonData.bondmny},{title: '保证金状态', key: jsonData.bond_status_str})
-        }
-
-
+        // if (jsonData.isextension==='1'){
+        //     section1.push({title: '保证金', key: jsonData.bondmny},{title: '保证金状态', key: jsonData.bond_status_str})
+        // }
         dataSource['section1']=section1
         if(carData.length>0){
             dataSource['section2']=carData;
         }
-
         return dataSource;
     }
 
     renderImagePage=(data,pageId)=>{
-
         return (
             <Image source={{uri:data}} style={{ backgroundColor:'white', height: adapeSize(250), width:width}}/>
         )
-
     }
 
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
-
-
         if (sectionID === 'section2') {
             if(rowId==='0'){
-
                 return(
                     <ImagePageView
                     dataSource={this.state.imagePikerData}    //数据源（必须）
@@ -142,9 +127,7 @@ export default class OrderCarDetailScene extends BaseComponent{
                     autoPlay={false}                      //是否自动
                     locked={false}                        //为true时禁止滑动翻页
                 />)
-
             }else {
-
                 return null;
             }
         }
@@ -156,18 +139,14 @@ export default class OrderCarDetailScene extends BaseComponent{
 
         if(sectionID==='section2'){
             return (
-
                 <View style={ {backgroundColor:PAGECOLOR.COLORA3, height:adapeSize(20),alignItems:'flex-start',justifyContent:'center'}}>
                     <Text allowFontScaling={false}  style={{marginLeft:adapeSize(15)}}>车辆照片</Text>
                 </View>
             )
         }
-
         return null;
-
     }
     renderSeparator =(sectionID,rowId,adjacentRowHighlighted)=>{
-
         let separtrorHegigth =1;
         if (rowId==='1'){
             separtrorHegigth=10;
@@ -212,7 +191,6 @@ export default class OrderCarDetailScene extends BaseComponent{
 
 const styles = StyleSheet.create({
     container: {
-
         flex: 1,
         backgroundColor: PAGECOLOR.COLORA3
     },

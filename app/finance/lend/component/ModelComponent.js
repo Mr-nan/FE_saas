@@ -164,6 +164,82 @@ export class ModifyBorrowing extends Component{
 }
 
 
+//修改借款金额
+export class ModifyBorrowingNew extends Component{
+
+    // 构造
+    constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {visible:false};
+    }
+
+    static propTypes={
+
+        confimClick:React.PropTypes.func.isRequired,
+        cancleClick:React.PropTypes.func.isRequired,
+    }
+    setModelVisible=(value)=>{
+
+        this.setState({
+            visible:value
+        })
+    }
+    _confimClick=()=>{
+
+        const {confimClick}=this.props;
+
+        confimClick(this.setModelVisible);
+    }
+    _cancleClick=()=>{
+        const {cancleClick}=this.props;
+        cancleClick(this.setModelVisible)
+    }
+
+    render(){
+
+        return(
+
+            <Modal animationType='none'
+                   transparent={true}
+                   visible={this.state.visible}
+                   onShow={() => {
+                   }}
+                   onRequestClose={() => {
+                   }}
+            >
+                <TouchableOpacity style={styles.mask} activeOpacity={1} onPress={()=>{
+                    dismissKeyboard();
+                }}>
+                    <View style={[styles.container,{marginTop:adapeSize(230), marginLeft:adapeSize(20), marginRight:adapeSize(20)}]}>
+                        <Text allowFontScaling={false}  style={{fontSize:adapeSize(14),color:'#333333',marginTop:adapeSize(15),marginBottom:adapeSize(15)}}>修改借款金额申请</Text>
+                        <View style={{height:adapeSize(35),flexDirection:'row',marginLeft:adapeSize(5),marginRight:adapeSize(5),borderBottomColor:'#D8D8D8',borderBottomWidth:0.5,alignItems:'center',justifyContent:'center'}}>
+                            <Text style={{flex:1,fontSize:adapeSize(12),color:'#999999',marginLeft:adapeSize(5)}}>可借额度区间</Text>
+                            <Text allowFontScaling={false}  style={{fontSize:adapeSize(14), color:'#FA5741'}}>{this.props.minLend}-{this.props.maxLend}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#FA5741',marginRight:adapeSize(5),padding:0,marginLeft:adapeSize(10)}}>万元</Text>
+                        </View>
+                        <View style={{height:adapeSize(35), marginTop:adapeSize(20), flexDirection:'row',borderBottomColor:'#D8D8D8',borderBottomWidth:0.5,alignItems:'center',marginLeft:adapeSize(5),marginRight:adapeSize(5),justifyContent:'center'}}>
+                            <Text style={{color:'#333333',fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>金额</Text>
+                            <TextInput underlineColorAndroid={"#00000000"} onChangeText={this.props.onchangeText} style={{flex:1, fontSize:adapeSize(12), color:PAGECOLOR.COLORB4, paddingLeft:adapeSize(10), height:adapeSize(35),padding:0}} placeholder='请输入借修改后的款金额' keyboardType='decimal-pad'></TextInput>
+                            <Text style={{color:'#666666',fontSize:adapeSize(12),marginRight:adapeSize(5),marginLeft:adapeSize(10)}}>万元</Text>
+                        </View>
+                        <View style={styles.handelWarp}>
+                            <TouchableOpacity style={[styles.button,styles.buttonRight,{marginLeft:adapeSize(30),marginRight:adapeSize(10),}]}onPress={this._cancleClick}>
+                                <Text allowFontScaling={false}  style={{textAlign:'center', color:'#ffffff',fontSize:adapeSize(14)}}>放弃修改</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.button,styles.buttonLeft,{marginLeft:adapeSize(10),marginRight:adapeSize(30),}]} onPress={this._confimClick}>
+                                <Text allowFontScaling={false}  style={{textAlign:'center', color:'#ffffff',fontSize:adapeSize(14)}}>确认提交</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
+
+        )
+    }
+}
+
+
 
 export class ModalList extends PureComponent{
 
@@ -777,7 +853,7 @@ const styles=StyleSheet.create({
         marginLeft:40,
         marginRight:40,
         marginTop:100,
-        borderRadius:5,
+        borderRadius:3,
     },
     showMessage:{
 
@@ -831,7 +907,7 @@ const styles=StyleSheet.create({
         alignItems:'center',
         padding:10,
         marginBottom:20,
-        borderRadius:5,
+        borderRadius:3,
 
     },
     buttonLeft:{

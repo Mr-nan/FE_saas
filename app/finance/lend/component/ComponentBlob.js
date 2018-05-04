@@ -134,7 +134,7 @@ export class CommenButtonNew extends PureComponent {
         return (
             <View >
                 <TouchableOpacity style={buttonStyle} onPress={onPress} activeOpacity={0.8}>
-                    <Text allowFontScaling={false}  style={[{fontSize: Pixel.getPixel(15), color: '#fff'}, textStyle]}>{title}</Text>
+                    <Text allowFontScaling={false}  style={[{fontSize: Pixel.getPixel(14), color: '#fff'}, textStyle]}>{title}</Text>
                 </TouchableOpacity>
             </View>
         )
