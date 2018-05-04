@@ -860,6 +860,12 @@ export const GET_CAR_INFO = 'api/v1/account/get_car_info'
 export const CANCEL_LOAN = 'api/v3/account/cancel_loan'
 
 /**
+ * from @huangnign
+ * 取消借款单车/库容
+ **/
+export const CANCEL_CHILD_LOAN = 'api/v2/account/cancel_child_loan'
+
+/**
  * from @huangning
  * 取消借款
  **/

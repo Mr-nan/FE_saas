@@ -366,7 +366,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     cancleLoadC = (imgSid,code) => {
         this.props.showModal(true);
         let maps = {
-            api: apis.CANCEL_LOAN,
+            api: apis.CANCEL_CHILD_LOAN,
             payment_number : this.props.loanNumber, //主单号
             loan_number :this.cancleid,
             img_sid : imgSid,
