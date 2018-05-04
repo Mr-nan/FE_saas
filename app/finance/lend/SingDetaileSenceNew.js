@@ -185,7 +185,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 {
                                     "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
                                     "frame_number": "43434343233346666",
-                                    "loan_number": "20171018001002",
+                                    "loan_number": "32906",
                                     "loan_mny": "17000.00",
                                     "loan_time": "2017-09-01",
                                     "assess_time": "2017-10-18",
@@ -205,7 +205,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 {
                                     "model_name": "2017款 奥迪A6L TFSI 技术型",
                                     "frame_number": "34343434444555555",
-                                    "loan_number": "20171018001001",
+                                    "loan_number": "32906",
                                     "loan_mny": "24000.00",
                                     "loan_time": "2017-09-01",
                                     "assess_time": "2017-10-18",
@@ -225,7 +225,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 {
                                     "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
                                     "frame_number": "43434343233346666",
-                                    "loan_number": "20171018001002",
+                                    "loan_number": "32906",
                                     "loan_mny": "17000.00",
                                     "loan_time": "2017-09-01",
                                     "assess_time": "2017-10-18",
@@ -307,6 +307,34 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 // tempTitle = ['审核未通过']
             }else if (stateCode == '0') {
                 // tempTitle = ['已取消']
+            }
+            return tempTitle;
+        }
+    }
+
+    getStatusStr = (stateCode) => {
+        if (stateCode !== '') {
+            let tempTitle = []
+            if (stateCode == '10') {
+                tempTitle = ['评估监管中']
+            } else if (stateCode == '20') {
+                tempTitle = ['审核中']
+            } else if (stateCode == '30') {
+                tempTitle = ['渠道审核中']
+            }else if (stateCode == '40') {
+                tempTitle = ['待签合同']
+            }else if (stateCode == '50') {
+                tempTitle = ['待确认借据']
+            }else if (stateCode == '60') {
+                tempTitle = ['处理中']
+            }else if (stateCode == '70') {
+                tempTitle = ['已放款']
+            }else if (stateCode == '80') {
+                tempTitle = ['已还清']
+            }else if (stateCode == '21') {
+                tempTitle = ['审核未通过']
+            }else if (stateCode == '0') {
+                tempTitle = ['已取消']
             }
             return tempTitle;
         }
@@ -459,7 +487,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             name: 'OrderCarDetailScene',
             component: OrderCarDetailScene,
             params: {
-                auto_id: rowData.auto_id,
+                auto_id: rowData.loan_number,
                 type: '2'
             }
         }
@@ -471,8 +499,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
                     <Text style={{backgroundColor:'#05c5c2',color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),paddingLeft:adapeSize(3),paddingRight:adapeSize(3),height:adapeSize(16)}}>单</Text>
-                    <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{'单号：' + this.tempjson.data.response.payment_number}</Text>
-                    <Text style={{fontSize:adapeSize(14),color:"#FA5741"}}>{this.tempjson.data.response.paymenttype}</Text>
+                    <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.data.response.payment_number}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:"#FA5741"}}>{this.getStatusStr(this.stateCode)}</Text>
                 </View>
                 <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
@@ -515,7 +543,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             }
         )
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
-                <TouchableOpacity onPress={()=>{  alert("xx")  }} >
+                <TouchableOpacity onPress={()=>{   this.getCarInfo(rowData) }} >
                     <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
                         <View style={{flexDirection:'column',flex:1}}>
                             <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.model_name}</Text>
