@@ -29,6 +29,7 @@ import MyButton from '../../../../component/MyButton'
 import LicenseImageScene from "./LicenseImageScene";
 import ImageSourceSample from "../../../../publish/component/ImageSourceSample";
 import ImagePicker from "react-native-image-picker";
+import * as ImageUpload from '../../../../utils/ImageUpload'
 
 const options = {
     //弹出框选项
@@ -53,10 +54,47 @@ export default class UploadProof extends BaseComponent {
     constructor(props) {
         super(props)
 
+        this.state={
+            images:[]
+        }
+        
+        
+        // file_id:"2335124"
+        // icon:"http://zuopeng.img-cn-beijing.aliyuncs.com/Uploads/Oss/201805/04/5aec19c15ee54.jpeg@80h_80w_2e"
+        // img_url:"http://zuopeng.img-cn-beijing.aliyuncs.com/Uploads/Oss/201805/04/5aec19c15ee54.jpeg"
+        // is_cover:0
+        // url:"http://zuopeng.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201805/04/5aec19c15ee54.jpeg"
+     
     }
 
 
     render() {
+        
+        let image = []
+        
+        if(this.state.images.length>0){
+            this.state.images.map(img, ()=>{
+                
+                image.push(
+                    <LicenseImageScene
+                        image={{uri:img.icon}}
+                        ref={'id_front'}
+                        onPress={() => {
+                            this._rePhoto('legal_picurl')
+                        }}
+                        onDelete={() => {
+                            this.props.model.legal_picurl = null;
+                            this.setState({
+                                legal_picurl: null
+                            })
+                        }}
+                    />
+                )
+            })
+        }
+        
+        
+        
         return (
             <View style={styles.root}>
                 <NavigationBar
@@ -79,10 +117,10 @@ export default class UploadProof extends BaseComponent {
                         }}
                     >
 
+                        {image}
+                        
                         <LicenseImageScene
                             ref={'id_front'}
-                            title={'身份证-正面'}
-
                             onPress={() => {
                                 this._rePhoto('legal_picurl')
                             }}
@@ -93,7 +131,6 @@ export default class UploadProof extends BaseComponent {
                                 })
                             }}
                         />
-
 
 
                     </View>
@@ -154,7 +191,7 @@ export default class UploadProof extends BaseComponent {
                     } else if (response.error) {
                     } else if (response.customButton) {
                     } else {
-                        this.uploadImage(response, this.id);
+                        this.uploadImage(response);
                     }
                 });
             },
@@ -190,21 +227,24 @@ export default class UploadProof extends BaseComponent {
         let params = {
             base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
-        this.props.showModal(true);
+        //this.props.showModal(true);
 
+    
         ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
 
-                this.props.showModal(false);
+               // this.props.showModal(false);
 
                 if (response.mycode == 1) {
-                    let source = {uri: response.mjson.data.icon};
-
-                    this.props.model[id] = response.mjson.data.url;
-
-
-
-
+                    
+                    console.log(response.mjson.data)
+                    this.state.images.push(response.mjson.data);
+                    
+                    console.log(this.state.images)
+                    
+                    this.setState({
+                        images:this.state,
+                    })
                 } else {
                     this.props.showToast(response.mjson.msg + "!");
                 }
