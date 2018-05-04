@@ -55,7 +55,7 @@ export default class UploadProof extends BaseComponent {
         super(props)
 
         this.state={
-            images:[]
+            images:null
         }
         
         
@@ -69,30 +69,6 @@ export default class UploadProof extends BaseComponent {
 
 
     render() {
-        
-        let image = []
-        
-        if(this.state.images.length>0){
-            this.state.images.map(img, ()=>{
-                
-                image.push(
-                    <LicenseImageScene
-                        image={{uri:img.icon}}
-                        ref={'id_front'}
-                        onPress={() => {
-                            this._rePhoto('legal_picurl')
-                        }}
-                        onDelete={() => {
-                            this.props.model.legal_picurl = null;
-                            this.setState({
-                                legal_picurl: null
-                            })
-                        }}
-                    />
-                )
-            })
-        }
-        
         
         
         return (
@@ -112,22 +88,20 @@ export default class UploadProof extends BaseComponent {
                         style={{
                             backgroundColor: 'white',
                             flexDirection:'row',
-                            paddingVertical:Pixel.getPixel(15)
+                            paddingVertical:Pixel.getPixel(10)
 
                         }}
                     >
-
-                        {image}
                         
                         <LicenseImageScene
+                            image={this.state.images!==null?{uri:this.state.images.icon}:null}
                             ref={'id_front'}
                             onPress={() => {
                                 this._rePhoto('legal_picurl')
                             }}
                             onDelete={() => {
-                                this.props.model.legal_picurl = null;
                                 this.setState({
-                                    legal_picurl: null
+                                   images:null
                                 })
                             }}
                         />
@@ -238,12 +212,8 @@ export default class UploadProof extends BaseComponent {
                 if (response.mycode == 1) {
                     
                     console.log(response.mjson.data)
-                    this.state.images.push(response.mjson.data);
-                    
-                    console.log(this.state.images)
-                    
                     this.setState({
-                        images:this.state,
+                        images:response.mjson.data,
                     })
                 } else {
                     this.props.showToast(response.mjson.msg + "!");

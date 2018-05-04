@@ -43,20 +43,19 @@ export default class LicenseImageScene extends Component {
             >
                 <View
                     style={{
-                        width: Pixel.getPixel(87),
-                        height: Pixel.getPixel(67),
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}
                 >
 
                     <TouchableOpacity
+                        activeOpacity={.8}
                         onPress={()=>{
                             this.props.onPress()
                         }}
                     >
 
-                        <Image style={{width: Pixel.getPixel(78), height: Pixel.getPixel(58)}}
+                        <Image style={{width: Pixel.getPixel(100), height: Pixel.getPixel(75), margin:Pixel.getPixel(5)}}
                                source={this.props.image ? this.props.image : require('../../../../../images/add_photo.png')}/>
 
                     </TouchableOpacity>
