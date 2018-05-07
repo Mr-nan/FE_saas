@@ -146,10 +146,11 @@ export  default class ContractInfoScene extends BaseComponent {
                         }
                     }
                     console.log("xxxxxx",response.mjson)
-                    // RJson = response.mjson;
-                    // imageItems.push(...response.mjson.data.response[numberPage].contract[namePage].pic);
-                    RJson = xxx;
-                    imageItems.push(...xxx.data.response[numberPage].contract[namePage].pic);
+                    RJson = response.mjson;
+                    imageItems.push(...response.mjson.data[numberPage].contract[namePage].pic);
+                    // RJson = xxx;
+                    // imageItems.push(...xxx.data.response[numberPage].contract[namePage].pic);
+                    console.log(imageItems);
                     let ds = new ViewPager.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         dataSource: ds.cloneWithPages(imageItems),

@@ -37,7 +37,8 @@ import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ContractInfoScene from './ContractInfoScene';
-import ContractInfoSceneChildren from './ContractInfoSceneChildren';
+// import ContractInfoSceneChildren from './ContractInfoSceneChildren';
+import ContractInfoSceneChildren from './ContractListScene';
 import RecognizedGains from '../../login/RecognizedGains';
 
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
@@ -418,7 +419,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 name: 'ContractInfoSceneChildren',
                 component: ContractInfoSceneChildren,
                 params: {
-                    loan_code: this.props.loanNumber, showButton: true, callbackfresh: () => {
+                    loan_code: this.props.loanNumber,
+                    showButton: true,
+                    callbackfresh:() => {
                         this.initFinish();
                         this.props.backRefresh();
                     }
