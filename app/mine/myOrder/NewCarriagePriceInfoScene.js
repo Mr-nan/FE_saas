@@ -55,7 +55,7 @@ class LocationView extends Component{
         return(
             <View style={styles.contentView}>
                 <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{title}</Text>
-                <View style={{backgroundColor:fontAndColor.COLORA3,paddingVertical:Pixel.getFontPixel(20), alignItems:'center',justifyContent:'center',marginTop:Pixel.getPixel(10),
+                <View style={{backgroundColor:fontAndColor.COLORB10,paddingVertical:Pixel.getFontPixel(20), alignItems:'center',justifyContent:'center',marginTop:Pixel.getPixel(10),
                     flexDirection:'row'}}>
                     <View style={{alignItems:'center',justifyContent:'center',width:Pixel.getPixel(100),}}>
                         <Image source={require('../../../images/carriagePriceImage/startLocation.png')}/>
