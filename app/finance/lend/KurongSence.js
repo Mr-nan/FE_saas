@@ -27,7 +27,7 @@ import Picker from 'react-native-picker';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import {LendSuccessAlert} from './component/ModelComponent'
-const PostData = {
+let PostData = {
     apply_type: '4',
     loan_mny: '',
     loan_life:'',
