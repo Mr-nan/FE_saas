@@ -392,25 +392,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
 
                 let datas = JSON.parse(data.result);
-                /******     信托白名单查询     ******/
-
-                request(AppUrls.CAN_XINTUO, 'POST', {enter_base_id: datas.company_base_id, type: 0}).then((response) => {
-
-                    let maps = {
-                        source_type: '3',
-                        fund_channel: '信托'
-                    };
-
-                    request(AppUrls.AGREEMENT_LISTS, 'Post', maps)
-                        .then((response) => {
-                                this.contractList=response.mjson.data.list;
-                        }, (error) => {
-
-                        });
-
-                }, (error) => {
-                    console.log(error.msg)
-                })
 
                 let maps = {
                     company_id: datas.company_base_id,
@@ -444,7 +425,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         }
 
 
-                        this.checkeXintuoWhiteList(datas.company_base_id, this.orderDetail.seller_company_id)
+                        this.checkeXintuoWhiteList(datas.company_base_id, this.orderDetail.buyer_company_id)
 
                         this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);
