@@ -132,21 +132,29 @@ export default class OpenAccountBaseScene extends BaseComponent {
 
         let contractList = [];
         for (let i = 0; i < this.contractList.length; i++) {
-            contractList.push(<Text
-                key={i + 'contractList'}
-                allowFontScaling={false}
-                onPress={() => {
-                    this.openContractScene('合同', this.contractList[i].url)
-                    console.log(this.contractList[i].url)
-                }}
-                style={{
-                    fontSize: Pixel.getFontPixel(FontAndColor.CONTENTFONT24),
-                    color: FontAndColor.COLORB4,
-                    lineHeight: Pixel.getPixel(20)
-                }}>
-                《{this.contractList[i].name}》{i < this.contractList.length - 1 ? '、' : ''}
-            </Text>);
-            //contractList.push({title: this.contractList[i].name, webUrl: this.contractList[i].url});
+
+            if (this.contractList[i].name.indexOf('民事信托合同') !== -1 || this.contractList[i].name.indexOf('信账宝会员注册及服务协议')!==-1|| this.contractList[i].name.indexOf('中信信托-账户管理类服务')!==-1) {
+
+                contractList.push(<Text
+                    key={i + 'contractList'}
+                    allowFontScaling={false}
+                    onPress={() => {
+                        this.openContractScene('合同', this.contractList[i].url)
+                        console.log(this.contractList[i].url)
+                    }}
+                    style={{
+                        fontSize: Pixel.getFontPixel(FontAndColor.CONTENTFONT24),
+                        color: FontAndColor.COLORB4,
+                        lineHeight: Pixel.getPixel(20)
+                    }}>
+                    《{this.contractList[i].name}》
+                </Text>);
+
+            }
+
+            //contractList.reverse()
+
+
         }
 
         return (

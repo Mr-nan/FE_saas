@@ -150,10 +150,6 @@ export default class ZheShangAccountScene extends BaseComponent {
                 }}>
                     <TouchableOpacity onPress={() => {  // 提现
 
-                        this.props.showModal(true)
-                        request(Urls.ZS_IN_SERVICE, 'POST', {}).then((response) => {
-                            this.props.showModal(false)
-                            if (response.mjson.data.out_service === 0) {
                                 this.toNextPage({
                                     name: 'WithdrawScene',
                                     component: WithdrawScene, params: {
@@ -161,18 +157,6 @@ export default class ZheShangAccountScene extends BaseComponent {
                                         account: account,
                                     }
                                 })
-
-                            } else {
-                                this.setState({
-                                    service_in: response.mjson.data.in_time,
-                                    service_out: response.mjson.data.out_time,
-                                    alert: true
-                                })
-                            }
-                        }, (error) => {
-                            this.props.showModal(false)
-                            this.props.showToast(error.mjson.msg)
-                        })
 
                     }} activeOpacity={0.8}
                                       style={{
@@ -190,57 +174,6 @@ export default class ZheShangAccountScene extends BaseComponent {
                     backIconClick={this.backPage}
                 />
 
-                {
-                    this.state.alert ?
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.setState({
-                                    alert: false
-                                })
-                            }}
-                            style={{
-                                flexDirection: 'column',
-                                position: 'absolute',
-                                backgroundColor: 'rgba(0,0,0,.5)',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: width,
-                                height: height
-                            }}>
-                            <View style={{
-                                backgroundColor: 'white',
-                                borderRadius: 5,
-                                alignItems: 'center'
-                            }}>
-                                <SaasText style={{fontWeight: 'bold', fontSize: 20, marginVertical: 15}}>提示</SaasText>
-                                <SaasText style={{marginBottom: 5, marginHorizontal: 30}}>银行服务时间为{this.state.service_in}-{this.state.service_out}</SaasText>
-                                <SaasText>请在银行服务时间操作</SaasText>
-                                <MyButton
-                                    buttonType={MyButton.TEXTBUTTON}
-                                    mOnPress={() => {
-                                        this.setState({
-                                            alert: false
-                                        })
-                                    }}
-                                    content={'知道了'}
-                                    parentStyle={{
-                                        borderColor: fontAndColor.COLORB0,
-                                        borderWidth: 1,
-                                        borderRadius: 4,
-                                        marginVertical: 15
-                                    }}
-                                    childStyle={{
-                                        color: fontAndColor.COLORB0,
-                                        fontSize: 17,
-                                        marginHorizontal: 20,
-                                        marginVertical: 5
-                                    }}
-                                />
-
-                            </View>
-                        </TouchableOpacity>
-                        : null
-                }
 
             </View>
         );

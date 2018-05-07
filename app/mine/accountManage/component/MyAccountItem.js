@@ -387,12 +387,13 @@ export default class MyAccountItem extends BaseComponent {
                         justifyContent: 'space-between',
                         backgroundColor: 'transparent',
                         flexDirection: 'row',
+
                     }}>
                         <View>
                             <Text
                                 allowFontScaling={false}
                                 style={{
-                                    includeFontPadding: false,
+                                    //includeFontPadding: false,
                                     textAlign: 'left',
                                     fontSize: Pixel.getPixel(12),
                                     color: fontAndColor.COLORA1
@@ -443,7 +444,7 @@ export default class MyAccountItem extends BaseComponent {
                                     <Text
                                         allowFontScaling={false}
                                         style={{
-                                            includeFontPadding: false,
+
                                             textAlign: 'left',
                                             fontSize: Pixel.getPixel(12),
                                             color: fontAndColor.COLORA1

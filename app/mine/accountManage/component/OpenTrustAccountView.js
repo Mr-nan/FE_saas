@@ -113,7 +113,7 @@ export default class OpenTrustAccountView extends BaseComponent {
             let contractList = [];
             for (let i = 0; i < this.contractList.length; i++) {
 
-                if (this.contractList[i].name.indexOf('民事信托合同') !== -1 || this.contractList[i].name.indexOf('中信信托-账户管理类服务信托项目信托合同及风险申明书')!==-1|| this.contractList[i].name.indexOf('中信信托账户管理类')!==-1){
+                if (this.contractList[i].name.indexOf('民事信托合同') !== -1 || this.contractList[i].name.indexOf('信账宝会员注册及服务协议')!==-1|| this.contractList[i].name.indexOf('中信信托-账户管理类服务')!==-1){
                     contractList.push(<Text
                         key={i + 'contractList'}
                         allowFontScaling={false}
@@ -131,10 +131,6 @@ export default class OpenTrustAccountView extends BaseComponent {
 
                 }
             }
-
-            let a = contractList[contractList.length - 1];
-            contractList.splice(0, 0, a);
-            contractList.pop()
 
             return (
 
@@ -242,7 +238,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                             Animated.timing(
                                                 this.state.content_height,
                                                 {
-                                                    toValue:Pixel.getPixel(360)
+                                                    toValue:Pixel.getPixel(375)
                                                 }
                                             ).start()
 

@@ -133,9 +133,9 @@ export default class WithdrawScene extends ZSBaseComponent {
                                style={{width: 55, height: 55, marginHorizontal: 15}}/>
                         <View style={{flex:1}}>
 
-                            <SText style={{fontSize: 17, marginBottom: 10, marginRight:20}}>{this.props.account.bind_bank_name}</SText>
+                            <SText style={{fontSize: 17, marginBottom: 10, marginRight:20}}>{this.props.account.bind_sub_bank_name}</SText>
                             <SText
-                                style={{color: FontAndColor.COLORA1}}>{this.props.account.bank_name}{s}</SText>
+                                style={{color: FontAndColor.COLORA1}}>{s}</SText>
                         </View>
                     </View>
 
@@ -283,15 +283,6 @@ export default class WithdrawScene extends ZSBaseComponent {
                     this.setState({
                         sms_pad: false
                     })
-
-
-                    if(error.mycode === 8050324){  // 不在服务时间内
-                        this.setState({
-                            out_of_service_msg:error.mjson.msg,
-                            alert:true
-                        })
-                        return
-                    }
 
                     if (error.mycode === 8010007) {  // 存疑
                         this.toNextPage({

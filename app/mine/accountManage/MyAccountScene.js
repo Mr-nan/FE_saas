@@ -365,7 +365,7 @@ export default class MyAccountScene extends BaseComponent {
             if (this.is_zheshang_in_whitelist) {
                 dataList.push('316');
             }
-            if (this.is_xintuo_in_whitelist) {
+            if (this.is_xintuo_in_whitelist&&this.hengFengInfo.status !== 0) {
                 dataList.push('zsyxt');
             }
 
