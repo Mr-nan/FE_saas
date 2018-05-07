@@ -40,7 +40,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         super(props);
         // 初始状态
         this.state = {
-            renderPlaceholderOnly: "success",
+            renderPlaceholderOnly: "loading",
             isShowCallUpView: false,
             senderInfo: null,
             receiverInfo: null,
@@ -69,28 +69,28 @@ export default class CarriagePriceInfoScene extends BaseComponent {
     }
 
     initFinish = () => {
-        // this.loadData()
+         this.loadData()
     }
 
 
     render() {
 
-        // console.log(this.state.renderPlaceholderOnly)
-        //
-        //
-        // if (this.state.renderPlaceholderOnly !== 'success') {
-        //     // 加载中....
-        //     return ( <View style={styles.root}>
-        //         <NavigationBar
-        //             leftImageShow={true}
-        //             leftTextShow={false}
-        //             centerText={'运价详情'}
-        //             rightText={""}
-        //             leftImageCallBack={this.backPage}
-        //         />
-        //         {this.loadView()}
-        //     </View>);
-        // }
+        console.log(this.state.renderPlaceholderOnly)
+
+
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            // 加载中....
+            return ( <View style={styles.root}>
+                <NavigationBar
+                    leftImageShow={true}
+                    leftTextShow={false}
+                    centerText={'运价详情'}
+                    rightText={""}
+                    leftImageCallBack={this.backPage}
+                />
+                {this.loadView()}
+            </View>);
+        }
 
 
         const {
@@ -363,7 +363,6 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         }, (error) => {
             this.setState({
                 renderPlaceholderOnly: 'failure',
-                priceData: data
             });
 
             this.props.showToast(error.mjson.msg);
