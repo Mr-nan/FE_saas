@@ -81,8 +81,8 @@ export default class LogisticsQueryScene extends BaseComponent {
         this.transType = [];
         this.transError = false;
         this.transSelect = {
-            transportTypeCode: 0,
-            transportType: ''
+            transportTypeCode: 0,   // 大板车：1，  救援车：2，
+            transportType: ''   // 大板车、救援车
         }
 
 
