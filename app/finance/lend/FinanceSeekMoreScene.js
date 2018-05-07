@@ -56,13 +56,13 @@ export default class FinanceSeekMoreScene extends BaseComponent{
                               <TextInput style={styles.seekPriceInput}
                                          placeholder='请输入最低额度'
                                          keyboardType={'numeric'}
-                                         maxLength={7}
+                                         maxLength={8}
                                          underlineColorAndroid='transparent'
                                          ref={(ref)=>{this.minPriceInput = ref}}
                                          defaultValue={this.state.minPrice?stringTransform.carMoneyChange(this.state.minPrice):''}
                                          onChangeText={(text)=>{
-                                             if(text.length>4&&text.indexOf('.')==-1){
-                                                 text = text.substring(0,4);
+                                             if(text.length>5&&text.indexOf('.')==-1){
+                                                 text = text.substring(0,5);
                                              }
                                              let moneyStr = this.chkPrice(text);
                                              this.minPriceInput.setNativeProps({
@@ -74,13 +74,13 @@ export default class FinanceSeekMoreScene extends BaseComponent{
                               <TextInput style={styles.seekPriceInput}
                                          placeholder='请输入最高额度'
                                          keyboardType={'numeric'}
-                                         maxLength={7}
+                                         maxLength={8}
                                          underlineColorAndroid='transparent'
                                          ref={(ref)=>{this.maxPriceInput = ref}}
                                          defaultValue={this.state.maxPrice?stringTransform.carMoneyChange(this.state.maxPrice):''}
                                          onChangeText={(text)=>{
-                                             if(text.length>4&&text.indexOf('.')==-1){
-                                                 text = text.substring(0,4);
+                                             if(text.length>5&&text.indexOf('.')==-1){
+                                                 text = text.substring(0,5);
                                              }
                                              let moneyStr = this.chkPrice(text);
                                              this.maxPriceInput.setNativeProps({
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor:fontAndColor.COLORA3,
         paddingTop:Pixel.getTitlePixel(64),
-        paddingBottom:Pixel.getPixel(50),
+        paddingBottom:Pixel.getPixel(44),
         alignItems:'center',
         justifyContent:'center'
     },
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
         right: 0,
         position: 'absolute',
         bottom:0,
-        height:Pixel.getPixel(50),
+        height:Pixel.getPixel(44),
         flexDirection:'row'
     },
     seekView:{
@@ -279,8 +279,9 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         justifyContent:'center',
         alignItems:'center',
-        margin:Pixel.getPixel(20),
-        flexDirection:'row'
+        flexDirection:'row',
+        marginHorizontal:Pixel.getPixel(20),
+        marginVertical:Pixel.getPixel(10),
     },
     navigatorSousuoText: {
 
