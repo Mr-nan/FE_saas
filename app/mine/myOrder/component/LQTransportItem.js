@@ -34,18 +34,11 @@ export  default class LQTransportItem extends PureComponent {
     render() {
         return (
             <View style={{width:width,justifyContent:'center',alignItems:'center',
-            backgroundColor:'#fff',height:Pixel.getPixel(98)}}>
-                <LQSelectComponent ref="lqselectcomponenttop" leftName={'运输类型'} select={()=>{
+            backgroundColor:'#fff'}}>
+                <LQSelectComponent ref="lqselectcomponenttop" value={this.props.transName} leftName={'运输类型'} select={()=>{
                     this.props.selectTransport();
-                }}/>
-                <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(1),
-                backgroundColor:'#D8D8D8'}}></View>
-                <LQAndComponent ref="lqselectcomponentbottom" leftName={'数量'} changeNumber={(number)=>{
-                    this.props.changeNumber(number);
                 }}/>
             </View>
         );
     }
-
-
 }

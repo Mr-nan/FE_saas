@@ -35,7 +35,7 @@ export  default class LQInputComponent extends PureComponent {
                     <Text style={{fontSize: Pixel.getPixel(12),color:'#222222'}}>可修改</Text>
                     <Text style={{fontSize: Pixel.getPixel(15),color:'#222222'}}>)</Text>
                 </View>
-                <View style={{flex:1,justifyContent: 'flex-end',alignItems: 'center',flexDirection: 'row'}}>
+                <View style={{alignItems: 'center',flexDirection: 'row'}}>
                     <TextInput
                         keyboardType={'numeric'}
                         style={styles.textInput}
@@ -44,6 +44,7 @@ export  default class LQInputComponent extends PureComponent {
                         underlineColorAndroid='transparent'
                         ref={(input) => {this.instructionsInput = input}}
                         onChangeText={(text)=>{this.props.inputMoney(text)}}
+
                     />
                     <Text style={{fontSize: Pixel.getPixel(12),color:'#90A1B5'}}>万元</Text>
                 </View>
@@ -56,15 +57,12 @@ export  default class LQInputComponent extends PureComponent {
 
 const styles = StyleSheet.create({
     textInput: {
-        flex: 1,
+        width:Pixel.getPixel(60),
         borderColor: '#00000000',
         textAlign: 'right',
         fontSize: Pixel.getFontPixel(14),
-        paddingTop: 0,
-        paddingBottom: 0,
-        paddingLeft: 0,
-        paddingRight: 0,
-        backgroundColor: 'white',
+        padding:0,
+        backgroundColor:'white',
         color: '#90A1B5',
     },
 });

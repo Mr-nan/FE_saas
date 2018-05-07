@@ -1,12 +1,17 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
+<<<<<<< HEAD
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
+=======
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
+
+>>>>>>> 64ec01191a8c378022f7d877b9be456e880a8b87
 
 /**
  * 测试地址2
@@ -16,7 +21,11 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 正式地址
  */
+<<<<<<< HEAD
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
+=======
+//export const BASEURL = 'https://gatewayapi.dycd.com/';
+>>>>>>> 64ec01191a8c378022f7d877b9be456e880a8b87
 
 /**
  * 预发布地址
@@ -562,7 +571,8 @@ export const ACCOUNT_PAYLOG = BASEURL + 'v2/user.account/payLog';
  *
  * 获取运输类型
  **/
-export const GETTRANSPORTTYPE = BASEURL + 'v2/order.logistics/getTransportType';
+export const GETTRANSPORTTYPE = BASEURL + 'v2/order.logistics_flows/getTransportType';
+
 
 /**
  * from @zhaojian
@@ -1576,7 +1586,9 @@ export const CHECKTRANSTYPE = BASEURL + "v2/order.logistics/check";
  *
  *物流运价查询
  */
-export const ORDER_LOGISTICS_QUERY = BASEURL + "v2//order.logistics/query";
+export const ORDER_LOGISTICS_QUERY = BASEURL  + "v2/order.logistics_flows/getFreight";
+//export const ORDER_LOGISTICS_QUERY = BASEURL + "v2/order.logistics/query";
+
 /**
  *
  *获取发票信息

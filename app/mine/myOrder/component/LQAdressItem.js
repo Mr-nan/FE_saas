@@ -19,6 +19,7 @@ import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
 import LQSelectComponent from './LQSelectComponent';
+import SeperateLine from './SeperateLine'
 
 export  default class PurchasePickerItem extends PureComponent {
 
@@ -27,24 +28,28 @@ export  default class PurchasePickerItem extends PureComponent {
     }
 
     componentWillReceiveProps(props) {
-        this.refs.lqselectcomponenttop.setSelectName(props.firstName);
-        this.refs.lqselectcomponentbottom.setSelectName(props.lastName);
+        this.refs.lqselectcomponentfrom.setSelectName(props.firstName);
+        this.refs.lqselectcomponentto.setSelectName(props.lastName);
+        this.refs.lqselectcomponentnewold.setSelectName(props.typeName)
     }
 
     render() {
         return (
-            <View style={{width:width,height:Pixel.getPixel(108),justifyContent:'center',alignItems:'center',
+            <View style={{width:width,justifyContent:'center',alignItems:'center',
             backgroundColor:'#fff'}}>
-                <LQSelectComponent ref="lqselectcomponenttop" leftName={'始发地'} select={()=>{
+                <LQSelectComponent ref="lqselectcomponentfrom" value={this.props.firstName} leftName={'始发地'} select={()=>{
                     this.props.selectCity(1);
                 }}/>
-                <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(1),
-                backgroundColor:'#D8D8D8'}}></View>
-                <LQSelectComponent ref="lqselectcomponentbottom" leftName={'目的地'} select={()=>{
+                <SeperateLine/>
+                <LQSelectComponent ref="lqselectcomponentto" value={this.props.lastName} leftName={'目的地'}  select={()=>{
                      this.props.selectCity(2);
                 }}/>
+                <SeperateLine/>
+                <LQSelectComponent ref="lqselectcomponentnewold" value={this.props.typeName} leftName={'车辆新旧'} select={()=>{
+                    this.props.selectCity(3);
+                }}/>
                 <View style={{width:width,height:Pixel.getPixel(10),
-                backgroundColor:fontAndColor.COLORA3}}></View>
+                backgroundColor:fontAndColor.COLORA3}}/>
             </View>
         );
     }

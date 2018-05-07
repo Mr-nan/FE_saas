@@ -27,6 +27,7 @@ export  default class PurchasePickerItem extends PureComponent {
         }
     }
 
+
     setSelectName = (name) => {
         this.setState({
             selectName: name
@@ -48,10 +49,10 @@ export  default class PurchasePickerItem extends PureComponent {
                                   style={{flex:2,justifyContent: 'flex-end',alignItems: 'center',flexDirection: 'row'}}>
                     <Text numberOfLines={1} allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14),color:'#90A1B5',
                     marginRight:Pixel.getPixel(10)}}>
-                        {this.state.selectName}
+                        {this.props.value}
                     </Text>
                     <Image style={{width:Pixel.getPixel(8),height:Pixel.getPixel(14)}}
-                           source={require('../../../../images/financeImages/celljiantou.png')}></Image>
+                           source={require('../../../../images/financeImages/celljiantou.png')}/>
                 </TouchableOpacity>
             </View>
         );
