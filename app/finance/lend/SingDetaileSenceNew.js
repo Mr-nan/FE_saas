@@ -113,11 +113,12 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 "payment_branch": "北京",
                                 "paymenttype": "随借随还",
                                 "loan_time": "1970-01-01",
+                                "channel_time":"1970-01-01",
                                 "loantype": "131",
                                 "trenchtype": "1961",
                                 "lending_methods": "账户体系放款",
                                 "cancle_time": "1970-01-01",
-                                "logic_status": "80",
+                                "logic_status": "0",
                                 "is_cancel_loan": 0,
                                 "is_sign_contract": 0,
                                 "is_confirm_iou": 0,
@@ -186,7 +187,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 {
                                     "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
                                     "frame_number": "43434343233346666",
-                                    "loan_number": "32906",
+                                    "loan_number": "201706080012",
                                     "loan_mny": "17000.00",
                                     "loan_time": "2017-09-01",
                                     "assess_time": "2017-10-18",
@@ -226,7 +227,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                 {
                                     "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
                                     "frame_number": "43434343233346666",
-                                    "loan_number": "32906",
+                                    "loan_number": "201706080012",
                                     "loan_mny": "17000.00",
                                     "loan_time": "2017-09-01",
                                     "assess_time": "2017-10-18",
@@ -237,7 +238,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                     "lending_methods": "线下放款",
                                     "channel_name": null,
                                     "finish_time": null,
-                                    "child_loan_status": 60,
+                                    "child_loan_status": 50,
                                     "child_loan_status_str": "渠道审核中",
                                     "is_confirm_iou": 1,
                                     "is_sign_contract": 1,
@@ -353,7 +354,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 return styles.cancelButton
             case '已取消借款':
                 return styles.canceledButton
-            case '签署微单合同':
+            case '确认借据'://签署微单合同
                 return styles.controlButton
             case '资金方签署中':
                 return styles.cancelButton
@@ -369,7 +370,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         let maps = {
             api: apis.CANCEL_CHILD_LOAN,
             payment_number : this.props.loanNumber, //主单号
-            loan_number :this.cancleid,
+            loan_number :this.loan_number,
             img_sid : imgSid,
             img_code : code,
         }
@@ -408,10 +409,10 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 });
     }
 
-    controsButtonClick = (title,id) => {
+    controsButtonClick = (title,loan_number) => {
 
         if (title === '取消借款') {
-            this.cancleid = id;
+            this.loan_number = loan_number;
             this.cancleFlag = '取消子单'
             this.canleAlert.setModelVisible(true);
         } else if (title === '签署合同') {
@@ -439,11 +440,11 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 component: ContractInfoSceneChildren,
                 params: {loan_code: this.props.loanNumber, showButton: false}
             });
-        } else if (title === "签署微单合同") {
+        } else if (title === "确认借据") {//签署微单合同
             this.toNextPage({
                 name: 'RecognizedGains', component: RecognizedGains, params: {
-                    loan_code: controlCode.loan_code,
-                    loan_number: '',
+                    loan_code: this.props.loanNumber, //主单号,
+                    loan_number: loan_number,
                     isShow: true,
                     callBack: () => {
                         this.setState({
@@ -523,9 +524,27 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.data.response.paymenttype}</Text>
-                    <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}> | 申请日期:</Text>
-                    <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.data.response.loan_time}</Text>
+                    {
+                        this.stateCode != 0 ?
+                            <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>| 申请日期:{this.tempjson.data.response.loan_time}</Text> :null
+                    }
+
                 </View>
+                {
+                    this.stateCode == 0 ?
+                    <View style={{flexDirection:'column'}}>
+                        <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                        <View style={{flexDirection:'row',padding:adapeSize(10)}}>
+                            <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'借款日期'}</Text>
+                            <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.data.response.loan_time}</Text>
+                        </View>
+                        <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                        <View style={{flexDirection:'row',padding:adapeSize(10)}}>
+                            <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'取消日期'}</Text>
+                            <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.data.response.channel_time}</Text>
+                        </View>
+                    </View>:null
+                }
                 <Text style={{fontSize:adapeSize(12),color:"#846545",backgroundColor:'#FFF8EA',
                 paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),
                 paddingBottom:adapeSize(10)}}>{'资金渠道正在对您的借款进行审核，请耐心等待。'}</Text>
@@ -539,7 +558,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         tempButtonTitles.map((item) => {
                 tempButtons.push(<CommenButtonNew buttonStyle={this.getButtonStyleWithTitle(item)}
                                                textStyle={styles.buttontextStyle}
-                                               onPress={()=>{this.controsButtonClick(item,rowData.frame_number)}}
+                                               onPress={()=>{this.controsButtonClick(item,rowData.loan_number)}}
                                                title={item}
                                                key={item}
                 />)
