@@ -1,17 +1,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-<<<<<<< HEAD
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
-=======
-//export const BASEURL = 'http://api-gateway.test.dycd.com/';
-
->>>>>>> 64ec01191a8c378022f7d877b9be456e880a8b87
 
 /**
  * 测试地址2
@@ -21,11 +16,7 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 正式地址
  */
-<<<<<<< HEAD
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
-=======
-//export const BASEURL = 'https://gatewayapi.dycd.com/';
->>>>>>> 64ec01191a8c378022f7d877b9be456e880a8b87
 
 /**
  * 预发布地址

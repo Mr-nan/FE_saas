@@ -10,8 +10,6 @@ import {
 
 import Root from './app/root';
 
-import comp from './app/mine/myOrder/orderwuliu/pay/UploadProof'
-
-AppRegistry.registerComponent('FE_Sass', () => comp);
+AppRegistry.registerComponent('FE_Sass', () => Root);
 
 
