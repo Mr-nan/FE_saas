@@ -66,9 +66,8 @@ export default class BlankFinanceScene extends BaseComponent {
 	 *   初始化
 	 **/
 	initFinish = () => {
-		if (this.props.BASE_USER_ID == this.props.MAPS.controller_base_id) {//实际控制人登录
 
-
+        if (this.props.BASE_USER_ID+'' ==this.props.MAPS.controller_base_id+'') {//实际控制人登录
 			request(Urls.GETCREDITSTATUSBYMERGE, 'Post', this.props.MAPS)
 				.then((response) => {
 						let DATA = response.mjson.data.credit;
@@ -91,7 +90,6 @@ export default class BlankFinanceScene extends BaseComponent {
 
 							this.setState({showType: 3, renderPlaceholderOnly: 'success',creditStatusAndType:DATA});
 						}
-
 					},
 					(error) => {
 						this.setState({renderPlaceholderOnly: 'error'});
@@ -107,14 +105,16 @@ export default class BlankFinanceScene extends BaseComponent {
 			}
 		}
 
-	}
+
+
+    }
 	/**
 	 *   金融申请授信通过后的刷新走这个方法
 	 **/
 	_refreshFinance = () => {
+
+
 		if (this.props.BASE_USER_ID == this.props.MAPS.controller_base_id) {//实际控制人登录
-
-
 			request(Urls.GETCREDITSTATUSBYMERGE, 'Post', this.props.MAPS)
 				.then((response) => {
 						let DATA = response.mjson.data.credit;

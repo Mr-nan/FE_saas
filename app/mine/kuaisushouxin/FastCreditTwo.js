@@ -119,8 +119,6 @@ export default class FastCreditTwo extends BaseComponent {
             if (childdata.code == 1) {
 
                 let childdatas = JSON.parse(childdata.result);
-
-
 	            this.boss_id = childdatas.boss_id;
 	            this.base_user_id = childdatas.base_user_id;
 

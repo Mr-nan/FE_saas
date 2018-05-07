@@ -197,6 +197,8 @@ export default class MainPage extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
             if (data.code == 1 && data.result) {
                 let userData = JSON.parse(data.result);
+                this.boss_id = userData.boss_id;
+                this.base_user_id = userData.base_user_id;
                 StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                     if (subData.code == 1) {
                         let obj = JSON.parse(subData.result);
@@ -567,7 +569,6 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }} showLoginModal={this.props.showLoginModal}/>
         } else if (ref == 'financePage') {
-
                 return  <BlankFinanceScene
 					MAPS={{base_id: global.companyBaseID ,controller_base_id:this.boss_id,merge_id:global.MERGE_ID}}
 					BASE_USER_ID={this.base_user_id}
@@ -577,9 +578,7 @@ export default class MainPage extends BaseComponent {
 					toNextPage={(params) => {this.toNextPage(params); }}
 					toSelect={()=>{
                         let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
-
                         const navigator = this.props.navigator;
-
                         if (navigator) {
 
                             navigator.immediatelyResetRouteStack([{
