@@ -47,23 +47,38 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             isChecked: true,
         }
 
+        const paramsData = {
+            carCount: this.props.carCount,
+            carType: this.props.carType,
+            endAddr: this.props.endAddr,
+            endAddrRegionId: this.props.endAddrRegionId,
+            startAddr: this.props.startAddr,
+            startAddrRegionId: this.props.startAddrRegionId,
+            transportType: this.props.transportType,
+            company_id: global.companyBaseID,
+            model_data: JSON.stringify(this.props.model_data),
+            receive_type: 1,
+            send_type: 1,
+        };
+
+
         this.params = {
-            carCount: 1,           //车辆总数量		【必填】
-            carType: 1,              //1 新车2：二手车		【必填】
-            company_id: '',    //公司ID		【必填】
-            endAddr: null,	//目的地名称		【必填】
-            endAddrRegionId: null,    //	目的地编码		【必填】
-            endGpsLatitude: null,	//车型目的地纬度
-            endGpsLongitude: null,	//目的地经度
-            model_data: [],   //	车辆数量		【必填】
+            carCount: this.props.carCount,           //车辆总数量		【必填】
+            carType: this.props.carType,              //1 新车2：二手车		【必填】
+            company_id: global.companyBaseID,    //公司ID		【必填】
+            endAddr: this.props.endAddr,	//目的地名称		【必填】
+            endAddrRegionId: this.props.endAddrRegionId,    //	目的地编码		【必填】
+            endGpsLatitude: 0,	//车型目的地纬度
+            endGpsLongitude: 0,	//目的地经度
+            model_data: JSON.stringify(this.props.model_data),   //	车辆数量		【必填】
             needInvoice: 0,	//是否开发票0：否1：是默认为0
-            receive_type: 1,	//收车方式 1：自己送车到网点 2：平台上门取车		【必填】
-            send_type: 2,   	//送车方式 1：平台送车到户 2：自己到网点提车		【必填】
-            startAddr: null, 	//始发地名称
-            startAddrRegionId: null,	//始发地编码
-            startGpsLatitude: null,	//初始地纬度
-            startGpsLongitude: null, 	//初始地经度
-            transportType: null,	//运输类型1
+            receive_type: this.props.transportType===1?1:2,	//收车方式 1：自己送车到网点 2：平台上门取车		【必填】
+            send_type: 1,   	                            //送车方式 1：平台送车到户 2：自己到网点提车		【必填】
+            startAddr: this.props.startAddr, 	//始发地名称
+            startAddrRegionId:this.props.startAddrRegionId,	//始发地编码
+            startGpsLatitude: 0,	//初始地纬度
+            startGpsLongitude: 0, 	//初始地经度
+            transportType: this.props.transportType,	//运输类型1
         }
 
     }
@@ -74,9 +89,6 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
 
     render() {
-
-        console.log(this.state.renderPlaceholderOnly)
-
 
         if (this.state.renderPlaceholderOnly !== 'success') {
             // 加载中....
@@ -135,8 +147,8 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
                         <AddressInfoItemView
                             deliverModeClick={(mode) => {
-                                this.params.send_type = mode
-                                console.log(this.params.send_type)
+                                this.params.receive_type = mode
+                                console.log(this.params.receive_type)
 
                             }}
                             contactInformationClickCallBack={() => {
@@ -149,16 +161,19 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                                     }
                                 })
                             }}
-
+                            switchable={this.props.transportType ===1 ?true:false}
                             type={1}
+                            value={this.params.receive_type}
                             departure={startAddr}
                             contactInfo={this.state.senderInfo}
                         />
 
                         <AddressInfoItemView
                             deliverModeClick={(mode) => {
-                                this.params.receive_type = mode;
-                                console.log(this.params.receive_type)
+                                this.props.showToast('该功能正在开发中...')
+
+                                // this.params.send_type = mode;
+                                // console.log(this.params.send_type)
                             }}
                             contactInformationClickCallBack={() => {
                                 this.toNextPage({
@@ -170,6 +185,8 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                                     }
                                 })
                             }}
+                            switchable={false}
+                            value={this.params.send_type}
                             type={2}
                             departure={endAddr}
                             contactInfo={this.state.receiverInfo}
@@ -334,24 +351,24 @@ export default class CarriagePriceInfoScene extends BaseComponent {
     }
 
     loadData = () => {
-        const paramsData = {
-            carCount: this.props.carCount,
-            carType: this.props.carType,
-            endAddr: this.props.endAddr,
-            endAddrRegionId: this.props.endAddrRegionId,
-            startAddr: this.props.startAddr,
-            startAddrRegionId: this.props.startAddrRegionId,
-            transportType: this.props.transportType,
-            company_id: global.companyBaseID,
-            model_data: JSON.stringify(this.props.model_data),
-            receive_type: 1,
-            send_type: 1,
-        };
+        // const paramsData = {
+        //     carCount: this.props.carCount,
+        //     carType: this.props.carType,
+        //     endAddr: this.props.endAddr,
+        //     endAddrRegionId: this.props.endAddrRegionId,
+        //     startAddr: this.props.startAddr,
+        //     startAddrRegionId: this.props.startAddrRegionId,
+        //     transportType: this.props.transportType,
+        //     company_id: global.companyBaseID,
+        //     model_data: JSON.stringify(this.props.model_data),
+        //     receive_type: 1,
+        //     send_type: 1,
+        // };
 
 
         //console.log(paramsData);
 
-        Net.request(AppUrls.ORDER_LOGISTICS_QUERY, 'post', paramsData).then((response) => {
+        Net.request(AppUrls.ORDER_LOGISTICS_QUERY, 'post', this.params).then((response) => {
 
             let data = response.mjson.data;
             // let priceData=[{title:'运价',value:data.freight},{title:'保险费',value:data.insurance},{title:'服务费',value:data.serviceFee},{title:'提验车费',value:data.checkCarFee},{title:'送店费',value:data.toStoreFee},{title:'税费',value:data.taxation},{title:'总价',value:data.totalPrice}];
@@ -384,7 +401,7 @@ class AddressInfoItemView extends Component {
             // departureDeliverMode:1,
             // destinationDeliverMode:1
 
-            deliverMode: this.props.type
+            deliverMode:this.props.value
         }
 
 
@@ -471,23 +488,36 @@ class AddressInfoItemView extends Component {
                         value={this.props.type === 1 ? '一车上门取车' : "一车送车到户"}
                         status={this.props.type === 1 ? this.state.deliverMode === 1 ? false : true : this.state.deliverMode === 1 ? true : false}
                         clickCallBack={(status) => {
-                            this.setState({
-                                deliverMode: this.props.type === 1 ? 2 : 1
-                            }, () => {
-                                this.props.deliverModeClick(this.state.deliverMode)
 
-                            })
+                            if(this.props.switchable){
+                                this.setState({
+                                    deliverMode: this.props.type === 1 ? 2 : 1
+                                }, () => {
+                                    this.props.deliverModeClick(this.state.deliverMode)
+                                    return true;
+                                })
+                            }else {
+                                this.props.deliverModeClick()
+                                return false;
+                            }
                         }}
                     />
                     <DeliverTypeItem
                         value={this.props.type === 1 ? '自己送车到网点' : "自己到网点提车"}
                         status={this.props.type === 1 ? this.state.deliverMode === 1 ? true : false : this.state.deliverMode === 1 ? false : true}
                         clickCallBack={(status) => {
-                            this.setState({
-                                deliverMode: this.props.type === 1 ? 1 : 2
-                            }, () => {
-                                this.props.deliverModeClick(this.state.deliverMode)
-                            })
+                            if(this.props.switchable){
+                                this.setState({
+                                    deliverMode: this.props.type === 1 ? 1 : 2
+                                }, () => {
+                                    this.props.deliverModeClick(this.state.deliverMode)
+                                    return true;
+                                })
+                            }else {
+                                this.props.deliverModeClick()
+                                return false;
+                            }
+
                         }}
 
                     />
@@ -770,10 +800,12 @@ class DeliverTypeItem extends Component {
                     if (this.state.isChecked === true) {
                         return
                     }
-                    this.setState({
-                        isChecked: !this.state.isChecked
-                    })
-                    this.props.clickCallBack(this.state.isChecked)
+
+                    if (this.props.clickCallBack(this.state.isChecked)){
+                        this.setState({
+                            isChecked: !this.state.isChecked
+                        })
+                    }
                 }}
             >
                 <Image style={{width: Pixel.getPixel(18), height: Pixel.getPixel(18)}}
