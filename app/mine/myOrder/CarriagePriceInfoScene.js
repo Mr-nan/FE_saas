@@ -826,6 +826,20 @@ class CarriagePriceInfoListView extends Component {
 
     constructor(props) {
         super(props)
+
+        /*
+        //this.props
+        checkCarFee:"200.00"
+        distance:"686"
+        freight:"1011.00"
+        insurance:"0.00"
+        msg:""
+        serviceFee:"50.00"
+        taxation:"0.00"
+        toStoreFee:"0.00"
+        totalPrice:"1261.00"
+        */
+
         this.state = {
             fold: true
         }
@@ -835,13 +849,13 @@ class CarriagePriceInfoListView extends Component {
 
     render() {
         let priceData = {
-            totalPrice: 30232,
-            taxation: 100,
-            freight: 100,
-            checkCarFee: 100,
-            insurance: 100,
-            toStoreFee: 100,
-            serviceFee: 100,
+            totalPrice: this.props.data.totalPrice,
+            taxation: this.props.data.taxation,
+            freight: this.props.data.freight,
+            checkCarFee: this.props.data.checkCarFee,
+            insurance: this.props.data.insurance,
+            toStoreFee: this.props.data.toStoreFee,
+            serviceFee: this.props.data.serviceFee,
         }
 
 
