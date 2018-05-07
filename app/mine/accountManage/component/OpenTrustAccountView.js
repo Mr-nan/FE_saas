@@ -40,7 +40,7 @@ export default class OpenTrustAccountView extends BaseComponent {
 
         this.state = {
             isShow: false,
-            content_height: new Animated.Value(Pixel.getPixel(280))
+            content_height: new Animated.Value(Pixel.getPixel(288))
         };
     }
 
@@ -113,7 +113,7 @@ export default class OpenTrustAccountView extends BaseComponent {
             let contractList = [];
             for (let i = 0; i < this.contractList.length; i++) {
 
-                if (this.contractList[i].name.indexOf('机动车辆买卖合同') !== -1 || this.contractList[i].name.indexOf('信托利益分配申请及代为支付指令函')!==-1){
+                if (this.contractList[i].name.indexOf('民事信托合同') !== -1 || this.contractList[i].name.indexOf('中信信托-账户管理类服务信托项目信托合同及风险申明书')!==-1|| this.contractList[i].name.indexOf('中信信托账户管理类')!==-1){
                     contractList.push(<Text
                         key={i + 'contractList'}
                         allowFontScaling={false}
@@ -194,7 +194,7 @@ export default class OpenTrustAccountView extends BaseComponent {
 
                                 <View style={{
                                     flexDirection: 'row',
-                                    alignItems: 'center',
+
                                     marginTop: Pixel.getPixel(15)
                                 }}>
                                     <SelectButton onPress={(flag) => {
@@ -208,9 +208,14 @@ export default class OpenTrustAccountView extends BaseComponent {
                                             color: fontAndColor.COLORA1,
                                             marginLeft: Pixel.getPixel(5),
                                             marginTop: Pixel.getPixel(5),
-                                            textAlign: 'center',
-                                        }}>
-                                        默认使用恒丰开户信息开通粮票
+                                            marginRight:Pixel.getPixel(5),
+                                            textAlign: 'left',
+
+                                        }}
+                                        multiline={true}
+                                    >
+
+                                        {"用“粮票”购车、还款，提现更方便，更\n快捷！一键开通，“粮票”到手！"}
                                     </Text>
 
                                 </View>
