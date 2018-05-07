@@ -321,8 +321,8 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                 let maps = {
                     enter_base_id: datas.company_base_id,
                     bank_id: 'zsyxt',
-                    serial_no: this.props.error.data.serial_no,
-                    operate_type: this.state.type === 0||this.state.type === 1 ?'99':null
+                    serial_no: typeof this.props.error.data.serial_no === 'undefined' || this.props.error.data.serial_no === null ?'':this.props.error.data.serial_no,
+                    operate_type: this.state.type === 0||this.state.type === 1 ?'99':""
                 };
 
                 this.setState({
