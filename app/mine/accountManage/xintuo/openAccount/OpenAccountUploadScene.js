@@ -319,8 +319,8 @@ export default class OpenAccountBaseScene extends BaseComponent {
 
                     <View style={{
                         flexDirection: 'row',
-                        alignItems: 'center',
-                        marginTop: Pixel.getPixel(15)
+                        marginTop: Pixel.getPixel(15),
+                        marginRight:Pixel.getPixel(15),
                     }}>
                         <SelectButton onPress={(flag) => {
                             this.agree_default = flag;
@@ -332,9 +332,9 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                 color: FontAndColor.COLORA1,
                                 marginLeft: Pixel.getPixel(5),
                                 marginTop: Pixel.getPixel(5),
-                                textAlign: 'center',
+                                textAlign: 'left',
                             }}>
-                            默认使用恒丰开户信息开通粮票
+                            用“粮票”购车、还款，提现更方便，更快捷！一键开通，“粮票”到手！
                         </Text>
 
                     </View>
@@ -505,11 +505,11 @@ export default class OpenAccountBaseScene extends BaseComponent {
         }
 
         if(!this.agree_default){
-            this.props.showToast('请同意默认使用恒丰开户信息开通粮票')
+            this.props.showToast('请先勾选相关协议')
             return false;
         }
         if(!this.agree_contract){
-            this.props.showToast('请同意相关协议')
+            this.props.showToast('请先勾选相关协议')
             return false;
         }
 
