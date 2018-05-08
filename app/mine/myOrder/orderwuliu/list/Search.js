@@ -4,21 +4,21 @@ import {
     Text,
     View, TouchableOpacity, Dimensions, TextInput, Image,
 } from 'react-native';
-import BaseComponent from '../../../component/BaseComponent';
-import NavigationBar from '../../../component/NavigationBar';
+import BaseComponent from '../../../../component/BaseComponent';
+import NavigatorView from '../../../../component/AllNavigationView';
 
 const {width} = Dimensions.get('window');
-import * as FontAndColor from '../../../constant/fontAndColor';
-import PixelUtil from '../../../utils/PixelUtil';
-import MyButton from "../../../component/MyButton";
-import CheckWaybill from './CheckWaybill';
-import SelectDestination from './SelectDestination';
-import StorageUtil from "../../../utils/StorageUtil";
-import * as StorageKeyNames from "../../../constant/storageKeyNames";
+import * as FontAndColor from '../../../../constant/fontAndColor';
+import PixelUtil from '../../../../utils/PixelUtil';
+import MyButton from "../../../../component/MyButton";
+import CheckWaybill from '../CheckWaybill';
+import SelectDestination from '../SelectDestination';
+import StorageUtil from "../../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 
-const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
-import {request} from '../../../utils/RequestUtil';
-import * as Urls from '../../../constant/appUrls';
+const cellJianTou = require('../../../../../images/mainImage/celljiantou@2x.png');
+import {request} from '../../../../utils/RequestUtil';
+import * as Urls from '../../../../constant/appUrls';
 const Pixel = new PixelUtil();
 
 
@@ -35,9 +35,12 @@ export default  class  List extends BaseComponent{
     }
 
     initFinish(){
-        this.setState({
+
+
+        this.state = {
             renderPlaceholderOnly: "success",
-        })
+        }
+
     }
 
 
@@ -58,7 +61,7 @@ export default  class  List extends BaseComponent{
             </View>);
         }
 
-        return(<View  style={styles.root}>
+        return(<View>
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
@@ -81,15 +84,3 @@ export default  class  List extends BaseComponent{
 
 
 }
-
-
-const styles = StyleSheet.create({
-
-    root: {
-        flex: 1,
-        backgroundColor: FontAndColor.COLORA3,
-        paddingBottom: Pixel.getPixel(50.5)
-    },
-
-
-})
