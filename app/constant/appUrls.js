@@ -1036,6 +1036,13 @@ export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
 export const APPLY_LOAN = 'api/v3/account/apply_loan'
 
 /**
+ * from @huangning
+ *
+ *  新 申请借款
+ **/
+export const ACCOUNT_APPLY_LOAN = 'api/v4/account/apply_loan'
+
+/**
  * from huangning
  * 车抵贷申请借款
  */

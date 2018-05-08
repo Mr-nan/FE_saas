@@ -657,8 +657,9 @@ export default class DDApplyLendScene extends BaseComponent {
                 this.companyId = JSON.parse(data.result).company_base_id;
                 let maps;
                 if (this.props.sceneName == "FinanceScene") {
+                    // api: apis.APPLY_LOAN,
                     maps = {
-                        api: apis.APPLY_LOAN,
+                        api: apis.ACCOUNT_APPLY_LOAN,
                         apply_type: "6",
                         platform_order_number: this.props.orderNo,
                         company_base_id: this.companyId,
@@ -670,8 +671,9 @@ export default class DDApplyLendScene extends BaseComponent {
                         loan_life: this.PostData.dateLimit,
                     }
                 } else {
+                    // api: apis.APPLY_LOAN,
                     maps = {
-                        api: apis.APPLY_LOAN,
+                        api: apis.ACCOUNT_APPLY_LOAN,
                         apply_type: "6",
                         platform_order_number: this.props.orderNo,
                         company_base_id: this.companyId,
