@@ -39,7 +39,7 @@ import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import Picker from 'react-native-picker';
 
-const PostData = {
+let PostData = {
     dateLimit: '',
     rate: '',
     loan_life_type: '',
