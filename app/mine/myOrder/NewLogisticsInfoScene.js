@@ -76,8 +76,9 @@ class LogisticsInfoView extends BaseComponent{
       }
     render(){
         return(
-            <View>
-                <ListView dataSource={this.state.dataSource}
+            <View style={{flex:1}}>
+                <ListView
+                          dataSource={this.state.dataSource}
                           renderRow={this.renderRow}
                           enableEmptySections={true}
                           renderSeparator={(sectionID,rowID)=>{return(<View key={`${sectionID}+${rowID}`} style={{backgroundColor:fontAndColor.COLORA3,height:Pixel.getPixel(10)}}/>)}} />
