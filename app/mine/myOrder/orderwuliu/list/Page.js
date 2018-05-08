@@ -32,7 +32,11 @@ export default class FlowAllPage extends BaseComponent {
 
     constructor(props) {
         super(props);
-        this.state = {renderPlaceholderOnly: 'loading'};
+        this.state = {
+            renderPlaceholderOnly: 'loading',
+            isRefreshing: false
+        };
+
 
     }
 
@@ -86,7 +90,7 @@ export default class FlowAllPage extends BaseComponent {
         return (
             <ListView
                 removeClippedSubviews={false}
-                style={{marginTop: Pixel.getPixel(8), backgroundColor: fontAndColor.COLORA3, flex: 1}}
+                style={{paddingTop: Pixel.getPixel(8), backgroundColor: fontAndColor.COLORA3, flex: 1}}
                 dataSource={this.state.source}
                 renderRow={this._renderRow}
                 initialListSize={10}
@@ -111,8 +115,9 @@ export default class FlowAllPage extends BaseComponent {
 
         return (
             <View style={{padding: Pixel.getPixel(15), backgroundColor: 'white', marginBottom: Pixel.getPixel(8)}}>
-                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: "space-between"}}>
-                    <SaasText style={{flex: 1, color: fontAndColor.COLORA1, fontSize: 13}}>运单号234567890</SaasText>
+                <View style={{flexDirection: 'row', alignItems: 'center', }}>
+                    <SaasText style={{flex: 1, color: fontAndColor.COLORA1, fontSize: 14}}>运单号234567890</SaasText>
+                    <SaasText style={{ color: fontAndColor.COLORA1, fontSize:12, marginRight:Pixel.getPixel(2)}}>运单号234567890</SaasText>
                     <Image source={require('../../../../../images/mine/celljiantou.png')}/>
                 </View>
 
@@ -121,8 +126,8 @@ export default class FlowAllPage extends BaseComponent {
                     backgroundColor: '#f8f8f8',
                     marginVertical: Pixel.getPixel(15),
                     padding: Pixel.getPixel(25),
-                    justifyContent:"space-between",
-                    borderRadius:Pixel.getPixel(2)
+                    justifyContent: "space-between",
+                    borderRadius: Pixel.getPixel(2)
                 }}>
 
                     <View style={{alignItems: 'center',}}>
@@ -130,16 +135,16 @@ export default class FlowAllPage extends BaseComponent {
                             width: Pixel.getPixel(12),
                             height: Pixel.getPixel(12),
                             marginBottom: Pixel.getPixel(7),
-                            resizeMode:'contain'
+                            resizeMode: 'contain'
                         }} source={require('../../../../../images/carriagePriceImage/startLocation.png')}/>
-                        <SaasText style={{fontSize: 15}}>太原市</SaasText>
+                        <SaasText style={{fontSize: 16}}>太原市</SaasText>
                     </View>
-                    <View style={{alignItems: 'center',marginTop:Pixel.getPixel(7)}}>
+                    <View style={{alignItems: 'center', marginTop: Pixel.getPixel(7)}}>
                         <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1}}>大板车运输</SaasText>
                         <Image style={{
                             width: Pixel.getPixel(200),
                             height: Pixel.getPixel(6),
-                            resizeMode:'contain'
+                            resizeMode: 'contain'
                         }} source={require('../../../../../images/carriagePriceImage/direction_line.png')}/>
                     </View>
 
@@ -148,15 +153,105 @@ export default class FlowAllPage extends BaseComponent {
                             width: Pixel.getPixel(9),
                             height: Pixel.getPixel(9),
                             marginBottom: Pixel.getPixel(7),
-                            resizeMode:'contain'
+                            resizeMode: 'contain'
                         }} source={require('../../../../../images/carriagePriceImage/stopLocation.png')}/>
-                        <SaasText style={{fontSize: 15}}>保定市</SaasText>
+                        <SaasText style={{fontSize: 16}}>保定市</SaasText>
                     </View>
+
+
+                </View>
+
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: Pixel.getPixel(5)}}>
+                    <SaasText style={{color: fontAndColor.COLORA1, fontSize: 13, flex: 1}}>车辆共计：</SaasText>
+                    <SaasText style={{fontSize: 14, fontWeight: '400'}}>13台</SaasText>
+
+                </View>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    borderBottomColor: fontAndColor.COLORA4,
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                    paddingBottom: Pixel.getPixel(10)
+                }}>
+                    <SaasText style={{color: fontAndColor.COLORA1, fontSize: 13, flex: 1}}>运费合计：</SaasText>
+                    <SaasText style={{fontSize: 14, color: fontAndColor.COLORB2, fontWeight: '400'}}>13.00元</SaasText>
+
                 </View>
 
 
 
 
+
+                <View style={{
+                    marginTop:Pixel.getPixel(5),
+                    height: Pixel.getPixel(50.5),
+                    backgroundColor: 'white',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent:'flex-end'
+                }}>
+
+                    <TouchableOpacity activeOpacity={1} onPress={() => {
+
+                    }}>
+                        <View style={{
+                            width: Pixel.getPixel(100.5),
+                            height: Pixel.getPixel(32.5),
+                            backgroundColor: 'white',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: Pixel.getPixel(2),
+                            borderColor: fontAndColor.COLORA1,
+                            borderWidth: Pixel.getPixel(1),
+
+                        }}>
+                            <Text style={{
+                                color: fontAndColor.COLORA1,
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+                            }}>取消</Text>
+                        </View>
+                    </TouchableOpacity>
+                    {
+                       1?
+                        <TouchableOpacity activeOpacity={1} onPress={() => {
+                            this.state.priceData && this.setState({isShowCallUpView: true})
+                        }}>
+                            <View style={{
+                                width: Pixel.getPixel(100.5),
+                                height: Pixel.getPixel(32.5),
+                                backgroundColor:  fontAndColor.COLORB0,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: Pixel.getPixel(2),
+                                marginLeft:Pixel.getPixel(12)
+                            }}>
+                                <Text style={{
+                                    color: 'white',
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+                                }}>支付</Text>
+                            </View>
+                        </TouchableOpacity>:null
+
+                    }
+
+                </View>
+
+
+
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: Pixel.getPixel(15),
+                    alignItems: 'center'
+                }}>
+                    <SaasText style={{fontSize: 15, flex: 1, fontWeight: '400'}}>在途车辆</SaasText>
+
+                    <Image style={{}}
+                           source={require('../../../../../images/carriagePriceImage/jiantou_downward.png')}/>
+                </View>
+
+                <CarInfo/>
+                <CarInfo/>
             </View>
 
         )
@@ -195,8 +290,47 @@ export default class FlowAllPage extends BaseComponent {
 
 
     }
-
 }
+
+
+class CarInfo extends Component {
+
+    constructor(props) {
+        super(props)
+
+    }
+
+    componentWillReceiveProps(props) {
+
+
+    }
+
+    render() {
+        return <View style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderTopWidth:StyleSheet.hairlineWidth,
+            borderTopColor:fontAndColor.COLORA4,
+            marginTop:Pixel.getPixel(15),
+            paddingTop:Pixel.getPixel(15)
+        }}>
+            <View>
+                <SaasText style={{fontSize: 14, color: 'black', marginBottom: Pixel.getPixel(8)}}>书房里就是水电费</SaasText>
+                <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1, marginBottom: Pixel.getPixel(7)}}>1234567876543</SaasText>
+                <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1}}>2345678765432</SaasText>
+
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <SaasText style={{fontSize: 14, fontWeight: '400', color: fontAndColor.COLORB2, marginRight:Pixel.getPixel(5)}}>运输中</SaasText>
+                <Image style={{width: Pixel.getPixel(15), height: Pixel.getPixel(15)}}
+                       source={require('../../../../../images/mine/celljiantou.png')}/>
+            </View>
+        </View>
+    }
+}
+
+
 const styles = StyleSheet.create({
     leftText: {
         color: '#000',
