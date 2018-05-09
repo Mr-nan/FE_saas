@@ -459,25 +459,25 @@ export default class FinanceSence extends BaseComponet {
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
             } else if (movie.product_code == 5) {
-                if (movie.product_type_change_status == 0) {
+                // if (movie.product_type_change_status == 0) {
                     nextPage = CGDDetailSence;
                     this.buttonParams.content = '采购';
                     this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
                     this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
-                } else if (movie.product_type_change_status == 1) {
-                    nextPage = SingDetaileSence;
-                    this.buttonParams.content = '单车采购';
-                    this.buttonParams.parentStyle = [cellSheet.parentStyle, {
-                        borderColor: fontAndColor.COLORB1,
-                        width: Pixel.getPixel(58)
-                    }];
-                    this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
-                } else {
-                    nextPage = SingDetaileSence;
-                    this.buttonParams.content = '单车';
-                    this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
-                    this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
-                }
+                // } else if (movie.product_type_change_status == 1) {
+                //     nextPage = SingDetaileSence;
+                //     this.buttonParams.content = '单车采购';
+                //     this.buttonParams.parentStyle = [cellSheet.parentStyle, {
+                //         borderColor: fontAndColor.COLORB1,
+                //         width: Pixel.getPixel(58)
+                //     }];
+                //     this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
+                // } else {
+                //     nextPage = SingDetaileSence;
+                //     this.buttonParams.content = '单车';
+                //     this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
+                //     this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
+                // }
             } else if (movie.product_code == 6) {
                 nextPage = DDDetailScene;
                 this.buttonParams.content = '订单';
@@ -622,7 +622,7 @@ export default class FinanceSence extends BaseComponet {
 
     getStatusStr = (stateCode) => {
         if (stateCode !== '') {
-            let tempTitle = []
+            let tempTitle = ['未知']
             if (stateCode == '10') {
                 tempTitle = ['评估监管中']
             } else if (stateCode == '20') {

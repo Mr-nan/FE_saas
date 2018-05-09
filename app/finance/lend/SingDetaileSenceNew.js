@@ -88,8 +88,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             .then((response) => {
                     this.tempjson = response.mjson.data
                     this.stateCode =  this.tempjson.logic_status;
-                    this.minLend =  this.tempjson.loanmny;
-                    this.maxLend = changeToMillion( parseFloat(this.tempjson.loanmny) + parseFloat(this.tempjson.loanperiod));
+                    this.minLend =  changeToMillion(this.tempjson.min_loanmny);
+                    this.maxLend = changeToMillion(this.tempjson.max_loanmny);
                     // controlCode.stateCode =  this.tempjson.data.response.logic_status;
                     // controlCode.extendCode = this.tempjson.is_extend;  查看合同
                     // controlCode.lendType = this.tempjson.type;
