@@ -437,28 +437,28 @@ export default class FinanceSence extends BaseComponet {
         if (movie == '1') {
             return (<View/>);
         } else {
-            if (movie.type == 1) {
+            if (movie.product_code == 1) {
                 nextPage = KurongDetaileScene;
                 this.buttonParams.content = '库融';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
             }
-            else if (movie.type == 2) {
+            else if (movie.product_code == 2) {
                 nextPage = SingDetaileSence;
                 this.buttonParams.content = '单车';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
-            } else if (movie.type == 3) {
+            } else if (movie.product_code == 3) {
                 nextPage = KurongDetaileScene;
                 this.buttonParams.content = '信贷';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
-            } else if (movie.type == 4) {
+            } else if (movie.product_code == 4) {
                 nextPage = KurongDetaileScene;
                 this.buttonParams.content = '库融';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
-            } else if (movie.type == 5) {
+            } else if (movie.product_code == 5) {
                 if (movie.product_type_change_status == 0) {
                     nextPage = CGDDetailSence;
                     this.buttonParams.content = '采购';
@@ -478,7 +478,7 @@ export default class FinanceSence extends BaseComponet {
                     this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
                     this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
                 }
-            } else if (movie.type == 6) {
+            } else if (movie.product_code == 6) {
                 nextPage = DDDetailScene;
                 this.buttonParams.content = '订单';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
@@ -494,15 +494,15 @@ export default class FinanceSence extends BaseComponet {
             } else {
                 this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB0}];
             }
-            this.typeButtonParams.content = movie.status_str;
+            this.typeButtonParams.content = movie.product_type_code;
             return (
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
                     if (nextPage === CGDDetailSence) {//采购贷
-                        if (movie.payment_status == '31') {//审核未通过
+                        if (movie.status == '31') {//审核未通过
                             this.navigatorParams.name = 'CGDLendScenes';
                             this.navigatorParams.component = CGDLendScenes;
                             this.navigatorParams.params = {
-                                loan_code: movie.loan_code,
+                                loan_code: movie.payment_number,
                                 backRefresh: () => {
                                     this.allRefresh()
                                 }, customerName: this.state.customerName,
@@ -511,7 +511,7 @@ export default class FinanceSence extends BaseComponet {
                             this.navigatorParams.name = 'DetaileSence';
                             this.navigatorParams.component = nextPage;
                             this.navigatorParams.params = {
-                                loanNumber: movie.loan_code,
+                                loanNumber: movie.payment_number,
                                 backRefresh: () => {
                                     this.allRefresh()
                                 }
@@ -519,12 +519,12 @@ export default class FinanceSence extends BaseComponet {
                         }
                     }
                     else if (nextPage === DDDetailScene) {//订单融资
-                        if (movie.payment_status == '31') {//审核未通过
+                        if (movie.status == '31') {//审核未通过
                             this.navigatorParams.name = 'DDApplyLendScene';
                             this.navigatorParams.component = DDApplyLendScene;
                             this.navigatorParams.params = {
                                 sceneName:"FinanceScene",
-                                loan_code: movie.loan_code,//借款单号
+                                loan_code: movie.payment_number,//借款单号
                                 orderNo: movie.order_number,//平台订单号
                                 orderId: movie.order_id,
 
@@ -536,7 +536,7 @@ export default class FinanceSence extends BaseComponet {
                             this.navigatorParams.name = 'DDDetailScene';
                             this.navigatorParams.component = nextPage;
                             this.navigatorParams.params = {
-                                financeNo: movie.loan_code,//借款单号
+                                financeNo: movie.payment_number,//借款单号
                                 orderNo: movie.order_number,//平台订单号
                                 FromScene:"FinanceScene",
 
@@ -550,7 +550,7 @@ export default class FinanceSence extends BaseComponet {
                         this.navigatorParams.name = 'DetaileSence';
                         this.navigatorParams.component = nextPage;
                         this.navigatorParams.params = {
-                            loanNumber: movie.loan_code,
+                            loanNumber: movie.payment_number,
                             backRefresh: () => {
                                 this.allRefresh()
                             }
@@ -579,7 +579,7 @@ export default class FinanceSence extends BaseComponet {
                         }]}>
 
                             <Text allowFontScaling={false}
-                                  style={cellSheet.rowTopGrayTextStyle}>{movie.loan_code}</Text>
+                                  style={cellSheet.rowTopGrayTextStyle}>{movie.payment_number}</Text>
                         </View>
                     </View>
                     <View style={{height: 0.5, backgroundColor: fontAndColor.COLORA4}}></View>
@@ -587,12 +587,12 @@ export default class FinanceSence extends BaseComponet {
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
                             <Text allowFontScaling={false} style={cellSheet.rowBottomLittleStyle}>借款金额</Text>
                             <Text allowFontScaling={false}
-                                  style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORB2}]}>{movie.loan_mny}</Text>
+                                  style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORB2}]}>{movie.loanmny+'万'}</Text>
                         </View>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
                             <Text allowFontScaling={false} style={cellSheet.rowBottomLittleStyle}>借款期限</Text>
                             <Text allowFontScaling={false}
-                                  style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORA0}]}>{movie.loan_life}</Text>
+                                  style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORA0}]}>{movie.loanperiod+'天'}</Text>
                         </View>
                         <View
                             style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-end', justifyContent: 'center'}]}>
@@ -609,7 +609,7 @@ export default class FinanceSence extends BaseComponet {
                                 <Text allowFontScaling={false} style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: fontAndColor.COLORB3,
-                                }}>{movie.status_str}</Text>
+                                }}>{this.getStatusStr(movie.logic_status)}</Text>
                             </View>
                         </View>
                     </View>
@@ -620,6 +620,33 @@ export default class FinanceSence extends BaseComponet {
         }
     }
 
+    getStatusStr = (stateCode) => {
+        if (stateCode !== '') {
+            let tempTitle = []
+            if (stateCode == '10') {
+                tempTitle = ['评估监管中']
+            } else if (stateCode == '20') {
+                tempTitle = ['审核中']
+            } else if (stateCode == '30') {
+                tempTitle = ['渠道审核中']
+            }else if (stateCode == '40') {
+                tempTitle = ['待签合同']
+            }else if (stateCode == '50') {
+                tempTitle = ['待确认借据']
+            }else if (stateCode == '60') {
+                tempTitle = ['处理中']
+            }else if (stateCode == '70') {
+                tempTitle = ['已放款']
+            }else if (stateCode == '80') {
+                tempTitle = ['已还清']
+            }else if (stateCode == '21') {
+                tempTitle = ['审核未通过']
+            }else if (stateCode == '0') {
+                tempTitle = ['已取消']
+            }
+            return tempTitle;
+        }
+    }
     _renderSeparator(sectionId, rowId) {
 
         return (

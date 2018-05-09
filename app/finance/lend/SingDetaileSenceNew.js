@@ -298,19 +298,19 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
     getStatusStrs = (stateCode) => {
         if (stateCode !== '') {
-            let tempTitle = []
+            let tempTitle = ''
             if (stateCode == '10') {
                 // tempTitle = ['评估监管中']
             } else if (stateCode == '20') {
                 // tempTitle = ['审核中']
             } else if (stateCode == '30') {
-                tempTitle = ['资金渠道正在对您的借款进行审核，请耐心等待。']
+                tempTitle = '资金渠道正在对您的借款进行审核，请耐心等待。'
             }else if (stateCode == '40') {
-                tempTitle = ['您有待签署的合同，请尽快签署。']
+                tempTitle = '您有待签署的合同，请尽快签署。'
             }else if (stateCode == '50') {
-                tempTitle = ['您有待确认的借据，请尽快确认。']
+                tempTitle = '您有待确认的借据，请尽快确认。'
             }else if (stateCode == '60') {
-                tempTitle = ['当前您的借款处于处理中的状态，请耐心等待。']
+                tempTitle = '当前您的借款处于处理中的状态，请耐心等待。'
             }else if (stateCode == '70') {
                 // tempTitle = ['已放款']
             }else if (stateCode == '80') {
@@ -327,7 +327,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     getButtonStyleWithTitle = (title) => {
 
         switch (title) {
-
             case '取消借款':
                 return styles.cancelButton
             case '签署合同':
@@ -457,10 +456,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     }, (error) => {
                         this.props.showModal(false);
                         if (error.mycode != -300 || error.mycode != -500) {
-
                             this.props.showToast(error.mjson.msg);
                         } else {
-
                             this.props.showToast('服务器连接有问题')
                         }
                     });
@@ -530,7 +527,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     </View>:null
                 }
                 {
-                    this.getStatusStr(this.stateCode) != []?
+                    this.getStatusStrs(this.stateCode) != []?
                     <Text style={{fontSize:adapeSize(12),color:"#846545",backgroundColor:'#FFF8EA',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                         {this.getStatusStrs(this.stateCode)}
                     </Text>:null
