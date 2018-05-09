@@ -555,7 +555,7 @@ export default class CheckStand extends BaseComponent {
                                                 fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
                                             }}
                                         >
-                                            付款即表示您已阅读
+                                            付款即表示您已同意
                                         </SaasText>
                                         {this.contractList}
                                     </SaasText>

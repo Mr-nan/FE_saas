@@ -452,10 +452,10 @@ export default class MyAccountScene extends BaseComponent {
                                 color: '#000'
                             }}>什么是车贷粮票?</Text>
                             <Text allowFontScaling={false} style={{
-                                textAlign: 'center', fontSize: Pixel.getPixel(14),
+                                textAlign: 'left', fontSize: Pixel.getPixel(14),
                                 marginTop: Pixel.getPixel(11), color: fontAndColor.COLORA1
                             }}>
-                                {"车贷粮票是第1车贷与中信信托\n联合推出的一款具有强大金融功能的信托服务账户。"}
+                                {"\t车贷粮票”是第1车贷与中信信托合作推出的服务车商间买卖交易的平台产品；具有第三方担保交易及资产增值等服务功能"}
                             </Text>
                             <TouchableOpacity onPress={() => {
                                 this.setState({

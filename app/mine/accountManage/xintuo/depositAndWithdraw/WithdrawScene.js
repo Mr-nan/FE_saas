@@ -246,8 +246,10 @@ export default class WithdrawScene extends ZSBaseComponent {
 
                     />
 
+
+
                     {this.state.isShowContact?
-                        <View style={{ flexDirection:'row',alignItems:'center', marginTop:Pixel.getPixel(25), alignSelf:'center'}}>
+                        <View style={{ flexDirection:'row',alignItems:'center', marginTop:Pixel.getPixel(20), alignSelf:'center'}}>
 
 
                             <SelectButton onPress={(flag)=>{

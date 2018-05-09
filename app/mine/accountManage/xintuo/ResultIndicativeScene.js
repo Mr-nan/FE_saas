@@ -400,7 +400,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
             case 3: {
                 switch (this.state.status) {
                     case 0: {
-                        return '提现处理中'
+                        return '提现申请受理成功'
                     }
                     case 1: {
                         return '提现成功'
@@ -592,7 +592,15 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
             } break;
             case 3: {  //提现
 
-                return <View style={{marginHorizontal: 30, height: 180}}>
+                return <View style={{marginHorizontal: 30, height: 180, alignItems:'center'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
+                        <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginRight: 15}}/>
+                        <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}>温馨提示</Text>
+                        <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginLeft: 15}}/>
+                    </View>
+                    <Text allowFontScaling={false}
+                          multiline={true}
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>提现到个人用户5W以下预计2小时内到账提现到个人用户5W以上或公司用户到账时间以银行受理时间为准。去掉刷新试试</Text>
                 </View>
             }
                 break;
