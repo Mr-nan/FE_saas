@@ -176,7 +176,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                         fontSize: Pixel.getFontPixel(15),
                                         lineHeight: Pixel.getPixel(18),
                                     }}
-                                >{"\t第1车贷与中信信托合作,为优质合作伙伴开通具备强大金融功能的信托服务账户“粮票”。"}</Text>
+                                >{"\t用“粮票”购车、还款，提现更方便，更快捷！一键开通，“粮票”到手!"}</Text>
 
                             </View>
 
@@ -210,8 +210,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                         }}
                                         multiline={true}
                                     >
-
-                                        {"用“粮票”购车、还款，提现更方便，更\n快捷！一键开通，“粮票”到手！"}
+                                        默认使用恒丰开户信息开通粮票
                                     </Text>
 
                                 </View>

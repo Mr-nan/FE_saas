@@ -45,44 +45,72 @@ export default class WithdrawScene extends ZSBaseComponent {
             renderPlaceholderOnly: true,
             sms_pad: false,
             money_input: '',
-            allow_withdraw_amount: ''
+            allow_withdraw_amount: '',
+            isShowContact:false,
         }
+        this.contractList = []
+        this.contract = []
     }
 
     initFinish() {
-        //this.loadInstruction()
+        this.loadContact()
         this.setState({
             renderPlaceholderOnly: false,
         })
     }
 
-    loadInstruction = () => {
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code === 1 && data.result !== null) {
-                let datas = JSON.parse(data.result);
-                //this.isOpenContract = datas.is_open_electron_repayment_contract;
-                let maps = {
-                    enter_base_id: datas.company_base_id,
-                };
-
-                //TODO
-                request(AppUrls.ZS_QUOTA, 'Post', maps)
-                    .then((response) => {
-                        this.setState({
-                            allow_withdraw_amount: response.mjson.data.allow_withdraw_amount,
-                        })
-                    }, (error) => {
-                        this.props.showToast(error.mjson.msg)
-
-                    });
-            } else {
-                this.props.showToast('限额说明查询失败');
-                this.setState({
-                    renderPlaceholderOnly: 'error',
-                    isRefreshing: false
-                });
+    openContractScene = (name, url) => {
+        this.toNextPage({
+            name: 'TrustAccountContractScene',
+            component: TrustAccountContractScene,
+            params: {
+                title: name,
+                webUrl: url
             }
         })
+    };
+
+    loadContact = () => {
+
+        this.props.showModal(true);
+        let maps = {
+            source_type: '3',
+            fund_channel: '信托'
+        };
+        request(AppUrls.AGREEMENT_LISTS, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                this.contractList = response.mjson.data.list;
+
+                for (let i = 0; i < this.contractList.length; i++) {
+
+                    if (this.contractList[i].name==='信托利益分配申请' ){
+                        this.contract.push(<Text
+                            key={i + 'contractList'}
+                            allowFontScaling={false}
+                            onPress={() => {
+                                this.openContractScene('合同', this.contractList[i].url)
+                                console.log(this.contractList[i].url)
+                            }}
+                            style={{
+                                fontSize: Pixel.getFontPixel(FontAndColor.CONTENTFONT24),
+                                color: FontAndColor.COLORB4,
+                                lineHeight: Pixel.getPixel(20)
+                            }}>
+                            《{this.contractList[i].name}》
+                        </Text>);
+
+                    }
+                }
+
+                this.setState({
+                    isShowContact:true
+                })
+
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+            });
     }
 
 
@@ -217,27 +245,20 @@ export default class WithdrawScene extends ZSBaseComponent {
                         }}
 
                     />
-                    <View style={{ flexDirection:'row',alignItems:'center', marginTop:Pixel.getPixel(25), alignSelf:'center'}}>
+
+                    {this.state.isShowContact?
+                        <View style={{ flexDirection:'row',alignItems:'center', marginTop:Pixel.getPixel(25), alignSelf:'center'}}>
 
 
-                        <SelectButton onPress={(flag)=>{
-                            this.check_contact = flag;
-                        }}/>
-                        <SaasText
-                            onPress={()=>{
-                                this.toNextPage({
-                                    name: 'TrustAccountContractScene',
-                                    component: TrustAccountContractScene,
-                                    params: {
-                                        title: '信托利益分配申请',
-                                        webUrl: "https://www.baidu.com"
-                                    }
-                                })
+                            <SelectButton onPress={(flag)=>{
+                                this.check_contact = flag;
+                            }}/>
+                            {this.contract}
+                        </View>
 
-                            }}
-                            style={{color:FontAndColor.COLORA1, fontSize:13}}
-                        >《信托利益分配申请》</SaasText>
-                    </View>
+
+                        :null}
+
 
                 </ScrollView>
 

@@ -139,6 +139,7 @@ export default class Log extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
+
             return (
                 <View style={{flex: 1, backgroundColor: 'white'}}>
                     <NavigationBar
@@ -151,9 +152,19 @@ export default class Log extends BaseComponent {
                         rightImageShow={true}
                         rightTextShow={false}
                         rightImage={require('../../../../../images/account/screening.png')}
+                        rightImageCallBack={()=>{
+                            this.setState({
+                                isShowSheet: true,
+                            }, ()=>{
+                                if (this.state.renderPlaceholderOnly === 'loading'){
+                                    this.state.isShowSheet=false
+                                }
+                            })
+                        }}
                     />
 
                     {this.loadView()}
+                    {this.state.isShowSheet && this.state.renderPlaceholderOnly !== 'loading'? this.optionSheet():null}
 
                 </View>
             )
@@ -175,6 +186,10 @@ export default class Log extends BaseComponent {
                     rightImageCallBack={() => {
                         this.setState({
                             isShowSheet: true,
+                        }, ()=>{
+                            if (this.state.renderPlaceholderOnly === 'loading'){
+                                this.state.isShowSheet=false
+                            }
                         })
                     }}
                 />
@@ -211,98 +226,7 @@ export default class Log extends BaseComponent {
                         }
                     />
                     {
-                        this.state.isShowSheet ?
-                            <View
-
-                                style={{
-                                    position: 'absolute',
-                                    top:0,
-                                    right:0,
-                                    bottom:0,
-                                    left:0,
-                                    backgroundColor: 'rgba(0,0,0,.4)'
-                                }}>
-
-                                <TouchableWithoutFeedback
-                                    onPress={() => {
-                                        this.setState({
-                                            isShowSheet: false,
-                                        })
-                                    }}
-                                >
-                                    <View style={{flex: 1}}/>
-                                </TouchableWithoutFeedback>
-
-                                <View style={{
-                                    alignItems: 'center',
-                                    paddingHorizontal: 15,
-                                    backgroundColor: 'white',
-                                    height: 100
-                                }}>
-                                    <View
-                                        style={{
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            flex: 1,
-                                            flexDirection: 'row',
-                                            borderBottomWidth: StyleSheet.hairlineWidth,
-                                            borderBottomColor: FontAndColor.COLORA4
-                                        }}
-                                    >
-                                        <SText
-                                            onPress={() => {
-                                                this.props.showModal(true)
-                                                log_data = []
-                                                type = '3,120'
-                                                page = 1
-                                                old_date = ''
-                                                rows = []
-                                                this.loadLog()
-                                                this.setState({
-                                                    isShowSheet: false,
-                                                    screenningType: 1
-                                                })
-                                            }}
-
-                                            style={{
-                                                fontSize: 17,
-                                                flex: 1,
-                                                textAlign: 'center',
-                                                color: this.state.screenningType === 1 ? FontAndColor.COLORB0 : 'black'
-                                            }}>充值</SText>
-                                    </View>
-                                    <View
-                                        style={{
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                            flex: 1
-                                        }}
-                                    >
-                                        <SText
-                                            onPress={() => {
-                                                this.props.showModal(true)
-                                                log_data = []
-                                                page = 1;
-                                                type = '4,122';
-                                                old_date = ''
-                                                rows = []
-                                                this.loadLog()
-                                                this.setState({
-                                                    isShowSheet: false,
-                                                    screenningType: 2
-                                                })
-                                            }}
-                                            style={{
-                                                fontSize: 17,
-                                                textAlign: 'center',
-                                                flex: 1,
-                                                color: this.state.screenningType === 2 ? FontAndColor.COLORB0 : 'black'
-                                            }}>提现</SText>
-                                    </View>
-                                </View>
-                            </View>
-                            : null
+                        this.state.isShowSheet? this.optionSheet():null
                     }
                     <DateTimePicker
                         titleIOS="请选择日期"
@@ -328,6 +252,101 @@ export default class Log extends BaseComponent {
 
     }
 
+    optionSheet = ()=> {
+        return (
+                <View
+
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        bottom: 0,
+                        left: 0,
+                        backgroundColor: 'rgba(0,0,0,.4)'
+                    }}>
+
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            this.setState({
+                                isShowSheet: false,
+                            })
+                        }}
+                    >
+                        <View style={{flex: 1}}/>
+                    </TouchableWithoutFeedback>
+
+                    <View style={{
+                        alignItems: 'center',
+                        paddingHorizontal: 15,
+                        backgroundColor: 'white',
+                        height: 100
+                    }}>
+                        <View
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                flex: 1,
+                                flexDirection: 'row',
+                                borderBottomWidth: StyleSheet.hairlineWidth,
+                                borderBottomColor: FontAndColor.COLORA4
+                            }}
+                        >
+                            <SText
+                                onPress={() => {
+                                    this.props.showModal(true)
+                                    log_data = []
+                                    type = '3,120'
+                                    page = 1
+                                    old_date = ''
+                                    rows = []
+                                    this.loadLog()
+                                    this.setState({
+                                        isShowSheet: false,
+                                        screenningType: 1
+                                    })
+                                }}
+
+                                style={{
+                                    fontSize: 17,
+                                    flex: 1,
+                                    textAlign: 'center',
+                                    color: this.state.screenningType === 1 ? FontAndColor.COLORB0 : 'black'
+                                }}>充值</SText>
+                        </View>
+                        <View
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                flex: 1
+                            }}
+                        >
+                            <SText
+                                onPress={() => {
+                                    this.props.showModal(true)
+                                    log_data = []
+                                    page = 1;
+                                    type = '4,122';
+                                    old_date = ''
+                                    rows = []
+                                    this.loadLog()
+                                    this.setState({
+                                        isShowSheet: false,
+                                        screenningType: 2
+                                    })
+                                }}
+                                style={{
+                                    fontSize: 17,
+                                    textAlign: 'center',
+                                    flex: 1,
+                                    color: this.state.screenningType === 2 ? FontAndColor.COLORB0 : 'black'
+                                }}>提现</SText>
+                        </View>
+                    </View>
+                </View>
+        )
+
+    }
     _handleDatePicked = (date) => {
         this.setState({
             isDateTimePickerVisible: false

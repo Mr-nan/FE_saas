@@ -334,7 +334,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                                 marginTop: Pixel.getPixel(5),
                                 textAlign: 'left',
                             }}>
-                            用“粮票”购车、还款，提现更方便，更快捷！一键开通，“粮票”到手！
+                            默认使用恒丰开户信息开通粮票
                         </Text>
 
                     </View>
