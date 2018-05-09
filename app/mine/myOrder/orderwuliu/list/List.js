@@ -17,6 +17,7 @@ import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import ScrollableTabView , {DefaultTabBar,ScrollableTabBar}from 'react-native-scrollable-tab-view';
 import Page from './Page'
+import Search from './Search'
 
 import RepaymenyTabBar from '../../../../finance/repayment/component/RepaymenyTabBar';
 
@@ -70,7 +71,11 @@ export default  class  List extends BaseComponent{
                     rightImageShow={true}
                     rightImage={require('../../../../../images/carriagePriceImage/search.png')}
                     rightImageCallBack={()=>{
-                        console.log('12345678')
+                        this.toNextPage({
+                            name:'Search',
+                            component:Search,
+                            params:{}
+                        })
                     }}
                     leftImageCallBack={this.backPage}
                 />
@@ -109,7 +114,6 @@ const styles = StyleSheet.create({
     root: {
         flex: 1,
         backgroundColor: FontAndColor.COLORA3,
-        paddingBottom: Pixel.getPixel(50.5)
     },
 
 
