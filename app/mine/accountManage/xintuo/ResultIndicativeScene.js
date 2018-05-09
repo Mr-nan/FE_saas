@@ -166,21 +166,29 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                     }} source={this.image()}/>
                     <Text allowFontScaling={false} style={{fontSize: 20, marginBottom: 10}}>{this.tips()}</Text>
                     {this.renderAnnotation()}
-                    <MyButton
-                        buttonType={MyButton.TEXTBUTTON}
-                        content={this.buttonTitle()}
-                        parentStyle={{
-                            backgroundColor: FontAndColor.COLORB0,
-                            borderRadius: 3,
-                            marginTop: 25,
-                            height: 35,
-                            width: 100,
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                        childStyle={{color: 'white', fontSize: 16}}
-                        mOnPress={this.buttonAction}
-                    />
+
+                    {
+                        this.state.type !== 3?
+                            <MyButton
+                                buttonType={MyButton.TEXTBUTTON}
+                                content={this.buttonTitle()}
+                                parentStyle={{
+                                    backgroundColor: FontAndColor.COLORB0,
+                                    borderRadius: 3,
+                                    marginTop: 25,
+                                    height: 35,
+                                    width: 100,
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                                childStyle={{color: 'white', fontSize: 16}}
+                                mOnPress={this.buttonAction}
+                            />
+
+                            :null
+
+                    }
+
                 </View>
                 {this.renderFooter()}
                 {this.out_of_service()}
@@ -600,7 +608,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                     </View>
                     <Text allowFontScaling={false}
                           multiline={true}
-                          style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>提现到个人用户5W以下预计2小时内到账提现到个人用户5W以上或公司用户到账时间以银行受理时间为准。去掉刷新试试</Text>
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>提现到个人用户5W以下预计2小时内到账提现到个人用户5W以上或公司用户到账时间以银行受理时间为准。</Text>
                 </View>
             }
                 break;
