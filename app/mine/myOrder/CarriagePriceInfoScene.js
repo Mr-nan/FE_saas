@@ -32,6 +32,7 @@ import SaasText from "../accountManage/zheshangAccount/component/SaasText";
 import InformationInputItem from './component/InformationInputItem'
 import InformationEnter from "./orderwuliu/InformationEnter";
 import ProvinceListScene from "../../carSource/ProvinceListScene";
+import AddressManageListScene from "../addressManage/AddressManageListScene";
 
 
 export default class CarriagePriceInfoScene extends BaseComponent {
@@ -153,8 +154,8 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             }}
                             contactInformationClickCallBack={() => {
                                 this.toNextPage({
-                                    name: 'InformationEnter',
-                                    component: InformationEnter,
+                                    name: 'AddressManageListScene',
+                                    component:AddressManageListScene ,
                                     params: {
                                         callBack: this.senderInfo,
                                         from: '发车人'
@@ -177,8 +178,8 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             }}
                             contactInformationClickCallBack={() => {
                                 this.toNextPage({
-                                    name: 'InformationEnter',
-                                    component: InformationEnter,
+                                    name: 'AddressManageListScene',
+                                    component: AddressManageListScene,
                                     params: {
                                         callBack: this.receiverInfo,
                                         from: '收车人'
@@ -470,7 +471,7 @@ class AddressInfoItemView extends Component {
                                 fontWeight: '200',
                                 textAlign: 'right',
                                 flex: 1
-                            }}>{this.props.contactInfo ? this.props.contactInfo.region.provice_name + this.props.contactInfo.region.city_name + this.props.contactInfo.address : '请填写发车人联系方式及详细地址'}</SaasText>
+                            }}>{this.props.contactInfo ? this.props.contactInfo.region.provice_name + this.props.contactInfo.region.city_name + this.props.contactInfo.address : '请选择详细地址'}</SaasText>
                             <Image style={{width: Pixel.getPixel(10), height: Pixel.getPixel(10)}}
                                    source={require('../../../images/mainImage/celljiantou.png')}/>
                         </View>

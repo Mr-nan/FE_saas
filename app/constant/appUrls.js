@@ -1573,6 +1573,26 @@ export const WAYBILL_DETAIL = BASEURL + "v2/order.logistics/detail";
  *物流运价数据检查（获取运输类型对应的费）
  */
 export const CHECKTRANSTYPE = BASEURL + "v2/order.logistics/check";
+/**
+ *
+ * 下物流订单
+ */
+export const LOGISTICS_ORDER = BASEURL + "v2/order.logistics_flows/create";
+/**
+ *
+ * 运单列表
+ */
+export const LOGISTICS_ORDER_LIST = BASEURL + "v2/order.logistics_flows/getMeWaybill";
+/**
+ *
+ * 运单查询
+ */
+export const LOGISTICS_ORDER_SEARCH = BASEURL + "v2/order.logistics_flows/getTransSearch";
+/**
+ *
+ * 运单取消
+ */
+export const LOGISTICS_ORDER_CANCEL = BASEURL + "v2/order.logistics_flows/cancelTrans";
 
 /**
  *
