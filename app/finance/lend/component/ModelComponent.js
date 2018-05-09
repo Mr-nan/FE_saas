@@ -492,9 +492,10 @@ export class MMSModalAlert extends PureComponent{
             device_code = 'dycd_platform_ios';
         }
         let maps = {
+            api: "api/v2/validate/img_code",
             device_code: device_code,
         };
-        request(AppUrls.IDENTIFYING, 'Post', maps)
+        request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
                 this.refs.loginVerifycode.lodingStatus(false);
                 this.imgSrc = response.mjson.data.img_src;

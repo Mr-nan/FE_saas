@@ -87,60 +87,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     this.tempjson = response.mjson.data
-                    // this.tempjson =
-                    //     {
-                    //         "code": 1,
-                    //         "msg": "ok",
-                    //         "data": {
-                    //             "payment_id": "26178",
-                    //             "payment_number": "201710230006",
-                    //             "product_type_code": {
-                    //                 "product_type": "单车融资",
-                    //                 "product_code": 2
-                    //             },
-                    //             "merge_id": "2816",
-                    //             "loanperiod": "3",
-                    //             "loanmny": "5.000000",
-                    //             "loanperiod_type": "月",
-                    //             "rate": "19.10000",
-                    //             "payment_bankaccount": "1",
-                    //             "payment_bankusername": "1",
-                    //             "payment_bankname": "1",
-                    //             "payment_branch": "1",
-                    //             "paymenttype": "随借随还",
-                    //             "loan_time": "2017-10-23",
-                    //             "loantype": null,
-                    //             "trenchtype": "1678",
-                    //             "lending_methods": "0",
-                    //             "channel_code": "",
-                    //             "logic_status": 30,
-                    //             "cancle_time": "1970-01-01",
-                    //             "is_cancel_loan": 0,
-                    //             "is_sign_contract": 0,
-                    //             "is_confirm_iou": 0,
-                    //             "account": {
-                    //                 "payment_bankaccount": "85121001012280392200000008",
-                    //                 "payment_bankusername": "姜浩韩",
-                    //                 "payment_bankname": "恒丰银行股份有限公司北京分行长安街支行",
-                    //                 "payment_branch": "中国农业银行北京市房山区支行琉璃河分理处"
-                    //             }
-                    //         },
-                    //         "trace": {
-                    //             "url": "http://finance.api.test.dycd.com/api/v4/account/get_loan_info",
-                    //             "data": {
-                    //                 "token": "663a411eab579977149268b905e0b5ef",
-                    //                 "device_code": "dycd_platform_android",
-                    //                 "version": "38",
-                    //                 "payment_number": "201710230006",
-                    //                 "user_ip": "10.2.18.242",
-                    //                 "user_id": 9693
-                    //             },
-                    //             "method": "POST",
-                    //             "cache": "no_cache"
-                    //         },
-                    //         "token": "663a411eab579977149268b905e0b5ef"
-                    //     }
-
                     this.stateCode =  this.tempjson.logic_status;
                     this.minLend =  this.tempjson.loanmny;
                     this.maxLend = changeToMillion( parseFloat(this.tempjson.loanmny) + parseFloat(this.tempjson.loanperiod));
@@ -345,6 +291,34 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 tempTitle = ['审核未通过']
             }else if (stateCode == '0') {
                 tempTitle = ['已取消']
+            }
+            return tempTitle;
+        }
+    }
+
+    getStatusStrs = (stateCode) => {
+        if (stateCode !== '') {
+            let tempTitle = []
+            if (stateCode == '10') {
+                // tempTitle = ['评估监管中']
+            } else if (stateCode == '20') {
+                // tempTitle = ['审核中']
+            } else if (stateCode == '30') {
+                tempTitle = ['资金渠道正在对您的借款进行审核，请耐心等待。']
+            }else if (stateCode == '40') {
+                tempTitle = ['您有待签署的合同，请尽快签署。']
+            }else if (stateCode == '50') {
+                tempTitle = ['您有待确认的借据，请尽快确认。']
+            }else if (stateCode == '60') {
+                tempTitle = ['当前您的借款处于处理中的状态，请耐心等待。']
+            }else if (stateCode == '70') {
+                // tempTitle = ['已放款']
+            }else if (stateCode == '80') {
+                // tempTitle = ['已还清']
+            }else if (stateCode == '21') {
+                // tempTitle = ['审核未通过']
+            }else if (stateCode == '0') {
+                // tempTitle = ['已取消']
             }
             return tempTitle;
         }
@@ -555,9 +529,12 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         </View>
                     </View>:null
                 }
-                <Text style={{fontSize:adapeSize(12),color:"#846545",backgroundColor:'#FFF8EA',
-                paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),
-                paddingBottom:adapeSize(10)}}>{'资金渠道正在对您的借款进行审核，请耐心等待。'}</Text>
+                {
+                    this.getStatusStr(this.stateCode) != []?
+                    <Text style={{fontSize:adapeSize(12),color:"#846545",backgroundColor:'#FFF8EA',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                        {this.getStatusStrs(this.stateCode)}
+                    </Text>:null
+                }
             </View>
         )
     }
