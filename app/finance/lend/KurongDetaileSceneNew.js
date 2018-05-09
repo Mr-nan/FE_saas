@@ -193,7 +193,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
     getStatusStr = (stateCode) => {
         if (stateCode !== '') {
-            let tempTitle = []
+            let tempTitle = ['未知']
             if (stateCode == '10') {
                 tempTitle = ['评估监管中']
             } else if (stateCode == '20') {
