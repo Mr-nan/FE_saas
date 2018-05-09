@@ -40,7 +40,7 @@ export default class OpenTrustAccountView extends BaseComponent {
 
         this.state = {
             isShow: false,
-            content_height: new Animated.Value(Pixel.getPixel(288))
+            content_height: new Animated.Value(Pixel.getPixel(275))
         };
     }
 
@@ -237,7 +237,7 @@ export default class OpenTrustAccountView extends BaseComponent {
                                             Animated.timing(
                                                 this.state.content_height,
                                                 {
-                                                    toValue:Pixel.getPixel(375)
+                                                    toValue:Pixel.getPixel(365)
                                                 }
                                             ).start()
 
