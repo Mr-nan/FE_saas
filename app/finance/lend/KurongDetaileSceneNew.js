@@ -79,61 +79,15 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     //借款信息
     getLendinfo = () => {
         let maps = {
-            api: apis.GET_APPLY_INFO,
-            loan_code: this.props.loanNumber
+            api: apis.GET_APPLY_INFO_NEW,
+            payment_number: this.props.loanNumber,
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-                // this.tempjson = response.mjson.data
-                this.tempjson = {
-                    "token": "",
-                    "code": 1,
-                    "msg": "ok",
-                    "data": {
-                        "request": {
-                            "device_code": "dycd_platform_finance_pc",
-                            "user_ip": "1"
-                        },
-                        "response": {
-                            "payment_number": "201709250019",
-                            "product_type_code": {
-                                "product_type": "库存融资",
-                                "product_code": 4
-                            },
-                            "merge_id": "2789",
-                            "loanperiod": "30",
-                            "loanmny": "3",
-                            "loanperiod_type": "天",
-                            "rate": "22",
-                            "payment_bankaccount": "6211 1111 1111 1111 111",
-                            "payment_bankusername": "王芳",
-                            "payment_bankname": "招商",
-                            "payment_branch": "北京",
-                            "paymenttype": "随借随还",
-                            "loan_time": "1970-01-01",
-                            "channel_time":"1970-01-01",
-                            "loantype": "131",
-                            "trenchtype": "1961",
-                            "lending_methods": "账户体系放款",
-                            "cancle_time": "1970-01-01",
-                            "logic_status": "0",
-                            "is_cancel_loan": 0,
-                            "is_sign_contract": 0,
-                            "is_confirm_iou": 0,
-                            "account": {
-                                "payment_bankaccount": "85121001012280150600000027",
-                                "payment_bankusername": "桃树",
-                                "payment_bankname": "恒丰银行股份有限公司北京分行长安街支行",
-                                "payment_branch": "恒丰银行股份有限公司重庆永川支行"
-                            },
-                            "finish_time": "1970-01-01"
-                        }
-                    }
-                }
-
-                this.stateCode =  this.tempjson.data.response.logic_status;
-                this.minLend =  this.tempjson.data.response.loanmny;
-                this.maxLend = changeToMillion( parseFloat(this.tempjson.data.response.loanmny) + parseFloat(this.tempjson.data.response.loanperiod));
+                this.tempjson = response.mjson.data
+                this.stateCode =  this.tempjson.logic_status;
+                this.minLend =  changeToMillion(this.tempjson.min_loanmny);
+                this.maxLend = changeToMillion(this.tempjson.max_loanmny);
                 // controlCode.stateCode =  this.tempjson.data.response.logic_status;
                 // controlCode.extendCode = this.tempjson.is_extend;  查看合同
                 // controlCode.lendType = this.tempjson.type;
@@ -290,11 +244,13 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     }
 
     //取消借款  主单
-    cancleLoad = () => {
+    cancleLoad = (imgSid,code) => {
         this.props.showModal(true);
         let maps = {
             api: apis.CANCEL_LOAN,
-            loan_code: this.props.loanNumber
+            loan_code: this.props.loanNumber,
+            img_sid : imgSid,
+            img_code : code,
         }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
@@ -356,27 +312,27 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
                     <Text style={{backgroundColor:'#05c5c2',color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),paddingLeft:adapeSize(3),paddingRight:adapeSize(3),height:adapeSize(16)}}>库</Text>
-                    <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.data.response.payment_number}</Text>
+                    <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(14),color:"#FA5741"}}>{this.getStatusStr(this.stateCode)}</Text>
                 </View>
                 <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-start"}}>
-                        <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{this.tempjson.data.response.loanmny}<Text style={{fontSize:adapeSize(12)}}>万</Text></Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{parseFloat(this.tempjson.loanmny)}<Text style={{fontSize:adapeSize(12)}}>万</Text></Text>
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>借款金额</Text>
                     </View>
                     <View style={{flexDirection:'column',flex:1,alignItems:"center"}}>
-                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}>{this.tempjson.data.response.loanperiod}<Text style={{fontSize:adapeSize(12)}}>天</Text></Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}>{this.tempjson.loanperiod}<Text style={{fontSize:adapeSize(12)}}>天</Text></Text>
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>借款期限</Text>
                     </View>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-end"}}>
-                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}> {this.tempjson.data.response.rate}<Text style={{fontSize:adapeSize(12)}}>%</Text></Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}> {parseFloat(this.tempjson.rate)}<Text style={{fontSize:adapeSize(12)}}>%</Text></Text>
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>综合费率</Text>
                     </View>
                 </View>
                 <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
-                    <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.data.response.paymenttype}</Text>
+                    <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.paymenttype}</Text>
                 </View>
             </View>
         )
@@ -496,7 +452,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                confimClick={(setModelVis,imgSid,code)=>{
                                    setModelVis(false);
                                    if(this.cancleFlag =='取消主单'){
-                                        this.cancleLoad()
+                                        this.cancleLoad(imgSid,code)
                                    } else {
                                         this.cancleLoadC(imgSid,code)
                                    }
@@ -519,7 +475,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     backIconClick={this.backPage}/>
                 <View style={{position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',flexDirection:'row',width:width}}>
                     {
-                        this.tempjson.data.response.is_cancel_loan == 1?
+                        this.tempjson.is_cancel_loan == 1?
                             <TouchableOpacity  style={{height:40,flex:1,backgroundColor:'#90A1B5',justifyContent:'center',alignItems:'center'}}
                                                onPress={()=>{
                                                this.cancleFlag = '取消主单'
