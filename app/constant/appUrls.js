@@ -809,6 +809,13 @@ export const GET_MNY = 'api/v3/account/get_mny';
 export const GET_APPLY_INFO = 'api/v3/account/get_apply_info';
 
 /**
+ * from @ 黄宁
+ *
+ * 获取借款首页数据  新
+ **/
+export const GET_APPLY_INFO_NEW = 'api/v4/account/get_loan_info';
+
+/**
  * from @huangning
  *
  * 获取借款首页数据
@@ -842,6 +849,13 @@ export const CARLOAN_SET_APPLY_MNY = 'api/v3/carloan/set_apply_mny'
  * 获取订单车辆列表
  **/
 export const GET_APPLY_CARLIST = 'api/v2/account/get_apply_carlist';
+
+/**
+ * from @huangnign
+ * 获取订单车辆列表 新
+ **/
+export const GET_APPLY_CARLIST_NEW = 'api/v2/account/get_child_loan';
+
 /**
  * from @lhc
  * 删除车辆
