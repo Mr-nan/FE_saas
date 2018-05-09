@@ -81,61 +81,69 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     //借款信息
     getLendinfo = () => {
         let maps = {
-            api: apis.GET_APPLY_INFO,
-            loan_code: this.props.loanNumber
+            api: apis.GET_APPLY_INFO_NEW,
+            payment_number: this.props.loanNumber
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-                    // this.tempjson = response.mjson.data
-                    this.tempjson = {
-                        "token": "",
-                        "code": 1,
-                        "msg": "ok",
-                        "data": {
-                            "request": {
-                                "device_code": "dycd_platform_finance_pc",
-                                "user_ip": "1"
-                            },
-                            "response": {
-                                "payment_number": "201709250019",
+                    this.tempjson = response.mjson.data
+                    this.tempjson =
+                        {
+                            "code": 1,
+                            "msg": "ok",
+                            "data": {
+                                "payment_id": "26178",
+                                "payment_number": "201710230006",
                                 "product_type_code": {
-                                    "product_type": "库存融资",
-                                    "product_code": 4
+                                    "product_type": "单车融资",
+                                    "product_code": 2
                                 },
-                                "merge_id": "2789",
-                                "loanperiod": "30",
-                                "loanmny": "3",
-                                "loanperiod_type": "天",
-                                "rate": "22",
-                                "payment_bankaccount": "6211 1111 1111 1111 111",
-                                "payment_bankusername": "王芳",
-                                "payment_bankname": "招商",
-                                "payment_branch": "北京",
+                                "merge_id": "2816",
+                                "loanperiod": "3",
+                                "loanmny": "5.000000",
+                                "loanperiod_type": "月",
+                                "rate": "19.00000",
+                                "payment_bankaccount": "1",
+                                "payment_bankusername": "1",
+                                "payment_bankname": "1",
+                                "payment_branch": "1",
                                 "paymenttype": "随借随还",
-                                "loan_time": "1970-01-01",
-                                "channel_time":"1970-01-01",
-                                "loantype": "131",
-                                "trenchtype": "1961",
-                                "lending_methods": "账户体系放款",
+                                "loan_time": "2017-10-23",
+                                "loantype": null,
+                                "trenchtype": "1678",
+                                "lending_methods": "0",
+                                "channel_code": "",
+                                "logic_status": 30,
                                 "cancle_time": "1970-01-01",
-                                "logic_status": "0",
                                 "is_cancel_loan": 0,
                                 "is_sign_contract": 0,
                                 "is_confirm_iou": 0,
                                 "account": {
-                                    "payment_bankaccount": "85121001012280150600000027",
-                                    "payment_bankusername": "桃树",
+                                    "payment_bankaccount": "85121001012280392200000008",
+                                    "payment_bankusername": "姜浩韩",
                                     "payment_bankname": "恒丰银行股份有限公司北京分行长安街支行",
-                                    "payment_branch": "恒丰银行股份有限公司重庆永川支行"
+                                    "payment_branch": "中国农业银行北京市房山区支行琉璃河分理处"
+                                }
+                            },
+                            "trace": {
+                                "url": "http://finance.api.test.dycd.com/api/v4/account/get_loan_info",
+                                "data": {
+                                    "token": "663a411eab579977149268b905e0b5ef",
+                                    "device_code": "dycd_platform_android",
+                                    "version": "38",
+                                    "payment_number": "201710230006",
+                                    "user_ip": "10.2.18.242",
+                                    "user_id": 9693
                                 },
-                                "finish_time": "1970-01-01"
-                            }
+                                "method": "POST",
+                                "cache": "no_cache"
+                            },
+                            "token": "663a411eab579977149268b905e0b5ef"
                         }
-                    }
 
-                    this.stateCode =  this.tempjson.data.response.logic_status;
-                    this.minLend =  this.tempjson.data.response.loanmny;
-                    this.maxLend = changeToMillion( parseFloat(this.tempjson.data.response.loanmny) + parseFloat(this.tempjson.data.response.loanperiod));
+                    this.stateCode =  this.tempjson.data.logic_status;
+                    this.minLend =  this.tempjson.data.loanmny;
+                    this.maxLend = changeToMillion( parseFloat(this.tempjson.data.loanmny) + parseFloat(this.tempjson.data.loanperiod));
                     // controlCode.stateCode =  this.tempjson.data.response.logic_status;
                     // controlCode.extendCode = this.tempjson.is_extend;  查看合同
                     // controlCode.lendType = this.tempjson.type;
@@ -167,88 +175,88 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     //车辆信息
     getOrderCarInfo = () => {
         let maps = {
-            api: apis.GET_APPLY_CARLIST,
-            loan_code: this.props.loanNumber
+            api: apis.GET_APPLY_CARLIST_NEW,
+            payment_number: this.props.loanNumber
         }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-                    // let tempCarJson = response.mjson.data.list
-                    let xxx = {
-                        "token": "",
-                        "code": 1,
-                        "msg": "ok",
-                        "data": {
-                            "request": {
-                                "device_code": "dycd_platform_finance_pc",
-                                "user_ip": "1",
-                                "payment_number": 201710180010
-                            },
-                            "response": [
-                                {
-                                    "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
-                                    "frame_number": "43434343233346666",
-                                    "loan_number": "201706080012",
-                                    "loan_mny": "17000.00",
-                                    "loan_time": "2017-09-01",
-                                    "assess_time": "2017-10-18",
-                                    "assess_user_name": "admin",
-                                    "plate_number": "0",
-                                    "hq_assess_mny": 3.5,
-                                    "storage": "工行烫晚祁有限公司",
-                                    "lending_methods": "线下放款",
-                                    "channel_name": null,
-                                    "finish_time": null,
-                                    "child_loan_status": 60,
-                                    "child_loan_status_str": "渠道审核中",
-                                    "is_confirm_iou": 1,
-                                    "is_sign_contract": 1,
-                                    "is_cancel_loan": 1
-                                },
-                                {
-                                    "model_name": "2017款 奥迪A6L TFSI 技术型",
-                                    "frame_number": "34343434444555555",
-                                    "loan_number": "32906",
-                                    "loan_mny": "24000.00",
-                                    "loan_time": "2017-09-01",
-                                    "assess_time": "2017-10-18",
-                                    "assess_user_name": "admin",
-                                    "plate_number": "0",
-                                    "hq_assess_mny": 3,
-                                    "storage": "工行烫晚祁有限公司",
-                                    "lending_methods": "线下放款",
-                                    "channel_name": null,
-                                    "finish_time": null,
-                                    "child_loan_status": 40,
-                                    "child_loan_status_str": "渠道审核中",
-                                    "is_confirm_iou": 1,
-                                    "is_sign_contract": 1,
-                                    "is_cancel_loan": 1
-                                },
-                                {
-                                    "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
-                                    "frame_number": "43434343233346666",
-                                    "loan_number": "201706080012",
-                                    "loan_mny": "17000.00",
-                                    "loan_time": "2017-09-01",
-                                    "assess_time": "2017-10-18",
-                                    "assess_user_name": "admin",
-                                    "plate_number": "0",
-                                    "hq_assess_mny": 3.5,
-                                    "storage": "工行烫晚祁有限公司",
-                                    "lending_methods": "线下放款",
-                                    "channel_name": null,
-                                    "finish_time": null,
-                                    "child_loan_status": 50,
-                                    "child_loan_status_str": "渠道审核中",
-                                    "is_confirm_iou": 1,
-                                    "is_sign_contract": 1,
-                                    "is_cancel_loan": 1
-                                },
-
-                            ]
-                        }
-                    }
-                    let tempCarJson = xxx.data.response
+                    let tempCarJson = response.mjson.data
+                    // let xxx = {
+                    //     "token": "",
+                    //     "code": 1,
+                    //     "msg": "ok",
+                    //     "data": {
+                    //         "request": {
+                    //             "device_code": "dycd_platform_finance_pc",
+                    //             "user_ip": "1",
+                    //             "payment_number": 201710180010
+                    //         },
+                    //         "response": [
+                    //             {
+                    //                 "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
+                    //                 "frame_number": "43434343233346666",
+                    //                 "loan_number": "201706080012",
+                    //                 "loan_mny": "17000.00",
+                    //                 "loan_time": "2017-09-01",
+                    //                 "assess_time": "2017-10-18",
+                    //                 "assess_user_name": "admin",
+                    //                 "plate_number": "0",
+                    //                 "hq_assess_mny": 3.5,
+                    //                 "storage": "工行烫晚祁有限公司",
+                    //                 "lending_methods": "线下放款",
+                    //                 "channel_name": null,
+                    //                 "finish_time": null,
+                    //                 "child_loan_status": 60,
+                    //                 "child_loan_status_str": "渠道审核中",
+                    //                 "is_confirm_iou": 1,
+                    //                 "is_sign_contract": 1,
+                    //                 "is_cancel_loan": 1
+                    //             },
+                    //             {
+                    //                 "model_name": "2017款 奥迪A6L TFSI 技术型",
+                    //                 "frame_number": "34343434444555555",
+                    //                 "loan_number": "32906",
+                    //                 "loan_mny": "24000.00",
+                    //                 "loan_time": "2017-09-01",
+                    //                 "assess_time": "2017-10-18",
+                    //                 "assess_user_name": "admin",
+                    //                 "plate_number": "0",
+                    //                 "hq_assess_mny": 3,
+                    //                 "storage": "工行烫晚祁有限公司",
+                    //                 "lending_methods": "线下放款",
+                    //                 "channel_name": null,
+                    //                 "finish_time": null,
+                    //                 "child_loan_status": 40,
+                    //                 "child_loan_status_str": "渠道审核中",
+                    //                 "is_confirm_iou": 1,
+                    //                 "is_sign_contract": 1,
+                    //                 "is_cancel_loan": 1
+                    //             },
+                    //             {
+                    //                 "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
+                    //                 "frame_number": "43434343233346666",
+                    //                 "loan_number": "201706080012",
+                    //                 "loan_mny": "17000.00",
+                    //                 "loan_time": "2017-09-01",
+                    //                 "assess_time": "2017-10-18",
+                    //                 "assess_user_name": "admin",
+                    //                 "plate_number": "0",
+                    //                 "hq_assess_mny": 3.5,
+                    //                 "storage": "工行烫晚祁有限公司",
+                    //                 "lending_methods": "线下放款",
+                    //                 "channel_name": null,
+                    //                 "finish_time": null,
+                    //                 "child_loan_status": 50,
+                    //                 "child_loan_status_str": "渠道审核中",
+                    //                 "is_confirm_iou": 1,
+                    //                 "is_sign_contract": 1,
+                    //                 "is_cancel_loan": 1
+                    //             },
+                    //
+                    //         ]
+                    //     }
+                    // }
+                    // let tempCarJson = xxx.data.response
 
                     this.setState({
                         dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempCarJson)),
@@ -503,30 +511,30 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
                     <Text style={{backgroundColor:'#05c5c2',color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),paddingLeft:adapeSize(3),paddingRight:adapeSize(3),height:adapeSize(16)}}>单</Text>
-                    <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.data.response.payment_number}</Text>
+                    <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.data.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(14),color:"#FA5741"}}>{this.getStatusStr(this.stateCode)}</Text>
                 </View>
                 <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-start"}}>
-                        <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{this.tempjson.data.response.loanmny}<Text style={{fontSize:adapeSize(12)}}>万</Text></Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{this.tempjson.data.loanmny}<Text style={{fontSize:adapeSize(12)}}>万</Text></Text>
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>借款金额</Text>
                     </View>
                     <View style={{flexDirection:'column',flex:1,alignItems:"center"}}>
-                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}>{this.tempjson.data.response.loanperiod}<Text style={{fontSize:adapeSize(12)}}>天</Text></Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}>{this.tempjson.data.loanperiod}<Text style={{fontSize:adapeSize(12)}}>天</Text></Text>
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>借款期限</Text>
                     </View>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-end"}}>
-                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}> {this.tempjson.data.response.rate}<Text style={{fontSize:adapeSize(12)}}>%</Text></Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#000000"}}> {this.tempjson.data.rate}<Text style={{fontSize:adapeSize(12)}}>%</Text></Text>
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>综合费率</Text>
                     </View>
                 </View>
                 <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
-                    <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.data.response.paymenttype}</Text>
+                    <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.data.paymenttype}</Text>
                     {
                         this.stateCode != 0 ?
-                            <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>| 申请日期:{this.tempjson.data.response.loan_time}</Text> :null
+                            <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>| 申请日期:{this.tempjson.data.loan_time}</Text> :null
                     }
 
                 </View>
@@ -536,12 +544,12 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
                         <View style={{flexDirection:'row',padding:adapeSize(10)}}>
                             <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'借款日期'}</Text>
-                            <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.data.response.loan_time}</Text>
+                            <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.data.loan_time}</Text>
                         </View>
                         <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
                         <View style={{flexDirection:'row',padding:adapeSize(10)}}>
                             <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'取消日期'}</Text>
-                            <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.data.response.channel_time}</Text>
+                            <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.data.channel_time}</Text>
                         </View>
                     </View>:null
                 }
@@ -710,7 +718,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',flexDirection:'row',width:width}}>
 
                     {
-                        this.tempjson.data.response.logic_status == 10?
+                        this.tempjson.data.logic_status == 10?
                             <TouchableOpacity  style={{height:40,flex:1,backgroundColor:'#90A1B5',justifyContent:'center',alignItems:'center'}}
                                            onPress={()=>{
                                                this.cancleFlag = '取消主单'
@@ -727,7 +735,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                             </TouchableOpacity>:null
                     }
                     {
-                        this.tempjson.data.response.is_sign_contract == 1?
+                        this.tempjson.data.is_sign_contract == 1?
                             <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{
                                                    this.toNextPage({
