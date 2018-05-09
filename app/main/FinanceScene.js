@@ -445,8 +445,7 @@ export default class FinanceSence extends BaseComponet {
                 this.buttonParams.content = '库融';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
-            }
-            else if (movie.product_code == 2) {
+            } else if (movie.product_code == 2) {
                 nextPage = SingDetaileSence;
                 this.buttonParams.content = '单车';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
@@ -486,22 +485,27 @@ export default class FinanceSence extends BaseComponet {
                 this.buttonParams.content = '订单';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
+            }else if (movie.product_code == 8) {
+                nextPage = KurongDetaileScene;
+                this.buttonParams.content = '车抵';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
             }
 
-            if (movie.status == 1) {
-                this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB3}];
-            } else if (movie.status == 7) {
-                this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB2}];
-            } else if (movie.status == 6 || movie.status == 0 || movie.status == 5) {
-                this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORA1}];
-            } else {
-                this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB0}];
-            }
-            this.typeButtonParams.content = movie.product_type_code;
+            // if (movie.status == 1) {
+            //     this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB3}];
+            // } else if (movie.status == 7) {
+            //     this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB2}];
+            // } else if (movie.status == 6 || movie.status == 0 || movie.status == 5) {
+            //     this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORA1}];
+            // } else {
+            //     this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB0}];
+            // }
+            // this.typeButtonParams.content = movie.product_type_code;
             return (
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
                     if (nextPage === CGDDetailSence) {//采购贷
-                        if (movie.status == '31') {//审核未通过
+                        if (movie.logic_status == '21') {//审核未通过
                             this.navigatorParams.name = 'CGDLendScenes';
                             this.navigatorParams.component = CGDLendScenes;
                             this.navigatorParams.params = {
@@ -520,9 +524,8 @@ export default class FinanceSence extends BaseComponet {
                                 }
                             }
                         }
-                    }
-                    else if (nextPage === DDDetailScene) {//订单融资
-                        if (movie.status == '31') {//审核未通过
+                    } else if (nextPage === DDDetailScene) {//订单融资
+                        if (movie.logic_status == '21') {//审核未通过
                             this.navigatorParams.name = 'DDApplyLendScene';
                             this.navigatorParams.component = DDApplyLendScene;
                             this.navigatorParams.params = {
@@ -548,8 +551,7 @@ export default class FinanceSence extends BaseComponet {
                                 }
                             }
                         }
-                    }
-                    else {
+                    }  else {
                         this.navigatorParams.name = 'DetaileSence';
                         this.navigatorParams.component = nextPage;
                         this.navigatorParams.params = {
@@ -650,6 +652,7 @@ export default class FinanceSence extends BaseComponet {
             return tempTitle;
         }
     }
+
     _renderSeparator(sectionId, rowId) {
 
         return (
