@@ -177,12 +177,19 @@ export default class FinanceSence extends BaseComponet {
             p: page,
             rows:10,
             product_type_cod:0,
+            ...this.seekParameter,
         };
         request(Urls.FINANCE, 'Post', maps, () => {
             this.props.backToLogin();
         })
             .then((response) => {
-                    movies.push(...response.mjson.data.list);
+                    if(page==1){
+                        movies = response.mjson.data.list;
+
+                    }else {
+                        movies.push(...response.mjson.data.list);
+
+                    }
                     allPage = response.mjson.data.page;
                     StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
                         if (data.code == 1) {
@@ -298,14 +305,16 @@ export default class FinanceSence extends BaseComponet {
         };
 
         this.seekParameter={
-            number:'',
+            auto_vin:'', // 车架号
+            payment_number:'', // 订单标号
             min_loanmny:'',
             max_loanmny:'',
-            loanperiod:'',
-            logic_status:'',
-            product_type_code:'',
-            min_date:'',
-            max_date:''
+            min_loan_time:'',
+            max_loan_time:'',
+            loanperiod:'', // 借款期限
+            logic_status:'', // 状态
+            product_type_code:'', // 产品类型
+
         };
         this.offY = 0;
     }
@@ -320,6 +329,13 @@ export default class FinanceSence extends BaseComponet {
         this.getAccountInfo();
     };
 
+    refreshingListData =()=>{
+        page = 1;
+        this.setState({isRefreshing: true});
+        this.getApplyData();
+    }
+
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
@@ -329,6 +345,7 @@ export default class FinanceSence extends BaseComponet {
                 <ListView
                     scrollEnabled={this.state.seekData.length>0?false:true}
                     removeClippedSubviews={false}
+                    enableEmptySections={true}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -907,13 +924,16 @@ export default class FinanceSence extends BaseComponet {
     financeSeekMoreConfirmClick=(parameter)=>{
 
         console.log('=======',parameter);
-        this.seekParameter.number = parameter.number;
+        this.seekParameter.auto_vin = parameter.number;
+        this.seekParameter.payment_number = parameter.number;
+
         this.seekParameter.min_loanmny = parameter.minPrice;
         this.seekParameter.max_loanmny = parameter.maxPrice;
-        this.seekParameter.min_date = parameter.minDate;
-        this.seekParameter.max_date = parameter.maxDate;
+        this.seekParameter.min_loan_time = parameter.minDate;
+        this.seekParameter.max_loan_time = parameter.maxDate;
 
-        console.log(this.seekParameter);
+        this.refreshingListData();
+
 
     }
 
@@ -932,6 +952,8 @@ export default class FinanceSence extends BaseComponet {
             this.seekParameter.loanperiod = title;
 
         }
+
+        this.refreshingListData();
 
     }
 

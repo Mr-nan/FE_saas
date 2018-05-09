@@ -876,7 +876,9 @@ export const CARLOAN_CANCEL_LOAN = 'api/v3/carloan/cancel_loan'
  *
  * 获取借款记录
  **/
-export const GET_APPLY_LIST = 'api/v3/account/get_apply_list';
+// export const GET_APPLY_LIST = 'api/v3/account/get_apply_list';
+export const GET_APPLY_LIST = '/api/v6/account/get_apply_list_new';
+
 
 /**
  * from @huangning

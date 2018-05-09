@@ -35,9 +35,9 @@ export default class FinanceSeekMoreScene extends BaseComponent{
         this.state = {
             minPrice:this.props.seekParameter.min_loanmny,
             maxPrice:this.props.seekParameter.max_loanmny,
-            minDate:this.props.seekParameter.min_date,
-            maxDate:this.props.seekParameter.max_date,
-            number:this.props.seekParameter.number,
+            minDate:this.props.seekParameter.min_loan_time,
+            maxDate:this.props.seekParameter.max_loan_time,
+            number:this.props.seekParameter.auto_vin,
         };
       }
 
