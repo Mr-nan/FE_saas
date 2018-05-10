@@ -297,7 +297,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             }}>{this.state.priceData && this.state.priceData.totalPrice}元</Text>
                         </View>
 
-                        <TouchableOpacity activeOpacity={1} onPress={() => {
+                        <TouchableOpacity activeOpacity={.8} onPress={() => {
                                 if (this.verify()){
                                     this.preserveOrder(1)
                                 }
@@ -319,7 +319,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                                 }}>预存订单</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={1} onPress={() => {
+                        <TouchableOpacity activeOpacity={.8} onPress={() => {
                             if (this.verify()){
                                 this.preserveOrder(2)
                             }
@@ -386,8 +386,9 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         // province_code:"110000"
         // updated_time:"2018-05-10 13:54:23"
 
-            this.params.startGpsLatitude = info.latitude
-            this.params.startGpsLongitude = info.longitude
+            this.params.startGpsLatitude = info.latitude;
+            this.params.startGpsLongitude = info.longitude;
+            this.params.start_id = info.id;
 
         console.log(info)
         this.setState({
@@ -398,9 +399,15 @@ export default class CarriagePriceInfoScene extends BaseComponent {
     }
     receiverInfo = (info) => {
 
-        this.params.endGpsLatitude = info.latitude
-        this.params.endGpsLongitude = info.longitude
-        this.params.id_card = info.id_card
+        if(typeof info.id_card === 'undefined' || info.id_card === '' || info.id_card === null){
+            this.props.showToast('您选的地址没有证件信息，请编辑添加或重新添加地址')
+            return
+        }
+
+        this.params.endGpsLatitude = info.latitude;
+        this.params.endGpsLongitude = info.longitude;
+        this.params.end_id = info.id;
+        this.params.id_card = info.id_card;
 
         console.log(info)
         this.setState({
@@ -487,10 +494,6 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
         }, (error) => {
             this.props.showModal(false);
-            this.setState({
-                //renderPlaceholderOnly: 'success',
-                renderPlaceholderOnly: 'failure',
-            });
 
             this.props.showToast(error.mjson.msg);
 
@@ -507,7 +510,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
 
 
-
+            return true
     }
 
 
