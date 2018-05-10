@@ -1240,7 +1240,7 @@ const cellSheet = StyleSheet.create({
         color: '#ffffff', marginTop: Pixel.getPixel(6), backgroundColor: '#00000000'
     },
     parentStyle: {
-        borderRadius: 3,
+        borderRadius: Pixel.getPixel(1),
         height: Pixel.getPixel(16),
         width: Pixel.getPixel(22),
         justifyContent: 'center',

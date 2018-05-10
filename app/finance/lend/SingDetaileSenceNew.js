@@ -463,8 +463,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
-                    <Text style={{backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code),color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),
-                    paddingLeft:adapeSize(3),paddingRight:adapeSize(3),height:adapeSize(16),borderRadius:Pixel.getPixel(3)}}>{Pixel.getProductStr(this.tempjson.product_type_code.product_code)}</Text>
+                    <Text style={{backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code),color:'#ffffff',fontSize:adapeSize(12),borderRadius:Pixel.getPixel(1),height:Pixel.getPixel(16),width:Pixel.getPixel(22),textAlign:'center'}}>
+                        {Pixel.getProductStr(this.tempjson.product_type_code.product_code)}
+                    </Text>
                     <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(this.stateCode)[0]}}>{Pixel.getStatusStr(this.stateCode)}</Text>
                 </View>
@@ -500,10 +501,10 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                             <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'借款日期'}</Text>
                             <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.loan_time}</Text>
                         </View>
-                        <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                        <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
                         <View style={{flexDirection:'row',padding:adapeSize(10)}}>
                             <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'取消日期'}</Text>
-                            <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.channel_time}</Text>
+                            <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.cancle_time}</Text>
                         </View>
                     </View>:null
                 }
@@ -577,7 +578,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         </View>
                     </View>:null
                 }
-                <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
+                <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
                 <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
                         {tempButtons}
                 </View>
