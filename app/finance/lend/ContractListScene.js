@@ -71,7 +71,7 @@ export default class ContractListScene extends BaseComponent{
     loadData=()=>{
         let maps = {
             api: Urls.GET_CONTRACT_DATA,
-            loan_code: this.props.loan_code,
+            payment_number: this.props.loan_code,
             loan_number:this.props.loan_number
         };
         request(Urls.FINANCE, 'Post', maps)
@@ -90,7 +90,7 @@ export default class ContractListScene extends BaseComponent{
         this.props.showModal(true);
         let maps = {
             api: Urls.CONTRACT_SIGN,
-            loan_code: this.props.loan_code,
+            payment_number: this.props.loan_code,
             loan_number:this.props.loan_number
         };
         request(Urls.FINANCE, 'Post', maps)
