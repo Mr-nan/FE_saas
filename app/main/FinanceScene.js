@@ -442,30 +442,30 @@ export default class FinanceSence extends BaseComponet {
         } else {
             if (movie.product_code == 1) {
                 nextPage = KurongDetaileScene;
-                this.buttonParams.content = '库融';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
-                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
+                this.buttonParams.content = '库';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: fontAndColor.COLORB4}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             } else if (movie.product_code == 2) {
                 nextPage = SingDetaileSence;
-                this.buttonParams.content = '单车';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
-                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
+                this.buttonParams.content = '单';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: fontAndColor.COLORB0}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             } else if (movie.product_code == 3) {
                 nextPage = KurongDetaileScene;
-                this.buttonParams.content = '信贷';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
-                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
+                this.buttonParams.content = '信';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: "#8db7f7"}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             } else if (movie.product_code == 4) {
                 nextPage = KurongDetaileScene;
-                this.buttonParams.content = '库融';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
-                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
+                this.buttonParams.content = '库';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: fontAndColor.COLORB4}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             } else if (movie.product_code == 5) {
                 // if (movie.product_type_change_status == 0) {
                     nextPage = CGDDetailSence;
-                    this.buttonParams.content = '采购';
-                    this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
-                    this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
+                    this.buttonParams.content = '采';
+                    this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: "#FA5741"}];
+                    this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
                 // } else if (movie.product_type_change_status == 1) {
                 //     nextPage = SingDetaileSence;
                 //     this.buttonParams.content = '单车采购';
@@ -482,14 +482,14 @@ export default class FinanceSence extends BaseComponet {
                 // }
             } else if (movie.product_code == 6) {
                 nextPage = DDDetailScene;
-                this.buttonParams.content = '订单';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
-                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
+                this.buttonParams.content = '订';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: "#3AC87E"}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             }else if (movie.product_code == 8) {
                 nextPage = KurongDetaileScene;
-                this.buttonParams.content = '车抵';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
-                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
+                this.buttonParams.content = '车';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: "#FFBD2F"}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             }
 
             // if (movie.status == 1) {
@@ -567,9 +567,8 @@ export default class FinanceSence extends BaseComponet {
                 }} style={[cellSheet.row, cellSheet.padding]}>
                     <View style={cellSheet.rowViewStyle}>
                         <View style={[{
-                            height: Pixel.getPixel(40),
                             justifyContent: 'flex-start', flex: 3, flexDirection: 'row',
-                            alignItems: 'center'
+                            alignItems: 'center',
                         }]}>
 
                             <MyButton {...this.buttonParams}/>
@@ -590,25 +589,23 @@ export default class FinanceSence extends BaseComponet {
                     <View style={{height: 0.5, backgroundColor: fontAndColor.COLORA4}}></View>
                     <View style={cellSheet.rowBottomViewStyle}>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
-                            <Text allowFontScaling={false} style={cellSheet.rowBottomLittleStyle}>借款金额</Text>
-                            <Text allowFontScaling={false}
-                                  style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORB2}]}>{movie.loanmny+'万'}</Text>
+                            <Text style={{fontSize:Pixel.getPixel(20),color:"#FA5741"}}>{parseFloat(movie.loanmny)}<Text style={{fontSize:Pixel.getPixel(12)}}>万</Text></Text>
+                            <Text style={{fontSize:Pixel.getPixel(12),color:"#9E9E9E"}}>借款金额</Text>
                         </View>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
-                            <Text allowFontScaling={false} style={cellSheet.rowBottomLittleStyle}>借款期限</Text>
-                            <Text allowFontScaling={false}
-                                  style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORA0}]}>{movie.loanperiod+'天'}</Text>
+                            <Text style={{fontSize:Pixel.getPixel(20),color:"#000000"}}>{movie.loanperiod}<Text style={{fontSize:Pixel.getPixel(12)}}>天</Text></Text>
+                            <Text style={{fontSize:Pixel.getPixel(12),color:"#9E9E9E"}}>借款期限</Text>
                         </View>
                         <View
                             style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-end', justifyContent: 'center'}]}>
                             <View style={{
                                 borderWidth: 1,
                                 borderColor: fontAndColor.COLORA4,
-                                borderRadius: 100,
-                                height: Pixel.getPixel(23),
-                                width: Pixel.getPixel(120),
+                                height: Pixel.getPixel(30),
                                 justifyContent: 'center',
                                 alignItems: 'center',
+                                paddingLeft:Pixel.getPixel(5),
+                                paddingRight:Pixel.getPixel(5)
                             }}>
 
                                 <Text allowFontScaling={false} style={{
@@ -1273,13 +1270,11 @@ const cellSheet = StyleSheet.create({
         color: '#ffffff', marginTop: Pixel.getPixel(6), backgroundColor: '#00000000'
     },
     parentStyle: {
-        borderWidth: 1,
-        borderColor: fontAndColor.COLORB0,
         borderRadius: 3,
         height: Pixel.getPixel(16),
-        width: Pixel.getPixel(34),
+        width: Pixel.getPixel(22),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     childStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
@@ -1292,7 +1287,7 @@ const cellSheet = StyleSheet.create({
         height: Pixel.getPixel(23),
         width: Pixel.getPixel(72),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     typeChildStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
@@ -1307,19 +1302,20 @@ const cellSheet = StyleSheet.create({
         alignItems: 'center'
     },
     rowTopTextStyle: {
-        marginLeft: Pixel.getPixel(7), fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        marginLeft: Pixel.getPixel(7), fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
         color: fontAndColor.COLORA0
     },
     rowTopGrayTextStyle: {
-        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT20),
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
         color: fontAndColor.COLORA1
     },
     rowBottomViewStyle: {
         height: Pixel.getPixel(71), flexDirection: 'row'
     },
     rowBottomChildStyle: {
-        height: Pixel.getPixel(71),
         flex: 1,
+        height: Pixel.getPixel(71),
+        justifyContent:'center',
     },
     rowBottomLittleStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
