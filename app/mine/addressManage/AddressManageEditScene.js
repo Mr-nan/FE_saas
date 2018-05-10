@@ -75,19 +75,13 @@ export default class AddressManageEditScene extends BaseComponent {
         }
 
 
-        if (typeof this.props.screen_item.city_code !== 'undefined'||  this.props.screen_item.city_code !== ''){
+        if (typeof this.props.screenItem.city_code !== 'undefined'||  this.props.screenItem.city_code !== ''){
 
-            if(this.item.city_code != this.props.screen_item.city_code){
-                this.props.showToast('区域与发车区域不符，请重新选择')
+            if(this.item.city_code != this.props.screenItem.city_code){
+                this.props.showToast('区域与发车/收车区域不符，请重新选择')
                 return;
             }
         }
-
-
-
-
-
-
 
         this.props.showModal(true);
         let maps = {

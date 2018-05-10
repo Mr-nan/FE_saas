@@ -128,6 +128,13 @@ export default class AddressManageListScene extends BaseComponent {
         });
     };
 
+    onPress = (item) =>{
+        if(typeof this.props.callBack !== 'undefined'){
+            this.backPage();
+            this.props.callBack(item)
+        }
+    }
+
     _setDefault = (item)=>{
         let maps = {
             company_id:global.companyBaseID,
@@ -196,8 +203,11 @@ export default class AddressManageListScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData) => {
         return (
-            <AddressManageItem item={rowData} onEdit={this._onEdit}
-                                onDelete={this._onDelete} setDefault={this._setDefault}/>
+            <AddressManageItem
+                item={rowData}
+                onEdit={this._onEdit}
+                onPress={this.onPress}
+                onDelete={this._onDelete} setDefault={this._setDefault}/>
         );
     }
 }
