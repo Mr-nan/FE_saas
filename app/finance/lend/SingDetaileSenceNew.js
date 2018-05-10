@@ -417,7 +417,11 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             this.toNextPage({
                 name: 'ContractInfoSceneChildren',
                 component: ContractInfoSceneChildren,
-                params: {loan_code: this.props.loanNumber, loan_number:loan_number, showButton: false}
+                params: {
+                    loan_code: this.props.loanNumber,
+                    loan_number:loan_number,
+                    showButton: false
+                }
             });
         } else if (title === '资金方签署中') {
             this.toNextPage({
