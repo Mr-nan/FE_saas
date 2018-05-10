@@ -35,7 +35,7 @@ export default class OpenTrustSubmit extends PureComponent {
 
     render() {
         return (
-            <TouchableOpacity style={{alignSelf: 'center', marginTop: Pixel.getPixel(25),}}
+            <TouchableOpacity style={{alignSelf: 'center'}}
                               onPress={() => {
                                   if (this.state.canSubmit) {
                                     this.props.submit();
@@ -49,12 +49,13 @@ export default class OpenTrustSubmit extends PureComponent {
                     alignItems: 'center',
                     borderRadius: 3,
                     borderWidth: 1,
+                    backgroundColor:fontAndColor.COLORB0,
                     borderColor: this.state.canSubmit ? fontAndColor.COLORB0 : fontAndColor.COLORA2
                 }}>
                     <Text allowFontScaling={false} style={{
                         fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
-                        color: this.state.canSubmit ? fontAndColor.COLORB0 : fontAndColor.COLORA2
-                    }}>立刻升级</Text>
+                        color: this.state.canSubmit ? 'white' : fontAndColor.COLORA2
+                    }}>开通</Text>
                 </View>
             </TouchableOpacity>
         );

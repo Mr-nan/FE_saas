@@ -10,7 +10,8 @@ import {
     Image,
     Text,
     TouchableOpacity,
-    InteractionManager
+    InteractionManager,
+    Animated,
 } from "react-native";
 
 const {width, height} = Dimensions.get('window');
@@ -22,6 +23,7 @@ import * as AppUrls from "../../../constant/appUrls";
 import TrustAccountContractScene from "../trustAccount/TrustAccountContractScene";
 import SelectButton from "./SelectButton";
 import OpenTrustSubmit from "./OpenTrustSubmit";
+
 const Pixel = new PixelUtil();
 
 export default class OpenTrustAccountView extends BaseComponent {
@@ -33,8 +35,12 @@ export default class OpenTrustAccountView extends BaseComponent {
     constructor(props) {
         super(props);
         this.contractList = [];
+        this.agree_contract = true;
+        this.agree_default = true;
+
         this.state = {
-            isShow: false
+            isShow: false,
+            content_height: new Animated.Value(Pixel.getPixel(275))
         };
     }
 
@@ -71,14 +77,14 @@ export default class OpenTrustAccountView extends BaseComponent {
      *   跳转合同预览页
      **/
     openContractScene = (name, url) => {
-            this.toNextPage({
-                name: 'TrustAccountContractScene',
-                component: TrustAccountContractScene,
-                params: {
-                    title: name,
-                    webUrl: url
-                }
-            })
+        this.toNextPage({
+            name: 'TrustAccountContractScene',
+            component: TrustAccountContractScene,
+            params: {
+                title: name,
+                webUrl: url
+            }
+        })
     };
 
     /**
@@ -92,8 +98,11 @@ export default class OpenTrustAccountView extends BaseComponent {
      *   开通信托账户提交
      **/
     openTrustSubmit = () => {
-        this.changeState(false);
-        this.props.callBack();
+        if (this.agree_contract && this.agree_default) {
+            this.changeState(false);
+            this.props.callBack();
+        }
+
     };
 
     /**
@@ -103,83 +112,161 @@ export default class OpenTrustAccountView extends BaseComponent {
         if (this.state.isShow) {
             let contractList = [];
             for (let i = 0; i < this.contractList.length; i++) {
-                contractList.push(<Text
-                    key={i + 'contractList'}
-                    allowFontScaling={false}
-                    onPress={() => {this.openContractScene('合同', this.contractList[i].url)}}
-                    style={{
-                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                        color: fontAndColor.COLORB4,
-                        lineHeight: Pixel.getPixel(20)
-                    }}>
-                    《{this.contractList[i].name}》{i < this.contractList.length - 1 ? '、' : ''}
-                </Text>);
-                //contractList.push({title: this.contractList[i].name, webUrl: this.contractList[i].url});
+
+                if (this.contractList[i].name.indexOf('民事信托合同') !== -1 || this.contractList[i].name.indexOf('信账宝会员注册及服务协议')!==-1|| this.contractList[i].name.indexOf('中信信托-账户管理类服务')!==-1){
+                    contractList.push(<Text
+                        key={i + 'contractList'}
+                        allowFontScaling={false}
+                        onPress={() => {
+                            this.openContractScene('合同', this.contractList[i].url)
+                            console.log(this.contractList[i].url)
+                        }}
+                        style={{
+                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                            color: fontAndColor.COLORB4,
+                            lineHeight: Pixel.getPixel(20)
+                        }}>
+                        《{this.contractList[i].name}》
+                    </Text>);
+
+                }
             }
-            return (<View style={styles.container}>
-                <TouchableOpacity style={{flex: 1}} onPress={() => {
-                    this.changeState(false)
-                }}/>
-                <View style={{
-                    position: 'absolute',
-                    backgroundColor: '#ffffff',
-                    width: Pixel.getPixel(290),
-                    height: Pixel.getPixel(292),
-                    //marginTop: Pixel.getPixel(150),
-                    //justifyContent: 'center',
-                    top: Pixel.getPixel(150),
-                    left: Pixel.getPixel(43),
-                    alignSelf: 'center',
-                    borderRadius: Pixel.getPixel(4),
-                    borderWidth: 1,
-                    borderColor: '#ffffff'
-                }}>
-                    <Text
-                        allowFontScaling={false}
-                        style={{
-                            marginTop: Pixel.getPixel(18),
-                            marginLeft: Pixel.getPixel(20),
-                            marginRight: Pixel.getPixel(20),
-                            color: '#000',
-                            fontSize: Pixel.getFontPixel(16),
-                            textAlign: 'center'
-                        }}>升级开通"转呗"</Text>
-                    <Text
-                        allowFontScaling={false}
-                        style={{
-                            marginTop: Pixel.getPixel(18),
-                            marginLeft: Pixel.getPixel(20),
-                            marginRight: Pixel.getPixel(20),
-                            color: '#000',
-                            fontSize: Pixel.getFontPixel(14),
-                            lineHeight: Pixel.getPixel(18),
-                            textAlign: 'center'
-                        }}>第1车贷同中信信托合作，为优质合作伙伴开通具备强大金融功能的信托服务账户"转呗"</Text>
-                    <View style={{
-                        marginTop: Pixel.getPixel(15), flexDirection: 'row', alignSelf: 'center',
-                        marginLeft: Pixel.getPixel(20), marginRight: Pixel.getPixel(20),
-                    }}>
-                        <SelectButton link={this.getOpenTrustSubmitRef}/>
-                        <View style={{marginLeft: Pixel.getPixel(5),}}>
-                            <Text >
+
+            return (
+
+                <View style={styles.container}>
+                    <TouchableOpacity
+                        style={{flex: 1, alignItems: 'center',}}
+                        onPress={() => {
+                            this.changeState(false)
+                        }}
+                    >
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            style={{
+                                marginTop:Pixel.getPixel(200),
+                            }}
+                            onPress={()=>{}}
+                        >
+
+
+                        <Animated.View style={{
+
+                            backgroundColor: '#ffffff',
+                            borderRadius: Pixel.getPixel(4),
+                            width: Pixel.getPixel(260),
+                            height: this.state.content_height,
+                            paddingBottom: Pixel.getPixel(15),
+                            overflow:"hidden",
+                        }}>
+
+                            <View
+                                style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    paddingVertical: Pixel.getPixel(50),
+                                    paddingHorizontal: Pixel.getPixel(20)
+                                }}
+                            >
+
                                 <Text
                                     allowFontScaling={false}
                                     style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                        color: fontAndColor.COLORA1,
-                                        lineHeight: Pixel.getPixel(20)
-                                    }}>
-                                    我已经阅读并同意
-                                </Text>
+                                        color: '#000',
+                                        fontSize: Pixel.getFontPixel(15),
+                                        lineHeight: Pixel.getPixel(18),
+                                    }}
+                                >{"\t用“粮票”购车、还款，提现更方便，更快捷！一键开通，“粮票”到手!"}</Text>
+
+                            </View>
+
+                            <View style={{
+                                marginTop: Pixel.getPixel(15), alignSelf: 'center',
+                                marginHorizontal: Pixel.getPixel(20),
+                            }}>
+                                <OpenTrustSubmit ref={(ref) => {
+                                    this.openTrustSubmitRef = ref
+                                }} submit={this.openTrustSubmit}/>
+
+                                <View style={{
+                                    flexDirection: 'row',
+
+                                    marginTop: Pixel.getPixel(15)
+                                }}>
+                                    <SelectButton onPress={(flag) => {
+                                        this.agree_default = flag;
+                                        this.openTrustSubmitRef.changeState(this.agree_contract && this.agree_default)
+                                    }}/>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                            color: fontAndColor.COLORA1,
+                                            marginLeft: Pixel.getPixel(5),
+                                            marginTop: Pixel.getPixel(5),
+                                            marginRight:Pixel.getPixel(5),
+                                            textAlign: 'left',
+
+                                        }}
+                                        multiline={true}
+                                    >
+                                        默认使用恒丰开户信息开通粮票
+                                    </Text>
+
+                                </View>
+
+
+                                <View
+                                    style={{flexDirection: 'row', alignItems: 'center'}}
+                                >
+                                    <SelectButton onPress={(flag) => {
+                                        this.agree_contract = flag;
+                                        this.openTrustSubmitRef.changeState(this.agree_contract && this.agree_default)
+
+                                    }}/>
+
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                            color: fontAndColor.COLORA1,
+                                            lineHeight: Pixel.getPixel(20),
+                                            marginLeft: Pixel.getPixel(5)
+                                        }}
+                                        onPress={() => {
+                                            Animated.timing(
+                                                this.state.content_height,
+                                                {
+                                                    toValue:Pixel.getPixel(365)
+                                                }
+                                            ).start()
+
+                                        }}
+                                    >
+
+                                        我已经阅读并同意以下协议,点击查看
+                                    </Text>
+
+                                </View>
+
+
+                            </View>
+
+
+                            <View style={{
+                                marginHorizontal:Pixel.getPixel(15),
+                                marginVertical:Pixel.getPixel(9),
+                            }}>
                                 {contractList}
-                            </Text>
-                        </View>
-                    </View>
-                    <OpenTrustSubmit ref={(ref) => {this.openTrustSubmitRef = ref}} submit={this.openTrustSubmit}/>
+                            </View>
+                        </Animated.View>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
                 </View>
-            </View>);
+
+            );
         } else {
-            return (<View />);
+            return (<View/>);
         }
     }
 
@@ -193,5 +280,7 @@ const styles = StyleSheet.create({
         right: 0,
         position: 'absolute',
         bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 });
