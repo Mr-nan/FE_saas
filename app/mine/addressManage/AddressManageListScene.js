@@ -32,9 +32,14 @@ export default class AddressManageListScene extends BaseComponent {
     };
 
     getData = () => {
+
         let maps = {
             company_id:global.companyBaseID,
         };
+        if(typeof this.props.item !== 'undefined'){
+            maps.screen_code = this.props.item.regionId
+        }
+
         request(Urls.GET_FLOWSOTHER_LIST, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
