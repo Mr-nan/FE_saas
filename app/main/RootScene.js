@@ -30,7 +30,7 @@ import codePush from 'react-native-code-push'
 import SQLiteUtil from "../utils/SQLiteUtil";
 import PromotionScene from "./PromotionScene";
 const SQLite = new SQLiteUtil();
-const versionCode = 37.0;
+const versionCode = 38.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
@@ -46,7 +46,6 @@ export default class RootScene extends BaseComponent {
         super(props);
 //获取DeviceToken
         UmengPush.getDeviceToken(deviceToken => {
-            console.log('deviceToken', deviceToken)
         });
 
 //接收到推送消息回调
