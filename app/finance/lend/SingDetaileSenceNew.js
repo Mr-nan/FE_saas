@@ -8,7 +8,8 @@ import {
     ListView,
     Text,
     TouchableOpacity,
-    Image
+    Image,
+    PixelRatio,
 } from 'react-native';
 
 import {
@@ -40,6 +41,7 @@ import ContractInfoScene from './ContractInfoScene';
 // import ContractInfoSceneChildren from './ContractInfoSceneChildren';
 import ContractInfoSceneChildren from './ContractListScene';
 import RecognizedGains from '../../login/RecognizedGains';
+var onePT = 1 / PixelRatio.get(); //一个像素
 
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 const controlCode = {
@@ -487,7 +489,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(14),color:"#FA5741"}}>{this.getStatusStr(this.stateCode)}</Text>
                 </View>
-                <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
+                <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-start"}}>
                         <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{parseFloat(this.tempjson.loanmny)}<Text style={{fontSize:adapeSize(12)}}>万</Text></Text>
@@ -502,7 +504,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>综合费率</Text>
                     </View>
                 </View>
-                <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.paymenttype}</Text>
                     {
@@ -514,7 +516,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 {
                     this.stateCode == 0 ?
                     <View style={{flexDirection:'column'}}>
-                        <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                        <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
                         <View style={{flexDirection:'row',padding:adapeSize(10)}}>
                             <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'借款日期'}</Text>
                             <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.loan_time}</Text>
@@ -559,7 +561,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         <Image source={cellJianTou} style={{ width: adapeSize(15), height: adapeSize(15)}}/>
                     </View>
                 </TouchableOpacity>
-                <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
+                <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
                         <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(100)}}>{rowData.loan_mny}</Text>

@@ -4,7 +4,6 @@
 
 import  React, {Component, PropTypes} from  'react'
 import  {
-
     View,
     Text,
     ListView,
@@ -15,7 +14,8 @@ import  {
     TouchableOpacity,
     RefreshControl,
     NativeModules,
-    BackAndroid
+    BackAndroid,
+    PixelRatio,
 } from  'react-native'
 
 let mnyData = {};
@@ -29,6 +29,7 @@ import  PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileSceneNew';
 import DDDetailScene from '../finance/lend/DDDetailScene';
 import DDApplyLendScene from '../finance/lend/DDApplyLendScene';
+var onePT = 1 / PixelRatio.get(); //一个像素
 
 import CGDDetailSence from '../finance/lend/CGDDetailSence';
 import SingDetaileSence from '../finance/lend/SingDetaileSenceNew';
@@ -428,6 +429,11 @@ export default class FinanceSence extends BaseComponet {
         opacity: 1,
     }
 
+    rightbuttonParams = {
+        parentStyle: cellSheet.rightParentStyle,
+        childStyle: cellSheet.rightChildStyle,
+    }
+
     typeButtonParams = {
         buttonType: MyButton.TEXTBUTTON,
         parentStyle: cellSheet.typeParentStyle,
@@ -442,29 +448,29 @@ export default class FinanceSence extends BaseComponet {
         } else {
             if (movie.product_code == 1) {
                 nextPage = KurongDetaileScene;
-                this.buttonParams.content = '库';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: fontAndColor.COLORB4}];
+                this.buttonParams.content = Pixel.getProductStr(movie.product_code);
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: Pixel.getProductColor(movie.product_code)}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             } else if (movie.product_code == 2) {
                 nextPage = SingDetaileSence;
-                this.buttonParams.content = '单';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: fontAndColor.COLORB0}];
+                this.buttonParams.content = Pixel.getProductStr(movie.product_code);
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: Pixel.getProductColor(movie.product_code)}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             } else if (movie.product_code == 3) {
                 nextPage = KurongDetaileScene;
-                this.buttonParams.content = '信';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: "#8db7f7"}];
+                this.buttonParams.content = Pixel.getProductStr(movie.product_code);
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: Pixel.getProductColor(movie.product_code)}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             } else if (movie.product_code == 4) {
                 nextPage = KurongDetaileScene;
-                this.buttonParams.content = '库';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: fontAndColor.COLORB4}];
+                this.buttonParams.content = Pixel.getProductStr(movie.product_code);
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: Pixel.getProductColor(movie.product_code)}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             } else if (movie.product_code == 5) {
                 // if (movie.product_type_change_status == 0) {
                     nextPage = CGDDetailSence;
-                    this.buttonParams.content = '采';
-                    this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: "#FA5741"}];
+                    this.buttonParams.content = Pixel.getProductStr(movie.product_code);
+                    this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: Pixel.getProductColor(movie.product_code)}];
                     this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
                 // } else if (movie.product_type_change_status == 1) {
                 //     nextPage = SingDetaileSence;
@@ -482,16 +488,18 @@ export default class FinanceSence extends BaseComponet {
                 // }
             } else if (movie.product_code == 6) {
                 nextPage = DDDetailScene;
-                this.buttonParams.content = '订';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: "#3AC87E"}];
+                this.buttonParams.content = Pixel.getProductStr(movie.product_code);
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: Pixel.getProductColor(movie.product_code)}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             }else if (movie.product_code == 8) {
                 nextPage = KurongDetaileScene;
-                this.buttonParams.content = '车';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: "#FFBD2F"}];
+                this.buttonParams.content = Pixel.getProductStr(movie.product_code);
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {backgroundColor: Pixel.getProductColor(movie.product_code)}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             }
 
+            this.rightbuttonParams.parentStyle = [cellSheet.rightParentStyle,{borderColor: this.getStatusColor(movie.logic_status)[0],}];
+            this.rightbuttonParams.childStyle = [cellSheet.rightChildStyle,{color: this.getStatusColor(movie.logic_status)[1]}];
             // if (movie.status == 1) {
             //     this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB3}];
             // } else if (movie.status == 7) {
@@ -502,6 +510,7 @@ export default class FinanceSence extends BaseComponet {
             //     this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB0}];
             // }
             // this.typeButtonParams.content = movie.product_type_code;
+
             return (
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
                     if (nextPage === CGDDetailSence) {//采购贷
@@ -598,20 +607,8 @@ export default class FinanceSence extends BaseComponet {
                         </View>
                         <View
                             style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-end', justifyContent: 'center'}]}>
-                            <View style={{
-                                borderWidth: 1,
-                                borderColor: fontAndColor.COLORA4,
-                                height: Pixel.getPixel(30),
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                paddingLeft:Pixel.getPixel(5),
-                                paddingRight:Pixel.getPixel(5)
-                            }}>
-
-                                <Text allowFontScaling={false} style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                    color: fontAndColor.COLORB3,
-                                }}>{this.getStatusStr(movie.logic_status)}</Text>
+                            <View style={this.rightbuttonParams.parentStyle}>
+                                <Text allowFontScaling={false} style={this.rightbuttonParams.childStyle}>{this.getStatusStr(movie.logic_status)}</Text>
                             </View>
                         </View>
                     </View>
@@ -645,6 +642,44 @@ export default class FinanceSence extends BaseComponet {
                 tempTitle = ['审核未通过']
             }else if (stateCode == '0') {
                 tempTitle = ['已取消']
+            }
+            return tempTitle;
+        }
+    }
+
+
+    getStatusColor = (stateCode) => {
+        if (stateCode !== '') {
+            let tempTitle = ['#999999','#999999']
+            if (stateCode == '10') {
+                // tempTitle = ['评估监管中']
+                tempTitle = ['#05C5C2','#05C5C2']
+            } else if (stateCode == '20') {
+                // tempTitle = ['审核中']
+                tempTitle = ['#05C5C2','#05C5C2']
+            } else if (stateCode == '30') {
+                // tempTitle = ['渠道审核中']
+                tempTitle = ['#05C5C2','#05C5C2']
+            }else if (stateCode == '40') {
+                // tempTitle = ['待签合同']
+                tempTitle = ['#05C5C2','#05C5C2']
+            }else if (stateCode == '50') {
+                // tempTitle = ['待确认借据']
+                tempTitle = ['#05C5C2','#05C5C2']
+            }else if (stateCode == '60') {
+                tempTitle = ['#FA5741','#FA5741']
+            }else if (stateCode == '70') {
+                // tempTitle = ['已放款']
+                tempTitle = ['#05C5C2','#05C5C2']
+            }else if (stateCode == '80') {
+                // tempTitle = ['已还清']
+                tempTitle = ['#05C5C2','#05C5C2']
+            }else if (stateCode == '21') {
+                // tempTitle = ['审核未通过']
+                tempTitle = ['#05C5C2','#05C5C2']
+            }else if (stateCode == '0') {
+                // tempTitle = ['已取消']
+                tempTitle = ['#999999','#999999']
             }
             return tempTitle;
         }
@@ -1166,12 +1201,10 @@ const cellSheet = StyleSheet.create({
     },
 
     headerTitle: {
-
         fontSize: 20,
     },
 
     container: {
-
         flex: 1,
         marginTop: 0,   //设置listView 顶在最上面
         backgroundColor: fontAndColor.COLORA3,
@@ -1181,14 +1214,15 @@ const cellSheet = StyleSheet.create({
         backgroundColor: '#ffffff',
         height: Pixel.getPixel(111)
     },
+
     rightContainer: {
 
         marginLeft: 20,
         flex: 1,
         alignItems: 'flex-start',
     },
-    rightContainerTop: {
 
+    rightContainerTop: {
         marginLeft: 10,
         flex: 1,
         alignItems: 'center',
@@ -1196,40 +1230,42 @@ const cellSheet = StyleSheet.create({
     },
 
     rightContainerBottom: {
-
         marginLeft: 10,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    title: {
 
+    title: {
         flex: 1,
         fontSize: 15,
         textAlign: 'left',
-
     },
+
     year: {
         fontSize: 15,
         textAlign: 'center',
         marginRight: 20,
     },
-    Separator: {
 
+    Separator: {
         backgroundColor: fontAndColor.COLORA4,
         height: 1,
-
     },
+
     titleStyle: {
         width: width,
         height: Pixel.getPixel(230)
     },
+
     titleViewStyle: {
         alignItems: 'center',
     },
+
     titleImageStyle: {
         position: 'absolute'
     },
+
     titleViewBottomStyle: {
         width: width,
         height: Pixel.getPixel(40),
@@ -1276,9 +1312,21 @@ const cellSheet = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    rightParentStyle: {
+        borderWidth: onePT,
+        borderColor: fontAndColor.COLORA4,
+        height: Pixel.getPixel(30),
+        justifyContent: 'center',
+        alignItems: 'center',
+        width:Pixel.getPixel(90)
+    },
     childStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
         color: fontAndColor.COLORB0,
+    },
+    rightChildStyle: {
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB3,
     },
     typeParentStyle: {
         borderWidth: 1,

@@ -8,7 +8,8 @@ import {
     ListView,
     Text,
     TouchableOpacity,
-    Image
+    Image,
+    PixelRatio
 } from 'react-native';
 
 import {
@@ -39,6 +40,7 @@ import *as apis from '../../constant/appUrls'
 import ContractInfoScene from './ContractInfoScene';
 import ContractInfoSceneChildren from './ContractInfoSceneChildren';
 import RecognizedGains from '../../login/RecognizedGains';
+var onePT = 1 / PixelRatio.get(); //一个像素
 
 const controlCode = {
     stateCode: '',
@@ -317,7 +319,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(14),color:"#FA5741"}}>{this.getStatusStr(this.stateCode)}</Text>
                 </View>
-                <View style={{width:width,height:1,backgroundColor:'#D8D8D8'}}/>
+                <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-start"}}>
                         <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{parseFloat(this.tempjson.loanmny)}<Text style={{fontSize:adapeSize(12)}}>万</Text></Text>
@@ -332,7 +334,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>综合费率</Text>
                     </View>
                 </View>
-                <View style={{width:width-adapeSize(10),height:1,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.paymenttype}</Text>
                 </View>
