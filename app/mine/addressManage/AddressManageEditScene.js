@@ -253,8 +253,8 @@ export default class AddressManageEditScene extends BaseComponent {
                         style={styles.itemRightText}
                         underlineColorAndroid='transparent'
                         placeholder={'请输入'}
-                        defaultValue={this.item.contact_name}
-                        onChangeText={(text)=>{this._onTextChange('1',text)}}
+                        defaultValue={this.item.id_card}
+                        onChangeText={(text)=>{this._onTextChange('3',text)}}
                     />
                 </View>
                 <TouchableOpacity style={styles.btnStyle}
