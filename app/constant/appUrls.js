@@ -11,12 +11,16 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 测试地址2
  */
-// export const BASEURL = 'http://10.3.11.99:80/';
+//export const BASEURL = 'http://10.3.11.99:80/';
 
 /**
  * 正式地址
  */
+<<<<<<< HEAD
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
+=======
+//export const BASEURL = 'https://gatewayapi.dycd.com/';
+>>>>>>> 7bfedabaa35be5c9d75be48345c5273cb01f3dcd
 
 /**
  * 预发布地址
@@ -1429,10 +1433,27 @@ export const ZS_SUB_BANK = BASEURL + "v1/bankRoute.query/findChildBankNo";
  *   获取用户的账户详情(我的账户页面-卡片页  调用)
  */
 export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccountDetail";
+
 /**
- *   信托开户
+ *   信托提现
+ */
+export const XINTUO_WITHDRAW = BASEURL + "v2/account.xt/appWithdrawal"
+
+/**
+ *   判断是否在信托白名单
+ */
+export const CAN_XINTUO = BASEURL + "v2/account.xt/getUidExistWhiteList";
+
+/**
+ *   信托开户（个人）
  */
 export const OPEN_PERSON_TRUST_ACCOUNT = BASEURL + "v1/account.zsyxt/openPersonAccount";
+
+/**
+ *   信托开户(企业)
+ */
+export const OPEN_ENTER_TRUST_ACCOUNT = BASEURL + "v2/account.xt/openEnterpriseAccount";
+
 /**
  *   微众借据详情API(信托开户)
  */
