@@ -41,6 +41,8 @@ import ContractInfoScene from './ContractInfoScene';
 import ContractInfoSceneChildren from './ContractInfoSceneChildren';
 import RecognizedGains from '../../login/RecognizedGains';
 var onePT = 1 / PixelRatio.get(); //一个像素
+import  PixelUtil from '../../utils/PixelUtil';
+let Pixel = new PixelUtil();
 
 const controlCode = {
     stateCode: '',
@@ -193,34 +195,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         return dataSource;
     }
 
-    getStatusStr = (stateCode) => {
-        if (stateCode !== '') {
-            let tempTitle = ['未知']
-            if (stateCode == '10') {
-                tempTitle = ['评估监管中']
-            } else if (stateCode == '20') {
-                tempTitle = ['审核中']
-            } else if (stateCode == '30') {
-                tempTitle = ['渠道审核中']
-            }else if (stateCode == '40') {
-                tempTitle = ['待签合同']
-            }else if (stateCode == '50') {
-                tempTitle = ['待确认借据']
-            }else if (stateCode == '60') {
-                tempTitle = ['处理中']
-            }else if (stateCode == '70') {
-                tempTitle = ['已放款']
-            }else if (stateCode == '80') {
-                tempTitle = ['已还清']
-            }else if (stateCode == '21') {
-                tempTitle = ['审核未通过']
-            }else if (stateCode == '0') {
-                tempTitle = ['已取消']
-            }
-            return tempTitle;
-        }
-    }
-
     //取消借款  子单
     cancleLoadC = (imgSid,code) => {
         this.props.showModal(true);
@@ -313,11 +287,11 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
-                    <Text style={{backgroundColor:'#05c5c2',color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),paddingLeft:adapeSize(3),paddingRight:adapeSize(3),height:adapeSize(16)}}>
-                        {(this.tempjson.product_type_code.product_type + '').substr(0,1)}
+                    <Text style={{backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code),color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),paddingLeft:adapeSize(3),paddingRight:adapeSize(3),height:adapeSize(16),borderRadius:adapeSize(3)}}>
+                        {Pixel.getProductStr(this.tempjson.product_type_code.product_code)}
                     </Text>
                     <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.payment_number}</Text>
-                    <Text style={{fontSize:adapeSize(14),color:"#FA5741"}}>{this.getStatusStr(this.stateCode)}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(this.stateCode)[0]}}>{Pixel.getStatusStr(this.stateCode)}</Text>
                 </View>
                 <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>

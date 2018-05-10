@@ -498,8 +498,8 @@ export default class FinanceSence extends BaseComponet {
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: "#ffffff"}];
             }
 
-            this.rightbuttonParams.parentStyle = [cellSheet.rightParentStyle,{borderColor: this.getStatusColor(movie.logic_status)[0],}];
-            this.rightbuttonParams.childStyle = [cellSheet.rightChildStyle,{color: this.getStatusColor(movie.logic_status)[1]}];
+            this.rightbuttonParams.parentStyle = [cellSheet.rightParentStyle,{borderColor: Pixel.getStatusColor(movie.logic_status)[0],}];
+            this.rightbuttonParams.childStyle = [cellSheet.rightChildStyle,{color: Pixel.getStatusColor(movie.logic_status)[1]}];
             // if (movie.status == 1) {
             //     this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB3}];
             // } else if (movie.status == 7) {
@@ -608,7 +608,7 @@ export default class FinanceSence extends BaseComponet {
                         <View
                             style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-end', justifyContent: 'center'}]}>
                             <View style={this.rightbuttonParams.parentStyle}>
-                                <Text allowFontScaling={false} style={this.rightbuttonParams.childStyle}>{this.getStatusStr(movie.logic_status)}</Text>
+                                <Text allowFontScaling={false} style={this.rightbuttonParams.childStyle}>{Pixel.getStatusStr(movie.logic_status)}</Text>
                             </View>
                         </View>
                     </View>
@@ -616,72 +616,6 @@ export default class FinanceSence extends BaseComponet {
 
 
             )
-        }
-    }
-
-    getStatusStr = (stateCode) => {
-        if (stateCode !== '') {
-            let tempTitle = ['未知']
-            if (stateCode == '10') {
-                tempTitle = ['评估监管中']
-            } else if (stateCode == '20') {
-                tempTitle = ['审核中']
-            } else if (stateCode == '30') {
-                tempTitle = ['渠道审核中']
-            }else if (stateCode == '40') {
-                tempTitle = ['待签合同']
-            }else if (stateCode == '50') {
-                tempTitle = ['待确认借据']
-            }else if (stateCode == '60') {
-                tempTitle = ['处理中']
-            }else if (stateCode == '70') {
-                tempTitle = ['已放款']
-            }else if (stateCode == '80') {
-                tempTitle = ['已还清']
-            }else if (stateCode == '21') {
-                tempTitle = ['审核未通过']
-            }else if (stateCode == '0') {
-                tempTitle = ['已取消']
-            }
-            return tempTitle;
-        }
-    }
-
-
-    getStatusColor = (stateCode) => {
-        if (stateCode !== '') {
-            let tempTitle = ['#999999','#999999']
-            if (stateCode == '10') {
-                // tempTitle = ['评估监管中']
-                tempTitle = ['#05C5C2','#05C5C2']
-            } else if (stateCode == '20') {
-                // tempTitle = ['审核中']
-                tempTitle = ['#05C5C2','#05C5C2']
-            } else if (stateCode == '30') {
-                // tempTitle = ['渠道审核中']
-                tempTitle = ['#05C5C2','#05C5C2']
-            }else if (stateCode == '40') {
-                // tempTitle = ['待签合同']
-                tempTitle = ['#05C5C2','#05C5C2']
-            }else if (stateCode == '50') {
-                // tempTitle = ['待确认借据']
-                tempTitle = ['#05C5C2','#05C5C2']
-            }else if (stateCode == '60') {
-                tempTitle = ['#FA5741','#FA5741']
-            }else if (stateCode == '70') {
-                // tempTitle = ['已放款']
-                tempTitle = ['#05C5C2','#05C5C2']
-            }else if (stateCode == '80') {
-                // tempTitle = ['已还清']
-                tempTitle = ['#05C5C2','#05C5C2']
-            }else if (stateCode == '21') {
-                // tempTitle = ['审核未通过']
-                tempTitle = ['#05C5C2','#05C5C2']
-            }else if (stateCode == '0') {
-                // tempTitle = ['已取消']
-                tempTitle = ['#999999','#999999']
-            }
-            return tempTitle;
         }
     }
 
