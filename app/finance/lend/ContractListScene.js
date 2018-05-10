@@ -70,7 +70,7 @@ export default class ContractListScene extends BaseComponent{
 
     loadData=()=>{
         let maps = {
-            api: Urls.GET_CONTRACT_DATA,
+            api: Urls.GET_SUB_CONTRACT_DATA,
             payment_number: this.props.loan_code,
             loan_number:this.props.loan_number
         };
@@ -89,7 +89,7 @@ export default class ContractListScene extends BaseComponent{
     contractSign = () => {
         this.props.showModal(true);
         let maps = {
-            api: Urls.CONTRACT_SIGN,
+            api: Urls.SUB_CONTRACT_SIGN,
             payment_number: this.props.loan_code,
             loan_number:this.props.loan_number
         };

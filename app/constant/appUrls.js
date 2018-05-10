@@ -750,6 +750,14 @@ export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
  **/
 export const GET_CONTRACT_DATA = 'api/v1/account/get_contract_data';
 
+
+/**
+ * from @zhaojian
+ *
+ * 获取一车一融子单合同数据
+ **/
+export const GET_SUB_CONTRACT_DATA = 'api/v3/contract/info';
+
 /**
  * from @zhaojian
  *
@@ -770,6 +778,13 @@ export const CONTRACT_LOAN_CONTRACT_LIST = 'api/v1/contract/loan_contract_list';
  * 签署合同
  **/
 export const CONTRACT_SIGN = 'api/v1/account/contract_sign';
+
+/**
+ * from @zhaojian
+ *
+ * 签署合同一车一融子单合同
+ **/
+export const SUB_CONTRACT_SIGN = 'api/v3/contract/sign_child';
 
 /**
  * from @zhaojian
