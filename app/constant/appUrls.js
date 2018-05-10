@@ -1591,6 +1591,27 @@ export const CHECKTRANSTYPE = BASEURL + "v2/order.logistics/check";
 
 /**
  *
+ * 取消运单
+ */
+export const LOGISTICS_ORDER_CANCEL = BASEURL + "v2/order.logistics_flows/cancelTrans";
+/**
+ *
+ * 取消运单
+ */
+export const LOGISTICS_ORDER_LIST = BASEURL + "v2/order.logistics_flows/getMeWaybill";
+/**
+ *
+ * 取消运单
+ */
+export const LOGISTICS_ORDER_CREATE = BASEURL + "v2/order.logistics_flows/create";
+/**
+ *
+ * 取消运单
+ */
+export const LOGISTICS_ORDER_SEARCH = BASEURL + "v2/order.logistics_flows/getTransSearch";
+
+/**
+ *
  *物流运价查询
  */
 export const ORDER_LOGISTICS_QUERY = BASEURL + "v2/order.logistics_flows/getFreight";

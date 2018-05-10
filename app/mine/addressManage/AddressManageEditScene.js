@@ -74,6 +74,21 @@ export default class AddressManageEditScene extends BaseComponent {
             return;
         }
 
+
+        if (typeof this.props.screen_item.city_code !== 'undefined'||  this.props.screen_item.city_code !== ''){
+
+            if(this.item.city_code != this.props.screen_item.city_code){
+                this.props.showToast('区域与发车区域不符，请重新选择')
+                return;
+            }
+        }
+
+
+
+
+
+
+
         this.props.showModal(true);
         let maps = {
             company_id:global.companyBaseID,

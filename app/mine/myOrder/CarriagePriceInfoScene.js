@@ -169,11 +169,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                                     name: 'AddressManageListScene',
                                     component:AddressManageListScene ,
                                     params: {
-                                        item:{
-                                            addr: this.params.startAddr,	                //始发地名称
-                                            regionId:this.params.startAddrRegionId        //始发地编码
-
-                                        },
+                                        item:this.props.firstItem,
                                         callBack: this.senderInfo,
 
                                     }
@@ -198,11 +194,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                                     name: 'AddressManageListScene',
                                     component: AddressManageListScene,
                                     params: {
-                                        item:{
-                                            addr: this.params.endAddr,
-                                            regionId:this.params.endAddrRegionId
-
-                                        },
+                                        item:this.props.lastItem,
                                         callBack: this.receiverInfo,
 
                                     }
@@ -393,6 +385,20 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             this.props.showToast(error.mjson.msg);
 
         });
+    }
+
+    preserveOrder = ()=>{
+
+
+    }
+
+
+    verify = ()=>{
+
+
+
+
+
     }
 
 

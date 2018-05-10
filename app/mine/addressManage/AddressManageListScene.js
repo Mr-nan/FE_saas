@@ -37,7 +37,7 @@ export default class AddressManageListScene extends BaseComponent {
             company_id:global.companyBaseID,
         };
         if(typeof this.props.item !== 'undefined'){
-            maps.screen_code = this.props.item.regionId
+            maps.screen_code = this.props.item.city_code
         }
 
         request(Urls.GET_FLOWSOTHER_LIST, 'Post', maps)
@@ -82,7 +82,10 @@ export default class AddressManageListScene extends BaseComponent {
         this.toNextPage({
             component:AddressManageEditScene,
             name:'AddressManageEditScene',
-            params:{item:{},refreshData:this.refreshingData}
+            params:{
+                screenItem:this.props.item,
+                item:{},
+                refreshData:this.refreshingData}
         });
     };
 
