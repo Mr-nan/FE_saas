@@ -47,6 +47,8 @@ export default class AddressManageEditScene extends BaseComponent {
             this.item.contact_name = text;
         }else if(type === '2'){
             this.item.contact_phone = text;
+        }else if(type === '3'){
+            this.item.id_card = text;
         }
     };
 
@@ -67,6 +69,11 @@ export default class AddressManageEditScene extends BaseComponent {
             this.props.showToast('请选择详细地址');
             return;
         }
+        if(this._isEmpty(this.item.id_card)){
+            this.props.showToast('请填写身份证号码');
+            return;
+        }
+
         this.props.showModal(true);
         let maps = {
             company_id:global.companyBaseID,
@@ -81,7 +88,8 @@ export default class AddressManageEditScene extends BaseComponent {
             address:this.item.address,
             latitude:this.item.latitude,
             longitude:this.item.longitude,
-            is_default:'0'
+            is_default:'0',
+            id_card:this.item.id_card
         };
         let url = Urls.ADD_ADDRESS;
         if(this.props.isEdit){
@@ -237,6 +245,17 @@ export default class AddressManageEditScene extends BaseComponent {
                               style={this.state.region_address ? styles.itemRightText : styles.itemRightText2}>{this.state.region_address ? this.state.region_address : '请选择'}</Text>
                         <Image style={styles.arrowStyle} source={arrow_img}/>
                     </TouchableOpacity>
+                </View>
+                <View style={styles.itemSeparator}/>
+                <View style={styles.itemView}>
+                    <Text style={styles.itemLeftText}>{'身份证号码'}</Text>
+                    <TextInput
+                        style={styles.itemRightText}
+                        underlineColorAndroid='transparent'
+                        placeholder={'请输入'}
+                        defaultValue={this.item.contact_name}
+                        onChangeText={(text)=>{this._onTextChange('1',text)}}
+                    />
                 </View>
                 <TouchableOpacity style={styles.btnStyle}
                                   activeOpacity={0.6}

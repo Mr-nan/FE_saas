@@ -259,8 +259,19 @@ export default class LogisticsQueryScene extends BaseComponent {
                     </KeyboardAvoidingView>
                 )}
                 <TouchableOpacity onPress={() => {
+
+
+                    let brandParams = {
+                        name: 'CarriagePriceInfoScene',
+                        component: CarriagePriceInfoScene,
+                        params: {}
+                    };
+
+                    this.toNextPage(brandParams)
+
                     if (this.state.canClick) {
-                        this.toNext();
+
+                    this.toNext();
                     }
                 }}
                                   activeOpacity={0.9}
