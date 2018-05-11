@@ -42,46 +42,61 @@ export default class FlowAllPage extends BaseComponent {
 
     initFinish = () => {
 
+        this.loadData()
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+
+    }
+
+
+    allRefresh = ()=>{
+
         this.setState({
-            renderPlaceholderOnly: 'success',
-            source: ds.cloneWithRows(['1', '2'])
+            renderPlaceholderOnly: 'loading',
         })
-        //this.getData();
+
+        this.loadData()
     }
 
-    getData = () => {
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                let maps = {};
-                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                    .then((response) => {
+    loadData = ()=>{
 
-                        },
-                        (error) => {
-                            this.setState({
-                                renderPlaceholderOnly: 'error',
-                            });
-                        });
-            } else {
+        let params = {
+
+            company_id: global.companyBaseID,
+            page:1,
+            rows:5,
+            status:this.props.status,  // 0：全部 1：待付款 2：待发运 3：已发运 4：已到达 5：已完成 6：失效
+
+        }
+
+        request(Urls.LOGISTICS_ORDER_LIST, 'post', params).then((response) => {
+            let data = response.mjson.data.info_list;
+
+            if (typeof data === 'undefined'){
                 this.setState({
-                    renderPlaceholderOnly: 'error',
-                });
+                    renderPlaceholderOnly: 'noData',
+
+                })
+                return;
             }
-        })
+
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+            this.setState({
+                renderPlaceholderOnly: 'success',
+                source: ds.cloneWithRows(data)
+            })
+
+        }, (error) => {
+
+            this.setState({
+                renderPlaceholderOnly: "failure",
+            })
+            this.props.showToast(error.mjson.msg);
+
+        });
+
     }
 
-    getFlowData = (id, type) => {
-        let maps = {};
-        request(Urls.ACCOUNT_PAYLOG, 'Post', maps)
-            .then((response) => {
 
-                },
-                (error) => {
-
-                });
-    }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -114,7 +129,9 @@ export default class FlowAllPage extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
 
         return (
-            <TransportOrder />
+            <TransportOrder
+                dataSource={movie}
+            />
         )
 
 

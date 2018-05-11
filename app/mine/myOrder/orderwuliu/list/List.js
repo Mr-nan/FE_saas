@@ -32,35 +32,11 @@ export default  class  List extends BaseComponent{
     constructor(props){
         super(props)
 
-        this.state = {
-            renderPlaceholderOnly: "loading",
-        }
 
     }
-
-    initFinish(){
-        this.setState({
-            renderPlaceholderOnly: "success",
-        })
-    }
-
 
 
     render(){
-
-        if (this.state.renderPlaceholderOnly !== 'success') {
-            // 加载中....
-            return ( <View style={styles.root}>
-                <NavigationBar
-                    leftImageShow={true}
-                    leftTextShow={false}
-                    centerText={'我的运单'}
-                    rightText={""}
-                    leftImageCallBack={this.backPage}
-                />
-                {this.loadView()}
-            </View>);
-        }
 
         return(<View  style={styles.root}>
                 <NavigationBar
@@ -88,15 +64,17 @@ export default  class  List extends BaseComponent{
                     onChangeTab={(obj) => {
 
                     }}
-                    renderTabBar={() => <RepaymenyTabBar tabName={['全部','代付款', "待发运",'在途','已到达','已失效']}/>}
+                    renderTabBar={() => <RepaymenyTabBar tabName={['全部','代付款', "待发运",'在途','已到达','已完成','已失效']}/>}
 
                 >
-                    <Page/>
-                    <Page/>
-                    <Page/>
-                    <Page/>
-                    <Page/>
-                    <Page/>
+                    <Page status={0}/>
+                    <Page status={1}/>
+                    <Page status={2}/>
+                    <Page status={3}/>
+                    <Page status={4}/>
+                    <Page status={5}/>
+                    <Page status={6}/>
+
                 </ScrollableTabView>
 
 

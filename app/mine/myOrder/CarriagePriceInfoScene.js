@@ -79,7 +79,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             carCount: 2,                  //车辆总数量		【必填】
             carType: 1,                            //1 新车2：二手车		【必填】
             company_id: global.companyBaseID,                   //公司ID		【必填】
-            endAddr:"辽宁沈阳",	                    //目的地名称		【必填】
+            endAddr:"辽宁沈阳",	               //目的地名称		【必填】
             endAddrRegionId: "210100",        //	目的地编码		【必填】
             endGpsLatitude: 0,	                                //车型目的地纬度
             endGpsLongitude: 0,	                                    //目的地经度
@@ -95,7 +95,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             startAddrRegionId:"110105",	        //始发地编码
             startGpsLatitude: 0,	                            //初始地纬度
             startGpsLongitude: 0, 	                            //初始地经度
-            transportType: 1,	        //运输类型1
+            transportType: 1,	        //运输类型1：大板2：救援3：代驾【必填】
         }
 
     }
@@ -103,7 +103,6 @@ export default class CarriagePriceInfoScene extends BaseComponent {
     initFinish = () => {
          this.loadData()
     }
-
 
     render() {
 
@@ -227,7 +226,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             }}
                         />
 
-                        <CarriagePriceInfoListView data={this.state.priceData}/>
+                        <CarriagePriceInfoListView data={this.state.priceData} params={this.params}/>
                     </ScrollView>
                 </KeyboardAvoidingView>
 
@@ -357,6 +356,18 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         )
     }
 
+    _showModal = (bool)=>{
+        this.props.showModal(bool)
+    }
+    _closeProvince = ()=>{
+        this.setState({
+            cityStatus:false,
+        })
+    }
+    checkAreaClick= (item)=>{
+        this.refs.InvoiceMarkItem.provinceCallBack(item)
+    }
+
 
     senderInfo = (info) => {
         // info
@@ -399,7 +410,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
     }
     receiverInfo = (info) => {
 
-        if(typeof info.id_card === 'undefined' || info.id_card === '' || info.id_card === null){
+        if(this.isNull(info.id_card)){
             this.props.showToast('您选的地址没有证件信息，请编辑添加或重新添加地址')
             return
         }
@@ -446,6 +457,8 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
         this.props.showModal(true)
 
+        this.params.invoice_data = JSON.stringify(this.params.invoice_data)
+
         Net.request(AppUrls.ORDER_LOGISTICS_QUERY, 'post', this.params).then((response) => {
             this.props.showModal(false)
             let data = response.mjson.data;
@@ -468,8 +481,26 @@ export default class CarriagePriceInfoScene extends BaseComponent {
     }
 
     preserveOrder = (type)=>{
+
+
+
+        this.toNextPage({
+            name:'List',
+            component:List,
+            params:{
+
+            }
+        })
+
+        return
+
+
+
         //  type  1: 预存订单 2: 立即支付
         this.props.showModal(true);
+
+        this.params.invoice_data = JSON.stringify(this.params.invoice_data)
+
 
         Net.request(AppUrls.LOGISTICS_ORDER_CREATE, 'post', this.params).then((response) => {
             this.props.showModal(false);
@@ -505,6 +536,43 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
     verify = ()=>{
 
+        if(this.params.needInvoice ===1){
+
+            if (this.isEmpty(this.params.invoice_data.invoice_title)){
+                this.props.showToast('请填写发票抬头');
+                return false;
+            }
+            if (this.isEmpty(this.params.invoice_data.invoice_code)){
+                this.props.showToast('请填写纳税人识别号');
+                return false;
+            }
+            if (this.isEmpty(this.params.invoice_data.province)||this.isEmpty(this.params.invoice_data.city)||this.isEmpty(this.params.invoice_data.district)){
+                this.props.showToast('请选择区域');
+                return false;
+            }
+            if (this.isEmpty(this.params.invoice_data.address)){
+                this.props.showToast('请填写详细地址')
+                return false;
+            }
+        }
+
+            if(this.params.receive_type===2){
+                if(this.params.startGpsLatitude === 0){
+                    this.props.showToast('请选择始发地详细地址');
+                    return false;
+                }
+            }
+            if(this.params.endGpsLatitude === 0){
+                this.props.showToast('请选择到达地详细地址');
+                return false;
+            }
+
+            if (!this.state.isChecked){
+
+                this.props.showToast('请选阅读并同意物流服务协议');
+                return false;
+
+            }
 
 
 
@@ -512,6 +580,17 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
             return true
     }
+
+
+    isEmpty=(value )=>{
+
+        if (typeof value === "undefined" || value === null || value === ''){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 
 
 }
@@ -687,6 +766,37 @@ class InvoiceMarkItem extends Component {
 
         }
 
+        // this.props.receiverInfo 对象
+        //
+        // address:"辽宁省沈阳市新民市304国道西50米"
+        // area:""
+        // area_code:""
+        // boss_id:10231
+        // boss_name:"丁永刚"
+        // city:"沈阳"
+        // city_code:"210100"
+        // company_id:10232
+        // company_name:"丁永刚二手车"
+        // contact_name:"骆伟"
+        // contact_phone:"18937284622"
+        // created_time:"2018-05-10 14:04:56"
+        // district:"新民市"
+        // district_code:"210181"
+        // full_address:"辽宁沈阳新民市辽宁省沈阳市新民市304国道西50米"
+        // id:65
+        // id_card:"420700197004070216"
+        // is_default:0
+        // is_del:0
+        // is_port:0
+        // latitude:"42.016773"
+        // longitude:"122.866409"
+        // province:"辽宁"
+        // province_code:"210000"
+        // updated_time:"2018-05-10 14:04:56"
+
+
+
+
     }
 
     provinceCallBack = (item)=>{
@@ -760,13 +870,11 @@ class InvoiceMarkItem extends Component {
                 <InformationInputItem
                     ref={'title'}
                     title={'发票抬头'}
-                    textPlaceholder={'或选择历史记录'}
+                    textPlaceholder={'请填写发票抬头'}
                     keyboardType={'default'}
-                    rightIcon={true}
                     value={this.state.title}
                     onChangeText={(text) => {
                         this.state.title = this.props.params.invoice_data.invoice_title = text;
-
                     }}
 
                 />
@@ -802,19 +910,27 @@ class InvoiceMarkItem extends Component {
                         <SaasText style={{fontWeight: '200', fontSize: 15,}}>发票收取地址与目的地址相同</SaasText>
                         <TouchableOpacity
                             onPress={() => {
-                                if (this.props.receiverInfo !== null) {
+                                if ( this.props.receiverInfo !== null) {
                                     if (this.state.same === false) {
                                         this.setState({
-                                            name: this.props.receiverInfo.name,
-                                            phone: this.props.receiverInfo.phone,
+                                            name: this.props.receiverInfo.contact_name,
+                                            phone: this.props.receiverInfo.contact_phone,
                                             address: this.props.receiverInfo.address,
                                             same: true,
                                             region: this.props.receiverInfo.region,
-                                            region_in_string: this.props.receiverInfo.region.provice_name + " " + this.props.receiverInfo.region.city_name
+                                            region_in_string: this.props.receiverInfo.province + " " + this.props.receiverInfo.city
                                         }, () => {
                                             this.refs.name.setInputTextValue(this.state.name)
                                             this.refs.phone.setInputTextValue(this.state.phone)
                                             this.refs.address.setInputTextValue(this.state.address)
+
+                                            this.props.params.invoice_data.contact_name = this.state.name;
+                                            this.props.params.invoice_data.contact_phone = this.state.phone;
+                                            this.props.params.invoice_data.address = this.state.address;
+                                            this.props.params.invoice_data.province = this.props.receiverInfo.province;
+                                            this.props.params.invoice_data.city=this.props.receiverInfo.city;
+                                            this.props.params.invoice_data.district=this.props.receiverInfo.district;
+
                                         })
                                     } else {
                                         this.setState({
@@ -822,7 +938,7 @@ class InvoiceMarkItem extends Component {
                                         })
                                     }
                                 } else {
-                                    this.props.showToast('请完善收车人相关信息')
+                                    this.props.showToast('请完善收车详细信息')
                                 }
 
 
@@ -1044,7 +1160,7 @@ class CarriagePriceInfoListView extends Component {
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <SaasText style={{fontWeight: '200'}}>运输方式：</SaasText>
-                            <SaasText style={{fontWeight: '200'}}>大板车</SaasText>
+                            <SaasText style={{fontWeight: '200'}}>{this.props.params.transportType ==1 ?'大板车':this.props.params.transportType ==2?"救援":"代价"}</SaasText>
                         </View>
                     </View>
                     <TouchableOpacity
@@ -1080,16 +1196,18 @@ class CarriagePriceInfoListView extends Component {
                         }}>
                             <View>
                                 <PriceItemView title="运费" value={priceData.freight}/>
-                                <PriceItemView title="提验车费" value={priceData.checkCarFee}/>
-
+                                {
+                                    this.props.params.transportType==1?<PriceItemView title="提验车费" value={priceData.checkCarFee}/>:null
+                                }
                             </View>
                             <View>
-                                <PriceItemView title="保险费" value={priceData.insurance}/>
-                                <PriceItemView title="送店费" value={priceData.toStoreFee}/>
-
+                                <PriceItemView title="保险费" value={parseFloat(priceData.insurance) == 0?'平台赠送':priceData.insurance}/>
+                                {
+                                    this.props.params.transportType==1?<PriceItemView title="送店费" value={priceData.toStoreFee}/>:null
+                                }
                             </View>
                             <View>
-                                <PriceItemView title="服务费" value={priceData.serviceFee}/>
+                                <PriceItemView title="服务费" value={parseFloat(priceData.serviceFee) == 0? '减免': priceData.serviceFee}/>
                                 <View style={{backgroundColor: 'white', marginBottom: Pixel.getPixel(23)}}>
                                     <Text style={{
                                         color: fontAndColor.COLORA1,

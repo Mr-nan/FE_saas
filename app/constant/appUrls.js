@@ -21,7 +21,7 @@
 /**
  * 预发布地址
  */
-// export const BASEURL = 'https://stgatewayapi.dycd.com/';
+//export const BASEURL = 'https://stgatewayapi.dycd.com/';
 
 /**
  * 版本号1

@@ -36,8 +36,12 @@ export default class AddressManageListScene extends BaseComponent {
         let maps = {
             company_id:global.companyBaseID,
         };
-        if(typeof this.props.item !== 'undefined'){
-            maps.screen_code = this.props.item.city_code
+        if(!this.isNull(this.props.item)){
+            if(!this.isNull(this.props.item.district_code)){
+                maps.screen_code = this.props.item.district_code
+            }else if(!this.isNull(this.props.item.city_code) )  {
+                maps.screen_code = this.props.item.city_code
+            }
         }
 
         request(Urls.GET_FLOWSOTHER_LIST, 'Post', maps)
