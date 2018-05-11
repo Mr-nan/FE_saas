@@ -460,6 +460,11 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         this.params.invoice_data = JSON.stringify(this.params.invoice_data)
 
         Net.request(AppUrls.ORDER_LOGISTICS_QUERY, 'post', this.params).then((response) => {
+
+            this.params.invoice_data = JSON.parse(this.params.invoice_data)
+
+
+
             this.props.showModal(false)
             let data = response.mjson.data;
             // let priceData=[{title:'运价',value:data.freight},{title:'保险费',value:data.insurance},{title:'服务费',value:data.serviceFee},{title:'提验车费',value:data.checkCarFee},{title:'送店费',value:data.toStoreFee},{title:'税费',value:data.taxation},{title:'总价',value:data.totalPrice}];
@@ -469,6 +474,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             });
 
         }, (error) => {
+            this.params.invoice_data = JSON.parse(this.params.invoice_data)
             this.props.showModal(false)
             this.setState({
                 //renderPlaceholderOnly: 'success',
@@ -483,16 +489,16 @@ export default class CarriagePriceInfoScene extends BaseComponent {
     preserveOrder = (type)=>{
 
 
-
-        this.toNextPage({
-            name:'List',
-            component:List,
-            params:{
-
-            }
-        })
-
-        return
+        //
+        // this.toNextPage({
+        //     name:'List',
+        //     component:List,
+        //     params:{
+        //
+        //     }
+        // })
+        //
+        // return
 
 
 
@@ -501,8 +507,8 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
         this.params.invoice_data = JSON.stringify(this.params.invoice_data)
 
-
         Net.request(AppUrls.LOGISTICS_ORDER_CREATE, 'post', this.params).then((response) => {
+            this.params.invoice_data = JSON.parse(this.params.invoice_data)
             this.props.showModal(false);
             let data = response.mjson.data;
             // let priceData=[{title:'运价',value:data.freight},{title:'保险费',value:data.insurance},{title:'服务费',value:data.serviceFee},{title:'提验车费',value:data.checkCarFee},{title:'送店费',value:data.toStoreFee},{title:'税费',value:data.taxation},{title:'总价',value:data.totalPrice}];
@@ -519,11 +525,16 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             }else if(type === 2){
 
 
+
+
+
+
             }
 
 
 
         }, (error) => {
+            this.params.invoice_data = JSON.parse(this.params.invoice_data)
             this.props.showModal(false);
 
             this.props.showToast(error.mjson.msg);
