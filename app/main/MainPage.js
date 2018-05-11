@@ -294,6 +294,8 @@ export default class MainPage extends BaseComponent {
      *
      * 获取游客身份权限
      *
+     *
+     * 
      */
 
     getTouristPermission=()=>{

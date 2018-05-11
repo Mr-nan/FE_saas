@@ -8,6 +8,7 @@
  */
 //export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
+
 /**
  * 测试地址2
  */
@@ -17,6 +18,7 @@
  * 正式地址
  */
 //export const BASEURL = 'https://gatewayapi.dycd.com/';
+
 
 /**
  * 预发布地址

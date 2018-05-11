@@ -35,6 +35,7 @@ import ProvinceListScene from "../../carSource/ProvinceListScene";
 import AddressManageListScene from "../addressManage/AddressManageListScene";
 import List from './orderwuliu/list/List'
 import CityRegionScene from "../addressManage/CityRegionScene";
+import PlatformChoose from "./orderwuliu/pay/PlatformChoose";
 
 
 export default class CarriagePriceInfoScene extends BaseComponent {
@@ -524,11 +525,13 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
             }else if(type === 2){
 
-
-
-
-
-
+                this.toNextPage({
+                    name:'PlatformChoose',
+                    component:PlatformChoose,
+                    params:{
+                        trans_id:'12345678'
+                    }
+                })
             }
 
 

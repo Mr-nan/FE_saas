@@ -362,6 +362,7 @@
 			remoteInfo = RNImagePicker;
 		};
 		EA444C9A2074CF39008D6C09 /* PBXContainerItemProxy */ = {
+
 			isa = PBXContainerItemProxy;
 			containerPortal = A08B9B7AF08C41A082FB247D /* RCTWeChat.xcodeproj */;
 			proxyType = 2;
@@ -369,6 +370,7 @@
 			remoteInfo = RCTWeChatTests;
 		};
 		EA444CA72074CF39008D6C09 /* PBXContainerItemProxy */ = {
+
 			isa = PBXContainerItemProxy;
 			containerPortal = F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */;
 			proxyType = 2;
@@ -813,6 +815,7 @@
 			children = (
 				7D769F0F1E6572180039526C /* libRNSpinkit.a */,
 				EA444CA82074CF39008D6C09 /* libRNSpinkit.a */,
+
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1037,6 +1040,7 @@
 			children = (
 				E3B816F81E613DD400279287 /* libRCTWeChat.a */,
 				EA444C9B2074CF39008D6C09 /* RCTWeChatTests.xctest */,
+
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1496,6 +1500,7 @@
 			fileType = archive.ar;
 			path = libRNSpinkit.a;
 			remoteRef = EA444CA72074CF39008D6C09 /* PBXContainerItemProxy */;
+
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		EE822B071F5D57D000E4249A /* libRCTCameraRoll.a */ = {
@@ -1867,7 +1872,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODEPUSH_KEY = "TXKA_1RB5rKvXMOuBTMqPoon2c5Pe1b7b22b-ea3f-4c77-abcc-72586c814b3c";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai FengZhiXing Automobile Finance Information Service Co., Ltd.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2201,7 +2206,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODEPUSH_KEY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai FengZhiXing Automobile Finance Information Service Co., Ltd.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2244,7 +2249,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODEPUSH_KEY = "TXKA_1RB5rKvXMOuBTMqPoon2c5Pe1b7b22b-ea3f-4c77-abcc-72586c814b3c";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai FengZhiXing Automobile Finance Information Service Co., Ltd.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
