@@ -14,7 +14,8 @@ export default class RepaymenyTabBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabName: this.props.tabName
+            tabName: this.props.tabName,
+            subName: this.props.subName
         }
     }
 
@@ -32,6 +33,7 @@ export default class RepaymenyTabBar extends Component {
                               tab={tab}
                               i={i}
                               tabName={this.state.tabName}
+                              subName = {this.state.subName}
                               activeTab={this.props.activeTab}/>);
         })
         return <View style={[styles.tabs, this.props.style]}>
@@ -42,6 +44,11 @@ export default class RepaymenyTabBar extends Component {
     setTabName=(tabName)=>{
         this.setState({
             tabName: tabName,
+        });
+    };
+    setTabSubName=(subName)=>{
+        this.setState({
+            subName: subName,
         });
     }
 }

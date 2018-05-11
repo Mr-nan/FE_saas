@@ -79,6 +79,8 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(12),
         height: Pixel.getPixel(20),
         width: Pixel.getPixel(20),
+        // backgroundColor:'red'
+
     },
 
     titleText: {
@@ -86,6 +88,7 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
         textAlign: 'center',
         backgroundColor: 'transparent',
+        // backgroundColor:'red'
 
     },
     imageFoot: {
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        // backgroundColor:'red
+        // backgroundColor:'red',
         width: Pixel.getPixel(80),
         marginRight:Pixel.getPixel(15),
 

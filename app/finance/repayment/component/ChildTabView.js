@@ -20,12 +20,23 @@ export default class ChildTabView extends Component {
             this.props.goToPages(this.props.i)
         }} style={styles.tab}>
             <View
-                style={[{flex: 1, height: Pixel.getPixel(38), justifyContent: 'center', alignItems: 'center'}]}>
+                style={[{flex: 1, height: Pixel.getPixel(38), justifyContent: 'center', alignItems: 'center',
+                    flexDirection:'row'
+                }]}>
                 <Text allowFontScaling={false} ref="ttt"
                       style={[this.props.activeTab === this.props.i ? {color: fontAndColor.COLORB0} : {color: fontAndColor.COLORA0},
                         {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>
                     {this.props.tabName[this.props.i]}
                 </Text>
+                {
+                    this.props.subName && (
+                        <Text allowFontScaling={false} ref="ttt"
+                              style={[this.props.activeTab === this.props.i ? {color: fontAndColor.COLORB0} : {color: fontAndColor.COLORB2},
+                                  {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(5)}]}>
+                            {this.props.subName[this.props.i]}
+                        </Text>
+                    )
+                }
             </View>
             { this.props.activeTab === this.props.i ?
                 <View style={{height: Pixel.getPixel(2),backgroundColor: fontAndColor.COLORB0}}/>
