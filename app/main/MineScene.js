@@ -17,7 +17,7 @@ import {
 import * as fontAndClolr from '../constant/fontAndColor';
 import MycarScene from '../carSource/CarMySourceScene';
 import PixelUtil from '../utils/PixelUtil'
-import ContractManageScene from '../mine/contractManage/ContractManageScene';
+import ContractManageScene from '../mine/shuchebaozhengjin/SCBZJScene';
 
 import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
