@@ -131,9 +131,12 @@ export default class FlowAllPage extends BaseComponent {
         return (
             <TransportOrder
                 data={movie}
+                pay={this.payOrder}
+                cancel={this.cancelOrder}
+                toCarDetialClick={this.toCarDetial}
+                toOrderDetialClick={this.toOrderDetial}
             />
         )
-
 
     }
 
@@ -168,6 +171,28 @@ export default class FlowAllPage extends BaseComponent {
 
 
     }
+
+    cancelOrder= (order)=>{
+
+
+
+
+    }
+
+    payOrder = (order)=>{
+
+    }
+
+    toCarDetial = (car)=>{
+
+    }
+
+    toOrderDetial = (order)=>{
+
+    }
+
+
+
 }
 
 export class TransportOrder extends Component{
@@ -199,7 +224,7 @@ export class TransportOrder extends Component{
 
         return<View style={{padding: Pixel.getPixel(15), backgroundColor: 'white', marginBottom: Pixel.getPixel(8)}}>
             <View style={{flexDirection: 'row', alignItems: 'center', }}>
-                <SaasText style={{flex: 1, color: fontAndColor.COLORA1, fontSize: 14}}>{运单号+this.props.data.trans_code}</SaasText>
+                <SaasText style={{flex: 1, color: fontAndColor.COLORA1, fontSize: 14}}>运单号{this.props.data.trans_code}</SaasText>
                 <SaasText style={{ color: fontAndColor.COLORA1, fontSize:12, marginRight:Pixel.getPixel(2)}}></SaasText>
                 <Image source={require('../../../../../images/mine/celljiantou.png')}/>
             </View>
@@ -225,7 +250,7 @@ export class TransportOrder extends Component{
                 <View style={{alignItems: 'center', marginTop: Pixel.getPixel(7)}}>
                     <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1}}>{this.props.data.trans_type ===1?'大板车运输':this.props.data.trans_type===2?'救援车':"代价"}</SaasText>
                     <Image style={{
-                        width: Pixel.getPixel(200),
+                        width: Pixel.getPixel(170),
                         height: Pixel.getPixel(6),
                         resizeMode: 'contain'
                     }} source={require('../../../../../images/carriagePriceImage/direction_line.png')}/>
@@ -246,7 +271,7 @@ export class TransportOrder extends Component{
 
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: Pixel.getPixel(5)}}>
                 <SaasText style={{color: fontAndColor.COLORA1, fontSize: 13, flex: 1}}>车辆共计：</SaasText>
-                <SaasText style={{fontSize: 14, fontWeight: '400'}}>{this.props.data.car_number+台}</SaasText>
+                <SaasText style={{fontSize: 14, fontWeight: '400'}}>{this.props.data.car_number+' 台'}</SaasText>
 
             </View>
             <View style={{
@@ -257,7 +282,7 @@ export class TransportOrder extends Component{
                 paddingBottom: Pixel.getPixel(10)
             }}>
                 <SaasText style={{color: fontAndColor.COLORA1, fontSize: 13, flex: 1}}>运费合计：</SaasText>
-                <SaasText style={{fontSize: 14, color: fontAndColor.COLORB2, fontWeight: '400'}}>{this.props.data.total_amount + 元}</SaasText>
+                <SaasText style={{fontSize: 14, color: fontAndColor.COLORB2, fontWeight: '400'}}>{this.props.data.total_amount}元</SaasText>
 
             </View>
 
@@ -275,7 +300,7 @@ export class TransportOrder extends Component{
             }}>
 
                 <TouchableOpacity activeOpacity={1} onPress={() => {
-
+                    this.props.cancel(this.props.data)
                 }}>
                     <View style={{
                         width: Pixel.getPixel(100.5),

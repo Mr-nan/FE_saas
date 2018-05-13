@@ -80,7 +80,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             carCount: 2,                  //车辆总数量		【必填】
             carType: 1,                            //1 新车2：二手车		【必填】
             company_id: global.companyBaseID,                   //公司ID		【必填】
-            endAddr:"辽宁沈阳",	               //目的地名称		【必填】
+            endAddr:"辽宁沈阳新民市",	               //目的地名称		【必填】
             endAddrRegionId: "210100",        //	目的地编码		【必填】
             endGpsLatitude: 0,	                                //车型目的地纬度
             endGpsLongitude: 0,	                                    //目的地经度
@@ -97,6 +97,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             startGpsLatitude: 0,	                            //初始地纬度
             startGpsLongitude: 0, 	                            //初始地经度
             transportType: 1,	        //运输类型1：大板2：救援3：代驾【必填】
+            clientele_msg:'',
         }
 
     }
@@ -420,6 +421,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         this.params.endGpsLongitude = info.longitude;
         this.params.end_id = info.id;
         this.params.id_card = info.id_card;
+        this.params.endAddrRegionId= info.district_code;
 
         console.log(info)
         this.setState({
@@ -490,16 +492,16 @@ export default class CarriagePriceInfoScene extends BaseComponent {
     preserveOrder = (type)=>{
 
 
-        //
-        // this.toNextPage({
-        //     name:'List',
-        //     component:List,
-        //     params:{
-        //
-        //     }
-        // })
-        //
-        // return
+
+        this.toNextPage({
+            name:'List',
+            component:List,
+            params:{
+
+            }
+        })
+
+        return
 
 
 
