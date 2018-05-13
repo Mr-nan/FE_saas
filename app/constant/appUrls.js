@@ -1,7 +1,9 @@
 /**
  * 开发地址
  */
+
  export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+
 
 /**
  * 测试地址
