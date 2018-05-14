@@ -380,6 +380,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 component: ContractInfoSceneChildren,
                 params: {
                     loan_code: this.props.loanNumber,
+                    loan_number:loan_number,
                     showButton: true,
                     callbackfresh:() => {
                         this.initFinish();
