@@ -211,6 +211,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             }}
                             switchable={false}
                             value={this.params.send_type}
+                            params = {this.params}
                             type={2}
                             departure={endAddr}
                             contactInfo={this.state.receiverInfo}
@@ -754,6 +755,9 @@ class AddressInfoItemView extends Component {
                         <TextInput
                             style={{flex: 1,}}
                             multiline={true}
+                            onChangeText = {(text)=>{
+                                this.props.params.clientele_msg = text;
+                            }}
                         />
                     </View> : null
                 }

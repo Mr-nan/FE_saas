@@ -25,6 +25,12 @@ export  default class TopBottomText extends PureComponent {
         super(props);
     }
 
+// {
+//     "nodeDesc": "到达：辽宁省沈阳市",
+//     "nodeTime": "2018-05-13 11:26:00",
+//     "nodeMsg": "备注信息"
+// }
+
     componentWillReceiveProps(props) {
     }
 
@@ -46,7 +52,7 @@ export  default class TopBottomText extends PureComponent {
                 <View style={{marginLeft:Pixel.getPixel(71),width:Pixel.getPixel(81),alignItems:'center',
                 marginTop:lineTop}}>
                     <Text style={{fontSize:Pixel.getPixel(14),color:'#000',textAlign: 'center'}}>
-                        2017-12-12 18：00</Text>
+                        {this.props.data.nodeTime}</Text>
                 </View>
                 <View style={{marginLeft:Pixel.getPixel(12),width:Pixel.getPixel(17),
                 marginTop:lineTop,alignItems:'center'}}>
@@ -58,7 +64,7 @@ export  default class TopBottomText extends PureComponent {
                 </View>
                 <View style={{marginLeft:Pixel.getPixel(15),marginTop:lineTop}}>
                     <Text style={{fontSize:Pixel.getPixel(14),color:'#000',textAlign: 'center'}}>
-                        交车</Text>
+                        {this.props.data.nodeDesc}</Text>
                 </View>
             </View>
         );

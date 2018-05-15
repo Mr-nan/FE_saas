@@ -32,20 +32,128 @@ import NewLogisticsInfoScene from "./NewLogisticsInfoScene";
 
 
 export default class NewCarriagePriceInfoScene extends  BaseComponent{
+
+    constructor(props){
+        super(props)
+
+        this.state = {
+            renderPlaceholderOnly:'loading'
+        }
+        this.order = {}
+    }
+
+
+
+
+    initFinish(){
+
+        this.loadData()
+    }
+
+
+    /*    v2/order.logistics_flows/getTransDetails  接口返回的数据格式
+        {
+            "trans_data": {
+                "trans_id": 83,
+                "start_id": 53,
+                "end_id": 54,
+                "trans_code": "YD20180513100350",
+                "start_address": "北京北京",
+                "end_address": "辽宁沈阳",
+                "trans_type": 1,
+                "car_number": 2,
+                "total_amount": "4479.00",
+                "insure_amount": "0.00",
+                "tax_amount": "0.00",
+                "service_amount": "300.00",
+                "tostore_amount": "478.00",
+                "verify_amount": "560.00",
+                "trans_amount": "3141.00"
+            },
+            "item_data": [{
+                "car_name": "2013款 途观 豪华版 1.8TSI 手自一体 两驱",
+                "car_price": "130000.00",
+                "car_number": 2
+            }],
+            "start_address": {
+                "contact_name": "王雪岗",
+                "contact_phone": "13261577303",
+                "full_address": "北京北京朝阳区北京朝阳区东风乡南十里居路甲1号",
+                "id_card": ""
+            },
+            "end_address": {
+                "contact_name": "骆伟",
+                "contact_phone": "13261577303",
+                "full_address": "辽宁沈阳大东区大东区东站街70号(联合路东站街路口)",
+                "id_card": "420700197004070216"
+            }
+        }
+   */
+
+    loadData=()=>{
+
+        let params = {
+            company_id: global.companyBaseID,
+            trans_id:this.props.order.trans_id,
+        }
+
+        Net.request(AppUrls.ORDER_LOGISTICS_ORDER_DETAIL, 'post', params).then((response) => {
+            let data = response.mjson.data;
+
+
+            if (typeof data === 'undefined'){
+                this.setState({
+                    renderPlaceholderOnly: 'noData',
+                })
+                return;
+            }
+            this.order = data;
+            this.setState({
+                renderPlaceholderOnly: 'success',
+            })
+        }, (error) => {
+
+            this.setState({
+                renderPlaceholderOnly: "failure",
+
+            })
+            this.props.showToast(error.mjson.msg);
+
+        });
+
+    }
+
+
     render(){
+
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            // 加载中....
+            return ( <View style={styles.root}>
+                <NavigationBar
+                    leftImageShow={true}
+                    leftTextShow={false}
+                    centerText={'运价详情'}
+                    rightText={""}
+                    leftImageCallBack={this.backPage}
+                />
+                {this.loadView()}
+            </View>);
+        }
+
+
         return(
             <View style={styles.root}>
                 <ScrollView>
-                    <LocationView title="运单号20171212100" startName="太原市" stopName="保定市" typeName="大拌菜运输" />
+                    <LocationView title={'运单号'+this.order.trans_data.trans_code} startName={this.order.trans_data.start_address} stopName={this.order.trans_data.end_address} typeName={this.order.trans_data.trans_type ===1?'大板车运输':this.order.trans_type===2?'救援车':"代价"} />
                     <MessageView imageData={require('../../../images/carriagePriceImage/sendCarIcon.png')}
-                                 title={'发车信息'} name={'郑帮 | 18690788221'}
-                                 loactionStr={'广西壮族自治区南市江南区'}/>
+                                 title={'发车信息'} name={this.order.start_address.contact_name + ' | ' + this.order.start_address.contact_phone}
+                                 loactionStr={this.order.start_address.full_address}/>
                     <MessageView imageData={require('../../../images/carriagePriceImage/putCarIcon.png')}
                                  title={'收车信息'}
-                                 name={'郑帮 | 18690788221'}
-                                 loactionStr={'广西壮族自治区南市江南区'}/>
-                    <CarriagePriceView/>
-                    <CarView carData={['11','22','33']}/>
+                                 name={this.order.end_address.contact_name + ' | ' + this.order.end_address.contact_phone}
+                                 loactionStr={this.order.end_address.full_address}/>
+                    <CarriagePriceView data = {this.order.trans_data} />
+                    <CarView carData={this.order.item_data}/>
                 </ScrollView>
                 <TouchableOpacity style={styles.footButton} activeOpacity={1} onPress={this.footBtnClick}>
                     <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>查看物流详情</Text>
@@ -60,7 +168,7 @@ export default class NewCarriagePriceInfoScene extends  BaseComponent{
           name: 'NewLogisticsInfoScene',
           component: NewLogisticsInfoScene,
           params: {
-
+              order:this.props.order
           }});
 
     }
@@ -120,15 +228,26 @@ class MessageView extends Component{
 class CarriagePriceView extends Component{
 
     render(){
-        let priceData = {
-            totalPrice: 30232,
-            taxation: 100,
-            freight: 100,
-            checkCarFee: 100,
-            insurance: 100,
-            toStoreFee: 100,
-            serviceFee: 100,
-        }
+
+        //
+        // "total_amount": "4479.00",
+        //     "insure_amount": "0.00",
+        //     "tax_amount": "0.00",
+        //     "service_amount": "300.00",
+        //     "tostore_amount": "478.00",
+        //     "verify_amount": "560.00",
+        //     "trans_amount": "3141.00"
+        //
+
+
+        let {total_amount,
+            tax_amount,
+            trans_amount,
+            verify_amount,
+            insure_amount,
+            tostore_amount,
+            service_amount
+        } = this.props.data;
 
         return(
             <View style={[styles.contentView,{paddingTop:Pixel.getPixel(0)}]}>
@@ -151,7 +270,7 @@ class CarriagePriceView extends Component{
                         <Text style={{
                             color: fontAndColor.COLORB2,
                             fontSize: Pixel.getPixel(fontAndColor.BUTTONFONT30),
-                        }}>{priceData.totalPrice}</Text>
+                        }}>{total_amount}</Text>
                         <Text
                             style={{
                                 color: fontAndColor.COLORB2,
@@ -161,7 +280,7 @@ class CarriagePriceView extends Component{
                             <Text style={{
                                 color: fontAndColor.COLORA1,
                                 fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
-                            }}>{priceData.taxation > 0 ? `(含税${priceData.taxation}元)` : '(不含税)'}</Text>
+                            }}>{tax_amount > 0 ? `(含税${tax_amount}元)` : '(不含税)'}</Text>
                         }
                     </View>
                 </View>
@@ -173,17 +292,17 @@ class CarriagePriceView extends Component{
                     marginTop: Pixel.getPixel(15)
                 }}>
                     <View>
-                        <PriceItemView title="运费" value={priceData.freight}/>
-                        <PriceItemView title="提验车费" value={priceData.checkCarFee}/>
+                        <PriceItemView title="运费" value={trans_amount}/>
+                        <PriceItemView title="提验车费" value={verify_amount}/>
 
                     </View>
                     <View>
-                        <PriceItemView title="保险费" value={priceData.insurance}/>
-                        <PriceItemView title="送店费" value={priceData.toStoreFee}/>
+                        <PriceItemView title="保险费" value={insure_amount}/>
+                        <PriceItemView title="送店费" value={tostore_amount}/>
 
                     </View>
                     <View>
-                        <PriceItemView title="服务费" value={priceData.serviceFee}/>
+                        <PriceItemView title="服务费" value={service_amount}/>
                         <View style={{backgroundColor: 'white', marginBottom: Pixel.getPixel(23)}}>
                             <Text style={{
                                 color: fontAndColor.COLORA1,
@@ -277,7 +396,7 @@ class CarView extends Component{
                 </View>
                 <ListView dataSource={this.state.dataSource}
                           enableEmptySections={true}
-                          renderRow={(data)=>{return(<CarItem/>)}}
+                          renderRow={(data)=>{return(<CarItem  data = {data}/>)}}
                           renderSeparator={(sectionID, rowID)=>{return(<View key={`${sectionID}+${rowID}`} style={{height:Pixel.getPixel(1),backgroundColor:fontAndColor.COLORA3}}/>)}}/>
             </View>
         )
@@ -285,22 +404,39 @@ class CarView extends Component{
 }
 
 class CarItem extends Component{
+
+    // "item_data": [{
+    //     "car_name": "2013款 途观 豪华版 1.8TSI 手自一体 两驱",
+    //     "car_price": "130000.00",
+    //     "car_number": 2
+    // }],
+
+
     render(){
+
+        let {
+            car_name,
+            car_price,
+            car_number,
+        } = this.props.data;
+
+
+
         return(
-            <View style={{backgroundColor:'white', flex:1,height:Pixel.getPixel(104),paddingVertical:Pixel.getPixel(12),
+            <View style={{backgroundColor:'white', flex:1,paddingVertical:Pixel.getPixel(12),
                 flexDirection:'row'
             }}>
-                <Image style={{width:Pixel.getPixel(120),height:Pixel.getPixel(80),backgroundColor:fontAndColor.COLORA3}}/>
-                <View style={{flex:1,marginLeft:Pixel.getPixel(12),backgroundColor:'white',justifyContent:'space-between'}}>
-                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}} numberOfLines={2}>[北京]奔驰M级(进口) 2015款 M奔驰M级(进口) 2015款[北京]奔驰M级(进口) 2015款 M奔驰M级(进口) 2015款[北京]奔驰M级(进口) 2015款 M奔驰M级(进口) 2015款</Text>
-                    <View>
+                {/*<Image style={{width:Pixel.getPixel(120),height:Pixel.getPixel(80),backgroundColor:fontAndColor.COLORA3}}/>*/}
+                <View style={{flex:1,backgroundColor:'white',justifyContent:'space-between'}}>
+                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}} multiline={true}>{car_name}</Text>
+                    <View style = {{marginTop:Pixel.getPixel(15)}}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
-                            <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>上牌：</Text>
-                            <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>2016-9-09</Text>
+                            <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>数量：</Text>
+                            <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{car_number}</Text>
                         </View>
                         <View style={{flexDirection:'row',alignItems:'center',marginTop:Pixel.getPixel(5)}}>
                             <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>标价：</Text>
-                            <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>23.9万</Text>
+                            <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{car_price}</Text>
                         </View>
 
                     </View>

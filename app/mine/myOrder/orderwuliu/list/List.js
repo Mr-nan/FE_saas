@@ -67,13 +67,13 @@ export default  class  List extends BaseComponent{
                     renderTabBar={() => <RepaymenyTabBar tabName={['全部','代付款', "待发运",'在途','已到达','已完成','已失效']}/>}
 
                 >
-                    <Page status={0}/>
-                    <Page status={1}/>
-                    <Page status={2}/>
-                    <Page status={3}/>
-                    <Page status={4}/>
-                    <Page status={5}/>
-                    <Page status={6}/>
+                    <Page status={0} showModal={this.props.showModal} showToast={this.props.showToast} toNextPage={this.toNextPage}/>
+                    <Page status={1} showModal={this.props.showModal} showToast={this.props.showToast} toNextPage={this.toNextPage}/>
+                    <Page status={2} showModal={this.props.showModal} showToast={this.props.showToast} toNextPage={this.toNextPage}/>
+                    <Page status={3} showModal={this.props.showModal} showToast={this.props.showToast} toNextPage={this.toNextPage}/>
+                    <Page status={4} showModal={this.props.showModal} showToast={this.props.showToast} toNextPage={this.toNextPage}/>
+                    <Page status={5} showModal={this.props.showModal} showToast={this.props.showToast} toNextPage={this.toNextPage}/>
+                    <Page status={6} showModal={this.props.showModal} showToast={this.props.showToast} toNextPage={this.toNextPage}/>
 
                 </ScrollableTabView>
 
