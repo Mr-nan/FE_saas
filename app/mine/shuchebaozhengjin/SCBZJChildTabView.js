@@ -25,18 +25,15 @@ export default class ConstractChildTabView extends PureComponent {
         if(list.length>1){
             count = list[1];
         }
-        return (<TouchableOpacity
-                    onPress={()=>{
-                        this.props.goToPages(this.props.i)
-                    }} style={styles.tab}>
+        return (<TouchableOpacity onPress={()=>{ this.props.goToPages(this.props.i) }} style={styles.tab}>
                 <View style={[{ height: Pixel.getPixel(38),justifyContent: 'center', alignItems: 'center',flexDirection: 'row'}]}>
-                    <Text allowFontScaling={false}  ref="ttt" style={[this.props.activeTab === this.props.i ? {color: fontAndColor.COLORB0} : {color: fontAndColor.COLORA0},
-                            {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>
+                    <Text  ref="ttt"
+                           allowFontScaling={false}
+                           style={[this.props.activeTab === this.props.i ? {color: fontAndColor.COLORB0} : {color: fontAndColor.COLORA0},{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>
                         {list[0]}
                     </Text>
                     {
-                        count==''?<View/>
-                        :<Text allowFontScaling={false} style={[{color: fontAndColor.COLORB2}, {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>{count}</Text>
+                        count == ''? <View/> : <Text allowFontScaling={false} style={[{color: fontAndColor.COLORB2}, {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>{count}</Text>
                     }
                 </View>
                 <View style={[{height: Pixel.getPixel(2)},

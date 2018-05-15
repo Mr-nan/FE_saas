@@ -33,13 +33,17 @@ export default class ConstractTabBar extends PureComponent {
                     tab={tab}
                     goToPages={(i) => { this.goToPages(i); }}
                     tabName={this.props.tabName}
-                    activeTab={this.props.activeTab}/>);
-            })
-        return <View style={{height:Pixel.getPixel(40)}}>
+                    activeTab={this.props.activeTab}/>
+            );
+            tabChild.push(<View
+                                 key={tab +'x'}
+                                 style={{backgroundColor:'#D8D8D8',width:1,height:20}}/>
+            );
+        })
+        return <View style={{height:Pixel.getPixel(40),alignItems:'center',justifyContent:'center',backgroundColor:'#ffffff'}}>
             <ScrollView  showsHorizontalScrollIndicator={false} horizontal={true} contentContainerStyle={[styles.tabs]}>
                 {tabChild}
             </ScrollView>
-            <Image source={require('../../../images/mainImage/transRight.png')} style={{ height: Pixel.getPixel(40),width:41,position: 'absolute',right:0}}/>
         </View>;
     }
 }
