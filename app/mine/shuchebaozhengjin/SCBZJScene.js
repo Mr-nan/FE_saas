@@ -10,7 +10,7 @@ import {
     ScrollView,
     Dimensions,
     TouchableOpacity,
-    PixelRatio
+    PixelRatio,
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -33,6 +33,7 @@ export  default class SCBZJScene extends BaseComponent {
         super(props);
         this.state = {
             renderPlaceholderOnly: 'blank',
+            details:'open'
         };
     }
 
@@ -78,21 +79,29 @@ export  default class SCBZJScene extends BaseComponent {
                 <View style={{flexDirection:'row',marginTop: Pixel.getTitlePixel(64),height:Pixel.getPixel(45),paddingLeft:Pixel.getPixel(15),paddingRight:Pixel.getPixel(15),backgroundColor:'#ffffff',alignItems:'center'}}>
                     <Text style={{fontSize:Pixel.getFontPixel(14),color:'#333333'}}>保证金总额</Text>
                     <Text style={{fontSize:Pixel.getFontPixel(12),color:'#FA5741',flex:1}}>245.75元</Text>
-                    <Text style={{fontSize:Pixel.getFontPixel(12),color:'#010101',backgroundColor:'#05C5C2'}}>收起详情</Text>
+                    <TouchableOpacity  onPress={()=>{
+                        if(this.state.details =='open'){
+                            this.setState({details: 'close'});
+                        }else {
+                            this.setState({details: 'open'});
+                        }
+                    }}>
+                        <Text style={{fontSize:Pixel.getFontPixel(12),color:'#010101',backgroundColor:'#05C5C2'}}>{ this.state.details =='open'  ?'收起详情':'展开详情'}</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
                 {
-                    <Text style={{paddingLeft:Pixel.getPixel(15),paddingRight:Pixel.getPixel(15),color:'#999999',fontSize:Pixel.getFontPixel(12),backgroundColor:'#ffffff',paddingTop:Pixel.getPixel(11),paddingBottom:Pixel.getPixel(11)}}>
+                    this.state.details =='open' && <Text style={{paddingLeft:Pixel.getPixel(15),paddingRight:Pixel.getPixel(15),color:'#999999',fontSize:Pixel.getFontPixel(12),backgroundColor:'#ffffff',paddingTop:Pixel.getPixel(11),paddingBottom:Pixel.getPixel(11)}}>
                         保证金总额=赎车保证金+保证金可用金额
                     </Text>
                 }
                 {
-                    <View style={{width:width-Pixel.getPixel(20),height:onePT,backgroundColor:'#D8D8D8',marginLeft:Pixel.getPixel(10),marginRight:Pixel.getPixel(10)}}/>
-
+                    this.state.details =='open' && <View style={{width:width-Pixel.getPixel(20),height:onePT,backgroundColor:'#D8D8D8',marginLeft:Pixel.getPixel(10),marginRight:Pixel.getPixel(10)}}/>
                 }
                 {
-                    <View style={{flexDirection:'row',height:Pixel.getPixel(54),backgroundColor:'#ffffff',marginBottom:Pixel.getPixel(10),alignItems:'center'}}>
+                    this.state.details =='open' && <View style={{flexDirection:'row',height:Pixel.getPixel(54),backgroundColor:'#ffffff',marginBottom:Pixel.getPixel(10),alignItems:'center'}}>
                         <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(12),flex:1,textAlign:'center'}}>{'赎车保证金 \n245.75元'}</Text>
+                        <View style={{width:1,height:Pixel.getPixel(25),backgroundColor:'#D8D8D8'}}/>
                         <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(12),flex:1,textAlign:'center'}}>{'保证金可用金额 \n89.96元'}</Text>
                     </View>
                 }

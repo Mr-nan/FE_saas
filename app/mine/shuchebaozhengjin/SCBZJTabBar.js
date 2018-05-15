@@ -35,10 +35,10 @@ export default class ConstractTabBar extends PureComponent {
                     tabName={this.props.tabName}
                     activeTab={this.props.activeTab}/>
             );
-            tabChild.push(<View
-                                 key={tab +'x'}
-                                 style={{backgroundColor:'#D8D8D8',width:1,height:20}}/>
-            );
+            // tabChild.push(<View
+            //                      key={tab +'x'}
+            //                      style={{backgroundColor:'#D8D8D8',width:1,height:20}}/>
+            // );
         })
         return <View style={{height:Pixel.getPixel(40),alignItems:'center',justifyContent:'center',backgroundColor:'#ffffff'}}>
             <ScrollView  showsHorizontalScrollIndicator={false} horizontal={true} contentContainerStyle={[styles.tabs]}>
