@@ -240,7 +240,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
     getControlTitleblob = (stateCode) => {
         if (stateCode !== '') {
-            let tempTitle = []
+            let tempTitle = ''
             if (stateCode == '10') {
                 tempTitle = ['评估监管中']
             } else if (stateCode == '20') {
@@ -545,7 +545,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
-                        <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(100)}}>{rowData.loan_mny}</Text>
+                        <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(100)}}>{rowData.loan_mny +'万元'}</Text>
                         <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{rowData.loan_time}</Text>
                         <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.loan_number}</Text>
                     </View>
@@ -579,10 +579,15 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         </View>
                     </View>:null
                 }
-                <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
+            {
+                tempButtonTitles != '' &&   <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
+            }
+            {
+                tempButtonTitles != '' &&
                 <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
-                        {tempButtons}
+                    {tempButtons}
                 </View>
+            }
         </View>
     }
 
