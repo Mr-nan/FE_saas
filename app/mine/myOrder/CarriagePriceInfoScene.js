@@ -578,7 +578,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             return true
     }
 
-    parse(str){
+    parse=(str)=>{
         if (typeof str === 'string'){
             return JSON.parse(str);
         }else {
@@ -594,8 +594,6 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             return obj
         }
     }
-
-
 }
 
 

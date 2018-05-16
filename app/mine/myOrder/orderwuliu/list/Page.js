@@ -252,7 +252,7 @@ export default class FlowAllPage extends BaseComponent {
             return<View
                 style={{backgroundColor:'#fff8eb', alignItems:'flex-start', paddingLeft:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(6)}}
             >
-                <SaasText style={{color:'#846545', fontSize:13, fontWeight:'200'}}>在图状态下，因车辆已验收，所以不能取消运单。</SaasText>
+                <SaasText style={{color:'#846545', fontSize:13, fontWeight:'200'}}>在途状态下，因车辆已验收，所以不能取消运单。</SaasText>
             </View>
         }
         return (
@@ -264,7 +264,6 @@ export default class FlowAllPage extends BaseComponent {
                 onCarClick={this.toCarDetial}
             />
         )
-
     }
 
 
