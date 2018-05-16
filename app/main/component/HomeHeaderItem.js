@@ -11,6 +11,7 @@ import {
     StyleSheet,
     Dimensions,
     TouchableOpacity,
+    PixelRatio
 } from 'react-native';
 
 
@@ -20,6 +21,7 @@ import {
 import * as fontAndClolr from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
+var onePT = 1 / PixelRatio.get(); //一个像素
 /*
  * 获取屏幕的宽和高
  **/
@@ -41,7 +43,7 @@ export default class HomeHeaderItem extends Component {
         return (
             <TouchableOpacity activeOpacity={0.7}
                               style={[styles.container,bottomBorder?{borderBottomWidth:1,borderColor:fontAndClolr.COLORA4}:{}
-                              ,rightBorder?{borderRightWidth:1,borderColor:fontAndClolr.COLORA4}:{}]}
+                              ,rightBorder?{borderRightWidth:onePT,borderColor:"#F0EFF5"}:{}]}
                               onPress={()=> {
                 this.props.callBack(this.props.functionTitle);
             }}>
@@ -66,6 +68,7 @@ const styles = StyleSheet.create({
         width: width / 2.0,
         height: Pixel.getPixel(75),
         backgroundColor: '#ffffff',
+        paddingLeft:Pixel.getPixel(10)
     },
     imageStyle: {
         width: Pixel.getPixel(46),
@@ -77,7 +80,7 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(7),
     },
     functionTitleStytle: {
-        marginBottom: Pixel.getPixel(7),
+        marginBottom: Pixel.getPixel(3),
         fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
         color: fontAndClolr.COLORA0,
 

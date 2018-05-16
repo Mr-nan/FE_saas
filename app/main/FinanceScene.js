@@ -724,8 +724,17 @@ export default class FinanceSence extends BaseComponet {
                     </View>
                     <View>
                         <View
-                            style={{width: width, height: Pixel.getBottomPixel(65), flexDirection: 'row',marginTop:Pixel.getPixel(30),justifyContent:'space-between'}}>
-                            <View style={{flex: 1, alignItems: 'center',}}>
+                            style={{width: width, flexDirection: 'row',marginTop:Pixel.getPixel(30),justifyContent:'center',alignItems:'center'}}>
+                            <View style={{width: width/2, alignItems: 'center',}}>
+                                <Text allowFontScaling={false}
+                                      style={{
+                                          width: width/2,
+                                          fontSize: Pixel.getFontPixel(32),
+                                          color: '#fff',
+                                          fontWeight: 'bold',
+                                          backgroundColor: '#00000000',
+                                          textAlign: 'center'
+                                      }}>{this.state.allData.keyongedu}</Text>
                                 <Text allowFontScaling={false}
                                       style={{
                                           fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
@@ -733,16 +742,6 @@ export default class FinanceSence extends BaseComponet {
                                           backgroundColor: '#00000000'
                                       }}>{this.state.mnyData.is_microchinese_mny == 3 && '综合'}可用额度(万)</Text>
 
-                                <Text allowFontScaling={false}
-                                      style={{
-                                          fontSize: Pixel.getFontPixel(28),
-                                          color: '#fff',
-                                          marginTop: Pixel.getPixel(7),
-                                          fontWeight: 'bold',
-                                          backgroundColor: '#00000000',
-                                          flex: 1,
-                                          textAlign: 'center'
-                                      }}>{this.state.allData.keyongedu}</Text>
 
                             </View>
                             {
@@ -764,34 +763,29 @@ export default class FinanceSence extends BaseComponet {
                                               style={{
                                                   fontSize: Pixel.getFontPixel(28),
                                                   color: '#fff',
-                                                  marginTop: Pixel.getPixel(7),
                                                   fontWeight: 'bold',
                                                   backgroundColor: '#00000000',
-                                                  flex: 1,
                                                   textAlign: 'center'
                                               }}>{this.state.mnyData.is_microchinese_mny == 5 ? 0 : this.state.mnyData.microchinese_mny / 10000}</Text>
 
                                     </View>)
                             }
-                            <View
-                                style={{flex: 1, alignItems: 'center',borderLeftColor:'white',borderLeftWidth:StyleSheet.hairlineWidth}}>
+                            <View style={{width: width/2, alignItems: 'center',borderLeftColor:'white',borderLeftWidth:StyleSheet.hairlineWidth}}>
+                                <Text allowFontScaling={false}
+                                      style={{
+                                          width: width/2,
+                                          fontSize: Pixel.getFontPixel(32),
+                                          color: '#fff',
+                                          fontWeight: 'bold',
+                                          backgroundColor: '#00000000',
+                                          textAlign: 'center'
+                                      }}>{this.state.allData.daikuanyue}</Text>
                                 <Text allowFontScaling={false}
                                       style={{
                                           fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                           color: '#fff',
                                           backgroundColor: '#00000000'
                                       }}>贷款余额(万)</Text>
-
-                                <Text allowFontScaling={false}
-                                      style={{
-                                          fontSize: Pixel.getFontPixel(28),
-                                          color: '#fff',
-                                          marginTop: Pixel.getPixel(7),
-                                          fontWeight: 'bold',
-                                          backgroundColor: '#00000000',
-                                          flex: 1,
-                                          textAlign: 'center'
-                                      }}>{this.state.allData.daikuanyue}</Text>
                             </View>
                         </View>
                         {
@@ -846,7 +840,7 @@ export default class FinanceSence extends BaseComponet {
                                       fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                       color: '#fff',
                                       backgroundColor: '#00000000'
-                                  }}>保证金额度:</Text>
+                                  }}>保证金额度: </Text>
 
                             <Text allowFontScaling={false}
                                   style={{
@@ -863,7 +857,7 @@ export default class FinanceSence extends BaseComponet {
                                       fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                       color: '#fff',
                                       backgroundColor: '#00000000'
-                                  }}>保证金余额:</Text>
+                                  }}>保证金余额: </Text>
 
                             <Text allowFontScaling={false}
                                   style={{
@@ -1189,7 +1183,7 @@ const cellSheet = StyleSheet.create({
 
     titleStyle: {
         width: width,
-        height: Pixel.getPixel(230)
+        height: Pixel.getPixel(200)
     },
 
     titleViewStyle: {
