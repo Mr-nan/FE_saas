@@ -598,7 +598,7 @@ export default class FinanceSence extends BaseComponet {
                     <View style={{height: onePT, backgroundColor: '#F0EFF5'}}></View>
                     <View style={cellSheet.rowBottomViewStyle}>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
-                            <Text style={{fontSize:Pixel.getPixel(20),color:"#FA5741"}}>{parseFloat(movie.loanmny)}<Text style={{fontSize:Pixel.getPixel(12)}}>万</Text></Text>
+                            <Text style={{fontSize:Pixel.getPixel(20),color:"#FA5741"}}>{parseFloat(movie.loanmny) == '0'?'-':parseFloat(movie.loanmny)}<Text style={{fontSize:Pixel.getPixel(12)}}>万</Text></Text>
                             <Text style={{fontSize:Pixel.getPixel(12),color:"#9E9E9E"}}>借款金额</Text>
                         </View>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
@@ -770,7 +770,7 @@ export default class FinanceSence extends BaseComponet {
 
                                     </View>)
                             }
-                            <Image style={{width:onePT*2,height:Pixel.getPixel(45),marginTop:Pixel.getPixel(8)}} source={require('../../images/xu_shu_line.png')}/>
+                            <Image style={{width:onePT*2,height:Pixel.getPixel(45),marginTop:Pixel.getPixel(10)}} source={require('../../images/xu_shu_line.png')}/>
                             <View style={{width: width/2, alignItems: 'center'}}>
                                 <Text allowFontScaling={false}
                                       style={{
