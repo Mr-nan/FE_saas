@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     },
     seekView:{
         width:width-Pixel.getPixel(40),
-        height:Pixel.getPixel(44),
+        height:Pixel.getPixel(33),
         borderRadius:Pixel.getPixel(22),
         backgroundColor:'white',
         justifyContent:'center',
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     navigatorSousuoText: {
 
         color: fontAndColor.COLORA0,
-        height: Pixel.getPixel(35),
+        height: Pixel.getPixel(30),
         width:  width - Pixel.getPixel(165),
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         paddingTop: 0,
