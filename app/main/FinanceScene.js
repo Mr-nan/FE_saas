@@ -65,9 +65,9 @@ import FinanceSeekMoreScene from "../finance/lend/FinanceSeekMoreScene";
 let firstType = '-1';
 let lastType = '-1';
 
-let product_type_codeData = [{title:'库存融资',code:4},{title:'单车融资',code:2},{title:'车抵贷',code:8},{title:'采购贷',code:5},{title:'信用贷',code:3},{title:'订单融资',code:6},{title:'应收账款',code:7}];
-let logic_statusData = [{title:'评估监控中',code:10},{title:'审核中',code:20},{title:'渠道审核中',code:30},{title:'待签合同',code:40},{title:'待确认借据',code:50},{title:'处理中',code:60},{title:'已放款',code:70},{title:'已还清',code:80},{title:'已取消',code:0}];
-let loanperiodData = [{title:'30天',code:30},{title:'60天',code:60},{title:'90天',code:90},{title:'180天',code:180}];
+let product_type_codeData = [{title:'库存融资',code:4},{title:'单车融资',code:2},{title:'车抵贷',code:8},{title:'采购贷',code:5}/*,{title:'信用贷',code:3}*/,{title:'订单融资',code:6}/*,{title:'应收账款',code:7}*/];
+let logic_statusData = [{title:'评估监管中',code:10},{title:'审核中',code:20},{title:'渠道审核中',code:30},{title:'待签合同',code:40},{title:'待确认借据',code:50},{title:'处理中',code:60},{title:'已放款',code:70},{title:'已还清',code:80},{title:'已取消',code:0}];
+let loanperiodData = [{title:'30天',code:30},{title:'60天',code:60},{title:'90天',code:90},{title:'180天',code:180},{title:'360天',code:360}];
 
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
