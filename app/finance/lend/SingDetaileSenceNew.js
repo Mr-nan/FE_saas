@@ -240,7 +240,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
 
     getControlTitleblob = (stateCode) => {
         if (stateCode !== '') {
-            let tempTitle = ''
+            let tempTitle = []
             if (stateCode == '10') {
                 tempTitle = ['评估监管中']
             } else if (stateCode == '20') {
@@ -579,15 +579,15 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         </View>
                     </View>:null
                 }
-            {
-                tempButtonTitles != '' &&   <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
-            }
-            {
-                tempButtonTitles != '' &&
-                <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
-                    {tempButtons}
-                </View>
-            }
+                {
+                    tempButtons.length == 0 ?  <View style={{width:width,height:Pixel.getPixel(5)}}></View> : <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
+                }
+                {
+                    tempButtons.length > 0 &&
+                    <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
+                        {tempButtons}
+                    </View>
+                }
         </View>
     }
 

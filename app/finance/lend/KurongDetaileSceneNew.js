@@ -56,7 +56,7 @@ const controlCode = {
 }
 
 
-export  default  class SingDetaileSenceNew extends BaseComponent {
+export  default  class KurongDetaileSceneNew extends BaseComponent {
 
     // 构造
     constructor(props) {
@@ -473,7 +473,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         this.stateCode == '40' || this.stateCode == '60' ||  this.stateCode == '70' || this.stateCode == '80'?
                             <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{
-                                                   this.toNextPage({
+                                                  if(this.stateCode == '40'){
+                                                    this.toNextPage({
                                                         name: 'ContractInfoScene',
                                                         component: ContractInfoScene,
                                                         params: {
@@ -483,10 +484,16 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                                             }
                                                         }
                                                     });
+                                                  }else {
+                                                      this.toNextPage({
+                                                        name: 'ContractInfoScene',
+                                                        component: ContractInfoScene,
+                                                         params: {loan_code: this.props.loanNumber, showButton: false}
+                                                    });
+                                                  }
                                               }}>
                                 <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>
                                     {this.stateCode == '40' ? "签署合同" : "查看合同"}
-
                                 </Text>
                             </TouchableOpacity>:null
                     }
