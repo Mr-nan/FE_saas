@@ -53,9 +53,9 @@ export  default class LogisCarInfoBottomItem extends PureComponent {
 
                     </Image>
                     <Text style={{marginTop:Pixel.getPixel(7),color: '#000',fontSize: Pixel.getPixel(15),
-                        width:Pixel.getPixel(178),backgroundColor:'#00000000',textAlign: 'center'}}
+                        width:Pixel.getPixel(200),backgroundColor:'#00000000',textAlign: 'center'}}
                           numberOfLines={2}>
-                        山西省太原市红居街朗琴园 28号楼808室
+                        {this.props.destination}
                     </Text>
                 </Image>
                 <ListView style={{width:Pixel.getPixel(335),marginTop:Pixel.getPixel(100),

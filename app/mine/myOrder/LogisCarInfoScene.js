@@ -164,7 +164,7 @@ export default class LogisCarInfoScene extends BaseComponent {
         } else if (rowID == 1) {
             return (<LogisCarInfoCenterItem data = {this.order}/>);
         } else {
-            return (<LogisCarInfoBottomItem data = {this.order.Logistics_info} offy={this.offY} callBack={(content) => {
+            return (<LogisCarInfoBottomItem destination = {this.order.destination} data = {this.order.Logistics_info} offy={this.offY} callBack={(content) => {
                 console.log(55555555555555555);
                 this.setState({scrollEnabled: content});
             }}/>);

@@ -29,6 +29,7 @@ import SaasText from "../../../accountManage/zheshangAccount/component/SaasText"
 import MyButton from '../../../../component/MyButton'
 import AccountWebScene from "../../../accountManage/AccountWebScene";
 import * as webBackUrl from "../../../../constant/webBackUrl";
+import List from "../list/List";
 
 export  default  class  PlatformChoose extends BaseComponent{
 
@@ -203,7 +204,13 @@ export  default  class  PlatformChoose extends BaseComponent{
         Net.request(AppUrls.LOGISTICS_ORDER_PAY_CALLBACK, 'post', params).then((response) => {
             this.props.showModal(false)
             if(response.mjson.code === 1){
-                this.backPage()
+                this.toNextPage({
+                    name:'List',
+                    component:List,
+                    params:{
+
+                    }
+                })
             }
         }, (error) => {
             this.props.showModal(false)

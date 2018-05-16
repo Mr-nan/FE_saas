@@ -30,7 +30,7 @@ import SaasText from "../../../accountManage/zheshangAccount/component/SaasText"
 import PlatformChoose from "../pay/PlatformChoose";
 import LogisCarInfoScene from "../../LogisCarInfoScene";
 import NewCarriagePriceInfoScene from "../../NewCarriagePriceInfoScene";
-//import ListFooter from './../../../component/LoadMoreFooter';
+import ListFooter from './../../../../component/LoadMoreFooter';
 
 export default class FlowAllPage extends BaseComponent {
 
@@ -42,16 +42,20 @@ export default class FlowAllPage extends BaseComponent {
             isShow:false
         };
 
+        this.orders = [];
+        this.currentPage = 1;
+        this.totalOrders = 0;
 
 
     }
 
     initFinish = () => {
 
-        this.loadData()
+        this.loadData(this.currentPage)
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
 
     }
+
 
 
     allRefresh = ()=>{
@@ -60,15 +64,17 @@ export default class FlowAllPage extends BaseComponent {
             renderPlaceholderOnly: 'loading',
         })
 
-        this.loadData()
+        this.orders = [];
+        this.currentPage = 1;
+        this.loadData(this.currentPage)
     }
 
-    loadData = ()=>{
+    loadData = (page)=>{
 
         let params = {
 
             company_id: global.companyBaseID,
-            page:1,
+            page:page,
             rows:5,
             status:this.props.status,  // 0：全部 1：待付款 2：待发运 3：已发运 4：已到达 5：已完成 6：失效
 
@@ -76,6 +82,7 @@ export default class FlowAllPage extends BaseComponent {
 
         request(Urls.LOGISTICS_ORDER_LIST, 'post', params).then((response) => {
             let data = response.mjson.data.info_list;
+            this.totalOrders = response.mjson.data.total;
 
             if (typeof data === 'undefined'){
                 this.setState({
@@ -86,13 +93,26 @@ export default class FlowAllPage extends BaseComponent {
 
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
 
-            if(this.props.status === 3){
-                data.splice(0,0,'1')
+            data.map((order)=>{
+                this.orders.push(order);
+            })
+
+            if(this.props.status === 3 && this.orders[0] !== '1'){
+                this.orders.splice(0,0,'1')
             }
+
+            let currentNum = this.props.status === 3?this.orders.length-1:this.orders.length;
+
+            if(currentNum >= this.totalOrders){
+                this.state.haveMoreData = false;
+            }else {
+                this.state.haveMoreData = true;
+            }
+
 
             this.setState({
                 renderPlaceholderOnly: 'success',
-                source: ds.cloneWithRows(data),
+                source: ds.cloneWithRows(this.orders),
                 isRefreshing:false
             })
 
@@ -121,10 +141,12 @@ export default class FlowAllPage extends BaseComponent {
                     style={{paddingTop: Pixel.getPixel(this.props.status ===3?1:8), backgroundColor: fontAndColor.COLORA3, flex: 1}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
+                    render
                     initialListSize={10}
                     onEndReachedThreshold={2}
                     stickyHeaderIndices={[]}//仅ios
                     enableEmptySections={true}
+                    renderFooter={this.renderListFooter}
                     scrollRenderAheadDistance={10}
                     pageSize={10}
                     onEndReached={this.toEnd}
@@ -265,10 +287,13 @@ export default class FlowAllPage extends BaseComponent {
 
     toEnd = () => {
 
-        // if (!this.state.isRefreshing && this.page != this.allPage) {
-        //     this.page = this.page + 1;
-        //     this.getFlowData(this.enter_base_id, this.user_type);
-        // }
+
+        let currentNum = this.props.status === 3?this.orders.length-1:this.orders.length;
+
+        if (!this.state.isRefreshing && this.totalOrders > currentNum) {
+            this.currentPage++;
+            this.loadData(this.currentPage)
+        }
 
     };
 
@@ -277,11 +302,11 @@ export default class FlowAllPage extends BaseComponent {
         this.setState({
             isRefreshing:true
         },()=>{
-            this.loadData();
+
+            this.orders = [];
+            this.currentPage = 1
+            this.loadData(this.currentPage);
         })
-
-
-
 
     }
 
@@ -536,7 +561,7 @@ export class TransportOrder extends Component{
                                 style = {{paddingLeft:Pixel.getPixel(30), paddingVertical:Pixel.getPixel(8)}}
                             >
                                 <Image style={{}}
-                                       source={this.state.fold?require('../../../../../images/carriagePriceImage/jiantou_downward.png'):require('../../../../../images/carriagePriceImage/jiantou_upward.png')}/>
+                                       source={this.state.fold?require('../../../../../images/carriagePriceImage/jiantou_upward.png'):require('../../../../../images/carriagePriceImage/jiantou_downward.png')}/>
                             </TouchableOpacity>
 
 

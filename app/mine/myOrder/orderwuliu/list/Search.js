@@ -21,6 +21,9 @@ import {request} from '../../../../utils/RequestUtil';
 import * as Urls from '../../../../constant/appUrls';
 import SaasText from "../../../accountManage/zheshangAccount/component/SaasText";
 import {TransportOrder} from './Page'
+import PlatformChoose from "../pay/PlatformChoose";
+import LogisCarInfoScene from "../../LogisCarInfoScene";
+import NewCarriagePriceInfoScene from "../../NewCarriagePriceInfoScene";
 
 const Pixel = new PixelUtil();
 

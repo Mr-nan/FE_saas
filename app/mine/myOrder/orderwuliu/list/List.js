@@ -35,7 +35,6 @@ export default  class  List extends BaseComponent{
 
     }
 
-
     render(){
 
         return(<View  style={styles.root}>
@@ -53,7 +52,7 @@ export default  class  List extends BaseComponent{
                             params:{}
                         })
                     }}
-                    leftImageCallBack={this.backPage}
+                    leftImageCallBack={this.backToTop}
                 />
 
 
