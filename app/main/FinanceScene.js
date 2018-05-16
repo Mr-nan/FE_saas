@@ -1078,7 +1078,7 @@ class FinanceSeekContentView extends Component{
 
     render(){
         return(
-            <TouchableOpacity activeOpacity={1} onPress={this.props.cancel} style={{top:Pixel.getPixel(364)-this.props.offY, backgroundColor:'rgba(0, 0, 0,0.3)', left: 0, right: 0, position: 'absolute', bottom:0,paddingTop:Pixel.getPixel(1)}}>
+            <TouchableOpacity activeOpacity={1} onPress={this.props.cancel} style={{top:Pixel.getPixel(335)-this.props.offY, backgroundColor:'rgba(0, 0, 0,0.3)', left: 0, right: 0, position: 'absolute', bottom:0}}>
                 <ListView dataSource={this.state.dataSource}
                           renderRow={(rowDate)=>{
                               return(
