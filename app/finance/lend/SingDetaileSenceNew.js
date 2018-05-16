@@ -470,7 +470,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(this.stateCode)[0]}}>{Pixel.getStatusStr(this.stateCode)}</Text>
                 </View>
-                <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
+                <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-start"}}>
                         <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{parseFloat(this.tempjson.loanmny)}<Text style={{fontSize:adapeSize(12)}}>万</Text></Text>
@@ -485,7 +485,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>综合费率</Text>
                     </View>
                 </View>
-                <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#F0EFF5',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.paymenttype}</Text>
                     {
@@ -497,12 +497,12 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 {
                     this.stateCode == 0 ?
                     <View style={{flexDirection:'column'}}>
-                        <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                        <Image style={{width:width-adapeSize(10),height:onePT,marginLeft:adapeSize(5),marginRight:adapeSize(5)}} source={require('../../../images/xu_line.png')}/>
                         <View style={{flexDirection:'row',padding:adapeSize(10)}}>
                             <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'借款日期'}</Text>
                             <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.loan_time}</Text>
                         </View>
-                        <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#D8D8D8',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
+                        <Image style={{width:width-adapeSize(10),height:onePT,marginLeft:adapeSize(5),marginRight:adapeSize(5)}} source={require('../../../images/xu_line.png')}/>
                         <View style={{flexDirection:'row',padding:adapeSize(10)}}>
                             <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'取消日期'}</Text>
                             <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.cancle_time}</Text>
@@ -542,7 +542,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         <Image source={cellJianTou} style={{ width: adapeSize(15), height: adapeSize(15)}}/>
                     </View>
                 </TouchableOpacity>
-                <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
+                <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
                         <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(110)}}>{rowData.loan_mny +'万元'}</Text>
@@ -580,7 +580,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     </View>:null
                 }
                 {
-                    tempButtons.length == 0 ?  <View style={{width:width,height:Pixel.getPixel(5)}}></View> : <View style={{width:width,height:onePT*2,backgroundColor:'#D8D8D8'}}/>
+                    tempButtons.length == 0 ?  <View style={{width:width,height:Pixel.getPixel(5)}}></View> : <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
                 }
                 {
                     tempButtons.length > 0 &&
