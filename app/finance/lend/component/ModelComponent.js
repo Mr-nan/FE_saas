@@ -211,7 +211,7 @@ export class ModifyBorrowingNew extends Component{
                 <TouchableOpacity style={styles.mask} activeOpacity={1} onPress={()=>{
                     dismissKeyboard();
                 }}>
-                    <View style={[styles.container,{marginTop:adapeSize(230), marginLeft:adapeSize(20), marginRight:adapeSize(20)}]}>
+                    <View style={[styles.container,{marginTop:adapeSize(190), marginLeft:adapeSize(20), marginRight:adapeSize(20)}]}>
                         <Text allowFontScaling={false}  style={{fontSize:adapeSize(14),color:'#333333',marginTop:adapeSize(15),marginBottom:adapeSize(15)}}>修改借款金额申请</Text>
                         <View style={{height:adapeSize(35),flexDirection:'row',marginLeft:adapeSize(5),marginRight:adapeSize(5),borderBottomColor:'#D8D8D8',borderBottomWidth:0.5,alignItems:'center',justifyContent:'center'}}>
                             <Text style={{flex:1,fontSize:adapeSize(12),color:'#999999',marginLeft:adapeSize(5)}}>可借额度区间</Text>
@@ -220,7 +220,8 @@ export class ModifyBorrowingNew extends Component{
                         </View>
                         <View style={{height:adapeSize(35), marginTop:adapeSize(20), flexDirection:'row',borderBottomColor:'#D8D8D8',borderBottomWidth:0.5,alignItems:'center',marginLeft:adapeSize(5),marginRight:adapeSize(5),justifyContent:'center'}}>
                             <Text style={{color:'#333333',fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>金额</Text>
-                            <TextInput underlineColorAndroid={"#00000000"} onChangeText={this.props.onchangeText} style={{flex:1, fontSize:adapeSize(12), color:PAGECOLOR.COLORB4, paddingLeft:adapeSize(10), height:adapeSize(35),padding:0}} placeholder='请输入借修改后的款金额' keyboardType='decimal-pad'></TextInput>
+                            <TextInput underlineColorAndroid={"#00000000"} onChangeText={this.props.onchangeText}
+                                       style={{flex:1, fontSize:adapeSize(12), color:PAGECOLOR.COLORB4, paddingLeft:adapeSize(10), height:adapeSize(35),padding:0}} placeholderTextColor={'#999999'} placeholder='请输入借修改后的款金额' keyboardType='decimal-pad'></TextInput>
                             <Text style={{color:'#666666',fontSize:adapeSize(12),marginRight:adapeSize(5),marginLeft:adapeSize(10)}}>万元</Text>
                         </View>
                         <View style={styles.handelWarp}>

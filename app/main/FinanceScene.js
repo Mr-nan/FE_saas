@@ -595,7 +595,7 @@ export default class FinanceSence extends BaseComponet {
                                   style={cellSheet.rowTopGrayTextStyle}>{movie.payment_number}</Text>
                         </View>
                     </View>
-                    <View style={{height: 0.5, backgroundColor: fontAndColor.COLORA4}}></View>
+                    <View style={{height: onePT, backgroundColor: '#F0EFF5'}}></View>
                     <View style={cellSheet.rowBottomViewStyle}>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
                             <Text style={{fontSize:Pixel.getPixel(20),color:"#FA5741"}}>{parseFloat(movie.loanmny)}<Text style={{fontSize:Pixel.getPixel(12)}}>万</Text></Text>
@@ -1183,8 +1183,8 @@ const cellSheet = StyleSheet.create({
     },
 
     Separator: {
-        backgroundColor: fontAndColor.COLORA4,
-        height: 1,
+        backgroundColor: '#D8D8D8',
+        height: onePT,
     },
 
     titleStyle: {
