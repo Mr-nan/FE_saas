@@ -686,7 +686,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',flexDirection:'row',width:width}}>
 
                     {
-                        this.tempjson.logic_status == 10?
+                        (this.tempjson.logic_status == 10 || this.tempjson.logic_status == 20)?
                             <TouchableOpacity  style={{height:40,flex:1,backgroundColor:'#90A1B5',justifyContent:'center',alignItems:'center'}}
                                            onPress={()=>{
                                                this.cancleFlag = '取消主单'
