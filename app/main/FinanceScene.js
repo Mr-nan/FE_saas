@@ -770,7 +770,8 @@ export default class FinanceSence extends BaseComponet {
 
                                     </View>)
                             }
-                            <View style={{width: width/2, alignItems: 'center',borderLeftColor:'white',borderLeftWidth:StyleSheet.hairlineWidth}}>
+                            <Image style={{width:onePT*2,height:Pixel.getPixel(45),marginTop:Pixel.getPixel(8)}} source={require('../../images/xu_shu_line.png')}/>
+                            <View style={{width: width/2, alignItems: 'center'}}>
                                 <Text allowFontScaling={false}
                                       style={{
                                           width: width/2,
@@ -972,7 +973,7 @@ class FinanceTypeSeekView extends  Component{
     render(){
         this.subItem=[];
         return(
-            <View style={{flex:1, height:Pixel.getPixel(49), backgroundColor:'white', flexDirection:'row', alignItems:'center',justifyContent:'space-between',borderBottomColor:fontAndColor.COLORA4,borderBottomWidth:Pixel.getPixel(1),
+            <View style={{flex:1, height:Pixel.getPixel(49), backgroundColor:'white', flexDirection:'row', alignItems:'center',justifyContent:'space-between',borderBottomColor:'#D8D8D8',borderBottomWidth:onePT,
             }}>
                 <FinaceTypeSeekItem ref={(ref)=>{ref && this.subItem.push(ref)}} type={0} title={'全部借款'} seekClick={this.seekClick}/>
                 <FinaceTypeSeekItem ref={(ref)=>{ ref && this.subItem.push(ref)}} type={1} title={'状态'} seekClick={this.seekClick}/>
