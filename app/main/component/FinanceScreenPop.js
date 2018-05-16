@@ -63,10 +63,9 @@ export default class FinanceScreenPop extends PureComponent {
             <TouchableOpacity onPress={()=>{
                 this.props.hidden('null');
             }} activeOpacity={1} style={{width:this.state.width,height:this.state.height,
-            backgroundColor:'rgba(0,0,0,0.6)',position: 'absolute',
+                backgroundColor:'rgba(0,0,0,0.3)',position: 'absolute',
             left:0,top:this.state.top,overflow:'hidden'}}>
-                <View style={{width:this.state.width,height:Pixel.getPixel(274),backgroundColor:'#fff'
-                    ,paddingHorizontal:Pixel.getPixel(15)}}>
+                <View style={{width:this.state.width,height:Pixel.getPixel(274), paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white'}}>
                     {viewList}
                 </View>
             </TouchableOpacity>

@@ -74,7 +74,8 @@ export default class FinanceHeader extends PureComponent {
                                 source={require('../../../images/financeImages/jinrongbeijinghou.png')}>
                     <FinanceHeaderTop onPress={() => {
                         this.changeBottom(2);}}
-                                      ref="bottoms" type={2} allData={this.props.allData1}
+                                      ref="bottoms" type={2}
+                                      allData={this.props.allData1}
                                       depositPop={()=>{this.props.depositPop()}}
                                       creditPop={()=>{this.props.creditPop()}}
                                       balancePop={()=>{this.props.balancePop()}}

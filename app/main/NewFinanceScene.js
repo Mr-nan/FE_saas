@@ -64,6 +64,7 @@ import FinanceButton from './component/FinanceButton';
 import FinanceScreen from './component/FinanceScreen';
 import FinanceScreenPop from './component/FinanceScreenPop';
 import FinanceItem from './component/FinanceItem';
+
 import FinanceGuide from './component/FinanceGuide';
 
 let contentData = [{title: '保证金额度', value: '100万'}, {title: '保证金余额', value: '100万'}];
@@ -405,6 +406,31 @@ export default class NewFinanceScene extends BaseComponet {
                     }
                     this.closePop();
                 }}/>
+                <LendSuccessAlert ref="showAlert"
+                                  title={'审核未通过'}
+                                  subtitle={mnyData.microchinese_audit_reason}
+                                  confimClick={()=>{
+                                      if(mnyData.microchinese_apply_status == 0){
+
+                                      }
+                                      else {
+                                          let navigationParams={
+                                              name: "QuotaApplication",
+                                              component: QuotaApplication,
+                                              params: {
+                                                  callBack:()=>{
+                                                      this.allRefresh()
+                                                  }
+                                              }
+                                          }
+                                          this.props.callBack(navigationParams);
+                                      }
+
+                                  }}
+
+                                  confimTitle={mnyData.microchinese_apply_status == 0 ? "好的":"重新审核"}
+
+                />
                 <ExplainModal ref='loanModal' buttonStyle={cellSheet.expButton} textStyle={cellSheet.expText}/>
                 {/*<FinanceGuide/>*/}
                 <NavigationView title="锋之行汽车销售"/>
@@ -512,7 +538,21 @@ export default class NewFinanceScene extends BaseComponet {
                 balancePop={() => {
                 }}
                 weizongPop={() => {
-                }}/>);
+                    if(movie.is_microchinese_mny==4){
+                        this.refs.showAlert.setModelVisible(true);
+                    }else if (movie.is_microchinese_mny == 1 && movie.microchinese_apply_status != 0){
+                            let navigationParams={
+                                name: "QuotaApplication",
+                                component: QuotaApplication,
+                                params: {
+                                    callBack:()=>{
+                                        this.allRefresh()
+                                    }
+                                }
+                            }
+                            this.props.callBack(navigationParams);
+                    }}
+                }/>);
         } else if (rowId == 1) {
             return (<FinanceButton borrowBt={() => {
                 this.homeItemOnPress('借款');
