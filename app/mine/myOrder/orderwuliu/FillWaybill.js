@@ -391,7 +391,7 @@ export default class FillWaybill extends BaseComponent {
                             });
                         }
 
-                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 && this.collectAddress !== '请选择' && this.distance !== '0') {
+                        if (!this.isEmpty(data.all_amount) && data.all_amount.length > 0 && this.collectAddress !== '请选择') {
                             data.all_amount.map((data) => {
                                 if (data.amount_name == '总金额') {
                                     this.totalMoney = data.amount;
