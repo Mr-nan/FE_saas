@@ -63,7 +63,7 @@ export default class FillWaybill extends BaseComponent {
         this.store_amount = 0;
         this.transTypeTags = [{
             name: '平台上门取车',
-            check: false,
+            check: true,
         }, {
             name: '客户送车到网点',
             check: false,
@@ -214,7 +214,7 @@ export default class FillWaybill extends BaseComponent {
             warehouse_id: this.props.logisticsType == 3 ? this.endId : this.warehouse_id,
 
         };
-        if (this.state.transType == '1') {
+        if (this.transType == '1') {
             if(this.sendType!==-1){
                 maps['send_type']=this.sendType;
             }else {
@@ -354,9 +354,9 @@ export default class FillWaybill extends BaseComponent {
                         this.startAdress = data.start_address.city + data.start_address.district;
                         this.startId = data.start_address.id;
                         this.sendType=-1;
-                        this.transTypeTags.map((data) => {
-                            data.check = false;
-                        });
+                        // this.transTypeTags.map((data) => {
+                        //     data.check = false;
+                        // });
                         if (end_address == null) {
                             this.collectAddress = '请选择'
                             return;
