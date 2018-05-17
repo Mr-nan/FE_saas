@@ -821,7 +821,7 @@ export default class CarInfoScene extends BaseComponent {
     addStoreAction = (isStoreClick) => {
 
         StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
-                if (res.result) {
+                if (res.result && res.result == 'true') {
                     let url = AppUrls.BASEURL + 'v1/user.favorites/create';
                     request(url, 'post', {
 

@@ -232,12 +232,11 @@ export default class MainPage extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
 
             if (res.result !== StorageUtil.ERRORCODE) {
-                if (!res.result) {
+                if (!res.result || res.result == 'false') {
 
                     this.getTouristPermission();
 
                 } else {
-
                     StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
                         if (childdata.code == 1) {
                             let childdatas = JSON.parse(childdata.result);
