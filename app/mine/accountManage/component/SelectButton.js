@@ -45,10 +45,10 @@ export default class SelectButton extends PureComponent {
         let image = this.state.isSelect ? require('../../../../images/login/okconfirm.png') :
             require('../../../../images/login/noconfirm.png');
         return (
-            <TouchableOpacity style={{marginTop: Pixel.getPixel(5)}}
+            <TouchableOpacity style={{marginVertical:Pixel.getPixel(5)}}
                               onPress={() => {
                                   this.changeState(!this.state.isSelect);
-                                  this.props.link().changeState(!this.state.isSelect);
+                                  this.props.onPress(!this.state.isSelect)
                               }}>
                 <Image source={image}/>
             </TouchableOpacity>
