@@ -433,7 +433,10 @@ export default class NewFinanceScene extends BaseComponet {
                 />
                 <ExplainModal ref='loanModal' buttonStyle={cellSheet.expButton} textStyle={cellSheet.expText}/>
                 {/*<FinanceGuide/>*/}
-                <NavigationView title="锋之行汽车销售"/>
+                <NavigationView title="锋之行汽车销售" wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0,
+                    fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+                    textAlign: 'center',
+                    backgroundColor: 'transparent',}}/>
             </View>
         )
     }

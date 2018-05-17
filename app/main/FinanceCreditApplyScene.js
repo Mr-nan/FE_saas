@@ -151,7 +151,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 	 * */
 	loadScrollView = () => {
 		return (
-			<ScrollView style={{backgroundColor:'white'}}
+			<ScrollView style={{backgroundColor:fontAndColor.COLORA3}}
 			            refreshControl={
                               <RefreshControl
                                   refreshing={this.state.isRefreshing}
@@ -166,19 +166,14 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 				{/*//----------------------------------------------第 1 块view 新车订单授信----------------------------------------------*/}
 
 				<View
-					style={{width:width,alignItems:'center',backgroundColor:'white',marginTop:Pixel.getPixel(20),
-					}}>
-					<Text
-						style={{color: 'black',fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34), lineHeight:24,marginTop:Pixel.getPixel(11)}}>
+					style={{width:width,alignItems:'center',backgroundColor:'white',paddingBottom:Pixel.getPixel(20)}}>
+					<Text style={{color: 'black',fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34), lineHeight:24,marginTop:Pixel.getPixel(11),marginTop:Pixel.getPixel(20)}}>
 						金融
 					</Text>
-
 					{this.state.APPEAR ?
 						<TouchableOpacity onPress={()=>{this._disappear()}}
 						                  style={{backgroundColor:'rgba(255,255,208,1.00)',borderColor:'rgba(255,255,255,0.30)',
 					                   width:Pixel.getPixel(336),padding:Pixel.getPixel(0),marginTop:Pixel.getPixel(10)}}>
-
-
 							<Text allowFontScaling={false}
 							      style={{color:'rgba(237,120,92,1.00)',fontSize: Pixel.getFontPixel(14),marginTop:Pixel.getPixel(0)}}>
 								{this.state.DancheResult}
@@ -191,13 +186,9 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 							      style={{color:'rgba(237,120,92,1.00)',fontSize: Pixel.getFontPixel(14),marginTop:Pixel.getPixel(10)}}>
 								{this.state.ZongheResult}
 							</Text>
-
-
 						</TouchableOpacity>
 						: null}
-
-
-					<Image source={require('../mine/kuaisushouxin/kuaisushouxin_images/jinrongbeijinglanqian.png')}
+					<Image resizeMode={'stretch'} source={require('../mine/kuaisushouxin/kuaisushouxin_images/jinrongbeijinglanqian_2.png')}
 					       style={{width:Pixel.getPixel(350),height:Pixel.getPixel(170),marginTop:Pixel.getPixel(20)}}>
 						<View style={{marginTop:Pixel.getPixel(9),flexDirection:'row',alignItems:'flex-end',}}>
 							<Text allowFontScaling={false}
@@ -210,8 +201,6 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 								在线
 							</Text>
 						</View>
-
-
 						<View style={{marginTop:Pixel.getPixel(20),alignItems:'center',}}>
 							<Text allowFontScaling={false}
 							      style={{backgroundColor:'#00000000',color:'white',fontSize: Pixel.getFontPixel(22),marginLeft:Pixel.getPixel(5)}}>
@@ -219,20 +208,18 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 							</Text>
 
 							<View style={{flexDirection:'row',marginTop:Pixel.getPixel(10)}}>
-								<View style={{borderColor:'rgba(255,255,255,0.42)',borderWidth:1,borderRadius:Pixel.getPixel(8),
+								<View style={{borderColor:'rgba(255,255,255,0.42)',borderWidth:StyleSheet.hairlineWidth,borderRadius:Pixel.getPixel(8),
 							width:Pixel.getPixel(95),height:Pixel.getPixel(16),alignItems:'center',justifyContent:'center'}}>
 									<Text allowFontScaling={false}
 									      style={{backgroundColor:'#00000000',color:'white',fontSize: Pixel.getFontPixel(10)}}>最长期限  长期</Text>
 								</View>
-								<View style={{borderColor:'rgba(255,255,255,0.42)',borderWidth:1,borderRadius:Pixel.getPixel(8),
+								<View style={{borderColor:'rgba(255,255,255,0.42)',borderWidth:StyleSheet.hairlineWidth,borderRadius:Pixel.getPixel(8),
 							width:Pixel.getPixel(95),height:Pixel.getPixel(16),alignItems:'center',justifyContent:'center',marginLeft:Pixel.getPixel(10)}}>
 									<Text allowFontScaling={false}
 									      style={{backgroundColor:'#00000000',color:'white',fontSize: Pixel.getFontPixel(10)}}>最高额度  200万</Text>
 								</View>
 
 							</View>
-
-
 							<TouchableOpacity
 								onPress={()=>{this._applyCredit('xinchedingdan',this.state.xincheCreditStatus)}}
 								style={{marginTop:Pixel.getPixel(20),backgroundColor:'rgba(255,255,255,0.30)',borderColor:'rgba(255,255,255,0.30)',borderWidth:1,borderRadius:Pixel.getPixel(13),
@@ -240,10 +227,8 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 								<Text allowFontScaling={false}
 								      style={{backgroundColor:'#00000000',color:'white',fontSize: Pixel.getFontPixel(15)}}>{this._creditStatusForButton(this.state.xincheCreditStatus)}</Text>
 							</TouchableOpacity>
-
 						</View>
 					</Image>
-
 				</View>
 
 				{/*//----------------------------------------------第 2 块view 小额授信----------------------------------------------*/}
@@ -271,12 +256,12 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 						</Text>
 
 						<View style={{flexDirection:'row',marginTop:Pixel.getPixel(10)}}>
-							<View style={{borderColor:fontAndColor.COLORA1,borderWidth:1,borderRadius:Pixel.getPixel(8),
+							<View style={{borderColor:fontAndColor.COLORA4,borderWidth:StyleSheet.hairlineWidth,borderRadius:Pixel.getPixel(8),
 							width:Pixel.getPixel(95),height:Pixel.getPixel(16),alignItems:'center',justifyContent:'center'}}>
 								<Text allowFontScaling={false}
 								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(11)}}>最长期限  12个月</Text>
 							</View>
-							<View style={{borderColor:fontAndColor.COLORA1,borderWidth:1,borderRadius:Pixel.getPixel(8),
+							<View style={{borderColor:fontAndColor.COLORA4,borderWidth:StyleSheet.hairlineWidth,borderRadius:Pixel.getPixel(8),
 							width:Pixel.getPixel(95),height:Pixel.getPixel(16),alignItems:'center',justifyContent:'center',marginLeft:Pixel.getPixel(10)}}>
 								<Text allowFontScaling={false}
 								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(11)}}>最高额度  50万</Text>
@@ -285,7 +270,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 						</View>
 						{/*灰色的线*/}
 						<View style={{backgroundColor:fontAndColor.COLORA4,width:Pixel.getPixel(width-30),
-						height:Pixel.getPixel(1),marginTop:Pixel.getPixel(28)}}/>
+						height:StyleSheet.hairlineWidth,marginTop:Pixel.getPixel(28)}}/>
 
 						<TouchableOpacity onPress={()=>{this._applyCredit('kuaisu',this.state.xiaoeCreditStatus)}}
 						                  style={{marginTop:Pixel.getPixel(0),backgroundColor:'white',
@@ -326,12 +311,12 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 						</Text>
 
 						<View style={{flexDirection:'row',marginTop:Pixel.getPixel(10)}}>
-							<View style={{borderColor:fontAndColor.COLORA1,borderWidth:1,borderRadius:Pixel.getPixel(8),
+							<View style={{borderColor:fontAndColor.COLORA4,borderWidth:StyleSheet.hairlineWidth,borderRadius:Pixel.getPixel(8),
 							width:Pixel.getPixel(95),height:Pixel.getPixel(16),alignItems:'center',justifyContent:'center'}}>
 								<Text allowFontScaling={false}
 								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(11)}}>最长期限  12个月</Text>
 							</View>
-							<View style={{borderColor:fontAndColor.COLORA1,borderWidth:1,borderRadius:Pixel.getPixel(8),
+							<View style={{borderColor:fontAndColor.COLORA4,borderWidth:StyleSheet.hairlineWidth,borderRadius:Pixel.getPixel(8),
 							width:Pixel.getPixel(95),height:Pixel.getPixel(16),alignItems:'center',justifyContent:'center',marginLeft:Pixel.getPixel(10)}}>
 								<Text allowFontScaling={false}
 								      style={{backgroundColor:'#00000000',color:fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(11)}}>最高额度  5000万</Text>
@@ -340,7 +325,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 						</View>
 						{/*灰色的线*/}
 						<View style={{backgroundColor:fontAndColor.COLORA4,width:Pixel.getPixel(width-30),
-						height:Pixel.getPixel(1),marginTop:Pixel.getPixel(28)}}/>
+						height:StyleSheet.hairlineWidth,marginTop:Pixel.getPixel(28)}}/>
 
 						<TouchableOpacity onPress={()=>{this._applyCredit('zonghe',this.state.zongheCreditStatus)}}
 						                  style={{marginTop:Pixel.getPixel(0),backgroundColor:'white',
@@ -708,7 +693,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: 'white',
-		paddingTop: Pixel.getPixel(0),
 	},
 	fillSpace: {
 		flex: 1,
