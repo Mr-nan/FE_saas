@@ -464,9 +464,11 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
-                    <Text style={{backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code),color:'#ffffff',fontSize:adapeSize(12),borderRadius:Pixel.getPixel(1),height:Pixel.getPixel(16),width:Pixel.getPixel(22),textAlign:'center'}}>
-                        {Pixel.getProductStr(this.tempjson.product_type_code.product_code)}
-                    </Text>
+                    <View style={{borderRadius:Pixel.getPixel(1),height:Pixel.getPixel(16),width:Pixel.getPixel(22),justifyContent:'center',alignItems:'center'}}>
+                        <Text style={{backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code),color:'#ffffff',fontSize:adapeSize(12)}}>
+                            {Pixel.getProductStr(this.tempjson.product_type_code.product_code)}
+                        </Text>
+                    </View>
                     <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(this.stateCode)[0]}}>{Pixel.getStatusStr(this.stateCode)}</Text>
                 </View>
@@ -549,7 +551,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
                 <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
-                        <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(110)}}>{rowData.loan_mny +'万元'}</Text>
+                        <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(110)}}>{rowData.loan_mny}<Text style={{fontSize:adapeSize(12)}}>万元</Text></Text>
                         <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.loan_time}</Text>
                         <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.loan_number}</Text>
                     </View>
