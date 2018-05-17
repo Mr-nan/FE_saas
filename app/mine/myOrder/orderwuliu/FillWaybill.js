@@ -409,7 +409,7 @@ export default class FillWaybill extends BaseComponent {
                                 feeDatas.push({title: '仓储费', value: parseFloat(this.store_amount).toFixed(2) + '元'})
                             }
                         }
-                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 && this.collectAddress !== '请选择' && this.distance !== '0') {
+                        if (!this.isEmpty(data.trans_type) && data.trans_type.length > 0 && this.collectAddress !== '请选择') {
                             data.trans_type.map((data, index) => {
                                 if (index == '0') {
                                     this.transType = data.transportTypeCode;
