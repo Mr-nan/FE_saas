@@ -857,7 +857,7 @@ export default class CarInfoScene extends BaseComponent {
     cancelStoreAction = (isStoreClick) => {
 
         StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
-                if (res.result) {
+                if (res.result && res.result == 'true') {
                     let url = AppUrls.BASEURL + 'v1/user.favorites/delete';
                     request(url, 'post', {
 
