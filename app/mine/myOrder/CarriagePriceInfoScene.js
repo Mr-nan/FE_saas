@@ -886,7 +886,7 @@ class InvoiceMarkItem extends Component {
                 <InformationInputItem
                     ref={'tax_id'}
                     title={'纳税人识别号'}
-                    textPlaceholder={'18位以内不包含汉子的识别号'}
+                    textPlaceholder={'18位以内不包含汉字的识别号'}
                     keyboardType={'default'}
                     separator={false}
                     onChangeText={(text) => {
