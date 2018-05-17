@@ -87,26 +87,26 @@ export  default class ZongheCreditApply extends BaseComponent {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.backPage();
-                        }}
-                        style={styles.selectBtn}
-                        activeOpacity={0.6}>
-                        <Text allowFontScaling={false}
-                              style={{fontSize: Pixel.getFontPixel(14), color: fontAndColor.COLORB0,}}>取消</Text>
-                    </TouchableOpacity>
-                    <View style={{flex: 1}}/>
-                    <TouchableOpacity
-                        style={[styles.selectBtn, {backgroundColor: fontAndColor.COLORB0}]}
-                        activeOpacity={0.6}
-                        onPress={() => {
-                            this._applyZongHeCredit();
-                        }}>
-                        <Text allowFontScaling={false}
-                              style={{fontSize: Pixel.getFontPixel(14), color: 'white'}}>提交</Text>
-                    </TouchableOpacity>
-
+                    <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.backPage();
+                            }}
+                            style={[styles.selectBtn,{marginRight:Pixel.getPixel(15)}]}
+                            activeOpacity={0.6}>
+                            <Text allowFontScaling={false}
+                                  style={{fontSize: Pixel.getFontPixel(14), color: fontAndColor.COLORB0,}}>取消</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.selectBtn, {backgroundColor: fontAndColor.COLORB0}]}
+                            activeOpacity={0.6}
+                            onPress={() => {
+                                this._applyZongHeCredit();
+                            }}>
+                            <Text allowFontScaling={false}
+                                  style={{fontSize: Pixel.getFontPixel(14), color: 'white'}}>提交</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         )
@@ -262,8 +262,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: Pixel.getFontPixel(2),
-        marginRight: Pixel.getPixel(25),
-        marginLeft: Pixel.getPixel(25),
         borderColor: fontAndColor.COLORB0,
         borderWidth: 1,
 
