@@ -74,7 +74,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         )
         this.state = {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
-            renderPlaceholderOnly: STATECODE.loading
+            renderPlaceholderOnly: STATECODE.loading,
+            number : 0,
         }
     }
 
@@ -131,6 +132,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempCarJson = response.mjson.data
+
                     // let xxx = {
                     //     "token": "",
                     //     "code": 1,
@@ -228,6 +230,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     titleNameBlob = ( carData) => {
         let dataSource = {};
         if (carData.length > 0) {
+            this.state = {number : carData.length,}
             let tempCarDate = [];
             carData.map((item) => {
                 tempCarDate.push(item)
@@ -705,7 +708,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                             </TouchableOpacity>:null
                     }
                     {
-                        this.tempjson.is_sign_contract == 1?
+                        this.tempjson.is_sign_contract == 1 && this.state.number > 0?
                             <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{
                                                    this.toNextPage({
