@@ -229,14 +229,18 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     // 数据初始化方法
     titleNameBlob = ( carData) => {
         let dataSource = {};
+        this.count = 0;
         if (carData.length > 0) {
-            this.state = {number : carData.length,}
             let tempCarDate = [];
             carData.map((item) => {
+                if(item.is_sign_contract == 1 ){
+                    this.count++
+                }
                 tempCarDate.push(item)
             })
             dataSource['section2'] = tempCarDate;
         }
+        this.state = {number :this.count}
         return dataSource;
     }
 
@@ -708,7 +712,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                             </TouchableOpacity>:null
                     }
                     {
-                        this.tempjson.is_sign_contract == 1 && this.state.number > 0?
+                        this.state.number > 1?
                             <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{
                                                    this.toNextPage({
