@@ -27,7 +27,9 @@ import * as Net from '../../../../utils/RequestUtil';
 import * as AppUrls from '../../../../constant/appUrls';
 import SaasText from "../../../accountManage/zheshangAccount/component/SaasText";
 import MyButton from '../../../../component/MyButton'
-
+import AccountWebScene from "../../../accountManage/AccountWebScene";
+import * as webBackUrl from "../../../../constant/webBackUrl";
+import List from "../list/List";
 
 export  default  class  PlatformChoose extends BaseComponent{
 
@@ -63,7 +65,7 @@ export  default  class  PlatformChoose extends BaseComponent{
                     paddingVertical:Pixel.getPixel(30)
                 }}>
                     <SaasText style={{fontSize:15, fontWeight:'200', marginBottom:Pixel.getPixel(4)}}>支付金额</SaasText>
-                    <SaasText style={{fontSize:25,}}>10000元</SaasText>
+                    <SaasText style={{fontSize:25,}}>{this.props.order.total_amount + '元'}</SaasText>
 
                 </View>
 
@@ -101,7 +103,7 @@ export  default  class  PlatformChoose extends BaseComponent{
                         >
 
                             <Image source={require('../../../../../images/carriagePriceImage/platform_pay.png')}/>
-                            <SaasText style={{fontSize:13, fontWeight:'200', flex:1, marginLeft:Pixel.getPixel(5)}}>平台账户支付</SaasText>
+                            <SaasText style={{fontSize:14, fontWeight:'200', flex:1, marginLeft:Pixel.getPixel(5)}}>平台账户支付</SaasText>
                             {this.state.pay_way === 1?
                                 <Image style={{width: Pixel.getPixel(15), height: Pixel.getPixel(15)}}
                                        source={require('../../../../../images/checked.png')}/>
@@ -110,32 +112,32 @@ export  default  class  PlatformChoose extends BaseComponent{
 
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={()=>{
-                            this.setState({
-                                pay_way:2
-                            })
-                        }}
-                    >
-                        <View
-                            style={{
-                                backgroundColor:'white',
-                                flexDirection:'row',
-                                alignItems:'center',
-                                paddingVertical:Pixel.getPixel(15)
-                            }}
-                        >
+                    {/*<TouchableOpacity*/}
+                        {/*onPress={()=>{*/}
+                            {/*this.setState({*/}
+                                {/*pay_way:2*/}
+                            {/*})*/}
+                        {/*}}*/}
+                    {/*>*/}
+                        {/*<View*/}
+                            {/*style={{*/}
+                                {/*backgroundColor:'white',*/}
+                                {/*flexDirection:'row',*/}
+                                {/*alignItems:'center',*/}
+                                {/*paddingVertical:Pixel.getPixel(15)*/}
+                            {/*}}*/}
+                        {/*>*/}
 
-                            <Image source={require('../../../../../images/carriagePriceImage/transfer_pay.png')}/>
-                            <SaasText style={{fontSize:13, fontWeight:'200', flex:1, marginLeft:Pixel.getPixel(5)}}>转账支付</SaasText>
-                            {this.state.pay_way === 2?
-                                <Image style={{width: Pixel.getPixel(15), height: Pixel.getPixel(15)}}
-                                       source={require('../../../../../images/checked.png')}/>
-                                :null}
+                            {/*<Image source={require('../../../../../images/carriagePriceImage/transfer_pay.png')}/>*/}
+                            {/*<SaasText style={{fontSize:14, fontWeight:'200', flex:1, marginLeft:Pixel.getPixel(5)}}>转账支付</SaasText>*/}
+                            {/*{this.state.pay_way === 2?*/}
+                                {/*<Image style={{width: Pixel.getPixel(15), height: Pixel.getPixel(15)}}*/}
+                                       {/*source={require('../../../../../images/checked.png')}/>*/}
+                                {/*:null}*/}
 
 
-                        </View>
-                    </TouchableOpacity>
+                        {/*</View>*/}
+                    {/*</TouchableOpacity>*/}
 
                 </View>
 
@@ -146,16 +148,79 @@ export  default  class  PlatformChoose extends BaseComponent{
                     parentStyle={styles.next_parentStyle}
                     childStyle={styles.next_childStyle}
                     mOnPress={() => {
-                            this.toNextPage({
-
-                            })
-
-
+                        this.pay()
                     }}/>
                 </ScrollView>
 
             </View>)
     }
+
+    pay = ()=>{
+        let params = {
+            company_id: global.companyBaseID,
+            trans_id:this.props.order.trans_id,
+            reback_url:webBackUrl.PAY
+        }
+
+        this.props.showModal(true)
+        Net.request(AppUrls.LOGISTICS_ORDER_PAY, 'post', params).then((response) => {
+            this.props.showModal(false)
+            if(response.mjson.code === 1){
+
+                this.trans_serial_no = response.mjson.data.trans_serial_no
+
+                this.toNextPage({
+                    name: 'AccountWebScene',
+                    component: AccountWebScene,
+                    params: {
+                        title: '支付',
+                        webUrl: response.mjson.data.url,
+                        callBack: () => {
+                            this.checkFullPay()
+                        },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                        backUrl: webBackUrl.PAY
+                    }
+                });
+
+            }
+
+
+        }, (error) => {
+            this.props.showModal(false)
+            this.props.showToast(error.mjson.msg);
+
+        });
+    }
+
+    checkFullPay = ()=>{
+
+        let params = {
+            company_id: global.companyBaseID,
+            trans_id:this.props.order.trans_id,
+            trans_serial_no:this.trans_serial_no
+        }
+
+        this.props.showModal(true)
+        Net.request(AppUrls.LOGISTICS_ORDER_PAY_CALLBACK, 'post', params).then((response) => {
+            this.props.showModal(false)
+            if(response.mjson.code === 1){
+                this.toNextPage({
+                    name:'List',
+                    component:List,
+                    params:{
+
+                    }
+                })
+            }
+        }, (error) => {
+            this.props.showModal(false)
+            this.props.showToast(error.mjson.msg);
+
+        });
+
+
+    }
+
 }
 
 const styles = StyleSheet.create({

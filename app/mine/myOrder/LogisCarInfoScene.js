@@ -14,7 +14,7 @@ import {
     InteractionManager,
     RefreshControl,
     Dimensions
-} from  'react-native'
+} from 'react-native'
 
 const {width, height} = Dimensions.get('window');
 import BaseComponent from "../../component/BaseComponent";
@@ -39,25 +39,11 @@ export default class LogisCarInfoScene extends BaseComponent {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: ds.cloneWithRows([1, 2, 3]),
-            renderPlaceholderOnly: 'blank',
+            renderPlaceholderOnly: 'loading',
             isRefreshing: false,
             scrollEnabled: true
         };
-    }
-
-    componentDidMount() {
-        try {
-            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        } catch (e) {
-
-        } finally {
-            //InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'}, () => {
-                this.initFinish();
-            });
-
-            //});
-        }
+        this.order = {};
     }
 
     initFinish = () => {
@@ -70,9 +56,70 @@ export default class LogisCarInfoScene extends BaseComponent {
         this.loadData();
     };
 
+
+
+    /*
+
+         {
+        "car_name": "2013款 途观 豪华版 1.8TSI 手自一体 两驱",
+        "car_price": "130000.00",
+        "tms_vin": "",
+        "total_amount": "1976.00",
+        "tax_amount": "0.00",
+        "insure_amount": "0.00",
+        "check_amount": "0.00",
+        "freight_amount": "1587.00",
+        "service_amount": "150.00",
+        "tostore_amount": "239.00",
+        "Logistics_info": [{
+            "nodeDesc": "下单",
+            "nodeTime": "2018-05-13 11:26:00",
+            "nodeMsg": "备注信息"
+        }, {
+            "nodeDesc": "到达：辽宁省沈阳市",
+            "nodeTime": "2018-05-13 11:26:00",
+            "nodeMsg": "备注信息"
+        }]
+    }
+
+    */
+
     loadData = () => {
-        this.setState({renderPlaceholderOnly: 'success'});
-    };
+
+        let params = {
+            company_id: global.companyBaseID,
+            trans_id: this.props.order.trans_id,
+            item_id:this.props.car.item_id,
+        }
+
+        request(AppUrls.ORDER_LOGISTICS_CAR_DETAIL, 'post', params).then((response) => {
+            let data = response.mjson.data;
+
+            if (typeof data === 'undefined') {
+                this.setState({
+                    renderPlaceholderOnly: 'noData',
+                })
+                return;
+            }
+            this.order = data;
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                dataSource: ds.cloneWithRows([1, 2, 3]),
+                isRefreshing: false,
+                scrollEnabled: true,
+                renderPlaceholderOnly: 'success',
+            })
+        }, (error) => {
+
+            this.setState({
+                renderPlaceholderOnly: "failure",
+
+            })
+            this.props.showToast(error.mjson.msg);
+
+        });
+
+    }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -90,22 +137,22 @@ export default class LogisCarInfoScene extends BaseComponent {
                           enableEmptySections={true}
                           showsVerticalScrollIndicator={false}
                           scrollEnabled={this.state.scrollEnabled}
-                          onScroll={(event)=>{
-                                this.offY = Pixel.getPixel(event.nativeEvent.contentOffset.y);
-                                if(this.offY==286){
-                                    console.log("----------------");
-                                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                                     this.setState({ dataSource: ds.cloneWithRows([1, 2, 3])});
-                                }
-                            }}
+                          onScroll={(event) => {
+                              this.offY = Pixel.getPixel(event.nativeEvent.contentOffset.y);
+                              if(this.offY==286){
+                                  console.log("----------------");
+                                   let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                                   this.setState({ dataSource: ds.cloneWithRows([1, 2, 3])});
+                              }
+                          }}
                           refreshControl={
-                                  <RefreshControl
-                                      refreshing={this.state.isRefreshing}
-                                      onRefresh={this.refreshingData}
-                                      tintColor={[fontAndColor.COLORB0]}
-                                      colors={[fontAndColor.COLORB0]}
-                                  />
-                              }/>
+                              <RefreshControl
+                                  refreshing={this.state.isRefreshing}
+                                  onRefresh={this.refreshingData}
+                                  tintColor={[fontAndColor.COLORB0]}
+                                  colors={[fontAndColor.COLORB0]}
+                              />
+                          }/>
             </View>);
         }
     }
@@ -113,14 +160,14 @@ export default class LogisCarInfoScene extends BaseComponent {
 
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowID == 0) {
-            return (<LogisCarInfoTopItem></LogisCarInfoTopItem>);
+            return (<LogisCarInfoTopItem data = {this.order}/>);
         } else if (rowID == 1) {
-            return (<LogisCarInfoCenterItem></LogisCarInfoCenterItem>);
+            return (<LogisCarInfoCenterItem data = {this.order}/>);
         } else {
-            return (<LogisCarInfoBottomItem offy={this.offY} callBack={(content)=>{
+            return (<LogisCarInfoBottomItem destination = {this.order.destination} data = {this.order.Logistics_info} offy={this.offY} callBack={(content) => {
                 console.log(55555555555555555);
-                this.setState({scrollEnabled:content});
-            }}></LogisCarInfoBottomItem>);
+                this.setState({scrollEnabled: content});
+            }}/>);
         }
     }
 

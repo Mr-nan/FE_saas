@@ -24,9 +24,31 @@ export  default class LogisCarInfoTopItem extends PureComponent {
     constructor(props) {
         super(props);
     }
+    /*
 
-    componentWillReceiveProps(props) {
+         {
+        "car_name": "2013款 途观 豪华版 1.8TSI 手自一体 两驱",
+        "car_price": "130000.00",
+        "tms_vin": "",
+        "total_amount": "1976.00",
+        "tax_amount": "0.00",
+        "insure_amount": "0.00",
+        "check_amount": "0.00",
+        "freight_amount": "1587.00",
+        "service_amount": "150.00",
+        "tostore_amount": "239.00",
+        "Logistics_info": [{
+            "nodeDesc": "下单",
+            "nodeTime": "2018-05-13 11:26:00",
+            "nodeMsg": "备注信息"
+        }, {
+            "nodeDesc": "到达：辽宁省沈阳市",
+            "nodeTime": "2018-05-13 11:26:00",
+            "nodeMsg": "备注信息"
+        }]
     }
+
+    */
 
     render() {
         return (
@@ -37,16 +59,15 @@ export  default class LogisCarInfoTopItem extends PureComponent {
                 <View style={{width:Pixel.getPixel(213),height:Pixel.getPixel(80),
                 marginLeft:Pixel.getPixel(12)}}>
                     <Text style={{fontSize: Pixel.getPixel(14),backgroundColor:'#00000000',
-                    color: '#000'}} numberOfLines={2}>
-                        [北京]奔驰M级（进口） 2015款 M奔驰奔驰M级（进口） 2015款</Text>
+                    color: '#000'}} numberOfLines={2}>{this.props.data.car_name}</Text>
                     <Text style={{fontSize: Pixel.getPixel(12),backgroundColor:'#00000000',
                     color: '#9b9b9b',marginTop:Pixel.getPixel(15)}} >
                         单车指导价：<Text style={{fontSize: Pixel.getPixel(12),backgroundColor:'#00000000',
-                    color: '#000'}}>120000万</Text></Text>
+                    color: '#000'}}>{this.props.data.car_price}</Text></Text>
                     <Text style={{fontSize: Pixel.getPixel(12),backgroundColor:'#00000000',
                     color: '#9b9b9b',marginTop:Pixel.getPixel(5)}} >
                         车架号：<Text style={{fontSize: Pixel.getPixel(12),backgroundColor:'#00000000',
-                    color: '#000'}}>***********</Text></Text>
+                    color: '#000'}}>{this.props.data.tms_vin}</Text></Text>
                 </View>
             </View>
         );

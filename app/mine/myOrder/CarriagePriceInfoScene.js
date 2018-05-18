@@ -52,52 +52,55 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         }
 
 
-        // this.params = {
-        //     carCount: this.props.carCount,                  //车辆总数量		【必填】
-        //     carType: this.props.carType,                            //1 新车2：二手车		【必填】
-        //     company_id: global.companyBaseID,                   //公司ID		【必填】
-        //     endAddr: this.props.endAddr,	                    //目的地名称		【必填】
-        //     endAddrRegionId: this.props.endAddrRegionId,        //	目的地编码		【必填】
-        //     endGpsLatitude: 0,	                                //车型目的地纬度
-        //     endGpsLongitude: 0,	                                    //目的地经度
-        //     model_data: JSON.stringify(this.props.model_data),   //	车辆数量		【必填】
-        //     needInvoice: 0,	                                    //是否开发票0：否1：是默认为0
-        //     receive_type: this.props.transportType===1?1:2,	    //收车方式 1：自己送车到网点 2：平台上门取车		【必填】
-        //     send_type: 1,   	                                //送车方式 1：平台送车到户 2：自己到网点提车		【必填】
-        //     startAddr: this.props.startAddr, 	                //始发地名称
-        //     startAddrRegionId:this.props.startAddrRegionId,	        //始发地编码
-        //     startGpsLatitude: 0,	                            //初始地纬度
-        //     startGpsLongitude: 0, 	                            //初始地经度
-        //     transportType: this.props.transportType,	        //运输类型1
-        // }
+        this.params = {
+            carCount: this.props.carCount,                  //车辆总数量		【必填】
+            carType: this.props.carType,                            //1 新车2：二手车		【必填】
+            company_id: global.companyBaseID,                   //公司ID		【必填】
+            endAddr: this.props.endAddr,	                    //目的地名称		【必填】
+            endAddrRegionId: this.props.endAddrRegionId,        //	目的地编码		【必填】
+            endGpsLatitude: 0,	                                //车型目的地纬度
+            endGpsLongitude: 0,	                                    //目的地经度
+            model_data: this.props.model_data,   //	车辆数量		【必填】
+            needInvoice: 0,                                         //是否开发票0：否1：是默认为0
+            invoice_data:{},
+            receive_type: this.props.transportType===1?1:2,	    //收车方式 1：自己送车到网点 2：平台上门取车		【必填】
+            send_type: 1,   	                                //送车方式 1：平台送车到户 2：自己到网点提车		【必填】
+            startAddr: this.props.startAddr, 	                //始发地名称
+            startAddrRegionId:this.props.startAddrRegionId,	        //始发地编码
+            startGpsLatitude: 0,	                            //初始地纬度
+            startGpsLongitude: 0, 	                            //初始地经度
+            transportType: this.props.transportType,	        //运输类型1
+            clientele_msg:''
+        }
 
         //
         // 420700197004070216
         // 骆伟
 
 
-        this.params = {
-            carCount: 2,                  //车辆总数量		【必填】
-            carType: 1,                            //1 新车2：二手车		【必填】
-            company_id: global.companyBaseID,                   //公司ID		【必填】
-            endAddr:"辽宁沈阳",	               //目的地名称		【必填】
-            endAddrRegionId: "210100",        //	目的地编码		【必填】
-            endGpsLatitude: 0,	                                //车型目的地纬度
-            endGpsLongitude: 0,	                                    //目的地经度
-            model_data: JSON.stringify([{ model_id: 23658,
-                car_name: '2015款 宝马X6 xDrive35i 豪华型',
-                car_count: 1,
-                car_price: '99.80',}]),   //	车辆数量		【必填】
-            needInvoice: 0,	                                    //是否开发票0：否1：是默认为0
-            invoice_data:{},
-            receive_type: 1,	    //收车方式 1：自己送车到网点 2：平台上门取车		【必填】
-            send_type: 1,   	                                //送车方式 1：平台送车到户 2：自己到网点提车		【必填】
-            startAddr: "北京北京朝阳区", 	                //始发地名称
-            startAddrRegionId:"110105",	        //始发地编码
-            startGpsLatitude: 0,	                            //初始地纬度
-            startGpsLongitude: 0, 	                            //初始地经度
-            transportType: 1,	        //运输类型1：大板2：救援3：代驾【必填】
-        }
+        // this.params = {
+        //     carCount: 1,                  //车辆总数量		【必填】
+        //     carType: 1,                            //1 新车2：二手车		【必填】
+        //     company_id: global.companyBaseID,                   //公司ID		【必填】
+        //     endAddr:"辽宁沈阳新民市",	               //目的地名称		【必填】
+        //     endAddrRegionId: "210100",        //	目的地编码		【必填】
+        //     endGpsLatitude: 0,	                                //车型目的地纬度
+        //     endGpsLongitude: 0,	                                    //目的地经度
+        //     model_data: JSON.stringify([{ model_id: 23658,
+        //         car_name: '2015款 宝马X6 xDrive35i 豪华型',
+        //         car_count: 1,
+        //         car_price: '99.80',}]),   //	车辆数量		【必填】
+        //     needInvoice: 0,	                                    //是否开发票0：否1：是默认为0
+        //     invoice_data:{},
+        //     receive_type: 1,	    //收车方式 1：自己送车到网点 2：平台上门取车		【必填】
+        //     send_type: 1,   	                                //送车方式 1：平台送车到户 2：自己到网点提车		【必填】
+        //     startAddr: "北京北京朝阳区", 	                //始发地名称
+        //     startAddrRegionId:"110105",	        //始发地编码
+        //     startGpsLatitude: 0,	                            //初始地纬度
+        //     startGpsLongitude: 0, 	                            //初始地经度
+        //     transportType: 1,	        //运输类型1：大板2：救援3：代驾【必填】
+        //     clientele_msg:'',
+        // }
 
     }
 
@@ -131,14 +134,10 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             model_name
         } = this.params;
 
-        model_data = [{ model_id: 23658,
-            car_name: '2015款 宝马X6 xDrive35i 豪华型',
-            car_count: 1,
-            car_price: '99.80'}]
-
         let cars = []
-        model_data.map((model, index) => {
 
+        model_data = this.parse(model_data)
+        model_data.map((model, index) => {
             cars.push(
                 <CarInfoItem
                     key={index}
@@ -210,6 +209,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             }}
                             switchable={false}
                             value={this.params.send_type}
+                            params = {this.params}
                             type={2}
                             departure={endAddr}
                             contactInfo={this.state.receiverInfo}
@@ -420,6 +420,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         this.params.endGpsLongitude = info.longitude;
         this.params.end_id = info.id;
         this.params.id_card = info.id_card;
+        this.params.endAddrRegionId= info.district_code;
 
         console.log(info)
         this.setState({
@@ -456,29 +457,22 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
     loadData = () => {
 
-        this.props.showModal(true)
-
-        this.params.invoice_data = JSON.stringify(this.params.invoice_data)
+        this.params.invoice_data = this.stringify(this.params.invoice_data);
+        this.params.model_data = this.stringify(this.params.model_data);
 
         Net.request(AppUrls.ORDER_LOGISTICS_QUERY, 'post', this.params).then((response) => {
 
-            this.params.invoice_data = JSON.parse(this.params.invoice_data)
-
-
-
-            this.props.showModal(false)
+            console.log('loadData after')
+            console.log(this.params.model_data)
             let data = response.mjson.data;
-            // let priceData=[{title:'运价',value:data.freight},{title:'保险费',value:data.insurance},{title:'服务费',value:data.serviceFee},{title:'提验车费',value:data.checkCarFee},{title:'送店费',value:data.toStoreFee},{title:'税费',value:data.taxation},{title:'总价',value:data.totalPrice}];
             this.setState({
                 renderPlaceholderOnly: 'success',
                 priceData: data
             });
 
         }, (error) => {
-            this.params.invoice_data = JSON.parse(this.params.invoice_data)
-            this.props.showModal(false)
+
             this.setState({
-                //renderPlaceholderOnly: 'success',
                 renderPlaceholderOnly: 'failure',
             });
 
@@ -488,7 +482,6 @@ export default class CarriagePriceInfoScene extends BaseComponent {
     }
 
     preserveOrder = (type)=>{
-
 
         //
         // this.toNextPage({
@@ -501,15 +494,13 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         //
         // return
 
-
-
         //  type  1: 预存订单 2: 立即支付
         this.props.showModal(true);
 
-        this.params.invoice_data = JSON.stringify(this.params.invoice_data)
+        this.params.invoice_data = this.stringify(this.params.invoice_data)
 
         Net.request(AppUrls.LOGISTICS_ORDER_CREATE, 'post', this.params).then((response) => {
-            this.params.invoice_data = JSON.parse(this.params.invoice_data)
+
             this.props.showModal(false);
             let data = response.mjson.data;
             // let priceData=[{title:'运价',value:data.freight},{title:'保险费',value:data.insurance},{title:'服务费',value:data.serviceFee},{title:'提验车费',value:data.checkCarFee},{title:'送店费',value:data.toStoreFee},{title:'税费',value:data.taxation},{title:'总价',value:data.totalPrice}];
@@ -529,15 +520,12 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                     name:'PlatformChoose',
                     component:PlatformChoose,
                     params:{
-                        trans_id:'12345678'
+                        order:data
                     }
                 })
             }
 
-
-
         }, (error) => {
-            this.params.invoice_data = JSON.parse(this.params.invoice_data)
             this.props.showModal(false);
 
             this.props.showToast(error.mjson.msg);
@@ -587,26 +575,25 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                 return false;
 
             }
-
-
-
-
-
             return true
     }
 
-
-    isEmpty=(value )=>{
-
-        if (typeof value === "undefined" || value === null || value === ''){
-            return true;
+    parse=(str)=>{
+        if (typeof str === 'string'){
+            return JSON.parse(str);
         }else {
-            return false;
+            return str;
         }
+
     }
 
-
-
+    stringify(obj){
+        if (typeof obj !== 'string'){
+             return JSON.stringify(obj);
+        }else {
+            return obj
+        }
+    }
 }
 
 
@@ -752,6 +739,9 @@ class AddressInfoItemView extends Component {
                         <TextInput
                             style={{flex: 1,}}
                             multiline={true}
+                            onChangeText = {(text)=>{
+                                this.props.params.clientele_msg = text;
+                            }}
                         />
                     </View> : null
                 }
@@ -896,7 +886,7 @@ class InvoiceMarkItem extends Component {
                 <InformationInputItem
                     ref={'tax_id'}
                     title={'纳税人识别号'}
-                    textPlaceholder={'18位以内不包含汉子的识别号'}
+                    textPlaceholder={'18位以内不包含汉字的识别号'}
                     keyboardType={'default'}
                     separator={false}
                     onChangeText={(text) => {

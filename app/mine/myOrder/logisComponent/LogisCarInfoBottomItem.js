@@ -24,10 +24,9 @@ export  default class LogisCarInfoBottomItem extends PureComponent {
     constructor(props) {
         super(props);
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.source = [1,2,3,4,5,6,7,8,9,0];
         this.offY = 0;
         this.state={
-            dataSource:ds.cloneWithRows(this.source),
+            dataSource:ds.cloneWithRows(this.props.data.reverse()),
             scrollEnabled:false
         }
     }
@@ -40,8 +39,8 @@ export  default class LogisCarInfoBottomItem extends PureComponent {
 
     render() {
         let bottomHeight = height-Pixel.getPixel(160);
-        if(this.source.length<7){
-            bottomHeight = Pixel.getPixel(69)*this.source.length+Pixel.getPixel(27);
+        if(this.props.data.length<7){
+            bottomHeight = Pixel.getPixel(69)*this.props.data.length+Pixel.getPixel(27);
         }
         return (
             <View style={{width:width,marginTop:Pixel.getPixel(10)
@@ -54,9 +53,9 @@ export  default class LogisCarInfoBottomItem extends PureComponent {
 
                     </Image>
                     <Text style={{marginTop:Pixel.getPixel(7),color: '#000',fontSize: Pixel.getPixel(15),
-                        width:Pixel.getPixel(178),backgroundColor:'#00000000',textAlign: 'center'}}
+                        width:Pixel.getPixel(200),backgroundColor:'#00000000',textAlign: 'center'}}
                           numberOfLines={2}>
-                        山西省太原市红居街朗琴园 28号楼808室
+                        {this.props.destination}
                     </Text>
                 </Image>
                 <ListView style={{width:Pixel.getPixel(335),marginTop:Pixel.getPixel(100),
@@ -85,7 +84,7 @@ export  default class LogisCarInfoBottomItem extends PureComponent {
     }
     _renderRow=(rowData, selectionID, rowID)=>{
         return(
-            <TransportNode rowId={rowID} length ={this.source.length-1}>
+            <TransportNode data={rowData} rowId={rowID} length ={this.props.data.length-1}>
             </TransportNode>
         );
     }

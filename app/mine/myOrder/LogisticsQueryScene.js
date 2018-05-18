@@ -60,40 +60,40 @@ export default class LogisticsQueryScene extends BaseComponent {
 
         this.selectIndex = 0;
 
-        // this.firstItem = {
-        //     province: '',
-        //     province_code: '',
-        //     city: '',
-        //     city_code: '',
-        //     district: '',
-        //     district_code: ''
-        // }
-        // this.lastItem = {
-        //     province: '',
-        //     province_code: '',
-        //     city: '',
-        //     city_code: '',
-        //     district: '',
-        //     district_code: ''
-        // }
-
         this.firstItem = {
-            province: "北京",
-            province_code: '110000',
-            city: '北京',
-            city_code: '110100',
-            district: '朝阳区',
-            district_code: '110105'
-        }
-
-        this.lastItem = {
-            province: '辽宁',
-            province_code: '210000',
-            city: '沈阳',
-            city_code: '210100',
+            province: '',
+            province_code: '',
+            city: '',
+            city_code: '',
             district: '',
             district_code: ''
         }
+        this.lastItem = {
+            province: '',
+            province_code: '',
+            city: '',
+            city_code: '',
+            district: '',
+            district_code: ''
+        }
+
+        // this.firstItem = {
+        //     province: "北京",
+        //     province_code: '110000',
+        //     city: '北京',
+        //     city_code: '110100',
+        //     district: '朝阳区',
+        //     district_code: '110105'
+        // }
+
+        // this.lastItem = {
+        //     province: '辽宁',
+        //     province_code: '210000',
+        //     city: '沈阳',
+        //     city_code: '210100',
+        //     district: '',
+        //     district_code: ''
+        // }
 
 
         this.transType = [];
@@ -283,16 +283,16 @@ export default class LogisticsQueryScene extends BaseComponent {
                 <TouchableOpacity onPress={() => {
 
 
-                    let brandParams = {
-                        name: 'CarriagePriceInfoScene',
-                        component: CarriagePriceInfoScene,
-                        params: {
-                            firstItem:this.firstItem,  //为了校验详细地址而传
-                            lastItem:this.lastItem    //为了校验详细地址而传
-                        }
-                    };
-
-                    this.toNextPage(brandParams)
+                    // let brandParams = {
+                    //     name: 'CarriagePriceInfoScene',
+                    //     component: CarriagePriceInfoScene,
+                    //     params: {
+                    //         firstItem:this.firstItem,  //为了校验详细地址而传
+                    //         lastItem:this.lastItem    //为了校验详细地址而传
+                    //     }
+                    // };
+                    //
+                    // this.toNextPage(brandParams)
 
                     if (this.state.canClick) {
 

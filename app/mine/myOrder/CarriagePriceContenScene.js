@@ -1,6 +1,4 @@
-/**
- * Created by zhengnan on 2018/3/6.
- */
+
 
 import React,{Component} from 'react'
 import {
