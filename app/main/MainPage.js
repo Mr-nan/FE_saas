@@ -230,7 +230,7 @@ export default class MainPage extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
 
             if (res.result !== StorageUtil.ERRORCODE) {
-                if (!res.result) {
+                if (!res.result || res.result =='false') {
 
                     this.getTouristPermission();
 
