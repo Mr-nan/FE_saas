@@ -73,6 +73,8 @@ export default class LoginInputTextYU extends Component {
 
         rightIconClick: PropTypes.func,//定义搜索结果控件
         callBackSms: PropTypes.func,//发送短语验证码
+
+        textChangeClick:PropTypes.func
     }
 
     clickBtn() {
@@ -153,6 +155,7 @@ export default class LoginInputTextYU extends Component {
                         }
                         editable={this.props.editable}
                         onChangeText={(text) => {
+                            this.props.textChangeClick && this.props.textChangeClick(text);
                             this.setState({
                                 values: text
                             });
@@ -198,6 +201,7 @@ export default class LoginInputTextYU extends Component {
     }
 
     clearValue = () => {
+        this.props.textChangeClick &&  this.props.textChangeClick('');
         this.setState({
             values: '',
         });

@@ -16,7 +16,7 @@ import {
     Dimensions,
     TouchableWithoutFeedback,
 }from 'react-native';
-let {width} = Dimensions.get('window');
+let {width, height} = Dimensions.get('window');
 
 import BaseComponent from '../../component/BaseComponent';
 import AllNavigationView from '../../component/AllNavigationView';
@@ -62,7 +62,11 @@ export default class FastCreditOne extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             qiyemingcheng: '',
             xinyongdaima: '',
+            isFinish:false,
         };
+        this.selectNO = 'own';
+
+
     }
 
     initFinish = () => {
@@ -99,18 +103,28 @@ export default class FastCreditOne extends BaseComponent {
     };
     _qiyemingchengChange = (text) => {
         this.enterpriseData.qiyemingcheng = text;
+        this.verifyBtn();
+
     };
     _xinyongdaimaChange = (text) => {
         this.enterpriseData.xinyongdaima = text;
+        this.verifyBtn();
+
     };
     _daikuanyueChange = (text) => {
         this.enterpriseData.daikuanyue = text;
+        this.verifyBtn();
+
     };
     _yuezujinChange = (text) => {
         this.enterpriseData.yuezujin = text;
+        this.verifyBtn();
+
     }
     _fangwujiazhiChange = (text) => {
         this.enterpriseData.fangwujiazhi = text;
+        this.verifyBtn();
+
     };
     /*
      * 商户所在地点击
@@ -123,6 +137,7 @@ export default class FastCreditOne extends BaseComponent {
 
                 callBackRefresh: (Data) => {
                     this.enterpriseData.business_home = Data.business_home +''+ Data.xiangxidizhi;
+                    this.verifyBtn();
                     this.setState({
                         business_home: this.enterpriseData.business_home,
                     });
@@ -144,6 +159,9 @@ export default class FastCreditOne extends BaseComponent {
      * 完成点击
      * */
     _onCompletePress = () => {
+
+        if(!this.isFinish) return;
+
         if (this.isEmpty(this.enterpriseData.business_home) === true) {
             this._showHint('请选择经营地址');
             return;
@@ -168,6 +186,7 @@ export default class FastCreditOne extends BaseComponent {
         this.enterpriseData.selectOWNorRENT = this.state.selectNO;
         this.enterpriseData.business_home = this.state.business_home;
         this.enterpriseData.fangwujiazhi = this.state.fangwujiazhi;
+
         let  PARAMS ;
         if (this.props.FromScene == 'kuaisuANDmine'){
 	        PARAMS = {
@@ -182,7 +201,6 @@ export default class FastCreditOne extends BaseComponent {
 	        }
         }
 
-
         this.toNextPage({
             name: 'FastCreditTwo',
             component: FastCreditTwo,
@@ -194,7 +212,7 @@ export default class FastCreditOne extends BaseComponent {
 
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
-                <View style={{flex: 1, backgroundColor: 'white'}}>
+                <View style={{flex: 1, backgroundColor: fontAndColor.COLORA3}}>
                     {this.loadView()}
                     <AllNavigationView title="小额授信申请" backIconClick={() => {
                         this.backPage();
@@ -228,8 +246,7 @@ export default class FastCreditOne extends BaseComponent {
      * */
     loadScrollView = () => {
         return (
-            <ScrollView keyboardDismissMode={IS_ANDROID ? 'none' : 'on-drag'}>
-
+            <ScrollView  keyboardDismissMode={IS_ANDROID ? 'none' : 'on-drag'} style={{height: height - Pixel.getPixel(64)}}>
                 <View style={{width: width, height: Pixel.getPixel(15), backgroundColor: fontAndColor.COLORA3}}/>
                 {/*企业名称view*/}
                 <View style={styles.itemBackground}>
@@ -384,7 +401,7 @@ export default class FastCreditOne extends BaseComponent {
                                         });
                                     }}
                                 />
-                                <Text allowFontScaling={false} style={styles.leftFont}>万元</Text>
+                                <Text allowFontScaling={false} style={[styles.leftFont,{marginLeft:Pixel.getPixel(5)}]}>万元</Text>
 
                             </View>
                         </View>
@@ -419,17 +436,14 @@ export default class FastCreditOne extends BaseComponent {
                                         });
                                     }}
                                 />
-                                <Text allowFontScaling={false} style={styles.leftFont}>万元</Text>
+                                <Text allowFontScaling={false} style={[styles.leftFont,{marginLeft:Pixel.getPixel(5)}]}>万元</Text>
                             </View>
                         </View>
                 }
 
-
-                <View style={{width: width, height: Pixel.getPixel(100), backgroundColor: fontAndColor.COLORA3}}/>
-
                 {/*下一步view*/}
                 <View style={styles.fillSpace}>
-                    <TouchableOpacity style={styles.btnOk} activeOpacity={0.6} onPress={this._onCompletePress}>
+                    <TouchableOpacity style={[styles.btnOk, {backgroundColor:this.state.isFinish?fontAndColor.COLORB0:fontAndColor.COLORB5}]} activeOpacity={0.6} onPress={this._onCompletePress}>
                         <Text allowFontScaling={false} style={styles.btnFont}>下一步</Text>
                     </TouchableOpacity>
                 </View>
@@ -446,6 +460,31 @@ export default class FastCreditOne extends BaseComponent {
             return true;
         }
     };
+
+    verifyBtn =()=>{
+
+        this.isFinish = true;
+        if (this.isEmpty(this.enterpriseData.business_home) === true) {
+            this.isFinish = false;
+
+        }
+        if (this.selectNO == 'own') {
+            if (this.isEmpty(this.state.fangwujiazhi) === true || this.isEmpty(this.enterpriseData.daikuanyue) === true) {
+                this.isFinish = false;
+
+            }
+        }
+        if (this.selectNO == 'rent') {
+            if (this.isEmpty(this.enterpriseData.yuezujin) === true) {
+                this.isFinish = false;
+            }
+        }
+
+        this.setState({
+            isFinish:this.isFinish
+        });
+
+    }
 	/**
 	 * 房屋价值选择点击事件
 	 */
@@ -460,6 +499,8 @@ export default class FastCreditOne extends BaseComponent {
                         '200万 ~ 300万', '300万 ~ 400万', '400万 ~ 500万', '500万以上'],
                     title: '选择房屋价值',
                     callBack: (name, index) => {
+                        this.enterpriseData.fangwujiazhi = name;
+                        this.verifyBtn();
                         this.setState({
                             fangwujiazhi: name
                         })
@@ -473,6 +514,8 @@ export default class FastCreditOne extends BaseComponent {
      * 场地类型切换  按钮点击事件
 	 */
     _changdiTypePress = (type) => {
+        this.selectNO = type;
+        this.verifyBtn();
         this.setState({
             selectNO: type
         })
@@ -481,7 +524,7 @@ export default class FastCreditOne extends BaseComponent {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: fontAndColor.COLORA3,
         paddingTop: Pixel.getPixel(64),
     },
     alignTop: {
@@ -548,8 +591,9 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORB0,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: Pixel.getPixel(15),
+        marginTop: Pixel.getPixel(30),
         borderRadius: Pixel.getFontPixel(2),
+
     },
     btnFont: {
         fontSize: Pixel.getFontPixel(15),
@@ -563,7 +607,7 @@ const styles = StyleSheet.create({
         borderRadius: Pixel.getFontPixel(2),
         marginRight: Pixel.getPixel(15),
         borderColor: fontAndColor.COLORB0,
-        borderWidth: 1,
+        borderWidth: StyleSheet.hairlineWidth,
 
     },
     selectBtnFont: {

@@ -69,45 +69,45 @@ export  default class ZongheCreditApply extends BaseComponent {
                     dataSource={this.state.dataSource}
                     renderHeader={() =>
                         <View style={styles.headView}>
-                            <Text allowFontScaling={false} style={styles.headViewText}>借款人
-                            </Text>
+                            <Text allowFontScaling={false} style={styles.headViewText}>借款人</Text>
                         </View>
                     }
-                    renderRow={this.renderRow}/>
+                    renderRow={this.renderRow} renderFooter={()=>{
+                    return(
+                        <View style={{
+                            width: width,
+                            backgroundColor: 'transparent',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginTop:Pixel.getPixel(25)
+                        }}>
+                            <View style={{flexDirection:'row'}}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        this.backPage();
+                                    }}
+                                    style={[styles.selectBtn,{marginRight:Pixel.getPixel(15)}]}
+                                    activeOpacity={0.6}>
+                                    <Text allowFontScaling={false}
+                                          style={{fontSize: Pixel.getFontPixel(14), color: fontAndColor.COLORB0,}}>取消</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[styles.selectBtn, {backgroundColor: fontAndColor.COLORB0}]}
+                                    activeOpacity={0.6}
+                                    onPress={() => {
+                                        this._applyZongHeCredit();
+                                    }}>
+                                    <Text allowFontScaling={false}
+                                          style={{fontSize: Pixel.getFontPixel(14), color: 'white'}}>提交</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    )}}/>
                 <NavigationView title="综合授信申请" backIconClick={() => {
                     this.backPage();
                 }}/>
-                <View style={{
-                    height: Pixel.getPixel(54),
-                    width: width,
-                    position: 'absolute',
-                    bottom: 0,
-                    backgroundColor: 'transparent',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <View style={{flexDirection:'row'}}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.backPage();
-                            }}
-                            style={[styles.selectBtn,{marginRight:Pixel.getPixel(15)}]}
-                            activeOpacity={0.6}>
-                            <Text allowFontScaling={false}
-                                  style={{fontSize: Pixel.getFontPixel(14), color: fontAndColor.COLORB0,}}>取消</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.selectBtn, {backgroundColor: fontAndColor.COLORB0}]}
-                            activeOpacity={0.6}
-                            onPress={() => {
-                                this._applyZongHeCredit();
-                            }}>
-                            <Text allowFontScaling={false}
-                                  style={{fontSize: Pixel.getFontPixel(14), color: 'white'}}>提交</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+
             </View>
         )
     }
@@ -156,13 +156,13 @@ export  default class ZongheCreditApply extends BaseComponent {
                               style={[styles.cellTitleViewTitle, {
                                   fontSize: Pixel.getFontPixel(15),
                                   color: 'black'
-                              }]}>{rowData.real_name}
-
-                        </Text >
-                        <Text allowFontScaling={false}
-                              style={[styles.cellTitleViewValue, {marginLeft: Pixel.getPixel(10)}]}>
-                            实际控制人
-                        </Text>
+                              }]}>{rowData.real_name}</Text>
+                        <View style={{paddingVertical:Pixel.getPixel(2),paddingHorizontal:Pixel.getPixel(5),backgroundColor:'#DBF7F6',borderRadius:Pixel.getPixel(2),
+                            marginLeft:Pixel.getPixel(5)
+                        }}>
+                            <Text allowFontScaling={false}
+                                style={[styles.cellTitleViewValue]}>实际控制人</Text>
+                        </View>
                     </View>
 
                 </View>
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     },
     cellTitleViewValue: {
         color: fontAndColor.COLORB0,
-        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
     },
     cellContent: {
         marginTop: Pixel.getPixel(10),

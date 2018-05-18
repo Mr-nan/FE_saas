@@ -93,6 +93,7 @@ export default class FastCreditTwo extends BaseComponent {
             boss_tel: '',//实际控制人电话
             boss_name: '',//实际控制人姓名
             boss_idcard: '',//实际控制人身份证
+            isFinish:false,
         }
 
         this.id;
@@ -102,9 +103,8 @@ export default class FastCreditTwo extends BaseComponent {
             legal_name: '',
             legal_idcard: '',
         }
-        console.log(this.props.fastOneData, '22222222222222222222222')
 
-
+       this.isFinish = false;
     }
 
     initFinish() {
@@ -185,8 +185,6 @@ export default class FastCreditTwo extends BaseComponent {
     }
 
     render() {
-        console.log(this.state.renderPlaceholderOnly, '33333333333333333')
-
 
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (<View style={{backgroundColor: 'white', flex: 1}}>
@@ -201,13 +199,7 @@ export default class FastCreditTwo extends BaseComponent {
         else {
 
             return (
-
                 <View style={styles.container}>
-
-                    <AllNavigationView
-                        backIconClick={this.backPage}
-                        title={'小额授信申请'}
-                    />
                     {
                         IS_ANDROID ? (this.loadScrollView()) : (
                             <KeyboardAvoidingView behavior={'position'}
@@ -225,6 +217,10 @@ export default class FastCreditTwo extends BaseComponent {
                         ref={(modal) => {
                             this.imageSource = modal
                         }}/>
+                    <AllNavigationView
+                        backIconClick={this.backPage}
+                        title={'小额授信申请'}
+                    />
                 </View>
             );
         }
@@ -323,6 +319,7 @@ export default class FastCreditTwo extends BaseComponent {
                         leftText={'法人姓名'}
                         textPlaceholder={'请输入'}
                         viewStytle={styles.itemStyel}
+                        textChangeClick={(text)=>{this.legalPersonName = text;this.verifyBtn();}}
                         inputTextStyle={styles.inputTextStyle}
                         leftIcon={false}
                         clearValue={true}
@@ -334,6 +331,7 @@ export default class FastCreditTwo extends BaseComponent {
                         leftText={'法人身份证'}
                         textPlaceholder={'请输入'}
                         viewStytle={styles.itemStyel}
+                        textChangeClick={(text)=>{this.legalPersonID = text;this.verifyBtn();}}
                         inputTextStyle={styles.inputTextStyle}
                         leftIcon={false}
                         clearValue={true}
@@ -345,6 +343,7 @@ export default class FastCreditTwo extends BaseComponent {
                         ref="legalPersonPhone"
                         leftText={'法人联系方式'}
                         textPlaceholder={'请输入'}
+                        textChangeClick={(text)=>{this.legalPersonPhone = text;this.verifyBtn();}}
                         viewStytle={[styles.itemStyel, {borderBottomWidth: 0,}]}
                         inputTextStyle={styles.inputTextStyle}
                         secureTextEntry={false}
@@ -407,6 +406,7 @@ export default class FastCreditTwo extends BaseComponent {
                                               this.setState({
                                                   enterpriseFront: null
                                               });
+                                              this.verifyBtn();
                                           }}/>
                                 : null}
 
@@ -443,6 +443,7 @@ export default class FastCreditTwo extends BaseComponent {
                                               this.setState({
                                                   enterpriseBack: null
                                               });
+                                              this.verifyBtn();
                                           }}/>
                                 : null}
 
@@ -497,6 +498,7 @@ export default class FastCreditTwo extends BaseComponent {
                                               this.setState({
                                                   businessLicense: null
                                               });
+                                              this.verifyBtn();
                                           }}/>
                                 : null}
 
@@ -509,10 +511,8 @@ export default class FastCreditTwo extends BaseComponent {
                 <CarUpImageCellYU
                     results={this.results}
                     retureSaveAction={() => {//---------------回调函数，获取到上传照片成功后，对应的照片的fileid,  this.results 是个数组，保存了全部的照片
-                        {/*console.log('1111111111111111' , this.results)*/
                             console.log('1111111111111111', this.results)
-                        }
-
+                            this.verifyBtn();
                     }}
                     showModal={(value) => {
                         this.props.showModal(value)
@@ -539,7 +539,7 @@ export default class FastCreditTwo extends BaseComponent {
                         marginTop: Pixel.getPixel(7),
                         width: width - Pixel.getPixel(30),
                         height: Pixel.getPixel(44),
-                        backgroundColor: FontAndColor.COLORB0,
+                        backgroundColor: this.state.isFinish? FontAndColor.COLORB0 :FontAndColor.COLORB5,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
@@ -554,16 +554,25 @@ export default class FastCreditTwo extends BaseComponent {
     }
     _changdiTypePress = (type) => {
 
+
         if (type == 'yes') {
+            this.legalPersonName = this.state.boss_name;
+            this.legalPersonID = this.state.boss_idcard;
+            this.legalPersonPhone = this.state.boss_tel;
             this.refs.legalPersonName.setInputTextValue(this.state.boss_name);
             this.refs.legalPersonID.setInputTextValue(this.state.boss_idcard);
             this.refs.legalPersonPhone.setInputTextValue(this.state.boss_tel);
 
         } else {
+            this.legalPersonName = '';
+            this.legalPersonID = '';
+            this.legalPersonPhone = '';
+
             this.refs.legalPersonName.setInputTextValue('');
             this.refs.legalPersonID.setInputTextValue('');
             this.refs.legalPersonPhone.setInputTextValue('');
         }
+        this.verifyBtn();
         this.setState({
             selectNO: type
         })
@@ -675,6 +684,7 @@ export default class FastCreditTwo extends BaseComponent {
                             this.props.showToast("id 为空 图片上传失败");
                         }
                     }
+                    this.verifyBtn();
                 } else {
                     this.props.showToast(response.mjson.msg + "!");
                 }
@@ -683,7 +693,54 @@ export default class FastCreditTwo extends BaseComponent {
                 this.props.showToast("图片上传失败");
             });
     }
+
+    verifyBtn =()=>{
+
+        this.isFinish = true;
+
+        if (this.isEmpty(this.legalPersonName) === true) {
+            this.isFinish = false;
+
+        }
+        if (this.isEmpty(this.legalPersonID) === true) {
+            this.isFinish = false;
+
+        }
+
+        if (this.isEmpty(this.legalPersonPhone) === true) {
+            this.isFinish = false;
+
+        }
+
+        if (this.isEmpty(idcardfront) === true) {
+            this.isFinish = false;
+
+        }
+        if (this.isEmpty(idcardback) === true) {
+            this.isFinish = false;
+
+        }
+        if (this.isEmpty(businessid) === true) {
+            this.isFinish = false;
+
+        }
+
+        if (this.results.length <= 0) {
+            this.isFinish = false;
+
+        }
+
+        console.log('isFinish======',this.isFinish);
+
+        this.setState({
+            isFinish:this.isFinish
+        });
+    }
+
     register = () => {
+
+        if(!this.isFinish) return;
+
         let legalPersonName = this.refs.legalPersonName.getInputTextValue();
         let legalPersonID = this.refs.legalPersonID.getInputTextValue();
         let legalPersonPhone = this.refs.legalPersonPhone.getInputTextValue();
@@ -905,7 +962,7 @@ const styles = StyleSheet.create({
         borderRadius: Pixel.getFontPixel(2),
         marginRight: Pixel.getPixel(15),
         borderColor: FontAndColor.COLORB0,
-        borderWidth: 1,
+        borderWidth: StyleSheet.hairlineWidth,
 
     },
     selectBtnFont: {
