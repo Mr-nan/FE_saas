@@ -258,6 +258,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
             }else if (stateCode == '40') {
                 // tempTitle = ['待签合同']
                 tempTitle = ['取消借款','签署合同']
+            } else if (stateCode == '41') {
+                // tempTitle = ['资金方签署中']
+                tempTitle = ['查看合同']
             }else if (stateCode == '50') {
                 // tempTitle = ['待确认借据']
                 tempTitle = ['确认借据']
