@@ -105,7 +105,6 @@ export default class NewFinanceScene extends BaseComponet {
     }
 
     componentDidMount() {
-        console.log(this.state.topWidth);
         try {
             BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         } catch (e) {
@@ -193,7 +192,6 @@ export default class NewFinanceScene extends BaseComponet {
                     this.props.showModal(false);
                     movies.push(...response.mjson.data.list);
                     this.allData[3]=movies
-                    console.log('-------',this.allData[3])
                     allPage = response.mjson.data.page;
                     StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
                         if (data.code == 1) {
@@ -203,7 +201,6 @@ export default class NewFinanceScene extends BaseComponet {
                             } else {
                                 names = datas.companyname;
                             }
-                            console.log('========',names);
                             this.setState({
                                 renderPlaceholderOnly: 'success',
                                 source: this.ds.cloneWithRows(this.allData),
