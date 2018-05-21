@@ -51,6 +51,7 @@ import AddressManageListScene from '../mine/addressManage/AddressManageListScene
 import GetCarerManageListScene from '../mine/getCarerManage/GetCarerManageListScene';
 import GetPermissionUtil from '../utils/GetPermissionUtil';
 import BaseComponent from '../component/BaseComponent';
+import CredictManageScene from "../mine/kuaisushouxin/CredictManageScene";
 
 var Pixel = new PixelUtil();
 
@@ -311,7 +312,15 @@ export default class MineScene extends BaseComponent {
                 "name": name
                 , "id": id
             },);
-        } else if (id == 48) {
+
+        } else if (id == 74) {
+	        Car[0].cars.push({
+		        "icon": require('../../images/mainImage/shouxinguanli.png'),
+		        "name": name
+		        , "id": id
+	        },);
+        }
+        else if (id == 48) {
             Car[0].cars.push({
                 "icon": require('../../images/mainImage/yuangongguanli.png'),
                 "name": name
@@ -712,6 +721,17 @@ export default class MineScene extends BaseComponent {
                 this.toPage();
                 return;
                 break;
+	        case 74:
+	            if(this.renzhengData.enterpriseRenZheng !== 2){
+		            this.props.showToast('授信前需已完成企业认证，请先完成企业认证，谢谢！');
+		            return;
+		            break;
+	            }else {
+		            this.navigatorParams.name = 'CredictManageScene'
+		            this.navigatorParams.component = CredictManageScene
+		            break;
+                }
+
             case 49:
                 this.props.toSelect();
                 return;

@@ -12,7 +12,7 @@ export const LITTLEFONT28 = 14;
 export const CONTENTFONT24 = 12;
 export const MARKFONT22 = 11;
 
-export const COLORA0 = "#000000";
+export const COLORA0 = "#333333";
 export const COLORA1 = "#9e9e9e";
 export const COLORA2 = "#90a1b5";
 export const COLORA3 = "#f0eff5";
