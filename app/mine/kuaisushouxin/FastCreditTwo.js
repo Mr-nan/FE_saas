@@ -837,12 +837,15 @@ export default class FastCreditTwo extends BaseComponent {
         this.setState({
             loading: true,
         });
+
+        this.props.showModal(true);
         request(AppUrls.FASTCREDIT, 'Post', maps)
             .then((response) => {
                     this.setState({
                         loading: false,
                     });
 
+                    this.props.showModal(false);
                     if (response.mjson.data.submit_result == "T") {//申请新车订单授信  提交
 
                         this.props.showToast("小额授信申请提交成功");
@@ -862,6 +865,7 @@ export default class FastCreditTwo extends BaseComponent {
 
                 },
                 (error) => {//验证验证码接口报错
+                    this.props.showModal(false);
                     this.setState({
                         loading: false,
                     });
