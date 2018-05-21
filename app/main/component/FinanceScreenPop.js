@@ -17,7 +17,7 @@ export default class FinanceScreenPop extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.selects = ["全部", "单车融资", "库存融资", "采购贷", "新车订单贷", "订单融资"]
+        this.selects = ["全部", "单车融资", "库存融资", "采购贷", "订单融资"]
         this.state = {
             top: 0,
             width: 0,

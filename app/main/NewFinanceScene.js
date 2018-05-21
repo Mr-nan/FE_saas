@@ -374,6 +374,7 @@ export default class NewFinanceScene extends BaseComponet {
                     }
                 />
                 <FinanceScreenPop ref="financescreenpop" hidden={(select) => {
+
                     if (select != 'null') {
                         movies = [];
                             page = 1;
@@ -391,10 +392,11 @@ export default class NewFinanceScene extends BaseComponet {
                                 this.type = 5;//采购贷
                                 break;
                             case 4:
-                                this.type = 8;//车抵贷
+                                this.type = 6;//订单融资
                                 break;
                             case 5:
-                                this.type = 6;//订单融资
+                                this.type = 8;//车抵贷
+
                                 break;
                         }
                         this.props.showModal(true);

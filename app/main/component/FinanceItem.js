@@ -96,14 +96,10 @@ export default class FinanceItem extends PureComponent {
                 <View style={{width:Pixel.getPixel(345),height:Pixel.getPixel(44),flexDirection:'row',
                 marginHorizontal:Pixel.getPixel(15)}}>
                     <View style={{flex:2,flexDirection: 'row',alignItems: 'center'}}>
-                        {
-                            this.content && (
-                                <View style={[{width:Pixel.getPixel(16),height:Pixel.getPixel(16),
+                        <View style={[{width:Pixel.getPixel(16),height:Pixel.getPixel(16),
                                 justifyContent:'center',alignItems: 'center',},this.typeColor]}>
                                 <Text style={{fontSize: Pixel.getFontPixel(12),color: '#fff'}}>{this.content}</Text>
-                            </View>)
-                        }
-
+                            </View>
                         <Text style={{fontSize: Pixel.getFontPixel(15),color: '#000',
                         marginLeft:Pixel.getPixel(8)}} numberOfLines={1}>{this.props.customerName}</Text>
                     </View>
