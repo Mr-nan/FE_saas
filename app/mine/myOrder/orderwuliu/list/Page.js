@@ -81,6 +81,9 @@ export default class FlowAllPage extends BaseComponent {
         }
 
         request(Urls.LOGISTICS_ORDER_LIST, 'post', params).then((response) => {
+
+            this.props.showModal(false)
+
             let data = response.mjson.data.info_list;
             this.totalOrders = response.mjson.data.total;
 
@@ -117,7 +120,7 @@ export default class FlowAllPage extends BaseComponent {
             })
 
         }, (error) => {
-
+            this.props.showModal(false)
             this.setState({
                 renderPlaceholderOnly: "failure",
                 isRefreshing:false,
@@ -324,9 +327,9 @@ export default class FlowAllPage extends BaseComponent {
 
         this.props.showModal(true)
         request(Urls.LOGISTICS_ORDER_CANCEL, 'post', params).then((response) => {
-            this.props.showModal(false)
-
-            this.props.showToast('运单取消成功');
+            this.orders = [];
+            this.currentPage = 1
+            this.loadData(this.currentPage);
 
         }, (error) => {
             this.props.showModal(false)

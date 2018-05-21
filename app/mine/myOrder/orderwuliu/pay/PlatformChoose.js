@@ -30,6 +30,7 @@ import MyButton from '../../../../component/MyButton'
 import AccountWebScene from "../../../accountManage/AccountWebScene";
 import * as webBackUrl from "../../../../constant/webBackUrl";
 import List from "../list/List";
+import Transfer from "./Transfer";
 
 export  default  class  PlatformChoose extends BaseComponent{
 
@@ -85,6 +86,7 @@ export  default  class  PlatformChoose extends BaseComponent{
                     }}
                 >
                     <TouchableOpacity
+                        activeOpacity={.8}
                         onPress={()=>{
                             this.setState({
                                 pay_way:1
@@ -112,32 +114,33 @@ export  default  class  PlatformChoose extends BaseComponent{
 
                         </View>
                     </TouchableOpacity>
-                    {/*<TouchableOpacity*/}
-                        {/*onPress={()=>{*/}
-                            {/*this.setState({*/}
-                                {/*pay_way:2*/}
-                            {/*})*/}
-                        {/*}}*/}
-                    {/*>*/}
-                        {/*<View*/}
-                            {/*style={{*/}
-                                {/*backgroundColor:'white',*/}
-                                {/*flexDirection:'row',*/}
-                                {/*alignItems:'center',*/}
-                                {/*paddingVertical:Pixel.getPixel(15)*/}
-                            {/*}}*/}
-                        {/*>*/}
+                    <TouchableOpacity
+                        activeOpacity={.8}
+                        onPress={()=>{
+                            this.setState({
+                                pay_way:2
+                            })
+                        }}
+                    >
+                        <View
+                            style={{
+                                backgroundColor:'white',
+                                flexDirection:'row',
+                                alignItems:'center',
+                                paddingVertical:Pixel.getPixel(15)
+                            }}
+                        >
 
-                            {/*<Image source={require('../../../../../images/carriagePriceImage/transfer_pay.png')}/>*/}
-                            {/*<SaasText style={{fontSize:14, fontWeight:'200', flex:1, marginLeft:Pixel.getPixel(5)}}>转账支付</SaasText>*/}
-                            {/*{this.state.pay_way === 2?*/}
-                                {/*<Image style={{width: Pixel.getPixel(15), height: Pixel.getPixel(15)}}*/}
-                                       {/*source={require('../../../../../images/checked.png')}/>*/}
-                                {/*:null}*/}
+                            <Image source={require('../../../../../images/carriagePriceImage/transfer_pay.png')}/>
+                            <SaasText style={{fontSize:14, fontWeight:'200', flex:1, marginLeft:Pixel.getPixel(5)}}>转账支付</SaasText>
+                            {this.state.pay_way === 2?
+                                <Image style={{width: Pixel.getPixel(15), height: Pixel.getPixel(15)}}
+                                       source={require('../../../../../images/checked.png')}/>
+                                :null}
 
 
-                        {/*</View>*/}
-                    {/*</TouchableOpacity>*/}
+                        </View>
+                    </TouchableOpacity>
 
                 </View>
 
@@ -156,40 +159,56 @@ export  default  class  PlatformChoose extends BaseComponent{
     }
 
     pay = ()=>{
-        let params = {
-            company_id: global.companyBaseID,
-            trans_id:this.props.order.trans_id,
-            reback_url:webBackUrl.PAY
-        }
 
-        this.props.showModal(true)
-        Net.request(AppUrls.LOGISTICS_ORDER_PAY, 'post', params).then((response) => {
-            this.props.showModal(false)
-            if(response.mjson.code === 1){
-
-                this.trans_serial_no = response.mjson.data.trans_serial_no
-
-                this.toNextPage({
-                    name: 'AccountWebScene',
-                    component: AccountWebScene,
-                    params: {
-                        title: '支付',
-                        webUrl: response.mjson.data.url,
-                        callBack: () => {
-                            this.checkFullPay()
-                        },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
-                        backUrl: webBackUrl.PAY
-                    }
-                });
-
+        if(this.state.pay_way == 1){
+            let params = {
+                company_id: global.companyBaseID,
+                trans_id:this.props.order.trans_id,
+                reback_url:webBackUrl.PAY
             }
 
+            this.props.showModal(true)
+            Net.request(AppUrls.LOGISTICS_ORDER_PAY, 'post', params).then((response) => {
+                this.props.showModal(false)
+                if(response.mjson.code === 1){
 
-        }, (error) => {
-            this.props.showModal(false)
-            this.props.showToast(error.mjson.msg);
+                    this.trans_serial_no = response.mjson.data.trans_serial_no
 
-        });
+                    this.toNextPage({
+                        name: 'AccountWebScene',
+                        component: AccountWebScene,
+                        params: {
+                            title: '支付',
+                            webUrl: response.mjson.data.url,
+                            callBack: () => {
+                                this.checkFullPay()
+                            },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                            backUrl: webBackUrl.PAY
+                        }
+                    });
+
+                }
+
+
+            }, (error) => {
+                this.props.showModal(false)
+                this.props.showToast(error.mjson.msg);
+
+            });
+
+        }else {
+
+            this.toNextPage({
+                name: 'Transfer',
+                component: Transfer,
+                params: {
+                    order:this.props.order,
+                }
+            });
+        }
+
+
+
     }
 
     checkFullPay = ()=>{

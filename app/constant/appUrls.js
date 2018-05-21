@@ -1600,6 +1600,12 @@ export const LOGISTICS_ORDER_PAY = BASEURL + "v2/order.logistics_flows/payFreigh
 
 /**
  *
+ * 上传凭证
+ */
+export const LOGISTICS_ORDER_PROOF = BASEURL + "v2/order.logistics_flows/uploadPayVoucher";
+
+/**
+ *
  * 支付运单回调
  */
 export const LOGISTICS_ORDER_PAY_CALLBACK = BASEURL + "v2/order.logistics_flows/payFreightCallBack";

@@ -12,7 +12,8 @@ import {
     Linking,
     TextInput,
     Animated,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Clipboard
 } from 'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -26,6 +27,7 @@ import * as Net from '../../../../utils/RequestUtil';
 import * as AppUrls from '../../../../constant/appUrls';
 import SaasText from "../../../accountManage/zheshangAccount/component/SaasText";
 import MyButton from '../../../../component/MyButton'
+import UploadProof from "./UploadProof";
 
 
 export default class Transfer extends BaseComponent {
@@ -85,7 +87,7 @@ export default class Transfer extends BaseComponent {
                                     flex: 1
                                 }}>开户人</SaasText>
                             <SaasText
-                                style={{fontSize: 15, fontWeight: '200', flex: 1.5}}>说服力双方律师费案例都是看风景sad离开公</SaasText>
+                                style={{fontSize: 15, fontWeight: '200', flex: 1.5,textAlign:'right'}}>宁波梅山保税港区安和御鑫信息服务有限公司</SaasText>
 
                         </View>
                         <View
@@ -107,7 +109,7 @@ export default class Transfer extends BaseComponent {
                                     color: fontAndColor.COLORA1,
                                     flex: 1
                                 }}>开户行</SaasText>
-                            <SaasText style={{fontSize: 15, fontWeight: '200', flex: 1.5}}>说服力双方律师费案例都是看</SaasText>
+                            <SaasText style={{fontSize: 15, fontWeight: '200', flex: 1.5, textAlign:'right'}}>招商银行 北京朝外大街支行</SaasText>
 
                         </View>
                         <View
@@ -134,9 +136,10 @@ export default class Transfer extends BaseComponent {
                                 }}
 
                             >
-                                <SaasText style={{fontSize: 15, fontWeight: '200', lineHeight:35}}>88888888888888</SaasText>
+                                <SaasText style={{fontSize: 15, fontWeight: '200', lineHeight:35,textAlign:'right'}}>1109 2908 5703 403</SaasText>
                                 <TouchableOpacity activeOpacity={.7} onPress={() => {
-
+                                    Clipboard.setString('110929085703403')
+                                    this.props.showToast('复制成功')
                                 }}>
                                     <View style={{
                                         width: Pixel.getPixel(75),
@@ -188,11 +191,21 @@ export default class Transfer extends BaseComponent {
                         childStyle={styles.next_childStyle}
                         mOnPress={() => {
 
+                            this.toNextPage({
+                                name: 'UploadProof',
+                                component: UploadProof,
+                                params: {
+                                    order:this.props.order,
+                                }
+                            });
+
                         }}/>
                 </ScrollView>
 
             </View>)
     }
+
+
 }
 
 const styles = StyleSheet.create({
