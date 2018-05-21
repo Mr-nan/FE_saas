@@ -249,9 +249,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         if (stateCode !== '') {
             let tempTitle = []
             if (stateCode == '10') {
-                tempTitle = ['评估监管中']
+                // tempTitle = ['评估监管中']
             } else if (stateCode == '20') {
-                tempTitle = ['审核中']
+                // tempTitle = ['审核中']
             } else if (stateCode == '30') {
                 // tempTitle = ['渠道审核中']
                 tempTitle = ['取消借款']
