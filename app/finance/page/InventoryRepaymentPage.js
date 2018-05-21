@@ -195,7 +195,7 @@ export  default class InventoryRepaymentPage extends BaseComponent {
             }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
-                        <MyButton {...this.buttonParams} content="库融"/>
+                        <MyButton {...this.buttonParams} content="库"/>
                         <Text allowFontScaling={false}  style={styles.rowTopTextStyle}>{this.props.customerName}</Text>
                     </View>
                     <View style={[styles.rowTopViewStyle, {
@@ -267,17 +267,16 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(15), marginRight: Pixel.getPixel(15),
     },
     parentStyle: {
-        borderWidth: 1,
-        borderColor: fontAndColor.COLORB0,
-        borderRadius: 3,
+        borderRadius: Pixel.getPixel(1),
         height: Pixel.getPixel(16),
-        width: Pixel.getPixel(34),
+        width: Pixel.getPixel(22),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor:'#2f9bfa'
     },
     childStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color: fontAndColor.COLORB0,
+        color: '#ffffff',
     },
     allBack: {
         width: width, height: Pixel.getPixel(123), backgroundColor: '#ffffff', alignItems: 'center'
