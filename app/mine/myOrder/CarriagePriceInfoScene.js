@@ -1193,7 +1193,7 @@ class CarriagePriceInfoListView extends Component {
                     this.state.fold ?
                         <View style={{
                             flexDirection: 'row',
-                            alignItems: 'center',
+                            alignItems: 'flex-start',
                             justifyContent: 'space-between',
                             width: width - Pixel.getPixel(30),
                             marginTop: Pixel.getPixel(15)
@@ -1212,22 +1212,22 @@ class CarriagePriceInfoListView extends Component {
                             </View>
                             <View>
                                 <PriceItemView title="服务费" value={parseFloat(priceData.serviceFee) == 0? '减免': priceData.serviceFee}/>
-                                <View style={{backgroundColor: 'white', marginBottom: Pixel.getPixel(23)}}>
-                                    <Text style={{
-                                        color: fontAndColor.COLORA1,
-                                        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)
-                                    }}> </Text>
-                                    <View style={{
-                                        marginTop: Pixel.getPixel(10),
-                                        flexDirection: 'row',
-                                        alignItems: 'center'
-                                    }}>
-                                        <Text style={{
-                                            color: fontAndColor.COLORA0,
-                                            fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)
-                                        }}> </Text>
-                                    </View>
-                                </View>
+                                {/*<View style={{backgroundColor: 'white', marginBottom: Pixel.getPixel(23)}}>*/}
+                                    {/*<Text style={{*/}
+                                        {/*color: fontAndColor.COLORA1,*/}
+                                        {/*fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)*/}
+                                    {/*}}> </Text>*/}
+                                    {/*<View style={{*/}
+                                        {/*marginTop: Pixel.getPixel(10),*/}
+                                        {/*flexDirection: 'row',*/}
+                                        {/*alignItems: 'center'*/}
+                                    {/*}}>*/}
+                                        {/*<Text style={{*/}
+                                            {/*color: fontAndColor.COLORA0,*/}
+                                            {/*fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)*/}
+                                        {/*}}> </Text>*/}
+                                    {/*</View>*/}
+                                {/*</View>*/}
                             </View>
                         </View> : null
 
@@ -1293,7 +1293,7 @@ class PriceItemView extends Component {
                         color: fontAndColor.COLORA0,
                         fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
                         fontWeight: '200'
-                    }}>元</Text>
+                    }}>{value === '平台赠送'?'':'元'}</Text>
                 </View>
             </View>
         )
