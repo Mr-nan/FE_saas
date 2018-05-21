@@ -286,7 +286,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
     renderHeader = () => {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
                     <Text style={{backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code),color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),height:adapeSize(16),width:Pixel.getPixel(22),textAlign:'center'}}>
                         {Pixel.getProductStr(this.tempjson.product_type_code.product_code)}
                     </Text>
@@ -294,7 +294,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(this.stateCode)[0]}}>{Pixel.getStatusStr(this.stateCode)}</Text>
                 </View>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-start"}}>
                         <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{parseFloat(this.tempjson.loanmny) == '0'? '- -':parseFloat(this.tempjson.loanmny)}
                             {
@@ -313,7 +313,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     </View>
                 </View>
                 <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#F0EFF5',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.paymenttype}</Text>
                 </View>
             </View>
@@ -322,7 +322,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
 
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
-            <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(15),paddingBottom:adapeSize(15)}}>
+            <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(15),paddingBottom:adapeSize(15)}}>
                 <View style={{flexDirection:'row',alignItems:'center'}}>
                     <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.loan_mny}</Text>
                     <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{this.stateCode == 0?rowData.loan_time:rowData.loan_time}</Text>

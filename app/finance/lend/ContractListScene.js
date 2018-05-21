@@ -121,7 +121,7 @@ export default class ContractListScene extends BaseComponent{
                     <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{data.name}</Text>
                     <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginTop:Pixel.getPixel(5)}}></Text>
                 </View>
-                <View style={{flexDirection:'row'}}>
+                <View style={{flexDirection:'row',alignItems:'center'}}>
                     <Text style={{color:fontAndColor.COLORA2, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginRight:Pixel.getPixel(5)}}>阅读详情</Text>
                     <Image source={require('../../../images/financeImages/celljiantou.png')}/>
                 </View>

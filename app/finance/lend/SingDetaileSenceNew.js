@@ -470,9 +470,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     renderHeader = () => {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
-                    <View style={{borderRadius:Pixel.getPixel(1),height:Pixel.getPixel(16),width:Pixel.getPixel(22),justifyContent:'center',alignItems:'center'}}>
-                        <Text style={{backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code),color:'#ffffff',fontSize:adapeSize(12)}}>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
+                    <View style={{borderRadius:Pixel.getPixel(1),height:Pixel.getPixel(16),width:Pixel.getPixel(22),justifyContent:'center',alignItems:'center',backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code)}}>
+                        <Text style={{color:'#ffffff',fontSize:adapeSize(12)}}>
                             {Pixel.getProductStr(this.tempjson.product_type_code.product_code)}
                         </Text>
                     </View>
@@ -480,7 +480,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(this.stateCode)[0]}}>{Pixel.getStatusStr(this.stateCode)}</Text>
                 </View>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-start"}}>
                         <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{parseFloat(this.tempjson.loanmny)=='0'?'- -':parseFloat(this.tempjson.loanmny)}
                             {
@@ -499,7 +499,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     </View>
                 </View>
                 <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#F0EFF5',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.paymenttype}</Text>
                     {
                         this.stateCode != 0 ?
@@ -546,7 +546,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         )
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
                 <TouchableOpacity onPress={()=>{   this.getCarInfo(rowData) }} >
-                    <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
+                    <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
                         <View style={{flexDirection:'column',flex:1}}>
                             <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.model_name}</Text>
                             <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.frame_number}</Text>
@@ -556,7 +556,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     </View>
                 </TouchableOpacity>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
-                <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
                         <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(110)}}>{rowData.loan_mny}<Text style={{fontSize:adapeSize(12)}}>万元</Text></Text>
                         <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.loan_time}</Text>
@@ -570,7 +570,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 </View>
                 {
                     rowData.child_loan_status == 70 ?
-                    <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                    <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.lending_methods}</Text>
                         </View>
@@ -581,7 +581,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 }
                 {
                     rowData.child_loan_status == 80 ?
-                    <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                    <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.lending_methods}</Text>
                             <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.finish_time}</Text>
@@ -597,7 +597,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 }
                 {
                     tempButtons.length > 0 &&
-                    <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
+                    <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
                         {tempButtons}
                     </View>
                 }
