@@ -26,6 +26,8 @@ export default class FinanceItem extends PureComponent {
         super(props);
         this.data=this.props.data;
         this.state={data:this.data};
+        this.content='';
+
 
     }
 
@@ -70,11 +72,11 @@ export default class FinanceItem extends PureComponent {
                     this.typeColor={backgroundColor:fontAndColor.COLORB1};
                 } else if (this.state.data.product_type_change_status == 1) {
                     nextPage = SingDetaileSence;
-                    this.buttonParams.content = '单';
+                    this.content = '单';
                     this.typeColor={backgroundColor:fontAndColor.COLORB1};
                 } else {
                     nextPage = SingDetaileSence;
-                    this.buttonParams.content = '单';
+                    this.content = '单';
                     this.typeColor={backgroundColor:fontAndColor.COLORB1};
                 }
                 break;
@@ -94,10 +96,14 @@ export default class FinanceItem extends PureComponent {
                 <View style={{width:Pixel.getPixel(345),height:Pixel.getPixel(44),flexDirection:'row',
                 marginHorizontal:Pixel.getPixel(15)}}>
                     <View style={{flex:2,flexDirection: 'row',alignItems: 'center'}}>
-                        <View style={[{width:Pixel.getPixel(16),height:Pixel.getPixel(16),
-                        justifyContent:'center',alignItems: 'center',},this.typeColor]}>
-                            <Text style={{fontSize: Pixel.getFontPixel(12),color: '#fff'}}>{this.content}</Text>
-                        </View>
+                        {
+                            this.content && (
+                                <View style={[{width:Pixel.getPixel(16),height:Pixel.getPixel(16),
+                                justifyContent:'center',alignItems: 'center',},this.typeColor]}>
+                                <Text style={{fontSize: Pixel.getFontPixel(12),color: '#fff'}}>{this.content}</Text>
+                            </View>)
+                        }
+
                         <Text style={{fontSize: Pixel.getFontPixel(15),color: '#000',
                         marginLeft:Pixel.getPixel(8)}} numberOfLines={1}>{this.props.customerName}</Text>
                     </View>
@@ -105,7 +111,7 @@ export default class FinanceItem extends PureComponent {
                         <Text style={{fontSize: Pixel.getFontPixel(12),color: '#999'}}>{this.state.data.loan_code}</Text>
                     </View>
                 </View>
-                <View style={{width:Pixel.getPixel(345),height:Pixel.getPixel(1),backgroundColor:'#d8d8d8',
+                <View style={{width:Pixel.getPixel(345),height:StyleSheet.hairlineWidth,backgroundColor:'#d8d8d8',
                 marginHorizontal:Pixel.getPixel(15)}}></View>
                 <View style={{width:Pixel.getPixel(345),height:Pixel.getPixel(84),flexDirection:'row',
                 marginHorizontal:Pixel.getPixel(15)}}>
@@ -122,9 +128,10 @@ export default class FinanceItem extends PureComponent {
                         marginTop:Pixel.getPixel(5)}}>借款期限</Text>
                     </View>
                     <View style={{flex:5,justifyContent:'center',alignItems:'flex-end'}}>
-                        <View style={[{width:Pixel.getPixel(70),height:Pixel.getPixel(30),
-                        justifyContent:'center',alignItems: 'center',borderWidth:1,
-                        borderRadius:3},this.state.data.status==6?{borderColor:'#999'}:{borderColor:'#fa5741'}]}>
+                        <View style={[{height:Pixel.getPixel(30),
+                        justifyContent:'center',alignItems: 'center',borderWidth:StyleSheet.hairlineWidth,
+                        borderRadius:3, width:Pixel.getPixel(100)
+                        },this.state.data.status==6?{borderColor:'#999'}:{borderColor:'#fa5741'}]}>
                             <Text style={[{fontSize: Pixel.getFontPixel(15),},this.state.data.status==6?{color:'#999'}:{color:'#fa5741'}]}>{this.state.data.status_str}</Text>
                         </View>
                     </View>
