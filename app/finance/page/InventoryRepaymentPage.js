@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(22),
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:'#2f9bfa'
+        backgroundColor:Pixel.getProductStr(4)
     },
     childStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
