@@ -346,6 +346,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 this.props.showModal(false);
                 if (error.mycode == -300 || error.mycode == -500) {
                     this.props.showToast('服务器连接有问题')
+                } else if(error.mycode == '13010017' || error.mycode == '13010018' ){
+                    this.props.showToast(error.mjson.msg);
+                    this.getOrderCarInfo()
                 } else {
                     this.props.showToast(error.mjson.msg);
                 }
@@ -369,6 +372,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('服务器连接有问题')
+                    } else if(error.mycode == '13010017' || error.mycode == '13010018' ){
+                        this.props.showToast(error.mjson.msg);
+                        this.getOrderCarInfo()
                     } else {
                         this.props.showToast(error.mjson.msg);
                     }
