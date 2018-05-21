@@ -765,7 +765,7 @@ const commentAlertStyle=StyleSheet.create({
     },
     buttonRight:{
 
-        backgroundColor:PAGECOLOR.COLORA4
+        backgroundColor:PAGECOLOR.COLORA2
     },
     successButton:{
 
@@ -774,7 +774,7 @@ const commentAlertStyle=StyleSheet.create({
         backgroundColor:'blue',
         alignItems:'center',
         justifyContent:'center',
-        borderRadius:5,
+        borderRadius:3,
 
     },
 

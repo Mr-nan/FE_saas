@@ -548,10 +548,10 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <TouchableOpacity onPress={()=>{   this.getCarInfo(rowData) }} >
                     <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
                         <View style={{flexDirection:'column',flex:1}}>
-                            <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.model_name}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9B9B9B',paddingRight:Pixel.getPixel(30)}} numberOfLines={1} >{rowData.model_name}</Text>
                             <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.frame_number}</Text>
                         </View>
-                        <Text style={{fontSize:adapeSize(14),color:'#05C5C2',marginBottom:Pixel.getPixel(1)}}>{rowData.child_loan_status_str}</Text>
+                        <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(rowData.child_loan_status)[0],marginBottom:Pixel.getPixel(1)}}>{rowData.child_loan_status_str}</Text>
                         <Image source={cellJianTou} style={{ width: adapeSize(15), height: adapeSize(15)}}/>
                     </View>
                 </TouchableOpacity>

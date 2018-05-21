@@ -9,7 +9,8 @@ import {
     View,
     ListView,
     Image,
-    Text
+    Text,
+    PixelRatio
 } from 'react-native';
 import {CommnetListItem, LendCarItemCell, CommenButton,commnetStyle,ComentImageButton} from './component/ComponentBlob'
 import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
@@ -18,6 +19,9 @@ import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ImagePageView from 'react-native-viewpager'
+var onePT = 1 / PixelRatio.get(); //一个像素
+import  PixelUtil from '../../utils/PixelUtil';
+let Pixel = new PixelUtil();
 
 const ImageSouce= {
     imageSouce:[]
@@ -176,7 +180,7 @@ export default class OrderCarDetailScene extends BaseComponent{
             <View style={styles.container}>
             <ListView
                 removeClippedSubviews={false}
-                style={{marginTop:64}}
+                style={{top: Pixel.getTitlePixel(64),}}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow}
                 renderSeparator={this.renderSeparator}
