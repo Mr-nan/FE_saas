@@ -299,7 +299,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         this.props.showToast('服务器连接有问题')
                     } else if(error.mycode == '31010017' || error.mycode == '31010018'){
                         this.props.showToast(error.mjson.msg);
-                        this.getOrderCarInfo()
+                        this.getLendinfo()
                     } else {
                         this.props.showToast(error.mjson.msg);
                     }
