@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(40),
     },
     footerTitle: {
-        marginLeft: Pixel.getPixel(10),
         fontSize: Pixel.getFontPixel(14),
         color: 'gray'
     }
