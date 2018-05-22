@@ -358,7 +358,7 @@ export default class MainPage extends BaseComponent {
                                          source={data.defaultImg}/>}
                 onPress={() => {
 
-                        if(data.title=='车源列表' && !this.isLogin){
+                        if((data.title=='金融' || data.title=='我的') && !this.isLogin){
                             this.props.showLoginModal();
                         }else {
                             this.setState({selectedTab: data.ref})
