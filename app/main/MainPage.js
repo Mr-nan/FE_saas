@@ -92,6 +92,10 @@ export default class MainPage extends BaseComponent {
             mbShow: false,
 
         }
+        this.boss_id = '';
+        this.base_user_id = '';
+        this.isLogin = false;
+
         this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(25) : height;
         this.emitterNewCarPage = DeviceEventEmitter.addListener('pushNewCarListScene', () => {
             StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR, 'true');
@@ -230,13 +234,13 @@ export default class MainPage extends BaseComponent {
     initFinish = () => {
 
         StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
-
             if (res.result !== StorageUtil.ERRORCODE) {
                 if (!res.result || res.result =='false') {
-
+                    this.isLogin = false;
                     this.getTouristPermission();
 
                 } else {
+                    this.isLogin = true;
                     StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
                         if (childdata.code == 1) {
                             let childdatas = JSON.parse(childdata.result);
@@ -248,6 +252,7 @@ export default class MainPage extends BaseComponent {
                     });
                 }
             }else {
+                this.isLogin = false;
                 this.getTouristPermission();
             }
         });
@@ -339,8 +344,8 @@ export default class MainPage extends BaseComponent {
         if (this.state.renderPlaceholderOnly != 'success') {
             return this._renderPlaceholderView();
         }
-        let items = [];
 
+        let items = [];
         tabArray.map((data) => {
             let tabItem;
             tabItem = <TabNavigator.Item
@@ -352,7 +357,12 @@ export default class MainPage extends BaseComponent {
                 renderIcon={() => <Image style={styles.img}
                                          source={data.defaultImg}/>}
                 onPress={() => {
-                        this.setState({selectedTab: data.ref})
+
+                        if(data.title=='车源列表' && !this.isLogin){
+                            this.props.showLoginModal();
+                        }else {
+                            this.setState({selectedTab: data.ref})
+                        }
                     }
                 }
                 selectedTitleStyle={styles.selectedTitleStyle}
@@ -569,9 +579,9 @@ export default class MainPage extends BaseComponent {
                 }} showLoginModal={this.props.showLoginModal}/>
         } else if (ref == 'financePage') {
                 return  <BlankFinanceScene
-					MAPS={{base_id: global.companyBaseID ,controller_base_id:this.boss_id,merge_id:global.MERGE_ID}}
-					BASE_USER_ID={this.base_user_id}
-					IS_DONE_CREDIT={this.is_done_credit}
+					MAPS={ global.companyBaseID && {base_id:global.companyBaseID ,controller_base_id:this.boss_id,merge_id:global.MERGE_ID}}
+					BASE_USER_ID={this.base_user_id && this.base_user_id}
+					IS_DONE_CREDIT={this.is_done_credit && this.is_done_credit}
 					showModal={(value)=>{this.props.showModal(value);}}
 					showToast={(content)=>{this.props.showToast(content)}}
 					toNextPage={(params) => {this.toNextPage(params); }}
