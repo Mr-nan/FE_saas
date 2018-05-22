@@ -867,6 +867,12 @@ export const CARLOAN_SET_APPLY_MNY = 'api/v3/carloan/set_apply_mny'
 export const GET_APPLY_CARLIST = 'api/v2/account/get_apply_carlist';
 
 /**
+ * from @huangning
+ * 一车一融库容进度条
+ **/
+export const ACCOUNT_PROGRESS_BAR = 'api/v4/account/progress_bar';
+
+/**
  * from @huangnign
  * 获取订单车辆列表 新
  **/

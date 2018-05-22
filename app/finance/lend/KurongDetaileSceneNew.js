@@ -123,8 +123,9 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
     //车辆信息
     getOrderCarInfo = () => {
         let maps = {
-            api: apis.GET_APPLY_CARLIST,
-            loan_code: this.props.loanNumber
+            api: apis.ACCOUNT_PROGRESS_BAR,
+            payment_number: this.props.loanNumber,
+
         }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
