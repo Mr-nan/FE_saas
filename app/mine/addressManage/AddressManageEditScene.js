@@ -27,11 +27,19 @@ export default class AddressManageEditScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        this.item = this.props.item;
+        this.item = typeof this.props.screenItem !=='undefined'?this.props.screenItem:this.props.item;
         this.pro_city = '';
         if(!this._isEmpty(this.item.province)){
             this.pro_city = this.item.province + this.item.city + this.item.district;
         }
+        //screenItem
+        // city:"北京"
+        // city_code:"110100"
+        // district:"朝阳区"
+        // district_code:"110105"
+        // province:"北京"
+        // province_code:"110000"
+
         this.state ={
             cityStatus:false,
             region_city:this.pro_city,
@@ -54,7 +62,7 @@ export default class AddressManageEditScene extends BaseComponent {
 
     _onSave = ()=>{
         if(this._isEmpty(this.item.contact_name)){
-            this.props.showToast('请填写提车人');
+            this.props.showToast('请填写联系人');
             return;
         }
         if(this._isEmpty(this.item.contact_phone)){
@@ -78,7 +86,7 @@ export default class AddressManageEditScene extends BaseComponent {
         if (typeof this.props.screenItem !== 'undefined'){
 
             if(this.item.city_code != this.props.screenItem.city_code){
-                this.props.showToast('区域与发车/收车区域不符，请重新选择')
+                this.props.showToast('所选区域与发车/收车区域不符，请重新选择')
                 return;
             }
         }
@@ -121,7 +129,7 @@ export default class AddressManageEditScene extends BaseComponent {
     };
 
     _toAddress = ()=>{
-        if(this._isEmpty(this.item.province)){
+        if(this._isEmpty(this.item.district)){
             this.props.showToast('请先选择区域');
             return;
         }
@@ -169,6 +177,10 @@ export default class AddressManageEditScene extends BaseComponent {
     };
 
     _toProvince = ()=>{
+
+        if (typeof this.props.screenItem !== 'undefined'&&this.props.screenItem.district_code !== ""){
+            return;
+        }
         dismissKeyboard();
         this.setState({cityStatus:true});
     };
@@ -182,6 +194,22 @@ export default class AddressManageEditScene extends BaseComponent {
     };
 
     checkAreaClick = (cityRegion)=>{
+
+        if(typeof this.props.screenItem !== 'undefined'){
+
+            if (this.props.screenItem.district_code !== ""){
+                if( cityRegion.district_code !== this.props.screenItem.district_code ){
+                    this.props.showToast('区域不匹配')
+                    return;
+                }
+            }else if (this.props.screenItem.city_code !== "") {
+                if( cityRegion.city_code !== this.props.screenItem.city_code ){
+                    this.props.showToast('省市不匹配')
+                    return;
+                }
+            }
+        }
+
         this.item.province = cityRegion.provice_name;
         this.item.province_code = cityRegion.provice_code;
         this.item.city = cityRegion.city_name;

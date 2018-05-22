@@ -176,7 +176,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                                     name: 'AddressManageListScene',
                                     component:AddressManageListScene ,
                                     params: {
-                                        item:this.props.firstItem,
+                                        item:this.deepCopy(this.props.firstItem),
                                         callBack: this.senderInfo,
 
                                     }
@@ -201,7 +201,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                                     name: 'AddressManageListScene',
                                     component: AddressManageListScene,
                                     params: {
-                                        item:this.props.lastItem,
+                                        item:this.deepCopy(this.props.lastItem),
                                         callBack: this.receiverInfo,
 
                                     }
@@ -593,6 +593,14 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         }else {
             return obj
         }
+    }
+
+    deepCopy= function(source) {
+        let result={};
+        for (let key in source) {
+            result[key] = typeof source[key]==='object'? deepCoyp(source[key]): source[key];
+        }
+        return result;
     }
 }
 
