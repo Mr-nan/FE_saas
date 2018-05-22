@@ -1,5 +1,5 @@
 import  React, {Component, PropTypes} from  'react'
-import  {
+import {
     View,
     Text,
     ListView,
@@ -8,7 +8,8 @@ import  {
     Image,
     TouchableOpacity,
     RefreshControl,
-} from  'react-native'
+    PixelRatio,
+} from 'react-native'
 
 import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
@@ -18,6 +19,7 @@ import BaseComponent from "../../component/BaseComponent";
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import  LoadMoreFooter from '../../component/LoadMoreFooter';
+var onePT = 1 / PixelRatio.get(); //一个像素
 /*
  * 获取屏幕的宽和高
  **/
@@ -142,43 +144,50 @@ export default class SCBJZChildScene extends BaseComponent {
     _renderRow = (rowData, rowID, selectionID) => {
         return (
             <View style={styles.rowView}>
-                <View style={{flexDirection:'row',alignItems:'center',paddingTop:Pixel.getPixel(5)}}>
+                <View style={{flexDirection:'row',alignItems:'center',height:Pixel.getPixel(39)}}>
                     <Text allowFontScaling={false}  style={{color: '#333333',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{'订单号：JGF201720475793735'}</Text>
                 </View>
-                <View style={{flexDirection:'column'}}>
+                <Image resizeMode={'cover'} source={require('../../../images/xu_line.png')}
+                       style={{width:width-Pixel.getPixel(30),height:onePT,}} />
+                <View style={{flexDirection:'column',height:Pixel.getPixel(79),justifyContent:'center'}}>
                     <Text allowFontScaling={false}  style={{color: "#000000",fontSize: Pixel.getFontPixel(13)}}>{'2017款别克精英版 1.8TSI 手自一体 反而凤凰热开关法人四驱（098521）'}</Text>
                     <Text allowFontScaling={false}  style={{color: '#9B9B9B',fontSize: Pixel.getFontPixel(12)}}>
                         {'申请时间：'}
                         <Text style={{fontSize:Pixel.getPixel(15)}}>{'2017-11-12 10:23'}</Text>
                     </Text>
                 </View>
-                <View style={{flexDirection:'row',alignItems:'center',paddingBottom:Pixel.getPixel(5)}}>
+                <Image resizeMode={'cover'} source={require('../../../images/xu_line.png')}
+                       style={{width:width-Pixel.getPixel(30),height:onePT,}} />
+                <View style={{flexDirection:'row',alignItems:'center',height:Pixel.getPixel(37),alignItems:'center'}}>
                     <Text allowFontScaling={false}  style={{color: "#333333",fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{'保证金：'}</Text>
                     <Text allowFontScaling={false}  style={{color: "#FA5741",fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),flex:1}}>{'345元'}</Text>
-                    <TouchableOpacity
-                        style={styles.buttonStyle}
-                        onPress={() => {
-                        this.toNextPage({
-                            name: 'ContractSignScene',
-                            component: ContractSignScene,
-                            params: {
-                                contract_id: rowData.contract_id,   //合同ID
-                                contract_log_id: rowData.contract_log_id,	//合同日志ID
-                                product_type_code: rowData.product_type_code,	//产品类型编码
-                                opt_user_id:this.props.opt_user_id,
-                                showButton: true,
-                                user_id:rowData.signator_id,
-                                callBack: () => {
-                                    allSouce = [];
-                                    this.setState({renderPlaceholderOnly: 'loading'});
-                                    page = 1;
-                                    this.getData();
-                                },
-                            },
-                        })
-                    }}>
-                        <Text allowFontScaling={false}  style={{color: '#ffffff',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>去支付</Text>
-                    </TouchableOpacity>
+                    {
+                       this.props.page == '未支付' &&
+                       <TouchableOpacity
+                           style={styles.buttonStyle}
+                           onPress={() => {
+                               this.toNextPage({
+                                   name: 'ContractSignScene',
+                                   component: ContractSignScene,
+                                   params: {
+                                       contract_id: rowData.contract_id,   //合同ID
+                                       contract_log_id: rowData.contract_log_id,	//合同日志ID
+                                       product_type_code: rowData.product_type_code,	//产品类型编码
+                                       opt_user_id:this.props.opt_user_id,
+                                       showButton: true,
+                                       user_id:rowData.signator_id,
+                                       callBack: () => {
+                                           allSouce = [];
+                                           this.setState({renderPlaceholderOnly: 'loading'});
+                                           page = 1;
+                                           this.getData();
+                                       },
+                                   },
+                               })
+                           }}>
+                           <Text allowFontScaling={false}  style={{color: '#ffffff',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>去支付</Text>
+                       </TouchableOpacity>
+                    }
                 </View>
             </View>
 
@@ -191,6 +200,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
         backgroundColor: fontAndColor.COLORA3,
+        marginBottom:Pixel.getPixel(15)
     },
     listStyle: {
         marginTop: Pixel.getPixel(0)
@@ -231,7 +241,7 @@ const styles = StyleSheet.create({
     buttonStyle:{
         height: Pixel.getPixel(25),
         width: Pixel.getPixel(73),
-        borderRadius: 3,
+        borderRadius: Pixel.getPixel(1),
         backgroundColor: fontAndColor.COLORB0,
         justifyContent:'center',
         alignItems:'center',
