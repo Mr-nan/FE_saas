@@ -24,9 +24,9 @@ import NavigationView from '../../component/AllNavigationView';
 import SCBJZChildScene from '../shuchebaozhengjin/SCBJZChildScene';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 var onePT = 1 / PixelRatio.get(); //一个像素
-let first = '';
-let last = '';
 export  default class SCBZJScene extends BaseComponent {
 
     constructor(props) {
@@ -42,27 +42,26 @@ export  default class SCBZJScene extends BaseComponent {
     }
 
     getData = () => {
-        first = '';
-        last = '';
-        let maps = {
-            api: Urls.GET_CONTRACT_REMIND,
-            opt_user_id: '11383',
-            opt_merge_id: '2812'
-        };
-        request(Urls.FINANCE, 'Post', maps)
-            .then((response) => {
-                    if (response.mjson.data != null) {
-                        if (response.mjson.data.wait_ctc_sign_num != null && response.mjson.data.wait_ctc_sign_num != '0') {
-                            last = '、(' + response.mjson.data.wait_ctc_sign_num + ')';
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids: datas.company_base_id,
+                };
+                request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
+                    .then((response) => {
+                        if (response.mjson.data != null) {
                         }
-                        if (response.mjson.data.wait_sign_num != null && response.mjson.data.wait_sign_num != '0') {
-                            first = '、(' + response.mjson.data.wait_sign_num + ')';
-                        }
-                    }
-                    this.setState({renderPlaceholderOnly: 'success'});
-                }, (error) => {
-                    this.setState({renderPlaceholderOnly: 'success'});
+                        this.setState({renderPlaceholderOnly: 'success'});
+                    }, (error) => {
+                        this.setState({renderPlaceholderOnly: 'success'});
+                    });
+            } else {
+                this.setState({
+                    renderPlaceholderOnly: 'error',
                 });
+            }
+        })
     }
 
     /**
