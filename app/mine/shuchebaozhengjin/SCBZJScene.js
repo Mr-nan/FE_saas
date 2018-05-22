@@ -33,7 +33,10 @@ export  default class SCBZJScene extends BaseComponent {
         super(props);
         this.state = {
             renderPlaceholderOnly: 'blank',
-            details:'open'
+            details:'open',
+            money:0,
+            scmoney:0,
+            totalmoney:0,
         };
     }
 
@@ -50,9 +53,25 @@ export  default class SCBZJScene extends BaseComponent {
                 };
                 request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
                     .then((response) => {
+                        let total = 0;
+                        let left= 0;
+                        let right = 0;
                         if (response.mjson.data != null) {
+                            response.mjson.data[315].map((item) => {
+                                if(item.account_type_id == 11){//赎车保证金
+                                    left = parseFloat(left) + parseFloat(item.balance)
+                                } else if(item.account_type_id == 2){ //保证金
+                                    right = parseFloat(right) + parseFloat(item.balance)
+                                }
+                            })
+                            total = parseFloat(left) + parseFloat(right);
                         }
-                        this.setState({renderPlaceholderOnly: 'success'});
+                        this.setState({
+                            scmoney:left,
+                            money:right,
+                            totalmoney:total,
+                            renderPlaceholderOnly: 'success'
+                        });
                     }, (error) => {
                         this.setState({renderPlaceholderOnly: 'success'});
                     });
@@ -77,7 +96,7 @@ export  default class SCBZJScene extends BaseComponent {
             <View style={{width:width,height:height,backgroundColor: fontAndColor.COLORA3,flexDirection:'column'}}>
                 <View style={{flexDirection:'row',marginTop: Pixel.getTitlePixel(64),height:Pixel.getPixel(45),paddingLeft:Pixel.getPixel(15),paddingRight:Pixel.getPixel(15),backgroundColor:'#ffffff',alignItems:'center'}}>
                     <Text style={{fontSize:Pixel.getFontPixel(14),color:'#333333'}}>保证金总额: </Text>
-                    <Text style={{fontSize:Pixel.getFontPixel(12),color:'#FA5741',flex:1}}>245.75元</Text>
+                    <Text style={{fontSize:Pixel.getFontPixel(12),color:'#FA5741',flex:1}}>{this.state.totalmoney}元</Text>
                     <TouchableOpacity  onPress={()=>{
                         if(this.state.details =='open'){
                             this.setState({details: 'close'});
@@ -106,9 +125,9 @@ export  default class SCBZJScene extends BaseComponent {
                 }
                 {
                     this.state.details =='open' && <View style={{flexDirection:'row',height:Pixel.getPixel(54),backgroundColor:'#ffffff',marginBottom:Pixel.getPixel(10),alignItems:'center'}}>
-                        <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(12),flex:1,textAlign:'center'}}>{'赎车保证金 \n245.75元'}</Text>
+                        <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(12),flex:1,textAlign:'center'}}>{'赎车保证金 \n'}{this.state.scmoney}{'元'}</Text>
                         <View style={{width:onePT,height:Pixel.getPixel(25),backgroundColor:'#D8D8D8'}}/>
-                        <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(12),flex:1,textAlign:'center'}}>{'保证金可用金额 \n89.96元'}</Text>
+                        <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(12),flex:1,textAlign:'center'}}>{'保证金可用金额 \n'}{this.state.money}{'元'}</Text>
                     </View>
                 }
                 <ScrollableTabView
