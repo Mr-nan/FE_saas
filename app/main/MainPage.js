@@ -232,11 +232,7 @@ export default class MainPage extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
 
             if (res.result !== StorageUtil.ERRORCODE) {
-<<<<<<< HEAD
                 if (!res.result || res.result =='false') {
-=======
-                if (!res.result || res.result == 'false') {
->>>>>>> kuaisushouxin20180102
 
                     this.getTouristPermission();
 
