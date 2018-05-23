@@ -53,11 +53,12 @@ export default class SCBJZChildScene extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
+                let xx = {"token":"","code":1,"msg":"ok","data":{"request":{},"response":[{"id":"118","water_num":"20180410140227104226","type_id":"1","scene_id":"1","payment_number":"201710190014","assets_number":"","finance_number":"","money":"120000.00","status":"1","bussness_status":"0","merge_id":"2877","remark":"77522","create_time":"2018-04-10 14:02:27","update_time":"2018-04-10 14:36:38","user_id":"0","ip":"","is_del":"0"},{"id":"119","water_num":"2018041014080066348","type_id":"1","scene_id":"1","payment_number":"201710190014","assets_number":"","finance_number":"","money":"120000.00","status":"4","bussness_status":"0","merge_id":"2877","remark":"77522","create_time":"2018-04-10 14:08:00","update_time":"2018-04-10 14:32:40","user_id":"0","ip":"","is_del":"0"},{"id":"123","water_num":"20180411105418859911","type_id":"1","scene_id":"1","payment_number":"201710190014","assets_number":"","finance_number":"","money":"22500.00","status":"4","bussness_status":"0","merge_id":"2877","remark":"77521","create_time":"2018-04-11 10:54:18","update_time":"2018-04-11 10:56:09","user_id":"0","ip":"","is_del":"0"},{"id":"124","water_num":"20180411160617279955","type_id":"1","scene_id":"1","payment_number":"201710180005","assets_number":"","finance_number":"10101006201804131113164226233132","money":"32000.00","status":"2","bussness_status":"0","merge_id":"2877","remark":"77510","create_time":"2018-04-11 16:06:17","update_time":"2018-04-16 12:38:43","user_id":"0","ip":"","is_del":"0"},{"id":"125","water_num":"20180411160724404488","type_id":"1","scene_id":"1","payment_number":"201710180005","assets_number":"","finance_number":"","money":"32000.00","status":"4","bussness_status":"0","merge_id":"2877","remark":"77510","create_time":"2018-04-11 16:07:24","update_time":"2018-04-11 16:11:21","user_id":"0","ip":"","is_del":"0"},{"id":"126","water_num":"20180411161623136752","type_id":"1","scene_id":"1","payment_number":"201710180005","assets_number":"","finance_number":"10101006201804131113164226233132","money":"32000.00","status":"2","bussness_status":"0","merge_id":"2877","remark":"77510","create_time":"2018-04-11 16:16:23","update_time":"2018-04-16 12:38:43","user_id":"0","ip":"","is_del":"0"},{"id":"128","water_num":"20180412175703866422","type_id":"1","scene_id":"1","payment_number":"201710190014","assets_number":"","finance_number":"","money":"22500.00","status":"0","bussness_status":"0","merge_id":"2877","remark":"77521","create_time":"2018-04-12 17:57:03","update_time":"0000-00-00 00:00:00","user_id":"0","ip":"","is_del":"0"}]},"trace":{"source_url":"http:\/\/","cost_time":"0.4317s","cost_mem":"1 B","server_ip":"","server_version":"5.6.32","file_max_size":"2M","post_max_size":"8M","source_ip":"0.0.0.0","sql":["SHOW COLUMNS FROM `dms_merge` [ RunTime:1,526,870,198.1623s ]","SHOW COLUMNS FROM `dms_merge` [ RunTime:-0.0001s ]"]}}
                     if (page == 1 && response.mjson.data.contract_list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
                         allPage = response.mjson.data.total/10;
-                        allSouce.push(...response.mjson.data.contract_list);
+                        allSouce.push(...xx.data.response);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             dataSource: ds.cloneWithRows(allSouce),
@@ -145,22 +146,22 @@ export default class SCBJZChildScene extends BaseComponent {
         return (
             <View style={styles.rowView}>
                 <View style={{flexDirection:'row',alignItems:'center',height:Pixel.getPixel(39)}}>
-                    <Text allowFontScaling={false}  style={{color: '#333333',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{'订单号：JGF201720475793735'}</Text>
+                    <Text allowFontScaling={false}  style={{color: '#333333',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{'订单号：'+rowData.water_num}</Text>
                 </View>
                 <Image resizeMode={'cover'} source={require('../../../images/xu_line.png')}
                        style={{width:width-Pixel.getPixel(30),height:onePT,}} />
                 <View style={{flexDirection:'column',height:Pixel.getPixel(79),justifyContent:'center'}}>
-                    <Text allowFontScaling={false}  style={{color: "#000000",fontSize: Pixel.getFontPixel(13)}}>{'2017款别克精英版 1.8TSI 手自一体 反而凤凰热开关法人四驱（098521）'}</Text>
+                    <Text allowFontScaling={false}  style={{color: "#000000",fontSize: Pixel.getFontPixel(13)}}>{rowData.car_name}</Text>
                     <Text allowFontScaling={false}  style={{color: '#9B9B9B',fontSize: Pixel.getFontPixel(12)}}>
                         {'申请时间：'}
-                        <Text style={{fontSize:Pixel.getPixel(15)}}>{'2017-11-12 10:23'}</Text>
+                        <Text style={{fontSize:Pixel.getPixel(15)}}>{rowData.create_time}</Text>
                     </Text>
                 </View>
                 <Image resizeMode={'cover'} source={require('../../../images/xu_line.png')}
                        style={{width:width-Pixel.getPixel(30),height:onePT,}} />
                 <View style={{flexDirection:'row',alignItems:'center',height:Pixel.getPixel(37),alignItems:'center'}}>
                     <Text allowFontScaling={false}  style={{color: "#333333",fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{'保证金：'}</Text>
-                    <Text allowFontScaling={false}  style={{color: "#FA5741",fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),flex:1}}>{'345元'}</Text>
+                    <Text allowFontScaling={false}  style={{color: "#FA5741",fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),flex:1}}>{parseFloat(rowData.money)+'元'}</Text>
                     {
                        this.props.page == '未支付' &&
                        <TouchableOpacity
@@ -185,13 +186,38 @@ export default class SCBJZChildScene extends BaseComponent {
                                    },
                                })
                            }}>
-                           <Text allowFontScaling={false}  style={{color: '#ffffff',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>去支付</Text>
+                           <Text allowFontScaling={false}  style={{color: '#ffffff',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
+                               {this.getStatusStr(this.props.status,rowData.status)}</Text>
                        </TouchableOpacity>
                     }
                 </View>
             </View>
 
         );
+    }
+
+    getStatusStr = (stateCode,state) => {
+        let tempTitle = []
+        if (stateCode == '0') {
+            tempTitle = ['去开户']
+        } else if (stateCode == '1') {
+            tempTitle = ['去绑卡']
+        } else if (stateCode == '2') {
+            tempTitle = ['去激活']
+        }else {
+            if(state == 0){
+                tempTitle = ['去支付']
+            }else if(state == 1){
+                tempTitle = ['处理中']
+            }else if(state == 2){
+                tempTitle = ['处理成功']
+            }else if(state == 3){
+                tempTitle = ['处理失败']
+            }else if(state == 4){
+                tempTitle = ['订单取消']
+            }
+        }
+        return tempTitle;
     }
 }
 

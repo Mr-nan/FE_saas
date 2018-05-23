@@ -37,6 +37,7 @@ export  default class SCBZJScene extends BaseComponent {
             money:0,
             scmoney:0,
             totalmoney:0,
+            status:-1,
         };
     }
 
@@ -56,12 +57,15 @@ export  default class SCBZJScene extends BaseComponent {
                         let total = 0;
                         let left= 0;
                         let right = 0;
+                        let status = 3;
                         if (response.mjson.data != null) {
                             response.mjson.data[315].map((item) => {
                                 if(item.account_type_id == 11){//赎车保证金
                                     left = parseFloat(left) + parseFloat(item.balance)
+                                    // status = item.status;
                                 } else if(item.account_type_id == 2){ //保证金
                                     right = parseFloat(right) + parseFloat(item.balance)
+                                    // status = item.status;
                                 }
                             })
                             total = parseFloat(left) + parseFloat(right);
@@ -70,6 +74,7 @@ export  default class SCBZJScene extends BaseComponent {
                             scmoney:left,
                             money:right,
                             totalmoney:total,
+                            status:status,
                             renderPlaceholderOnly: 'success'
                         });
                     }, (error) => {
@@ -94,7 +99,17 @@ export  default class SCBZJScene extends BaseComponent {
         }
         return (
             <View style={{width:width,height:height,backgroundColor: fontAndColor.COLORA3,flexDirection:'column'}}>
-                <View style={{flexDirection:'row',marginTop: Pixel.getTitlePixel(64),height:Pixel.getPixel(45),paddingLeft:Pixel.getPixel(15),paddingRight:Pixel.getPixel(15),backgroundColor:'#ffffff',alignItems:'center'}}>
+                <View style={{marginTop: Pixel.getTitlePixel(64)}}>
+                {
+                    (this.state.status == 0 ||  this.state.status == 1 ||  this.state.status == 2 )&&
+                    <View style={{width:width ,height:Pixel.getPixel(40), backgroundColor:'#FFF8EA',justifyContent:'center',paddingLeft:Pixel.getPixel(15)}} >
+                        <Text style={{color:'#846545',fontSize:Pixel.getFontPixel(15)}}>
+                            {this.getStatusStr(this.state.status)}
+                        </Text>
+                    </View>
+                }
+                <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
+                <View style={{flexDirection:'row',height:Pixel.getPixel(45),paddingLeft:Pixel.getPixel(15),paddingRight:Pixel.getPixel(15),backgroundColor:'#ffffff',alignItems:'center'}}>
                     <Text style={{fontSize:Pixel.getFontPixel(14),color:'#333333'}}>保证金总额: </Text>
                     <Text style={{fontSize:Pixel.getFontPixel(12),color:'#FA5741',flex:1}}>{this.state.totalmoney}元</Text>
                     <TouchableOpacity  onPress={()=>{
@@ -104,12 +119,13 @@ export  default class SCBZJScene extends BaseComponent {
                             this.setState({details: 'open'});
                         }
                     }}>
-                        <View style={{backgroundColor:'#05C5C2',width:Pixel.getPixel(90),borderRadius:Pixel.getPixel(9),height:Pixel.getPixel(19),flexDirection:'row',justifyContent:'center',alignItems:'center'}} >
+                        <View style={{backgroundColor:'#e6f9f9',width:Pixel.getPixel(90),borderRadius:Pixel.getPixel(9),height:Pixel.getPixel(19),flexDirection:'row',justifyContent:'center',alignItems:'center'}} >
                             <Text style={{fontSize:Pixel.getFontPixel(12),color:'#010101'}}>
                             { this.state.details =='open'  ?'收起详情 ':'展开详情 '}
                             </Text>
                         </View>
                     </TouchableOpacity>
+                </View>
                 </View>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
                 {
@@ -136,7 +152,7 @@ export  default class SCBZJScene extends BaseComponent {
                     locked={true}
                     scrollWithoutAnimation={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["未支付", "已支付"]}/>}>
-                    <SCBJZChildScene tabLabel="ios-paper1" opt_user_id={'11383'} navigator={this.props.navigator} page={'未支付'}/>
+                    <SCBJZChildScene tabLabel="ios-paper1" opt_user_id={'11383'} navigator={this.props.navigator} page={'未支付'} status={this.state.status}/>
                     <SCBJZChildScene tabLabel="ios-paper2" opt_user_id={'11383'} navigator={this.props.navigator} page={'已支付'}/>
                 </ScrollableTabView>
                 <NavigationView title="合同管理" backIconClick={this.backPage}/>
@@ -153,6 +169,20 @@ export  default class SCBZJScene extends BaseComponent {
         if (this.state.renderPlaceholderOnly == 'success') {
 
         }
+    }
+
+    getStatusStr = (stateCode) => {
+            let tempTitle = []
+            if (stateCode == '0') {
+                tempTitle = ['支付保证金前，请先开通恒丰账户。']
+            } else if (stateCode == '1') {
+                tempTitle = ['支付保证金前，请先完成绑卡。']
+            } else if (stateCode == '2') {
+                tempTitle = ['您的恒丰卡未激活 ，请激活后再进行支付。']
+            }else {
+                tempTitle = ['']
+            }
+            return tempTitle;
     }
 
     /**
