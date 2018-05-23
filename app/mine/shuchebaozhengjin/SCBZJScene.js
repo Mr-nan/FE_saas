@@ -42,10 +42,10 @@ export  default class SCBZJScene extends BaseComponent {
     }
 
     initFinish = () => {
-        this.getData();
+        this.getData(1);
     }
 
-    getData = () => {
+    getData = (flag) => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -77,6 +77,9 @@ export  default class SCBZJScene extends BaseComponent {
                             status:status,
                             renderPlaceholderOnly: 'success'
                         });
+                        if(flag == 2){
+                            this.refs.po.upDataView();
+                        }
                     }, (error) => {
                         this.setState({renderPlaceholderOnly: 'success'});
                     });
@@ -158,7 +161,8 @@ export  default class SCBZJScene extends BaseComponent {
                     locked={true}
                     scrollWithoutAnimation={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["未支付", "已支付"]}/>}>
-                    <SCBJZChildScene tabLabel="ios-paper1" opt_user_id={'11383'} navigator={this.props.navigator} page={'未支付'} status={this.state.status}  callBack={this.getData}/>
+                    <SCBJZChildScene ref = 'po' tabLabel="ios-paper1" opt_user_id={'11383'} navigator={this.props.navigator} page={'未支付'}
+                                     status={this.state.status}  callBack={this.getData(2)}/>
                     <SCBJZChildScene tabLabel="ios-paper2" opt_user_id={'11383'} navigator={this.props.navigator} page={'已支付'}/>
                 </ScrollableTabView>
                 <NavigationView title="合同管理" backIconClick={this.backPage}/>

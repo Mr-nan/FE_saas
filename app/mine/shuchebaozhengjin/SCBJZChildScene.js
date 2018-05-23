@@ -101,6 +101,10 @@ export default class SCBJZChildScene extends BaseComponent {
         }
     };
 
+    upDataView = () =>{
+        this.initFinish()
+    }
+
     renderListFooter = () => {
         if (this.state.isRefreshing) {
             return null;
@@ -175,7 +179,6 @@ export default class SCBJZChildScene extends BaseComponent {
                                        params: {
                                            callBackData: () => {
                                                this.props.callBack();
-                                               this.initFinish();
                                            }
                                        }
                                    });
