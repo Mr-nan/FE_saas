@@ -467,6 +467,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         let tempButtons = [];
         let tempButtonTitles = this.getControlTitleblob(rowData.child_loan_status);
         tempButtonTitles.map((item) => {
+
                 tempButtons.push(<CommenButtonNew buttonStyle={this.getButtonStyleWithTitle(item)}
                                                textStyle={styles.buttontextStyle}
                                                onPress={()=>{this.controsButtonClick(item,rowData.loan_number)}}
@@ -529,6 +530,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 {
                     tempButtons.length > 0 &&
                     <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
+                        <Text style={{flex:1,fontSize:adapeSize(12),color:'#9E9E9E',}}>{rowData.audit_info}</Text>
                         {tempButtons}
                     </View>
                 }
