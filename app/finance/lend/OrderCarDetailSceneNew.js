@@ -101,7 +101,7 @@ export default class OrderCarDetailScene extends BaseComponent{
             {title: '车架号', key: jsonData.frame_number},
             {title: '监管地点',     key: jsonData.storage},
             {title: '评估金额', key: jsonData.hq_assess_mny+'万元'},
-            {title: '合同放款额度', key: jsonData.loan_mny+'万元'},
+            {title: '合同放款额', key: jsonData.loan_mny+'万元'},
             // {title: '在库天数', key: jsonData.library_day+'天'},
         ]
         // if (jsonData.isextension==='1'){

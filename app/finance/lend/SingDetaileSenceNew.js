@@ -501,7 +501,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     </View>
                 </View>
                 {
-                    rowData.child_loan_status == 70 ?
+                    rowData.child_loan_status == 70 &&
                     <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.lending_methods}</Text>
@@ -509,10 +509,10 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                         <View style={{flexDirection:'row'}}>
                             <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{rowData.channel_name}</Text>
                         </View>
-                    </View>:null
+                    </View>
                 }
                 {
-                    rowData.child_loan_status == 80 ?
+                    rowData.child_loan_status == 80 &&
                     <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.lending_methods}</Text>
@@ -522,7 +522,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                             <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{rowData.channel_name}</Text>
                             <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'结清日期'}</Text>
                         </View>
-                    </View>:null
+                    </View>
                 }
                 {
                     tempButtons.length == 0 ?  <View style={{width:width,height:Pixel.getPixel(5)}}></View> : <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
