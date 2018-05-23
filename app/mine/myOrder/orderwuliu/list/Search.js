@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View, TouchableOpacity, Dimensions, TextInput, Image,ListView,RefreshControl,Modal
+    View, TouchableOpacity, Dimensions, TextInput, Image, ListView, RefreshControl, Modal
 } from 'react-native';
 import BaseComponent from '../../../../component/BaseComponent';
 import NavigatorView from '../../../../component/AllNavigationView';
@@ -32,21 +32,21 @@ export default class List extends BaseComponent {
 
     constructor(props) {
         super(props)
-        let ds  = new ListView.DataSource({rowHasChanged:(r1, r2)=>r1!==r2})
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
 
         this.state = {
             renderPlaceholderOnly: "success",
-            isRefreshing:false,
-            source:ds.cloneWithRows([]),
-            isShow:false
+            isRefreshing: false,
+            source: ds.cloneWithRows([]),
+            isShow: false
         }
 
     }
 
-    toEnd = ()=>{
+    toEnd = () => {
 
     }
-    refreshingData=()=>{
+    refreshingData = () => {
 
     }
 
@@ -55,16 +55,16 @@ export default class List extends BaseComponent {
         return (<View style={styles.root}>
 
                 <NavigationtBar
-                    onChangeText={(text)=>{
+                    onChangeText={(text) => {
 
                     }}
-                    rightClick={()=>{
+                    rightClick={() => {
                         this.backPage();
                     }}
-                    leftClick={()=>{
+                    leftClick={() => {
                         this.backPage();
                     }}
-                    onSearch={(key)=>{
+                    onSearch={(key) => {
                         this.search(key)
                     }}
                 />
@@ -96,7 +96,7 @@ export default class List extends BaseComponent {
                 >
                     <View
                         style={{
-                            flex:1,
+                            flex: 1,
                             justifyContent: 'center',
                             alignItems: 'center',
                             backgroundColor: 'rgba(0,0,0,.3)'
@@ -107,8 +107,8 @@ export default class List extends BaseComponent {
                             backgroundColor: '#fff',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            paddingHorizontal:Pixel.getPixel(20),
-                            borderRadius:Pixel.getPixel(4)
+                            paddingHorizontal: Pixel.getPixel(20),
+                            borderRadius: Pixel.getPixel(4)
                         }}>
                             <Text allowFontScaling={false} style={{
                                 textAlign: 'center', fontSize: Pixel.getPixel(14),
@@ -117,16 +117,16 @@ export default class List extends BaseComponent {
                                 {'运单取消后无法找回，\n确认取消该运单？'}
                             </Text>
                             <View
-                                style = {{flexDirection:'row',marginTop: Pixel.getPixel(16),}}
+                                style={{flexDirection: 'row', marginTop: Pixel.getPixel(16),}}
                             >
 
                                 <TouchableOpacity onPress={() => {
                                     this.setState({
-                                        isShow:false
+                                        isShow: false
                                     })
                                     this.cancelOrderRequset()
                                 }} activeOpacity={0.9} style={{
-                                    width:  Pixel.getPixel(90),
+                                    width: Pixel.getPixel(90),
                                     height: Pixel.getPixel(35),
                                     flexDirection: 'row',
                                     justifyContent: 'center',
@@ -155,8 +155,8 @@ export default class List extends BaseComponent {
                                     borderRadius: 3,
                                     borderWidth: 1,
                                     borderColor: FontAndColor.COLORB0,
-                                    backgroundColor:FontAndColor.COLORB0,
-                                    marginLeft:Pixel.getPixel(20)
+                                    backgroundColor: FontAndColor.COLORB0,
+                                    marginLeft: Pixel.getPixel(20)
                                 }}>
                                     <Text allowFontScaling={false} style={{
                                         fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT28),
@@ -173,24 +173,24 @@ export default class List extends BaseComponent {
         )
     }
 
-    _renderRow = (movie)=>{
-            return(
-                <TransportOrder
-                    data={movie}
-                    pay={this.payOrder}
-                    cancel={this.cancelOrder}
-                    toCarDetialClick={this.toCarDetial}
-                    toOrderDetialClick={this.toOrderDetial}
-                />
-            )
+    _renderRow = (movie) => {
+        return (
+            <TransportOrder
+                data={movie}
+                pay={this.payOrder}
+                cancel={this.cancelOrder}
+                toCarDetialClick={this.toCarDetial}
+                toOrderDetialClick={this.toOrderDetial}
+            />
+        )
     }
 
-    search = (key)=>{
+    search = (key) => {
         let params = {
             company_id: global.companyBaseID,
-            page:1,
-            rows:5,
-            import:key,
+            page: 1,
+            rows: 5,
+            import: key,
         }
 
         this.props.showModal(true)
@@ -198,7 +198,7 @@ export default class List extends BaseComponent {
             this.props.showModal(false)
             let data = response.mjson.data.info_list;
 
-            if(this.isNull(data)){
+            if (this.isNull(data)) {
                 this.props.showToast('暂无数据');
                 return;
             }
@@ -216,17 +216,17 @@ export default class List extends BaseComponent {
         });
     }
 
-    cancelOrder= (order)=>{
+    cancelOrder = (order) => {
         this.setState({
-            isShow:true
+            isShow: true
         })
         this.cancelOrder = order
     }
 
-    cancelOrderRequset =() =>{
+    cancelOrderRequset = () => {
         let params = {
             company_id: global.companyBaseID,
-            trans_id:this.cancelOrder.trans_id,
+            trans_id: this.cancelOrder.trans_id,
         }
 
         this.props.showModal(true)
@@ -243,43 +243,42 @@ export default class List extends BaseComponent {
     }
 
 
-    payOrder = (order)=>{
+    payOrder = (order) => {
 
         this.toNextPage({
-            name:'PlatformChoose',
-            component:PlatformChoose,
-            params:{
-                order:order,
+            name: 'PlatformChoose',
+            component: PlatformChoose,
+            params: {
+                order: order,
             }
         })
 
     }
 
-    toCarDetial = (order,car)=>{
+    toCarDetial = (order, car) => {
 
         this.toNextPage({
-            name:'LogisCarInfoScene',
-            component:LogisCarInfoScene,
-            params:{
-                car:car,
-                order:order
+            name: 'LogisCarInfoScene',
+            component: LogisCarInfoScene,
+            params: {
+                car: car,
+                order: order
             }
 
         })
 
     }
 
-    toOrderDetial = (order)=>{
+    toOrderDetial = (order) => {
 
         this.toNextPage({
-            name:'NewCarriagePriceInfoScene',
-            component:NewCarriagePriceInfoScene,
-            params:{
-                order:order
+            name: 'NewCarriagePriceInfoScene',
+            component: NewCarriagePriceInfoScene,
+            params: {
+                order: order
             }
         })
     }
-
 
 
 }
@@ -292,7 +291,7 @@ class NavigationtBar extends Component {
         super(props)
 
         this.state = {
-            value:''
+            value: ''
         }
 
     }
@@ -308,7 +307,7 @@ class NavigationtBar extends Component {
         }}>
 
             <TouchableOpacity
-                onPress={()=>{
+                onPress={() => {
                     this.props.rightClick()
                 }}
             >
@@ -321,27 +320,35 @@ class NavigationtBar extends Component {
                 height: Pixel.getPixel(28),
                 borderRadius: Pixel.getPixel(14),
                 backgroundColor: 'white',
-                alignItems:'center',
-                paddingHorizontal:Pixel.getPixel(8),
-                flex:1,
-                marginHorizontal:Pixel.getPixel(15)
+                alignItems: 'center',
+                paddingHorizontal: Pixel.getPixel(8),
+                flex: 1,
+                marginHorizontal: Pixel.getPixel(15)
             }}>
                 <Image style={{width: Pixel.getPixel(16), height: Pixel.getPixel(16)}}
                        source={require('../../../../../images/carSourceImages/sousuoicon.png')}/>
                 <TextInput
 
-                    style={{flex: 1, marginHorizontal: Pixel.getPixel(15)}}
-                    onChangeText={(text)=>{
+                    style={{
+                        flex: 1,
+                        marginHorizontal: Pixel.getPixel(5),
+
+                        paddingLeft: 0,
+                        paddingRight: 0,
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                    }}
+                    onChangeText={(text) => {
                         this.setState({
-                            value:text
+                            value: text
                         })
                         this.props.onChangeText(text)
                     }}
-                    onBlur={()=>{
+                    onBlur={() => {
 
                     }}
-                    value = {this.state.value}
-                    onSubmitEditing={()=>{
+                    value={this.state.value}
+                    onSubmitEditing={() => {
                         this.props.onSearch(this.state.value)
                     }}
                     returnKeyType={'search'}
@@ -349,11 +356,11 @@ class NavigationtBar extends Component {
                 />
             </View>
             <TouchableOpacity
-                onPress={()=>{
+                onPress={() => {
                     this.props.leftClick()
                 }}
             >
-            <SaasText style={{color: 'white'}}>取消</SaasText>
+                <SaasText style={{color: 'white'}}>取消</SaasText>
             </TouchableOpacity>
         </View>
     }

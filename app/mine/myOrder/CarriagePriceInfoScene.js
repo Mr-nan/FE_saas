@@ -62,15 +62,15 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             endGpsLongitude: 0,	                                    //目的地经度
             model_data: this.props.model_data,   //	车辆数量		【必填】
             needInvoice: 0,                                         //是否开发票0：否1：是默认为0
-            invoice_data:{},
-            receive_type: this.props.transportType===1?1:2,	    //收车方式 1：自己送车到网点 2：平台上门取车		【必填】
+            invoice_data: {},
+            receive_type: this.props.transportType === 1 ? 1 : 2,	    //收车方式 1：自己送车到网点 2：平台上门取车		【必填】
             send_type: 1,   	                                //送车方式 1：平台送车到户 2：自己到网点提车		【必填】
             startAddr: this.props.startAddr, 	                //始发地名称
-            startAddrRegionId:this.props.startAddrRegionId,	        //始发地编码
+            startAddrRegionId: this.props.startAddrRegionId,	        //始发地编码
             startGpsLatitude: 0,	                            //初始地纬度
             startGpsLongitude: 0, 	                            //初始地经度
             transportType: this.props.transportType,	        //运输类型1
-            clientele_msg:''
+            clientele_msg: ''
         }
 
         //
@@ -105,7 +105,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
     }
 
     initFinish = () => {
-         this.loadData()
+        this.loadData()
     }
 
     render() {
@@ -174,9 +174,9 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             contactInformationClickCallBack={() => {
                                 this.toNextPage({
                                     name: 'AddressManageListScene',
-                                    component:AddressManageListScene ,
+                                    component: AddressManageListScene,
                                     params: {
-                                        item:this.deepCopy(this.props.firstItem),
+                                        item: this.deepCopy(this.props.firstItem),
                                         callBack: this.senderInfo,
 
                                     }
@@ -201,7 +201,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                                     name: 'AddressManageListScene',
                                     component: AddressManageListScene,
                                     params: {
-                                        item:this.deepCopy(this.props.lastItem),
+                                        item: this.deepCopy(this.props.lastItem),
                                         callBack: this.receiverInfo,
 
                                     }
@@ -209,7 +209,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             }}
                             switchable={false}
                             value={this.params.send_type}
-                            params = {this.params}
+                            params={this.params}
                             type={2}
                             departure={endAddr}
                             contactInfo={this.state.receiverInfo}
@@ -223,7 +223,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             toNextPage={this.selectProvince}
 
                             clickCallBack={(state) => {
-                               this.params.needInvoice =state;
+                                this.params.needInvoice = state;
                             }}
                         />
 
@@ -271,7 +271,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             marginLeft: Pixel.getPixel(5)
                         }}>我已阅读并同意</SaasText>
                         <SaasText
-                            onPress={()=>{
+                            onPress={() => {
 
                             }}
                             style={{fontSize: 12, fontWeight: '200', color: fontAndColor.COLORA2}}>《物流服务协议》</SaasText>
@@ -298,9 +298,9 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                         </View>
 
                         <TouchableOpacity activeOpacity={.8} onPress={() => {
-                                if (this.verify()){
-                                    this.preserveOrder(1)
-                                }
+                            if (this.verify()) {
+                                this.preserveOrder(1)
+                            }
                         }}>
                             <View style={{
                                 width: Pixel.getPixel(100.5),
@@ -320,10 +320,10 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={.8} onPress={() => {
-                            if (this.verify()){
+                            if (this.verify()) {
                                 this.preserveOrder(2)
                             }
-                           // this.state.priceData && this.setState({isShowCallUpView: true})
+                            // this.state.priceData && this.setState({isShowCallUpView: true})
                         }}>
                             <View style={{
                                 width: Pixel.getPixel(100.5),
@@ -347,9 +347,9 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                 }
                 {
                     this.state.cityStatus && <CityRegionScene noneDistrict={false}
-                                                           checkAreaClick={this.checkAreaClick}
-                                                           showModal={this._showModal}
-                                                           closePress={this._closeProvince}/>
+                                                              checkAreaClick={this.checkAreaClick}
+                                                              showModal={this._showModal}
+                                                              closePress={this._closeProvince}/>
                 }
 
             </View>
@@ -357,15 +357,15 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         )
     }
 
-    _showModal = (bool)=>{
+    _showModal = (bool) => {
         this.props.showModal(bool)
     }
-    _closeProvince = ()=>{
+    _closeProvince = () => {
         this.setState({
-            cityStatus:false,
+            cityStatus: false,
         })
     }
-    checkAreaClick= (item)=>{
+    checkAreaClick = (item) => {
         this.refs.InvoiceMarkItem.provinceCallBack(item)
     }
 
@@ -398,20 +398,25 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         // province_code:"110000"
         // updated_time:"2018-05-10 13:54:23"
 
-            this.params.startGpsLatitude = info.latitude;
-            this.params.startGpsLongitude = info.longitude;
-            this.params.start_id = info.id;
+        if (this.isNull(info.id_card)) {
+            this.props.showToast('您选的地址没有证件信息，请编辑添加或重新添加地址')
+            return
+        }
+
+        this.params.startGpsLatitude = info.latitude;
+        this.params.startGpsLongitude = info.longitude;
+        this.params.start_id = info.id;
 
         console.log(info)
         this.setState({
             senderInfo: info
-        }, ()=>{
-                this.loadData()
+        }, () => {
+            this.loadData()
         })
     }
     receiverInfo = (info) => {
 
-        if(this.isNull(info.id_card)){
+        if (this.isNull(info.id_card)) {
             this.props.showToast('您选的地址没有证件信息，请编辑添加或重新添加地址')
             return
         }
@@ -420,20 +425,20 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         this.params.endGpsLongitude = info.longitude;
         this.params.end_id = info.id;
         this.params.id_card = info.id_card;
-        this.params.endAddrRegionId= info.district_code;
+        this.params.endAddrRegionId = info.district_code;
 
         console.log(info)
         this.setState({
             receiverInfo: info
-        }, ()=>{
+        }, () => {
             this.loadData()
         })
     }
 
-    selectProvince = ()=>{
+    selectProvince = () => {
 
         this.setState({
-            cityStatus:true,
+            cityStatus: true,
         })
 
     }
@@ -481,7 +486,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
         });
     }
 
-    preserveOrder = (type)=>{
+    preserveOrder = (type) => {
 
         //
         // this.toNextPage({
@@ -505,22 +510,20 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             let data = response.mjson.data;
             // let priceData=[{title:'运价',value:data.freight},{title:'保险费',value:data.insurance},{title:'服务费',value:data.serviceFee},{title:'提验车费',value:data.checkCarFee},{title:'送店费',value:data.toStoreFee},{title:'税费',value:data.taxation},{title:'总价',value:data.totalPrice}];
 
-            if (type === 1){
+            if (type === 1) {
                 this.toNextPage({
-                    name:'List',
-                    component:List,
-                    params:{
-
-                    }
+                    name: 'List',
+                    component: List,
+                    params: {}
                 })
 
-            }else if(type === 2){
+            } else if (type === 2) {
 
                 this.toNextPage({
-                    name:'PlatformChoose',
-                    component:PlatformChoose,
-                    params:{
-                        order:data
+                    name: 'PlatformChoose',
+                    component: PlatformChoose,
+                    params: {
+                        order: data
                     }
                 })
             }
@@ -536,69 +539,69 @@ export default class CarriagePriceInfoScene extends BaseComponent {
     }
 
 
-    verify = ()=>{
+    verify = () => {
 
-        if(this.params.needInvoice ===1){
+        if (this.params.needInvoice === 1) {
 
-            if (this.isEmpty(this.params.invoice_data.invoice_title)){
+            if (this.isEmpty(this.params.invoice_data.invoice_title)) {
                 this.props.showToast('请填写发票抬头');
                 return false;
             }
-            if (this.isEmpty(this.params.invoice_data.invoice_code)){
+            if (this.isEmpty(this.params.invoice_data.invoice_code)) {
                 this.props.showToast('请填写纳税人识别号');
                 return false;
             }
-            if (this.isEmpty(this.params.invoice_data.province)||this.isEmpty(this.params.invoice_data.city)||this.isEmpty(this.params.invoice_data.district)){
+            if (this.isEmpty(this.params.invoice_data.province) || this.isEmpty(this.params.invoice_data.city) || this.isEmpty(this.params.invoice_data.district)) {
                 this.props.showToast('请选择区域');
                 return false;
             }
-            if (this.isEmpty(this.params.invoice_data.address)){
+            if (this.isEmpty(this.params.invoice_data.address)) {
                 this.props.showToast('请填写详细地址')
                 return false;
             }
         }
 
-            if(this.params.receive_type===2){
-                if(this.params.startGpsLatitude === 0){
-                    this.props.showToast('请选择始发地详细地址');
-                    return false;
-                }
-            }
-            if(this.params.endGpsLatitude === 0){
-                this.props.showToast('请选择到达地详细地址');
+        if (this.params.receive_type === 2) {
+            if (this.params.startGpsLatitude === 0) {
+                this.props.showToast('请选择始发地详细地址');
                 return false;
             }
+        }
+        if (this.params.endGpsLatitude === 0) {
+            this.props.showToast('请选择到达地详细地址');
+            return false;
+        }
 
-            if (!this.state.isChecked){
+        if (!this.state.isChecked) {
 
-                this.props.showToast('请选阅读并同意物流服务协议');
-                return false;
+            this.props.showToast('请选阅读并同意物流服务协议');
+            return false;
 
-            }
-            return true
+        }
+        return true
     }
 
-    parse=(str)=>{
-        if (typeof str === 'string'){
+    parse = (str) => {
+        if (typeof str === 'string') {
             return JSON.parse(str);
-        }else {
+        } else {
             return str;
         }
 
     }
 
-    stringify(obj){
-        if (typeof obj !== 'string'){
-             return JSON.stringify(obj);
-        }else {
+    stringify(obj) {
+        if (typeof obj !== 'string') {
+            return JSON.stringify(obj);
+        } else {
             return obj
         }
     }
 
-    deepCopy= function(source) {
-        let result={};
+    deepCopy = function (source) {
+        let result = {};
         for (let key in source) {
-            result[key] = typeof source[key]==='object'? deepCoyp(source[key]): source[key];
+            result[key] = typeof source[key] === 'object' ? deepCoyp(source[key]) : source[key];
         }
         return result;
     }
@@ -615,7 +618,7 @@ class AddressInfoItemView extends Component {
             // departureDeliverMode:1,
             // destinationDeliverMode:1
 
-            deliverMode:this.props.value
+            deliverMode: this.props.value
         }
 
     }
@@ -702,14 +705,14 @@ class AddressInfoItemView extends Component {
                         status={this.props.type === 1 ? this.state.deliverMode === 1 ? false : true : this.state.deliverMode === 1 ? true : false}
                         clickCallBack={(status) => {
 
-                            if(this.props.switchable){
+                            if (this.props.switchable) {
                                 this.setState({
                                     deliverMode: this.props.type === 1 ? 2 : 1
                                 }, () => {
                                     this.props.deliverModeClick(this.state.deliverMode)
                                     return true;
                                 })
-                            }else {
+                            } else {
                                 this.props.deliverModeClick()
                                 return false;
                             }
@@ -719,14 +722,14 @@ class AddressInfoItemView extends Component {
                         value={this.props.type === 1 ? '自己送车到网点' : "自己到网点提车"}
                         status={this.props.type === 1 ? this.state.deliverMode === 1 ? true : false : this.state.deliverMode === 1 ? false : true}
                         clickCallBack={(status) => {
-                            if(this.props.switchable){
+                            if (this.props.switchable) {
                                 this.setState({
                                     deliverMode: this.props.type === 1 ? 1 : 2
                                 }, () => {
                                     this.props.deliverModeClick(this.state.deliverMode)
                                     return true;
                                 })
-                            }else {
+                            } else {
                                 this.props.deliverModeClick()
                                 return false;
                             }
@@ -747,7 +750,7 @@ class AddressInfoItemView extends Component {
                         <TextInput
                             style={{flex: 1,}}
                             multiline={true}
-                            onChangeText = {(text)=>{
+                            onChangeText={(text) => {
                                 this.props.params.clientele_msg = text;
                             }}
                         />
@@ -807,16 +810,14 @@ class InvoiceMarkItem extends Component {
         // updated_time:"2018-05-10 14:04:56"
 
 
-
-
     }
 
-    provinceCallBack = (item)=>{
+    provinceCallBack = (item) => {
         this.props.params.invoice_data.province = item.provice_name;
-        this.props.params.invoice_data.city=item.city_name;
-        this.props.params.invoice_data.district=item.district_name;
+        this.props.params.invoice_data.city = item.city_name;
+        this.props.params.invoice_data.district = item.district_name;
         this.setState({
-            region_in_string:item.provice_name+item.city_name+item.district_name
+            region_in_string: item.provice_name + item.city_name + item.district_name
         })
     }
 
@@ -837,7 +838,7 @@ class InvoiceMarkItem extends Component {
                     onPress={() => {
                         this.setState({
                             needInvoice: this.state.needInvoice === 0 ? 1 : 0
-                        }, ()=>{
+                        }, () => {
                             this.props.clickCallBack(this.state.needInvoice)
                         })
 
@@ -922,7 +923,7 @@ class InvoiceMarkItem extends Component {
                         <SaasText style={{fontWeight: '200', fontSize: 15,}}>发票收取地址与目的地址相同</SaasText>
                         <TouchableOpacity
                             onPress={() => {
-                                if ( this.props.receiverInfo !== null) {
+                                if (this.props.receiverInfo !== null) {
                                     if (this.state.same === false) {
                                         this.setState({
                                             name: this.props.receiverInfo.contact_name,
@@ -940,8 +941,8 @@ class InvoiceMarkItem extends Component {
                                             this.props.params.invoice_data.contact_phone = this.state.phone;
                                             this.props.params.invoice_data.address = this.state.address;
                                             this.props.params.invoice_data.province = this.props.receiverInfo.province;
-                                            this.props.params.invoice_data.city=this.props.receiverInfo.city;
-                                            this.props.params.invoice_data.district=this.props.receiverInfo.district;
+                                            this.props.params.invoice_data.city = this.props.receiverInfo.city;
+                                            this.props.params.invoice_data.district = this.props.receiverInfo.district;
 
                                         })
                                     } else {
@@ -1064,7 +1065,7 @@ class DeliverTypeItem extends Component {
                         return
                     }
 
-                    if (this.props.clickCallBack(this.state.isChecked)){
+                    if (this.props.clickCallBack(this.state.isChecked)) {
                         this.setState({
                             isChecked: !this.state.isChecked
                         })
@@ -1172,7 +1173,8 @@ class CarriagePriceInfoListView extends Component {
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <SaasText style={{fontWeight: '200'}}>运输方式：</SaasText>
-                            <SaasText style={{fontWeight: '200'}}>{this.props.params.transportType ==1 ?'大板车':this.props.params.transportType ==2?"救援":"代价"}</SaasText>
+                            <SaasText
+                                style={{fontWeight: '200'}}>{this.props.params.transportType == 1 ? '大板车' : this.props.params.transportType == 2 ? "救援" : "代价"}</SaasText>
                         </View>
                     </View>
                     <TouchableOpacity
@@ -1209,32 +1211,36 @@ class CarriagePriceInfoListView extends Component {
                             <View>
                                 <PriceItemView title="运费" value={priceData.freight}/>
                                 {
-                                    this.props.params.transportType==1?<PriceItemView title="提验车费" value={priceData.checkCarFee}/>:null
+                                    this.props.params.transportType == 1 ?
+                                        <PriceItemView title="提验车费" value={priceData.checkCarFee}/> : null
                                 }
                             </View>
                             <View>
-                                <PriceItemView title="保险费" value={parseFloat(priceData.insurance) == 0?'平台赠送':priceData.insurance}/>
+                                <PriceItemView title="保险费"
+                                               value={parseFloat(priceData.insurance) == 0 ? '平台赠送' : priceData.insurance}/>
                                 {
-                                    this.props.params.transportType==1?<PriceItemView title="送店费" value={priceData.toStoreFee}/>:null
+                                    this.props.params.transportType == 1 ?
+                                        <PriceItemView title="送店费" value={priceData.toStoreFee}/> : null
                                 }
                             </View>
                             <View>
-                                <PriceItemView title="服务费" value={parseFloat(priceData.serviceFee) == 0? '减免': priceData.serviceFee}/>
+                                <PriceItemView title="服务费"
+                                               value={parseFloat(priceData.serviceFee) == 0 ? '减免' : priceData.serviceFee}/>
                                 {/*<View style={{backgroundColor: 'white', marginBottom: Pixel.getPixel(23)}}>*/}
-                                    {/*<Text style={{*/}
-                                        {/*color: fontAndColor.COLORA1,*/}
-                                        {/*fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)*/}
-                                    {/*}}> </Text>*/}
-                                    {/*<View style={{*/}
-                                        {/*marginTop: Pixel.getPixel(10),*/}
-                                        {/*flexDirection: 'row',*/}
-                                        {/*alignItems: 'center'*/}
-                                    {/*}}>*/}
-                                        {/*<Text style={{*/}
-                                            {/*color: fontAndColor.COLORA0,*/}
-                                            {/*fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)*/}
-                                        {/*}}> </Text>*/}
-                                    {/*</View>*/}
+                                {/*<Text style={{*/}
+                                {/*color: fontAndColor.COLORA1,*/}
+                                {/*fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)*/}
+                                {/*}}> </Text>*/}
+                                {/*<View style={{*/}
+                                {/*marginTop: Pixel.getPixel(10),*/}
+                                {/*flexDirection: 'row',*/}
+                                {/*alignItems: 'center'*/}
+                                {/*}}>*/}
+                                {/*<Text style={{*/}
+                                {/*color: fontAndColor.COLORA0,*/}
+                                {/*fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)*/}
+                                {/*}}> </Text>*/}
+                                {/*</View>*/}
                                 {/*</View>*/}
                             </View>
                         </View> : null
@@ -1301,7 +1307,7 @@ class PriceItemView extends Component {
                         color: fontAndColor.COLORA0,
                         fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
                         fontWeight: '200'
-                    }}>{value === '平台赠送'?'':'元'}</Text>
+                    }}>{value === '平台赠送' ? '' : '元'}</Text>
                 </View>
             </View>
         )

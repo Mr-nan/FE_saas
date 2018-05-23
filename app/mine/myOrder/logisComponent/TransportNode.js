@@ -52,7 +52,7 @@ export  default class TopBottomText extends PureComponent {
                 <View style={{marginLeft:Pixel.getPixel(71),width:Pixel.getPixel(81),alignItems:'center',
                 marginTop:lineTop}}>
                     <Text style={{fontSize:Pixel.getPixel(14),color:'#000',textAlign: 'center'}}>
-                        {this.props.data.nodeTime}</Text>
+                        {this.timestampToTime(this.props.data.nodeTime)}</Text>
                 </View>
                 <View style={{marginLeft:Pixel.getPixel(12),width:Pixel.getPixel(17),
                 marginTop:lineTop,alignItems:'center'}}>
@@ -70,5 +70,15 @@ export  default class TopBottomText extends PureComponent {
         );
     }
 
+    timestampToTime(timestamp) {
+        let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = date.getDate() + ' ';
+        h = date.getHours() + ':';
+        m = date.getMinutes() + ':';
+        s = date.getSeconds();
+        return Y+M+D+h+m+s;
+    }
 
 }

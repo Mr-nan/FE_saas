@@ -616,7 +616,7 @@ class CarInfo extends Component {
             <View>
                 <SaasText style={{fontSize: 14, color: 'black', marginBottom: Pixel.getPixel(8)}}>{this.props.carData.car_name}</SaasText>
                 <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1, marginBottom: Pixel.getPixel(7)}}>{'车架号：' + this.props.carData.tms_vin===''?this.props.carData.tms_vin:'暂无'}</SaasText>
-                <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1}}>{this.props.carData.logistics_data.nodeDesc +' | '+ this.props.carData.logistics_data.nodeTime}</SaasText>
+                <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1}}>{this.props.carData.logistics_data.nodeDesc +' | '+ this.timestampToTime(this.props.carData.logistics_data.nodeTime)}</SaasText>
 
             </View>
             <TouchableOpacity
@@ -633,6 +633,18 @@ class CarInfo extends Component {
             </TouchableOpacity>
 
         </View>
+    }
+
+
+     timestampToTime(timestamp) {
+        let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = date.getDate() + ' ';
+        h = date.getHours() + ':';
+        m = date.getMinutes() + ':';
+        s = date.getSeconds();
+        return Y+M+D+h+m+s;
     }
 }
 
