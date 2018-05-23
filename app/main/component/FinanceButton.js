@@ -15,21 +15,13 @@ import  * as fontAndColor from '../../constant/fontAndColor'
 var Pixel = new PixelUtil();
 export default class FinanceButton extends PureComponent {
 
-    constructor(props) {
-        super(props);
-
-    }
-
-    componentWillMount() {
-
-    }
 
     render() {
         return (
-            <View style={{backgroundColor:'#fff',width:width,height: Pixel.getPixel(73),justifyContent:'center',
+            <View style={{backgroundColor:'white',width:width,justifyContent:'center',
             alignItems:'center'}}>
                 <View
-                    style={{backgroundColor:'white',width:Pixel.getPixel(306),height: Pixel.getPixel(73),flexDirection: 'row'}}>
+                    style={{backgroundColor:'white',width:Pixel.getPixel(306),flexDirection: 'row'}}>
                     <TouchableOpacity activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center'}}
                                       onPress={this.props.borrowBt}>
                         <View style={{backgroundColor:fontAndColor.COLORB0,width:Pixel.getPixel(120),
@@ -41,7 +33,7 @@ export default class FinanceButton extends PureComponent {
                     <TouchableOpacity activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center'}} onPress={this.props.payBt}>
                         <View style={{backgroundColor:'#fff',width:Pixel.getPixel(120),
                     height:Pixel.getPixel(36),justifyContent:'center',alignItems: 'center',
-                    borderColor:fontAndColor.COLORB0,borderWidth: 1}}>
+                    borderColor:fontAndColor.COLORB0,borderWidth:StyleSheet.hairlineWidth}}>
                             <Text style={{backgroundColor:'#00000000',fontSize: Pixel.getFontPixel(15),
                         color: fontAndColor.COLORB0}}>还款</Text>
                         </View>

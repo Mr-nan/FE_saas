@@ -42,9 +42,8 @@ export default class FinanceHeader extends PureComponent {
     }
 
     render() {
-        console.log('------',global.ISCOMPANY==0);
         return (
-            <View style={{backgroundColor: '#fff', width: width, height: Pixel.getTitlePixel(235)}}>
+            <View style={{backgroundColor: 'white', width: width, height: Pixel.getPixel(235)}}>
                 <Animated.Image style={{
                     width: this.state.topWidth,
                     height: this.state.topHeight, resizeMode: 'stretch',
