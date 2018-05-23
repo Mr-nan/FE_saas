@@ -598,7 +598,11 @@ export default class FinanceSence extends BaseComponet {
                     <View style={{height: onePT, backgroundColor: '#F0EFF5'}}></View>
                     <View style={cellSheet.rowBottomViewStyle}>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
-                            <Text style={{fontSize:Pixel.getPixel(20),color:"#FA5741"}}>{parseFloat(movie.loanmny) == '0'?'-':parseFloat(movie.loanmny)}<Text style={{fontSize:Pixel.getPixel(12)}}>万</Text></Text>
+                            <Text style={{fontSize:Pixel.getPixel(20),color:"#FA5741"}}>{parseFloat(movie.loanmny) == '0'?'- -': parseFloat(movie.loanmny)}
+                                {
+                                    parseFloat(movie.loanmny) != '0'&&  <Text style={{fontSize:Pixel.getPixel(12)}}>万</Text>
+                                }
+                            </Text>
                             <Text style={{fontSize:Pixel.getPixel(12),color:"#9E9E9E"}}>借款金额</Text>
                         </View>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
