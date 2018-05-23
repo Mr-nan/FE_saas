@@ -123,6 +123,12 @@ export  default class SCBZJScene extends BaseComponent {
                             <Text style={{fontSize:Pixel.getFontPixel(12),color:'#010101'}}>
                             { this.state.details =='open'  ?'收起详情 ':'展开详情 '}
                             </Text>
+                            {
+                                this.state.details =='open' ?
+                                    <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(5)}} source={require('../../../images/delete@2x.png')}/>:
+                                    <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(5)}} source={require('../../../images/delete@2x.png')}/>
+                            }
+
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -152,7 +158,7 @@ export  default class SCBZJScene extends BaseComponent {
                     locked={true}
                     scrollWithoutAnimation={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["未支付", "已支付"]}/>}>
-                    <SCBJZChildScene tabLabel="ios-paper1" opt_user_id={'11383'} navigator={this.props.navigator} page={'未支付'} status={this.state.status}/>
+                    <SCBJZChildScene tabLabel="ios-paper1" opt_user_id={'11383'} navigator={this.props.navigator} page={'未支付'} status={this.state.status}  callBack={this.getData}/>
                     <SCBJZChildScene tabLabel="ios-paper2" opt_user_id={'11383'} navigator={this.props.navigator} page={'已支付'}/>
                 </ScrollableTabView>
                 <NavigationView title="合同管理" backIconClick={this.backPage}/>

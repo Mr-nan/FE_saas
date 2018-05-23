@@ -19,6 +19,7 @@ import BaseComponent from "../../component/BaseComponent";
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import  LoadMoreFooter from '../../component/LoadMoreFooter';
+import MyAccountScene from "../accountManage/MyAccountScene";
 var onePT = 1 / PixelRatio.get(); //一个像素
 /*
  * 获取屏幕的宽和高
@@ -167,24 +168,40 @@ export default class SCBJZChildScene extends BaseComponent {
                        <TouchableOpacity
                            style={styles.buttonStyle}
                            onPress={() => {
-                               this.toNextPage({
-                                   name: 'ContractSignScene',
-                                   component: ContractSignScene,
-                                   params: {
-                                       contract_id: rowData.contract_id,   //合同ID
-                                       contract_log_id: rowData.contract_log_id,	//合同日志ID
-                                       product_type_code: rowData.product_type_code,	//产品类型编码
-                                       opt_user_id:this.props.opt_user_id,
-                                       showButton: true,
-                                       user_id:rowData.signator_id,
-                                       callBack: () => {
-                                           allSouce = [];
-                                           this.setState({renderPlaceholderOnly: 'loading'});
-                                           page = 1;
-                                           this.getData();
-                                       },
-                                   },
-                               })
+                               if(this.props.status == 3){
+                                   this.toNextPage({
+                                       name: 'MyAccountScene',
+                                       component: MyAccountScene,
+                                       params: {
+                                           callBackData: () => {
+                                               this.props.callBack();
+                                               this.initFinish();
+                                           }
+                                       }
+                                   });
+                               }else {
+                                   if(rowData.status == 0){
+
+                                   }
+                               }
+                               // this.toNextPage({
+                               //     name: 'ContractSignScene',
+                               //     component: ContractSignScene,
+                               //     params: {
+                               //         contract_id: rowData.contract_id,   //合同ID
+                               //         contract_log_id: rowData.contract_log_id,	//合同日志ID
+                               //         product_type_code: rowData.product_type_code,	//产品类型编码
+                               //         opt_user_id:this.props.opt_user_id,
+                               //         showButton: true,
+                               //         user_id:rowData.signator_id,
+                               //         callBack: () => {
+                               //             allSouce = [];
+                               //             this.setState({renderPlaceholderOnly: 'loading'});
+                               //             page = 1;
+                               //             this.getData();
+                               //         },
+                               //     },
+                               // })
                            }}>
                            <Text allowFontScaling={false}  style={{color: '#ffffff',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
                                {this.getStatusStr(this.props.status,rowData.status)}</Text>
