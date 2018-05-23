@@ -41,7 +41,7 @@ export default class CarInfoNavigationView extends Component {
 
     render() {
 
-        const {title, backIconClick, renderRihtFootView,wrapStyle} = this.props;
+        const {title, backIconClick, renderRihtFootView,wrapStyle,titleStyle} = this.props;
 
         return (
             <View style={[styles.navigation,wrapStyle,this.state.navigationBackgroundColor && {backgroundColor:this.state.navigationBackgroundColor}]}>
@@ -50,7 +50,7 @@ export default class CarInfoNavigationView extends Component {
                                       onPress={backIconClick}>
                     {backIconClick && <Image style={styles.backIcon} source={require('../../images/mainImage/navigatorBack.png')}/>}
                      </TouchableOpacity>
-                    <Text allowFontScaling={false}  style={styles.titleText}>{title}</Text>
+                    <Text allowFontScaling={false}  style={[styles.titleText,titleStyle]}>{title}</Text>
                     <View style={styles.imageFoot}>
                         {
                             renderRihtFootView && renderRihtFootView()

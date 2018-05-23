@@ -122,6 +122,14 @@ public class QrScanModule extends ReactContextBaseJavaModule implements Activity
         mLocationClient.start();
     }
 
+    //百度定位
+    @ReactMethod
+    public void lbsStop(){
+        if(mLocationClient != null && mLocationClient.isStarted()){
+            mLocationClient.stop();
+        }
+    }
+
 
     public LocationClient mLocationClient = null;
     private MyLocationListener myListener = new MyLocationListener();

@@ -203,12 +203,19 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else {
                     this.mList = ['0', '1', '2', '3', '4', '6'];
                 }
-
-                this.contactData = {
-                    layoutTitle: '全款已付清',
-                    layoutContent: '确认验收车辆后卖家可提款，手续齐全。',
-                    setPrompt: false
-                };
+                if (this.orderDetail.status === 101) {
+                    this.contactData = {
+                        layoutTitle: '圈提中',
+                        layoutContent: '确认验收车辆后卖家可提款，手续齐全。',
+                        setPrompt: false
+                    };
+                } else {
+                    this.contactData = {
+                        layoutTitle: '全款已付清',
+                        layoutContent: '确认验收车辆后卖家可提款，手续齐全。',
+                        setPrompt: false
+                    };
+                }
                 if (this.orderDetail.totalpay_amount > 0) {
                     this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
                     this.items.push({title: '已付全款', nodeState: 1, isLast: false, isFirst: false});
@@ -878,6 +885,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                                     parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
                                             orderId: this.props.orderId,
                                             orderNo: this.orderDetail.order_no,
+                                            seller_company_id:this.orderDetail.seller_company_id,
                                             payType: this.orderState,
                                             payFull: this.orderDetail.totalpay_amount > 0,
                                             sellerId: this.orderDetail.seller_id,
@@ -1468,11 +1476,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 10: // 10=>'确认验收失败'
             case 90: // 90=>'质押车辆提前还款失败',
             case 91: // 91=>'质押车辆提前还款成功',
+            case 101: // 101 => 信托圈提中
                 if (cancelStatus === 0) {
                     this.orderState = 3;
                     this.topState = -1;
                     if (status === 9) {
                         this.bottomState = 8;
+                    } else if (status === 101) {
+                        this.bottomState = -1;
                     } else {
                         if (this.orderDetail.pay_type == 'dingcheng' || this.orderDetail.pay_type == 'offline') {
                             this.bottomState = 11;
