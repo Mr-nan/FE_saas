@@ -74,7 +74,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         )
         this.state = {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
-            renderPlaceholderOnly: STATECODE.loading
+            renderPlaceholderOnly: STATECODE.loading,
+            number : 0,
         }
     }
 
@@ -131,83 +132,6 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempCarJson = response.mjson.data
-                    // let xxx = {
-                    //     "token": "",
-                    //     "code": 1,
-                    //     "msg": "ok",
-                    //     "data": {
-                    //         "request": {
-                    //             "device_code": "dycd_platform_finance_pc",
-                    //             "user_ip": "1",
-                    //             "payment_number": 201710180010
-                    //         },
-                    //         "response": [
-                    //             {
-                    //                 "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
-                    //                 "frame_number": "43434343233346666",
-                    //                 "loan_number": "201706080012",
-                    //                 "loan_mny": "17000.00",
-                    //                 "loan_time": "2017-09-01",
-                    //                 "assess_time": "2017-10-18",
-                    //                 "assess_user_name": "admin",
-                    //                 "plate_number": "0",
-                    //                 "hq_assess_mny": 3.5,
-                    //                 "storage": "工行烫晚祁有限公司",
-                    //                 "lending_methods": "线下放款",
-                    //                 "channel_name": null,
-                    //                 "finish_time": null,
-                    //                 "child_loan_status": 60,
-                    //                 "child_loan_status_str": "渠道审核中",
-                    //                 "is_confirm_iou": 1,
-                    //                 "is_sign_contract": 1,
-                    //                 "is_cancel_loan": 1
-                    //             },
-                    //             {
-                    //                 "model_name": "2017款 奥迪A6L TFSI 技术型",
-                    //                 "frame_number": "34343434444555555",
-                    //                 "loan_number": "32906",
-                    //                 "loan_mny": "24000.00",
-                    //                 "loan_time": "2017-09-01",
-                    //                 "assess_time": "2017-10-18",
-                    //                 "assess_user_name": "admin",
-                    //                 "plate_number": "0",
-                    //                 "hq_assess_mny": 3,
-                    //                 "storage": "工行烫晚祁有限公司",
-                    //                 "lending_methods": "线下放款",
-                    //                 "channel_name": null,
-                    //                 "finish_time": null,
-                    //                 "child_loan_status": 40,
-                    //                 "child_loan_status_str": "渠道审核中",
-                    //                 "is_confirm_iou": 1,
-                    //                 "is_sign_contract": 1,
-                    //                 "is_cancel_loan": 1
-                    //             },
-                    //             {
-                    //                 "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
-                    //                 "frame_number": "43434343233346666",
-                    //                 "loan_number": "201706080012",
-                    //                 "loan_mny": "17000.00",
-                    //                 "loan_time": "2017-09-01",
-                    //                 "assess_time": "2017-10-18",
-                    //                 "assess_user_name": "admin",
-                    //                 "plate_number": "0",
-                    //                 "hq_assess_mny": 3.5,
-                    //                 "storage": "工行烫晚祁有限公司",
-                    //                 "lending_methods": "线下放款",
-                    //                 "channel_name": null,
-                    //                 "finish_time": null,
-                    //                 "child_loan_status": 50,
-                    //                 "child_loan_status_str": "渠道审核中",
-                    //                 "is_confirm_iou": 1,
-                    //                 "is_sign_contract": 1,
-                    //                 "is_cancel_loan": 1
-                    //             },
-                    //
-                    //         ]
-                    //     }
-                    // }
-                    // let tempCarJson = xxx.data.response
-
                     this.setState({
                         dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempCarJson)),
                         renderPlaceholderOnly: STATECODE.loadSuccess
@@ -227,13 +151,18 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     // 数据初始化方法
     titleNameBlob = ( carData) => {
         let dataSource = {};
+        this.count = 0;
         if (carData.length > 0) {
             let tempCarDate = [];
             carData.map((item) => {
+                if(item.is_sign_contract == 1 ){
+                    this.count++
+                }
                 tempCarDate.push(item)
             })
             dataSource['section2'] = tempCarDate;
         }
+        this.state = {number :this.count}
         return dataSource;
     }
 
@@ -242,15 +171,18 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         if (stateCode !== '') {
             let tempTitle = []
             if (stateCode == '10') {
-                tempTitle = ['评估监管中']
+                // tempTitle = ['评估监管中']
             } else if (stateCode == '20') {
-                tempTitle = ['审核中']
+                // tempTitle = ['审核中']
             } else if (stateCode == '30') {
                 // tempTitle = ['渠道审核中']
                 tempTitle = ['取消借款']
             }else if (stateCode == '40') {
                 // tempTitle = ['待签合同']
                 tempTitle = ['取消借款','签署合同']
+            } else if (stateCode == '41') {
+                // tempTitle = ['资金方签署中']
+                tempTitle = ['查看合同']
             }else if (stateCode == '50') {
                 // tempTitle = ['待确认借据']
                 tempTitle = ['确认借据']
@@ -339,6 +271,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 this.props.showModal(false);
                 if (error.mycode == -300 || error.mycode == -500) {
                     this.props.showToast('服务器连接有问题')
+                } else if(error.mycode == '-2006003'  ){
+                    this.props.showToast(error.mjson.msg);
+                    this.getOrderCarInfo()
                 } else {
                     this.props.showToast(error.mjson.msg);
                 }
@@ -362,6 +297,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('服务器连接有问题')
+                    } else if(error.mycode == '31010017' || error.mycode == '31010018'){
+                        this.props.showToast(error.mjson.msg);
+                        this.getLendinfo()
                     } else {
                         this.props.showToast(error.mjson.msg);
                     }
@@ -463,17 +401,23 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     renderHeader = () => {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
-                    <Text style={{backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code),color:'#ffffff',fontSize:adapeSize(12),borderRadius:Pixel.getPixel(1),height:Pixel.getPixel(16),width:Pixel.getPixel(22),textAlign:'center'}}>
-                        {Pixel.getProductStr(this.tempjson.product_type_code.product_code)}
-                    </Text>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
+                    <View style={{borderRadius:Pixel.getPixel(1),height:Pixel.getPixel(16),width:Pixel.getPixel(22),justifyContent:'center',alignItems:'center',backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code)}}>
+                        <Text style={{color:'#ffffff',fontSize:adapeSize(12)}}>
+                            {Pixel.getProductStr(this.tempjson.product_type_code.product_code)}
+                        </Text>
+                    </View>
                     <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(this.stateCode)[0]}}>{Pixel.getStatusStr(this.stateCode)}</Text>
                 </View>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-start"}}>
-                        <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{parseFloat(this.tempjson.loanmny)=='0'?'-':parseFloat(this.tempjson.loanmny)}<Text style={{fontSize:adapeSize(12)}}>万</Text></Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{parseFloat(this.tempjson.loanmny)=='0'?'- -':parseFloat(this.tempjson.loanmny)}
+                            {
+                                parseFloat(this.tempjson.loanmny) != '0' && <Text style={{fontSize:adapeSize(12)}}>万</Text>
+                            }
+                        </Text>
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>借款金额</Text>
                     </View>
                     <View style={{flexDirection:'column',flex:1,alignItems:"center"}}>
@@ -486,7 +430,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     </View>
                 </View>
                 <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#F0EFF5',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.paymenttype}</Text>
                     {
                         this.stateCode != 0 ?
@@ -523,6 +467,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         let tempButtons = [];
         let tempButtonTitles = this.getControlTitleblob(rowData.child_loan_status);
         tempButtonTitles.map((item) => {
+
                 tempButtons.push(<CommenButtonNew buttonStyle={this.getButtonStyleWithTitle(item)}
                                                textStyle={styles.buttontextStyle}
                                                onPress={()=>{this.controsButtonClick(item,rowData.loan_number)}}
@@ -533,42 +478,42 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
         )
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
                 <TouchableOpacity onPress={()=>{   this.getCarInfo(rowData) }} >
-                    <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
+                    <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
                         <View style={{flexDirection:'column',flex:1}}>
-                            <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.model_name}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9B9B9B',paddingRight:Pixel.getPixel(30)}} numberOfLines={1} >{rowData.model_name}</Text>
                             <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.frame_number}</Text>
                         </View>
-                        <Text style={{fontSize:adapeSize(14),color:'#05C5C2',marginBottom:Pixel.getPixel(1)}}>{rowData.child_loan_status_str}</Text>
+                        <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(rowData.child_loan_status)[0],marginBottom:Pixel.getPixel(1)}}>{rowData.child_loan_status_str}</Text>
                         <Image source={cellJianTou} style={{ width: adapeSize(15), height: adapeSize(15)}}/>
                     </View>
                 </TouchableOpacity>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
-                <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
-                        <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(110)}}>{rowData.loan_mny +'万元'}</Text>
+                        <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(110)}}>{rowData.loan_mny}<Text style={{fontSize:adapeSize(12)}}>万元</Text></Text>
                         <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.loan_time}</Text>
                         <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.loan_number}</Text>
                     </View>
                     <View style={{flexDirection:'row'}}>
-                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'合同放款额度'}</Text>
+                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'合同放款额'}</Text>
                         <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'放款日期'}</Text>
                         <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'资产编号'}</Text>
                     </View>
                 </View>
                 {
-                    rowData.child_loan_status == 70 ?
-                    <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                    rowData.child_loan_status == 70 &&
+                    <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.lending_methods}</Text>
                         </View>
                         <View style={{flexDirection:'row'}}>
                             <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{rowData.channel_name}</Text>
                         </View>
-                    </View>:null
+                    </View>
                 }
                 {
-                    rowData.child_loan_status == 80 ?
-                    <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                    rowData.child_loan_status == 80 &&
+                    <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.lending_methods}</Text>
                             <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.finish_time}</Text>
@@ -577,14 +522,15 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                             <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{rowData.channel_name}</Text>
                             <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'结清日期'}</Text>
                         </View>
-                    </View>:null
+                    </View>
                 }
                 {
                     tempButtons.length == 0 ?  <View style={{width:width,height:Pixel.getPixel(5)}}></View> : <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
                 }
                 {
                     tempButtons.length > 0 &&
-                    <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
+                    <View style={[{flexDirection: 'row',justifyContent: 'flex-end',alignItems: 'center',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}]}>
+                        <Text style={{flex:1,fontSize:adapeSize(12),color:'#9E9E9E',}}>{rowData.audit_info}</Text>
                         {tempButtons}
                     </View>
                 }
@@ -682,7 +628,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',flexDirection:'row',width:width}}>
 
                     {
-                        this.tempjson.logic_status == 10?
+                        (this.tempjson.logic_status == 10 || this.tempjson.logic_status == 20)?
                             <TouchableOpacity  style={{height:40,flex:1,backgroundColor:'#90A1B5',justifyContent:'center',alignItems:'center'}}
                                            onPress={()=>{
                                                this.cancleFlag = '取消主单'
@@ -699,7 +645,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                             </TouchableOpacity>:null
                     }
                     {
-                        this.tempjson.is_sign_contract == 1?
+                        this.state.number > 1?
                             <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{
                                                    this.toNextPage({

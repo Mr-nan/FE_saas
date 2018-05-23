@@ -92,82 +92,8 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                 this.stateCode =  this.tempjson.logic_status;
                 this.minLend =  changeToMillion(this.tempjson.min_loanmny);
                 this.maxLend = changeToMillion(this.tempjson.max_loanmny);
-                // controlCode.stateCode =  this.tempjson.data.response.logic_status;
-                // controlCode.extendCode = this.tempjson.is_extend;  查看合同
-                // controlCode.lendType = this.tempjson.type;
-                // controlCode.minLend = changeToMillion(this.tempjson.min_loanmny);
-                // controlCode.loan_code = this.tempjson.loan_code;
-                // controlCode.is_microchinese_contract = this.tempjson.is_microchinese_contract;
-                // let Maxmum = parseFloat(this.tempjson.max_loanmny) + parseFloat(this.tempjson.payment_loanmny)
-                // controlCode.maxLend = changeToMillion(Maxmum)
-                // if (this.stateCode != 10 && this.stateCode != 20 && this.stateCode != 0) {
-                this.getOrderCarInfo()
-                // } else {
-                //     this.setState({
-                //         dataSource: this.state.dataSource.cloneWithRowsAndSections([]),
-                //         renderPlaceholderOnly: STATECODE.loadSuccess
-                //     })
-                // }
-            }, (error) => {
                 this.setState({
-                    renderPlaceholderOnly: STATECODE.loadError
-                })
-                if (error.mycode == -300 || error.mycode == -500) {
-                    this.props.showToast('服务器连接有问题')
-                } else {
-                    this.props.showToast(error.mjson.msg);
-                }
-            });
-    }
-
-    //车辆信息
-    getOrderCarInfo = () => {
-        let maps = {
-            api: apis.GET_APPLY_CARLIST,
-            loan_code: this.props.loanNumber
-        }
-        request(apis.FINANCE, 'Post', maps)
-            .then((response) => {
-                // let tempCarJson = response.mjson.data.list
-                let xxx = {
-                    "token": "",
-                    "code": 1,
-                    "msg": "ok",
-                    "data": {
-                        "request": {
-                            "device_code": "dycd_platform_finance_pc",
-                            "user_ip": "1",
-                            "payment_number": 201710180010
-                        },
-                        "response": [
-                            {
-                                "model_name": "2017款 宝马5系 535Li 行政型 豪华设计套装",
-                                "frame_number": "43434343233346666",
-                                "loan_number": "201706080012",
-                                "loan_mny": "17000.00",
-                                "loan_time": "2017-09-01",
-                                "assess_time": "2017-10-18",
-                                "assess_user_name": "admin",
-                                "plate_number": "0",
-                                "hq_assess_mny": 3.5,
-                                "storage": "工行烫晚祁有限公司",
-                                "lending_methods": "线下放款",
-                                "channel_name": null,
-                                "finish_time": null,
-                                "child_loan_status": 60,
-                                "child_loan_status_str": "渠道审核中",
-                                "is_confirm_iou": 1,
-                                "is_sign_contract": 1,
-                                "is_cancel_loan": 1
-                            },
-
-                        ]
-                    }
-                }
-                let tempCarJson = xxx.data.response
-
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempCarJson)),
+                    dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob([ this.tempjson])),
                     renderPlaceholderOnly: STATECODE.loadSuccess
                 })
             }, (error) => {
@@ -286,7 +212,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
     renderHeader = () => {
         return (
             <View style={{flexDirection:'column',backgroundColor:"#ffffff"}}>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10),alignItems:'center'}}>
                     <Text style={{backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code),color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),height:adapeSize(16),width:Pixel.getPixel(22),textAlign:'center'}}>
                         {Pixel.getProductStr(this.tempjson.product_type_code.product_code)}
                     </Text>
@@ -294,9 +220,13 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(this.stateCode)[0]}}>{Pixel.getStatusStr(this.stateCode)}</Text>
                 </View>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'column',flex:1,alignItems:"flex-start"}}>
-                        <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{parseFloat(this.tempjson.loanmny) == '0'? '-':parseFloat(this.tempjson.loanmny)}<Text style={{fontSize:adapeSize(12)}}>万</Text></Text>
+                        <Text style={{fontSize:adapeSize(20),color:"#FA5741"}}>{parseFloat(this.tempjson.loanmny) == '0'? '- -':parseFloat(this.tempjson.loanmny)}
+                            {
+                                parseFloat(this.tempjson.loanmny) != '0' && <Text style={{fontSize:adapeSize(12)}}>万</Text>
+                            }
+                        </Text>
                         <Text style={{fontSize:adapeSize(12),color:"#9E9E9E"}}>借款金额</Text>
                     </View>
                     <View style={{flexDirection:'column',flex:1,alignItems:"center"}}>
@@ -309,7 +239,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     </View>
                 </View>
                 <View style={{width:width-adapeSize(10),height:onePT,backgroundColor:'#F0EFF5',marginLeft:adapeSize(5),marginRight:adapeSize(5)}}/>
-                <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.paymenttype}</Text>
                 </View>
             </View>
@@ -318,11 +248,11 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
 
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
-            <View style={{flexDirection:"column",paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(15),paddingBottom:adapeSize(15)}}>
+            <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(15),paddingBottom:adapeSize(15)}}>
                 <View style={{flexDirection:'row',alignItems:'center'}}>
-                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.loan_mny}</Text>
-                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{this.stateCode == 0?rowData.loan_time:rowData.loan_time}</Text>
-                    <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.loan_number}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.loan_time}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{this.stateCode == 0?rowData.loan_time:rowData.repayment_loan_time}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.lending_methods}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
                     <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'申请日期'}</Text>
@@ -331,26 +261,26 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                 </View>
             </View>
             {
-                this.stateCode == 70 ?
+                this.stateCode == 70 &&
                     <View style={{flexDirection:"column",paddingTop:adapeSize(0),paddingBottom:adapeSize(15)}}>
                         <View style={{width:width,height:adapeSize(10),backgroundColor:'#f0eff5',marginBottom:adapeSize(15)}}/>
                         <View style={{flexDirection:'row',alignItems:'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.lending_methods}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.channel_name}</Text>
                             <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{rowData.lending_methods}</Text>
                         </View>
                         <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
                             <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'资金渠道'}</Text>
                             <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'放款方式'}</Text>
                         </View>
-                    </View>:null
+                    </View>
             }
             {
-                this.stateCode == 80 ?
+                this.stateCode == 80 &&
                     <View style={{flexDirection:"column",paddingTop:adapeSize(0),paddingBottom:adapeSize(15)}}>
                         <View style={{width:width,height:adapeSize(10),backgroundColor:'#f0eff5',marginBottom:adapeSize(15)}}/>
                         <View style={{flexDirection:'row',alignItems:'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.channel_name}</Text>
                             <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.lending_methods}</Text>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.finish_time}</Text>
                             <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.finish_time}</Text>
                         </View>
                         <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
@@ -358,7 +288,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                             <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'放款方式'}</Text>
                             <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'结清日期'}</Text>
                         </View>
-                    </View>:null
+                    </View>
             }
         </View>
     }
@@ -443,7 +373,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                                       if(this.cancleFlag == '取消主单'){
                                         this.backPage()
                                       }else {
-                                        this.getOrderCarInfo()
+                                        this.getLendinfo()
                                       }
                                   }}
                                   title='取消成功' subtitle='取消借款成功'/>
