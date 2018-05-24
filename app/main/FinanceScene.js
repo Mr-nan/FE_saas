@@ -1037,7 +1037,9 @@ export default class FinanceSence extends BaseComponet {
     seekCancelClick=()=>{
 
         this.setState({
-            seekData:[]
+            seekData:[],
+            isShowSeekView:false,
+
         });
         this.trueFinanceTypeSeekView && this.trueFinanceTypeSeekView.seekViewCancel();
     }
