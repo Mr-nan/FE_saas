@@ -302,8 +302,7 @@ export default class FinanceSence extends BaseComponet {
         };
 
         this.seekParameter={
-            auto_vin:'', // 车架号
-            payment_number:'', // 订单标号
+            payment_number_auto_vin:'', // 订单标号、车架号
             min_loanmny:'',
             max_loanmny:'',
             min_loan_time:'',
@@ -425,9 +424,7 @@ export default class FinanceSence extends BaseComponet {
 
                 <FinanceTypeSeekView ref={(ref)=>{this.trueFinanceTypeSeekView=ref}}
                                      seekClick={this.seekAction}
-                                     newStyle={{top:this.state.isShowSeekView? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute',
-                                         backgroundColor:'yellow'
-                                     }}/>
+                                     newStyle={{top:this.state.isShowSeekView? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute'}}/>
 
                 <NavigationView
                     ref={(ref)=>{this.navigation = ref}}
@@ -451,9 +448,10 @@ export default class FinanceSence extends BaseComponet {
                     creditPop={() => {}}
                     balancePop={() => {}}
                     weizongPop={() => {
-                        if(movie.is_microchinese_mny==4){
+
+                        if(this.state.mnyData.is_microchinese_mny==4){
                             this.refs.showAlert.setModelVisible(true);
-                        }else if (movie.is_microchinese_mny == 1 && movie.microchinese_apply_status != 0){
+                        }else if (this.state.mnyData.is_microchinese_mny == 1 && this.state.mnyData.microchinese_apply_status != 0){
                             let navigationParams={
                                 name: "QuotaApplication",
                                 component: QuotaApplication,
@@ -663,16 +661,18 @@ export default class FinanceSence extends BaseComponet {
                     <View style={{height: onePT, backgroundColor: '#F0EFF5'}}></View>
                     <View style={cellSheet.rowBottomViewStyle}>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
-                            <Text style={{fontSize:Pixel.getPixel(20),color:"#FA5741"}}>{parseFloat(movie.loanmny) == '0'?'- -': parseFloat(movie.loanmny)}
-                                {
-                                    parseFloat(movie.loanmny) != '0'&&  <Text style={{fontSize:Pixel.getPixel(12)}}>万</Text>
-                                }
-                            </Text>
-                            <Text style={{fontSize:Pixel.getPixel(12),color:"#9E9E9E"}}>借款金额</Text>
+                            <View>
+                                <Text style={{fontSize:Pixel.getPixel(20),color:"#FA5741"}}>{parseFloat(movie.loanmny) == '0'?'- -': parseFloat(movie.loanmny)}
+                                    {
+                                        parseFloat(movie.loanmny) != '0'&&  <Text style={{fontSize:Pixel.getPixel(12)}}>万</Text>
+                                    }
+                                </Text>
+                                <Text style={{fontSize:Pixel.getPixel(12),color:"#9E9E9E",marginTop:Pixel.getPixel(2.5)}}>借款金额</Text>
+                            </View>
                         </View>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
                             <Text style={{fontSize:Pixel.getPixel(20),color:"#000000"}}>{movie.loanperiod}<Text style={{fontSize:Pixel.getPixel(12)}}>天</Text></Text>
-                            <Text style={{fontSize:Pixel.getPixel(12),color:"#9E9E9E"}}>借款期限</Text>
+                            <Text style={{fontSize:Pixel.getPixel(12),color:"#9E9E9E",marginTop:Pixel.getPixel(2.5)}}>借款期限</Text>
                         </View>
                         <View
                             style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-end', justifyContent: 'center'}]}>
@@ -972,7 +972,8 @@ export default class FinanceSence extends BaseComponet {
         }
 
         this.setState({
-            seekData:seekData
+            seekData:seekData,
+            isShowSeekView:seekData.length>0?true:false,
         });
 
         if(type==3){
@@ -997,8 +998,7 @@ export default class FinanceSence extends BaseComponet {
 
         this.props.showModal(true);
 
-        this.seekParameter.auto_vin = parameter.number;
-        this.seekParameter.payment_number = parameter.number;
+        this.seekParameter.payment_number_auto_vin = parameter.number;
 
         this.seekParameter.min_loanmny = parameter.minPrice;
         this.seekParameter.max_loanmny = parameter.maxPrice;
@@ -1373,12 +1373,14 @@ const cellSheet = StyleSheet.create({
         color: fontAndColor.COLORA1
     },
     rowBottomViewStyle: {
-        height: Pixel.getPixel(71), flexDirection: 'row'
+        height: Pixel.getPixel(71),
+        flexDirection: 'row'
     },
     rowBottomChildStyle: {
         flex: 1,
         height: Pixel.getPixel(71),
-        justifyContent:'center',
+        justifyContent: 'center',
+
     },
     rowBottomLittleStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),

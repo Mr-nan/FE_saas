@@ -98,9 +98,7 @@ export default class FinanceHeaderTop extends PureComponent {
             return (
                 <View style={{alignItems: 'center', flex: 1}}>
                     <View style={{height: Pixel.getPixel(34), flexDirection: 'row'}}>
-                        <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                            this.isEyeOpen()
-                        }}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => {this.isEyeOpen()}}>
                             <View style={{paddingTop: Pixel.getPixel(12), flex: 1, paddingLeft: Pixel.getPixel(20)}}>
                                 <Image style={{width: Pixel.getPixel(18), height: Pixel.getPixel(12)}}
                                        source={require('../../../images/financeImages/kejian.png')}></Image>
@@ -114,9 +112,7 @@ export default class FinanceHeaderTop extends PureComponent {
                                 width: Pixel.getPixel(54), height: Pixel.getPixel(17),
                                 backgroundColor: 'rgba(255,255,255,0.4)', borderRadius: 10, justifyContent: 'center',
                                 alignItems: 'center'
-                            }} onPress={() => {
-                                this.props.depositPop()
-                            }}>
+                            }} onPress={() => {this.props.depositPop()}}>
                                 <Text style={{
                                     fontSize: Pixel.getFontPixel(12), color: '#fff',
                                     backgroundColor: '#00000000'
@@ -141,11 +137,6 @@ export default class FinanceHeaderTop extends PureComponent {
                                     fontSize: Pixel.getPixel(32), color: '#fff', fontWeight: 'bold'
                                     , backgroundColor: '#00000000', marginTop: Pixel.getPixel(4)
                                 }}> {this.state.allData.credit_mny}</Text>
-                            {/*<Text*/}
-                                {/*style={{*/}
-                                    {/*fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'*/}
-                                    {/*, backgroundColor: '#00000000'*/}
-                                {/*}}>{' >'}</Text>*/}
                         </TouchableOpacity>
                     </View>
                     <View style={{width: Pixel.getPixel(290), height: 1, backgroundColor: 'rgba(255,255,255,0.3)'}}>
@@ -191,11 +182,6 @@ export default class FinanceHeaderTop extends PureComponent {
                                             fontWeight: 'bold',
                                             marginRight: Pixel.getPixel(4)
                                         }}>{this.state.allData.credit_maxloanmny}</Text>
-                                        {/*<Text*/}
-                                            {/*style={{*/}
-                                                {/*fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'*/}
-                                                {/*, backgroundColor: '#00000000'*/}
-                                            {/*}}>{' >'}</Text>*/}
                                     </View>
                                 </View>
 
@@ -203,7 +189,7 @@ export default class FinanceHeaderTop extends PureComponent {
                         </TouchableOpacity>
                         {
                           this.state.microchineseTitle!='' &&(
-                              <TouchableOpacity activeOpacity={0.8} style={{flex: 1, flexDirection:'row'}} onPress={() => {
+                              <TouchableOpacity activeOpacity={0.8} style={{flex: 1, flexDirection:'row',backgroundColor:'#00000000'}} onPress={() => {
                               this.props.weizongPop();
                           }}>
                               <View style={{
@@ -214,11 +200,14 @@ export default class FinanceHeaderTop extends PureComponent {
                                   flexDirection: 'row',
                                   alignItems: 'center',
                                   justifyContent:'center',
-                                  marginLeft:Pixel.getPixel(10)
+                                  backgroundColor:'#00000000',
+                                  flex:1,
+                                  marginBottom:Pixel.getPixel(10)
                               }}>
                                   <Text style={{
                                       fontSize: Pixel.getPixel(11), color: '#fff', backgroundColor: '#00000000', marginRight: Pixel.getPixel(4)
-                                  }}>{'激活微众额度 >'}</Text>
+                                  }}>{'激活微众额度'}</Text>
+                                  <Image source={require('../../../images/financeImages/youjiantou.png')}/>
                               </View>
                           </TouchableOpacity>)
                         }
