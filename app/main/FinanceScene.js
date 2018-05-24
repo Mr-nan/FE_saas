@@ -16,7 +16,9 @@ import  {
     NativeModules,
     BackAndroid,
     PixelRatio,
-    ScrollView
+    ScrollView,
+    StatusBar,
+    AppState
 } from  'react-native'
 
 let mnyData = {};
@@ -275,6 +277,7 @@ export default class FinanceSence extends BaseComponet {
 
     // 构造
     constructor(props) {
+
         super(props);
         firstType = '-1';
         lastType = '-1';
@@ -293,7 +296,8 @@ export default class FinanceSence extends BaseComponet {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             customerName: '',
-            seekData:[]
+            seekData:[],
+            StatusBarStyle:'default'
         };
 
         this.seekParameter={
@@ -327,14 +331,14 @@ export default class FinanceSence extends BaseComponet {
         this.getApplyData();
     }
 
-
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
         return (
             <View style={cellSheet.container}>
-                    <ListView
+                <StatusBar barStyle={this.state.StatusBarStyle}/>
+                <ListView
                         ref={(ref)=>{this.listView = ref}}
                         scrollEnabled={this.state.seekData.length>0?false:true}
                         removeClippedSubviews={false}
@@ -349,20 +353,33 @@ export default class FinanceSence extends BaseComponet {
                         onEndReached={this.toEnd}
                         onScroll={(event)=>{
                             this.offY = Pixel.getPixel(event.nativeEvent.contentOffset.y);
-                            console.log('========offY:',this.offY);
                             if(this.offY>=Pixel.getPixel(271)){
-                                this.financeTypeSeekView && this.financeTypeSeekView.setTop((Pixel.getPixel(271)));
-                                this.navigation && this.navigation.setNavigationBackgroindColor(fontAndColor.COLORB0,'white');
+                                if(this.state.StatusBarStyle =='default'){
+                                    this.navigation && this.navigation.setNavigationBackgroindColor(fontAndColor.COLORB0,'white');
+                                    this.setState({
+                                        StatusBarStyle:'light-content'
+                                    })
+                                }
+
                             }else {
-                                console.log('====00000====');
-                                this.navigation && this.navigation.setNavigationBackgroindColor(null,null);
-                                this.financeTypeSeekView && this.financeTypeSeekView.setTop(this.offY);
+                                if(this.state.StatusBarStyle == 'light-content'){
+                                    this.navigation && this.navigation.setNavigationBackgroindColor(null,null);
+                                    this.setState({
+                                        StatusBarStyle:'default'
+                                    })
+                                }
+
                             }
-
-
                         }}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this.refreshingData}
+                                tintColor={[fontAndColor.COLORB0]}
+                                colors={[fontAndColor.COLORB0]}
+                            />
+                        }
                     />
-                <FinanceTypeSeekView ref={(ref)=>{this.financeTypeSeekView=ref}} seekClick={this.seekAction}/>
                 <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref='cgdModal'
                                   confimClick={() => {
                                   }}/>
@@ -402,6 +419,11 @@ export default class FinanceSence extends BaseComponet {
                                                                             offY={this.offY}
                    />
                 }
+
+                <FinanceTypeSeekView ref={(ref)=>{this.trueFinanceTypeSeekView=ref}}
+                                     seekClick={this.seekAction}
+                                     newStyle={{top:this.state.seekData.length>0? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute'}}/>
+
                 <NavigationView
                     ref={(ref)=>{this.navigation = ref}}
                     title="锋之行汽车销售" wrapStyle={{backgroundColor:'white'}}
@@ -415,7 +437,7 @@ export default class FinanceSence extends BaseComponet {
 
     renderHeader =()=> {
         return(
-            <View style={{paddingBottom:Pixel.getPixel(49), backgroundColor:'white'}}>
+            <View>
                 <FinanceHeader
                     allData1={this.state.mnyData}
                     depositPop={() => {
@@ -443,9 +465,9 @@ export default class FinanceSence extends BaseComponet {
                     this.homeItemOnPress('借款');
                 }} payBt={() => {
                     this.homeItemOnPress('还款');
-                    // this.refs.loanModal.changeShowType(true, '提示', '确定', contentData, contentData);
                 }
                 }/>
+                <FinanceTypeSeekView  ref={(ref)=>{this.shamFinanceTypeSeekView = ref}} seekClick={this.shamSeekAction}/>
             </View>
         )
     }
@@ -960,6 +982,10 @@ export default class FinanceSence extends BaseComponet {
 
     }
 
+    shamSeekAction=(type,isSelect)=>{
+        this.trueFinanceTypeSeekView && this.trueFinanceTypeSeekView.seekClick(type,isSelect);
+    }
+
     financeSeekMoreConfirmClick=(parameter)=>{
 
         this.props.showModal(true);
@@ -1004,7 +1030,8 @@ export default class FinanceSence extends BaseComponet {
         this.setState({
             seekData:[]
         });
-        this.financeTypeSeekView && this.financeTypeSeekView.seekViewCancel();
+        this.trueFinanceTypeSeekView && this.trueFinanceTypeSeekView.seekViewCancel();
+        this.shamFinanceTypeSeekView && this.shamFinanceTypeSeekView.seekViewCancel();
     }
 }
 
@@ -1014,17 +1041,15 @@ class FinanceTypeSeekView extends  Component{
       constructor(props) {
         super(props);
         // 初始状态
-        this.state = {
-            top:(Pixel.getPixel(271)+Pixel.getTitlePixel(64))
-        };
+
 
       }
 
     render(){
         this.subItem=[];
         return(
-            <View style={{top:this.state.top,position: 'absolute', width:width, height:Pixel.getPixel(49), backgroundColor:'#fff', flexDirection:'row', alignItems:'center',justifyContent:'space-between',borderBottomColor:'#D8D8D8',borderBottomWidth:StyleSheet.hairlineWidth,
-            }}>
+            <View style={[{ width:width, height:Pixel.getPixel(49), backgroundColor:'#fff', flexDirection:'row', alignItems:'center',justifyContent:'space-between',borderBottomColor:'#D8D8D8',borderBottomWidth:StyleSheet.hairlineWidth,
+            },this.props.newStyle && this.props.newStyle ]}>
                 <FinaceTypeSeekItem ref={(ref)=>{ref && this.subItem.push(ref)}} type={0} title={'全部借款'} seekClick={this.seekClick}/>
                 <FinaceTypeSeekItem ref={(ref)=>{ ref && this.subItem.push(ref)}} type={1} title={'状态'} seekClick={this.seekClick}/>
                 <FinaceTypeSeekItem ref={(ref)=>{ref && this.subItem.push(ref)}} type={2} title={'期限'} seekClick={this.seekClick}/>
@@ -1042,11 +1067,7 @@ class FinanceTypeSeekView extends  Component{
         }
     }
 
-    setTop=(offY)=>{
-        this.setState({
-            top:(Pixel.getPixel(271)+Pixel.getTitlePixel(64)) - offY,
-        });
-    }
+
 
     seekClick=(type,isSelect)=>{
 
@@ -1057,6 +1078,8 @@ class FinanceTypeSeekView extends  Component{
 
                 this.subItem[this.currentSelectType].setSelectType(false);
 
+            }else {
+                this.subItem[this.currentSelectType].setSelectType(true);
             }
             this.currentSelectType = type;
 
@@ -1122,7 +1145,6 @@ class FinanceSeekContentView extends Component{
             dataSource:ds.cloneWithRows(this.props.data),
         };
         this.currentCode = this.props.currentTitle;
-        console.log('=========',this.props.currentTitle);
 
       }
 
@@ -1131,7 +1153,6 @@ class FinanceSeekContentView extends Component{
             dataSource:this.state.dataSource.cloneWithRows(newProps.data)
         });
         this.currentCode = newProps.currentTitle;
-        console.log('=========',newProps.currentTitle);
     }
 
     render(){
@@ -1236,7 +1257,7 @@ const cellSheet = StyleSheet.create({
 
     Separator: {
         backgroundColor: '#D8D8D8',
-        height: onePT,
+        height: Pixel.getPixel(10),
     },
 
     titleStyle: {
