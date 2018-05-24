@@ -433,25 +433,25 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.paymenttype}</Text>
                     {
-                        this.stateCode != 0 ?
-                            <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>| 申请日期:{this.tempjson.loan_time}</Text> :null
+                        this.stateCode != 0 &&
+                            <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>| 申请日期:{this.tempjson.loan_time}</Text>
                     }
 
                 </View>
                 {
-                    this.stateCode == 0 ?
-                    <View style={{flexDirection:'column'}}>
-                        <Image style={{width:width-adapeSize(10),height:onePT,marginLeft:adapeSize(5),marginRight:adapeSize(5)}} source={require('../../../images/xu_line.png')}/>
+                    this.stateCode == 0 &&
+                    <View style={{flexDirection:'column',paddingLeft:Pixel.getPixel(5),paddingRight:Pixel.getPixel(5)}}>
+                        <Image style={{width:width-adapeSize(20),height:onePT,marginLeft:adapeSize(5),marginRight:adapeSize(5)}} source={require('../../../images/xu_line.png')}/>
                         <View style={{flexDirection:'row',padding:adapeSize(10)}}>
                             <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'借款日期'}</Text>
                             <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.loan_time}</Text>
                         </View>
-                        <Image style={{width:width-adapeSize(10),height:onePT,marginLeft:adapeSize(5),marginRight:adapeSize(5)}} source={require('../../../images/xu_line.png')}/>
+                        <Image style={{width:width-adapeSize(20),height:onePT,marginLeft:adapeSize(5),marginRight:adapeSize(5)}} source={require('../../../images/xu_line.png')}/>
                         <View style={{flexDirection:'row',padding:adapeSize(10)}}>
                             <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'取消日期'}</Text>
                             <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.cancle_time}</Text>
                         </View>
-                    </View>:null
+                    </View>
                 }
                 {
                     this.getStatusStrs(this.stateCode) != []?
