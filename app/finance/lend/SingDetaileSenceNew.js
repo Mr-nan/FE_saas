@@ -493,7 +493,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
                         <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(110)}}>{rowData.loan_mny}<Text style={{fontSize:adapeSize(12)}}>万元</Text></Text>
-                        <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.loan_time}</Text>
+                        <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.child_loan_status == 0?rowData.cancel_time:rowData.loan_time}</Text>
                         <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.loan_number}</Text>
                     </View>
                     <View style={{flexDirection:'row'}}>
