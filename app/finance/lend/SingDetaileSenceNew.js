@@ -273,7 +273,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     this.props.showToast('服务器连接有问题')
                 } else if(error.mycode == '-2006003'  ){
                     this.props.showToast(error.mjson.msg);
-                    this.getOrderCarInfo()
+                    this.getLendinfo()
                 } else {
                     this.props.showToast(error.mjson.msg);
                 }
@@ -617,7 +617,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                       if(this.cancleFlag == '取消主单'){
                                         this.backPage()
                                       }else {
-                                        this.getOrderCarInfo()
+                                        this.getLendinfo()
                                       }
                                   }}
                                   title='取消成功' subtitle='取消借款成功'/>
