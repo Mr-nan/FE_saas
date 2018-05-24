@@ -424,7 +424,9 @@ export default class FinanceSence extends BaseComponet {
 
                 <FinanceTypeSeekView ref={(ref)=>{this.trueFinanceTypeSeekView=ref}}
                                      seekClick={this.seekAction}
-                                     newStyle={{top:this.state.isShowSeekView? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute'}}/>
+                                     newStyle={{top:this.state.isShowSeekView? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute',
+                                         backgroundColor:'yellow'
+                                     }}/>
 
                 <NavigationView
                     ref={(ref)=>{this.navigation = ref}}
