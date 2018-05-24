@@ -103,7 +103,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     // controlCode.is_microchinese_contract = this.tempjson.is_microchinese_contract;
                     // let Maxmum = parseFloat(this.tempjson.max_loanmny) + parseFloat(this.tempjson.payment_loanmny)
                     // controlCode.maxLend = changeToMillion(Maxmum)
-                    if (this.stateCode != 10 && this.stateCode != 20 && this.stateCode != 0) {
+                    if (this.stateCode != 10 && this.stateCode != 20) {
                         this.getOrderCarInfo()
                     } else {
                         this.setState({
@@ -152,7 +152,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     titleNameBlob = ( carData) => {
         let dataSource = {};
         this.count = 0;
+        this.chlNumber = 0;
         if (carData.length > 0) {
+            this.chlNumber = 1;
             let tempCarDate = [];
             carData.map((item) => {
                 if(item.is_sign_contract == 1 ){
@@ -433,13 +435,13 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.paymenttype}</Text>
                     {
-                        this.stateCode != 0 &&
+                        (this.stateCode != 0 ||(this.stateCode == 0 && this.chlNumber == 1))&&
                             <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>| 申请日期:{this.tempjson.loan_time}</Text>
                     }
 
                 </View>
                 {
-                    this.stateCode == 0 &&
+                    (this.stateCode == 0 && this.chlNumber != 1 )&&
                     <View style={{flexDirection:'column',paddingLeft:Pixel.getPixel(5),paddingRight:Pixel.getPixel(5)}}>
                         <Image style={{width:width-adapeSize(20),height:onePT,marginLeft:adapeSize(5),marginRight:adapeSize(5)}} source={require('../../../images/xu_line.png')}/>
                         <View style={{flexDirection:'row',padding:adapeSize(10)}}>
