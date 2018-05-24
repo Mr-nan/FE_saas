@@ -103,7 +103,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     // controlCode.is_microchinese_contract = this.tempjson.is_microchinese_contract;
                     // let Maxmum = parseFloat(this.tempjson.max_loanmny) + parseFloat(this.tempjson.payment_loanmny)
                     // controlCode.maxLend = changeToMillion(Maxmum)
-                    if (this.stateCode != 10 && this.stateCode != 20 && this.stateCode != 0) {
+                    if (this.stateCode != 10 && this.stateCode != 20) {
                         this.getOrderCarInfo()
                     } else {
                         this.setState({
@@ -152,7 +152,9 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
     titleNameBlob = ( carData) => {
         let dataSource = {};
         this.count = 0;
+        this.chlNumber = 0;
         if (carData.length > 0) {
+            this.chlNumber = 1;
             let tempCarDate = [];
             carData.map((item) => {
                 if(item.is_sign_contract == 1 ){
@@ -273,7 +275,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     this.props.showToast('服务器连接有问题')
                 } else if(error.mycode == '-2006003'  ){
                     this.props.showToast(error.mjson.msg);
-                    this.getOrderCarInfo()
+                    this.getLendinfo()
                 } else {
                     this.props.showToast(error.mjson.msg);
                 }
@@ -433,25 +435,25 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{flexDirection:'row',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>{this.tempjson.paymenttype}</Text>
                     {
-                        this.stateCode != 0 ?
-                            <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>| 申请日期:{this.tempjson.loan_time}</Text> :null
+                        (this.stateCode != 0 ||(this.stateCode == 0 && this.chlNumber == 1))&&
+                            <Text style={{fontSize:adapeSize(13),color:"#9E9E9E"}}>| 申请日期:{this.tempjson.loan_time}</Text>
                     }
 
                 </View>
                 {
-                    this.stateCode == 0 ?
-                    <View style={{flexDirection:'column'}}>
-                        <Image style={{width:width-adapeSize(10),height:onePT,marginLeft:adapeSize(5),marginRight:adapeSize(5)}} source={require('../../../images/xu_line.png')}/>
+                    (this.stateCode == 0 && this.chlNumber != 1 )&&
+                    <View style={{flexDirection:'column',paddingLeft:Pixel.getPixel(5),paddingRight:Pixel.getPixel(5)}}>
+                        <Image style={{width:width-adapeSize(20),height:onePT,marginLeft:adapeSize(5),marginRight:adapeSize(5)}} source={require('../../../images/xu_line.png')}/>
                         <View style={{flexDirection:'row',padding:adapeSize(10)}}>
                             <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'借款日期'}</Text>
                             <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.loan_time}</Text>
                         </View>
-                        <Image style={{width:width-adapeSize(10),height:onePT,marginLeft:adapeSize(5),marginRight:adapeSize(5)}} source={require('../../../images/xu_line.png')}/>
+                        <Image style={{width:width-adapeSize(20),height:onePT,marginLeft:adapeSize(5),marginRight:adapeSize(5)}} source={require('../../../images/xu_line.png')}/>
                         <View style={{flexDirection:'row',padding:adapeSize(10)}}>
                             <Text style={{fontSize:adapeSize(13),color:"#000000",flex:1}}>{'取消日期'}</Text>
                             <Text style={{fontSize:adapeSize(13),color:"#000000"}}>{this.tempjson.cancle_time}</Text>
                         </View>
-                    </View>:null
+                    </View>
                 }
                 {
                     this.getStatusStrs(this.stateCode) != []?
@@ -491,12 +493,12 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
                         <Text style={{fontSize:adapeSize(20),color:'#FA5741',width:adapeSize(110)}}>{rowData.loan_mny}<Text style={{fontSize:adapeSize(12)}}>万元</Text></Text>
-                        <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.loan_time}</Text>
+                        <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.child_loan_status == 0?rowData.cancel_time:rowData.loan_time}</Text>
                         <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.loan_number}</Text>
                     </View>
                     <View style={{flexDirection:'row'}}>
                         <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'合同放款额'}</Text>
-                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'放款日期'}</Text>
+                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{rowData.child_loan_status == 0?'取消日期':'放款日期'}</Text>
                         <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'资产编号'}</Text>
                     </View>
                 </View>
@@ -617,7 +619,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                                       if(this.cancleFlag == '取消主单'){
                                         this.backPage()
                                       }else {
-                                        this.getOrderCarInfo()
+                                        this.getLendinfo()
                                       }
                                   }}
                                   title='取消成功' subtitle='取消借款成功'/>

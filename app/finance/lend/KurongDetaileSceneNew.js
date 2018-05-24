@@ -250,13 +250,13 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
             <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(15),paddingBottom:adapeSize(15)}}>
                 <View style={{flexDirection:'row',alignItems:'center'}}>
-                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.loan_time}</Text>
-                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{this.stateCode == 0?rowData.loan_time:rowData.repayment_loan_time}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.loan_time}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{this.stateCode == 0?rowData.loan_time:rowData.repayment_loan_time}</Text>
                     <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.lending_methods}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
-                    <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'申请日期'}</Text>
-                    <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{this.stateCode == 0?'取消日期':'放款日期'}</Text>
+                    <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'申请日期'}</Text>
+                    <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{this.stateCode == 0?'取消日期':'放款日期'}</Text>
                     <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'借款类型'}</Text>
                 </View>
             </View>
@@ -265,12 +265,12 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     <View style={{flexDirection:"column",paddingTop:adapeSize(0),paddingBottom:adapeSize(15)}}>
                         <View style={{width:width,height:adapeSize(10),backgroundColor:'#f0eff5',marginBottom:adapeSize(15)}}/>
                         <View style={{flexDirection:'row',alignItems:'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.channel_name}</Text>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(100)}}>{rowData.lending_methods}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.channel_name}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.lending_methods}</Text>
                         </View>
                         <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'资金渠道'}</Text>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'放款方式'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'资金渠道'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'放款方式'}</Text>
                         </View>
                     </View>
             }
@@ -279,14 +279,14 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     <View style={{flexDirection:"column",paddingTop:adapeSize(0),paddingBottom:adapeSize(15)}}>
                         <View style={{width:width,height:adapeSize(10),backgroundColor:'#f0eff5',marginBottom:adapeSize(15)}}/>
                         <View style={{flexDirection:'row',alignItems:'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.channel_name}</Text>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.lending_methods}</Text>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(110)}}>{rowData.finish_time}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.channel_name}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.lending_methods}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.finish_time}</Text>
                         </View>
                         <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'资金渠道'}</Text>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'放款方式'}</Text>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'结清日期'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'资金渠道'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'放款方式'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'结清日期'}</Text>
                         </View>
                     </View>
             }
@@ -383,24 +383,24 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     backIconClick={this.backPage}/>
                 <View style={{position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',flexDirection:'row',width:width}}>
                     {
-                        this.tempjson.is_cancel_loan == 1?
+                        this.tempjson.is_cancel_loan == 1 &&
                             <TouchableOpacity  style={{height:40,flex:1,backgroundColor:'#90A1B5',justifyContent:'center',alignItems:'center'}}
                                                onPress={()=>{
                                                this.cancleFlag = '取消主单'
                                                this.canleAlert.setModelVisible(true);
                                            }}>
                                 <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>取消借款</Text>
-                            </TouchableOpacity>:null
+                            </TouchableOpacity>
                     }
                     {
-                        this.stateCode == '10'?
+                        this.stateCode == '10' &&
                             <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{ this.modifyb.setModelVisible(true)  }}>
                                 <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>修改借款金额</Text>
-                            </TouchableOpacity>:null
+                            </TouchableOpacity>
                     }
                     {
-                        this.stateCode == '40' || this.stateCode == '60' ||  this.stateCode == '70' || this.stateCode == '80'?
+                        (this.stateCode == '40' || this.stateCode == '60' ||  this.stateCode == '70' || this.stateCode == '80')&&
                             <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{
                                                   if(this.stateCode == '40'){
@@ -425,10 +425,10 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                                 <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>
                                     {this.stateCode == '40' ? "签署合同" : "查看合同"}
                                 </Text>
-                            </TouchableOpacity>:null
+                            </TouchableOpacity>
                     }
                     {
-                        this.stateCode == '50'?
+                        this.stateCode == '50'&&
                             <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{
                                                     this.toNextPage({
@@ -446,7 +446,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                                                     });
                                               }}>
                                 <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>确认借据</Text>
-                            </TouchableOpacity>:null
+                            </TouchableOpacity>
                     }
                 </View>
 
