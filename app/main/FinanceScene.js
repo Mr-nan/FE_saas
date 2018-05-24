@@ -353,7 +353,7 @@ export default class FinanceSence extends BaseComponet {
                         onEndReached={this.toEnd}
                         onScroll={(event)=>{
                             this.offY = Pixel.getPixel(event.nativeEvent.contentOffset.y);
-                            if(this.offY>=Pixel.getPixel(301)){
+                            if(this.offY>=Pixel.getPixel(281)){
                                 if(this.state.StatusBarStyle =='default'){
                                     this.navigation && this.navigation.setNavigationBackgroindColor(fontAndColor.COLORB0,'white');
                                     this.setState({
@@ -470,7 +470,7 @@ export default class FinanceSence extends BaseComponet {
                     this.homeItemOnPress('还款');
                 }
                 }/>
-                <View style={{marginTop:Pixel.getPixel(20)}}>
+                <View style={{marginTop:Pixel.getPixel(10)}}>
                     <FinanceTypeSeekView  seekClick={this.shamSeekAction} isSham={true}/>
                 </View>
             </View>
@@ -955,7 +955,7 @@ export default class FinanceSence extends BaseComponet {
         if(isSelect){
 
             if(type!=3){
-                this.listView &&  this.listView.scrollTo({x: 0, y:Pixel.getPixel(301), animated: false});
+                this.listView &&  this.listView.scrollTo({x: 0, y:Pixel.getPixel(281), animated: false});
             }
 
             if(type==0){

@@ -29,11 +29,11 @@ export default class FinanceHeader extends PureComponent {
             topWidth: new Animated.Value(Pixel.getPixel(330)),
             topHeight: new Animated.Value(Pixel.getPixel(170)),
             topLeft: new Animated.Value(Pixel.getPixel(22)),
-            topTop: new Animated.Value(Pixel.getTitlePixel(40)),
+            topTop: new Animated.Value(Pixel.getTitlePixel(5)),
             bottomWidth: new Animated.Value(Pixel.getPixel(306)),
             bottomHeight: new Animated.Value(Pixel.getPixel(35)),
             bottomLeft: new Animated.Value(Pixel.getPixel(35)),
-            bottomTop: new Animated.Value(Pixel.getTitlePixel(196))
+            bottomTop: new Animated.Value(Pixel.getTitlePixel(161))
         };
     }
 
@@ -43,7 +43,7 @@ export default class FinanceHeader extends PureComponent {
 
     render() {
         return (
-            <View style={{backgroundColor: 'white', width: width, height: Pixel.getPixel(235)}}>
+            <View style={{backgroundColor: 'white', width: width, height: Pixel.getPixel(215)}}>
                 <Animated.Image style={{
                     width: this.state.topWidth,
                     height: this.state.topHeight, resizeMode: 'stretch',
@@ -111,7 +111,7 @@ export default class FinanceHeader extends PureComponent {
                 ), Animated.timing(          // Uses easing functions
                     this.state.topTop,    // The value to drive
                     {
-                        toValue: Pixel.getTitlePixel(40),
+                        toValue: Pixel.getTitlePixel(5),
                         duration: 700
                     },
                 ),
@@ -136,7 +136,7 @@ export default class FinanceHeader extends PureComponent {
                 ), Animated.timing(          // Uses easing functions
                     this.state.bottomTop,    // The value to drive
                     {
-                        toValue: Pixel.getTitlePixel(196),
+                        toValue: Pixel.getTitlePixel(161),
                         duration: 700
                     },
                 )
@@ -167,7 +167,7 @@ export default class FinanceHeader extends PureComponent {
                 ), Animated.timing(          // Uses easing functions
                     this.state.topTop,    // The value to drive
                     {
-                        toValue: Pixel.getTitlePixel(196),
+                        toValue: Pixel.getTitlePixel(161),
                         duration: 700
                     },
                 ),
@@ -192,7 +192,7 @@ export default class FinanceHeader extends PureComponent {
                 ), Animated.timing(          // Uses easing functions
                     this.state.bottomTop,    // The value to drive
                     {
-                        toValue: Pixel.getTitlePixel(40),
+                        toValue: Pixel.getTitlePixel(5),
                         duration: 700
                     },
                 )
