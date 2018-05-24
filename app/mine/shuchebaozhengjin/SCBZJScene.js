@@ -128,8 +128,8 @@ export  default class SCBZJScene extends BaseComponent {
                             </Text>
                             {
                                 this.state.details =='open' ?
-                                    <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(5)}} source={require('../../../images/delete@2x.png')}/>:
-                                    <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(5)}} source={require('../../../images/delete@2x.png')}/>
+                                    <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(5)}} source={require('../../../images/jt_shang.png')}/>:
+                                    <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(5)}} source={require('../../../images/jt_xia.png')}/>
                             }
 
                         </View>
