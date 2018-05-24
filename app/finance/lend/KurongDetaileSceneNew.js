@@ -383,24 +383,24 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     backIconClick={this.backPage}/>
                 <View style={{position: 'absolute',bottom: 0,justifyContent:'center',alignItems:'center',flexDirection:'row',width:width}}>
                     {
-                        this.tempjson.is_cancel_loan == 1?
+                        this.tempjson.is_cancel_loan == 1 &&
                             <TouchableOpacity  style={{height:40,flex:1,backgroundColor:'#90A1B5',justifyContent:'center',alignItems:'center'}}
                                                onPress={()=>{
                                                this.cancleFlag = '取消主单'
                                                this.canleAlert.setModelVisible(true);
                                            }}>
                                 <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>取消借款</Text>
-                            </TouchableOpacity>:null
+                            </TouchableOpacity>
                     }
                     {
-                        this.stateCode == '10'?
+                        this.stateCode == '10' &&
                             <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{ this.modifyb.setModelVisible(true)  }}>
                                 <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>修改借款金额</Text>
-                            </TouchableOpacity>:null
+                            </TouchableOpacity>
                     }
                     {
-                        this.stateCode == '40' || this.stateCode == '60' ||  this.stateCode == '70' || this.stateCode == '80'?
+                        (this.stateCode == '40' || this.stateCode == '60' ||  this.stateCode == '70' || this.stateCode == '80')&&
                             <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{
                                                   if(this.stateCode == '40'){
@@ -425,10 +425,10 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                                 <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>
                                     {this.stateCode == '40' ? "签署合同" : "查看合同"}
                                 </Text>
-                            </TouchableOpacity>:null
+                            </TouchableOpacity>
                     }
                     {
-                        this.stateCode == '50'?
+                        this.stateCode == '50'&&
                             <TouchableOpacity style={{height:40,flex:1,backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}
                                               onPress={()=>{
                                                     this.toNextPage({
@@ -446,7 +446,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                                                     });
                                               }}>
                                 <Text style={{fontSize:adapeSize(15),color:'#ffffff'}}>确认借据</Text>
-                            </TouchableOpacity>:null
+                            </TouchableOpacity>
                     }
                 </View>
 
