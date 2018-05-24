@@ -498,7 +498,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                     </View>
                     <View style={{flexDirection:'row'}}>
                         <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'合同放款额'}</Text>
-                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{'放款日期'}</Text>
+                        <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(110)}}>{rowData.child_loan_status == 0?'取消日期':'放款日期'}</Text>
                         <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'资产编号'}</Text>
                     </View>
                 </View>
