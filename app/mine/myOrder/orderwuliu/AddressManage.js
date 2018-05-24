@@ -63,17 +63,24 @@ export default class AddressManage extends BaseComponent {
                                 district: data.district,
                                 is_port: data.is_port
                             })
-                            callBackInfo={
-                                full_address:data.full_address,
-                                id:data.id,
-                                province: data.province,
-                                city: data.city,
-                                district: data.district,
-                                is_port: data.is_port,
-                                contact_name:data.contact_name,
-                                contact_phone:data.contact_phone,
+
+                        })
+
+                        accountInfo.map((d)=>{
+                            if(d.is_default == 1){
+                                callBackInfo={
+                                    full_address:d.full_address,
+                                    id:d.id,
+                                    province: d.province,
+                                    city: d.city,
+                                    district: d.district,
+                                    is_port: d.is_port,
+                                    contact_name:d.contact_name,
+                                    contact_phone:d.contact_phone,
+                                }
                             }
                         })
+
                         this.setState({
                             dataSource: ds.cloneWithRows(accountInfo),
                             isRefreshing: false,

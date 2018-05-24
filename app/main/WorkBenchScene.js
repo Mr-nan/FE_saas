@@ -146,7 +146,8 @@ export default class NonCreditScene extends BaseComponent {
 
         this.isWorkBenchItemLose = true;
         StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
-                if (res.result) {
+                if (res.result &&  res.result =='true') {
+
                     StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                         if (data.code == 1 && data.result != null) {
                             let datas = JSON.parse(data.result);

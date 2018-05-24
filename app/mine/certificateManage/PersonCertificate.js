@@ -63,21 +63,21 @@ const options = {
         path: 'images',
     }
 };
-export default class EnterpriseCertificate extends BaseComponent {
-    /*
-     * 为了延迟调用*/
-    componentWillUnmount() {
-        this.timer && clearTimeout(this.timer);
-    }
+export default class PersonCertificate extends BaseComponent {
+	/*
+	 * 为了延迟调用*/
+	componentWillUnmount() {
+		this.timer && clearTimeout(this.timer);
+	}
 
-    constructor(props) {
-        super(props);
-        this.enterpriseData = {
-            zhuceren_name: '',//注册人姓名
-            zhuceren_IDNo: '',//注册人身份证号
-        };
+	constructor(props) {
+		super(props);
+		this.enterpriseData = {
+			zhuceren_name: '',//注册人姓名
+			zhuceren_IDNo: '',//注册人身份证号
+		};
 
-        this.state = {
+		this.state = {
 
             business_home: '请选择',//商户所在地
 
@@ -461,7 +461,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 
 
                 {/*个人身份证照片3张view*/}
-                <TouchableWithoutFeedback onPress={() => dismissKeyboard() }>
+                <TouchableWithoutFeedback >
                     <View style={{width: width,height: Pixel.getPixel(118),
 							backgroundColor: '#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15), }}>
 
@@ -558,7 +558,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 
                 <View style={{width:width,height:Pixel.getPixel(10),backgroundColor:fontAndColor.COLORA3}}/>
                 {/*名片或工作证照片view*/}
-                <TouchableWithoutFeedback onPress={() => dismissKeyboard() }>
+                <TouchableWithoutFeedback >
                     <View style={{width: width,height: Pixel.getPixel(88),flexDirection: 'row',alignItems: 'center',
 							backgroundColor: '#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15), }}>
 
@@ -592,6 +592,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 								          		businessLicense: null
 								          	});
                                                   }}/>
+
                                 : null}
 
                         </View>

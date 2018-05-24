@@ -29,7 +29,7 @@
     "react-native-update": "^4.0.3",
     "react-native-viewpager": "^0.2.13",
     "react-native-wechat": "^1.8.0",
-    "react-native-wheel-picker": "^1.1.1"
+    "react-native-wheel-picker": "^1.2.0"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",
