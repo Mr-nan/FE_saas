@@ -19,7 +19,7 @@ export default class FinanceButton extends PureComponent {
     render() {
         return (
             <View style={{backgroundColor:'white',width:width,justifyContent:'center',
-            alignItems:'center'}}>
+            alignItems:'center',paddingBottom:Pixel.getPixel(10)}}>
                 <View
                     style={{backgroundColor:'white',width:Pixel.getPixel(306),flexDirection: 'row'}}>
                     <TouchableOpacity activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center'}}

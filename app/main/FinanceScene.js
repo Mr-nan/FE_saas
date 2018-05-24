@@ -297,7 +297,8 @@ export default class FinanceSence extends BaseComponet {
             isRefreshing: false,
             customerName: '',
             seekData:[],
-            StatusBarStyle:'default'
+            StatusBarStyle:'default',
+            isShowSeekView:false,
         };
 
         this.seekParameter={
@@ -353,11 +354,12 @@ export default class FinanceSence extends BaseComponet {
                         onEndReached={this.toEnd}
                         onScroll={(event)=>{
                             this.offY = Pixel.getPixel(event.nativeEvent.contentOffset.y);
-                            if(this.offY>=Pixel.getPixel(271)){
+                            if(this.offY>=Pixel.getPixel(291)){
                                 if(this.state.StatusBarStyle =='default'){
                                     this.navigation && this.navigation.setNavigationBackgroindColor(fontAndColor.COLORB0,'white');
                                     this.setState({
-                                        StatusBarStyle:'light-content'
+                                        StatusBarStyle:'light-content',
+                                        isShowSeekView:true,
                                     })
                                 }
 
@@ -365,7 +367,8 @@ export default class FinanceSence extends BaseComponet {
                                 if(this.state.StatusBarStyle == 'light-content'){
                                     this.navigation && this.navigation.setNavigationBackgroindColor(null,null);
                                     this.setState({
-                                        StatusBarStyle:'default'
+                                        StatusBarStyle:'default',
+                                        isShowSeekView:false,
                                     })
                                 }
 
@@ -422,7 +425,9 @@ export default class FinanceSence extends BaseComponet {
 
                 <FinanceTypeSeekView ref={(ref)=>{this.trueFinanceTypeSeekView=ref}}
                                      seekClick={this.seekAction}
-                                     newStyle={{top:this.state.seekData.length>0? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute'}}/>
+                                     newStyle={{top:this.state.isShowSeekView? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute',
+                                         backgroundColor:'yellow'
+                                     }}/>
 
                 <NavigationView
                     ref={(ref)=>{this.navigation = ref}}
@@ -467,7 +472,9 @@ export default class FinanceSence extends BaseComponet {
                     this.homeItemOnPress('还款');
                 }
                 }/>
-                <FinanceTypeSeekView  ref={(ref)=>{this.shamFinanceTypeSeekView = ref}} seekClick={this.shamSeekAction}/>
+                <View style={{marginTop:Pixel.getPixel(10)}}>
+                    <FinanceTypeSeekView  seekClick={this.shamSeekAction} isSham={true}/>
+                </View>
             </View>
         )
     }
@@ -948,7 +955,7 @@ export default class FinanceSence extends BaseComponet {
         if(isSelect){
 
             if(type!=3){
-                this.listView &&  this.listView.scrollTo({x: 0, y:Pixel.getPixel(271), animated: false});
+                this.listView &&  this.listView.scrollTo({x: 0, y:Pixel.getPixel(291), animated: false});
             }
 
             if(type==0){
@@ -1031,7 +1038,6 @@ export default class FinanceSence extends BaseComponet {
             seekData:[]
         });
         this.trueFinanceTypeSeekView && this.trueFinanceTypeSeekView.seekViewCancel();
-        this.shamFinanceTypeSeekView && this.shamFinanceTypeSeekView.seekViewCancel();
     }
 }
 
@@ -1050,11 +1056,11 @@ class FinanceTypeSeekView extends  Component{
         return(
             <View style={[{ width:width, height:Pixel.getPixel(49), backgroundColor:'#fff', flexDirection:'row', alignItems:'center',justifyContent:'space-between',borderBottomColor:'#D8D8D8',borderBottomWidth:StyleSheet.hairlineWidth,
             },this.props.newStyle && this.props.newStyle ]}>
-                <FinaceTypeSeekItem ref={(ref)=>{ref && this.subItem.push(ref)}} type={0} title={'全部借款'} seekClick={this.seekClick}/>
-                <FinaceTypeSeekItem ref={(ref)=>{ ref && this.subItem.push(ref)}} type={1} title={'状态'} seekClick={this.seekClick}/>
-                <FinaceTypeSeekItem ref={(ref)=>{ref && this.subItem.push(ref)}} type={2} title={'期限'} seekClick={this.seekClick}/>
+                <FinaceTypeSeekItem ref={(ref)=>{ref && this.subItem.push(ref)}} type={0} title={'全部借款'} seekClick={this.seekClick} isSham={this.props.isSham}/>
+                <FinaceTypeSeekItem ref={(ref)=>{ ref && this.subItem.push(ref)}} type={1} title={'状态'} seekClick={this.seekClick} isSham={this.props.isSham}/>
+                <FinaceTypeSeekItem ref={(ref)=>{ref && this.subItem.push(ref)}} type={2} title={'期限'} seekClick={this.seekClick} isSham={this.props.isSham}/>
                 <View style={{width:StyleSheet.hairlineWidth*2,height:Pixel.getPixel(15), backgroundColor:fontAndColor.COLORA4}}/>
-                <FinaceTypeSeekItem ref={(ref)=>{ ref && this.subItem.push(ref)}} type={3} title={'更多'} seekClick={this.seekClick}/>
+                <FinaceTypeSeekItem ref={(ref)=>{ ref && this.subItem.push(ref)}} type={3} title={'更多'} seekClick={this.seekClick} isSham={this.props.isSham}/>
             </View>
         )
     }
@@ -1072,14 +1078,16 @@ class FinanceTypeSeekView extends  Component{
     seekClick=(type,isSelect)=>{
 
         this.props.seekClick(type,isSelect);
+        if(this.props.isSham){return;}
         if(isSelect){
 
             if( this.currentSelectType!=type && this.currentSelectType != null){
 
                 this.subItem[this.currentSelectType].setSelectType(false);
 
-            }else {
-                this.subItem[this.currentSelectType].setSelectType(true);
+            }
+            if(type!=3) {
+                this.subItem[type].setSelectType(true);
             }
             this.currentSelectType = type;
 
@@ -1122,7 +1130,7 @@ class FinaceTypeSeekItem extends  Component{
 
                       }else {
                           this.props.seekClick && this.props.seekClick(this.props.type,!this.state.isSelect);
-                          this.setSelectType(!this.state.isSelect);
+                          !this.props.isSham && this.setSelectType(!this.state.isSelect);
                       }
 
 
@@ -1182,7 +1190,7 @@ class FinanceSeekContentView extends Component{
                                   </TouchableOpacity>
                               )
                           }}
-                          renderSeparator={this._renderSeparator}
+                          renderSeparator={(sectionId,rowId)=>{return (<View style={{height:StyleSheet.hairlineWidth, backgroundColor:fontAndColor.COLORA3}} key={sectionId + rowId}/>)}}
                 />
             </TouchableOpacity>
         )
@@ -1256,7 +1264,7 @@ const cellSheet = StyleSheet.create({
     },
 
     Separator: {
-        backgroundColor: '#D8D8D8',
+        backgroundColor: fontAndColor.COLORA3,
         height: Pixel.getPixel(10),
     },
 
