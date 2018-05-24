@@ -54,9 +54,9 @@ export  default class LogisCarInfoTopItem extends PureComponent {
         return (
             <View style={{width:width,backgroundColor:'#fff',height:Pixel.getPixel(107),
             flexDirection:'row',paddingHorizontal:Pixel.getPixel(15),paddingVertical: Pixel.getPixel(13)}}>
-                <Image source={require('../../../../images/share_icon_wechat.png')}
-                       style={{width:Pixel.getPixel(120),height:Pixel.getPixel(80),resizeMode:'cover'}}></Image>
-                <View style={{width:Pixel.getPixel(213),height:Pixel.getPixel(80),
+                {/*<Image source={require('../../../../images/share_icon_wechat.png')}*/}
+                       {/*style={{width:Pixel.getPixel(120),height:Pixel.getPixel(80),resizeMode:'cover'}}></Image>*/}
+                <View style={{height:Pixel.getPixel(80),
                 marginLeft:Pixel.getPixel(12)}}>
                     <Text style={{fontSize: Pixel.getPixel(14),backgroundColor:'#00000000',
                     color: '#000'}} numberOfLines={2}>{this.props.data.car_name}</Text>
