@@ -97,17 +97,11 @@ export default class FinanceHeaderTop extends PureComponent {
         if (this.state.type == 1) {
             return (
                 <View style={{alignItems: 'center', flex: 1}}>
-                    <View style={{height: Pixel.getPixel(34), flexDirection: 'row'}}>
+                    <View style={{width:Pixel.getPixel(290), flexDirection: 'row',marginHorizontal:Pixel.getPixel(20),justifyContent:'space-between',marginTop:Pixel.getPixel(12)}}>
                         <TouchableOpacity activeOpacity={0.8} onPress={() => {this.isEyeOpen()}}>
-                            <View style={{paddingTop: Pixel.getPixel(12), flex: 1, paddingLeft: Pixel.getPixel(20)}}>
                                 <Image style={{width: Pixel.getPixel(18), height: Pixel.getPixel(12)}}
                                        source={require('../../../images/financeImages/kejian.png')}></Image>
-                            </View>
                         </TouchableOpacity>
-                        <View style={{
-                            paddingTop: Pixel.getPixel(12), flex: 1, paddingRight: Pixel.getPixel(20),
-                            alignItems: 'flex-end'
-                        }}>
                             <TouchableOpacity activeOpacity={0.8} style={{
                                 width: Pixel.getPixel(54), height: Pixel.getPixel(17),
                                 backgroundColor: 'rgba(255,255,255,0.4)', borderRadius: 10, justifyContent: 'center',
@@ -118,7 +112,6 @@ export default class FinanceHeaderTop extends PureComponent {
                                     backgroundColor: '#00000000'
                                 }}>保证金</Text>
                             </TouchableOpacity>
-                        </View>
                     </View>
                     <View style={{height: Pixel.getPixel(72), alignItems: 'center'}}>
                         <Text

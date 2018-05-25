@@ -62,12 +62,15 @@ import MyAccountScene from "../mine/accountManage/MyAccountScene";
 import FinanceSeekMoreScene from "../finance/lend/FinanceSeekMoreScene";
 import FinanceHeader from './component/FinanceHeader';
 import FinanceButton from './component/FinanceButton';
+import ExplainModal from "./component/ExplainModal";
+
 let firstType = '-1';
 let lastType = '-1';
 
 let product_type_codeData = [{title:'库存融资',code:'4'},{title:'单车融资',code:'2'},{title:'车抵贷',code:'8'},{title:'采购贷',code:'5'}/*,{title:'信用贷',code:3}*/,{title:'订单融资',code:'6'}/*,{title:'应收账款',code:7}*/];
 let logic_statusData = [{title:'评估监管中',code:'10'},{title:'审核中',code:'20'},{title:'渠道审核中',code:'30'},{title:'待签合同',code:'40'},{title:'待确认借据',code:'50'},{title:'处理中',code:'60'},{title:'已放款',code:'70'},{title:'已还清',code:'80'},{title:'已取消',code:'0'}];
 let loanperiodData = [{title:'30天',code:'30'},{title:'60天',code:'60'},{title:'90天',code:'90'},{title:'180天',code:'180'},{title:'360天',code:'360'}];
+let contentData = [{title: '保证金额度', value: '100万'}, {title: '保证金余额', value: '100万'}];
 
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
@@ -128,6 +131,8 @@ export default class FinanceSence extends BaseComponet {
                     that.setState({
                         mnyData: mnyData,
                     });
+                    contentData[0].value = (mnyData.bond_total_mny / 10000) + '万';
+                    contentData[1].value = mnyData.bond_mny + '万';
                     that.getApplyData();
                 },
                 (error) => {
@@ -425,7 +430,7 @@ export default class FinanceSence extends BaseComponet {
                 <FinanceTypeSeekView ref={(ref)=>{this.trueFinanceTypeSeekView=ref}}
                                      seekClick={this.seekAction}
                                      newStyle={{top:this.state.isShowSeekView? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute'}}/>
-
+                <ExplainModal ref='loanModal' buttonStyle={cellSheet.expButton} textStyle={cellSheet.expText}/>
                 <NavigationView
                     ref={(ref)=>{this.navigation = ref}}
                     title="锋之行汽车销售" wrapStyle={{backgroundColor:'white'}}
@@ -1391,5 +1396,22 @@ const cellSheet = StyleSheet.create({
     rowBottomBigStyle: {
         fontSize: Pixel.getFontPixel(16),
         marginTop: Pixel.getPixel(6)
+    },
+    expButton: {
+        marginBottom: Pixel.getPixel(20),
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(35),
+        marginTop: Pixel.getPixel(16),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0,
+        backgroundColor: fontAndColor.COLORB0
+    },
+    expText: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: 'white'
     },
 });
