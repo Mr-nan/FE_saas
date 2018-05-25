@@ -67,8 +67,6 @@ export default class CheckStand extends BaseComponent {
             "code": 1,
             "msg": "ok",
             "data": {
-                "request": {},
-                "response": {
                     "cashier_desk_trans_serial_no": "10101006201805251224340953533619",
                     "money_count": 22500,
                     "account_info": {
@@ -77,7 +75,6 @@ export default class CheckStand extends BaseComponent {
                         "bank_card_name": "黎乐池"
                     },
                     "company_base_user_id": "7857"
-                }
             },
             "trace": {
                 "source_url": "http://",
@@ -95,7 +92,7 @@ export default class CheckStand extends BaseComponent {
             }
         }
         // this.getData();
-        let data=response.data.response;
+        let data=response.data;
         this.cashier_desk_trans_serial_no=data.cashier_desk_trans_serial_no;
         this.accountInfo=data.account_info;
         this.payMoney=data.money_count;
