@@ -88,12 +88,10 @@ const options = {
 
 export default class MineScene extends BaseComponent {
 
-
     handleBack = () => {
         NativeModules.VinScan.goBack();
         return true;
     }
-
 
     componentDidMount() {
         try {
@@ -112,12 +110,13 @@ export default class MineScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
-        //    拿到所有的json数据
+        // 拿到所有的json数据
         this.isLogistics = 1;
         this.singleCar = 1;
         this.state = {
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
+            isRefreshing: false,
+            noPayNumber:0,
         };
     }
 
@@ -194,29 +193,27 @@ export default class MineScene extends BaseComponent {
                         this.initData(minList[i].id, minList[i].name);
                     }
                     let jsonData = user_list;
-
-                    //    定义变量
+                    // 定义变量
                     let dataBlob = {},
                         sectionIDs = [],
                         rowIDs = [];
                     for (let i = 0; i < jsonData.length; i++) {
-                        //    1.拿到所有的sectionId
+                        // 1.拿到所有的sectionId
                         sectionIDs.push(i);
 
-                        //    2.把组中的内容放入dataBlob内容中
+                        // 2.把组中的内容放入dataBlob内容中
                         dataBlob[i] = jsonData[i].title;
 
-                        //    3.设置改组中每条数据的结构
+                        // 3.设置改组中每条数据的结构
                         rowIDs[i] = [];
 
-                        //    4.取出改组中所有的数据
+                        // 4.取出改组中所有的数据
                         let cars = jsonData[i].cars;
 
-                        //    5.便利cars,设置每组的列表数据
+                        // 5.便利cars,设置每组的列表数据
                         for (let j = 0; j < cars.length; j++) {
-                            //    改组中的每条对应的rowId
+                            // 改组中的每条对应的rowId
                             rowIDs[i].push(j);
-
                             // 把每一行中的内容放入dataBlob对象中
                             dataBlob[i + ':' + j] = cars[j];
                         }
@@ -236,16 +233,7 @@ export default class MineScene extends BaseComponent {
                         }
                     );
 
-
-
-
-
-
-
                     DeviceEventEmitter.emit('mb_show', '完成');
-
-
-
 
                     /*   获取用户账户状态更新蒙层状态    专用       */
                     StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
@@ -257,9 +245,7 @@ export default class MineScene extends BaseComponent {
                             };
                             request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                                 .then((response) => {
-
                                         let account_status = response.mjson.data.account.status;
-
                                         this.setState({
                                             source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
                                             name: datas.real_name,
@@ -268,21 +254,16 @@ export default class MineScene extends BaseComponent {
                                             renderPlaceholderOnly: 'success',
                                             isRefreshing: false
                                         });
-
-
                                         if (account_status == '0') {
                                             DeviceEventEmitter.emit('mb_show', '未开通');
-
                                         } else if (account_status == '1') {
                                             DeviceEventEmitter.emit('mb_show', '未绑卡');
-
                                         } else if (account_status == '2') {
 
                                         } else if (account_status == '3') {
                                             DeviceEventEmitter.emit('mb_show', '已激活');
                                         }
-                                    },
-                                    (error) => {
+                                    }, (error) => {
                                         this.setState({
                                             renderPlaceholderOnly: 'error',
                                             isRefreshing: false
@@ -290,9 +271,6 @@ export default class MineScene extends BaseComponent {
                                     });
                         }
                     });
-
-                    /*   获取用户账户状态更新蒙层状态    专用       */
-
                 });
 
             } else {
@@ -305,22 +283,19 @@ export default class MineScene extends BaseComponent {
     }
 
     initData = (id, name) => {
-
         if (id == 47) {
             Car[0].cars.push({
                 "icon": require('../../images/mainImage/zhanghuguanli.png'),
                 "name": name
                 , "id": id
             },);
-
         } else if (id == 74) {
 	        Car[0].cars.push({
 		        "icon": require('../../images/mainImage/shouxinguanli.png'),
 		        "name": name
 		        , "id": id
 	        },);
-        }
-        else if (id == 48) {
+        } else if (id == 48) {
             Car[0].cars.push({
                 "icon": require('../../images/mainImage/yuangongguanli.png'),
                 "name": name
@@ -387,15 +362,13 @@ export default class MineScene extends BaseComponent {
                 , "id": id
             },);
 
-        }
-        else if (id == 58) {
+        } else if (id == 58) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/my_yqdhl.png'),
                 "name": name
                 , "id": id
             },);
-        }
-        else if (id == 67) {
+        } else if (id == 67) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/supervision_fee.png'),
                 "name": name
@@ -492,16 +465,11 @@ export default class MineScene extends BaseComponent {
                             base_id: BASE_ID,
                         };
                         request(Urls.GETCHECKSTATUS, 'post', maps).then((response) => {
-
-
                             if (response.mycode == "1") {
                                 let dataResult = response.mjson.data;
-
                                 this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
                                 this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
-
                                 this.toCompany();
-
                             } else {
                                 this.setState({
                                     renderPlaceholderOnly: 'error',
@@ -515,7 +483,6 @@ export default class MineScene extends BaseComponent {
                                 isRefreshing: false
                             });
                         });
-
                     } else {
                         this.props.showToast('获取个人信息失败');
                         this.setState({
@@ -532,25 +499,6 @@ export default class MineScene extends BaseComponent {
                 });
             }
         });
-
-        // StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-        //     if (data.code == 1) {
-        //         let datas = JSON.parse(data.result);
-        //         if(datas.user_level=='0'){
-        //             this.noCompany();
-        //         }else{
-        // this.toCompany();
-
-
-        //         }
-        //     }
-        // });
-
-    }
-
-    noCompany = () => {
-        lastType = 'error';
-        this.changeData();
     }
 
     toCompany = () => {
@@ -578,8 +526,7 @@ export default class MineScene extends BaseComponent {
                             }
                             // lastType = '3';、
                             this.getLogisticsKey();
-                        },
-                        (error) => {
+                        }, (error) => {
                             this.getLogisticsKey();
                         });
             }
@@ -635,9 +582,7 @@ export default class MineScene extends BaseComponent {
      *   订单物流开关接口
      **/
     getLogisticsKey = () => {
-        let maps = {
-
-        };
+        let maps = {};
         let url = Urls.LOGISTICS_SWITCH;
         request(url, 'post', maps).then((response) => {
             this.isLogistics = response.mjson.data.a;
@@ -666,16 +611,12 @@ export default class MineScene extends BaseComponent {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
-
                 <View style={styles.container}>
-
                     {this.loadView()}
-
                 </View>
             )
         }
         return (
-
             <View style={styles.container}>
                 <ImageSource galleryClick={this._galleryClick}
                              cameraClick={this._cameraClick}
@@ -705,7 +646,6 @@ export default class MineScene extends BaseComponent {
     }
 
     navigatorParams = {
-
         name: 'AccountManageScene',
         component: AccountManageScene,
         params: {}
@@ -719,8 +659,6 @@ export default class MineScene extends BaseComponent {
          //firstType = lastType;
          this.props.callBack(this.navigatorParams);
      };
-
-
 
     /**
      *   更新 lastType;
@@ -776,7 +714,6 @@ export default class MineScene extends BaseComponent {
 		            this.navigatorParams.component = CredictManageScene
 		            break;
                 }
-
             case 49:
                 this.props.toSelect();
                 return;
@@ -842,10 +779,8 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.name = 'SupervisionFeeScene'
                 this.navigatorParams.component = SupervisionFeeScene
                 this.navigatorParams.params = {callBack: this.updateType};
-
                 break;
         }
-
         this.props.callBack(this.navigatorParams);
     };
 
@@ -866,7 +801,6 @@ export default class MineScene extends BaseComponent {
         } else {
             return (
                 <TouchableOpacity style={styles.rowView} onPress={() => {
-
                     this._navigator(rowData)
                 }}>
 
@@ -900,11 +834,7 @@ export default class MineScene extends BaseComponent {
                             borderRadius: 14}}>
                             <Text style={{color:'#FC6855', fontSize:12}}> {un_pay_count + '笔待付'}</Text>
                         </View> : <View/>}
-
-
                     <Image source={cellJianTou} style={styles.rowjiantouImage}/>
-
-
                 </TouchableOpacity>
             );
         }
@@ -933,7 +863,6 @@ export default class MineScene extends BaseComponent {
                                                 .then((response) => {
                                                         haveOrder = response.mjson.data.order.tradeing_count;
                                                         lastType = response.mjson.data.account.status;
-
                                                         console.log(lastType + '-----------')
                                                         if (lastType == '0') {
                                                             DeviceEventEmitter.emit('mb_show', '未开通');
@@ -960,9 +889,7 @@ export default class MineScene extends BaseComponent {
                                                         }
                                                         firstType = lastType;
                                                     },
-                                                    (error) => {
-
-                                                    });
+                                                    (error) => {});
                                         }
                                     });
                                 }
@@ -1044,8 +971,6 @@ export default class MineScene extends BaseComponent {
                         <TouchableOpacity onPress={() => {
                         if(this.renzhengData.enterpriseRenZheng == 2  || this.renzhengData.enterpriseRenZheng == 1){
                             //0-> 未审核 1->审核中 2->通过  3->未通过
-
-
                         }else {
                             this._qiyerenzheng();
                         }
@@ -1063,20 +988,13 @@ export default class MineScene extends BaseComponent {
                             <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
 
                                 <Text allowFontScaling={false}
-
                                       style={{color:this.mColor[this.renzhengData.enterpriseRenZheng]}}
-
                                 >
                                     {this._getRenZhengResult(this.renzhengData.enterpriseRenZheng)}
-
                                 </Text>
                             </Text>
-
                         </TouchableOpacity>
-
                     </View>}
-
-
             </View>
         )
     }
@@ -1171,27 +1089,20 @@ export default class MineScene extends BaseComponent {
 
 
 const styles = StyleSheet.create({
-
-
     headerViewStyle: {
-
         height: Pixel.getPixel(190),
         width: width,
         backgroundColor: fontAndClolr.COLORB0,
         alignItems: 'center',
-
     },
     headerImageStyle: {
-
         width: Pixel.getPixel(65),
         height: Pixel.getPixel(65),
         marginTop: Pixel.getPixel(45),
         justifyContent: 'center',
         alignItems: 'center',
-
     },
     headerNameStyle: {
-
         color: 'white',
         fontSize: Pixel.getFontPixel(15),
         marginTop: Pixel.getPixel(10),
@@ -1203,7 +1114,6 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(12),
     },
     container: {
-
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
         backgroundColor: fontAndClolr.COLORA3,
@@ -1235,14 +1145,11 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(15),
         height: Pixel.getPixel(15),
         marginRight: Pixel.getPixel(15),
-
     },
     rowTitle: {
         flex: 1,
         fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
         marginLeft: Pixel.getPixel(20),
         color: '#000',
-
     }
-
 });
