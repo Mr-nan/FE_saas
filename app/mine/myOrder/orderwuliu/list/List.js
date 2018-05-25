@@ -59,7 +59,7 @@ export default  class  List extends BaseComponent{
                 <ScrollableTabView
                     style={{flex: 1}}
                     initialPage={0}
-                    locked={false}
+                    locked={true}
                     onChangeTab={(obj) => {
 
                     }}

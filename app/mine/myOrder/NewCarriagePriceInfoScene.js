@@ -23,7 +23,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 
 const Pixel = new PixelUtil();
-import NavigationBar from '../../component/AllNavigationView';
+import NavigatorView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import * as Net from '../../utils/RequestUtil';
@@ -35,15 +35,11 @@ export default class NewCarriagePriceInfoScene extends  BaseComponent{
 
     constructor(props){
         super(props)
-
         this.state = {
             renderPlaceholderOnly:'loading'
         }
         this.order = {}
     }
-
-
-
 
     initFinish(){
 
@@ -129,13 +125,7 @@ export default class NewCarriagePriceInfoScene extends  BaseComponent{
         if (this.state.renderPlaceholderOnly !== 'success') {
             // 加载中....
             return ( <View style={styles.root}>
-                <NavigationBar
-                    leftImageShow={true}
-                    leftTextShow={false}
-                    centerText={'运价详情'}
-                    rightText={""}
-                    leftImageCallBack={this.backPage}
-                />
+                <NavigatorView title='单车详情' backIconClick={this.backPage}/>
                 {this.loadView()}
             </View>);
         }
@@ -143,7 +133,7 @@ export default class NewCarriagePriceInfoScene extends  BaseComponent{
 
         return(
             <View style={styles.root}>
-                <ScrollView>
+                <ScrollView style={{marginTop:Pixel.getPixel(64)}}>
                     <LocationView title={'运单号'+this.order.trans_data.trans_code} startName={this.order.trans_data.start_address} stopName={this.order.trans_data.end_address} typeName={this.order.trans_data.trans_type ===1?'大板车运输':this.order.trans_type===2?'救援车':"代价"} />
                     <MessageView imageData={require('../../../images/carriagePriceImage/sendCarIcon.png')}
                                  title={'发车信息'} name={this.order.start_address.contact_name + ' | ' + this.order.start_address.contact_phone}
@@ -153,12 +143,12 @@ export default class NewCarriagePriceInfoScene extends  BaseComponent{
                                  name={this.order.end_address.contact_name + ' | ' + this.order.end_address.contact_phone}
                                  loactionStr={this.order.end_address.full_address}/>
                     <CarriagePriceView data = {this.order.trans_data} />
-                    <CarView carData={this.order.item_data}/>
+                    <CarView carData={this.order.item_data} quantity={this.order.trans_data.car_number}/>
                 </ScrollView>
                 <TouchableOpacity style={styles.footButton} activeOpacity={1} onPress={this.footBtnClick}>
                     <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>查看物流详情</Text>
                 </TouchableOpacity>
-                <NavigationBar title="运单详情" backIconClick={this.backPage}/>
+                <NavigatorView title="运单详情" backIconClick={this.backPage}/>
             </View>
         )
     }
@@ -364,7 +354,7 @@ class CarView extends Component{
       }
 
     render(){
-        const {carData} = this.props;
+        const {carData, quantity} = this.props;
         return(
             <View style={[styles.contentView,{paddingTop:Pixel.getPixel(0)}]}>
                 <View style={{
@@ -386,7 +376,7 @@ class CarView extends Component{
                         <Text style={{
                             color: fontAndColor.COLORA0,
                             fontSize: Pixel.getPixel(fontAndColor.BUTTONFONT30),
-                        }}>{carData.length}</Text>
+                        }}>{quantity}</Text>
                         <Text
                             style={{
                                 color: fontAndColor.COLORA0,
@@ -449,7 +439,6 @@ class CarItem extends Component{
 const styles = StyleSheet.create({
     root:{
         flex:1,
-        paddingTop:Pixel.getTitlePixel(64),
         paddingBottom:Pixel.getPixel(44),
         backgroundColor:fontAndColor.COLORA3,
     },

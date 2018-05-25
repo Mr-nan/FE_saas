@@ -36,6 +36,7 @@ import AddressManageListScene from "../addressManage/AddressManageListScene";
 import List from './orderwuliu/list/List'
 import CityRegionScene from "../addressManage/CityRegionScene";
 import PlatformChoose from "./orderwuliu/pay/PlatformChoose";
+import TrustAccountContractScene from "../accountManage/trustAccount/TrustAccountContractScene";
 
 
 export default class CarriagePriceInfoScene extends BaseComponent {
@@ -50,7 +51,6 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             receiverInfo: null,
             isChecked: true,
         }
-
 
         this.params = {
             carCount: this.props.carCount,                  //车辆总数量		【必填】
@@ -273,8 +273,17 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                         <SaasText
                             onPress={() => {
 
+                                this.toNextPage({
+                                    name: 'TrustAccountContractScene',
+                                    component: TrustAccountContractScene,
+                                    params: {
+                                        title: this.logistics_contract.name,
+                                        webUrl: this.logistics_contract.url
+                                    }
+                                })
+
                             }}
-                            style={{fontSize: 12, fontWeight: '200', color: fontAndColor.COLORA2}}>《物流服务协议》</SaasText>
+                            style={{fontSize: 12, fontWeight: '200', color: fontAndColor.COLORA2}}>《{this.logistics_contract.name}》</SaasText>
                     </View>
 
 
@@ -484,6 +493,22 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             this.props.showToast(error.mjson.msg);
 
         });
+
+
+        Net.request(AppUrls.AGREEMENT_LISTS, 'post', {source_type:5, fund_channel:'物流'}).then((response) => {
+
+            if (response.mjson.code ==1){
+
+                this.logistics_contract = response.mjson.data.list[0];
+            }
+
+        }, (error) => {
+
+            this.props.showToast(error.mjson.msg);
+
+        });
+
+
     }
 
     preserveOrder = (type) => {
@@ -813,6 +838,9 @@ class InvoiceMarkItem extends Component {
     }
 
     provinceCallBack = (item) => {
+
+        this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
+
         this.props.params.invoice_data.province = item.provice_name;
         this.props.params.invoice_data.city = item.city_name;
         this.props.params.invoice_data.district = item.district_name;
@@ -887,8 +915,9 @@ class InvoiceMarkItem extends Component {
                     keyboardType={'default'}
                     value={this.state.title}
                     onChangeText={(text) => {
+                        this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
                         this.state.title = this.props.params.invoice_data.invoice_title = text;
-                    }}
+                    }}params
 
                 />
 
@@ -899,6 +928,7 @@ class InvoiceMarkItem extends Component {
                     keyboardType={'default'}
                     separator={false}
                     onChangeText={(text) => {
+                        this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
                         this.props.params.invoice_data.invoice_code = text;
                         this.state.tax_num = text
                     }}
@@ -923,7 +953,9 @@ class InvoiceMarkItem extends Component {
                         <SaasText style={{fontWeight: '200', fontSize: 15,}}>发票收取地址与目的地址相同</SaasText>
                         <TouchableOpacity
                             onPress={() => {
+
                                 if (this.props.receiverInfo !== null) {
+
                                     if (this.state.same === false) {
                                         this.setState({
                                             name: this.props.receiverInfo.contact_name,
@@ -936,6 +968,8 @@ class InvoiceMarkItem extends Component {
                                             this.refs.name.setInputTextValue(this.state.name)
                                             this.refs.phone.setInputTextValue(this.state.phone)
                                             this.refs.address.setInputTextValue(this.state.address)
+
+                                            this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
 
                                             this.props.params.invoice_data.contact_name = this.state.name;
                                             this.props.params.invoice_data.contact_phone = this.state.phone;
@@ -971,6 +1005,7 @@ class InvoiceMarkItem extends Component {
                     textPlaceholder={' '}
                     keyboardType={'default'}
                     onChangeText={(text) => {
+                        this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
                         this.state.name = text
                         this.props.params.invoice_data.contact_name = text;
                     }}
@@ -982,6 +1017,7 @@ class InvoiceMarkItem extends Component {
                     textPlaceholder={''}
                     keyboardType={'numeric'}
                     onChangeText={(text) => {
+                        this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
                         this.state.phone = text
                         this.props.params.invoice_data.contact_phone = text;
                     }}
@@ -1013,6 +1049,7 @@ class InvoiceMarkItem extends Component {
                     separator={false}
                     keyboardType={'default'}
                     onChangeText={(text) => {
+                        this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
                         this.state.address = text
                         this.props.params.invoice_data.address = text;
                     }}
@@ -1036,6 +1073,16 @@ class InvoiceMarkItem extends Component {
         this.setState({
             region_in_string: region.provice_name + " " + region.city_name
         })
+    }
+
+
+    parse = (str) => {
+        if (typeof str === 'string') {
+            return JSON.parse(str);
+        } else {
+            return str;
+        }
+
     }
 
 }

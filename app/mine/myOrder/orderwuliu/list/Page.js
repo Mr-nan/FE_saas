@@ -228,7 +228,8 @@ export default class FlowAllPage extends BaseComponent {
                                     alignItems: 'center',
                                     borderRadius: 3,
                                     borderWidth: 1,
-                                    borderColor: fontAndColor.COLORA1
+                                    borderColor: fontAndColor.COLORA1,
+                                    marginLeft:Pixel.getPixel(10)
                                 }}>
                                     <Text allowFontScaling={false} style={{
                                         fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
@@ -251,7 +252,7 @@ export default class FlowAllPage extends BaseComponent {
                                     borderWidth: 1,
                                     borderColor: fontAndColor.COLORB0,
                                     backgroundColor:fontAndColor.COLORB0,
-                                    marginLeft:Pixel.getPixel(20)
+                                    marginLeft:Pixel.getPixel(10)
                                 }}>
                                     <Text allowFontScaling={false} style={{
                                         fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
@@ -565,7 +566,7 @@ export class TransportOrder extends Component{
                         marginBottom: Pixel.getPixel(7),
                         resizeMode: 'contain'
                     }} source={require('../../../../../images/carriagePriceImage/startLocation.png')}/>
-                    <SaasText style={{fontSize: 16}}>{this.props.data.start_address}</SaasText>
+                    <SaasText style={{fontSize: 16 , width:Pixel.getPixel(65),textAlign:'center'}}>{this.props.data.start_address}</SaasText>
                 </View>
                 <View style={{alignItems: 'center', marginTop: Pixel.getPixel(7)}}>
                     <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1}}>{this.props.data.trans_type ===1?'大板车运输':this.props.data.trans_type===2?'救援车':"代价"}</SaasText>
@@ -583,7 +584,7 @@ export class TransportOrder extends Component{
                         marginBottom: Pixel.getPixel(7),
                         resizeMode: 'contain'
                     }} source={require('../../../../../images/carriagePriceImage/stopLocation.png')}/>
-                    <SaasText style={{fontSize: 16}}>{this.props.data.end_address}</SaasText>
+                    <SaasText style={{fontSize: 16, width:Pixel.getPixel(65), textAlign:'center'}}>{this.props.data.end_address}</SaasText>
                 </View>
 
 
@@ -734,7 +735,7 @@ class CarInfo extends Component {
         }}>
             <View>
                 <SaasText style={{fontSize: 14, color: 'black', marginBottom: Pixel.getPixel(8)}}>{this.props.carData.car_name}</SaasText>
-                <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1, marginBottom: Pixel.getPixel(7)}}>{'车架号：' + this.props.carData.tms_vin===''?this.props.carData.tms_vin:'暂无'}</SaasText>
+                <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1, marginBottom: Pixel.getPixel(7)}}>车架号: {this.props.carData.tms_vin!==''?this.props.carData.tms_vin:'暂无'}</SaasText>
                 <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1}}>{this.props.carData.logistics_data.nodeDesc +' | '+ this.timestampToTime(this.props.carData.logistics_data.nodeTime)}</SaasText>
 
             </View>

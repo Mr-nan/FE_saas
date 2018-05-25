@@ -26,6 +26,7 @@ import * as Net from '../../../../utils/RequestUtil';
 import * as AppUrls from '../../../../constant/appUrls';
 import SaasText from "../../../accountManage/zheshangAccount/component/SaasText";
 import MyButton from '../../../../component/MyButton'
+import List from "../list/List";
 
 
 export default class Result extends BaseComponent {
@@ -195,7 +196,22 @@ export default class Result extends BaseComponent {
                         mOnPress={() => {
 
                             if(this.props.from === 'offLine'){
-                                this.backToRoute('List')
+
+                                const navi = this.props.navigator;
+                                let route = navi.getCurrentRoutes();
+
+                                for(let i = 0; i<route.length; i++){
+                                    if (route[i].name === "List"){
+                                        this.backToRoute('List')
+                                       return;
+                                    }
+                                }
+
+                                this.toNextPage({
+                                    name:'List',
+                                    component:List,
+                                    params:{}
+                                })
                             }else {
 
 

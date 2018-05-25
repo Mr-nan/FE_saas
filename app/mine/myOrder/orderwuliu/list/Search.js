@@ -332,7 +332,7 @@ class NavigationtBar extends Component {
                     style={{
                         flex: 1,
                         marginHorizontal: Pixel.getPixel(5),
-
+                        underlineColorAndroid:'transparent',
                         paddingLeft: 0,
                         paddingRight: 0,
                         paddingTop: 0,
