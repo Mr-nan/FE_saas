@@ -251,7 +251,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
             <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(15),paddingBottom:adapeSize(15)}}>
                 <View style={{flexDirection:'row',alignItems:'center'}}>
                     <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.loan_time}</Text>
-                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{this.stateCode == 0?rowData.cancle_time:rowData.repayment_loan_time}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{this.stateCode == 0?rowData.cancle_time:rowData.product_loan_type}</Text>
                     <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.paymenttype}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
