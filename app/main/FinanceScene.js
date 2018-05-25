@@ -110,7 +110,6 @@ export default class FinanceSence extends BaseComponet {
         }
     }
 
-
     initFinish = () => {
 
         this.getMnyData();
@@ -429,7 +428,9 @@ export default class FinanceSence extends BaseComponet {
 
                 <FinanceTypeSeekView ref={(ref)=>{this.trueFinanceTypeSeekView=ref}}
                                      seekClick={this.seekAction}
-                                     newStyle={{top:this.state.isShowSeekView? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute'}}/>
+                                     newStyle={{top:this.state.isShowSeekView? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute',
+                                         backgroundColor:'yellow'
+                                     }}/>
                 <ExplainModal ref='loanModal' buttonStyle={cellSheet.expButton} textStyle={cellSheet.expText}/>
                 <NavigationView
                     ref={(ref)=>{this.navigation = ref}}
@@ -476,7 +477,7 @@ export default class FinanceSence extends BaseComponet {
                 }
                 }/>
                 <View style={{marginTop:Pixel.getPixel(10)}}>
-                    <FinanceTypeSeekView  seekClick={this.shamSeekAction} isSham={true}/>
+                    <FinanceTypeSeekView  ref={(ref)=>{this.shamFinanceTypeSeekView = ref}} seekClick={this.shamSeekAction}/>
                 </View>
             </View>
         )
@@ -687,8 +688,6 @@ export default class FinanceSence extends BaseComponet {
                         </View>
                     </View>
                 </TouchableOpacity>
-
-
             )
         }
     }
@@ -981,7 +980,10 @@ export default class FinanceSence extends BaseComponet {
             isShowSeekView:seekData.length>0?true:false,
         });
 
+
         if(type==3){
+
+            this.shamFinanceTypeSeekView && this.shamFinanceTypeSeekView.seekViewCancel();
             let navigationParams={
                 name: "FinanceSeekMoreScene",
                 component: FinanceSeekMoreScene,
@@ -1045,6 +1047,7 @@ export default class FinanceSence extends BaseComponet {
 
         });
         this.trueFinanceTypeSeekView && this.trueFinanceTypeSeekView.seekViewCancel();
+        this.shamFinanceTypeSeekView && this.shamFinanceTypeSeekView.seekViewCancel();
     }
 }
 
