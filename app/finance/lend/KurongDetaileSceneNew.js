@@ -250,14 +250,14 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
         return <View style={{flexDirection:'column',backgroundColor:'#ffffff'}}>
             <View style={{flexDirection:"column",paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(15),paddingBottom:adapeSize(15)}}>
                 <View style={{flexDirection:'row',alignItems:'center'}}>
-                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.loan_time}</Text>
-                    <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{this.stateCode == 0?rowData.loan_time:rowData.repayment_loan_time}</Text>
-                    <Text style={{fontSize:adapeSize(14),color:'#000000'}}>{rowData.lending_methods}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:'#000000',flex:1}}>{rowData.loan_time}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:'#000000',flex:1,textAlign:'center'}}>{this.stateCode == 0?rowData.cancle_time:rowData.repayment_loan_time}</Text>
+                    <Text style={{fontSize:adapeSize(14),color:'#000000',textAlign:'right',flex:1}}>{rowData.product_loan_type}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
-                    <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'申请日期'}</Text>
-                    <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{this.stateCode == 0?'取消日期':'放款日期'}</Text>
-                    <Text style={{fontSize:adapeSize(12),color:'#9E9E9E'}}>{'借款类型'}</Text>
+                    <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',flex:1}}>{'申请日期'}</Text>
+                    <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',textAlign:'center',flex:1}}>{this.stateCode == 0?'取消日期':'放款日期'}</Text>
+                    <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',textAlign:'right',flex:1}}>{'借款类型'}</Text>
                 </View>
             </View>
             {
@@ -265,12 +265,14 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     <View style={{flexDirection:"column",paddingTop:adapeSize(0),paddingBottom:adapeSize(15)}}>
                         <View style={{width:width,height:adapeSize(10),backgroundColor:'#f0eff5',marginBottom:adapeSize(15)}}/>
                         <View style={{flexDirection:'row',alignItems:'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.channel_name}</Text>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.lending_methods}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',flex:1}}>{rowData.channel_name}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',textAlign:'center',flex:1}}>{rowData.lending_methods}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',textAlign:'right',flex:1}}>{}</Text>
                         </View>
                         <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'资金渠道'}</Text>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'放款方式'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',flex:1}}>{'资金渠道'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',textAlign:'center',flex:1}}>{'放款方式'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',textAlign:'right',flex:1}}>{}</Text>
                         </View>
                     </View>
             }
@@ -279,14 +281,14 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     <View style={{flexDirection:"column",paddingTop:adapeSize(0),paddingBottom:adapeSize(15)}}>
                         <View style={{width:width,height:adapeSize(10),backgroundColor:'#f0eff5',marginBottom:adapeSize(15)}}/>
                         <View style={{flexDirection:'row',alignItems:'center',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.channel_name}</Text>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.lending_methods}</Text>
-                            <Text style={{fontSize:adapeSize(14),color:'#000000',width:adapeSize(130)}}>{rowData.finish_time}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',flex:1}}>{rowData.channel_name}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',textAlign:'center',flex:1}}>{rowData.lending_methods}</Text>
+                            <Text style={{fontSize:adapeSize(14),color:'#000000',textAlign:'right',flex:1}}>{rowData.finish_time}</Text>
                         </View>
                         <View style={{flexDirection:'row',paddingLeft:adapeSize(10),paddingRight:adapeSize(10)}}>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'资金渠道'}</Text>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'放款方式'}</Text>
-                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',width:adapeSize(130)}}>{'结清日期'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',flex:1}}>{'资金渠道'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',textAlign:'center',flex:1}}>{'放款方式'}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#9E9E9E',textAlign:'right',flex:1}}>{'结清日期'}</Text>
                         </View>
                     </View>
             }
