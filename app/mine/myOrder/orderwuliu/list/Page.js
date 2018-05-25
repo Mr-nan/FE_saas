@@ -39,7 +39,8 @@ export default class FlowAllPage extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: 'loading',
             isRefreshing: false,
-            isShow:false
+            payShow:false,
+            cancelShow:false
         };
 
         this.orders = [];
@@ -161,13 +162,112 @@ export default class FlowAllPage extends BaseComponent {
                             colors={[fontAndColor.COLORB0]}
                         />}
                 />
-
-
                 <Modal
-                    ref='loadingModal'
+                    ref='pay'
                     animationType={"fade"}
                     transparent={true}
-                    visible={this.state.isShow}
+                    visible={this.state.payShow}
+
+                >
+                    <View
+                        style={{
+                            flex:1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: 'rgba(0,0,0,.3)'
+                        }}>
+                        <View style={{
+                            width: width - width / 4,
+                            height: Pixel.getPixel(125),
+                            backgroundColor: '#fff',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            paddingHorizontal:Pixel.getPixel(20),
+                            borderRadius:Pixel.getPixel(4)
+                        }}>
+                            <Text allowFontScaling={false} style={{
+                                textAlign: 'center', fontSize: Pixel.getPixel(14),
+                                marginTop: Pixel.getPixel(11), color: fontAndColor.COLORA1
+                            }}>
+                                {'请确认运单信息，支付后若要取消订单，请联系物流，且取消运单可能会产生其他费用'}
+                            </Text>
+                            <View
+                                style = {{flexDirection:'row',marginTop: Pixel.getPixel(16),}}
+                            >
+
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({
+                                        payShow:false
+                                    })
+                                    this.wozaikankan()
+                                }} activeOpacity={0.9} style={{
+                                    width:  Pixel.getPixel(70),
+                                    height: Pixel.getPixel(35),
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: 3,
+                                    borderWidth: 1,
+                                    borderColor: fontAndColor.COLORA1
+                                }}>
+                                    <Text allowFontScaling={false} style={{
+                                        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+                                        color: fontAndColor.COLORA1
+                                    }}>我在看看</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({
+                                        payShow:false
+                                    })
+                                    this.buzaitixing()
+                                }} activeOpacity={0.9} style={{
+                                    width:  Pixel.getPixel(70),
+                                    height: Pixel.getPixel(35),
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: 3,
+                                    borderWidth: 1,
+                                    borderColor: fontAndColor.COLORA1
+                                }}>
+                                    <Text allowFontScaling={false} style={{
+                                        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+                                        color: fontAndColor.COLORA1
+                                    }}>不在提醒</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({
+                                        payShow: false
+                                    });
+                                    this.jixuzhifu(this.willPageOrder)
+                                }} activeOpacity={0.9} style={{
+                                    width: Pixel.getPixel(70),
+                                    height: Pixel.getPixel(35),
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: 3,
+                                    borderWidth: 1,
+                                    borderColor: fontAndColor.COLORB0,
+                                    backgroundColor:fontAndColor.COLORB0,
+                                    marginLeft:Pixel.getPixel(20)
+                                }}>
+                                    <Text allowFontScaling={false} style={{
+                                        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+                                        color: 'white'
+                                    }}>继续支付</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+
+                <Modal
+                    ref='cancel'
+                    animationType={"fade"}
+                    transparent={true}
+                    visible={this.state.cancelShow}
 
                 >
                     <View
@@ -198,7 +298,7 @@ export default class FlowAllPage extends BaseComponent {
 
                                 <TouchableOpacity onPress={() => {
                                     this.setState({
-                                        isShow:false
+                                        cancelShow:false
                                     })
                                     this.cancelOrderRequset()
                                 }} activeOpacity={0.9} style={{
@@ -219,7 +319,7 @@ export default class FlowAllPage extends BaseComponent {
 
                             <TouchableOpacity onPress={() => {
                                 this.setState({
-                                    isShow: false
+                                    cancelShow: false
                                 });
 
                             }} activeOpacity={0.9} style={{
@@ -314,7 +414,7 @@ export default class FlowAllPage extends BaseComponent {
 
     cancelOrder= (order)=>{
         this.setState({
-            isShow:true
+            cancelShow:true
         })
         this.cancelOrder = order
     }
@@ -339,7 +439,16 @@ export default class FlowAllPage extends BaseComponent {
     }
 
 
-    payOrder = (order)=>{
+    wozaikankan = ()=>{
+        this.setState({
+            payShow:false,
+        })
+    }
+
+    buzaitixing=()=>{
+        StorageUtil.mSetItem(StorageKeyNames.LOGISTIC_ORDER_ALERT_SHOW, 'false');
+    }
+    jixuzhifu=(order)=>{
 
         this.props.toNextPage({
             name:'PlatformChoose',
@@ -348,7 +457,17 @@ export default class FlowAllPage extends BaseComponent {
                 order:order,
             }
         })
+    }
 
+    payOrder = (order)=>{
+        this.willPageOrder = order;
+        if (typeof StorageUtil.mGetItem(StorageKeyNames.LOGISTIC_ORDER_ALERT_SHOW) === 'undefined'){
+            this.setState({
+                payShow:true,
+            })
+        }else {
+            this.jixuzhifu(order)
+        }
     }
 
     toCarDetial = (order,car)=>{
@@ -495,7 +614,7 @@ export class TransportOrder extends Component{
                 justifyContent:'flex-end'
             }}>
                 {
-                    (this.props.data.status === 1 || this.props.data.status ===2)?<TouchableOpacity activeOpacity={1} onPress={() => {
+                    (this.props.data.status === 1)?<TouchableOpacity activeOpacity={1} onPress={() => {
                         this.props.cancel(this.props.data)
                     }}>
                         <View style={{
