@@ -588,6 +588,50 @@ export default class MineScene extends BaseComponent {
 
 
     /**
+     * 按状态统计订单数量
+     **/
+    getUnpay_num = () => {
+        let url = Urls.LOGISTICS_SWITCH;
+        let maps = {
+            // 0未支付/2已支付/3支付成功/4支付失败
+            status:'0'
+        };
+        request(url, 'post', maps).then((response) => {
+            let responses = {
+                "token": "",
+                "code": 1,
+                "msg": "ok",
+                "data": {
+                    "request": {},
+                    "response": [
+                        2
+                    ]
+                },
+                "trace": {
+                    "source_url": "http://",
+                    "cost_time": "0.5554s",
+                    "cost_mem": "1 B",
+                    "server_ip": "",
+                    "server_version": "5.6.32",
+                    "file_max_size": "2M",
+                    "post_max_size": "8M",
+                    "source_ip": "0.0.0.0",
+                    "sql": [
+                        "SHOW COLUMNS FROM `dms_merge` [ RunTime:1,527,227,876.4613s ]",
+                        "SHOW COLUMNS FROM `dms_merge` [ RunTime:-0.0001s ]"
+                    ]
+                }
+            }
+            this.setState({
+                noPayNumber: responses.data,
+            });
+            // this.isLogistics = response.mjson.data.a;
+            // this.singleCar = response.mjson.data.b;
+        }, (error) => {
+        });
+    };
+
+    /**
      *   订单物流开关接口
      **/
     getLogisticsKey = () => {
@@ -611,6 +655,7 @@ export default class MineScene extends BaseComponent {
             renderPlaceholderOnly: 'loading',
         });
         this.getData();
+        this.getUnpay_num();
     }
 
     refreshingData = () => {
