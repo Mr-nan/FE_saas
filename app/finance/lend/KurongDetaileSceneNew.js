@@ -216,7 +216,7 @@ export  default  class KurongDetaileSceneNew extends BaseComponent {
                     <Text style={{backgroundColor:Pixel.getProductColor(this.tempjson.product_type_code.product_code),color:'#ffffff',fontSize:adapeSize(12),borderRadius:adapeSize(1),height:adapeSize(16),width:Pixel.getPixel(22),textAlign:'center'}}>
                         {Pixel.getProductStr(this.tempjson.product_type_code.product_code)}
                     </Text>
-                    <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.payment_number}</Text>
+                    <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5),padding:0,marginBottom:Pixel.getPixel(1)}}>{ this.tempjson.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(this.stateCode)[0]}}>{Pixel.getStatusStr(this.stateCode)}</Text>
                 </View>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
