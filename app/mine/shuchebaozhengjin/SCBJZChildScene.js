@@ -189,6 +189,7 @@ export default class SCBJZChildScene extends BaseComponent {
                                            name: 'CheckStand',
                                            component: CheckStand,
                                            params: {
+                                               page:'ShuCheBaoZhengJin',
                                                orderNums:rowID.water_num,
                                                callBack: () => {
                                                    allSouce = [];
