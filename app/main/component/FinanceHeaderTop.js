@@ -95,8 +95,7 @@ export default class FinanceHeaderTop extends PureComponent {
         if (this.state.type == 1) {
             return (
                 <View style={{alignItems: 'center', flex: 1}}>
-                    <View style={{height:Pixel.getPixel(12),width:Pixel.getPixel(290)}}/>
-                    <View style={{width:Pixel.getPixel(290), flexDirection: 'row',justifyContent:'space-between'}}>
+                    <View style={{width:Pixel.getPixel(290), flexDirection: 'row',justifyContent:'space-between',marginTop:Pixel.getPixel(12)}}>
                         <TouchableOpacity activeOpacity={0.8} onPress={() => {this.isEyeOpen()}}>
                                 <Image style={{width: Pixel.getPixel(18), height: Pixel.getPixel(12)}}
                                        source={require('../../../images/financeImages/kejian.png')}></Image>

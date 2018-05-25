@@ -371,7 +371,7 @@ export default class FinanceSence extends BaseComponet {
                                     this.navigation && this.navigation.setNavigationBackgroindColor(null,null);
                                     this.setState({
                                         StatusBarStyle:'default',
-                                        isShowSeekView:false,
+                                        isShowSeekView: this.state.seekData.length>0?true: false,
                                     })
                                 }
 
@@ -428,9 +428,7 @@ export default class FinanceSence extends BaseComponet {
 
                 <FinanceTypeSeekView ref={(ref)=>{this.trueFinanceTypeSeekView=ref}}
                                      seekClick={this.seekAction}
-                                     newStyle={{top:this.state.isShowSeekView? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute',
-                                         backgroundColor:'yellow'
-                                     }}/>
+                                     newStyle={{top:this.state.isShowSeekView? Pixel.getTitlePixel(64):Pixel.getTitlePixel(0),position: 'absolute'}}/>
                 <ExplainModal ref='loanModal' buttonStyle={cellSheet.expButton} textStyle={cellSheet.expText}/>
                 <NavigationView
                     ref={(ref)=>{this.navigation = ref}}
@@ -958,9 +956,7 @@ export default class FinanceSence extends BaseComponet {
         let  seekData = [];
         if(isSelect){
 
-            if(type!=3){
-                this.listView &&  this.listView.scrollTo({x: 0, y:Pixel.getPixel(281), animated: false});
-            }
+
 
             if(type==0){
                 seekData = product_type_codeData;
@@ -973,6 +969,10 @@ export default class FinanceSence extends BaseComponet {
                 seekData = loanperiodData;
                 this.seekCurrentCode = this.seekParameter.loanperiod;
             }
+
+            if(type!=3){
+                this.listView &&  this.listView.scrollTo({x: 0, y:Pixel.getPixel(281), animated: true});
+            }
         }
 
         this.setState({
@@ -980,10 +980,13 @@ export default class FinanceSence extends BaseComponet {
             isShowSeekView:seekData.length>0?true:false,
         });
 
+        if(seekData.length<=0){
+            this.trueFinanceTypeSeekView && this.trueFinanceTypeSeekView.seekViewCancel();
+            this.shamFinanceTypeSeekView && this.shamFinanceTypeSeekView.seekViewCancel();
+        }
 
         if(type==3){
 
-            this.shamFinanceTypeSeekView && this.shamFinanceTypeSeekView.seekViewCancel();
             let navigationParams={
                 name: "FinanceSeekMoreScene",
                 component: FinanceSeekMoreScene,
