@@ -409,7 +409,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                             {Pixel.getProductStr(this.tempjson.product_type_code.product_code)}
                         </Text>
                     </View>
-                    <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>{ this.tempjson.payment_number}</Text>
+                    <Text style={{flex:1,fontSize:adapeSize(14),marginLeft:adapeSize(5),padding:0,marginBottom:Pixel.getPixel(1)}}>{ this.tempjson.payment_number}</Text>
                     <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(this.stateCode)[0]}}>{Pixel.getStatusStr(this.stateCode)}</Text>
                 </View>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
@@ -457,7 +457,7 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                 }
                 {
                     this.getStatusStrs(this.stateCode) != []?
-                    <Text style={{fontSize:adapeSize(12),color:"#846545",backgroundColor:'#FFF8EA',paddingLeft:adapeSize(10),paddingRight:adapeSize(10),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
+                    <Text style={{fontSize:adapeSize(12),color:"#846545",backgroundColor:'#FFF8EA',paddingLeft:adapeSize(15),paddingRight:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                         {this.getStatusStrs(this.stateCode)}
                     </Text>:null
                 }
@@ -485,8 +485,8 @@ export  default  class SingDetaileSenceNew extends BaseComponent {
                             <Text style={{fontSize:adapeSize(12),color:'#9B9B9B',paddingRight:Pixel.getPixel(30)}} numberOfLines={1} >{rowData.model_name}</Text>
                             <Text style={{fontSize:adapeSize(12),color:'#9B9B9B'}}>{rowData.frame_number}</Text>
                         </View>
-                        <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(rowData.child_loan_status)[0],marginBottom:Pixel.getPixel(1)}}>{rowData.child_loan_status_str}</Text>
-                        <Image source={cellJianTou} style={{ width: adapeSize(15), height: adapeSize(15)}}/>
+                        <Text style={{fontSize:adapeSize(14),color:Pixel.getStatusColor(rowData.child_loan_status)[0],marginBottom:Pixel.getPixel(2)}}>{rowData.child_loan_status_str}</Text>
+                        <Image source={cellJianTou} style={{ width: adapeSize(15), height: adapeSize(15),marginLeft:Pixel.getPixel(2)}}/>
                     </View>
                 </TouchableOpacity>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
