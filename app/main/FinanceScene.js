@@ -957,7 +957,6 @@ export default class FinanceSence extends BaseComponet {
         if(isSelect){
 
 
-
             if(type==0){
                 seekData = product_type_codeData;
               this.seekCurrentCode = this.seekParameter.product_type_code;

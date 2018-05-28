@@ -173,6 +173,18 @@ export default class FinanceSeekMoreScene extends BaseComponent{
 
     _handleDatePicked = (date)=>{
         let d = this.dateFormat(date,'yyyy-MM-dd');
+
+        let currentDate = new  Date();
+        if(date.getTime() > currentDate.getTime())
+        {
+            this.setState({ isDateTimePickerVisible: false },()=>{
+                this.props.showToast('选择日期不能大于今日');
+            });
+
+
+            return;
+        }
+
         if(this.dateType === 1){
            this.setState({
                minDate:d,

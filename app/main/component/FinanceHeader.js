@@ -47,7 +47,7 @@ export default class FinanceHeader extends PureComponent {
                     position: 'absolute', top: this.state.topTop,
                     left: this.state.topLeft
                 }}
-                                source={require('../../../images/financeImages/jinrongbeijingqian3.png')}
+                                source={require('../../../images/financeImages/jinrongbeijingqian.png')}
                 >
                     <FinanceHeaderTop onPress={() => {
                         this.changeBottom(1);
@@ -67,7 +67,7 @@ export default class FinanceHeader extends PureComponent {
                     position: 'absolute',
                     top: this.state.bottomTop, left: this.state.bottomLeft
                 }}
-                                source={require('../../../images/financeImages/jinrongbeijinghou3.png')}>
+                                source={require('../../../images/financeImages/jinrongbeijinghou.png')}>
                     <FinanceHeaderTop onPress={() => {
                         this.changeBottom(2);}}
                                       ref="bottoms" type={2}
