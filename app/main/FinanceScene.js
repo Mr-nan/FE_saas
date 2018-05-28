@@ -357,7 +357,7 @@ export default class FinanceSence extends BaseComponet {
                         onEndReached={this.toEnd}
                         onScroll={(event)=>{
                             this.offY = Pixel.getPixel(event.nativeEvent.contentOffset.y);
-                            if(this.offY>=Pixel.getPixel(281)){
+                            if(this.offY>=Pixel.getPixel(250)){
                                 if(this.state.StatusBarStyle =='default'){
                                     this.navigation && this.navigation.setNavigationBackgroindColor(fontAndColor.COLORB0,'white');
                                     this.setState({
@@ -956,8 +956,6 @@ export default class FinanceSence extends BaseComponet {
         let  seekData = [];
         if(isSelect){
 
-
-
             if(type==0){
                 seekData = product_type_codeData;
               this.seekCurrentCode = this.seekParameter.product_type_code;
@@ -978,6 +976,7 @@ export default class FinanceSence extends BaseComponet {
         this.setState({
             seekData:seekData,
             isShowSeekView:seekData.length>0?true:false,
+
         });
 
         if(seekData.length<=0){
@@ -1001,6 +1000,7 @@ export default class FinanceSence extends BaseComponet {
     }
 
     shamSeekAction=(type,isSelect)=>{
+
         this.trueFinanceTypeSeekView && this.trueFinanceTypeSeekView.seekClick(type,isSelect);
     }
 
