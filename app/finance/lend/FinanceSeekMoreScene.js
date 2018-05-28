@@ -30,8 +30,6 @@ export default class FinanceSeekMoreScene extends BaseComponent{
       constructor(props) {
         super(props);
 
-        console.log(this.props.seekParameter);
-
         this.state = {
             minPrice:this.props.seekParameter.min_loanmny,
             maxPrice:this.props.seekParameter.max_loanmny,
@@ -112,6 +110,8 @@ export default class FinanceSeekMoreScene extends BaseComponent{
                   <View style={styles.footView}>
                       <TouchableOpacity style={{width:width/2, flex:1,backgroundColor:fontAndColor.COLORA2, alignItems:'center',justifyContent:'center'}} activeOpacity={1}
                                         onPress={()=>{
+                                            this.minPriceInput &&  this.minPriceInput.setNativeProps({text:''});
+                                            this.maxPriceInput &&  this.maxPriceInput.setNativeProps({text:''});
                                             this.setState({
                                                 minPrice:'',
                                                 maxPrice:'',
@@ -232,6 +232,28 @@ export default class FinanceSeekMoreScene extends BaseComponent{
 
 class SeekHeadView extends Component{
 
+
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+            number:this.props.number
+        };
+      }
+
+    componentWillReceiveProps(newProps) {
+
+          this.setState({
+              number:newProps.number
+          })
+
+       this.input &&  this.input.setNativeProps({
+           text: newProps.number
+       });
+
+    }
+
     render(){
         return(
             <View style={styles.seekView}>
@@ -243,12 +265,11 @@ class SeekHeadView extends Component{
                         underlineColorAndroid='transparent'
                         keyboardType={'numbers-and-punctuation'}
                         style={styles.navigatorSousuoText}
-                        defaultValue={this.props.number?this.props.number:''}
+                        defaultValue={this.state.number?this.state.number:''}
                         placeholder={'请输入车架号后六位 / 借款编号'}
                         placeholderTextColor={fontAndColor.COLORA1}
                         onChangeText={(text)=>{this.props.onChangeText(text)}}/>
                 </View>
-
             </View>
         )
     }
