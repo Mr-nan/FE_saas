@@ -956,10 +956,6 @@ export default class FinanceSence extends BaseComponet {
         let  seekData = [];
         if(isSelect){
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 77003d049e716658054115957acd00f6701c5e6e
             if(type==0){
                 seekData = product_type_codeData;
               this.seekCurrentCode = this.seekParameter.product_type_code;
