@@ -16,7 +16,8 @@ import {
     Linking,
     TextInput,
     Animated,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Modal
 } from 'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -37,7 +38,8 @@ import List from './orderwuliu/list/List'
 import CityRegionScene from "../addressManage/CityRegionScene";
 import PlatformChoose from "./orderwuliu/pay/PlatformChoose";
 import TrustAccountContractScene from "../accountManage/trustAccount/TrustAccountContractScene";
-
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 
 export default class CarriagePriceInfoScene extends BaseComponent {
 
@@ -50,6 +52,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             senderInfo: null,
             receiverInfo: null,
             isChecked: true,
+            payShow:false
         }
 
         this.params = {
@@ -224,6 +227,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
                             clickCallBack={(state) => {
                                 this.params.needInvoice = state;
+                                this.loadData();
                             }}
                         />
 
@@ -330,7 +334,20 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={.8} onPress={() => {
                             if (this.verify()) {
-                                this.preserveOrder(2)
+
+                                StorageUtil.mGetItem(StorageKeyNames.LOGISTIC_ORDER_ALERT_SHOW, (data)=>{
+                                   if(data.code ==1){
+                                       if (data.result === 'undefined'){
+                                           this.setState({
+                                               payShow:true,
+                                           })
+                                       }else {
+                                           this.jixuzhifu()
+                                       }
+
+                                   }
+                                })
+
                             }
                             // this.state.priceData && this.setState({isShowCallUpView: true})
                         }}>
@@ -361,14 +378,133 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                                                               closePress={this._closeProvince}/>
                 }
 
+                <Modal
+                    ref='pay'
+                    animationType={"fade"}
+                    transparent={true}
+                    visible={this.state.payShow}
+
+                >
+                    <View
+                        style={{
+                            flex:1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: 'rgba(0,0,0,.3)'
+                        }}>
+                        <View style={{
+                            width: width - width / 4,
+                            height: Pixel.getPixel(125),
+                            backgroundColor: '#fff',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            paddingHorizontal:Pixel.getPixel(20),
+                            borderRadius:Pixel.getPixel(4)
+                        }}>
+                            <Text allowFontScaling={false} style={{
+                                textAlign: 'center', fontSize: Pixel.getPixel(14),
+                                marginTop: Pixel.getPixel(11), color: fontAndColor.COLORA1
+                            }}>
+                                {'请确认运单信息，支付后若要取消订单，请联系物流，且取消运单可能会产生其他费用'}
+                            </Text>
+                            <View
+                                style = {{flexDirection:'row',marginTop: Pixel.getPixel(16),}}
+                            >
+
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({
+                                        payShow:false
+                                    })
+                                    this.wozaikankan()
+                                }} activeOpacity={0.9} style={{
+                                    width:  Pixel.getPixel(70),
+                                    height: Pixel.getPixel(35),
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: 3,
+                                    borderWidth: 1,
+                                    borderColor: fontAndColor.COLORA1
+                                }}>
+                                    <Text allowFontScaling={false} style={{
+                                        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+                                        color: fontAndColor.COLORA1
+                                    }}>我在看看</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({
+                                        payShow:false
+                                    })
+                                    this.buzaitixing()
+                                }} activeOpacity={0.9} style={{
+                                    width:  Pixel.getPixel(70),
+                                    height: Pixel.getPixel(35),
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: 3,
+                                    borderWidth: 1,
+                                    borderColor: fontAndColor.COLORA1,
+                                    marginLeft:Pixel.getPixel(10)
+                                }}>
+                                    <Text allowFontScaling={false} style={{
+                                        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+                                        color: fontAndColor.COLORA1
+                                    }}>不在提醒</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({
+                                        payShow: false
+                                    });
+                                    this.jixuzhifu()
+                                }} activeOpacity={0.9} style={{
+                                    width: Pixel.getPixel(70),
+                                    height: Pixel.getPixel(35),
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: 3,
+                                    borderWidth: 1,
+                                    borderColor: fontAndColor.COLORB0,
+                                    backgroundColor:fontAndColor.COLORB0,
+                                    marginLeft:Pixel.getPixel(10)
+                                }}>
+                                    <Text allowFontScaling={false} style={{
+                                        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+                                        color: 'white'
+                                    }}>继续支付</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+
+
+
             </View>
 
         )
     }
 
+    wozaikankan = ()=>{
+        this.setState({
+            payShow:false,
+        })
+    }
+
+    buzaitixing=()=>{
+        StorageUtil.mSetItem(StorageKeyNames.LOGISTIC_ORDER_ALERT_SHOW, 'false');
+    }
+    jixuzhifu=(order)=>{
+        this.preserveOrder(2)
+    }
+
+
     _showModal = (bool) => {
         this.props.showModal(bool)
     }
+
     _closeProvince = () => {
         this.setState({
             cityStatus: false,
@@ -471,13 +607,13 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
     loadData = () => {
 
+        this.props.showModal(true)
+
         this.params.invoice_data = this.stringify(this.params.invoice_data);
         this.params.model_data = this.stringify(this.params.model_data);
 
         Net.request(AppUrls.ORDER_LOGISTICS_QUERY, 'post', this.params).then((response) => {
-
-            console.log('loadData after')
-            console.log(this.params.model_data)
+            this.props.showModal(false);
             let data = response.mjson.data;
             this.setState({
                 renderPlaceholderOnly: 'success',
@@ -485,7 +621,7 @@ export default class CarriagePriceInfoScene extends BaseComponent {
             });
 
         }, (error) => {
-
+            this.props.showModal(false);
             this.setState({
                 renderPlaceholderOnly: 'failure',
             });
@@ -576,6 +712,10 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                 this.props.showToast('请填写纳税人识别号');
                 return false;
             }
+
+
+
+
             if (this.isEmpty(this.params.invoice_data.province) || this.isEmpty(this.params.invoice_data.city) || this.isEmpty(this.params.invoice_data.district)) {
                 this.props.showToast('请选择区域');
                 return false;
@@ -925,12 +1065,36 @@ class InvoiceMarkItem extends Component {
                     ref={'tax_id'}
                     title={'纳税人识别号'}
                     textPlaceholder={'18位以内不包含汉字的识别号'}
-                    keyboardType={'default'}
+                    keyboardType={'numeric'}
                     separator={false}
                     onChangeText={(text) => {
-                        this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
-                        this.props.params.invoice_data.invoice_code = text;
-                        this.state.tax_num = text
+
+                        let re = /^[0-9]+$/
+                        let flag = re.test(text)
+
+                        console.log(text)
+                        console.log(flag)
+
+                        if(flag){
+
+                            text = text.length>18? text.substr(0,18):text;
+                            this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
+                            this.props.params.invoice_data.invoice_code = text;
+                            this.state.tax_num = text
+                            return text;
+                        }else {
+                            if(text === ''){
+                                this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
+                                this.props.params.invoice_data.invoice_code = text;
+                                this.state.tax_num = text
+                                return text;
+                            }else {
+
+                                this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
+                                return this.props.params.invoice_data.invoice_code
+                            }
+                        }
+
                     }}
                 />
                 <View style={{paddingVertical: Pixel.getPixel(8)}}>

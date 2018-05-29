@@ -126,8 +126,6 @@ export default class OpenAccountBaseScene extends BaseComponent {
                             textPlaceholder={''}
                             keyboardType={'default'}
                             onChangeText={(text) => {
-                                console.log(text)
-                                console.log(typeof text)
 
                                 let re = /^[\u4e00-\u9fa5a-zA-Z]+$/;
                                 let flag = re.test(text);

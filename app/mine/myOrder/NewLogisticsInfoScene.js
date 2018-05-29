@@ -251,7 +251,7 @@ class LogisticsInfoView extends BaseComponent {
                 <View style={{
                     flex: 1,
                     paddingHorizontal: Pixel.getPixel(15),
-                    paddingVertical: Pixel.getPixel(17),
+                    paddingVertical: Pixel.getPixel(15),
                     flexDirection: 'row',
                     alignItems: 'center',
                     backgroundColor: 'white',
@@ -263,10 +263,14 @@ class LogisticsInfoView extends BaseComponent {
                         <Text style={{
                             color: fontAndColor.COLORA1,
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                            marginVertical: Pixel.getPixel(10)
+                            marginTop: Pixel.getPixel(10)
                         }}>{'车架号：'+ data.tms_vin}</Text>
-                        <Text
-                            style={{color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{data.logistics_data.nodeDesc +' | '+ data.logistics_data.nodeTime}</Text>
+
+                        {
+                            this.isNull(data.logistics_data)?null :<Text
+                                style={{color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop: Pixel.getPixel(10)}}>{data.logistics_data.nodeDesc +' | '+ data.logistics_data.nodeTime}</Text>
+                        }
+
                     </View>
                     <Image source={require('../../../images/financeImages/celljiantou.png')}/>
 

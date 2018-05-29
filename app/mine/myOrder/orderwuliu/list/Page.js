@@ -462,13 +462,18 @@ export default class FlowAllPage extends BaseComponent {
 
     payOrder = (order)=>{
         this.willPageOrder = order;
-        if (typeof StorageUtil.mGetItem(StorageKeyNames.LOGISTIC_ORDER_ALERT_SHOW) === 'undefined'){
-            this.setState({
-                payShow:true,
-            })
-        }else {
-            this.jixuzhifu(order)
-        }
+
+        StorageUtil.mGetItem(StorageKeyNames.LOGISTIC_ORDER_ALERT_SHOW, (data)=>{
+            if(data.code ==1){
+                if (data.result === 'undefined'){
+                    this.setState({
+                        payShow:true,
+                    })
+                }else {
+                    this.jixuzhifu(order)
+                }
+            }
+        })
     }
 
     toCarDetial = (order,car)=>{
