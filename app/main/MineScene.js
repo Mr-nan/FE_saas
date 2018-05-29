@@ -337,6 +337,12 @@ export default class MineScene extends BaseComponent {
                 "name": name
                 , "id": id
             },);
+        }else if (id == 77) { //赎车保证金
+            Car[1].cars.push({
+                "icon": require('../../images/mine/mine_scbjz.png'),
+                "name": name
+                , "id": id
+            },);
         } else if (id == 53) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/shoucangjilu.png'),
@@ -725,6 +731,13 @@ export default class MineScene extends BaseComponent {
             case '积分管理':
                 break;
             case 51:
+                this.navigatorParams.name = 'ContractManageScene'
+                this.navigatorParams.component = ContractManageScene
+                this.navigatorParams.params = {
+                    from: 'xs'
+                }
+                break;
+            case 77://赎车保证金
                 this.navigatorParams.name = 'ContractManageScene'
                 this.navigatorParams.component = ContractManageScene
                 this.navigatorParams.params = {
