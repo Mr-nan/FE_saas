@@ -88,6 +88,28 @@ export default class Result extends BaseComponent {
         return t;
     }
 
+    backPage = ()=>{
+        if(this.props.from === 'offLine'){
+
+            const navi = this.props.navigator;
+            let route = navi.getCurrentRoutes();
+
+            for(let i = 0; i<route.length; i++){
+                if (route[i].name === "List"){
+                    this.backToRoute('List')
+                    return;
+                }
+            }
+            this.toNextPage({
+                name:'List',
+                component:List,
+                params:{}
+            })
+        }else {
+
+        }
+    }
+
     render() {
         return (
             <View style={styles.root}>
@@ -194,28 +216,8 @@ export default class Result extends BaseComponent {
                         parentStyle={styles.next_parentStyle}
                         childStyle={styles.next_childStyle}
                         mOnPress={() => {
+                            this.backPage();
 
-                            if(this.props.from === 'offLine'){
-
-                                const navi = this.props.navigator;
-                                let route = navi.getCurrentRoutes();
-
-                                for(let i = 0; i<route.length; i++){
-                                    if (route[i].name === "List"){
-                                        this.backToRoute('List')
-                                       return;
-                                    }
-                                }
-
-                                this.toNextPage({
-                                    name:'List',
-                                    component:List,
-                                    params:{}
-                                })
-                            }else {
-
-
-                            }
                         }}/>
 
 

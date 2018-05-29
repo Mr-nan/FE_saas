@@ -336,8 +336,9 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             if (this.verify()) {
 
                                 StorageUtil.mGetItem(StorageKeyNames.LOGISTIC_ORDER_ALERT_SHOW, (data)=>{
+                                    console.log(data)
                                    if(data.code ==1){
-                                       if (data.result === 'undefined'){
+                                       if (data.result == null){
                                            this.setState({
                                                payShow:true,
                                            })
@@ -1069,7 +1070,7 @@ class InvoiceMarkItem extends Component {
                     separator={false}
                     onChangeText={(text) => {
 
-                        let re = /^[0-9]+$/
+                        let re = /^[0-9a-zA-Z]+$/
                         let flag = re.test(text)
 
                         console.log(text)

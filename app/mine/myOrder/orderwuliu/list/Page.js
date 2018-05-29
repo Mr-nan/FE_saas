@@ -465,7 +465,7 @@ export default class FlowAllPage extends BaseComponent {
 
         StorageUtil.mGetItem(StorageKeyNames.LOGISTIC_ORDER_ALERT_SHOW, (data)=>{
             if(data.code ==1){
-                if (data.result === 'undefined'){
+                if (data.result === null){
                     this.setState({
                         payShow:true,
                     })
@@ -646,6 +646,11 @@ export class TransportOrder extends Component{
                 {
                     this.props.data.status === 1?
                         <TouchableOpacity activeOpacity={1} onPress={() => {
+
+                            if(this.props.data.is_verify ==1){
+                                return;
+                            }
+
                             this.props.pay(this.props.data)
                         }}>
                             <View style={{
@@ -661,7 +666,7 @@ export class TransportOrder extends Component{
                                 <Text style={{
                                     color: 'white',
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
-                                }}>支付</Text>
+                                }}>{this.props.data.is_verify == 1?'审核中':'支付'}</Text>
                             </View>
                         </TouchableOpacity>:null
 

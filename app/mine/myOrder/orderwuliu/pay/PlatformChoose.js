@@ -44,6 +44,23 @@ export  default  class  PlatformChoose extends BaseComponent{
 
     }
 
+    backPage = ()=>{
+
+        const navi = this.props.navigator;
+        let route = navi.getCurrentRoutes();
+        for(let i = 0; i<route.length; i++){
+            if (route[i].name === 'List'){
+                navi.popToRoute(route[i])
+                return;
+            }
+        }
+        navi.replacePreviousAndPop({
+            name:'List',
+            component:List,
+            params:{}
+        })
+    }
+
 
     render(){
         return(
