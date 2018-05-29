@@ -620,7 +620,7 @@ export class TransportOrder extends Component{
                 justifyContent:'flex-end'
             }}>
                 {
-                    (this.props.data.status === 1)?<TouchableOpacity activeOpacity={1} onPress={() => {
+                    (this.props.data.status === 1&&this.props.data.is_verify==0)?<TouchableOpacity activeOpacity={1} onPress={() => {
                         this.props.cancel(this.props.data)
                     }}>
                         <View style={{
