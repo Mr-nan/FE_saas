@@ -316,8 +316,8 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             }
                         }}>
                             <View style={{
-                                width: Pixel.getPixel(100.5),
-                                height: Pixel.getPixel(32.5),
+                                width: Pixel.getPixel(90),
+                                height: Pixel.getPixel(30),
                                 backgroundColor: 'white',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -345,7 +345,6 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                                        }else {
                                            this.jixuzhifu()
                                        }
-
                                    }
                                 })
 
@@ -353,8 +352,8 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                             // this.state.priceData && this.setState({isShowCallUpView: true})
                         }}>
                             <View style={{
-                                width: Pixel.getPixel(100.5),
-                                height: Pixel.getPixel(32.5),
+                                width: Pixel.getPixel(90),
+                                height: Pixel.getPixel(30),
                                 backgroundColor: this.state.priceData ? fontAndColor.COLORB0 : fontAndColor.COLORA3,
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -714,7 +713,26 @@ export default class CarriagePriceInfoScene extends BaseComponent {
                 return false;
             }
 
+            if(!(this.params.invoice_data.invoice_code.length==15||this.params.invoice_data.invoice_code.length==18||this.params.invoice_data.invoice_code.length==20)){
+                this.props.showToast('纳税人识别号格式有误');
+                return false;
+            }
+            let re = /^[a-zA-Z]+$/
+            let flag = re.test(this.params.invoice_data.invoice_code);
+            if (flag){
+                this.props.showToast('纳税人识别号不可以为纯字母');
+                return false;
+            }
 
+            if(this.params.invoice_data.invoice_code.length==18){
+
+                re = /[iozsvIOZSV]/
+                flag = this.params.invoice_data.invoice_code.match(re)
+                if (flag){
+                    this.props.showToast('纳税人识别号包含非法字母');
+                    return false;
+                }
+            }
 
 
             if (this.isEmpty(this.params.invoice_data.province) || this.isEmpty(this.params.invoice_data.city) || this.isEmpty(this.params.invoice_data.district)) {
@@ -1065,7 +1083,7 @@ class InvoiceMarkItem extends Component {
                 <InformationInputItem
                     ref={'tax_id'}
                     title={'纳税人识别号'}
-                    textPlaceholder={'18位以内不包含汉字的识别号'}
+                    textPlaceholder={'20位以内不包含汉字的识别号'}
                     keyboardType={'numeric'}
                     separator={false}
                     onChangeText={(text) => {
@@ -1078,7 +1096,7 @@ class InvoiceMarkItem extends Component {
 
                         if(flag){
 
-                            text = text.length>18? text.substr(0,18):text;
+                            text = text.length>20? text.substr(0,20):text;
                             this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
                             this.props.params.invoice_data.invoice_code = text;
                             this.state.tax_num = text

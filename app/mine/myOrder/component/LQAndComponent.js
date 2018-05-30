@@ -5,6 +5,7 @@ import React, {Component, PureComponent} from 'react';
 import {
     StyleSheet,
     Text,
+    TextInput,
     View,
     Image,
     ScrollView,
@@ -59,7 +60,8 @@ export  default class LQAndComponent extends PureComponent {
                         <TouchableOpacity onPress={()=>{
                             if(this.state.number>1){
                                 this.setState({number:this.state.number-1},()=>{
-                                this.props.changeNumber(this.state.number);
+                                    this.props.changeNumber(this.state.number);
+
                             });
                             }
                         }} activeOpacity={0.8}
@@ -72,17 +74,67 @@ export  default class LQAndComponent extends PureComponent {
                         </TouchableOpacity>
                         <View style={{flex:3,justifyContent:'center',alignItems:'center',
                         borderTopWidth:1,borderBottomWidth:1,borderColor:'#d8d8d8'}}>
-                            <Text style={{fontSize: Pixel.getFontPixel(14),color:'#000'}}>
-                                {this.state.number}
-                            </Text>
+                            <TextInput
+                                underlineColorAndroid={"#00000000"}
+                                keyboardType = {'numeric'}
+                                    style={{fontSize:14,flex:1, textAlign:'center'}}
+                                value={String(this.state.number)}
+                                onChangeText={(text) => {
+
+                                    console.log(text)
+                                    console.log(typeof text)
+
+
+                                    let re = /^[0-9]+$/;
+                                    let flag = re.test(text);
+
+                                    if(flag){
+                                        if(parseInt(text)>999){
+                                            text = '999'
+                                        }
+
+                                        this.setState({
+                                            number: text
+                                        },()=>{
+                                            this.props.changeNumber(text);
+                                        });
+                                    }else {
+                                        if(text == ''){
+                                            this.setState({
+                                                number:text
+                                            },()=>{
+                                                this.props.changeNumber(text);
+                                            })
+                                        }else {
+                                            this.props.changeNumber(this.state.number);
+                                        }
+                                    }
+                                }}
+
+                                onBlur={()=>{
+                                    if(this.state.number == ''){
+                                        this.setState({
+                                            number: 1
+                                        },()=>{
+                                            this.props.changeNumber(1);
+                                        });
+                                    }
+                                }}
+                            />
+                            {/*<Text style={{fontSize: Pixel.getFontPixel(14),color:'#000'}}>*/}
+                                {/*{this.state.number}*/}
+                            {/*</Text>*/}
                         </View>
                         <TouchableOpacity onPress={()=>{
 
-                            if (this.state.number>=99){
+                            if (this.state.number>=999){
                                 return;
                             }
                             this.setState({number:this.state.number+1},()=>{
+
                                 this.props.changeNumber(this.state.number);
+
+
                             });
                         }} activeOpacity={0.8}
                                           style={{flex:2,justifyContent:'center',alignItems:'center',
