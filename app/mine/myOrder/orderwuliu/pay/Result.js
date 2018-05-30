@@ -216,6 +216,10 @@ export default class Result extends BaseComponent {
                         parentStyle={styles.next_parentStyle}
                         childStyle={styles.next_childStyle}
                         mOnPress={() => {
+
+                            if(this.props.callBack){
+                                this.props.callBack()
+                            }
                             this.backPage();
 
                         }}/>

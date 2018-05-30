@@ -173,7 +173,8 @@ export default class UploadProof extends BaseComponent {
                 component: Result,
                 params: {
                     order:this.props.order,
-                    from:'offLine'
+                    from:'offLine',
+                    callBack:this.props.callBack,
                 }
             });
 

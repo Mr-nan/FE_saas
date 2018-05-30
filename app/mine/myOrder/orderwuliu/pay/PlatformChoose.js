@@ -220,6 +220,7 @@ export  default  class  PlatformChoose extends BaseComponent{
                 component: Transfer,
                 params: {
                     order:this.props.order,
+                    callBack:this.props.callBack,
                 }
             });
         }

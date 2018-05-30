@@ -363,7 +363,7 @@ export default class FlowAllPage extends BaseComponent {
             <TransportOrder
                 data={movie}
                 pay={this.payOrder}
-                cancel={this.cancelOrder}
+                cancel={this.cancel}
                 toOrderDetialClick={this.toOrderDetial}
                 onCarClick={this.toCarDetial}
             />
@@ -413,7 +413,7 @@ export default class FlowAllPage extends BaseComponent {
 
     }
 
-    cancelOrder= (order)=>{
+    cancel= (order)=>{
         this.setState({
             cancelShow:true
         })
@@ -456,6 +456,7 @@ export default class FlowAllPage extends BaseComponent {
             component:PlatformChoose,
             params:{
                 order:order,
+                callBack:this.callBack,
             }
         })
     }
@@ -501,7 +502,9 @@ export default class FlowAllPage extends BaseComponent {
         })
     }
 
-
+    callBack =()=>{
+        this.loadData(this.currentPage)
+    }
 
 }
 

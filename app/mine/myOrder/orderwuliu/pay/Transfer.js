@@ -196,6 +196,7 @@ export default class Transfer extends BaseComponent {
                                 component: UploadProof,
                                 params: {
                                     order:this.props.order,
+                                    callBack:this.props.callBack,
                                 }
                             });
 
