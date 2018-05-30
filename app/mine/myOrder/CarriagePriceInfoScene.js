@@ -1110,7 +1110,7 @@ class InvoiceMarkItem extends Component {
                             }else {
 
                                 this.props.params.invoice_data = this.parse(this.props.params.invoice_data)
-                                return this.props.params.invoice_data.invoice_code
+                                return typeof this.props.params.invoice_data.invoice_code === 'undefined'?'':this.props.params.invoice_data.invoice_code;
                             }
                         }
 

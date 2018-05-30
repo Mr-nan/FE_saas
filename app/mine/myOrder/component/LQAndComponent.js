@@ -55,7 +55,7 @@ export  default class LQAndComponent extends PureComponent {
                     </Text>
                 </View>
                 <View style={{flex:1,alignItems: 'flex-end',justifyContent: 'center'}}>
-                    <View style={{width:Pixel.getPixel(92),height:Pixel.getPixel(27),
+                    <View style={{width:Pixel.getPixel(100),height:Pixel.getPixel(27),
                     flexDirection: 'row'}}>
                         <TouchableOpacity onPress={()=>{
                             if(this.state.number>1){
@@ -73,11 +73,11 @@ export  default class LQAndComponent extends PureComponent {
 
                         </TouchableOpacity>
                         <View style={{flex:3,justifyContent:'center',alignItems:'center',
-                        borderTopWidth:1,borderBottomWidth:1,borderColor:'#d8d8d8'}}>
+                        borderTopWidth:1,borderBottomWidth:1,borderColor:'#d8d8d8', flexDirection:'row'}}>
                             <TextInput
                                 underlineColorAndroid={"#00000000"}
                                 keyboardType = {'numeric'}
-                                    style={{fontSize:14,flex:1, textAlign:'center'}}
+                                    style={{fontSize:14 ,flex:1, textAlign:'center', padding:0,}}
                                 value={String(this.state.number)}
                                 onChangeText={(text) => {
 
@@ -112,7 +112,17 @@ export  default class LQAndComponent extends PureComponent {
                                 }}
 
                                 onBlur={()=>{
-                                    if(this.state.number == ''){
+                                    if(this.state.number == ''||parseInt(this.state.number)<=0){
+                                        this.setState({
+                                            number: 1
+                                        },()=>{
+                                            this.props.changeNumber(1);
+                                        });
+                                    }
+                                }}
+
+                                onSubmitEditing={()=>{
+                                    if(this.state.number == ''||parseInt(this.state.number)<=0){
                                         this.setState({
                                             number: 1
                                         },()=>{
