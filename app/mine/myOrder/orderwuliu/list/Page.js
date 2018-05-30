@@ -503,7 +503,7 @@ export default class FlowAllPage extends BaseComponent {
     }
 
     callBack =()=>{
-        this.loadData(this.currentPage)
+        this.refreshingData()
     }
 
 }
