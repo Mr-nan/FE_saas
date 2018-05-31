@@ -23,6 +23,10 @@ export  default class LQInputComponent extends PureComponent {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            value:this.props.money,
+        }
     }
 
 
@@ -41,9 +45,38 @@ export  default class LQInputComponent extends PureComponent {
                         style={styles.textInput}
                         maxLength={15}
                         defaultValue={this.props.money}
+                        value={this.state.value}
                         underlineColorAndroid='transparent'
                         ref={(input) => {this.instructionsInput = input}}
-                        onChangeText={(text)=>{this.props.inputMoney(text)}}
+                        onChangeText={(text)=>{
+
+                            let re = /^[0-9]*[\.]?[0-9]{0,2}$/
+                            let flag  = re.test(text);
+
+                            console.log(flag);
+
+                            if(flag){
+
+                                if(text === '.'){
+                                    text = '0.'
+                                }
+
+                                if(text === '00'){
+                                    text = '0'
+                                }
+
+                                this.setState({
+                                    value:text,
+                                }, ()=>{
+                                    this.props.inputMoney(text)
+                                })
+                            }else {
+                                this.setState({
+                                    value:this.state.value,
+                                })
+                            }
+
+                        }}
 
                     />
                     <Text style={{fontSize: Pixel.getPixel(12),color:'#90A1B5'}}>万元</Text>
