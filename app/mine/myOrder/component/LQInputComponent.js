@@ -77,6 +77,13 @@ export  default class LQInputComponent extends PureComponent {
                             }
 
                         }}
+                        onSubmitEditing={()=>{
+                            this.trim();
+
+                        }}
+                        onBlur={()=>{
+                           this.trim();
+                        }}
 
                     />
                     <Text style={{fontSize: Pixel.getPixel(12),color:'#90A1B5'}}>万元</Text>
@@ -85,6 +92,17 @@ export  default class LQInputComponent extends PureComponent {
         );
     }
 
+
+    trim = ()=>{
+        if(this.state.value.substr(this.state.value.length-1,1) === '.'){
+            this.state.value = this.state.value.substr(0,this.state.value.length-1)
+            this.setState({
+                value:this.state.value
+            }, ()=>{
+                this.props.inputMoney(this.state.value)
+            })
+        }
+    }
 
 }
 
