@@ -60,6 +60,7 @@ let firstType = '-1';
 let lastType = '-1';
 let haveOrder = 0;
 let un_pay_count = 0;
+let noPayNumber = 0;
 const GetPermission = new GetPermissionUtil();
 let componyname = '';
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
@@ -146,6 +147,7 @@ export default class MineScene extends BaseComponent {
             lastType = '-1';
             haveOrder = 0;
             un_pay_count = 0;
+            noPayNumber = 0;
             componyname = '';
 
             this.renzhengData = {
@@ -383,6 +385,7 @@ export default class MineScene extends BaseComponent {
         }
     }
     getData = () => {
+        this.getUnpay_num();
         Car = [
             {
                 "cars": [
@@ -550,34 +553,7 @@ export default class MineScene extends BaseComponent {
             status:'0'
         };
         request(url, 'post', maps).then((response) => {
-            let responses = {
-                "token": "",
-                "code": 1,
-                "msg": "ok",
-                "data": {
-                    "request": {},
-                    "response": [
-                        2
-                    ]
-                },
-                "trace": {
-                    "source_url": "http://",
-                    "cost_time": "0.5554s",
-                    "cost_mem": "1 B",
-                    "server_ip": "",
-                    "server_version": "5.6.32",
-                    "file_max_size": "2M",
-                    "post_max_size": "8M",
-                    "source_ip": "0.0.0.0",
-                    "sql": [
-                        "SHOW COLUMNS FROM `dms_merge` [ RunTime:1,527,227,876.4613s ]",
-                        "SHOW COLUMNS FROM `dms_merge` [ RunTime:-0.0001s ]"
-                    ]
-                }
-            }
-            this.setState({
-                noPayNumber: responses.data,
-            });
+            noPayNumber = parseInt(response.mjson.data);
             // this.isLogistics = response.mjson.data.a;
             // this.singleCar = response.mjson.data.b;
         }, (error) => {
@@ -606,7 +582,6 @@ export default class MineScene extends BaseComponent {
             renderPlaceholderOnly: 'loading',
         });
         this.getData();
-        this.getUnpay_num();
     }
 
     refreshingData = () => {
@@ -846,6 +821,18 @@ export default class MineScene extends BaseComponent {
                             justifyContent:'center',
                             borderRadius: 14}}>
                             <Text style={{color:'#FC6855', fontSize:12}}> {un_pay_count + '笔待付'}</Text>
+                        </View> : <View/>}
+
+                    {rowData.name == '合同管理' && noPayNumber > 0 ?
+                        <View style={{
+                            marginRight: Pixel.getPixel(15),
+                            width: Pixel.getPixel(65),
+                            height: Pixel.getPixel(25),
+                            backgroundColor: '#FDEEEB',
+                            alignItems:'center',
+                            justifyContent:'center',
+                            borderRadius: 14}}>
+                            <Text style={{color:'#FC6855', fontSize:12}}> {noPayNumber + '笔待付'}</Text>
                         </View> : <View/>}
                     <Image source={cellJianTou} style={styles.rowjiantouImage}/>
                 </TouchableOpacity>
