@@ -580,6 +580,7 @@ export default class FinanceSence extends BaseComponet {
 
             return (
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                    console.log('==========',nextPage);
                     if (nextPage === CGDDetailSence) {//采购贷
                         if (movie.logic_status == '21') {//审核未通过
                             this.navigatorParams.name = 'CGDLendScenes';
