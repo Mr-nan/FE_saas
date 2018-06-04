@@ -4,6 +4,8 @@ import {
     Text,
     StyleSheet,
 } from 'react-native';
+import  PixelUtil from '../utils/PixelUtil';
+let Pixel = new PixelUtil();
 class LoadMoreFooter extends Component {
     constructor(props) {
         super(props);
@@ -26,7 +28,7 @@ const styles = StyleSheet.create({
     },
     footerTitle: {
         marginLeft: 10,
-        fontSize: 15,
+        fontSize:Pixel.getPixel(12) ,
         color: 'gray'
     }
 })

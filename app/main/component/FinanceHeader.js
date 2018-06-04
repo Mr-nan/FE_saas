@@ -29,22 +29,18 @@ export default class FinanceHeader extends PureComponent {
             topWidth: new Animated.Value(Pixel.getPixel(330)),
             topHeight: new Animated.Value(Pixel.getPixel(170)),
             topLeft: new Animated.Value(Pixel.getPixel(22)),
-            topTop: new Animated.Value(Pixel.getTitlePixel(40)),
+            topTop: new Animated.Value(Pixel.getPixel(5)),
             bottomWidth: new Animated.Value(Pixel.getPixel(306)),
             bottomHeight: new Animated.Value(Pixel.getPixel(35)),
             bottomLeft: new Animated.Value(Pixel.getPixel(35)),
-            bottomTop: new Animated.Value(Pixel.getTitlePixel(196))
+            bottomTop: new Animated.Value(Pixel.getPixel(161))
         };
     }
 
-    componentWillMount() {
-
-    }
 
     render() {
-        console.log('------',global.ISCOMPANY==0);
         return (
-            <View style={{backgroundColor: '#fff', width: width, height: Pixel.getTitlePixel(235)}}>
+            <View style={{backgroundColor: 'white', width: width, height: Pixel.getPixel(215)}}>
                 <Animated.Image style={{
                     width: this.state.topWidth,
                     height: this.state.topHeight, resizeMode: 'stretch',
@@ -87,58 +83,56 @@ export default class FinanceHeader extends PureComponent {
     }
 
     changeBottom = (from) => {
-        console.log(this.state.topWidth._value + '------------' + from);
         if (this.state.topWidth._value == Pixel.getPixel(306) && from == 1) {
-            console.log('aaaa');
             Animated.parallel([
                 Animated.timing(          // Uses easing functions
                     this.state.topWidth,    // The value to drive
                     {
                         toValue: Pixel.getPixel(330),
-                        duration: 700
+                        duration: 600
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.topHeight,    // The value to drive
                     {
                         toValue: Pixel.getPixel(170),
-                        duration: 720
+                        duration: 620
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.topLeft,    // The value to drive
                     {
                         toValue: Pixel.getPixel(22),
-                        duration: 700
+                        duration: 600
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.topTop,    // The value to drive
                     {
-                        toValue: Pixel.getTitlePixel(40),
-                        duration: 700
+                        toValue: Pixel.getPixel(5),
+                        duration: 600
                     },
                 ),
                 Animated.timing(          // Uses easing functions
                     this.state.bottomWidth,    // The value to drive
                     {
                         toValue: Pixel.getPixel(306),
-                        duration: 700
+                        duration: 600
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.bottomHeight,    // The value to drive
                     {
                         toValue: Pixel.getPixel(35),
-                        duration: 720
+                        duration: 620
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.bottomLeft,    // The value to drive
                     {
                         toValue: Pixel.getPixel(35),
-                        duration: 700
+                        duration: 600
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.bottomTop,    // The value to drive
                     {
-                        toValue: Pixel.getTitlePixel(196),
-                        duration: 700
+                        toValue: Pixel.getPixel(161),
+                        duration: 600
                     },
                 )
             ]).start();
@@ -151,50 +145,50 @@ export default class FinanceHeader extends PureComponent {
                     this.state.topWidth,    // The value to drive
                     {
                         toValue: Pixel.getPixel(306),
-                        duration: 700
+                        duration: 600
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.topHeight,    // The value to drive
                     {
                         toValue: Pixel.getPixel(35),
-                        duration: 720
+                        duration: 620
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.topLeft,    // The value to drive
                     {
                         toValue: Pixel.getPixel(35),
-                        duration: 700
+                        duration: 600
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.topTop,    // The value to drive
                     {
-                        toValue: Pixel.getTitlePixel(196),
-                        duration: 700
+                        toValue: Pixel.getPixel(161),
+                        duration: 600
                     },
                 ),
                 Animated.timing(          // Uses easing functions
                     this.state.bottomWidth,    // The value to drive
                     {
                         toValue: Pixel.getPixel(330),
-                        duration: 700
+                        duration: 600
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.bottomHeight,    // The value to drive
                     {
                         toValue: Pixel.getPixel(170),
-                        duration: 720
+                        duration: 620
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.bottomLeft,    // The value to drive
                     {
                         toValue: Pixel.getPixel(22),
-                        duration: 700
+                        duration: 600
                     },
                 ), Animated.timing(          // Uses easing functions
                     this.state.bottomTop,    // The value to drive
                     {
-                        toValue: Pixel.getTitlePixel(40),
-                        duration: 700
+                        toValue: Pixel.getPixel(5),
+                        duration: 600
                     },
                 )
             ]).start();

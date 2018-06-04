@@ -39,7 +39,7 @@ import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import Picker from 'react-native-picker';
 
-const PostData = {
+let PostData = {
     dateLimit: '',
     rate: '',
     loan_life_type: '',
@@ -186,9 +186,9 @@ export default class SingelCarSence extends BaseComponent {
             this.props.showToast('借款金额范围为' + showData.maxMoney)
         }
         if (infoComolete) {
-
+            // api: apis.APPLY_LOAN,
             let maps = {
-                api: apis.APPLY_LOAN,
+                api: apis.ACCOUNT_APPLY_LOAN,
                 apply_type: PostData.apply_type,
                 loan_mny: PostData.loan_mny,
                 remark: PostData.remark,

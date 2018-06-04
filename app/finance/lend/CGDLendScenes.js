@@ -345,9 +345,9 @@ export  default  class CGDLendScenes extends BaseComponent {
             let carIdList =tempCarList.join(',')
             let tempOBDState=this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isOBD;
             let tempCarinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isCarinvoice;
-
+             // api: apis.APPLY_LOAN,
             let maps = {
-                api: apis.APPLY_LOAN,
+                api: apis.ACCOUNT_APPLY_LOAN,
                 apply_type: PostData.apply_type,
                 isobd: tempOBDState,
                 isinvoice: tempCarinvoice,

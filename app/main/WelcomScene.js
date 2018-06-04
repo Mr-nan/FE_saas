@@ -65,19 +65,19 @@ export  default class WelcomScene extends BaseComponent {
                 >
 
                     <Image style={{resizeMode:'stretch',width:width,flex:1}}
-                           source={require('../../images/welcomFirst.jpg')}
+                           source={require('../../images/welcomFirst1.jpg')}
                            tabLabel="ios-paper1"/>
 
                     <Image style={{resizeMode:'stretch',width:width,flex:1}}
-                           source={require('../../images/welcomSecond.jpg')}
+                           source={require('../../images/welcomSecond1.jpg')}
                            tabLabel="ios-paper2"/>
 
                     <Image style={{resizeMode:'stretch',width:width,flex:1}}
-                           source={require('../../images/welcomThird.jpg')}
+                           source={require('../../images/welcomThird1.jpg')}
                            tabLabel="ios-paper3"/>
                     <View style={{flex:1}}>
                         <Image style={{resizeMode:'stretch',width:width,flex:1}}
-                               source={require('../../images/welcomFourth.jpg')}
+                               source={require('../../images/welcomFourth1.jpg')}
                                tabLabel="ios-paper4"/>
                         <TouchableOpacity onPress={()=>{
                              StorageUtil.mSetItem(KeyNames.FIRST_INTO,'false');
