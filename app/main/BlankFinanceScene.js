@@ -24,7 +24,7 @@ import * as Urls from '../constant/appUrls';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 // import FinanceScene from './FinanceScene'
-import FinanceScene from './NewFinanceScene'
+import FinanceScene from './FinanceScene'
 import NonCreditScene from './NonCreditScene'
 import FinanceCreditApplyScene from './FinanceCreditApplyScene'
 import SQLiteUtil from "../utils/SQLiteUtil";

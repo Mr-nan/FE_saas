@@ -28,14 +28,16 @@ export default class CarInfoNavigationView extends Component {
         this.state = {
 
             navigationBackgroundColor:null,
+            navigationTitleColor:null,
 
         };
       }
 
-      setNavigationBackgroindColor=(color)=>{
+      setNavigationBackgroindColor=(color,titleColor)=>{
 
           this.setState({
               navigationBackgroundColor:color,
+              navigationTitleColor:titleColor,
           });
       }
 
@@ -50,7 +52,7 @@ export default class CarInfoNavigationView extends Component {
                                       onPress={backIconClick}>
                     {backIconClick && <Image style={styles.backIcon} source={require('../../images/mainImage/navigatorBack.png')}/>}
                      </TouchableOpacity>
-                    <Text allowFontScaling={false}  style={[styles.titleText,titleStyle]}>{title}</Text>
+                    <Text allowFontScaling={false}  style={[styles.titleText,titleStyle,this.state.navigationTitleColor && {color:this.state.navigationTitleColor}]}>{title}</Text>
                     <View style={styles.imageFoot}>
                         {
                             renderRihtFootView && renderRihtFootView()

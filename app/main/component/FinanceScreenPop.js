@@ -7,6 +7,7 @@ import {
     Image,
     StyleSheet,
     Dimensions,
+
 } from 'react-native';
 
 let {height, width} = Dimensions.get('window');

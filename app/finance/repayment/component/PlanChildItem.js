@@ -39,34 +39,34 @@ export default class PlanItem extends PureComponent {
         }
         if (movie.type === '1') {
             count = 2;
-            this.buttonParams.parentStyle.push({borderColor: fontAndColor.COLORB4});
-            this.buttonParams.childStyle.push({color: fontAndColor.COLORB4});
-            this.buttonParams.content = "库融";
+            this.buttonParams.parentStyle.push({backgroundColor: Pixel.getProductColor(4)});
+            this.buttonParams.childStyle.push({color: '#ffffff'});
+            this.buttonParams.content = "库";
         } else if (movie.type === '2') {
             count = 3;
-            this.buttonParams.parentStyle.push({borderColor: fontAndColor.COLORB0});
-            this.buttonParams.childStyle.push({color: fontAndColor.COLORB0});
-            this.buttonParams.content = "单车";
+            this.buttonParams.parentStyle.push({backgroundColor: Pixel.getProductColor(2)});
+            this.buttonParams.childStyle.push({color: '#ffffff'});
+            this.buttonParams.content = "单";
         } else if (movie.type === '3') {
             count = 2;
-            this.buttonParams.parentStyle.push({borderColor: fontAndColor.COLORB1});
-            this.buttonParams.childStyle.push({color: fontAndColor.COLORB1});
-            this.buttonParams.content = "信用";
+            this.buttonParams.parentStyle.push({backgroundColor: Pixel.getProductColor(3)});
+            this.buttonParams.childStyle.push({color: '#ffffff'});
+            this.buttonParams.content = "信";
         } else if (movie.type === '4') {
             count = 2;
-            this.buttonParams.parentStyle.push({borderColor: fontAndColor.COLORB4});
-            this.buttonParams.childStyle.push({color: fontAndColor.COLORB4});
-            this.buttonParams.content = "库融";
+            this.buttonParams.parentStyle.push({backgroundColor: Pixel.getProductColor(4)});
+            this.buttonParams.childStyle.push({color: '#ffffff'});
+            this.buttonParams.content = "库";
         } else if (movie.type === '5') {
             count = 3;
-            this.buttonParams.parentStyle.push({borderColor: fontAndColor.COLORB1});
-            this.buttonParams.childStyle.push({color: fontAndColor.COLORB1});
-            this.buttonParams.content = "采购";
+            this.buttonParams.parentStyle.push({backgroundColor: Pixel.getProductColor(5)});
+            this.buttonParams.childStyle.push({color: '#ffffff'});
+            this.buttonParams.content = "采";
         }else if(movie.type =='8'){
             count = 2;
-            this.buttonParams.parentStyle.push({borderColor: fontAndColor.COLORB3});
-            this.buttonParams.childStyle.push({color: fontAndColor.COLORB3});
-            this.buttonParams.content = "车抵";
+            this.buttonParams.parentStyle.push({backgroundColor: Pixel.getProductColor(8)});
+            this.buttonParams.childStyle.push({color: '#ffffff'});
+            this.buttonParams.content = "车";
         }
         movieItems.push(<View key="top" style={{
             flex: 1,
@@ -186,10 +186,9 @@ export default class PlanItem extends PureComponent {
 
 const styles = StyleSheet.create({
     parentStyle: {
-        borderWidth: 1,
-        borderRadius: 3,
+        borderRadius: Pixel.getPixel(1),
         height: Pixel.getPixel(16),
-        width: Pixel.getPixel(34),
+        width: Pixel.getPixel(22),
         justifyContent: 'center',
         alignItems: 'center'
     },
