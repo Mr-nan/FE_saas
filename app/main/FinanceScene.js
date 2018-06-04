@@ -131,7 +131,7 @@ export default class FinanceSence extends BaseComponet {
                         mnyData: mnyData,
                     });
                     contentData[0].value = (mnyData.bond_total_mny / 10000) + '万';
-                    contentData[1].value = mnyData.bond_mny + '万';
+                    contentData[1].value = (mnyData.bond_mny/10000) + '万';
                     that.getApplyData();
                 },
                 (error) => {
