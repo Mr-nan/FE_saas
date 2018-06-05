@@ -62,44 +62,44 @@ export default class CheckStand extends BaseComponent {
     }
 
     initFinish = () => {
-        let response = {
-            "token": "",
-            "code": 1,
-            "msg": "ok",
-            "data": {
-                    "cashier_desk_trans_serial_no": "10101006201805251224340953533619",
-                    "money_count": 22500,
-                    "account_info": {
-                        "balance": "549388793.74",
-                        "bank_card_no": "85121001012280139800000080",
-                        "bank_card_name": "黎乐池"
-                    },
-                    "company_base_user_id": "7857"
-            },
-            "trace": {
-                "source_url": "http://",
-                "cost_time": "11.6496s",
-                "cost_mem": "1 B",
-                "server_ip": "",
-                "server_version": "5.6.32",
-                "file_max_size": "2M",
-                "post_max_size": "8M",
-                "source_ip": "0.0.0.0",
-                "sql": [
-                    "SHOW COLUMNS FROM `dms_merge` [ RunTime:1,527,222,264.1072s ]",
-                    "SHOW COLUMNS FROM `dms_merge` [ RunTime:-0.0001s ]"
-                ]
-            }
-        }
-        // this.getData();
-        let data=response.data;
-        this.cashier_desk_trans_serial_no=data.cashier_desk_trans_serial_no;
-        this.accountInfo=data.account_info;
-        this.payMoney=data.money_count;
-        this.setState({
-            renderPlaceholderOnly: 'success',
-
-        });
+        // let response = {
+        //     "token": "",
+        //     "code": 1,
+        //     "msg": "ok",
+        //     "data": {
+        //             "cashier_desk_trans_serial_no": "10101006201805251224340953533619",
+        //             "money_count": 22500,
+        //             "account_info": {
+        //                 "balance": "549388793.74",
+        //                 "bank_card_no": "85121001012280139800000080",
+        //                 "bank_card_name": "黎乐池"
+        //             },
+        //             "company_base_user_id": "7857"
+        //     },
+        //     "trace": {
+        //         "source_url": "http://",
+        //         "cost_time": "11.6496s",
+        //         "cost_mem": "1 B",
+        //         "server_ip": "",
+        //         "server_version": "5.6.32",
+        //         "file_max_size": "2M",
+        //         "post_max_size": "8M",
+        //         "source_ip": "0.0.0.0",
+        //         "sql": [
+        //             "SHOW COLUMNS FROM `dms_merge` [ RunTime:1,527,222,264.1072s ]",
+        //             "SHOW COLUMNS FROM `dms_merge` [ RunTime:-0.0001s ]"
+        //         ]
+        //     }
+        // }
+        // let data=response.data;
+        // this.cashier_desk_trans_serial_no=data.cashier_desk_trans_serial_no;
+        // this.accountInfo=data.account_info;
+        // this.payMoney=data.money_count;
+        // this.setState({
+        //     renderPlaceholderOnly: 'success',
+        //
+        // });
+        this.getData();
     };
 
     getData = () => {
