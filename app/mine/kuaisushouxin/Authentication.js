@@ -49,10 +49,15 @@ export default class Authentication extends BaseComponent {
 			renderPlaceholderOnly: true,
 			keyboardOffset: -Pixel.getPixel(100),
 			isAgree: false,
+			isFinish:false,
 
 		}
 		this.id;
 		this.timer = null;
+        this.BorrowerBankNO = '';
+        this.BankPhone = '';
+        this.BorrowerPhone = this.props.DATA.borrower_tel;
+        this.verifycode ='';
 
 	}
 
@@ -63,8 +68,6 @@ export default class Authentication extends BaseComponent {
 
 			if (this.isNull(this.props.DATA.borrower_cardid))//没有获取到身份证号码
 			{
-				console.log('00000000000000000000');
-
 				if (Platform.OS === 'android') {
 					device_code = 'dycd_platform_android';
 				} else {
@@ -116,11 +119,7 @@ export default class Authentication extends BaseComponent {
 			</TouchableWithoutFeedback>);
 		}
 		return (
-			<TouchableWithoutFeedback onPress={() => {
-                dismissKeyboard();
-            }}>
 				<View style={styles.container}>
-
 					<NavigationBar
 						leftImageCallBack={this.backPage}
 						rightText={""}
@@ -139,7 +138,6 @@ export default class Authentication extends BaseComponent {
 
 					{this.loadingView()}
 				</View>
-			</TouchableWithoutFeedback>
 		);
 	}
 
@@ -148,7 +146,7 @@ export default class Authentication extends BaseComponent {
 	 * */
 	loadScrollView = () => {
 		return (
-			<ScrollView keyboardShouldPersistTaps={'handled'}>
+			<ScrollView keyboardDismissMode={IS_ANDROID ? 'none' : 'on-drag'} style={{height: height - Pixel.getPixel(64)}}>
 
 				<View style={styles.inputTextLine}/>
 				<View style={styles.inputTextsStyle}>
@@ -178,8 +176,6 @@ export default class Authentication extends BaseComponent {
 
 				</View>
 				<View style={styles.inputTextLine}/>
-
-
 				<View style={styles.inputTextsStyle}>
 					<LoginInputTextYU
 						ref="BorrowerBankNO"
@@ -191,6 +187,7 @@ export default class Authentication extends BaseComponent {
 						clearValue={true}
 						import={false}
 						keyboardType={'phone-pad'}
+						textChangeClick={(text)=>{this.BorrowerBankNO = text;this.verifyBtn(); }}
 						rightIcon={false}/>
 					<LoginInputTextYU
 						ref="BankPhone"
@@ -198,6 +195,7 @@ export default class Authentication extends BaseComponent {
 						textPlaceholder={'请输入'}
 						viewStytle={styles.itemStyel}
 						inputTextStyle={styles.inputTextStyle}
+						textChangeClick={(text)=>{ this.BankPhone = text; this.verifyBtn();}}
 						keyboardType={'phone-pad'}
 						maxLength={11}
 						leftIcon={false}
@@ -216,6 +214,7 @@ export default class Authentication extends BaseComponent {
 						keyboardType={'phone-pad'}
 						rightIconClick={this.Verifycode}
 						rightIconStyle={{width: Pixel.getPixel(100)}}
+						textChangeClick={(text)=>{this.verifycode = text;this.verifyBtn(); }}
 						rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
 					{/*<LoginInputTextYU*/}
 					{/*ref="smsCode"*/}
@@ -231,7 +230,6 @@ export default class Authentication extends BaseComponent {
 					{/*leftIcon={false}/>*/}
 				</View>
 				<View style={styles.inputTextLine}/>
-
 				<View style={styles.inputTextsStyle}>
 					<LoginInputTextYU
 						ref="BorrowerPhone"
@@ -245,7 +243,9 @@ export default class Authentication extends BaseComponent {
 						clearValue={true}
 						keyboardType={'phone-pad'}
 						maxLength={11}//手机号限制11位
-						rightIcon={false}/>
+						rightIcon={false}
+						textChangeClick={(text)=>{this.BorrowerPhone = text;this.verifyBtn(); }}
+					/>
 				</View>
 				<View style={styles.inputTextLine}/>
 
@@ -253,9 +253,12 @@ export default class Authentication extends BaseComponent {
 
 				<View style={{alignItems: 'center', flexDirection: 'row',marginTop: Pixel.getPixel(10),}}>
 					<TouchableOpacity activeOpacity={1} onPress={() => {
+
+						this.isAgree = !this.state.isAgree;
                         this.setState({
                             isAgree: !this.state.isAgree
                         });
+                        this.verifyBtn();
                     }}>
 						<View style={{
                             flexDirection: 'row',
@@ -284,13 +287,12 @@ export default class Authentication extends BaseComponent {
 					</TouchableOpacity>
 				</View>
 				<View style={styles.imagebuttonok}>
-
 					<TouchableOpacity onPress={() => { this.register()}} activeOpacity={this.state.isAgree? 0.7 : 1}
 					                  style={{
                                 marginTop: Pixel.getPixel(7),
                                 width: width - Pixel.getPixel(30),
                                 height: Pixel.getPixel(44),
-                                backgroundColor: this.state.isAgree? FontAndColor.COLORB0 : FontAndColor.COLORA4,
+                                backgroundColor: this.state.isFinish? FontAndColor.COLORB0 : FontAndColor.COLORB5,
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
@@ -305,16 +307,22 @@ export default class Authentication extends BaseComponent {
 		)
 	}
 	register = () => {
-		if (!this.state.isAgree) {
+
+
+
+		if (!this.state.isAgree || !this.isFinish) {
 			return;
 		}
+
+
 
 		let BorrowerBankNO = this.refs.BorrowerBankNO.getInputTextValue();//借款人银行卡号
 		let BankPhone = this.refs.BankPhone.getInputTextValue();          //银行预留手机号
 		let BorrowerPhone = this.refs.BorrowerPhone.getInputTextValue();  //借款人手机号
-
 		let verifycode = this.refs.verifycode.getInputTextValue();        //图形验证码
-		// let smsCode = this.refs.smsCode.getInputTextValue();              //手机验证码
+
+
+        // let smsCode = this.refs.smsCode.getInputTextValue();              //手机验证码
 		/**
 		 *
 		 borrower_bank    借款人银行卡号        【必填】
@@ -373,6 +381,7 @@ export default class Authentication extends BaseComponent {
 						if (response11.mjson.data.check_result == 1) {//验证验证码成功
 							request(AppUrls.APPLYCHECKFOUR, 'Post', maps)//申请验四
 								.then((response) => {
+
 
 									this.setState({
 										loading: false,
@@ -483,13 +492,25 @@ export default class Authentication extends BaseComponent {
 			});
 	}
 
+	verifyBtn =()=>{
 
+		this.isFinish = true;
+        if (typeof(this.BorrowerBankNO) == "undefined" || this.BorrowerBankNO == "" || typeof(this.BankPhone) == "undefined" || this.BankPhone == "" || typeof(this.verifycode) == "undefined" || this.verifycode == "" || typeof(this.BorrowerPhone) == "undefined" || this.BorrowerPhone == ""|| !this.isAgree) {
+			this.isFinish = false;
+        }
+
+        this.setState({
+            isFinish:this.isFinish
+		});
+
+	}
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: FontAndColor.COLORA3
+		backgroundColor: FontAndColor.COLORA3,
+		flex:1,
+
 	},
 	buttonStyle: {
 		marginTop: Pixel.getPixel(10),

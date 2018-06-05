@@ -71,7 +71,7 @@ export default class FinanceScreen extends PureComponent {
                     this.setState({isTop:!this.state.isTop});
                     this.props.timeOrderClick(isTop);
                 }} activeOpacity={0.8} style={{flex:4,alignItems:'center',flexDirection:'row'}}>
-                    <View style={{width:Pixel.getPixel(2),height:Pixel.getPixel(20),
+                    <View style={{width:StyleSheet.hairlineWidth,height:Pixel.getPixel(20),
                     backgroundColor:'#d8d8d8'}}></View>
                     <View style={{flex:1,alignItems:'center',flexDirection:'row',justifyContent:'center'}}>
                         <Image style={{width:Pixel.getPixel(8),height:Pixel.getPixel(15)}}

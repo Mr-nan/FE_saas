@@ -86,14 +86,14 @@ export  default class LendMoneySence extends BaseComponent {
                     key: 'kurong'
                 })
             }
-            if (parseInt(this.props.purchase_status) == 1) {
-                this.dataSource.push({
-                    backImage: require('../../../images/financeImages/backcaigou.png'),
-                    imageSource: require('../../../images/financeImages/caigouIcon.png'),
-                    title: '采购融资',
-                    key: 'caigoudai'
-                })
-            }
+            // if (parseInt(this.props.purchase_status) == 1) {
+            //     this.dataSource.push({
+            //         backImage: require('../../../images/financeImages/backcaigou.png'),
+            //         imageSource: require('../../../images/financeImages/caigouIcon.png'),
+            //         title: '采购融资',
+            //         key: 'caigoudai'
+            //     })
+            // }
             if (parseInt(this.props.car_loan_status ) == 1) {
                 this.dataSource.push({
                     backImage: require('../../../images/financeImages/chedidai_bg.png'),
@@ -109,12 +109,12 @@ export  default class LendMoneySence extends BaseComponent {
                 title: '库融融资',
                 key: 'kurong'
             })
-            this.dataSource.push({
-                backImage: require('../../../images/financeImages/backcaigou.png'),
-                imageSource: require('../../../images/financeImages/caigouIcon.png'),
-                title: '采购融资',
-                key: 'caigoudai'
-            })
+            // this.dataSource.push({
+            //     backImage: require('../../../images/financeImages/backcaigou.png'),
+            //     imageSource: require('../../../images/financeImages/caigouIcon.png'),
+            //     title: '采购融资',
+            //     key: 'caigoudai'
+            // })
         }
 
     }

@@ -27,7 +27,7 @@ let mnyData={};
 // newcar_creditmny	新车授信额度	string	单位 元
 // newcar_loanbalance	新车贷款余额	string	单位 元
 // newcar_maxloanmny   新车可借额度
-export default class HomeJobItem extends PureComponent {
+export default class FinanceHeaderTop extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -39,6 +39,7 @@ export default class HomeJobItem extends PureComponent {
         }else if(mnyData.multiple_credit_type==1){
             titleText[0]='综合授信额度(万)';
         }
+
         this.allData = {
             credit_mny: this.type==1?mnyData.credit_mny / 10000:mnyData.newcar_creditmny/10000,//授信额度
             credit_maxloanmny: this.type==1?mnyData.credit_maxloanmny / 10000 : mnyData.newcar_maxloanmny/10000,//可用余额
@@ -49,16 +50,24 @@ export default class HomeJobItem extends PureComponent {
 
         }
 
+        let title = '';
+        if (mnyData.is_microchinese_mny == 1) {
+            title = '激活微众额度';
+        } else if (mnyData.is_microchinese_mny == 2) {
+            title = '待微众审核';
+        } else if (mnyData.is_microchinese_mny == 4) {
+            title = '微众审核未通过';
+        }
+
         this.state = {
             type: this.type,
             allData: this.allData,
-            titleText: this.type == 1 ? titleText : newCarTitleText
+            titleText: this.type == 1 ? titleText : newCarTitleText,
+            microchineseTitle:title,
         };
     }
 
-    componentWillMount() {
 
-    }
 
     changeType = (type) => {
         this.setState({type: type});
@@ -86,32 +95,21 @@ export default class HomeJobItem extends PureComponent {
         if (this.state.type == 1) {
             return (
                 <View style={{alignItems: 'center', flex: 1}}>
-                    <View style={{height: Pixel.getPixel(34), flexDirection: 'row'}}>
-                        <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                            this.isEyeOpen()
-                        }}>
-                            <View style={{paddingTop: Pixel.getPixel(12), flex: 1, paddingLeft: Pixel.getPixel(20)}}>
+                    <View style={{width:Pixel.getPixel(290), flexDirection: 'row',justifyContent:'space-between',marginTop:Pixel.getPixel(12)}}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => {this.isEyeOpen()}}>
                                 <Image style={{width: Pixel.getPixel(18), height: Pixel.getPixel(12)}}
                                        source={require('../../../images/financeImages/kejian.png')}></Image>
-                            </View>
                         </TouchableOpacity>
-                        <View style={{
-                            paddingTop: Pixel.getPixel(12), flex: 1, paddingRight: Pixel.getPixel(20),
-                            alignItems: 'flex-end'
-                        }}>
                             <TouchableOpacity activeOpacity={0.8} style={{
                                 width: Pixel.getPixel(54), height: Pixel.getPixel(17),
                                 backgroundColor: 'rgba(255,255,255,0.4)', borderRadius: 10, justifyContent: 'center',
                                 alignItems: 'center'
-                            }} onPress={() => {
-                                this.props.depositPop()
-                            }}>
+                            }} onPress={() => {this.props.depositPop()}}>
                                 <Text style={{
                                     fontSize: Pixel.getFontPixel(12), color: '#fff',
                                     backgroundColor: '#00000000'
                                 }}>保证金</Text>
                             </TouchableOpacity>
-                        </View>
                     </View>
                     <View style={{height: Pixel.getPixel(72), alignItems: 'center'}}>
                         <Text
@@ -130,11 +128,6 @@ export default class HomeJobItem extends PureComponent {
                                     fontSize: Pixel.getPixel(32), color: '#fff', fontWeight: 'bold'
                                     , backgroundColor: '#00000000', marginTop: Pixel.getPixel(4)
                                 }}> {this.state.allData.credit_mny}</Text>
-                            {/*<Text*/}
-                                {/*style={{*/}
-                                    {/*fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'*/}
-                                    {/*, backgroundColor: '#00000000'*/}
-                                {/*}}>{' >'}</Text>*/}
                         </TouchableOpacity>
                     </View>
                     <View style={{width: Pixel.getPixel(290), height: 1, backgroundColor: 'rgba(255,255,255,0.3)'}}>
@@ -180,52 +173,35 @@ export default class HomeJobItem extends PureComponent {
                                             fontWeight: 'bold',
                                             marginRight: Pixel.getPixel(4)
                                         }}>{this.state.allData.credit_maxloanmny}</Text>
-                                        {/*<Text*/}
-                                            {/*style={{*/}
-                                                {/*fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'*/}
-                                                {/*, backgroundColor: '#00000000'*/}
-                                            {/*}}>{' >'}</Text>*/}
                                     </View>
                                 </View>
 
                             </View>
                         </TouchableOpacity>
-
-                        {this.state.titleText.length > 3 &&(this.allData.is_microchinese_mny == 3 || this.allData.is_microchinese_mny == 5)&&
-                        <TouchableOpacity activeOpacity={0.8} style={{flex: 1}} onPress={() => {
-                            this.props.weizongPop()
-                        }}>
-                            <View style={{flex: 1, flexDirection: 'row'}}>
-                                <View style={{
-                                    width: Pixel.getPixel(1), height: Pixel.getPixel(32),
-                                    backgroundColor: 'rgba(255,255,255,0.3)', marginTop: Pixel.getPixel(9)
-                                }}>
-
-                                </View>
-                                <View style={{flex: 1, alignItems: 'center', paddingTop: Pixel.getPixel(9)}}>
-                                    <Text style={{
-                                        fontSize: Pixel.getPixel(11), color: '#fff',
-                                        backgroundColor: '#00000000'
-                                    }}>{this.state.titleText[3]}</Text>
-
-                                    <View activeOpacity={0.8} style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        justifyContent:'center'
-                                    }}>
-                                    <Text style={{
-                                        fontSize: Pixel.getPixel(17), color: '#fff',
-                                        backgroundColor: '#00000000', fontWeight: 'bold', marginRight: Pixel.getPixel(4)
-                                    }}>{this.state.allData.microchinese_mny}</Text>
-                                    {/*<Text*/}
-                                        {/*style={{*/}
-                                            {/*fontSize: Pixel.getPixel(18), color: 'rgba(255,255,255,0.4)'*/}
-                                            {/*, backgroundColor: '#00000000'*/}
-                                        {/*}}>{' >'}</Text>*/}
-                                    </View>
-                                </View>
-                            </View>
-                        </TouchableOpacity>}
+                        {
+                          this.state.microchineseTitle!='' &&(
+                              <TouchableOpacity activeOpacity={0.8} style={{flex: 1, flexDirection:'row',backgroundColor:'#00000000'}} onPress={() => {
+                              this.props.weizongPop();
+                          }}>
+                              <View style={{
+                                  width: Pixel.getPixel(1), height: Pixel.getPixel(32),
+                                  backgroundColor: 'rgba(255,255,255,0.3)', marginTop: Pixel.getPixel(9)
+                              }}/>
+                              <View activeOpacity={0.8} style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  justifyContent:'center',
+                                  backgroundColor:'#00000000',
+                                  flex:1,
+                                  marginBottom:Pixel.getPixel(10)
+                              }}>
+                                  <Text style={{
+                                      fontSize: Pixel.getPixel(11), color: '#fff', backgroundColor: '#00000000', marginRight: Pixel.getPixel(4)
+                                  }}>{'激活微众额度'}</Text>
+                                  <Image source={require('../../../images/financeImages/youjiantou.png')}/>
+                              </View>
+                          </TouchableOpacity>)
+                        }
                     </View>
                 </View>
 

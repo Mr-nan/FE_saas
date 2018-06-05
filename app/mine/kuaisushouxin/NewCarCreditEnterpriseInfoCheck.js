@@ -683,6 +683,7 @@ export default class NewCarCreditEnterpriseInfoCheck extends BaseComponent {
             });
     }
     _onCompletePress = () => {
+
         if (!this.state.isAgree) {
             return;
         }

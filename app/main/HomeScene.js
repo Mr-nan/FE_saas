@@ -141,7 +141,8 @@ export default class HomeScene extends BaseComponet {
     //认证功能验证
     _checkAuthen = (params) => {
         StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
-                if (res.result) {
+
+                if (res.result && res.result == 'true') {
                     this.isHomeJobItemLose = true;
                     StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
                         if (data.code == 1 && data.result) {

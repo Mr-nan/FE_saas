@@ -126,7 +126,8 @@ export default class CarNewMySourceScene extends BaceComponent {
         return(
             <RepaymenyTabBar ref={(ref)=>{this.tabBarView = ref}}
                              style={{backgroundColor:'white'}}
-                             tabName={["已上架("+this.state.shelves_count+")", "已下架("+this.state.unshelves_count+')', "审核中("+this.state.audit_count+')']}/>
+                             tabName={["已上架("+this.state.shelves_count+")", "已下架("+this.state.unshelves_count+')', "审核中("+this.state.audit_count+')']}
+            />
         )
     }
 

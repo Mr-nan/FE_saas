@@ -1306,6 +1306,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      *  bottomState为吸底渲染（各种功能按钮）
      **/
     stateMapping = (status, cancelStatus) => {
+
         switch (status) {
             case 0:  // 已拍下，价格未定  0=>'创建订单'
             case 1:  //  1=>'订单定价中'
@@ -1330,7 +1331,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 2: // 待付订金  2=>'订单定价完成'
             case 3: // 3=>'订金支付中'
             case 4:  // 4=>'订金支付失败'
-                if (this.orderDetail.set_deposit_amount == 0) {
+                if (this.orderDetail.set_deposit_amount == 0)
+                {
                     if (cancelStatus === 0) {
                         this.orderState = 2;
                         this.topState = -1;
@@ -1384,7 +1386,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             this.bottomState = 4;
                         }
                     }
-                } else {
+                }
+                else {
                     if (cancelStatus === 0) {
                         this.orderState = 1;
                         this.topState = 0;
@@ -1424,7 +1427,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     } else {
                         this.bottomState = 1;
                     }
-                } else if (cancelStatus === 1) {
+                }
+                else if (cancelStatus === 1) {
                     this.orderState = 2;
                     this.topState = -1;
                     this.bottomState = 3;
@@ -1957,7 +1961,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      *
      *
      **/
-    _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
+    _renderSeperator = (sectionID, rowID, adjacentRowHighlighted) => {
         return (
             <View
                 key={`${sectionID}-${rowID}`}

@@ -5,6 +5,7 @@
 
 /**
  * 测试地址
+ *
  */
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
@@ -818,6 +819,14 @@ export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
  **/
 export const GET_CONTRACT_DATA = 'api/v1/account/get_contract_data';
 
+
+/**
+ * from @zhaojian
+ *
+ * 获取一车一融子单合同数据
+ **/
+export const GET_SUB_CONTRACT_DATA = 'api/v3/contract/info';
+
 /**
  * from @zhaojian
  *
@@ -838,6 +847,13 @@ export const CONTRACT_LOAN_CONTRACT_LIST = 'api/v1/contract/loan_contract_list';
  * 签署合同
  **/
 export const CONTRACT_SIGN = 'api/v1/account/contract_sign';
+
+/**
+ * from @zhaojian
+ *
+ * 签署合同一车一融子单合同
+ **/
+export const SUB_CONTRACT_SIGN = 'api/v3/contract/sign_child';
 
 /**
  * from @zhaojian
@@ -877,6 +893,13 @@ export const GET_MNY = 'api/v3/account/get_mny';
 export const GET_APPLY_INFO = 'api/v3/account/get_apply_info';
 
 /**
+ * from @ 黄宁
+ *
+ * 获取借款首页数据  新
+ **/
+export const GET_APPLY_INFO_NEW = 'api/v4/account/get_loan_info';
+
+/**
  * from @huangning
  *
  * 获取借款首页数据
@@ -910,6 +933,19 @@ export const CARLOAN_SET_APPLY_MNY = 'api/v3/carloan/set_apply_mny'
  * 获取订单车辆列表
  **/
 export const GET_APPLY_CARLIST = 'api/v2/account/get_apply_carlist';
+
+/**
+ * from @huangning
+ * 一车一融库容进度条
+ **/
+export const ACCOUNT_PROGRESS_BAR = 'api/v4/account/progress_bar';
+
+/**
+ * from @huangnign
+ * 获取订单车辆列表 新
+ **/
+export const GET_APPLY_CARLIST_NEW = 'api/v2/account/get_child_loan';
+
 /**
  * from @lhc
  * 删除车辆
@@ -928,6 +964,12 @@ export const GET_CAR_INFO = 'api/v1/account/get_car_info'
 export const CANCEL_LOAN = 'api/v3/account/cancel_loan'
 
 /**
+ * from @huangnign
+ * 取消借款单车/库容
+ **/
+export const CANCEL_CHILD_LOAN = 'api/v2/account/cancel_child_loan'
+
+/**
  * from @huangning
  * 取消借款
  **/
@@ -938,7 +980,25 @@ export const CARLOAN_CANCEL_LOAN = 'api/v3/carloan/cancel_loan'
  *
  * 获取借款记录
  **/
-export const GET_APPLY_LIST = 'api/v3/account/get_apply_list';
+// export const GET_APPLY_LIST = 'api/v3/account/get_apply_list';
+export const GET_APPLY_LIST = '/api/v6/account/get_apply_list_new_app';
+
+
+/**
+ * from @huangning
+ *
+ * 获取借款记录
+ *
+ * payment_number单号
+ * auto_vin车架号
+ * min_loanmny最小金额
+ * max_loanmny最大金额
+ * loanperiod期限
+ * logic_status状态 全部all
+ * product_type_code产品类型 全部all
+ * 搜索字段
+ **/
+export const GET_APPLY_LIST_NEW = 'api/v6/account/get_apply_list_new';
 
 /**
  * from @zhaojian
@@ -1080,6 +1140,13 @@ export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
  * 申请借款
  **/
 export const APPLY_LOAN = 'api/v3/account/apply_loan'
+
+/**
+ * from @huangning
+ *
+ *  新 申请借款
+ **/
+export const ACCOUNT_APPLY_LOAN = 'api/v4/account/apply_loan'
 
 /**
  * from huangning
