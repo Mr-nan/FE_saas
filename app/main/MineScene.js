@@ -17,7 +17,8 @@ import {
 import * as fontAndClolr from '../constant/fontAndColor';
 import MycarScene from '../carSource/CarMySourceScene';
 import PixelUtil from '../utils/PixelUtil'
-import ContractManageScene from '../mine/shuchebaozhengjin/SCBZJScene';
+import ContractManageScene from '../mine/contractManage/ContractManageScene';
+import SCBZJScene from '../mine/shuchebaozhengjin/SCBZJScene';
 
 import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
@@ -713,8 +714,8 @@ export default class MineScene extends BaseComponent {
                 }
                 break;
             case 77://赎车保证金
-                this.navigatorParams.name = 'ContractManageScene'
-                this.navigatorParams.component = ContractManageScene
+                this.navigatorParams.name = 'SCBZJScene'
+                this.navigatorParams.component = SCBZJScene
                 this.navigatorParams.params = {
                     from: 'xs'
                 }
