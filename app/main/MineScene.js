@@ -340,7 +340,7 @@ export default class MineScene extends BaseComponent {
                 "name": name
                 , "id": id
             },);
-        }else if (id == 77) { //赎车保证金
+        }else if (id == 78) { //赎车保证金
             Car[1].cars.push({
                 "icon": require('../../images/mine/mine_scbjz.png'),
                 "name": name
@@ -713,7 +713,7 @@ export default class MineScene extends BaseComponent {
                     from: 'xs'
                 }
                 break;
-            case 77://赎车保证金
+            case 78://赎车保证金
                 this.navigatorParams.name = 'SCBZJScene'
                 this.navigatorParams.component = SCBZJScene
                 this.navigatorParams.params = {
