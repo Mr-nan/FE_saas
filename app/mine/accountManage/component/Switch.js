@@ -29,6 +29,7 @@ export  default class Switch extends PureComponent {
         }
     }
     render() {
+        console.log(this.state.fadeAnim);
         return (<TouchableOpacity onPress={()=>{
             let value = 0;
             if(this.state.isOpen){

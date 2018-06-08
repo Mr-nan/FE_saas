@@ -338,7 +338,7 @@ export default class OrderListScene extends BaseComponent {
         this.loadData();
     };
 
-    _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
+    _renderSeperator = (sectionID, rowID, adjacentRowHighlighted) => {
         return (
             <View
                 key={`${sectionID}-${rowID}`}

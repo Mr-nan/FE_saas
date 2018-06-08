@@ -173,9 +173,9 @@ export default class KurongSence extends BaseComponent {
         }
 
         if (infoComolete){
-
+            // api: apis.APPLY_LOAN,
             let maps = {
-                api: apis.APPLY_LOAN,
+                api: apis.ACCOUNT_APPLY_LOAN,
                 apply_type:PostData.apply_type,
                 loan_mny:PostData.loan_mny,
                 remark:PostData.remark,

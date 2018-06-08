@@ -16,6 +16,7 @@ export default class RepaymenyTabBar extends Component {
         this.state = {
             tabName: this.props.tabName,
             subName: this.props.subName
+
         }
     }
 
@@ -49,6 +50,12 @@ export default class RepaymenyTabBar extends Component {
     setTabSubName=(subName)=>{
         this.setState({
             subName: subName,
+        });
+    }
+
+    setSubTabName=(tabName)=>{
+        this.setState({
+            subName: tabName,
         });
     }
 }

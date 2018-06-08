@@ -39,7 +39,7 @@ import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import Picker from 'react-native-picker';
 
-const PostData = {
+let PostData = {
     dateLimit: '',
     rate: '',
     loan_life_type: '',
@@ -89,6 +89,7 @@ export default class SingelCarSence extends BaseComponent {
     }
 
     initFinish() {
+        // noinspection JSAnnotator
         PostData = {
             dateLimit: '',
             rate: '',
@@ -113,7 +114,7 @@ export default class SingelCarSence extends BaseComponent {
 
                     showData.companyName = this.props.customerName;
                     showData.lendType = tempjson.product_type;
-                    showData.rateAndLifeAndType = tempjson.product_period;
+                    showData.rateAndLifeAndType = this.isNull(tempjson.product_period)?[]:tempjson.product_period;
                     showData.maxMoney = changeToMillion(tempjson.min_loanmny) + '-' + changeToMillion(tempjson.max_loanmny) + '万';
                     showData.tempMin = changeToMillion(tempjson.min_loanmny);
                     showData.tempMax = changeToMillion(tempjson.max_loanmny);
@@ -185,9 +186,9 @@ export default class SingelCarSence extends BaseComponent {
             this.props.showToast('借款金额范围为' + showData.maxMoney)
         }
         if (infoComolete) {
-
+            // api: apis.APPLY_LOAN,
             let maps = {
-                api: apis.APPLY_LOAN,
+                api: apis.ACCOUNT_APPLY_LOAN,
                 apply_type: PostData.apply_type,
                 loan_mny: PostData.loan_mny,
                 remark: PostData.remark,

@@ -21,6 +21,10 @@ import { PAGECOLOR,adapeSize,fontadapeSize,width } from './MethodComponent'
 import {CommenButton} from './ComponentBlob'
 
 import dismissKeyboard from 'dismissKeyboard';
+import LoginInputText from '../../../login/component/LoginInputText';
+var Platform = require('Platform');
+import {request} from "../../../utils/RequestUtil";
+import * as AppUrls from "../../../constant/appUrls";
 
 
 export class LendSuccessAlert extends Component{
@@ -149,6 +153,83 @@ export class ModifyBorrowing extends Component{
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.button,styles.buttonRight]}onPress={this._cancleClick}>
                                 <Text allowFontScaling={false}  style={styles.text}>取消</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
+
+        )
+    }
+}
+
+
+//修改借款金额
+export class ModifyBorrowingNew extends Component{
+
+    // 构造
+    constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {visible:false};
+    }
+
+    static propTypes={
+
+        confimClick:React.PropTypes.func.isRequired,
+        cancleClick:React.PropTypes.func.isRequired,
+    }
+    setModelVisible=(value)=>{
+
+        this.setState({
+            visible:value
+        })
+    }
+    _confimClick=()=>{
+
+        const {confimClick}=this.props;
+
+        confimClick(this.setModelVisible);
+    }
+    _cancleClick=()=>{
+        const {cancleClick}=this.props;
+        cancleClick(this.setModelVisible)
+    }
+
+    render(){
+
+        return(
+
+            <Modal animationType='none'
+                   transparent={true}
+                   visible={this.state.visible}
+                   onShow={() => {
+                   }}
+                   onRequestClose={() => {
+                   }}
+            >
+                <TouchableOpacity style={styles.mask} activeOpacity={1} onPress={()=>{
+                    dismissKeyboard();
+                }}>
+                    <View style={[styles.container,{marginTop:adapeSize(190), marginLeft:adapeSize(20), marginRight:adapeSize(20)}]}>
+                        <Text allowFontScaling={false}  style={{fontSize:adapeSize(14),color:'#333333',marginTop:adapeSize(15),marginBottom:adapeSize(15)}}>修改借款金额申请</Text>
+                        <View style={{height:adapeSize(35),flexDirection:'row',marginLeft:adapeSize(5),marginRight:adapeSize(5),borderBottomColor:'#D8D8D8',borderBottomWidth:0.5,alignItems:'center',justifyContent:'center'}}>
+                            <Text style={{flex:1,fontSize:adapeSize(12),color:'#999999',marginLeft:adapeSize(5)}}>可借额度区间</Text>
+                            <Text allowFontScaling={false}  style={{fontSize:adapeSize(14), color:'#FA5741'}}>{this.props.minLend}-{this.props.maxLend}</Text>
+                            <Text style={{fontSize:adapeSize(12),color:'#FA5741',marginRight:adapeSize(5),padding:0,marginLeft:adapeSize(10)}}>万元</Text>
+                        </View>
+                        <View style={{height:adapeSize(35), marginTop:adapeSize(20), flexDirection:'row',borderBottomColor:'#D8D8D8',borderBottomWidth:0.5,alignItems:'center',marginLeft:adapeSize(5),marginRight:adapeSize(5),justifyContent:'center'}}>
+                            <Text style={{color:'#333333',fontSize:adapeSize(14),marginLeft:adapeSize(5)}}>金额</Text>
+                            <TextInput underlineColorAndroid={"#00000000"} onChangeText={this.props.onchangeText}
+                                       style={{flex:1, fontSize:adapeSize(12), color:PAGECOLOR.COLORB4, paddingLeft:adapeSize(10), height:adapeSize(35),padding:0}} placeholderTextColor={'#999999'} placeholder='请输入借修改后的款金额' keyboardType='decimal-pad'></TextInput>
+                            <Text style={{color:'#666666',fontSize:adapeSize(12),marginRight:adapeSize(5),marginLeft:adapeSize(10)}}>万元</Text>
+                        </View>
+                        <View style={styles.handelWarp}>
+                            <TouchableOpacity style={[styles.button,styles.buttonRight,{marginLeft:adapeSize(30),marginRight:adapeSize(10),}]}onPress={this._cancleClick}>
+                                <Text allowFontScaling={false}  style={{textAlign:'center', color:'#ffffff',fontSize:adapeSize(14)}}>放弃修改</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.button,styles.buttonLeft,{marginLeft:adapeSize(10),marginRight:adapeSize(30),}]} onPress={this._confimClick}>
+                                <Text allowFontScaling={false}  style={{textAlign:'center', color:'#ffffff',fontSize:adapeSize(14)}}>确认提交</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -336,6 +417,105 @@ export class ModalAlert extends PureComponent{
     }
 
 
+}
+
+
+export class MMSModalAlert extends PureComponent{
+    state={
+        show:false,
+    }
+
+    setModelVisible=(value)=>{
+        this.setState({
+            show:value
+        })
+    }
+
+    confimClick=()=>{
+        let verifyCode = this.refs.loginVerifycode.getInputTextValue();
+        if(verifyCode != ''){
+            const {confimClick} = this.props;
+            confimClick(this.setModelVisible,this.imgSid,verifyCode)
+        }
+    }
+
+    cancleClick=()=>{
+        const {cancleClick} =this.props;
+        cancleClick(this.setModelVisible)
+    }
+    render(){
+        const {title,subtitle,confimTitle}=this.props;
+        return(
+            <Modal animationType='none'
+                   transparent={true}
+                   visible={this.state.show}
+                   onShow={() => { this.Verifycode() }}
+                   onRequestClose={() => { }}>
+                <TouchableOpacity
+                    style={commentAlertStyle.mask}
+                    activeOpacity={1}
+                    onPress={()=>{dismissKeyboard();}}>
+                    <View style={commentAlertStyle.container}>
+                        <Text allowFontScaling={false}  style={commentAlertStyle.title}>{'验证码'}</Text>
+                        <View style={{width:adapeSize(200)}}>
+                            <LoginInputText
+                                ref="loginVerifycode"
+                                textPlaceholder={'请输入'}
+                                inputTextStyle={{}}
+                                viewStytle={{width:adapeSize(200)}}
+                                leftIcon={false}
+                                rightIconClick={this.Verifycode}
+                                keyboardType={'phone-pad'}
+                                rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}
+                                rightIconStyle={{width: adapeSize(100), height: adapeSize(32)}}/>
+                        </View>
+                        <View style={commentAlertStyle.buttonsWarp}>
+                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]}
+                                          onPress={this.confimClick}
+                                          title={"确定"}/>
+                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,commentAlertStyle.buttonRight]}
+                                          onPress={this.cancleClick}
+                                          title="取消"/>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
+        )
+    }
+
+    //获取图形验证码
+    Verifycode = () => {
+        this.refs.loginVerifycode.lodingStatus(true);
+        let device_code = '';
+        if (Platform.OS === 'android') {
+            device_code = 'dycd_platform_android';
+        } else {
+            device_code = 'dycd_platform_ios';
+        }
+        let maps = {
+            api: "api/v2/validate/img_code",
+            device_code: device_code,
+        };
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                this.refs.loginVerifycode.lodingStatus(false);
+                this.imgSrc = response.mjson.data.img_src;
+                this.imgSid = response.mjson.data.img_sid;
+                this.setState({
+                    verifyCode: {uri: this.imgSrc},
+                });
+            }, (error) => {
+                this.refs.loginVerifycode.lodingStatus(false);
+                this.setState({
+                    verifyCode: null,
+                });
+                if (error.mycode == -300 || error.mycode == -500) {
+                    this.props.showToast("获取失败");
+                } else {
+                    this.props.showToast(error.mjson.msg + "");
+                }
+            });
+    }
 }
 
 export class DDModalAlert extends PureComponent{
@@ -585,7 +765,7 @@ const commentAlertStyle=StyleSheet.create({
     },
     buttonRight:{
 
-        backgroundColor:PAGECOLOR.COLORA4
+        backgroundColor:PAGECOLOR.COLORA2
     },
     successButton:{
 
@@ -594,7 +774,7 @@ const commentAlertStyle=StyleSheet.create({
         backgroundColor:'blue',
         alignItems:'center',
         justifyContent:'center',
-        borderRadius:5,
+        borderRadius:3,
 
     },
 
@@ -675,7 +855,7 @@ const styles=StyleSheet.create({
         marginLeft:40,
         marginRight:40,
         marginTop:100,
-        borderRadius:5,
+        borderRadius:3,
     },
     showMessage:{
 
@@ -729,7 +909,7 @@ const styles=StyleSheet.create({
         alignItems:'center',
         padding:10,
         marginBottom:20,
-        borderRadius:5,
+        borderRadius:3,
 
     },
     buttonLeft:{

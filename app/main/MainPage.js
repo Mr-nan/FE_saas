@@ -22,7 +22,7 @@ const {width, height} = Dimensions.get('window');
 import  PixelUtil from '../utils/PixelUtil'
 let Pixel = new PixelUtil();
 import TabNavigator from 'react-native-tab-navigator';
-
+import BlankFinanceScene from './BlankFinanceScene'
 import HomeSence  from './HomeScene'
 import CarSourceSence from '../carSource/CarSourceListScene'
 import MineSence from './MineScene'
@@ -92,6 +92,10 @@ export default class MainPage extends BaseComponent {
             mbShow: false,
 
         }
+        this.boss_id = '';
+        this.base_user_id = '';
+        this.isLogin = false;
+
         this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(25) : height;
         this.emitterNewCarPage = DeviceEventEmitter.addListener('pushNewCarListScene', () => {
             StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR, 'true');
@@ -197,6 +201,8 @@ export default class MainPage extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
             if (data.code == 1 && data.result) {
                 let userData = JSON.parse(data.result);
+                this.boss_id = userData.boss_id;
+                this.base_user_id = userData.base_user_id;
                 StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                     if (subData.code == 1) {
                         let obj = JSON.parse(subData.result);
@@ -228,14 +234,13 @@ export default class MainPage extends BaseComponent {
     initFinish = () => {
 
         StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
-
             if (res.result !== StorageUtil.ERRORCODE) {
-                if (!res.result) {
-
+                if (!res.result || res.result =='false') {
+                    this.isLogin = false;
                     this.getTouristPermission();
 
                 } else {
-
+                    this.isLogin = true;
                     StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
                         if (childdata.code == 1) {
                             let childdatas = JSON.parse(childdata.result);
@@ -247,6 +252,7 @@ export default class MainPage extends BaseComponent {
                     });
                 }
             }else {
+                this.isLogin = false;
                 this.getTouristPermission();
             }
         });
@@ -338,8 +344,8 @@ export default class MainPage extends BaseComponent {
         if (this.state.renderPlaceholderOnly != 'success') {
             return this._renderPlaceholderView();
         }
-        let items = [];
 
+        let items = [];
         tabArray.map((data) => {
             let tabItem;
             tabItem = <TabNavigator.Item
@@ -351,7 +357,12 @@ export default class MainPage extends BaseComponent {
                 renderIcon={() => <Image style={styles.img}
                                          source={data.defaultImg}/>}
                 onPress={() => {
-                        this.setState({selectedTab: data.ref})
+
+                        if((data.title=='金融' || data.title=='我的') && !this.isLogin){
+                            this.props.showLoginModal();
+                        }else {
+                            this.setState({selectedTab: data.ref})
+                        }
                     }
                 }
                 selectedTitleStyle={styles.selectedTitleStyle}
@@ -567,17 +578,23 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }} showLoginModal={this.props.showLoginModal}/>
         } else if (ref == 'financePage') {
-            if (this.is_done_credit == 0) {
-                return <NonCreditScene/>
-            } else {
-                return <FinanceSence backToLogin={()=>{
-                            this.backToLogin({name:'LoginScene',component:LoginScene});
-                        }} showModal={(value)=>{
-                        this.props.showModal(value);
-                        }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
-                        this.toNextPage(params);
-                }} showLoginModal={this.props.showLoginModal}/>
-            }
+                return  <BlankFinanceScene
+					MAPS={ global.companyBaseID && {base_id:global.companyBaseID ,controller_base_id:this.boss_id,merge_id:global.MERGE_ID}}
+					BASE_USER_ID={this.base_user_id && this.base_user_id}
+					IS_DONE_CREDIT={this.is_done_credit && this.is_done_credit}
+					showModal={(value)=>{this.props.showModal(value);}}
+					showToast={(content)=>{this.props.showToast(content)}}
+					toNextPage={(params) => {this.toNextPage(params); }}
+					toSelect={()=>{
+                        let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
+                        const navigator = this.props.navigator;
+                        if (navigator) {
+
+                            navigator.immediatelyResetRouteStack([{
+                                ...mProps
+
+                            }]) }
+                    }}showLoginModal={this.props.showLoginModal}/>
         } else {
             return <MineSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
