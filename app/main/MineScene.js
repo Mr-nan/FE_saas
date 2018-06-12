@@ -527,7 +527,6 @@ export default class MineScene extends BaseComponent {
                 };
                 request(Urls.ACCOUNT_HOME, 'Post', maps)
                     .then((response) => {
-                            haveOrder = response.mjson.data.order.tradeing_count;
                             un_pay_count = parseInt(response.mjson.data.supervise.un_pay_count);
                             if (response.mjson.data.account == null || response.mjson.data.account.length <= 0) {
                                 lastType = 'error';

@@ -1241,7 +1241,7 @@ export const CONTRACT_CONTRACT_LIST = 'api/v1/Contract/contract_list';
 /**
  * 赎车保证金支付单列表
  */
-export const DEPOSIT_DEPOSIT_LIST = 'http://finance-api.fzxcar.com/Api/V1/Deposit/deposit_list';
+export const DEPOSIT_DEPOSIT_LIST = 'Api/V1/Deposit/deposit_list';
 
 /**
  * 转债权合同列表
