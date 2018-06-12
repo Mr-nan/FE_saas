@@ -485,7 +485,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 						<View style={{marginTop:Pixel.getPixel(20),alignItems:'center',}}>
 							<Text allowFontScaling={false}
 							      style={{backgroundColor:'#00000000',color:fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(22),marginLeft:Pixel.getPixel(5)}}>
-								库容、单车融资
+                                库融、单车融资
 								<Text allowFontScaling={false}
 								      style={{backgroundColor:'#00000000',color:'black',fontSize: Pixel.getFontPixel(22),marginLeft:Pixel.getPixel(5)}}>
 									等平台内全业务

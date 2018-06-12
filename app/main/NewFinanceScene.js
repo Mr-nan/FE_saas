@@ -386,7 +386,7 @@ export default class NewFinanceScene extends BaseComponet {
                                 this.type = 2;//单车
                                 break;
                             case 2:
-                                this.type = 4;//库容
+                                this.type = 4;//库融
                                 break;
                             case 3:
                                 this.type = 5;//采购贷
@@ -581,7 +581,7 @@ export default class NewFinanceScene extends BaseComponet {
                                 this.type = 2;//单车
                                 break;
                             case 2:
-                                this.type = 4;//库容
+                                this.type = 4;//库融
                                 break;
                         }
                         this.props.showModal(true);
