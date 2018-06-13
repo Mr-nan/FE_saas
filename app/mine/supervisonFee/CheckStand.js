@@ -256,7 +256,7 @@ export default class CheckStand extends BaseComponent {
         let url = this.props.page == 'ShuCheBaoZhengJin' ? AppUrls.DEPOSIT_DEPOSIT_PAY : AppUrls.SUPERVISE_PAY;
         let maps = {
             cashier_desk_trans_serial_no: this.cashier_desk_trans_serial_no,
-            transfer_accounts_url: webBackUrl.SUPERVICEPAY,
+            transfer_accounts_url:this.props.page == 'ShuCheBaoZhengJin' ? webBackUrl.SUPERVICEPAYS : webBackUrl.SUPERVICEPAY,
             api:url
         };
         request(AppUrls.FINANCE, 'post', maps).then((response) => {
@@ -275,7 +275,7 @@ export default class CheckStand extends BaseComponent {
                         params: {
                             title: '支付',
                             webUrl: response.mjson.data.transfer_accounts_url,
-                            backUrl: webBackUrl.SUPERVICEPAY,
+                            backUrl: this.props.page == 'ShuCheBaoZhengJin' ? webBackUrl.SUPERVICEPAYS : webBackUrl.SUPERVICEPAY,
                             callBack:
                                 ()=>{this.props.callBack()}
                         }
