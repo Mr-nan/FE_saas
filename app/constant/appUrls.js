@@ -1653,7 +1653,7 @@ export const CASHIER_TABLE = BASEURL + V + "finance.supervise/cashierTable";
  *
  * 赎车保证金支付调取收银台
  */
-export const DEPOSIT_CASHIER_TABLE = BASEURL + V + "Deposit/cashier_table";
+export const DEPOSIT_CASHIER_TABLE =  "Api/V1/Deposit/cashier_table";
 /**
  *
  * 监管费支付
@@ -1664,7 +1664,7 @@ export const SUPERVISE_PAY = BASEURL + V + "finance.supervise/pay";
  *
  * 赎车保证金确认支付接口
  */
-export const DEPOSIT_DEPOSIT_PAY = BASEURL + V + "Deposit/deposit_pay";
+export const DEPOSIT_DEPOSIT_PAY =  "Api/V1/Deposit/deposit_pay";
 
 /**
  *

@@ -105,7 +105,7 @@ export default class CheckStand extends BaseComponent {
     getData = () => {
         let maps = {
             api: this.props.page == 'ShuCheBaoZhengJin' ? Urls.DEPOSIT_CASHIER_TABLE : Urls.CASHIER_TABLE,
-            supervise_order_num:this.props.orderNums
+            deposit_order_num:this.props.orderNums
         };
         request(Urls.FINANCE, 'Post', maps)
 
