@@ -267,7 +267,6 @@ export default class CheckStand extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                         this.props.callBack();
                     }
-
                 }else{
                     this.transSerialNo = response.mjson.data.trans_serial_no;
                     this.toNextPage({
