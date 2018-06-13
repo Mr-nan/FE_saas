@@ -18,15 +18,19 @@ import {
 //图片加文字
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../utils/PixelUtil';
+
 const Pixel = new PixelUtil();
 import NavigationView from '../component/AllNavigationView';
 import * as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
+
 let oldUrl = '';
 import WebViewTitle from '../mine/accountManage/component/WebViewTitle';
 import CarInfoScene from '../carSource/CarInfoScene';
 import MainPage from './MainPage'
-export  default class WebScene extends BaseComponent {
+import SuishoujiIndicativeScene from './SuishoujiIndicativeScene'
+
+export default class WebScene extends BaseComponent {
 
     constructor(props) {
         super(props);
@@ -44,7 +48,7 @@ export  default class WebScene extends BaseComponent {
 
         } finally {
             //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: false});
+            this.setState({renderPlaceholderOnly: false});
             //});
         }
     }
@@ -69,29 +73,30 @@ export  default class WebScene extends BaseComponent {
                 <WebViewTitle ref="webviewtitle"/>
                 <WebView
                     ref="www"
-                    style={{width:width,height:height,backgroundColor:
-                    fontAndColor.COLORA3}}
-                    source={{uri:this.props.webUrl,method: 'GET'}}
+                    style={{
+                        width: width, height: height, backgroundColor:
+                        fontAndColor.COLORA3
+                    }}
+                    source={{uri: this.props.webUrl, method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
-                    onLoadStart={()=>{
+                    onLoadStart={() => {
                         this.refs.webviewtitle.firstProgress();
                     }}
-                    onLoadEnd={()=>{
-                         this.refs.webviewtitle.lastProgress();
+                    onLoadEnd={() => {
+                        this.refs.webviewtitle.lastProgress();
                     }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
                 <NavigationView
-                    title= {this.props.title?this.props.title:'公告'}
-                    backIconClick={()=>{
-                         this.props.showModal(false);
+                    title={this.props.title ? this.props.title : '公告'}
+                    backIconClick={() => {
+                        this.props.showModal(false);
                         console.log(this.props.webUrl)
-                        if(oldUrl==this.props.webUrl){
-                                this.backPage();
-
-                        }else{
+                        if (oldUrl == this.props.webUrl || this.props.webUrl === '') {
+                            this.backPage();
+                        } else {
                             this.refs.www.goBack();
                         }
                     }}
@@ -101,32 +106,51 @@ export  default class WebScene extends BaseComponent {
     }
 
     onNavigationStateChange = (navState) => {
+
+        console.log('------- ' + navState.url);
+
         oldUrl = navState.url;
         let urls = oldUrl.split('?');
         if (urls[0] == 'http://dycd.tocarsource.com/') {
-            let id = urls[1].replace('id=','');
+            let id = urls[1].replace('id=', '');
             let navigatorParams = {
                 name: "CarInfoScene",
                 component: CarInfoScene,
                 params: {
                     carID: id,
-                    from:'webview'
+                    from: 'webview'
                 }
             };
             let mainParams = {
                 name: "MainPage",
                 component: MainPage,
-                params: {
-                }
+                params: {}
             };
-            this.loginPage(navigatorParams,mainParams)
+            this.loginPage(navigatorParams, mainParams)
+        }
+
+        let flag = oldUrl.indexOf('https://gatewayapi.dycd.com');
+        if (flag>=0) {
+            console.log(flag);
+            const navigator = this.props.navigator;
+            if (navigator) {
+                navigator.replace({
+                    component: SuishoujiIndicativeScene,
+                    name: 'SuishoujiIndicativeScene',
+                    params: {
+                        type: 1,
+                        status: 0,
+                    }
+
+                });
+            }
         }
     }
 
-    loginPage = (mProps,mainParams) => {
+    loginPage = (mProps, mainParams) => {
         const navigator = this.props.navigator;
         if (navigator) {
-            navigator.immediatelyResetRouteStack([{...mainParams},{
+            navigator.immediatelyResetRouteStack([{...mainParams}, {
                 ...mProps
             }])
         }
@@ -134,11 +158,11 @@ export  default class WebScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
+            <View style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}>
                 <NavigationView
                     title="公告"
-                    backIconClick={()=>{
-                         this.props.showModal(false);
+                    backIconClick={() => {
+                        this.props.showModal(false);
                         this.backPage();
                     }}
                 />

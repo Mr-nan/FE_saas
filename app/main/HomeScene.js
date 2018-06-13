@@ -50,6 +50,8 @@ let Platform = require('Platform');
 import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
 import PersonCertificate from "../mine/certificateManage/PersonCertificate";
 
+import SuishoujiIndicativeScene from './SuishoujiIndicativeScene'
+
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
@@ -180,14 +182,75 @@ export default class HomeScene extends BaseComponet {
 
     }
 
+
+    suishouji = (urls)=>{
+
+        // finance.api.dev.dycd.com/api/v4/account/accountActivate 激活
+        // finance.api.dev.dycd.com/api/v4/account/accountAuth 授权
+        // finance.api.dev.dycd.com/api/v4/account/accountOpen 开户
+        // finance.api.dev.dycd.com/api/v4/account/borrowerInfo 开户状态
+
+        StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                if (res.result) {
+                    let maps = {
+                        api:'/api/v4/account/accountopen',
+                        //merge_id:global.MERGE_ID
+                    }
+
+                    this.props.showModal(true)
+                    request(Urls.FINANCE_API, 'Post', maps)
+                        .then((response) => {
+
+                                this.props.showModal(false)
+                                if(response.mjson.data.flag === 'T'){
+                                    this.props.callBack(
+                                        {name: 'WebScene', component: WebScene, params: {webUrl:response.mjson.data.url, title:'随手记'}}
+                                    );
+                                }else if(response.mjson.data.flag === 'F'){
+
+                                    this.props.callBack({
+                                        name: 'SuishoujiIndicativeScene',
+                                        component: SuishoujiIndicativeScene,
+                                        params: {
+                                            type: 1,
+                                            status: 2,
+                                            error: {
+                                                msg:response.mjson.data.remark,
+                                            }
+
+                                        }}
+                                    );
+
+
+                                }
+                            },
+                            (error) => {
+                                this.props.showModal(false)
+                                this.props.showToast(error.mjson.msg);
+
+                            });
+                }else {
+                    this.props.showLoginModal();
+                }
+            }
+        );
+
+    }
+
+
+
     _renderHeader = () => {
         return (
             <View>
                 <View style={{flexDirection: 'row'}}>
                     <ViewPagers callBack={(urls)=> {
-                        this.props.callBack(
-                            {name: 'WebScene', component: WebScene, params: {webUrl: urls}}
+                        if(urls == 'https://gatewayapi.dycd.com/suishouji'){
+                            this.suishouji(urls);
+                        }else {
+                            this.props.callBack(
+                                {name: 'WebScene', component: WebScene, params: {webUrl: urls}}
                             );
+                        }
                     }} items={this.state.allData} toNext={()=>{
                          this.props.jumpScene('financePage','');
                     }}/>
