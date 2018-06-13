@@ -51,11 +51,9 @@ import AddressManageListScene from '../mine/addressManage/AddressManageListScene
 import GetCarerManageListScene from '../mine/getCarerManage/GetCarerManageListScene';
 import GetPermissionUtil from '../utils/GetPermissionUtil';
 import BaseComponent from '../component/BaseComponent';
-<<<<<<< HEAD
 import List from "../mine/myOrder/orderwuliu/list/List";
-=======
 import CredictManageScene from "../mine/kuaisushouxin/CredictManageScene";
->>>>>>> develop
+
 
 var Pixel = new PixelUtil();
 

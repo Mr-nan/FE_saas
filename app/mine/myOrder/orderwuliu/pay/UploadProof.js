@@ -163,6 +163,7 @@ export default class UploadProof extends BaseComponent {
             company_id:global.companyBaseID,
             voucher:this.state.images.url,
             trans_id:this.props.order.trans_id,
+            voucher_id:this.state.images.file_id,
 
         }
 
