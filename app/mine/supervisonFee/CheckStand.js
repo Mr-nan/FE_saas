@@ -262,7 +262,7 @@ export default class CheckStand extends BaseComponent {
         request(AppUrls.FINANCE, 'post', maps).then((response) => {
             this.props.showModal(false);
             if (response.mjson.code === 1) {
-                if (response.mjson.data == null  || response.mjson.data.length==0) {
+                if (response.mjson.data == null) {
                     if(!this.isEmpty(response.mjson.msg)){
                         this.props.showToast(response.mjson.msg);
                         this.props.callBack();
