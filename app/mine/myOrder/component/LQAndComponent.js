@@ -59,7 +59,7 @@ export  default class LQAndComponent extends PureComponent {
                     flexDirection: 'row'}}>
                         <TouchableOpacity onPress={()=>{
                             if(this.state.number>1){
-                                this.setState({number:this.state.number-1},()=>{
+                                this.setState({number:parseInt(this.state.number)-1},()=>{
                                     this.props.changeNumber(this.state.number);
 
                             });
@@ -140,7 +140,7 @@ export  default class LQAndComponent extends PureComponent {
                             if (this.state.number>=999){
                                 return;
                             }
-                            this.setState({number:this.state.number+1},()=>{
+                            this.setState({number:parseInt(this.state.number)+1},()=>{
 
                                 this.props.changeNumber(this.state.number);
 

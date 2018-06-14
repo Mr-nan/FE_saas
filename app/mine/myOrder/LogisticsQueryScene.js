@@ -347,7 +347,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                         dataSource: ds.cloneWithRows(this.list_view_rows),
                         canClick: true
                     });
-                    //}
+         ``           //}
 
                 }} ref="lqselecttransitem"/>
                 <NavigatorView ref={(ref) => this.navigationView = ref} title='物流服务' backIconClick={this.backPage}
