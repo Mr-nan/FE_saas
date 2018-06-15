@@ -204,7 +204,7 @@ export  default class SCBZJScene extends BaseComponent {
         return (
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
-                <NavigationView title="合同管理" backIconClick={this.backPage}/>
+                <NavigationView title="保证金" backIconClick={this.backPage}/>
             </View>
         );
     }
