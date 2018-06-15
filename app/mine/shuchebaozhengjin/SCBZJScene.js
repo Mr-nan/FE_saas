@@ -165,7 +165,7 @@ export  default class SCBZJScene extends BaseComponent {
                                      status={this.state.status}  callBack={()=>this.getData(2)}/>
                     <SCBJZChildScene tabLabel="ios-paper2" opt_user_id={'2'} navigator={this.props.navigator} page={'已支付'}/>
                 </ScrollableTabView>
-                <NavigationView title="合同管理" backIconClick={this.backPage}/>
+                <NavigationView title="保证金" backIconClick={this.backPage}/>
             </View>
         );
     }
