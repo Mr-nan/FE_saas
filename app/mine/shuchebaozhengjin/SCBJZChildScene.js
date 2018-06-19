@@ -153,7 +153,8 @@ export default class SCBJZChildScene extends BaseComponent {
                 <Image resizeMode={'cover'} source={require('../../../images/xu_line.png')}
                        style={{width:width-Pixel.getPixel(30),height:onePT,}} />
                 <View style={{flexDirection:'column',height:Pixel.getPixel(79),justifyContent:'center'}}>
-                    <Text allowFontScaling={false}  style={{color: "#000000",fontSize: Pixel.getFontPixel(13)}}>{rowData.car_name}</Text>
+                    <Text allowFontScaling={false}  style={{color: "#000000",fontSize: Pixel.getFontPixel(13)}}>
+                        {rowData.car_name+'('+ rowData.auto_vin.substring(rowData.auto_vin.length - 6,rowData.auto_vin.length)+")"}</Text>
                     <Text allowFontScaling={false}  style={{color: '#9B9B9B',fontSize: Pixel.getFontPixel(12)}}>
                         {'申请时间：'}
                         <Text style={{fontSize:Pixel.getPixel(15)}}>{rowData.create_time}</Text>
