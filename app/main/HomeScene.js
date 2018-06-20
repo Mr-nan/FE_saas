@@ -2,8 +2,8 @@
  * Created by zhaojian 2017/2/8.
  */
 
-import  React, {Component, PropTypes} from  'react'
-import  {
+import React, {Component, PropTypes} from 'react'
+import {
 
     View,
     Text,
@@ -17,15 +17,16 @@ import  {
     BackAndroid,
     Linking,
     NativeModules
-} from  'react-native'
+} from 'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
-import  PixelUtil from '../utils/PixelUtil'
+import PixelUtil from '../utils/PixelUtil'
+
 var Pixel = new PixelUtil();
 let page = 1;
 let status = 1;
-import  ViewPagers from './component/ViewPager'
-import  CarsViewPager from './component/CarsViewPager'
+import ViewPagers from './component/ViewPager'
+import CarsViewPager from './component/CarsViewPager'
 /*
  * 获取屏幕的宽和高
  **/
@@ -34,18 +35,20 @@ import BaseComponet from '../component/BaseComponent';
 import {request} from '../utils/RequestUtil';
 import CarInfoScene from '../carSource/CarInfoScene';
 import CarNewInfoScene from '../carSource/CarNewInfoScene';
-import  StorageUtil from '../utils/StorageUtil';
+import StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import WebScene from './WebScene';
-import  CarMySourceScene from '../carSource/CarMySourceScene';
+import CarMySourceScene from '../carSource/CarMySourceScene';
 import HomeJobItem from './component/HomeJobItem';
 import HomeRowButton from './component/HomeRowButton';
 import HomeAdvertisementButton from './component/HomeAdvertisementButton';
 import MessageListScene from "../message/MessageListScene";
-import  StringTransformUtil from  '../utils/StringTransformUtil';
+import StringTransformUtil from '../utils/StringTransformUtil';
+
 let stringTransform = new StringTransformUtil();
 import * as Urls from '../constant/appUrls';
 import AuthenticationModal from '../component/AuthenticationModal';
+
 let Platform = require('Platform');
 import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
 import PersonCertificate from "../mine/certificateManage/PersonCertificate";
@@ -83,8 +86,8 @@ export default class HomeScene extends BaseComponet {
             isRefreshing: false,
             headSource: [],
             pageData: [],
-            newData:{list:[]},
-            oldData:{list:[]}
+            newData: {list: []},
+            oldData: {list: []}
         };
         this.authenOptions = {
             '1': [true, '请先完成认证后再进行操作', '取消', '', '个人认证', this._gerenrenzheng],
@@ -172,7 +175,7 @@ export default class HomeScene extends BaseComponet {
                         }
                     });
 
-                }else {
+                } else {
                     this.isHomeJobItemLose = false;
                     this.props.showLoginModal();
                 }
@@ -183,7 +186,7 @@ export default class HomeScene extends BaseComponet {
     }
 
 
-    suishouji = (urls)=>{
+    suishouji = (urls) => {
 
         // finance.api.dev.dycd.com/api/v4/account/accountActivate 激活
         // finance.api.dev.dycd.com/api/v4/account/accountAuth 授权
@@ -192,44 +195,68 @@ export default class HomeScene extends BaseComponet {
 
         StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
                 if (res.result) {
-                    let maps = {
-                        api:'/api/v4/account/accountopen',
-                        //merge_id:global.MERGE_ID
-                    }
-
                     this.props.showModal(true)
-                    request(Urls.FINANCE_API, 'Post', maps)
-                        .then((response) => {
+                    //查询状态
+                    request(Urls.FINANCE_API, 'post', {api: 'api/v4/account/borrowerInfo'}).then((response) => {
 
-                                this.props.showModal(false)
-                                if(response.mjson.data.flag === 'T'){
-                                    this.props.callBack(
-                                        {name: 'WebScene', component: WebScene, params: {webUrl:response.mjson.data.url, title:'随手记'}}
-                                    );
-                                }else if(response.mjson.data.flag === 'F'){
-
-                                    this.props.callBack({
-                                        name: 'SuishoujiIndicativeScene',
-                                        component: SuishoujiIndicativeScene,
-                                        params: {
-                                            type: 1,
-                                            status: 2,
-                                            error: {
-                                                msg:response.mjson.data.remark,
-                                            }
-
-                                        }}
-                                    );
+                        // accountStatus	开户状态（flag为T才有值）	number	0:未开户; 1:开户中; 2:开户成功，3:开户失败 4：锁定
+                        // activateStatus	激活状态（flag为T才有值）	number	0 未激活，1 已激活，2：激活中 3：激活失败
+                        // authStatus	授权状态（flag为T才有值）	number	0：未授权 1：授权中 2：授权成功 3：授权失败
 
 
+                        if (response.mjson.data.flag === 'T') {
+
+                            if (response.mjson.data.accountStatus == 2) {  //开户成功，走激活
+
+                                if (response.mjson.data.activateStatus == 1) { // 激活成功，走授权
+
+                                    //授权
+                                    request(Urls.FINANCE_API, 'post', {api: 'api/v4/account/accountAuth'}).then((response) => {
+
+                                        this.toSuiShouJiWeb(response);
+
+                                    }, (error) => {
+
+                                        this.props.showModal(false)
+                                        this.props.showToast(error.mjson.msg);
+                                    })
+
+
+                                } else {
+                                    //激活
+                                    request(Urls.FINANCE_API, 'post', {api: 'api/v4/account/accountActivate'}).then((response) => {
+                                        this.toSuiShouJiWeb(response);
+                                    }, (error) => {
+
+                                        this.props.showModal(false)
+                                        this.props.showToast(error.mjson.msg);
+                                    })
                                 }
-                            },
-                            (error) => {
-                                this.props.showModal(false)
-                                this.props.showToast(error.mjson.msg);
+                            } else {
 
-                            });
-                }else {
+                                // 开户
+                                request(Urls.FINANCE_API, 'Post', {api: '/api/v4/account/accountopen'})
+                                    .then((response) => {
+                                            this.toSuiShouJiWeb(response);
+                                        },
+                                        (error) => {
+                                            this.props.showModal(false)
+                                            this.props.showToast(error.mjson.msg);
+                                        });
+                            }
+
+                        } else {
+                            this.props.showModal(false)
+                            this.props.showToast(response.mjson.data.remark);
+
+                        }
+
+                    }, (error) => {
+                        this.props.showModal(false)
+                        this.props.showToast(error.mjson.msg);
+
+                    })
+                } else {
                     this.props.showLoginModal();
                 }
             }
@@ -237,24 +264,52 @@ export default class HomeScene extends BaseComponet {
 
     }
 
+    toSuiShouJiWeb = (response) => {
+
+        this.props.showModal(false)
+        if (response.mjson.data.flag === 'T') {
+            this.props.callBack(
+                {
+                    name: 'WebScene',
+                    component: WebScene,
+                    params: {webUrl: response.mjson.data.url, title: '随手记'}
+                }
+            );
+        } else if (response.mjson.data.flag === 'F') {
+
+            this.props.callBack({
+                    name: 'SuishoujiIndicativeScene',
+                    component: SuishoujiIndicativeScene,
+                    params: {
+                        type: 1,
+                        status: 2,
+                        error: {
+                            msg: response.mjson.data.remark,
+                        }
+
+                    }
+                }
+            );
+        }
+    }
 
 
     _renderHeader = () => {
         return (
             <View>
                 <View style={{flexDirection: 'row'}}>
-                    <ViewPagers callBack={(urls)=> {
-                        if(urls == 'https://gatewayapi.dycd.com/suishouji'){
+                    <ViewPagers callBack={(urls) => {
+                        if (urls == 'https://gatewayapi.dycd.com/suishouji') {
                             this.suishouji(urls);
-                        }else {
+                        } else {
                             this.props.callBack(
                                 {name: 'WebScene', component: WebScene, params: {webUrl: urls}}
                             );
                         }
-                    }} items={this.state.allData} toNext={()=>{
-                         this.props.jumpScene('financePage','');
+                    }} items={this.state.allData} toNext={() => {
+                        this.props.jumpScene('financePage', '');
                     }}/>
-                    <TouchableOpacity onPress={()=> {
+                    <TouchableOpacity onPress={() => {
                         this.props.jumpScene('carpage', 'true');
                     }} activeOpacity={0.8} style={{
                         backgroundColor: 'rgba(255,255,255,0.8)',
@@ -276,12 +331,16 @@ export default class HomeScene extends BaseComponet {
                             color: fontAndClolr.COLORA1
                         }}> 搜索您要找的车</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=> {
+                    <TouchableOpacity onPress={() => {
 
                         StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
                                 if (res.result) {
-                                    this.props.callBack({name:'messagelistscene',component:MessageListScene,params:{}});
-                                }else {
+                                    this.props.callBack({
+                                        name: 'messagelistscene',
+                                        component: MessageListScene,
+                                        params: {}
+                                    });
+                                } else {
                                     this.props.showLoginModal();
                                 }
                             }
@@ -295,38 +354,47 @@ export default class HomeScene extends BaseComponet {
                         marginTop: Pixel.getTitlePixel(26),
                         marginLeft: width - Pixel.getPixel(35),
                     }}>
-                        <Image style={{flex:1,resizeMode:'stretch'}}
+                        <Image style={{flex: 1, resizeMode: 'stretch'}}
                                source={require('../../images/workbench/ysjxx.png')}/>
                     </TouchableOpacity>
                 </View>
 
-                <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}
-                             callBack={(params)=>{
-                                 if(this.isHomeJobItemLose){return;}
-                                 this._checkAuthen(params)}
+                <HomeJobItem jumpScene={(ref, com) => {
+                    this.props.jumpScene(ref, com)
+                }}
+                             callBack={(params) => {
+                                 if (this.isHomeJobItemLose) {
+                                     return;
+                                 }
+                                 this._checkAuthen(params)
+                             }
                              }/>
                 {/*<HomeRowButton onPress={(id)=>{*/}
                 {/*this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});*/}
                 {/*}} list={this.carData}/>*/}
                 {
-                    this.state.newData && <CarsViewPager items={this.state.newData} toNext={(id)=>{
+                    this.state.newData && <CarsViewPager items={this.state.newData} toNext={(id) => {
                         this.pushNewCarInfoScene(id);
-                    }} more={()=>{
-                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);
+                    }} more={() => {
+                        this.props.jumpScene('carpage', storageKeyNames.NEED_CHECK_NEW_CAR);
                     }} title="推荐新车源" type="6"
                     />
                 }
                 {
-                    this.state.oldData.list.length == 0 && this.state.newData.list.length == 0 ?null:
-                        <CarsViewPager items={this.state.oldData} toNext={(id)=>{
+                    this.state.oldData.list.length == 0 && this.state.newData.list.length == 0 ? null :
+                        <CarsViewPager items={this.state.oldData} toNext={(id) => {
                             this.pushUserCarInfoScene(id);
-                        }} more={()=>{
-                            this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
+                        }} more={() => {
+                            this.props.jumpScene('carpage', storageKeyNames.NEED_CHECK_USER_CAR);
                         }} title="推荐二手车源" type="8"
                         />
                 }
-                <HomeAdvertisementButton click={()=>{
-                       this.props.callBack( {name: 'WebScene', component: WebScene, params: {webUrl: "http://u5559609.viewer.maka.im/k/9XENK1GL",title:'车行老板们想有钱有面儿有B格?'}});
+                <HomeAdvertisementButton click={() => {
+                    this.props.callBack({
+                        name: 'WebScene',
+                        component: WebScene,
+                        params: {webUrl: "http://u5559609.viewer.maka.im/k/9XENK1GL", title: '车行老板们想有钱有面儿有B格?'}
+                    });
                 }}/>
 
             </View>
@@ -361,7 +429,7 @@ export default class HomeScene extends BaseComponet {
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
 
-            console.log('==========Loan_SUBJECT',data);
+            console.log('==========Loan_SUBJECT', data);
             if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 this.getData(enters.prov_id);
@@ -594,23 +662,23 @@ export default class HomeScene extends BaseComponet {
                 height: Pixel.getPixel(40),
                 backgroundColor: 'white',
                 alignItems: 'center',
-                marginTop:Pixel.getPixel(10)
+                marginTop: Pixel.getPixel(10)
             }}>
 
-                <View style={{marginLeft: Pixel.getPixel(10), flex:1,flexDirection:'row'}}>
+                <View style={{marginLeft: Pixel.getPixel(10), flex: 1, flexDirection: 'row'}}>
                     <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(15), fontWeight: 'bold',}}>
                         {sectionData}
                     </Text>
                 </View>
-                <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
+                <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={() => {
 
 
-                    if(sectionData=='新车订阅'){
+                    if (sectionData == '新车订阅') {
 
-                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);
+                        this.props.jumpScene('carpage', storageKeyNames.NEED_CHECK_NEW_CAR);
 
-                    }else {
-                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
+                    } else {
+                        this.props.jumpScene('carpage', storageKeyNames.NEED_CHECK_USER_CAR);
 
                     }
                 }}>
@@ -620,7 +688,8 @@ export default class HomeScene extends BaseComponet {
                     }}>
                         <Text allowFontScaling={false}
                               style={{color: 'gray', fontSize: Pixel.getFontPixel(12)}}>更多</Text>
-                        <Image source={require('../../images/mainImage/more.png')} style={{width: Pixel.getPixel(5), height: Pixel.getPixel(10), marginLeft: Pixel.getPixel(2),
+                        <Image source={require('../../images/mainImage/more.png')} style={{
+                            width: Pixel.getPixel(5), height: Pixel.getPixel(10), marginLeft: Pixel.getPixel(2),
                         }}/>
                     </View>
                 </TouchableOpacity>
@@ -639,10 +708,10 @@ export default class HomeScene extends BaseComponet {
             DIDIAN = '';
         }
         return (
-            <TouchableOpacity onPress={()=> {
-                if(movie.v_type==1){
+            <TouchableOpacity onPress={() => {
+                if (movie.v_type == 1) {
                     this.pushUserCarInfoScene(movie.id);
-                }else {
+                } else {
                     this.pushNewCarInfoScene(movie.id);
                 }
             }} activeOpacity={0.8} style={{
@@ -654,7 +723,7 @@ export default class HomeScene extends BaseComponet {
                 alignItems: 'center',
             }}>
                 <View
-                    style={{width: Pixel.getPixel(166), backgroundColor:'white', justifyContent: 'center'}}>
+                    style={{width: Pixel.getPixel(166), backgroundColor: 'white', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle}
                            source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 320 + ',h_' + 240} : require('../../images/carSourceImages/car_null_img.png')}/>
 
@@ -663,7 +732,11 @@ export default class HomeScene extends BaseComponet {
                     <Text allowFontScaling={false}
                           style={cellSheet.timeStyle}>{movie.v_type == 1 ? (this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里') : ((movie.car_color ? (movie.car_color.split("|")[0] + ' | ') : ' ') + movie.stock + '辆')}</Text>
                     <Text allowFontScaling={false}
-                          style={{color:fontAndClolr.COLORB2, fontSize:Pixel.getFontPixel(fontAndClolr.LITTLEFONT28), marginBottom:Pixel.getPixel(15)}}>{movie.dealer_price > 0 ? (stringTransform.carMoneyChange(movie.dealer_price) + '万') : ' '}</Text>
+                          style={{
+                              color: fontAndClolr.COLORB2,
+                              fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
+                              marginBottom: Pixel.getPixel(15)
+                          }}>{movie.dealer_price > 0 ? (stringTransform.carMoneyChange(movie.dealer_price) + '万') : ' '}</Text>
                 </View>
             </TouchableOpacity>
         )

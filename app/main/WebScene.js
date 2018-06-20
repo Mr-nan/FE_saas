@@ -93,7 +93,11 @@ export default class WebScene extends BaseComponent {
                     title={this.props.title ? this.props.title : '公告'}
                     backIconClick={() => {
                         this.props.showModal(false);
-                        console.log(this.props.webUrl)
+                        if(this.props.title === '随手记'){
+                            this.backPage();
+                            return;
+                        }
+
                         if (oldUrl == this.props.webUrl || this.props.webUrl === '') {
                             this.backPage();
                         } else {
@@ -107,9 +111,8 @@ export default class WebScene extends BaseComponent {
 
     onNavigationStateChange = (navState) => {
 
-        console.log('------- ' + navState.url);
-
         oldUrl = navState.url;
+
         let urls = oldUrl.split('?');
         if (urls[0] == 'http://dycd.tocarsource.com/') {
             let id = urls[1].replace('id=', '');
@@ -129,21 +132,50 @@ export default class WebScene extends BaseComponent {
             this.loginPage(navigatorParams, mainParams)
         }
 
-        let flag = oldUrl.indexOf('https://gatewayapi.dycd.com');
-        if (flag>=0) {
-            console.log(flag);
-            const navigator = this.props.navigator;
-            if (navigator) {
-                navigator.replace({
-                    component: SuishoujiIndicativeScene,
-                    name: 'SuishoujiIndicativeScene',
-                    params: {
-                        type: 1,
-                        status: 0,
-                    }
+        if (oldUrl.indexOf('https://gatewayapi.dycd.com')==0) {
 
-                });
+            this.backPage();
+            return;
+
+            if(oldUrl.indexOf('message')>0){
+                let msg = oldUrl.split('=');
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    navigator.replace({
+                        component: SuishoujiIndicativeScene,
+                        name: 'SuishoujiIndicativeScene',
+                        params: {
+                            type: 1,
+                            status: 0,
+                            msg:msg[msg.length-1]
+
+                        }
+
+                    });
+                }
             }
+
+            if(oldUrl.indexOf('params')>0){
+
+                let msg = oldUrl.split('=');
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    navigator.replace({
+                        component: SuishoujiIndicativeScene,
+                        name: 'SuishoujiIndicativeScene',
+                        params: {
+                            type: 1,
+                            status: 0,
+                            msg:msg[msg.length-1]
+
+                        }
+
+                    });
+                }
+
+            }
+
+
         }
     }
 

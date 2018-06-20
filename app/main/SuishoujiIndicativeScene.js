@@ -358,7 +358,7 @@ export default class SuishoujiIndicativeScene extends ZSBaseComponent {
             case 1: {
                 switch (this.state.status) {
                     case 0: {
-                        return '开户审核中'
+                        return this.props.msg;   //'开户审核中'
                     }
                     case 1: {
                         return '恭喜您开户成功'
