@@ -96,17 +96,17 @@ export  default class LQAndComponent extends PureComponent {
                                         this.setState({
                                             number: text
                                         },()=>{
-                                            this.props.changeNumber(text);
+                                            this.props.changeNumber(parseInt(text));
                                         });
                                     }else {
                                         if(text == ''){
                                             this.setState({
                                                 number:text
                                             },()=>{
-                                                this.props.changeNumber(text);
+                                                this.props.changeNumber(parseInt(text));
                                             })
                                         }else {
-                                            this.props.changeNumber(this.state.number);
+                                            this.props.changeNumber(parseInt(this.state.number));
                                         }
                                     }
                                 }}
