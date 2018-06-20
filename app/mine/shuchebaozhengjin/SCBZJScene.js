@@ -59,13 +59,16 @@ export  default class SCBZJScene extends BaseComponent {
                         let right = 0;
                         let status = -1;
                         if (response.mjson.data != null) {
+                            console.log(JSON.stringify(response.mjson.data[315]))
                             response.mjson.data[315].map((item) => {
-                                if(item.account_type_id == 11){//赎车保证金
-                                    left = parseFloat(left) + parseFloat(item.balance)
+                                if(item.account_type_id == 1){
                                     status = item.status;
+                                }else if(item.account_type_id == 11){//赎车保证金
+                                    left = parseFloat(left) + parseFloat(item.balance)
+                                    // status = item.status;
                                 } else if(item.account_type_id == 2){ //保证金
                                     right = parseFloat(right) + parseFloat(item.balance)
-                                    status = item.status;
+                                    // status = item.status;
                                 }
                             })
                             total = parseFloat(left) + parseFloat(right);
