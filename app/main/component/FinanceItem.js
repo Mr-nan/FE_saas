@@ -48,7 +48,7 @@ export default class FinanceItem extends PureComponent {
             case 1:
                 nextPage = KurongDetaileScene;
                 this.content = '库';
-                this.typeColor={backgroundColor:fontAndColor.COLORB4};//库容
+                this.typeColor={backgroundColor:fontAndColor.COLORB4};//库融
                 break;
             case 2:
                 nextPage = SingDetaileSence;

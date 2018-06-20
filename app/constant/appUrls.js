@@ -840,7 +840,7 @@ export const CONTRACTBYLIST = 'api/V1/Contract/contractbylist';
 /**
  * from @zhaojian
  *
- * 线下库容获取合同数据
+ * 线下库融获取合同数据
  **/
 export const CONTRACT_LOAN_CONTRACT_LIST = 'api/v1/contract/loan_contract_list';
 
@@ -939,7 +939,7 @@ export const GET_APPLY_CARLIST = 'api/v2/account/get_apply_carlist';
 
 /**
  * from @huangning
- * 一车一融库容进度条
+ * 一车一融库融进度条
  **/
 export const ACCOUNT_PROGRESS_BAR = 'api/v4/account/progress_bar';
 
@@ -962,13 +962,13 @@ export const DELETEAUTO = 'api/v2/purchaAuto/deleteAuto'
 export const GET_CAR_INFO = 'api/v1/account/get_car_info'
 /**
  * from @lhc
- * 取消借款单车/库容
+ * 取消借款单车/库融
  **/
 export const CANCEL_LOAN = 'api/v3/account/cancel_loan'
 
 /**
  * from @huangnign
- * 取消借款单车/库容
+ * 取消借款单车/库融
  **/
 export const CANCEL_CHILD_LOAN = 'api/v2/account/cancel_child_loan'
 
