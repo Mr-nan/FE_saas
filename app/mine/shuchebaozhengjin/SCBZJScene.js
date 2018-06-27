@@ -164,7 +164,7 @@ export  default class SCBZJScene extends BaseComponent {
                     locked={true}
                     scrollWithoutAnimation={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["未支付", "已支付"]}/>}>
-                    <SCBJZChildScene ref = 'po' tabLabel="ios-paper1" opt_user_id={'0'} navigator={this.props.navigator} page={'未支付'}
+                    <SCBJZChildScene ref = 'po' tabLabel="ios-paper1" opt_user_id={['0','4']} navigator={this.props.navigator} page={'未支付'}
                                      status={this.state.status}  callBack={()=>this.getData(2)}/>
                     <SCBJZChildScene tabLabel="ios-paper2" opt_user_id={'2'} navigator={this.props.navigator} page={'已支付'}/>
                 </ScrollableTabView>
