@@ -1,15 +1,13 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
-
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  *
  */
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
-
 
 /**
  * 测试地址2
@@ -22,11 +20,10 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
-
 /**
  * 预发布地址
  */
-//export const BASEURL = 'https://stgatewayapi.dycd.com/';
+// export const BASEURL = 'https://stgatewayapi.dycd.com/';
 
 /**
  * 版本号1
@@ -1242,6 +1239,11 @@ export const CONTRACTLIST = 'api/v1/Contract/contract_list';
 export const CONTRACT_CONTRACT_LIST = 'api/v1/Contract/contract_list';
 
 /**
+ * 赎车保证金支付单列表
+ */
+export const DEPOSIT_DEPOSIT_LIST = 'Api/V1/Deposit/deposit_list';
+
+/**
  * 转债权合同列表
  */
 export const GET_CTC_CONTRACT_LIST_FOR_APP = 'api/v1/contract/get_ctc_contract_list_for_app';
@@ -1646,11 +1648,24 @@ export const SUPERVISE_LIST = BASEURL + V + "finance/superviseList";
  * 监管费收银台
  */
 export const CASHIER_TABLE = BASEURL + V + "finance.supervise/cashierTable";
+
+/**
+ *
+ * 赎车保证金支付调取收银台
+ */
+export const DEPOSIT_CASHIER_TABLE =  "Api/V1/Deposit/cashier_table";
 /**
  *
  * 监管费支付
  */
 export const SUPERVISE_PAY = BASEURL + V + "finance.supervise/pay";
+
+/**
+ *
+ * 赎车保证金确认支付接口
+ */
+export const DEPOSIT_DEPOSIT_PAY =  "Api/V1/Deposit/deposit_pay";
+
 /**
  *
  * 监管费支付
@@ -1729,63 +1744,9 @@ export const CHECKTRANSTYPE = BASEURL + "v2/order.logistics/check";
 
 /**
  *
- * 支付运单
- */
-export const LOGISTICS_ORDER_PAY = BASEURL + "v2/order.logistics_flows/payFreight";
-
-/**
- *
- * 上传凭证
- */
-export const LOGISTICS_ORDER_PROOF = BASEURL + "v2/order.logistics_flows/uploadPayVoucher";
-
-/**
- *
- * 支付运单回调
- */
-export const LOGISTICS_ORDER_PAY_CALLBACK = BASEURL + "v2/order.logistics_flows/payFreightCallBack";
-/**
- *
- * 取消运单
- */
-export const LOGISTICS_ORDER_CANCEL = BASEURL + "v2/order.logistics_flows/cancelTrans";
-/**
- *
- * 运单列表
- */
-export const LOGISTICS_ORDER_LIST = BASEURL + "v2/order.logistics_flows/getMeWaybill";
-/**
- *
- * 创建运单
- */
-export const LOGISTICS_ORDER_CREATE = BASEURL + "v2/order.logistics_flows/create";
-/**
- *
- * 搜索运单
- */
-export const LOGISTICS_ORDER_SEARCH = BASEURL + "v2/order.logistics_flows/getTransSearch";
-
-/**
- *
- * 运单详情
- */
-export const ORDER_LOGISTICS_ORDER_DETAIL = BASEURL + "v2/order.logistics_flows/getTransDetails";
-/**
- *
- * 单车详情
- */
-export const ORDER_LOGISTICS_CAR_DETAIL = BASEURL + "v2/order.logistics_flows/getCarDetails";
-/**
- *
- * 物流详情
- */
-export const ORDER_LOGISTICS_DETIAL = BASEURL + "v2/order.logistics_flows/getLogisticsDetails";
-
-/**
- *
  *物流运价查询
  */
-export const ORDER_LOGISTICS_QUERY = BASEURL + "v2/order.logistics_flows/getFreight";
+export const ORDER_LOGISTICS_QUERY = BASEURL + "v2//order.logistics/query";
 /**
  *
  *获取发票信息
