@@ -27,7 +27,7 @@ import Picker from 'react-native-picker';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import {LendSuccessAlert} from './component/ModelComponent'
-const PostData = {
+let PostData = {
     apply_type: '4',
     loan_mny: '',
     loan_life:'',
@@ -69,6 +69,13 @@ export default class KurongSence extends BaseComponent {
     ];
     dateBlob =['30天','90天','180天','360天'];
     initFinish() {
+        PostData = {
+            apply_type: '4',
+            loan_mny: '',
+            loan_life:'',
+            use_time: '',
+            remark: '',
+        };
         this.getData('');
 
     }
@@ -136,8 +143,13 @@ export default class KurongSence extends BaseComponent {
     }
 //日历按钮事件
     onPress = (changeText)=> {
+        Picker.hide();
         changeDate=changeText;
         this.setState({ isDateTimePickerVisible: true });
+    }
+    _backPage = () =>{
+        this.backPage();
+        Picker.hide();
     }
 //申请借款
     onClickLend = ()=> {
@@ -161,9 +173,9 @@ export default class KurongSence extends BaseComponent {
         }
 
         if (infoComolete){
-
+            // api: apis.APPLY_LOAN,
             let maps = {
-                api: apis.APPLY_LOAN,
+                api: apis.ACCOUNT_APPLY_LOAN,
                 apply_type:PostData.apply_type,
                 loan_mny:PostData.loan_mny,
                 remark:PostData.remark,
@@ -260,7 +272,7 @@ export default class KurongSence extends BaseComponent {
                     this.props.backRefresh();
                     this.backToTop()
                 }} title='借款成功'subtitle='恭喜您借款成功'/>
-                <AllNavigatior title='库融借款' backIconClick={()=>{ this.backPage()}}/>
+                <AllNavigatior title='库融借款' backIconClick={()=>{ this._backPage()}}/>
 
             </View>
         )

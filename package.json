@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "ios":"react-native run-ios"
+    "ios": "react-native run-ios"
   },
   "dependencies": {
     "react": "~15.4.0-rc.4",
@@ -21,7 +21,7 @@
     "react-native-sglistview": "^0.3.2",
     "react-native-spinkit": "^1.0.2",
     "react-native-sqlite-storage": "^3.2.2",
-    "react-native-swipe-list-view": "^0.4.1",
+    "react-native-swipeout": "^2.3.3",
     "react-native-tab-navigator": "^0.3.3",
     "react-native-tabs": "^1.0.9",
     "react-native-umeng-push": "^1.0.5",
@@ -29,7 +29,7 @@
     "react-native-update": "^4.0.3",
     "react-native-viewpager": "^0.2.13",
     "react-native-wechat": "^1.8.0",
-    "react-native-wheel-picker": "^1.1.1"
+    "react-native-wheel-picker": "^1.2.0"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",

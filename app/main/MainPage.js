@@ -6,6 +6,7 @@ import {
     AppRegistry,
     View,
     Text,
+    Platform,
     Image,
     StyleSheet,
     Dimensions,
@@ -14,13 +15,14 @@ import {
     NativeModules,
     InteractionManager,
     DeviceEventEmitter,
+    TouchableWithoutFeedback,
 } from 'react-native';
 
 const {width, height} = Dimensions.get('window');
 import  PixelUtil from '../utils/PixelUtil'
 let Pixel = new PixelUtil();
 import TabNavigator from 'react-native-tab-navigator';
-
+import BlankFinanceScene from './BlankFinanceScene'
 import HomeSence  from './HomeScene'
 import CarSourceSence from '../carSource/CarSourceListScene'
 import MineSence from './MineScene'
@@ -41,6 +43,7 @@ import GetPermissionUtil from '../utils/GetPermissionUtil';
 const GetPermission = new GetPermissionUtil();
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
+import * as StorageKeyNames from "../constant/storageKeyNames";
 export class tableItemInfo {
     constructor(ref, key, title, selectedImg, defaultImg, topView) {
 
@@ -67,12 +70,11 @@ export default class MainPage extends BaseComponent {
     };
 
 
-
-
     componentWillUnmount() {
         tabArray = [];
         this.emitterNewCarPage.remove();
         this.emitterUserCarPage.remove();
+        this.mbShow.remove();
     }
 
     /**
@@ -83,31 +85,179 @@ export default class MainPage extends BaseComponent {
         this.state = {
             // selectedTab: tabArray[0].ref,
             renderPlaceholderOnly: 'blank',
-            openSelectBranch: false
+            openSelectBranch: false,
+            mb_one: false,
+            mb_tow: false,
+            mb_three: false,
+            mbShow: false,
 
         }
-        this.emitterNewCarPage = DeviceEventEmitter.addListener('pushNewCarListScene',()=>{
-            StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR,'true');
+        this.boss_id = '';
+        this.base_user_id = '';
+        this.isLogin = false;
+
+        this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(25) : height;
+        this.emitterNewCarPage = DeviceEventEmitter.addListener('pushNewCarListScene', () => {
+            StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_NEW_CAR, 'true');
             this.setState({selectedTab: 'carpage'});
         });
-        this.emitterUserCarPage = DeviceEventEmitter.addListener('pushUserCarListScene',()=>{
-            StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_USER_CAR,'true');
+        this.emitterUserCarPage = DeviceEventEmitter.addListener('pushUserCarListScene', () => {
+            StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_USER_CAR, 'true');
             this.setState({selectedTab: 'carpage'});
         })
+        this.mbShow = DeviceEventEmitter.addListener('mb_show', (data) => {
+            if (data == '未开通') {
+
+                StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                    if (data.code == 1  && data.result) {
+                        let userData = JSON.parse(data.result);
+                        StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                            if (subData.code == 1) {
+                                let obj = JSON.parse(subData.result);
+
+                                if ( obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT] == 2){return}
+                                obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT] = 1;
+                                StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                })
+                                this.setState({
+                                    mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                    mb_tow: 0,
+                                    mb_three: 0,
+                                })
+                            }
+                        })
+                    }
+                })
+
+
+                // StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_WKHWBD, (data) => {
+                //     if (data.result != 'false') {
+                //         this.setState({mb_one: true,})
+                //     }
+                // })
+            } else if (data == '已激活') {
+                StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                    if (data.code == 1  && data.result) {
+                        let userData = JSON.parse(data.result);
+                        StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                            if (subData.code == 1) {
+                                let obj = JSON.parse(subData.result);
+
+                                if ( obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD] == 2){return}
+                                obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD] = 1;
+                                StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                })
+                                this.setState({
+                                    mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                    mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                                    mb_three: obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD],
+                                })
+                            }
+                        })
+                    }
+                })
+
+
+                //
+                //
+                // StorageUtil.mGetItem(StorageKeyNames.MB_YKHYBD, (data) => {
+                //     if (data.result != 'false') {
+                //         this.setState({mb_three: true,})
+                //     }
+                // })
+            } else if (data == '未绑卡') {
+                StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                    if (data.code == 1  && data.result) {
+                        let userData = JSON.parse(data.result);
+                        StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                            if (subData.code == 1) {
+                                let obj = JSON.parse(subData.result);
+
+                                if ( obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD] == 2){return}
+                                obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD] = 1;
+                                StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                })
+                                this.setState({
+                                    mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                    mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                                    mb_three: 0,
+                                })
+                            }
+                        })
+                    }
+                })
+
+
+                // StorageUtil.mGetItem(StorageKeyNames.MB_ZHGL_YKHWBD, (data) => {
+                //     if (data.result != 'false') {
+                //         this.setState({mb_tow: true,})
+                //     }
+                // })
+            } else if (data == '完成') {
+                this.setState({mbShow: true});
+            }
+        })
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1 && data.result) {
+                let userData = JSON.parse(data.result);
+                this.boss_id = userData.boss_id;
+                this.base_user_id = userData.base_user_id;
+                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                    if (subData.code == 1) {
+                        let obj = JSON.parse(subData.result);
+                        if (obj == null) {
+                            obj = {};
+                        }
+                        if (obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT] == null) {
+                            obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT] = 0;
+                            obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD] = 0;
+                            obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD] = 0;
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {})
+                        }
+                        this.setState({
+                            mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                            mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                            mb_three: obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD],
+                        })
+                    }
+                })
+            }
+        })
+
+
+
         tabArray = [];
     }
 
 
     initFinish = () => {
-        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
-            if (childdata.code == 1) {
-                let childdatas = JSON.parse(childdata.result);
-                this.is_done_credit = childdatas.is_done_credit;
-                this.getUserPermission(childdatas.company_base_id);
-            } else {
-                this.setState({renderPlaceholderOnly: 'error'});
+
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+            if (res.result !== StorageUtil.ERRORCODE) {
+                if (!res.result || res.result =='false') {
+                    this.isLogin = false;
+                    this.getTouristPermission();
+
+                } else {
+                    this.isLogin = true;
+                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
+                        if (childdata.code == 1) {
+                            let childdatas = JSON.parse(childdata.result);
+                            this.is_done_credit = childdatas.is_done_credit;
+                            this.getUserPermission(childdatas.company_base_id);
+                        } else {
+                            this.setState({renderPlaceholderOnly: 'error'});
+                        }
+                    });
+                }
+            }else {
+                this.isLogin = false;
+                this.getTouristPermission();
             }
         });
+
+
     }
 
     allRefresh = () => {
@@ -146,6 +296,42 @@ export default class MainPage extends BaseComponent {
                 });
     }
 
+    /*
+     *
+     * 获取游客身份权限
+     *
+     *
+     * 
+     */
+
+    getTouristPermission=()=>{
+        request(Urls.GET_TOURIST_BYTOKENENTER, 'Post', {})
+            .then((response) => {
+                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
+                        this.setState({
+                            renderPlaceholderOnly: 'null',
+                        });
+                    } else {
+                        StorageUtil.mSetItem(storageKeyNames.GET_USER_PERMISSION,
+                            JSON.stringify(response.mjson), () => {
+                                GetPermission.getFirstList((list) => {
+                                    for (let i = 0; i < list.length; i++) {
+                                        tabArray.push(new tableItemInfo(list[i].ref, list[i].key, list[i].name, list[i].image,
+                                            list[i].unImage, this.getTopView(list[i].ref)));
+                                    }
+                                    this.setState({
+                                        selectedTab: tabArray[0].ref,
+                                        renderPlaceholderOnly: 'success'
+                                    });
+                                });
+                            });
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
+    }
+
     _renderPlaceholderView() {
         return (
             <View style={{width: width, height: height,backgroundColor: fontAndClolr.COLORA3}}>
@@ -158,8 +344,8 @@ export default class MainPage extends BaseComponent {
         if (this.state.renderPlaceholderOnly != 'success') {
             return this._renderPlaceholderView();
         }
-        let items = [];
 
+        let items = [];
         tabArray.map((data) => {
             let tabItem;
             tabItem = <TabNavigator.Item
@@ -171,7 +357,12 @@ export default class MainPage extends BaseComponent {
                 renderIcon={() => <Image style={styles.img}
                                          source={data.defaultImg}/>}
                 onPress={() => {
-                        this.setState({selectedTab: data.ref})
+
+                        if((data.title=='金融' || data.title=='我的') && !this.isLogin){
+                            this.props.showLoginModal();
+                        }else {
+                            this.setState({selectedTab: data.ref})
+                        }
                     }
                 }
                 selectedTitleStyle={styles.selectedTitleStyle}
@@ -201,6 +392,111 @@ export default class MainPage extends BaseComponent {
                 <View
                     style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
                 {/*<CustomerServiceButton ref='customerservicebutton'/>*/}
+                {
+                    this.state.mb_one == 1 && this.state.selectedTab == 'mypage' && this.state.mbShow ?
+                        <View style={{position: 'absolute',bottom:0, top:0,width:width}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT] = 2;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                                        mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                                                        mb_three: obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+                            >
+                                <Image
+                                    style={{
+                                        width:width,
+                                        resizeMode:'stretch',
+                                        height:Pixel.getPixel(660),
+                                        }}
+                                    source={require('../../images/tishimengban/zhgl_wkhwbk.png')}/>
+                            </TouchableWithoutFeedback>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
+                        </View> : null
+                }
+                {
+                    this.state.mb_tow == 1 && this.state.selectedTab == 'mypage' && this.state.mbShow ?
+                        <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
+                            <TouchableWithoutFeedback
+
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD] = 2;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                                        mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                                                        mb_three: obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+                                >
+                                <Image style={{width:width,resizeMode:'stretch',height:Pixel.getPixel(660)}}
+                                       source={require('../../images/tishimengban/zhgl_ykhwbk.png')}/>
+                            </TouchableWithoutFeedback>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
+                        </View> : null
+                }
+                {
+                    this.state.mb_three == 1 && this.state.selectedTab == 'mypage' && this.state.mbShow ?
+                        <View style={{position: 'absolute',bottom:0,top:0,width:width}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD] = 2;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mb_one: obj[StorageKeyNames.HF_MINE_OPEN_ACCOUNT],
+                                                        mb_tow: obj[StorageKeyNames.HF_MINE_DO_NOT_BIND_BANKCARD],
+                                                        mb_three: obj[StorageKeyNames.HF_MINE_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+                                >
+                                <Image style={{resizeMode:'stretch',width:width,height:Pixel.getPixel(660)}}
+                                       source={require('../../images/tishimengban/ykhybk.png')}/>
+                            </TouchableWithoutFeedback>
+                            <View style = {{flex:1, backgroundColor:'rgba(0,0,0,.7)'}}/>
+                        </View> : null
+                }
             </View>
         );
     }
@@ -213,7 +509,7 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
-                }} jumpScene={(ref,openSelectBranch)=>{
+                }} showLoginModal={this.props.showLoginModal} jumpScene={(ref,openSelectBranch)=>{
 
                     if(openSelectBranch=='true'){
 
@@ -272,7 +568,7 @@ export default class MainPage extends BaseComponent {
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
 
                     this.toNextPage(params);
-                }}/>
+                }} showLoginModal={this.props.showLoginModal}/>
         } else if (ref == 'sendpage') {
             return <WorkBenchScene backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
@@ -280,19 +576,25 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
-                }}/>
+                }} showLoginModal={this.props.showLoginModal}/>
         } else if (ref == 'financePage') {
-            if (this.is_done_credit == 0) {
-                return <NonCreditScene/>
-            } else {
-                return <FinanceSence backToLogin={()=>{
-                            this.backToLogin({name:'LoginScene',component:LoginScene});
-                        }} showModal={(value)=>{
-                        this.props.showModal(value);
-                        }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
-                        this.toNextPage(params);
-                }}/>
-            }
+                return  <BlankFinanceScene
+					MAPS={ global.companyBaseID && {base_id:global.companyBaseID ,controller_base_id:this.boss_id,merge_id:global.MERGE_ID}}
+					BASE_USER_ID={this.base_user_id && this.base_user_id}
+					IS_DONE_CREDIT={this.is_done_credit && this.is_done_credit}
+					showModal={(value)=>{this.props.showModal(value);}}
+					showToast={(content)=>{this.props.showToast(content)}}
+					toNextPage={(params) => {this.toNextPage(params); }}
+					toSelect={()=>{
+                        let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
+                        const navigator = this.props.navigator;
+                        if (navigator) {
+
+                            navigator.immediatelyResetRouteStack([{
+                                ...mProps
+
+                            }]) }
+                    }}showLoginModal={this.props.showLoginModal}/>
         } else {
             return <MineSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
@@ -300,7 +602,7 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
-                }} toSelect={()=>{
+                }} showLoginModal={this.props.showLoginModal} toSelect={()=>{
                 let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
                 const navigator = this.props.navigator;
                 if (navigator) {
@@ -318,6 +620,8 @@ const styles = StyleSheet.create({
     flex: {
         flex: 1,
         backgroundColor: '#fff',
+        width: width, height: height,
+        paddingBottom: 0,
     },
     img: {
 

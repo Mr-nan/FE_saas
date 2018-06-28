@@ -11,7 +11,7 @@ import {
     Text,
     BackAndroid,
     TouchableOpacity,
-    InteractionManager,
+    ScrollView,
     Dimensions,
     TextInput
 } from 'react-native'
@@ -32,6 +32,9 @@ import * as webBackUrl from "../constant/webBackUrl";
 import AccountWebScene from "../mine/accountManage/AccountWebScene";
 import DDApplyLendScene from "./lend/DDApplyLendScene";
 import ChooseModal from "../mine/myOrder/component/ChooseModal";
+import SaasText from "../mine/accountManage/zheshangAccount/component/SaasText";
+import TrustAccountContractScene from "../mine/accountManage/trustAccount/TrustAccountContractScene";
+
 const Pixel = new PixelUtil();
 
 export default class CheckStand extends BaseComponent {
@@ -43,10 +46,18 @@ export default class CheckStand extends BaseComponent {
         this.isShowFinancing = 0;
         this.creditBalanceMny = 0;
         this.isConfigUserAuth = 0;
+
+        this.is_seller_inWhite = false;
+        this.is_buyer_inWhite = false;
+
+
+        this.contractList = []
         this.state = {
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
+            isRefreshing: false,
+
         }
+
     }
 
     componentDidMount() {
@@ -64,10 +75,41 @@ export default class CheckStand extends BaseComponent {
         this.loadData();
     };
 
+    componentWillUnmount() {
+    }
+
+
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
+
                 let datas = JSON.parse(data.result);
+
+                // 查看买家是否在信托白名单
+                request(AppUrls.CAN_XINTUO, 'POST', {
+                    enter_base_id: datas.company_base_id,
+                    type: 0
+                }).then((response) => {
+                    this.is_buyer_inWhite = true;
+                    this.loadContractList()
+
+                }, (error) => {
+                    console.log(error.msg)
+                })
+
+                // 查看卖家是否在信托白名单
+                request(AppUrls.CAN_XINTUO, 'POST', {
+                    enter_base_id: this.props.seller_company_id,
+                    type: 0
+                }).then((response) => {
+                    this.is_seller_inWhite = true;
+                    this.loadContractList()
+
+                }, (error) => {
+                    console.log(error.msg)
+                })
+
+
                 this.isDoneCredit = datas.is_done_credit;
                 this.creditBalanceMny = datas.credit_balance_mny;
                 let maps = {
@@ -83,7 +125,7 @@ export default class CheckStand extends BaseComponent {
                         } else {
                             this.setState({
                                 isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
+                                renderPlaceholderOnly: 'success',
                             });
                         }
                     } else {
@@ -105,6 +147,47 @@ export default class CheckStand extends BaseComponent {
             }
         });
     };
+
+    loadContractList = () => {
+
+        if (this.is_buyer_inWhite && this.is_seller_inWhite) {
+            request(AppUrls.AGREEMENT_LISTS, 'Post', {
+                source_type: '3',
+                fund_channel: '信托'
+            })
+                .then((response) => {
+                    // this.props.showModal(false);
+                    for (let i = 0; i < response.mjson.data.list.length; i++) {
+                        if (response.mjson.data.list[i].name.indexOf('机动车辆买卖合同') !== -1 || response.mjson.data.list[i].name.indexOf('信托利益分配申请及代为支付指令函') !== -1) {
+                            this.contractList.push(<Text
+                                key={i + 'contractList'}
+                                allowFontScaling={false}
+                                onPress={() => {
+                                    this.openContractScene('合同', response.mjson.data.list[i].url)
+                                    console.log(response.mjson.data.list[i].url)
+                                }}
+                                style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: fontAndColor.COLORB4,
+                                    lineHeight: Pixel.getPixel(20)
+                                }}>
+                                《{response.mjson.data.list[i].name}》
+                            </Text>);
+
+                        }
+
+                    }
+                    let a = this.contractList[this.contractList.length - 1];
+                    this.contractList.splice(0, 0, a);
+                    this.contractList.pop()
+
+                }, (error) => {
+                    //this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+        }
+    }
+
 
     /**
      *   检查此订单卖家是否是"线下支付"白名单用户
@@ -173,9 +256,12 @@ export default class CheckStand extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 let maps = {
                     company_id: datas.company_base_id,
-                    order_id: this.props.orderId
+                    order_id: this.props.orderId,
+                    logistics_type: this.props.logisticsType,
+                    reback_url: webBackUrl.PAY,
+                    pay_type: 1
                 };
-                let url = AppUrls.DING_CHENG;
+                let url = AppUrls.PAY_BALANCE;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.callBack();
@@ -202,9 +288,12 @@ export default class CheckStand extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 let maps = {
                     company_id: datas.company_base_id,
-                    order_id: this.props.orderId
+                    order_id: this.props.orderId,
+                    logistics_type: this.props.logisticsType,
+                    reback_url: webBackUrl.PAY,
+                    pay_type: 2
                 };
-                let url = AppUrls.OFFLINE_PAY;
+                let url = AppUrls.PAY_BALANCE;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.callBack();
@@ -248,20 +337,23 @@ export default class CheckStand extends BaseComponent {
                             this.isShowFinancing = 1;
                             this.setState({
                                 isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
+                                renderPlaceholderOnly: 'success',
+
                             });
                         } else {
                             this.isShowFinancing = 0;
                             this.setState({
                                 isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
+                                renderPlaceholderOnly: 'success',
+
                             });
                         }
                     }, (error) => {
                         this.isShowFinancing = 0;
                         this.setState({
                             isRefreshing: false,
-                            renderPlaceholderOnly: 'success'
+                            renderPlaceholderOnly: 'success',
+
                         });
                     });
                 }
@@ -269,13 +361,171 @@ export default class CheckStand extends BaseComponent {
                 this.isShowFinancing = 0;
                 this.setState({
                     isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
+                    renderPlaceholderOnly: 'success',
+
                 });
             }
         });
     };
 
+    /**
+     *   物流支付返回的View
+     **/
+    logisticsPay = () => {
+        return (
+            <View style={{backgroundColor: 'white'}}>
+                <View style={styles.needPayBar}>
+                    <Text allowFontScaling={false} style={{
+                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        marginTop: Pixel.getPixel(25)
+                    }}>需支付金额</Text>
+                    <Text allowFontScaling={false} style={{
+                        marginTop: Pixel.getPixel(6),
+                        //fontWeight: 'bold',
+                        fontSize: Pixel.getFontPixel(38)
+                    }}>{(parseFloat(this.props.payAmount) + parseFloat(this.props.transAmount)).toFixed(2)}元</Text>
+                </View>
+                <View style={styles.separatedLine}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>尾款金额：</Text>
+                    <Text allowFontScaling={false}
+                          style={styles.content}>{parseFloat(this.props.payAmount)}元</Text>
+                </View>
+                <View style={styles.separatedLine}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>运单费用：</Text>
+                    <Text allowFontScaling={false} style={styles.content}>{this.props.transAmount}元</Text>
+                </View>
+                <View style={{
+                    height: Pixel.getPixel(10),
+                    backgroundColor: fontAndColor.COLORA3
+                }}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>账户：</Text>
+                    <Text allowFontScaling={false}
+                          style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
+                </View>
+                <View style={styles.separatedLine}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>账户可用金额：</Text>
+                    <Text allowFontScaling={false} style={styles.content}>{this.accountInfo.balance}元</Text>
+                    <View style={{flex: 1}}/>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.toNextPage({
+                                name: 'AccountScene',
+                                component: AccountScene,
+                                params: {}
+                            });
+                        }}>
+                        <View style={{
+                            height: Pixel.getPixel(27),
+                            width: Pixel.getPixel(70),
+                            borderRadius: Pixel.getPixel(2),
+                            borderWidth: Pixel.getPixel(1),
+                            borderColor: fontAndColor.COLORB0,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginRight: Pixel.getPixel(15)
+                        }}>
+                            <Text allowFontScaling={false} style={{
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                color: fontAndColor.COLORB0
+                            }}>充值</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    };
+
+    /**
+     *   非物流支付返回的View
+     **/
+    normalPay = () => {
+        return (
+            <View style={{backgroundColor: 'white'}}>
+                <View style={styles.needPayBar}>
+                    <Text allowFontScaling={false} style={{
+                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        marginTop: Pixel.getPixel(25)
+                    }}>需支付金额</Text>
+                    <Text allowFontScaling={false} style={{
+                        marginTop: Pixel.getPixel(6),
+                        //fontWeight: 'bold',
+                        fontSize: Pixel.getFontPixel(38)
+                    }}>{parseFloat(this.props.payAmount).toFixed(2)}元</Text>
+                </View>
+                <View style={styles.separatedLine}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>账户：</Text>
+                    <Text allowFontScaling={false}
+                          style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
+                </View>
+                <View style={styles.separatedLine}/>
+                <View style={styles.accountBar}>
+                    <Text allowFontScaling={false} style={styles.title}>账户可用金额：</Text>
+                    <Text allowFontScaling={false} style={styles.content}>{this.accountInfo.balance}元</Text>
+                    <View style={{flex: 1}}/>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.toNextPage({
+                                name: 'AccountScene',
+                                component: AccountScene,
+                                params: {}
+                            });
+                        }}>
+                        <View style={{
+                            height: Pixel.getPixel(27),
+                            width: Pixel.getPixel(70),
+                            borderRadius: Pixel.getPixel(2),
+                            borderWidth: Pixel.getPixel(1),
+                            borderColor: fontAndColor.COLORB0,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginRight: Pixel.getPixel(15)
+                        }}>
+                            <Text allowFontScaling={false} style={{
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                color: fontAndColor.COLORB0
+                            }}>充值</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    };
+
+    /**
+     *
+     * */
+    pageRouting = (logisticsType) => {
+        //console.log('this.props.payType====', this.props.payType);
+        if (logisticsType && (this.props.payType == 2 || this.props.payType == 6)) {
+            return this.logisticsPay();
+        } else {
+            return this.normalPay();
+        }
+        //return this.normalPay();
+    };
+
+    /**
+     *   跳转合同预览页
+     **/
+    openContractScene = (name, url) => {
+        this.toNextPage({
+            name: 'TrustAccountContractScene',
+            component: TrustAccountContractScene,
+            params: {
+                title: name,
+                webUrl: url
+            }
+        })
+    };
+
+
     render() {
+
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
                 {this.loadView()}
@@ -285,143 +535,110 @@ export default class CheckStand extends BaseComponent {
             return (
                 <View style={styles.container}>
                     <NavigatorView title='收银台' backIconClick={this.backPage}/>
-                    {/*                    <View style={styles.tradingCountdown}>
-                     <Text allowFontScaling={false}  style={{marginRight: Pixel.getPixel(15), marginLeft: Pixel.getPixel(15)}}>
-                     <Text allowFontScaling={false}  style={{
-                     marginLeft: Pixel.getPixel(15),
-                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                     color: fontAndColor.COLORB2,
-                     fontWeight: 'bold'
-                     }}>重要提示：</Text>
-                     <Text allowFontScaling={false}  style={{
-                     lineHeight: Pixel.getPixel(20),
-                     marginLeft: Pixel.getPixel(15),
-                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                     color: fontAndColor.COLORB2
-                     }}>您申请的订单融资贷款已到账，请向卖家支付，支付后卖家可提现到账资金。</Text>
-                     </Text>
-                     </View>
-                     <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>*/}
-                    <View style={{backgroundColor: 'white', marginTop: Pixel.getTitlePixel(65)}}>
-                        <View style={styles.needPayBar}>
-                            <Text allowFontScaling={false} style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                marginTop: Pixel.getPixel(25)
-                            }}>需支付金额</Text>
-                            <Text allowFontScaling={false} style={{
-                                marginTop: Pixel.getPixel(6),
-                                //fontWeight: 'bold',
-                                fontSize: Pixel.getFontPixel(38)
-                            }}>{parseFloat(this.props.payAmount).toFixed(2)}元</Text>
-                        </View>
-                        <View style={styles.separatedLine}/>
-                        <View style={styles.accountBar}>
-                            <Text allowFontScaling={false} style={styles.title}>账户：</Text>
-                            <Text allowFontScaling={false}
-                                  style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
-                        </View>
-                        <View style={styles.separatedLine}/>
-                        <View style={styles.accountBar}>
-                            <Text allowFontScaling={false} style={styles.title}>账户可用金额：</Text>
-                            <Text allowFontScaling={false} style={styles.content}>{this.accountInfo.balance}元</Text>
-                            <View style={{flex: 1}}/>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.toNextPage({
-                                        name: 'AccountScene',
-                                        component: AccountScene,
-                                        params: {}
-                                    });
-                                }}>
-                                <View style={{
-                                    height: Pixel.getPixel(27),
-                                    width: Pixel.getPixel(70),
-                                    borderRadius: Pixel.getPixel(2),
-                                    borderWidth: Pixel.getPixel(1),
-                                    borderColor: fontAndColor.COLORB0,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    marginRight: Pixel.getPixel(15)
-                                }}>
-                                    <Text allowFontScaling={false} style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                        color: fontAndColor.COLORB0
-                                    }}>充值</Text>
+                    <ScrollView style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        {this.pageRouting(this.props.logisticsType)}
+                        <MyButton buttonType={MyButton.TEXTBUTTON}
+                                  content={'账户支付'}
+                                  parentStyle={styles.loginBtnStyle}
+                                  childStyle={styles.loginButtonTextStyle}
+                                  mOnPress={this.goPay}/>
+
+                        {
+                            this.contractList.length > 0 ?
+                                <View
+                                    style={{marginHorizontal: Pixel.getPixel(15), marginBottom: Pixel.getPixel(35)}}
+                                >
+                                    <SaasText>
+                                        <SaasText
+                                            style={{
+                                                color: fontAndColor.COLORA1,
+                                                fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
+                                            }}
+                                        >
+                                            付款即表示您已同意
+                                        </SaasText>
+                                        {this.contractList}
+                                    </SaasText>
                                 </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <MyButton buttonType={MyButton.TEXTBUTTON}
-                              content={'账户支付'}
-                              parentStyle={styles.loginBtnStyle}
-                              childStyle={styles.loginButtonTextStyle}
-                              mOnPress={this.goPay}/>
-                    {this.props.isSellerFinance == 0 && this.props.payType == 2 &&
-                    (<MyButton buttonType={MyButton.TEXTBUTTON}
-                               content={'鼎诚融资代付'}
-                               parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
-                               childStyle={styles.loginButtonTextStyle}
-                               mOnPress={() => {this.payPrompting(0)}}/>)
-                    }
-                    {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payType == 2 &&
+
+
+                                : null
+                        }
+
+                        {this.props.isSellerFinancee == 0 && this.props.payType == 2 && !this.props.logisticsType &&
                         (<MyButton buttonType={MyButton.TEXTBUTTON}
-                                content={'线下支付'}
-                                parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
-                                childStyle={styles.loginButtonTextStyle}
-                                mOnPress={() => {this.payPrompting(1)}}/>)
-                    }
-                    {/*---订单融资---*/}
-                    {this.isShowFinancing == 1 && this.props.payType == 2 &&
-                    <View>
-                        <View style={{
-                            alignItems: 'center',
-                            flexDirection: 'row',
-                            //marginTop: Pixel.getPixel(35)
-                        }}>
+                                   content={'鼎诚融资代付'}
+                                   parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
+                                   childStyle={styles.loginButtonTextStyle}
+                                   mOnPress={() => {
+                                       this.payPrompting(0)
+                                   }}/>)
+                        }
+                        {this.props.isSellerFinance == 0 && this.isConfigUserAuth == 1 && this.props.payType == 2
+                        && !this.props.logisticsType &&
+                        (<MyButton buttonType={MyButton.TEXTBUTTON}
+                                   content={'线下支付'}
+                                   parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
+                                   childStyle={styles.loginButtonTextStyle}
+                                   mOnPress={() => {
+                                       this.payPrompting(1)
+                                   }}/>)
+                        }
+                        {/*---订单融资---*/}
+                        {this.isShowFinancing == 1 && this.props.payType == 2 &&
+                        <View>
                             <View style={{
-                                marginRight: Pixel.getPixel(15),
-                                marginLeft: Pixel.getPixel(15),
-                                backgroundColor: fontAndColor.COLORA1,
-                                height: 1,
-                                flex: 1
-                            }}/>
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                //marginTop: Pixel.getPixel(35)
+                            }}>
+                                <View style={{
+                                    marginRight: Pixel.getPixel(15),
+                                    marginLeft: Pixel.getPixel(15),
+                                    backgroundColor: fontAndColor.COLORA1,
+                                    height: 1,
+                                    flex: 1
+                                }}/>
+                                <Text allowFontScaling={false} style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: fontAndColor.COLORA1
+                                }}>可选融资方案</Text>
+                                <View style={{
+                                    marginRight: Pixel.getPixel(15),
+                                    marginLeft: Pixel.getPixel(15),
+                                    backgroundColor: fontAndColor.COLORA1,
+                                    height: 1,
+                                    flex: 1
+                                }}/>
+                            </View>
+                            <MyButton
+                                mOnPress={this.goApplyLoan}
+                                buttonType={MyButton.TEXTBUTTON}
+                                content={'订单融资'}
+                                parentStyle={styles.loginBtnStyle1}
+                                childStyle={styles.loginButtonTextStyle}/>
                             <Text allowFontScaling={false} style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                color: fontAndColor.COLORA1
-                            }}>可选融资方案</Text>
-                            <View style={{
-                                marginRight: Pixel.getPixel(15),
                                 marginLeft: Pixel.getPixel(15),
-                                backgroundColor: fontAndColor.COLORA1,
-                                height: 1,
-                                flex: 1
-                            }}/>
-                        </View>
-                        <MyButton
-                            mOnPress={this.goApplyLoan}
-                            buttonType={MyButton.TEXTBUTTON}
-                            content={'订单融资'}
-                            parentStyle={styles.loginBtnStyle1}
-                            childStyle={styles.loginButtonTextStyle}/>
-                        <Text allowFontScaling={false} style={{
-                            marginLeft: Pixel.getPixel(15),
-                            marginRight: Pixel.getPixel(15),
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            color: fontAndColor.COLORA1,
-                            marginTop: Pixel.getPixel(10)
-                        }}>车辆交易背景下的，基于车辆买卖订单的，对买车人购车的融资业务。</Text>
-                    </View> }
-                    <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
-                                  text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
-                    <ChooseModal ref='chooseModal' title='提示'
-                                 negativeButtonStyle={styles.negativeButtonStyle}
-                                 negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
-                                 positiveButtonStyle={styles.positiveButtonStyle}
-                                 positiveTextStyle={styles.positiveTextStyle} positiveText='确认'
-                                 buttonsMargin={Pixel.getPixel(20)}
-                                 positiveOperation={() => {}}
-                                 prompt="温馨提示: 选择后无法修改"
-                                 content=''/>
+                                marginRight: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORA1,
+                                marginTop: Pixel.getPixel(10)
+                            }}>车辆交易背景下的，基于车辆买卖订单的，对买车人购车的融资业务。</Text>
+                        </View>}
+                        <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton}
+                                      textStyle={styles.expText}
+                                      text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
+                        <ChooseModal ref='chooseModal' title='提示'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确认'
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={() => {
+                                     }}
+                                     prompt="温馨提示: 选择后无法修改"
+                                     content=''/>
+                    </ScrollView>
                 </View>
             )
         }
@@ -443,7 +660,7 @@ export default class CheckStand extends BaseComponent {
                 let url = AppUrls.ORDER_CHECK_PAY_FULL;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        if (response.mjson.data.pay_status == 3) {
+                        if (response.mjson.data.pay_status == 1) {
                             this.props.showToast('支付成功');
                             this.props.callBack();
                             this.backPage();
@@ -479,7 +696,7 @@ export default class CheckStand extends BaseComponent {
                 let url = AppUrls.ORDER_CHECK_PAY;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        if (response.mjson.data.pay_status == 3) {
+                        if (response.mjson.data.pay_status == 1) {
                             this.props.showToast('支付成功');
                             this.props.callBack();
                             this.backPage();
@@ -515,7 +732,7 @@ export default class CheckStand extends BaseComponent {
                 let url = AppUrls.FIRST_PAYMENT_PAY_CALLBACK;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        if (response.mjson.data.pay_status == 3) {
+                        if (response.mjson.data.pay_status == 1) {
                             this.props.showToast('支付成功');
                             this.props.callBack();
                             this.backPage();
@@ -590,12 +807,19 @@ export default class CheckStand extends BaseComponent {
      *  支付分发
      */
     goPay = () => {
-        if (this.props.payType == 1 || this.props.payType == 2) {
-            if (this.props.payFull) {
-                this.goFullPay();
-            } else {
-                this.goDepositPay();
-            }
+        /*        if (this.props.payType == 1 || this.props.payType == 2) {
+                    if (this.props.payFull) {
+                        this.goFullPay();
+                    } else {
+                        this.goDepositPay();
+                    }
+                } else {
+                    this.goInitialPay();
+                }*/
+        if (this.props.payType == 1) {
+            this.goDepositPay();
+        } else if (this.props.payType == 2) {
+            this.goBalancePay();
         } else {
             this.goInitialPay();
         }
@@ -735,6 +959,53 @@ export default class CheckStand extends BaseComponent {
             }
         });
     }
+
+    /**
+     *  尾款、全款支付
+     */
+    goBalancePay = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                    logistics_type: this.props.logisticsType ? 1 : 0,
+                    reback_url: webBackUrl.PAY,
+                    pay_type: 0
+                };
+                let url = AppUrls.PAY_BALANCE;
+                request(url, 'post', maps).then((response) => {
+                    //this.loadData();
+                    //this.props.showToast('支付成功');
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
+                        this.transSerialNo = response.mjson.data.trans_serial_no;
+                        this.toNextPage({
+                            name: 'AccountWebScene',
+                            component: AccountWebScene,
+                            params: {
+                                title: '支付',
+                                webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
+                                callBack: () => {
+                                    this.checkPay()
+                                },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                                backUrl: webBackUrl.PAY
+                            }
+                        });
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('账户支付失败');
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('账户支付失败');
+            }
+        });
+    }
 }
 
 const styles = StyleSheet.create({
@@ -773,7 +1044,7 @@ const styles = StyleSheet.create({
         width: width - Pixel.getPixel(30),
         backgroundColor: fontAndColor.COLORB0,
         marginTop: Pixel.getPixel(30),
-        marginBottom: Pixel.getPixel(30),
+        marginBottom: Pixel.getPixel(10),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),

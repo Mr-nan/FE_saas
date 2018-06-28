@@ -90,7 +90,6 @@ export default class CGDAddCarScene extends BaseComponent {
             (response) => {
                 if (response.mycode === 1) {
                     let rdb = response.mjson.data;
-                    console.log('=====================>>>>>>>>>');
                     console.log(rdb);
                     if (rdb.rev_user_list.length === 0) {
                         this._showHint('请先配置收车人');

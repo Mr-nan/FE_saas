@@ -2,7 +2,7 @@
  * Created by zhengnan on 17/2/14.
  */
 
-import React, {Component, PureComponent} from 'react';
+import React, {Component} from 'react';
 
 import {
 
@@ -26,20 +26,24 @@ export default class CarInfoNavigationView extends Component {
         super(props);
         // 初始状态
         this.state = {
+
             navigationBackgroundColor:null,
+            navigationTitleColor:null,
+
         };
       }
 
-      setNavigationBackgroindColor=(color)=>{
+      setNavigationBackgroindColor=(color,titleColor)=>{
 
           this.setState({
               navigationBackgroundColor:color,
+              navigationTitleColor:titleColor,
           });
       }
 
     render() {
 
-        const {title, backIconClick, renderRihtFootView,wrapStyle} = this.props;
+        const {title, backIconClick, renderRihtFootView,wrapStyle,titleStyle} = this.props;
 
         return (
             <View style={[styles.navigation,wrapStyle,this.state.navigationBackgroundColor && {backgroundColor:this.state.navigationBackgroundColor}]}>
@@ -48,7 +52,7 @@ export default class CarInfoNavigationView extends Component {
                                       onPress={backIconClick}>
                     {backIconClick && <Image style={styles.backIcon} source={require('../../images/mainImage/navigatorBack.png')}/>}
                      </TouchableOpacity>
-                    <Text allowFontScaling={false}  style={styles.titleText}>{title}</Text>
+                    <Text allowFontScaling={false}  style={[styles.titleText,titleStyle,this.state.navigationTitleColor && {color:this.state.navigationTitleColor}]}>{title}</Text>
                     <View style={styles.imageFoot}>
                         {
                             renderRihtFootView && renderRihtFootView()
@@ -77,6 +81,8 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(12),
         height: Pixel.getPixel(20),
         width: Pixel.getPixel(20),
+        // backgroundColor:'red'
+
     },
 
     titleText: {
@@ -84,6 +90,7 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
         textAlign: 'center',
         backgroundColor: 'transparent',
+        // backgroundColor:'red'
 
     },
     imageFoot: {
@@ -91,7 +98,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        // backgroundColor:'red
+        // backgroundColor:'red',
         width: Pixel.getPixel(80),
         marginRight:Pixel.getPixel(15),
 

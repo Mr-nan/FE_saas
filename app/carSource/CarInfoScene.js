@@ -35,6 +35,7 @@ import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import BindCardScene from '../mine/accountManage/BindCardScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailScene";
+import ProcurementOrderDetailSceneOld from "../mine/myOrderOld/ProcurementOrderDetailScene";
 import CarMyListScene from "./CarMyListScene";
 import GetPermissionUtil from '../utils/GetRoleUtil';
 import MyAccountScene from "../mine/accountManage/MyAccountScene";
@@ -114,11 +115,19 @@ export default class CarInfoScene extends BaseComponent {
         this.state = {
             imageArray: new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
-            residualsData: [],
-            carData: {imgs: []},
+            residualsData:[],
+            carData: {imgs:[]},
             currentImageIndex: 1,
             switchoverCarInfo: 0,
         };
+    }
+
+    componentDidMount() {
+
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
 
     initFinish = () => {
@@ -126,7 +135,7 @@ export default class CarInfoScene extends BaseComponent {
         this.isUserBoss = false;
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-            if (data.code == 1 && data.result != '') {
+            if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 for (let item of enters.enterprise_list[0].role_type){
                     if(item ==1 || item==6){
@@ -143,27 +152,16 @@ export default class CarInfoScene extends BaseComponent {
 
     }
 
+
+
     allRefresh=()=>{
         this.loadData();
     }
 
     loadData = () => {
 
-
-        /*        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-         if (data.code == 1 && data.result != '') {
-         let enters = JSON.parse(data.result);
-         this.loadCarData(enters.company_base_id);
-
-         } else {
-         this.loadCarData('');
-         }
-         });*/
-
-
-
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
-            if (data.code == 1 && data.result != '') {
+            if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 let company_base_ids = '';
                 for (let index in enters) {
@@ -237,7 +235,6 @@ export default class CarInfoScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             if (response.mycode == 1) {
                 this.setState({
                     residualsData: response.mjson.data,
@@ -654,6 +651,42 @@ export default class CarInfoScene extends BaseComponent {
         }
     }
 
+    /**
+     *   订单物流开关接口
+     **/
+    getLogisticsKey = (orderId) => {
+        let url = AppUrls.LOGISTICS_SWITCH;
+        request(url, 'post', {}).then((response) => {
+            this.props.showModal(false);
+            let isLogistics = response.mjson.data.a;
+            let singleCar = response.mjson.data.b;
+            if (isLogistics == 0) {  //isLogistics == 'false'
+                this.toNextPage({
+                    name: 'ProcurementOrderDetailScene',
+                    component: ProcurementOrderDetailSceneOld,
+                    params: {
+                        business: 1,
+                        orderId: orderId,
+                        singleCar: singleCar
+                    }
+                });
+            } else {
+                this.toNextPage({
+                    name: 'ProcurementOrderDetailScene',
+                    component: ProcurementOrderDetailScene,
+                    params: {
+                        business: 1,
+                        orderId: orderId,
+                        singleCar: singleCar
+                    }
+                });
+            }
+        }, (error) => {
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
+        });
+    };
+
     // 车辆订购
     carOrder = (company_base_id, carData) => {
         this.props.showModal(true);
@@ -661,20 +694,12 @@ export default class CarInfoScene extends BaseComponent {
             'car_ids': carData.id,
             'company_id': company_base_id
         }).then((response) => {
-            this.props.showModal(false);
             if (response.mjson.msg === 'ok' && response.mjson.code === 1) {  // 下单成功
-                this.toNextPage({
-                    name: 'ProcurementOrderDetailScene',
-                    component: ProcurementOrderDetailScene,
-                    params: {
-                        business: 1,
-                        orderId: response.mjson.data.order_id
-                    }
-                });
+                this.getLogisticsKey(response.mjson.data.order_id);
             } else {
+                this.props.showModal(false);
                 this.props.showToast(response.mjson.msg);
             }
-
         }, (error) => {
             if (error.mjson.code == '6350133') {
                 this.props.showModal(false);
@@ -818,55 +843,73 @@ export default class CarInfoScene extends BaseComponent {
     // 添加收藏
     addStoreAction = (isStoreClick) => {
 
-        let url = AppUrls.BASEURL + 'v1/user.favorites/create';
-        request(url, 'post', {
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                if (res.result && res.result == 'true') {
+                    let url = AppUrls.BASEURL + 'v1/user.favorites/create';
+                    request(url, 'post', {
 
-            id: this.state.carData.id,
+                        id: this.state.carData.id,
 
-        }).then((response) => {
+                    }).then((response) => {
 
-            if (response.mycode == 1) {
+                        if (response.mycode == 1) {
 
-                isStoreClick(true);
-                this.props.showToast('收藏成功');
-            } else {
+                            isStoreClick(true);
+                            this.props.showToast('收藏成功');
+                        } else {
 
-                this.props.showToast(response.mycode.msg);
+                            this.props.showToast(response.mycode.msg);
+                        }
+
+                    }, (error) => {
+
+                        this.props.showToast('收藏失败');
+
+                    });
+                }else {
+                    this.props.showLoginModal();
+                }
             }
+        );
 
-        }, (error) => {
 
-            this.props.showToast('收藏失败');
-
-        });
 
     }
 
     // 取消收藏
     cancelStoreAction = (isStoreClick) => {
 
-        let url = AppUrls.BASEURL + 'v1/user.favorites/delete';
-        request(url, 'post', {
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                if (res.result && res.result == 'true') {
+                    let url = AppUrls.BASEURL + 'v1/user.favorites/delete';
+                    request(url, 'post', {
 
-            id: this.state.carData.id,
+                        id: this.state.carData.id,
 
-        }).then((response) => {
+                    }).then((response) => {
 
-            if (response.mycode == 1) {
+                        if (response.mycode == 1) {
 
-                isStoreClick(false);
-                this.props.showToast('取消收藏');
+                            isStoreClick(false);
+                            this.props.showToast('取消收藏');
 
-            } else {
+                        } else {
 
-                this.props.showToast(response.mycode.msg);
+                            this.props.showToast(response.mycode.msg);
+                        }
+
+                    }, (error) => {
+
+                        this.props.showToast('取消收藏失败');
+
+                    });
+                }else {
+                    this.props.showLoginModal();
+                }
             }
+        );
 
-        }, (error) => {
 
-            this.props.showToast('取消收藏失败');
-
-        });
 
     }
 

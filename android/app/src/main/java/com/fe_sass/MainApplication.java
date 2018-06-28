@@ -3,6 +3,8 @@ package com.fe_sass;
 import android.app.Application;
 import android.util.Log;
 
+import com.baidu.mapapi.CoordType;
+import com.baidu.mapapi.SDKInitializer;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -82,5 +84,10 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
 
     GrowingIO.enableRNNavigatorPage();    // 开启Navigator页面采集
     GrowingIO.enableRNOptimizedPath();    // 开启RN页面元素识别优化
+    // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
+    SDKInitializer.initialize(this);
+    //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
+    //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
+    SDKInitializer.setCoordType(CoordType.BD09LL);
   }
 }

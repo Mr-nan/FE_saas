@@ -1,10 +1,12 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+
 
 /**
  * 测试地址
+ *
  */
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
@@ -12,7 +14,7 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 测试地址2
  */
-//export const BASEURL = 'http://10.3.11.99:80/';
+// export const BASEURL = 'http://10.3.11.99:80/';
 
 /**
  * 正式地址
@@ -20,10 +22,11 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
+
 /**
  * 预发布地址
  */
-// export const BASEURL = 'https://stgatewayapi.dycd.com/';
+//export const BASEURL = 'https://stgatewayapi.dycd.com/';
 
 /**
  * 版本号1
@@ -183,6 +186,11 @@ export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
  * 获取我的车源-已上架/下架
  */
 export const CAR_USER_CAR = BASEURL + V + 'user/car';
+
+/**
+ * 根据车型名获取车型信息
+ */
+export const CAR_SEARCH_MODELS = BASEURL + V + 'home/searchModels';
 
 /**
  * 获取库存车辆列表
@@ -398,6 +406,21 @@ export const APP_UPDATE = BASEURL + 'v1/system/index';
  **/
 export const REPAYMENT_GETLIST = 'api/v2/Repayment/getList';
 
+
+/**
+ * from @marongting
+ *
+ * 获取申请还款
+ **/
+export const PREPAYMENT_APPLY = 'api/V1/Prepayment/apply';
+
+/**
+ * from @marongting
+ *
+ * 获取申请还款信息
+ **/
+export const PREPAYMENT_REPAYMENT_DETAIL = 'api/V1/Prepayment/repayment_detail';
+
 /**
  * from @zhaojian
  *
@@ -510,7 +533,82 @@ export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
  **/
 export const GETFUNCTIONBYTOKENENTER = BASEURL + 'v1/user/getFunctionByTokenEnter';
 
+
 /**
+ * from @zhaojian
+ *
+ * 获取游客功能权限
+ **/
+export const GET_TOURIST_BYTOKENENTER = BASEURL + 'v2/user.guest/getFunctionByTokenEnter';
+
+/**
+ * from @yujinzhong
+ *
+ * 获取借款人当前授信类型的授信状态
+ **/
+export const GETCREDITSTATUSBYMERGE = BASEURL + 'v2/credit.quick/getCreditStatusByMerge';
+/**
+ * from @yujinzhong
+ *
+ * 判断验四
+ **/
+export const CHECKFOUR = BASEURL + 'v2/credit.quick/checkFour';
+/**
+ * from @yujinzhong
+ *
+ * 验四 获取 验证码
+ **/
+export const GET_CAPTCHA = BASEURL + 'v2/credit.quick/captcha';
+/**
+ * from @yujinzhong
+ *
+ * 验四 验证 验证码
+ **/
+export const CHECKCAPTCHA = BASEURL + 'v2/credit.quick/checkCaptcha';
+/**
+ * from @yujinzhong
+ *
+ * 验四 验证 验证码
+ **/
+export const USER_GETINFO = BASEURL + 'v1/user/getInfo';
+/**
+* from @yujinzhong
+*
+* 申请验四
+**/
+export const APPLYCHECKFOUR = BASEURL + 'v2/credit.quick/applycheckFour';
+/**
+ * from @yujinzhong
+ *
+ * 综合授信  获取实际控制人信息及企业信息
+ **/
+export const GETENTERPRISEBYEUID = BASEURL + 'v2/user.home/getEnterpriseByEuid';
+/**
+ * from @yujinzhong
+ *
+ * 综合授信  提交申请
+ **/
+export const GETMULTIPLECREDITPHONE = BASEURL + 'v2/credit.quick/getMultipleCreditPhone';
+/**
+ * from @yujinzhong
+ *
+ * 新车订单授信  提交申请
+ **/
+export const SPECIALCREDIT = BASEURL + 'v2/credit.quick/specialCredit';
+
+/**
+ * from @yujinzhong
+ *
+ * 快速授信  小额  提交申请
+ **/
+export const FASTCREDIT = BASEURL + 'v2/credit.quick/fastCredit';
+/**
+ * from @yujinzhong
+ *
+ * 获取实际控制人的授信数据
+ **/
+export const GETCREDITBYREAL = BASEURL + 'v2/credit.quick/getCreditByReal';
+ /**
  * from @zhaojian
  *
  * 获取账户管理首页
@@ -530,6 +628,13 @@ export const USER_ACCOUNT_PAYLOG = BASEURL + 'v1/user.account/payLog';
  * 获取交易流水
  **/
 export const ACCOUNT_PAYLOG = BASEURL + 'v2/user.account/payLog';
+
+/**
+ * from @huangning
+ *
+ * 获取运输类型
+ **/
+export const GETTRANSPORTTYPE = BASEURL + 'v2/order.logistics/getTransportType';
 
 /**
  * from @zhaojian
@@ -558,6 +663,7 @@ export const USER_ACCOUNT_WITHDRAW = BASEURL + 'v1/user.account/withdraw';
  * 获取绑定银行卡信息
  **/
 export const USER_BANK_QUERY = BASEURL + 'v1/user.bank/query';
+
 
 /**
  * from @zhaojian
@@ -629,6 +735,7 @@ export const PURCHAAUTO_GETPURCHAAUTOPICCATE = 'api/v2/purchaAuto/getPurchaAutoP
  **/
 export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
 
+
 /**
  * from @zhaojian
  *
@@ -642,6 +749,13 @@ export const NEWREPAYMENT_CREDIT_APPLY_REPAYMENT = 'api/v5/NewRepayment/credit_a
  * 获取新还款详情
  **/
 export const NEWREPAYMENT_GET_INFO = 'api/v5/NewRepayment/get_info';
+
+/**
+ * from @xujiaqi
+ *
+ * 取消提前还款
+ **/
+export const PREPAYMENT_CANCEL_REPAYMENT = 'api/V1/Prepayment/cancel_repayment';
 
 /**
  * from @zhaojian
@@ -689,6 +803,14 @@ export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
 /**
  * from @zhaojian
  *
+ * 获取实体券的使用规则
+ **/
+export const GETSOLIDVOUCHERRULE = 'api/v5/Repayment/get_solid_voucher_rule';
+
+
+/**
+ * from @zhaojian
+ *
  * 获取库融还款计划详情
  **/
 export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
@@ -700,6 +822,14 @@ export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
  **/
 export const GET_CONTRACT_DATA = 'api/v1/account/get_contract_data';
 
+
+/**
+ * from @zhaojian
+ *
+ * 获取一车一融子单合同数据
+ **/
+export const GET_SUB_CONTRACT_DATA = 'api/v3/contract/info';
+
 /**
  * from @zhaojian
  *
@@ -710,7 +840,7 @@ export const CONTRACTBYLIST = 'api/V1/Contract/contractbylist';
 /**
  * from @zhaojian
  *
- * 线下库容获取合同数据
+ * 线下库融获取合同数据
  **/
 export const CONTRACT_LOAN_CONTRACT_LIST = 'api/v1/contract/loan_contract_list';
 
@@ -720,6 +850,13 @@ export const CONTRACT_LOAN_CONTRACT_LIST = 'api/v1/contract/loan_contract_list';
  * 签署合同
  **/
 export const CONTRACT_SIGN = 'api/v1/account/contract_sign';
+
+/**
+ * from @zhaojian
+ *
+ * 签署合同一车一融子单合同
+ **/
+export const SUB_CONTRACT_SIGN = 'api/v3/contract/sign_child';
 
 /**
  * from @zhaojian
@@ -759,6 +896,13 @@ export const GET_MNY = 'api/v3/account/get_mny';
 export const GET_APPLY_INFO = 'api/v3/account/get_apply_info';
 
 /**
+ * from @ 黄宁
+ *
+ * 获取借款首页数据  新
+ **/
+export const GET_APPLY_INFO_NEW = 'api/v4/account/get_loan_info';
+
+/**
  * from @huangning
  *
  * 获取借款首页数据
@@ -792,6 +936,19 @@ export const CARLOAN_SET_APPLY_MNY = 'api/v3/carloan/set_apply_mny'
  * 获取订单车辆列表
  **/
 export const GET_APPLY_CARLIST = 'api/v2/account/get_apply_carlist';
+
+/**
+ * from @huangning
+ * 一车一融库融进度条
+ **/
+export const ACCOUNT_PROGRESS_BAR = 'api/v4/account/progress_bar';
+
+/**
+ * from @huangnign
+ * 获取订单车辆列表 新
+ **/
+export const GET_APPLY_CARLIST_NEW = 'api/v2/account/get_child_loan';
+
 /**
  * from @lhc
  * 删除车辆
@@ -805,9 +962,15 @@ export const DELETEAUTO = 'api/v2/purchaAuto/deleteAuto'
 export const GET_CAR_INFO = 'api/v1/account/get_car_info'
 /**
  * from @lhc
- * 取消借款单车/库容
+ * 取消借款单车/库融
  **/
 export const CANCEL_LOAN = 'api/v3/account/cancel_loan'
+
+/**
+ * from @huangnign
+ * 取消借款单车/库融
+ **/
+export const CANCEL_CHILD_LOAN = 'api/v2/account/cancel_child_loan'
 
 /**
  * from @huangning
@@ -820,7 +983,25 @@ export const CARLOAN_CANCEL_LOAN = 'api/v3/carloan/cancel_loan'
  *
  * 获取借款记录
  **/
-export const GET_APPLY_LIST = 'api/v3/account/get_apply_list';
+// export const GET_APPLY_LIST = 'api/v3/account/get_apply_list';
+export const GET_APPLY_LIST = '/api/v6/account/get_apply_list_new_app';
+
+
+/**
+ * from @huangning
+ *
+ * 获取借款记录
+ *
+ * payment_number单号
+ * auto_vin车架号
+ * min_loanmny最小金额
+ * max_loanmny最大金额
+ * loanperiod期限
+ * logic_status状态 全部all
+ * product_type_code产品类型 全部all
+ * 搜索字段
+ **/
+export const GET_APPLY_LIST_NEW = 'api/v6/account/get_apply_list_new';
 
 /**
  * from @zhaojian
@@ -962,6 +1143,13 @@ export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
  * 申请借款
  **/
 export const APPLY_LOAN = 'api/v3/account/apply_loan'
+
+/**
+ * from @huangning
+ *
+ *  新 申请借款
+ **/
+export const ACCOUNT_APPLY_LOAN = 'api/v4/account/apply_loan'
 
 /**
  * from huangning
@@ -1379,10 +1567,27 @@ export const ZS_SUB_BANK = BASEURL + "v1/bankRoute.query/findChildBankNo";
  *   获取用户的账户详情(我的账户页面-卡片页  调用)
  */
 export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccountDetail";
+
 /**
- *   信托开户
+ *   信托提现
+ */
+export const XINTUO_WITHDRAW = BASEURL + "v2/account.xt/appWithdrawal"
+
+/**
+ *   判断是否在信托白名单
+ */
+export const CAN_XINTUO = BASEURL + "v2/account.xt/getUidExistWhiteList";
+
+/**
+ *   信托开户（个人）
  */
 export const OPEN_PERSON_TRUST_ACCOUNT = BASEURL + "v1/account.zsyxt/openPersonAccount";
+
+/**
+ *   信托开户(企业)
+ */
+export const OPEN_ENTER_TRUST_ACCOUNT = BASEURL + "v2/account.xt/openEnterpriseAccount";
+
 /**
  *   微众借据详情API(信托开户)
  */
@@ -1404,7 +1609,7 @@ export const ENTERPRISECERTIFICATE = BASEURL + V + "user.identity/applyEnterpris
  *
  * 注册(新)
  */
-export const ZHUCE = BASEURL +  "v2/auth/register";//注册(新)
+export const ZHUCE = BASEURL + "v2/auth/register";//注册(新)
 /**
  *
  * 通过用户base_id,企业base_id 查看审核状态
@@ -1423,15 +1628,15 @@ export const GETAPPLYENTERPRISEINFO = BASEURL + V + "user.identity/getApplyEnter
 /**
  *  用户是否"线下支付"白名单用户
  */
-export const IS_CONFIG_USER_AUTH = BASEURL +  "v2/order.index/isConfigUserAuth";
+export const IS_CONFIG_USER_AUTH = BASEURL + "v2/order.index/isConfigUserAuth";
 /**
  *  鼎城融资代付的方式付款
  */
-export const DING_CHENG = BASEURL +  "v2/order.pay/dingCheng";
+export const DING_CHENG = BASEURL + "v2/order.pay/dingCheng";
 /**
  *  线下支付方式付款
  */
-export const OFFLINE_PAY = BASEURL +  "v2/order.pay/offline";
+export const OFFLINE_PAY = BASEURL + "v2/order.pay/offline";
 /**
  * 监管费列表
  */
@@ -1450,4 +1655,211 @@ export const SUPERVISE_PAY = BASEURL + V + "finance.supervise/pay";
  *
  * 监管费支付
  */
-export const ACCOUNT_HOME = BASEURL  + "v2/account.home/index";
+export const ACCOUNT_HOME = BASEURL + "v2/account.home/index";
+/**
+ *
+ * 提车人列表
+ */
+export const GET_GETER_LIST = BASEURL + "v2/order.car_picker/lists";
+/**
+ *
+ * 新增提车人
+ */
+export const ADD_GETER = BASEURL + "v2/order.car_picker/save";
+/**
+ *
+ * 编辑提车人
+ */
+export const PUT_GETER = BASEURL + "v2/order.car_picker/save";
+/**
+ *
+ * 设置默认提车人
+ */
+export const SET_DEFAULT_GETER = BASEURL + "v2/order.car_picker/setDefault";
+/**
+ *
+ * 删除提车人
+ */
+export const DEL_GETER = BASEURL + "v2/order.car_picker/delete";
+/**
+ *
+ * 地址列表
+ */
+export const GET_FLOWSOTHER_LIST = BASEURL + "v2/order.address/lists";
+/**
+ *
+ * 新增收发车地址
+ */
+export const ADD_ADDRESS = BASEURL + "v2/order.address/save";
+/**
+ *
+ * 编辑地址
+ */
+export const PUT_ADDRESS = BASEURL + "v2/order.address/save";
+/**
+ *
+ * 设置默认地址
+ */
+export const SET_DEFAULT_ADDRESS = BASEURL + "v2/order.address/setDefault";
+/**
+ *
+ * 删除地址
+ */
+export const DEL_ADDRESS = BASEURL + "v2/order.address/delete";
+/**
+ *
+ * 获取城市下区域列表
+ */
+export const GET_DIST_LIST = BASEURL + "v2/home.index/getDistList";
+/**
+ *
+ * 物流填写订单
+ */
+export const WAYBILL = BASEURL + "v2/order.logistics/waybill";
+/**
+ *
+ * 物流运单订单(运单详情)
+ */
+export const WAYBILL_DETAIL = BASEURL + "v2/order.logistics/detail";
+/**
+ *
+ *物流运价数据检查（获取运输类型对应的费）
+ */
+export const CHECKTRANSTYPE = BASEURL + "v2/order.logistics/check";
+
+/**
+ *
+ * 支付运单
+ */
+export const LOGISTICS_ORDER_PAY = BASEURL + "v2/order.logistics_flows/payFreight";
+
+/**
+ *
+ * 上传凭证
+ */
+export const LOGISTICS_ORDER_PROOF = BASEURL + "v2/order.logistics_flows/uploadPayVoucher";
+
+/**
+ *
+ * 支付运单回调
+ */
+export const LOGISTICS_ORDER_PAY_CALLBACK = BASEURL + "v2/order.logistics_flows/payFreightCallBack";
+/**
+ *
+ * 取消运单
+ */
+export const LOGISTICS_ORDER_CANCEL = BASEURL + "v2/order.logistics_flows/cancelTrans";
+/**
+ *
+ * 运单列表
+ */
+export const LOGISTICS_ORDER_LIST = BASEURL + "v2/order.logistics_flows/getMeWaybill";
+/**
+ *
+ * 创建运单
+ */
+export const LOGISTICS_ORDER_CREATE = BASEURL + "v2/order.logistics_flows/create";
+/**
+ *
+ * 搜索运单
+ */
+export const LOGISTICS_ORDER_SEARCH = BASEURL + "v2/order.logistics_flows/getTransSearch";
+
+/**
+ *
+ * 运单详情
+ */
+export const ORDER_LOGISTICS_ORDER_DETAIL = BASEURL + "v2/order.logistics_flows/getTransDetails";
+/**
+ *
+ * 单车详情
+ */
+export const ORDER_LOGISTICS_CAR_DETAIL = BASEURL + "v2/order.logistics_flows/getCarDetails";
+/**
+ *
+ * 物流详情
+ */
+export const ORDER_LOGISTICS_DETIAL = BASEURL + "v2/order.logistics_flows/getLogisticsDetails";
+
+/**
+ *
+ *物流运价查询
+ */
+export const ORDER_LOGISTICS_QUERY = BASEURL + "v2/order.logistics_flows/getFreight";
+/**
+ *
+ *获取发票信息
+ */
+export const GETINVOICEINFO = BASEURL + "v2/order.invoice/info";
+/**
+ *  支付尾款跳转
+ */
+export const PAY_BALANCE = BASEURL + "v2/order.pay/balance";
+/**
+ *  微服务获取区县
+ */
+export const REGION_COUNTY = BASEURL + "v2/api.region/county";
+/**
+ *  微服务获取区县
+ */
+export const REGION_CITY = BASEURL + "v2/api.region/city";
+/**
+ *  微服务获取区县
+ */
+export const REGION_PROVINCE = BASEURL + "v2/api.region/province";
+/**
+ *  物流提交数据
+ */
+export const SUBMITTRANFERINFO = BASEURL + "v2/order.logistics/submit";
+/**
+ *  保存发票信息
+ */
+export const SAVEINVOICE = BASEURL + "v2/order.invoice/add";
+/**
+ *   获取仓库所在地址
+ **/
+export const GETWAREHOUSEINFO = BASEURL + "v2/order.home/getWarehouseInfo";
+/**
+ *   车是否在店审核
+ **/
+export const IS_CAR_STORE_CHECK = BASEURL + "v2/order.home/isCarStoreCheck";
+/**
+ *  支付库到店的物流和仓储费
+ */
+export const PAY_WAREHOUSE_TO_STORE_AMOUNT = BASEURL + "v2/order.home/payWarehouseToStoreAmount";
+/**
+ *  申请提车函后支付仓储费
+ */
+export const PAY_STORE_AMOUNT = BASEURL + "v2/order.home/payStoreAmount";
+/**
+ *  申请提车函后支付仓储费回调
+ */
+export const PAY_STORE_AMOUNT_CALLBACK = BASEURL + "v2/order.home/payStoreAmountCallback";
+/**
+ *  支付库到店的物流和仓储费回调
+ */
+export const PAY_WAREHOUSE_TO_STORE_AMOUNT_CALLBACK = BASEURL + "v2/order.home/payWarehouseToStoreAmountCallback";
+/**
+ *  转单车
+ */
+export const CHANGE_CAR_SINGLE_FINANCE = BASEURL + "v2/order.home/changeCarSingleFinance";
+/**
+ *  申请提车函
+ */
+export const APPLY_GET_CAR_LETTER = BASEURL + "v2/order.home/applyGetCarLetter";
+/**
+ *  获取运输类型
+ */
+export const GETTRANSTYPE = BASEURL + "v2/order.home/getTransType";
+/**
+ *   2月8日物流项目入口开关
+ */
+export const LOGISTICS_SWITCH = BASEURL + "v2/index/status";
+/**
+ *   添加运单提车人
+ **/
+export const STORE_GETER_REQUEST = BASEURL + "v2/order.home/storeGeterRequest";
+/**
+ *   运单提车人信息
+ **/
+export const GETSTOREGETER = BASEURL + "v2/order.home/getStoreGeter";

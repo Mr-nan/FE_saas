@@ -126,7 +126,8 @@ export default class CarNewMySourceScene extends BaceComponent {
         return(
             <RepaymenyTabBar ref={(ref)=>{this.tabBarView = ref}}
                              style={{backgroundColor:'white'}}
-                             tabName={["已上架("+this.state.shelves_count+")", "已下架("+this.state.unshelves_count+')', "审核中("+this.state.audit_count+')']}/>
+                             tabName={["已上架("+this.state.shelves_count+")", "已下架("+this.state.unshelves_count+')', "审核中("+this.state.audit_count+')']}
+            />
         )
     }
 
@@ -1393,13 +1394,18 @@ class MyCarSourceAuditView extends BaceComponent {
 }
 
 class ManageView extends  Component {
+
     render(){
+        const carCellData = this.props.carData;
+        const status = carCellData.status; // 1:审核中 2:已上架 3：已下架 4：已成交
+        const review_status = carCellData.review_status;  // 0：未审核，1：通过，2：不通过
+        const in_valid_order = carCellData.in_valid_order; // 当前车辆是否在有效的订单中，0：否，1：是
         return(
             <TouchableOpacity style={styles.manageView} activeOpacity={1} onPress={this.props.offClick}>
                 <View style={styles.sharedView}>
                     <View style={{flexDirection: 'row',paddingVertical:Pixel.getPixel(15)}}>
                         {
-                            this.props.carData.status ==2 && (
+                            ((status ==2 || status ==1)&& in_valid_order!=1 )&& (
                             <TouchableOpacity style={styles.sharedItemView} onPress={() => {
                                 this.btnClick('下架');
                             }}>
@@ -1410,7 +1416,7 @@ class ManageView extends  Component {
                             </TouchableOpacity>)
                         }
                         {
-                            this.props.carData.status ==3 && (
+                            ((status ==3 || status ==1)&& in_valid_order!=1 ) && (
                             <TouchableOpacity style={styles.sharedItemView} onPress={() => {
                                 this.btnClick('上架');
                             }}>
@@ -1421,7 +1427,7 @@ class ManageView extends  Component {
                             </TouchableOpacity>)
                         }
                         {
-                            (this.props.carData.status==1&&this.props.carData.review_status==0)? (null): (
+                            (in_valid_order!=1)&& (
                                 <TouchableOpacity style={styles.sharedItemView} onPress={() => {
                                     this.btnClick('编辑');
                                 }}>
@@ -1442,7 +1448,7 @@ class ManageView extends  Component {
                             {/*<Text allowFontScaling={false}  style={styles.sharedText}>已售</Text>*/}
                         {/*</TouchableOpacity>*/}
                         <TouchableOpacity style={styles.sharedItemView} onPress={() => {
-                        this.btnClick('库存管理');
+                             this.btnClick('库存管理');
                         }}>
                         <View style={styles.sharedImageBack}>
                         <Image source={require('../../images/carSourceImages/carNumberIcon.png')}/>

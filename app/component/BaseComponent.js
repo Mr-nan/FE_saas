@@ -41,9 +41,9 @@ export default class BaseComponent extends Component {
 
         } finally {
             //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.initFinish();
-           // });
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+            // });
         }
 
 
@@ -53,7 +53,7 @@ export default class BaseComponent extends Component {
 
     }
 
-    dismissKeyboard = ()=>{
+    dismissKeyboard = () => {
         dismissKeyboard();
     }
 
@@ -63,6 +63,40 @@ export default class BaseComponent extends Component {
             navigator.push({
                 ...mProps
             })
+        }
+    }
+
+    /**
+     * 非空判断
+     * @param content  任意类型值
+     */
+    isNull = (content) => {
+        try {
+            if (content == undefined) {
+                return true;
+            }
+            if (content == null) {
+                return true;
+            }
+            if (content instanceof Array) {
+                if (content.length <= 0) {
+                    return true;
+                }
+            }
+            if (content instanceof Object) {
+                if (JSON.stringify(content) == '{}') {
+                    return true;
+                }
+            }
+            if (content == 'null') {
+                return true;
+            }
+            if ((content+'').trim() == '') {
+                return true;
+            }
+            return false;
+        } catch (e) {
+            return true;
         }
     }
 
@@ -86,6 +120,20 @@ export default class BaseComponent extends Component {
         const navigator = this.props.navigator;
         if (navigator) {
             navigator.popToTop();
+        }
+    }
+
+    backToRoute =(routeName)=>{
+        if(this.isEmpty(routeName)){
+            return;
+        }
+        const navi = this.props.navigator;
+        let route = navi.getCurrentRoutes();
+        for(let i = 0; i<route.length; i++){
+            if (route[i].name === routeName){
+                navi.popToRoute(route[i])
+                break;
+            }
         }
     }
 
@@ -172,7 +220,7 @@ export default class BaseComponent extends Component {
                 </Text>
                 <MyButton {...this.allRefreshParams} />
             </View>
-        } else{
+        } else {
             view = <View style={{flex: 1, alignItems: 'center'}}>
                 <Image
                     style={{
@@ -194,7 +242,7 @@ export default class BaseComponent extends Component {
                         marginTop: Pixel.getPixel(10)
                     }}>
                 </Text>
-                {this.state.renderPlaceholderOnly == 'noData'?  <MyButton {...this.allRefreshParams}/>: null}
+                {this.state.renderPlaceholderOnly == 'noData' ? <MyButton {...this.allRefreshParams}/> : null}
             </View>
         }
         return view;
@@ -224,4 +272,12 @@ export default class BaseComponent extends Component {
         }
         return view;
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== null && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 }

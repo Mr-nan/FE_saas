@@ -10,6 +10,7 @@
 import React, {Component, PropTypes} from 'react'
 import {
     StyleSheet,
+    Platform,
     View,
     Text,
     ListView,
@@ -17,8 +18,10 @@ import {
     Image,
     BackAndroid,
     RefreshControl,
-    Dimensions
-} from  'react-native'
+    Dimensions,
+    TouchableWithoutFeedback,
+    Modal
+} from 'react-native'
 
 const {width, height} = Dimensions.get('window');
 import BaseComponent from "../../component/BaseComponent";
@@ -31,8 +34,19 @@ import * as StorageKeyNames from "../../constant/storageKeyNames";
 import MyAccountItem from "./component/MyAccountItem";
 import AccountManageScene from "./AccountManageScene";
 import * as Urls from '../../constant/appUrls';
+import OpenTrustAccountView from './component/OpenTrustAccountView'
+import OpenAccountBaseScene from './xintuo/openAccount/OpenAccountBaseScene'
+import ResultIndicativeScene from './xintuo/ResultIndicativeScene'
+import {BASEURL} from '../../constant/appUrls';
+import WebScene from '../../main/WebScene';
 
 var Pixel = new PixelUtil();
+
+let dataList = [];
+
+let flag1 = 0;
+let flag2 = 0;
+let flag3 = 0;
 
 export default class MyAccountScene extends BaseComponent {
 
@@ -47,12 +61,18 @@ export default class MyAccountScene extends BaseComponent {
         super(props);
         this.hengFengInfo = {};
         this.zheShangInfo = {};
+        this.is_zheshang_in_whitelist = false;
+        this.xintuoInfo = {};
+        this.is_xintuo_in_whitelist = false;
         this.lastType = '-1';
+        this.hight = Platform.OS === 'android' ? height + Pixel.getPixel(25) : height;
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
-            backColor: fontAndColor.COLORA3
+            backColor: fontAndColor.COLORA3,
+            isShow: false,
+
         };
     }
 
@@ -69,12 +89,41 @@ export default class MyAccountScene extends BaseComponent {
         }
     }
 
+    componentWillUnmount() {
+        dataList = [];
+        flag1 = 0;
+        flag2 = 0;
+        flag3 = 0;
+    }
+
     initFinish = () => {
-        /*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-         this.setState({
-         dataSource: ds.cloneWithRows(['0', '1']),
-         renderPlaceholderOnly: 'success'
-         });*/
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let userData = JSON.parse(data.result);
+                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                    if (subData.code == 1) {
+                        let obj = JSON.parse(subData.result);
+                        if (obj == null) {
+                            obj = {};
+                        }
+                        if (obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] == null) {
+                            obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = 0;
+                            obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = 0;
+                            obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = 0;
+                            StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                            })
+                        }
+                        this.setState({
+                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
+                            mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                            mbKTShow: obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                        })
+                    }
+                })
+            }
+        })
+
         this.loadData();
     };
 
@@ -90,7 +139,7 @@ export default class MyAccountScene extends BaseComponent {
     allRefresh = () => {
         this.props.showModal(true);
         this.loadData();
-        if(this.props.callBackData){
+        if (this.props.callBackData) {
             this.props.callBackData();
         }
     };
@@ -99,16 +148,27 @@ export default class MyAccountScene extends BaseComponent {
      *   页面起调，浙商开关接口
      **/
     loadData = () => {
+
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
+
                 let datas = JSON.parse(data.result);
-                request(Urls.ZS_BANK_IS_SHOW, 'Post', {})
+
+                this.getAccountInfo(datas.company_base_id);
+
+                request(Urls.IS_IN_WHITE_LIST, 'Post', {enter_base_id: datas.company_base_id})
                     .then((response) => {
-                        if (response.mjson.data.status === 1) {
-                            this.getIsInWhiteList(datas.company_base_id);
-                        } else {
-                            this.getAccountInfo(datas.company_base_id, 315);
+                        let isWhiteList = response.mjson.data.status;
+
+                        if (isWhiteList === 0) {  //0 不在白名单中
+                            this.is_zheshang_in_whitelist = false;
+                            flag2 = 1;
+                            this.renderUI();
+                        } else {   //1 在白名单中，
+                            this.isZSshow()
                         }
+
+
                     }, (error) => {
                         this.props.showModal(false);
                         this.props.showToast(error.mjson.msg);
@@ -117,6 +177,23 @@ export default class MyAccountScene extends BaseComponent {
                             isRefreshing: false
                         });
                     });
+
+                /******     信托白名单查询     ******/
+
+                request(Urls.CAN_XINTUO, 'POST', {enter_base_id: datas.company_base_id, type: 1}).then((response) => {
+
+                    this.is_xintuo_in_whitelist = true;
+                    flag3 = 1;
+                    this.renderUI();
+                }, (error) => {
+
+                    this.is_xintuo_in_whitelist = false;
+                    flag3 = 1;
+                    this.renderUI()
+                    console.log(error)
+                })
+
+
             } else {
                 this.props.showModal(false);
                 this.props.showToast('用户信息查询失败');
@@ -126,24 +203,26 @@ export default class MyAccountScene extends BaseComponent {
                 });
             }
         });
+
+
     };
 
     /**
-     *  查询是否在(浙商)白名单
-     * @returns {XML}
+     *  查询是否显示浙商账户
      **/
-    getIsInWhiteList = (companyBaseId) => {
-        let maps = {
-            enter_base_id: companyBaseId
-        };
-        request(Urls.IS_IN_WHITE_LIST, 'Post', maps)
+    isZSshow = () => {
+
+        /******     浙商账户是否可见     ******/
+
+        request(Urls.ZS_BANK_IS_SHOW, 'Post', {})
             .then((response) => {
-                let isWhiteList = response.mjson.data.status;
-                if (isWhiteList === 0) {  //1 在白名单中，0 不在白名单中
-                    this.getAccountInfo(companyBaseId, 315);
+                if (response.mjson.data.status === 1) {
+                    this.is_zheshang_in_whitelist = true
                 } else {
-                    this.getAccountInfo(companyBaseId);
+                    this.is_zheshang_in_whitelist = false;
                 }
+                flag2 = 1;
+                this.renderUI();
             }, (error) => {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
@@ -152,6 +231,7 @@ export default class MyAccountScene extends BaseComponent {
                     isRefreshing: false
                 });
             });
+
     };
 
     /**
@@ -162,35 +242,106 @@ export default class MyAccountScene extends BaseComponent {
         let maps = {
             enter_base_ids: companyBaseId,
             child_type: '1',
-            bank_id: bankId ? bankId : ''
+            bank_id: ''
         };
         request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
             .then((response) => {
                 this.props.showModal(false);
-                //console.log('USER_ACCOUNT_INFO=====', response.mjson.data);
-                //this.hengFengInfo = response.mjson.data['315'][0] ? response.mjson.data['315'][0] : {};
+
+                this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
+                this.xintuoInfo = response.mjson.data['zsyxt'][0] ? response.mjson.data['zsyxt'][0] : {};
+
                 if (response.mjson.data['315'][0]) {
                     this.hengFengInfo = response.mjson.data['315'][0];
+
+
+                    if (this.hengFengInfo.status == '0') {
+
+                        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                            if (data.code == 1) {
+                                let userData = JSON.parse(data.result);
+                                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                    if (subData.code == 1) {
+                                        let obj = JSON.parse(subData.result);
+
+                                        if (obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] == 2) {
+                                            return
+                                        }
+                                        obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = 1;
+                                        StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                        })
+                                        this.setState({
+                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
+                                            mbWBKShow: 0,
+                                            mbKTShow: 0,
+                                        })
+                                    }
+                                })
+                            }
+                        })
+
+                    } else if (this.hengFengInfo.status == '1') {
+
+                        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                            if (data.code == 1) {
+                                let userData = JSON.parse(data.result);
+                                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                    if (subData.code == 1) {
+                                        let obj = JSON.parse(subData.result);
+                                        if (obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] == 2) {
+                                            return
+                                        }
+                                        obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = 1;
+                                        StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                        })
+                                        this.setState({
+                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
+                                            mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                                            mbKTShow: 0,
+                                        })
+                                    }
+                                })
+                            }
+                        })
+
+                    } else if (this.hengFengInfo.status == '3') {
+
+                        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                            if (data.code == 1) {
+                                let userData = JSON.parse(data.result);
+                                StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                    if (subData.code == 1) {
+                                        let obj = JSON.parse(subData.result);
+                                        if (obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] == 2) {
+                                            return
+                                        }
+                                        obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = 1;
+                                        StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                        })
+                                        this.setState({
+                                            mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
+                                            mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                                            mbKTShow: obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                        })
+                                    }
+                                })
+                            }
+                        })
+
+
+                    }
                     this.lastType = response.mjson.data['315'][0].status;
-                    if(this.props.callBack){
+                    if (this.props.callBack) {
 
                         this.props.callBack(this.lastType);
                     }
                 }
-                this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
-                let dataList = [];
-                if (bankId) {
-                    dataList.push(bankId);
-                } else {
-                    dataList = ['315', '316'];
-                }
-                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                this.setState({
-                    dataSource: ds.cloneWithRows(dataList),
-                    renderPlaceholderOnly: 'success',
-                    isRefreshing: false,
-                    backColor: fontAndColor.COLORB0
-                });
+
+
+                flag1 = 1;
+                this.renderUI();
+
+
             }, (error) => {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
@@ -200,6 +351,39 @@ export default class MyAccountScene extends BaseComponent {
                 });
             });
     };
+
+
+    renderUI = () => {
+
+
+        if (flag1 == 1 && flag2 == 1 && flag3 == 1) {
+
+            dataList = []
+
+            dataList.push('315');
+
+            if (this.is_zheshang_in_whitelist) {
+                dataList.push('316');
+            }
+            if (this.is_xintuo_in_whitelist&&this.hengFengInfo.status !== 0) {
+                dataList.push('zsyxt');
+            }
+
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                dataSource: ds.cloneWithRows(dataList),
+                renderPlaceholderOnly: 'success',
+                isRefreshing: false,
+                backColor: fontAndColor.COLORB0
+            });
+
+            flag1 = 0;
+            flag2 = 0;
+            flag3 = 0;
+        }
+
+    }
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -233,8 +417,300 @@ export default class MyAccountScene extends BaseComponent {
                                   colors={[fontAndColor.COLORA3]}
                               />
                           }/>
+
+                <OpenTrustAccountView ref="openAccount" callBack={this.openTrustAccount}
+                                      showModal={this.props.showModal}
+                                      navigator={this.props.navigator}/>
+
+
+                <Modal
+                    ref='loadingModal'
+                    animationType={"fade"}
+                    transparent={true}
+                    visible={this.state.isShow}
+
+                >
+                    <View
+                        style={{
+                            flex:1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: 'rgba(0,0,0,.3)'
+                        }}>
+                        <View style={{
+                            width: width - width / 4,
+                            height: Pixel.getPixel(175),
+                            backgroundColor: '#fff',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            paddingHorizontal:Pixel.getPixel(20),
+                            borderRadius:Pixel.getPixel(4)
+                        }}>
+                            <Text allowFontScaling={false} style={{
+                                fontSize: Pixel.getPixel(17),
+                                fontWeight: 'bold',
+                                color: '#000'
+                            }}>什么是车贷粮票?</Text>
+                            <Text allowFontScaling={false} style={{
+                                textAlign: 'left', fontSize: Pixel.getPixel(14),
+                                marginTop: Pixel.getPixel(11), color: fontAndColor.COLORA1
+                            }}>
+                                {"\t“车贷粮票”是第1车贷与中信信托合作推出的服务车商间买卖交易的平台产品；具有第三方担保交易及资产增值等服务功能"}
+                            </Text>
+                            <TouchableOpacity onPress={() => {
+                                this.setState({
+                                    isShow: false
+                                });
+                                this.props.callBack();
+                            }} activeOpacity={0.9} style={{
+                                width: width - width / 4 - Pixel.getPixel(40),
+                                height: Pixel.getPixel(35),
+                                marginTop: Pixel.getPixel(16),
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: 3,
+                                borderWidth: 1,
+                                borderColor: fontAndColor.COLORB0
+                            }}>
+                                <Text allowFontScaling={false} style={{
+                                    fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+                                    color: fontAndColor.COLORB0
+                                }}>确定</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
+
+                {
+                    this.state.mbWKHShow == 1 ?
+                        <View style={{position: 'absolute', bottom: 0, top: 0, width: width}}>
+                            <TouchableWithoutFeedback
+                                onPress={() => {
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT] = 2;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
+                                                        mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                                                        mbKTShow: obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+
+                                }}>
+                                <Image style={{width: width, flex: 1, resizeMode: 'stretch'}}
+                                       source={require('../../../images/tishimengban/zhgl_wkhwbkyhk.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
+                {
+                    this.state.mbWBKShow == 1 ?
+                        <View style={{position: 'absolute', bottom: 0, top: 0, width: width}}>
+                            <TouchableWithoutFeedback
+                                onPress={() => {
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD] = 2;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
+                                                        mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                                                        mbKTShow: obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}
+
+                            >
+                                <Image style={{width: width, flex: 1, resizeMode: 'stretch'}}
+                                       source={require('../../../images/tishimengban/zhgl_bky.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
+                {
+                    this.state.mbKTShow == 1 ?
+                        <View style={{position: 'absolute', bottom: 0, top: 0, width: width}}>
+                            <TouchableWithoutFeedback
+                                onPress={() => {
+
+                                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                                        if (data.code == 1) {
+                                            let userData = JSON.parse(data.result);
+                                            StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
+                                                if (subData.code == 1) {
+                                                    let obj = JSON.parse(subData.result);
+                                                    obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD] = 2;
+                                                    StorageUtil.mSetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), JSON.stringify(obj), () => {
+                                                    })
+                                                    this.setState({
+                                                        mbWKHShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_OPEN_ACCOUNT],
+                                                        mbWBKShow: obj[StorageKeyNames.HF_ACCOUNT_DO_NOT_BIND_BANKCARD],
+                                                        mbKTShow: obj[StorageKeyNames.HF_ACCOUNT_DID_BIND_BANKCARD],
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                }}>
+                                <Image style={{width: width, flex: 1, resizeMode: 'stretch'}}
+                                       source={require('../../../images/tishimengban/zhgl_ykhybk.png')}/>
+                            </TouchableWithoutFeedback>
+                        </View> : null
+                }
             </View>);
         }
+    }
+
+
+    // 信托开户
+    openTrustAccount = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+
+                let params = {enter_base_id: datas.company_base_id}
+
+                request(Urls.OPEN_PERSON_TRUST_ACCOUNT, 'Post', params)
+                    .then((response) => {
+                        this.props.showModal(false)
+                        this.toNextPage({
+                            component: ResultIndicativeScene,
+                            name: 'ResultIndicativeScene',
+                            params: {
+                                type: 0,
+                                status: 1,
+                                params: params,
+                                append: this.state.bankName,
+                                callBack: this.allRefresh
+                            }
+                        })
+
+
+                    }, (error) => {
+                        this.props.showModal(false);
+
+                        if (error.mycode === 8050324) {  // 不在服务时间内
+                            this.setState({
+                                out_of_service_msg: error.mjson.msg,
+                                alert: true
+                            })
+                            return
+                        }
+                        if (error.mycode === 8010007) {  // 存疑
+
+                            this.toNextPage({
+                                component: ResultIndicativeScene,
+                                name: 'ResultIndicativeScene',
+                                params: {
+                                    type: 0,
+                                    status: 0,
+                                    params: params,
+                                    error: error.mjson,
+                                    callBack: this.allRefresh
+                                }
+                            })
+                        } else if (error.mycode === -500 || error.mycode === -300) {
+                            this.props.showToast(error.mycode)
+                        } else { // 开户失败
+                            this.toNextPage({
+                                component: ResultIndicativeScene,
+                                name: 'ResultIndicativeScene',
+                                params: {
+                                    type: 0,
+                                    status: 2,
+                                    params: params,
+                                    error: error.mjson,
+                                    callBack: this.allRefresh
+                                }
+                            })
+                        }
+
+
+                    });
+            }
+        })
+    }
+
+
+    clickCallBack = () => {
+
+        // this.props.showModal(true);
+        // let maps = {
+        //     source_type: '3',
+        //     fund_channel: '信托'
+        // };
+        // request(Urls.AGREEMENT_LISTS, 'Post', maps)
+        //     .then((response) => {
+        //         this.props.showModal(false);
+        //         this.contractList = response.mjson.data.list;
+        //         this.refs.openAccount.changeStateWithData(true, this.contractList);
+        //     }, (error) => {
+        //         this.props.showModal(false);
+        //         this.props.showToast(error.mjson.msg);
+        //     });
+        // return
+        //
+        //
+        // this.navigatorParams.name = 'OpenAccountBaseScene';
+        // this.navigatorParams.component = OpenAccountBaseScene;
+        // this.navigatorParams.params = {
+        //     showModal: this.props.showModal,
+        //     callBack: this.allRefresh
+        // };
+        // this.toNextPage(this.navigatorParams);
+        // return
+
+        if (this.hengFengInfo.account_open_type == 1) {  // 企业
+
+            this.navigatorParams.name = 'OpenAccountBaseScene';
+            this.navigatorParams.component = OpenAccountBaseScene;
+            this.navigatorParams.params = {
+                showModal: this.props.showModal,
+                callBack: this.allRefresh
+            };
+            this.toNextPage(this.navigatorParams);
+
+        } else if (this.hengFengInfo.account_open_type == 2) {  //个人
+
+            this.props.showModal(true);
+            let maps = {
+                source_type: '3',
+                fund_channel: '信托'
+            };
+            request(Urls.AGREEMENT_LISTS, 'Post', maps)
+                .then((response) => {
+                    this.props.showModal(false);
+                    this.contractList = response.mjson.data.list;
+                    this.refs.openAccount.changeStateWithData(true, this.contractList);
+                }, (error) => {
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+        }
+
     }
 
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
@@ -249,11 +725,16 @@ export default class MyAccountScene extends BaseComponent {
         let info = {};
         if (rowData == '315') {
             info = this.hengFengInfo;
-        } else {
+        } else if (rowData == '316') {
             info = this.zheShangInfo;
+        } else {
+            info = this.xintuoInfo;
         }
         return (
             <MyAccountItem
+                questionClick={this.questionClick}
+                clickCallBack={this.clickCallBack}
+                showQuestion={rowData == 315 || rowData == 'zsyxt' ? true : false}
                 navigator={this.props.navigator}
                 showToast={this.props.showToast}
                 showModal={this.props.showModal}
@@ -264,6 +745,43 @@ export default class MyAccountScene extends BaseComponent {
     }
 
 
+    questionClick = (type) => {
+
+        //this.props.showModal(true);
+        // let maps = {
+        //     source_type: '3',
+        //     fund_channel: '信托'
+        // };
+        // request(Urls.AGREEMENT_LISTS, 'Post', maps)
+        //     .then((response) => {
+        //         //this.props.showModal(false);
+        //         this.contractList = response.mjson.data.list;
+        //         this.refs.openAccount.changeStateWithData(true, this.contractList);
+        //     }, (error) => {
+        //         //this.props.showModal(false);
+        //         this.props.showToast(error.mjson.msg);
+        //     });
+        //
+        // return
+
+
+        if (type == '315') {
+
+            let url = BASEURL == 'https://gatewayapi.dycd.com/' ? 'http://bms.dycd.com/platform/activity_newhand.html' : 'http://test.bms.dycd.com/platform/activity_newhand.html';
+            this.toNextPage({
+                component: WebScene,
+                name: 'WebScene',
+                params: {webUrl: url, title: '新手指引'}
+            })
+
+        } else if (type == 'zsyxt') {
+
+            this.setState({
+                isShow: true
+            })
+        }
+
+    }
 }
 
 const styles = StyleSheet.create({});

@@ -59,7 +59,7 @@ export  default class AdjustManageListScene extends BaseComponent {
 
     getData = () => {
         let maps = {
-            base_id: this.props.base_id
+            merge_id: this.props.merge_id
         };
         request(Urls.COUPON_LISTBYUID, 'Post', maps)
             .then((response) => {
@@ -113,7 +113,7 @@ export  default class AdjustManageListScene extends BaseComponent {
         let money = '';
         if(movie.used_status=='0'){
             money = '';
-        }else if(movie.used_status=='1'){
+        }else if(movie.used_status=='1'|| movie.used_status == '4'){
             money = '已使用';
         }else if(movie.used_status=='2'){
             money = '已过期';

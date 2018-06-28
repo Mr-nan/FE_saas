@@ -25,27 +25,25 @@
  [Growing startWithAccountId:@"8c70ed29c1985918"];
  [Growing setRnNavigatorPageEnabled:YES];
 
-  
-  // 要使用百度地图，请先启动BaiduMapManager
-  _mapManager = [[BMKMapManager alloc]init];
-  // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
-  
-  BOOL ret = [_mapManager start:@"5ObiqhvAdtKSuqAVF0e9XRpAkfu6aAxG"  generalDelegate:nil];
-  if (!ret) {
-    NSLog(@"manager start failed!");
-  }
-
   NSString  *bundleIdentifier = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleIdentifier"];
   NSString *umengPushKey = nil;
+  NSString *BMKMapKey = nil;
   if([bundleIdentifier isEqualToString:@"com.dycd.dycdsaas"]) //企业 com.dycd.dycdsaas   AppStore版 com.dycd.BMSHtmls
   {
     umengPushKey = @"59c07978717c197a4b000015";
+    BMKMapKey = @"Nc638evw3a9FUSXigWO5Gkv1ztLFqIt6";
   }else
   {
     umengPushKey = @"5a0d01c8f43e48245b0001e3";
+    BMKMapKey=@"5ObiqhvAdtKSuqAVF0e9XRpAkfu6aAxG";
   }
  [RCTUmengPush registerWithAppkey:umengPushKey launchOptions:launchOptions];
 
+  _mapManager = [[BMKMapManager alloc]init];
+  BOOL ret = [_mapManager start:BMKMapKey generalDelegate:nil];
+  if (!ret) {
+    NSLog(@"百度地图开始失败！！！");
+  }
    
 #ifdef DEBUG
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
