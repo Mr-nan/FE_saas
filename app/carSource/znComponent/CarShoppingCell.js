@@ -30,23 +30,40 @@ export default class CarShoppingCell extends Component{
         };
       }
 
+
     render(){
         return(
             <View style={styles.cellView}>
-                <ShopView ref={(ref)=>{this.shopView = ref}} shopTitle={this.props.data.shopTitle} select={this.state.select} shopSelectClick={(type)=>{this.shopSelectClick(type)}}/>
+                <ShopView ref={(ref)=>{this.shopView = ref}}
+                          shopTitle={this.props.data.shopTitle}
+                          select={this.state.select} shopSelectClick={(type)=>{this.shopSelectClick(type)}}/>
                 {
                     this.state.list.map((data,index)=>{
                         return(
-                            <CarCell key={index} isShowLine={index<this.state.list.length?true:false} data={data}
-                                     carSelectClick={(type)=>{this.carSelectClick(type,index)}}
-                                     carDelectClick={()=>{this.props.carDelectClick(index)}}/>
+                            <View style={{borderTopColor:fontAndColor.COLORA3,borderTopWidth:index>0?Pixel.getPixel(1):0}}>
+                                <TouchableOpacity style={{alignItems:'center',flexDirection:'row',marginLeft:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(15)}} onPress={()=>{}}>
+                                    <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18),marginRight:Pixel.getPixel(10)}}
+                                           source={data.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')}/>
+                                    <Text>{data.cityName}</Text>
+                                </TouchableOpacity>
+                                {
+                                    data.carList.map((carData,subIndex)=>{
+                                            return(
+                                                <CarCell key={`${index}+${subIndex}`}
+                                                         isShowLine={subIndex<data.carList.length?true:false}
+                                                         data={carData}
+                                                         carSelectClick={(type)=>{this.carSelectClick(type,subIndex)}}
+                                                         carDelectClick={()=>{this.props.carDelectClick(subIndex)}}/>
+                                            )
+                                        })
+                                }
+                            </View>
                         )
                     })
                 }
             </View>
         )
     }
-
     componentWillReceiveProps(nextProps) {
 
         this.state.select = nextProps.select;

@@ -40,17 +40,55 @@ export  default  class CarShoppingScene extends BaseComponent{
               {
                   shopTitle:'商户1',
                   select:false,
-                  list:[{select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:5}},{select:false,carData:{title:'车辆2',type:1,number:1,maxNumber:5}},{select:false,carData:{title:'车辆3',type:1,number:3,maxNumber:5}},{select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:5}}]
+                  list:[
+                      {
+                          cityName:'广西壮族自治区南宁市',
+                          select:false,
+                          carList:[
+                              {select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:5}},
+                              {select:false,carData:{title:'车辆2',type:1,number:1,maxNumber:5}},
+                              {select:false,carData:{title:'车辆3',type:1,number:3,maxNumber:5}},
+                              {select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:5}},
+                          ]
+                      },
+                      {
+                          cityName:'广西壮族自治区北海市',
+                          select:false,
+                          carList:[
+                              {select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:5}},
+                              {select:false,carData:{title:'车辆2',type:1,number:1,maxNumber:5}},
+                          ]
+                      }
+                  ]
               },
               {
                   shopTitle:'商户2',
                   select:false,
-                  list:[{select:false,carData:{title:'车辆1',type:2,number:1,maxNumber:4}},{select:false,carData:{title:'车辆2',type:2,number:1,maxNumber:5}},{select:false,carData:{title:'车辆3',type:2,number:1,maxNumber:5}}]
+                  list:[
+                      {
+                          cityName:'河北省邯郸市',
+                          select:false,
+                          carList:[
+                              {select:false,carData:{title:'车辆1',type:2,number:1,maxNumber:5}},
+                              {select:false,carData:{title:'车辆2',type:2,number:1,maxNumber:5}},
+                              {select:false,carData:{title:'车辆3',type:2,number:3,maxNumber:5}},
+                              {select:false,carData:{title:'车辆1',type:2,number:1,maxNumber:5}},
+                          ]
+                      },
+                  ]
               },
               {
                   shopTitle:'商户3',
                   select:false,
-                  list:[{select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:3}}]
+                  list:[
+                      {
+                          cityName:'北京市',
+                          select:false,
+                          carList:[
+                              {select:false,carData:{title:'车辆1',type:2,number:1,maxNumber:5}},
+                          ]
+                      },
+                  ]
               },
 
           ];
