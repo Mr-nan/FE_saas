@@ -17,7 +17,7 @@
 // export const BASEURL = 'http://10.3.11.99:80/';
 
 /**
- * 正式地址 测试
+ * 正式地址
  */
 export const BASEURL = 'https://gatewayapi.dycd.com/';
 
