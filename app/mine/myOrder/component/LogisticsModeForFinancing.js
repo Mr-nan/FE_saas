@@ -78,6 +78,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                 component: SelectDestination,
                 params: {
                     orderId: this.props.orderDetail.id,
+                    orderDetail:this.props.orderDetail,
                     vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
                     callBack: this.updateOrdersTrans,
                     maxLoanmny: this.props.financeInfo.max_loanmny  // 订单融资最大可贷额度
@@ -251,6 +252,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                                 component: FillWaybill,
                                 params: {
                                     orderId: this.props.orderDetail.id,
+                                    orderDetail:this.props.orderDetail,
                                     logisticsType: this.state.ordersTrans.logistics_type,
                                     vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
                                     callBack: this.updateOrdersTrans
@@ -262,6 +264,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                                 component: CheckWaybill,
                                 params: {
                                     orderId: this.props.orderDetail.id,
+                                    orderDetail:this.props.orderDetail,
                                     transId: this.state.ordersTrans.id,
                                     waybillState: alreadyChoose.waybillState
                                 }
@@ -272,7 +275,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                         height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                         paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                     }}>
-                        <Text >运单信息</Text>
+                        <Text >运单信息----</Text>
                         <View style={{flex: 1}}/>
                         <Text style={{color: fontAndColor.COLORB0}}>{alreadyChoose.waybillState}</Text>
                         <Image source={require('../../../../images/mainImage/celljiantou.png')}/>
