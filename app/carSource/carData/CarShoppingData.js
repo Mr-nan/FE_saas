@@ -12,7 +12,21 @@ class CarShoppingData {
     @observable sumPrice = 0;
     @observable sumNumber = 0;
 
-    constructor
+    constructor(){
+      this.sumNumber=computed(()=>{
+          return this.shoppingData.forEach(e=>{
+              e.list.forEach(subE=>{
+                  subE.carList.reduce((a,b)=>{
+                      if(b.select){
+                          return a+b.number;
+                      }else {
+                          return a;
+                      }
+                  },0)
+              })
+          })
+      });
+    }
 
     @action // 初始化数据
     setShoppingData(data){
@@ -21,6 +35,11 @@ class CarShoppingData {
 
     @action // +1
     plus(index){
+
+    }
+
+    @action // -1
+    minus(index){
 
     }
 
