@@ -50,6 +50,7 @@ export default class SelectDestination extends BaseComponent {
             params: {
                 toStore: this.toStore,
                 orderId: this.orderId,
+                orderDetail:this.props.orderDetail,
                 vType: this.vType,
 /*                callBack: (data)=>{
                     this.backPage();
