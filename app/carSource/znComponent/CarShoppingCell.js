@@ -18,44 +18,43 @@ import *as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
+import { observer } from 'mobx-react';
 
+@observer
 export default class CarShoppingCell extends Component{
-    // 构造
-      constructor(props) {
-        super(props);
-        // 初始状态
-        this.state = {
-            select:false,
-            list:this.props.data.list
-        };
-      }
-
 
     render(){
+        let  {CarShoppingData,shopIndex} = this.props;
+
         return(
             <View style={styles.cellView}>
                 <ShopView ref={(ref)=>{this.shopView = ref}}
-                          shopTitle={this.props.data.shopTitle}
-                          select={this.state.select} shopSelectClick={(type)=>{this.shopSelectClick(type)}}/>
+                          shopTitle={this.props.data.shopTitle}/>
                 {
-                    this.state.list.map((data,index)=>{
+                    this.props.data.list.map((cityData,index)=>{
+
                         return(
                             <View key={index} style={{borderTopColor:fontAndColor.COLORA3,borderTopWidth:index>0?Pixel.getPixel(1):0,paddingTop:Pixel.getPixel(20)}}>
                                 <TouchableOpacity style={{alignItems:'center',flexDirection:'row',marginLeft:Pixel.getPixel(15),marginBottom:Pixel.getPixel(10)}}
                                                   activeOpacity={1}
-                                                  onPress={()=>{}}>
+                                                  onPress={()=>{
+                                                      this.props.citySelectClick(shopIndex,index);
+                                                  }}>
                                     <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18),marginRight:Pixel.getPixel(10)}}
-                                           source={data.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')}/>
-                                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{data.cityName}</Text>
+                                           source={cityData.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')}/>
+                                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{cityData.cityName}</Text>
                                 </TouchableOpacity>
                                 {
-                                    data.carList.map((carData,subIndex)=>{
+                                    cityData.carList.map((carData,subIndex)=>{
                                             return(
                                                 <CarCell key={`${index}+${subIndex}`}
-                                                         isShowLine={subIndex<data.carList.length?true:false}
+                                                         CarShoppingData={CarShoppingData}
+                                                         isShowLine={subIndex<cityData.carList.length?true:false}
                                                          data={carData}
-                                                         carSelectClick={(type)=>{this.carSelectClick(type,subIndex)}}
-                                                         carDelectClick={()=>{this.props.carDelectClick(subIndex)}}/>
+                                                         carSelectClick={()=>{
+                                                             this.props.carSelectClick(shopIndex,index,subIndex);
+                                                         }}
+                                                         carDelectClick={()=>{this.props.carDelectClick(this.props.shopIndex,index,subIndex)}}/>
                                             )
                                         })
                                 }
@@ -66,67 +65,14 @@ export default class CarShoppingCell extends Component{
             </View>
         )
     }
-    componentWillReceiveProps(nextProps) {
-
-        this.state.select = nextProps.select;
-        this.state.list = nextProps.data.list;
-        this.isAllSelectType();
-
-        this.setState({
-            select:this.state.select,
-            list:this.state.list,
-        })
-    }
-
-    shopSelectClick=(type)=>{
-
-        this.props.shopSelectClick(type);
-
-        for(let item of this.state.list){
-            item.select = type;
-        }
-        this.setState({
-            list:this.state.list
-        })
-    }
-
-    carSelectClick=(type,index)=>{
-
-        this.props.carSelectClick(type,index);
-        this.state.list[index].select = type;
-        this.isAllSelectType();
-
-    }
 
 
-    isAllSelectType=()=>{
-        let isAllSelect = true;
-        for (let item of this.state.list){
-            if(item.select==false){
-                isAllSelect = false;
-                break;
-            }
-        }
-        this.state.select = isAllSelect;
-        this.shopView.setSelectType(isAllSelect);
-    }
 
 }
 
+@observer
  class ShopView extends Component{
-     // 构造
-     constructor(props) {
-         super(props);
-         // 初始状态
-         this.state={
-             select:this.props.select
-         }
 
-     }
-
-     componentWillReceiveProps(nextProps) {
-         this.state.select = nextProps.select;
-     }
     render(){
         return(
             <View style={styles.shopView}>
@@ -135,14 +81,10 @@ export default class CarShoppingCell extends Component{
             </View>)
     }
 
-    setSelectType=(type)=>{
-        this.setState({
-            select:type
-        })
-    }
 }
 
- class CarCell extends Component{
+@observer
+class CarCell extends Component{
      // 构造
      constructor(props) {
          super(props);
@@ -217,27 +159,24 @@ export default class CarShoppingCell extends Component{
                         }}>
                             <View style={{flexDirection:'row', flex:1,alignItems:'center',backgroundColor:'white',width:ScreenWidth-Pixel.getPixel(30)}}>
                                 <TouchableOpacity style={{justifyContent:'center', alignItems:'center',width:Pixel.getPixel(18),height:Pixel.getPixel(80)}} onPress={()=>{
-                                    this.props.carSelectClick(!this.state.select);
-                                    this.setState({
-                                        select:!this.state.select
-                                    })
+                                    this.props.carSelectClick();
 
                                 }}>
-                                    <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18)}} source={this.state.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')}/>
+                                    <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18)}} source={this.props.data.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')}/>
                                 </TouchableOpacity>
                                 <Image style={styles.carImage} source={require('../../../images/carSourceImages/car_null_img.png')} resizeMode={'contain'}>
-                                    <Image style={{top:0,left:0,bottom:0,right:0,position: 'absolute'}} source={this.props.data.carData.type==1? require('../../../images/carSourceImages/userCarTypeIcon.png'):require('../../../images/carSourceImages/newCarTypeIcon.png')}/>
+                                    <Image style={{top:0,left:0,bottom:0,right:0,position: 'absolute'}} source={this.props.data.type==1? require('../../../images/carSourceImages/userCarTypeIcon.png'):require('../../../images/carSourceImages/newCarTypeIcon.png')}/>
                                 </Image>
                                 <View style={styles.carTextView}>
                                     <Text style={{
                                             color:fontAndColor.COLORA0,
                                             fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                    }}>{this.props.data.carData.title}</Text>
+                                    }}>{this.props.data.title}</Text>
                                     <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                                         <Text style={{
                                             color:fontAndColor.COLORA1,
                                             fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                                        }}>{this.props.data.carData.type==1?"红色":'2018年08月/1万公里'}</Text>
+                                        }}>{this.props.data.type==1?"红色":'2018年08月/1万公里'}</Text>
                                         <Text style={{
                                             color:fontAndColor.COLORB2,
                                             fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
@@ -249,7 +188,7 @@ export default class CarShoppingCell extends Component{
                                                 color:fontAndColor.COLORB2,
                                                 fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                                 fontWeight:'bold'
-                                            }}>{54}</Text>
+                                            }}>{this.props.data.price}</Text>
                                             <Text style={{
                                                 color:fontAndColor.COLORB2,
                                                 fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
@@ -261,7 +200,7 @@ export default class CarShoppingCell extends Component{
                                             }}></Text>
                                     </View>
                                 </View>
-                                <CarNumberEditView number={this.props.data.carData.number} maxNumber={this.props.data.carData.maxNumber}/>
+                                <CarNumberEditView CarShoppingData={this.props.CarShoppingData} number={this.props.data.number} maxNumber={this.props.data.maxNumber}/>
                                 {/*<Image style={{width:Pixel.getPixel(60),height:Pixel.getPixel(70),right:0,bottom:Pixel.getPixel(10), position: 'absolute',}}*/}
                                        {/*source={require('../../../images/carSourceImages/yishouxing.png')}/>*/}
                             </View>
@@ -329,54 +268,34 @@ class DelectButton extends Component{
     }
 }
 
+@observer
 class CarNumberEditView extends Component{
 
-    // 构造
-      constructor(props) {
-        super(props);
-        // 初始状态
-        this.state = {
-            carNumber:this.props.number
-        };
-      }
     render(){
         return(
             <View style={styles.carNumberEditView}>
                 <TouchableOpacity style={{alignItems:'center',justifyContent:'center',width:Pixel.getPixel(25),height:Pixel.getPixel(28)}} activeOpacity={1}
                                   onPress={()=>{this.carNumberClick(1)}}>
-                    <Image source={this.state.carNumber==1? require('../../../images/carSourceImages/noMinusCarNumber.png'):require('../../../images/carSourceImages/minusCarNumber.png')}/>
+                    <Image source={this.props.number==1? require('../../../images/carSourceImages/noMinusCarNumber.png'):require('../../../images/carSourceImages/minusCarNumber.png')}/>
                 </TouchableOpacity>
                 <View style={{alignItems:'center',justifyContent:'center',width:Pixel.getPixel(43),height:Pixel.getPixel(28),borderLeftColor:fontAndColor.COLORA3,borderLeftWidth:Pixel.getPixel(1),borderRightColor:fontAndColor.COLORA3,borderRightWidth:Pixel.getPixel(1)}}>
-                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>{this.state.carNumber}</Text>
+                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>{this.props.number}</Text>
                 </View>
                 <TouchableOpacity style={{alignItems:'center',justifyContent:'center',width:Pixel.getPixel(25),height:Pixel.getPixel(28)}} activeOpacity={1}
                                   onPress={()=>{this.carNumberClick(2)}}>
-                    <Image source={(this.props.maxNumber>this.state.carNumber)?require('../../../images/carSourceImages/addCarNumber.png'):require('../../../images/carSourceImages/noAddCarNumber.png')}/>
+                    <Image source={(this.props.maxNumber>this.props.number)?require('../../../images/carSourceImages/addCarNumber.png'):require('../../../images/carSourceImages/noAddCarNumber.png')}/>
                 </TouchableOpacity>
             </View>
         )
     }
 
     carNumberClick=(type)=>{
-        let carNumber = this.state.carNumber;
         if(type==1){
-
-            if(carNumber==1){return;}
-            carNumber-=1;
-            this.setState({
-                carNumber:carNumber,
-            })
+            this.props.CarShoppingData.minus();
 
         }else {
-
-           if(this.props.maxNumber && this.props.maxNumber<=carNumber){return;}
-           carNumber+=1;
-            this.setState({
-                carNumber:carNumber,
-            })
+            this.props.CarShoppingData.plus();
         }
-
-
     }
 }
 

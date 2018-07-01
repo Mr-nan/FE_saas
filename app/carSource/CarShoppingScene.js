@@ -16,14 +16,17 @@ import *as fontAndColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
 import CarShoppingCell from  './znComponent/CarShoppingCell';
 import PixelUtil from '../utils/PixelUtil';
+import { observer } from 'mobx-react';
+
 import * as AppUrls         from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import BaseComponent from "../component/BaseComponent";
+import CarShoppingData from './carData/CarShoppingData';
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 
 
-
+@observer
 export  default  class CarShoppingScene extends BaseComponent{
 
 
@@ -39,53 +42,50 @@ export  default  class CarShoppingScene extends BaseComponent{
           this.shoppingData = [
               {
                   shopTitle:'商户1',
-                  select:false,
                   list:[
                       {
                           cityName:'广西壮族自治区南宁市',
                           select:false,
                           carList:[
-                              {select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:5}},
-                              {select:false,carData:{title:'车辆2',type:1,number:1,maxNumber:5}},
-                              {select:false,carData:{title:'车辆3',type:1,number:3,maxNumber:5}},
-                              {select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:5}},
+                              {select:false,title:'车辆1',type:1,number:1,maxNumber:5,price:10},
+                              {select:false,title:'车辆2',type:1,number:1,maxNumber:5,price:11},
+                              {select:false,title:'车辆3',type:1,number:3,maxNumber:5,price:10},
+                              {select:false,title:'车辆1',type:1,number:1,maxNumber:5,price:10},
                           ]
                       },
                       {
                           cityName:'广西壮族自治区北海市',
                           select:false,
                           carList:[
-                              {select:false,carData:{title:'车辆1',type:1,number:1,maxNumber:5}},
-                              {select:false,carData:{title:'车辆2',type:1,number:1,maxNumber:5}},
+                              {select:false,title:'车辆1',type:1,number:1,maxNumber:5,price:10},
+                              {select:false,title:'车辆2',type:1,number:1,maxNumber:5,price:10},
                           ]
                       }
                   ]
               },
               {
                   shopTitle:'商户2',
-                  select:false,
                   list:[
                       {
                           cityName:'河北省邯郸市',
                           select:false,
                           carList:[
-                              {select:false,carData:{title:'车辆1',type:2,number:1,maxNumber:5}},
-                              {select:false,carData:{title:'车辆2',type:2,number:1,maxNumber:5}},
-                              {select:false,carData:{title:'车辆3',type:2,number:3,maxNumber:5}},
-                              {select:false,carData:{title:'车辆1',type:2,number:1,maxNumber:5}},
+                              {select:false,title:'车辆1',type:2,number:1,maxNumber:5,price:10},
+                              {select:false,title:'车辆2',type:2,number:1,maxNumber:5,price:10},
+                              {select:false,title:'车辆3',type:2,number:3,maxNumber:5,price:10},
+                              {select:false,title:'车辆1',type:2,number:1,maxNumber:5,price:10},
                           ]
                       },
                   ]
               },
               {
                   shopTitle:'商户3',
-                  select:false,
                   list:[
                       {
                           cityName:'北京市',
                           select:false,
                           carList:[
-                              {select:false,carData:{title:'车辆1',type:2,number:1,maxNumber:5}},
+                              {select:false,title:'车辆1',type:2,number:1,maxNumber:5,price:15},
                           ]
                       },
                   ]
@@ -94,11 +94,19 @@ export  default  class CarShoppingScene extends BaseComponent{
           ];
 
           this.state = {
-              dataSource:dataSource.cloneWithRows(this.shoppingData),
+              dataSource:dataSource.cloneWithRows(CarShoppingData.shoppingData),
               isEditType:false,
               isAllSelect:false,
           };
       }
+
+    componentWillMount() {
+
+        CarShoppingData.setShoppingData(this.shoppingData);
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows(CarShoppingData.shoppingData),
+        })
+    }
 
     render(){
         return(
@@ -137,32 +145,17 @@ export  default  class CarShoppingScene extends BaseComponent{
     renderRow =(data,sectionID,rowID)=> {
         return(
             <CarShoppingCell data={data}
-                             shopSelectClick={(type)=>{
-                                 let list = this.shoppingData[rowID].list;
-                                 for (let i=0;i<list.length;i++){
-                                     list[i].select = type;
-                                 }
-                                 this.shoppingData[rowID].select = type;
-                                 this.isAllSelectType();
+                             shopIndex={rowID}
+                             CarShoppingData={CarShoppingData}
+                             citySelectClick={(shopIndex,cityIndex)=>{
+                                 CarShoppingData.selectCity(shopIndex,cityIndex);
 
                              }}
-                             carSelectClick={(type,index)=>{
-                                     let list = this.shoppingData[rowID].list;
-                                     let isShopSelect = true;
-                                     for (let i=0;i<list.length;i++){
-                                         if(i==index){
-                                             list[i].select = type;
-                                         }
-                                         if(!list[i].select && isShopSelect){
-                                             isShopSelect = false;
-                                         }
-                                     }
-                                 this.shoppingData[rowID].select = isShopSelect;
-                                 this.isAllSelectType();
+                             carSelectClick={(shopIndex,cityIndex,carIndex)=>{
+                                 CarShoppingData.selectCar(shopIndex,cityIndex,carIndex);
 
                              }}
-                             carDelectClick={(index)=>{
-                                 this.carDelectAction(rowID,index);
+                             carDelectClick={(shopIndex,cityIndex,carIndex)=>{
                              }}/>
         )
     }
@@ -308,6 +301,7 @@ class HeadView extends Component{
 
 }
 
+@observer
 class FootView extends Component {
 
     // 构造
@@ -320,24 +314,24 @@ class FootView extends Component {
       }
 
      render(){
-          const {allSelectActin,financialAtion,allPriceAtion} = this.props;
+          const {financialAtion,allPriceAtion} = this.props;
          return(
              <View style={styles.footView}>
                  <TouchableOpacity activeOpacity={1} onPress={()=>{}}>
                      <View style={styles.selectView}>
                          <Text style={styles.selectText}>合计： </Text>
-                         <Text style={[styles.selectPrice,{fontWeight:'bold'}]}>0.00</Text>
+                         <Text style={[styles.selectPrice,{fontWeight:'bold'}]}>{CarShoppingData.sumPrice+''}</Text>
                          <Text style={[styles.selectPrice,{fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}]}>万元</Text>
                      </View>
                  </TouchableOpacity>
                  <TouchableOpacity activeOpacity={1} onPress={financialAtion}>
                      <View style={styles.financialBtn}>
-                         <Text style={styles.financialBtnTitle}>{`金融购结算(${0})`}</Text>
+                         <Text style={styles.financialBtnTitle}>金融购结算({CarShoppingData.sumNumber+''})</Text>
                      </View>
                  </TouchableOpacity>
                  <TouchableOpacity activeOpacity={1} onPress={allPriceAtion}>
                      <View style={styles.allPriceBtn}>
-                         <Text style={styles.allPriceBtnTitle}>{`全款购结算(${0})`}</Text>
+                         <Text style={styles.allPriceBtnTitle}>全款购结算({CarShoppingData.sumNumber+''})</Text>
                      </View>
                  </TouchableOpacity>
              </View>
