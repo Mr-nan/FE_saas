@@ -24,7 +24,7 @@ import { observer } from 'mobx-react';
 export default class CarShoppingCell extends Component{
 
     render(){
-        let  {CarShoppingData,shopIndex} = this.props;
+        let  {shopIndex} = this.props;
 
         return(
             <View style={styles.cellView}>
@@ -52,6 +52,7 @@ export default class CarShoppingCell extends Component{
                                                          isShowLine={subIndex<cityData.carList.length?true:false}
                                                          data={carData}
                                                          carSelectClick={()=>{
+                                                             console.log();
                                                              this.props.carSelectClick(shopIndex,index,subIndex);
                                                          }}
                                                          carDelectClick={()=>{this.props.carDelectClick(this.props.shopIndex,index,subIndex)}}/>
@@ -103,7 +104,7 @@ class CarCell extends Component{
              this.state.leftGap,
              {
                  toValue:-Pixel.getPixel(85),
-                 duration:300,
+                 duration:100,
 
 
              }
@@ -116,7 +117,7 @@ class CarCell extends Component{
              this.state.leftGap,
              {
                  toValue:0,
-                 duration:300,
+                 duration:100,
 
              }
          ).start();
@@ -124,7 +125,7 @@ class CarCell extends Component{
 
      componentWillMount() {
          this.panResponder = PanResponder.create({
-             onStartShouldSetPanResponder: (evt, gestureState) => false,
+             onStartShouldSetPanResponder: (evt, gestureState) => true,
              onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
              onMoveShouldSetPanResponder: (evt, gestureState) => true,
              onMoveShouldSetPanResponderCapture: (evt, gestureState) => false,
@@ -158,10 +159,7 @@ class CarCell extends Component{
                             }
                         }}>
                             <View style={{flexDirection:'row', flex:1,alignItems:'center',backgroundColor:'white',width:ScreenWidth-Pixel.getPixel(30)}}>
-                                <TouchableOpacity style={{justifyContent:'center', alignItems:'center',width:Pixel.getPixel(18),height:Pixel.getPixel(80)}} onPress={()=>{
-                                    this.props.carSelectClick();
-
-                                }}>
+                                <TouchableOpacity style={{justifyContent:'center', alignItems:'center',width:Pixel.getPixel(28),height:Pixel.getPixel(80),backgroundColor:'white',}} onPress={this.props.carSelectClick}>
                                     <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18)}} source={this.props.data.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')}/>
                                 </TouchableOpacity>
                                 <Image style={styles.carImage} source={require('../../../images/carSourceImages/car_null_img.png')} resizeMode={'contain'}>
@@ -332,7 +330,6 @@ const styles = StyleSheet.create({
         width:ScreenWidth-Pixel.getPixel(30),
     },
     carImage:{
-        marginLeft:Pixel.getPixel(10),
         width:Pixel.getPixel(110),
         height:Pixel.getPixel(80),
         backgroundColor:fontAndColor.COLORA3

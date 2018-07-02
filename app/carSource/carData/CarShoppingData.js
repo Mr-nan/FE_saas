@@ -76,6 +76,8 @@ class CarShoppingData {
 
     @action
     selectCity(shopIndex,cityIndex){
+        console.log('==============selectCity:',shopIndex,cityIndex);
+
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
 
@@ -97,11 +99,12 @@ class CarShoppingData {
 
     }
 
+
     selectCar(shopIndex,cityIndex,carIndex){
+        console.log('==============selectCar',shopIndex,cityIndex,carIndex);
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
             for(let cityI=0;cityI<shopData.list.length;cityI++){
-
                 let cityData = shopData.list[cityI];
                 for (let carI=0;carI<cityData.carList.length;carI++){
                     carData =  cityData.carList[carI];
@@ -114,7 +117,6 @@ class CarShoppingData {
 
                         carData.select = false;
                     }
-
                 }
 
                 cityData.select = false;
@@ -135,10 +137,28 @@ class CarShoppingData {
            }
         }
         cityData.select = tmpCitySelect;
-
-
     }
 
+
+    @action
+    delectCar(shopIndex,cityIndex,carIndex){
+
+        let shopData = this.shoppingData[shopIndex];
+        let cityData = shopData.list[cityIndex];
+
+        if(carIndex<cityData.carList.length){
+            cityData.carList.splice(carIndex,1);
+        }
+
+        if(cityData.carList.length<=0){
+            shopData.list.splice(cityIndex,1);
+        }
+
+        if(shopData.list.length<=0){
+            this.shoppingData.splice(shopIndex,1);
+        }
+
+    }
 
 
 

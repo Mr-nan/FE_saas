@@ -151,9 +151,12 @@ export  default  class CarShoppingScene extends BaseComponent{
                                  CarShoppingData.selectCity(shopIndex,cityIndex);
                              }}
                              carSelectClick={(shopIndex,cityIndex,carIndex)=>{
+                                 console.log('carSelectClick');
                                  CarShoppingData.selectCar(shopIndex,cityIndex,carIndex);
                              }}
                              carEditNumberClick={(type,shopIndex,cityIndex,carIndex)=>{
+                                 console.log('carEditNumberClick');
+
                                  if(type==1){
                                      CarShoppingData.minus(shopIndex,cityIndex,carIndex);
                                  }else {
