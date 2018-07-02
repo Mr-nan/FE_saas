@@ -48,7 +48,7 @@ export default class CarShoppingCell extends Component{
                                     cityData.carList.map((carData,subIndex)=>{
                                             return(
                                                 <CarCell key={`${index}+${subIndex}`}
-                                                         CarShoppingData={CarShoppingData}
+                                                         editeNumberClick={(type)=>{this.props.carEditNumberClick(type,shopIndex,index,subIndex)}}
                                                          isShowLine={subIndex<cityData.carList.length?true:false}
                                                          data={carData}
                                                          carSelectClick={()=>{
@@ -200,7 +200,7 @@ class CarCell extends Component{
                                             }}></Text>
                                     </View>
                                 </View>
-                                <CarNumberEditView CarShoppingData={this.props.CarShoppingData} number={this.props.data.number} maxNumber={this.props.data.maxNumber}/>
+                                <CarNumberEditView editClick={(type)=>{this.props.editeNumberClick(type)}} number={this.props.data.number} maxNumber={this.props.data.maxNumber}/>
                                 {/*<Image style={{width:Pixel.getPixel(60),height:Pixel.getPixel(70),right:0,bottom:Pixel.getPixel(10), position: 'absolute',}}*/}
                                        {/*source={require('../../../images/carSourceImages/yishouxing.png')}/>*/}
                             </View>
@@ -290,12 +290,7 @@ class CarNumberEditView extends Component{
     }
 
     carNumberClick=(type)=>{
-        if(type==1){
-            this.props.CarShoppingData.minus();
-
-        }else {
-            this.props.CarShoppingData.plus();
-        }
+        this.props.editClick(type);
     }
 }
 
