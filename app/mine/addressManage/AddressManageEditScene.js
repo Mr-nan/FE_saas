@@ -28,6 +28,9 @@ export default class AddressManageEditScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.item = typeof this.props.screenItem !=='undefined'?this.props.screenItem:this.props.item;
+
+        console.log(this.item)
+
         this.pro_city = '';
         if(!this._isEmpty(this.item.province)){
             this.pro_city = this.item.province + this.item.city + this.item.district;

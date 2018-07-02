@@ -362,7 +362,6 @@
 			remoteInfo = RNImagePicker;
 		};
 		EA444C9A2074CF39008D6C09 /* PBXContainerItemProxy */ = {
-
 			isa = PBXContainerItemProxy;
 			containerPortal = A08B9B7AF08C41A082FB247D /* RCTWeChat.xcodeproj */;
 			proxyType = 2;
@@ -370,7 +369,6 @@
 			remoteInfo = RCTWeChatTests;
 		};
 		EA444CA72074CF39008D6C09 /* PBXContainerItemProxy */ = {
-
 			isa = PBXContainerItemProxy;
 			containerPortal = F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */;
 			proxyType = 2;
@@ -814,7 +812,6 @@
 			children = (
 				7D769F0F1E6572180039526C /* libRNSpinkit.a */,
 				EA444CA82074CF39008D6C09 /* libRNSpinkit.a */,
-
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1038,7 +1035,6 @@
 			children = (
 				E3B816F81E613DD400279287 /* libRCTWeChat.a */,
 				EA444C9B2074CF39008D6C09 /* RCTWeChatTests.xctest */,
-
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1498,7 +1494,6 @@
 			fileType = archive.ar;
 			path = libRNSpinkit.a;
 			remoteRef = EA444CA72074CF39008D6C09 /* PBXContainerItemProxy */;
-
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		EE822B071F5D57D000E4249A /* libRCTCameraRoll.a */ = {

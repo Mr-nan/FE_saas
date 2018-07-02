@@ -19,34 +19,17 @@ var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
+import MyOrderListItem from './component/MyOrderListItem';
 import {request} from '../../utils/RequestUtil';
-import MyOrderItem from "./component/MyOrderItem";
-import MyOrderListScene from "./MyOrderListScene";
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
-export default class MyOrderScene extends BaseComponent {
+export default class MyOrderListScene extends BaseComponent {
     initFinish = () => {
-        let select = [{
-            name: '采购订单',
-            icon: require('../../../images/neworder/caigou.png'),
-            images:[require('../../../images/neworder/jyz.png'),
-                require('../../../images/neworder/ywc.png'),
-                require('../../../images/neworder/ygb.png'),
-                require('../../../images/neworder/tk.png')]
-        },
-            {
-                name: '销售订单',
-                icon: require('../../../images/neworder/xiaoshou.png'),
-                images:[require('../../../images/neworder/xsjyz.png'),
-                    require('../../../images/neworder/xsywc.png'),
-                    require('../../../images/neworder/xsygb.png'),
-                    require('../../../images/neworder/xstk.png') ]
-            }];
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows(select),
+            dataSource: ds.cloneWithRows([1,2,3,4]),
             renderPlaceholderOnly: 'success'
         });
     }
@@ -65,11 +48,11 @@ export default class MyOrderScene extends BaseComponent {
             return ( <View style={styles.container}>
 
                 {this.loadView()}
-                <NavigatorView title='我的订单' backIconClick={this.backPage}/>
+                <NavigatorView title={this.props.title} backIconClick={this.backPage}/>
             </View>);
         } else {
             return (<View style={styles.container}>
-                <NavigatorView title='我的订单' backIconClick={this.backPage}/>
+                <NavigatorView title={this.props.title} backIconClick={this.backPage}/>
                 <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(74)}}
                           dataSource={this.state.dataSource}
                           removeClippedSubviews={false}
@@ -93,12 +76,8 @@ export default class MyOrderScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
         return (
-          <MyOrderItem data={rowData} callBack={(index)=>{
-                this.toNextPage({
-                    name:'MyOrderListScene',
-                    component:MyOrderListScene,
-                    params:{title:rowData.name}
-                })
+          <MyOrderListItem data={rowData} callBack={(index)=>{
+
           }}/>
         );
     }
