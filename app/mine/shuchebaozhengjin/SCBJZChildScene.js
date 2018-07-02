@@ -221,7 +221,7 @@ export default class SCBJZChildScene extends BaseComponent {
             if(state == 0){
                 tempTitle = ['去支付']
             }else if(state == 1){
-                tempTitle = ['处理中']
+                tempTitle = ['支付中']
             }else if(state == 2){
                 tempTitle = ['处理成功']
             }else if(state == 3){
