@@ -70,7 +70,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.logisticsType = 1;
         this.ordersTrans = {};
         this.geterData = {};
-        this.applyLoanAmount = '请输入申请贷款金额';
+        this.applyLoanAmount = '待设置借款金额';
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
