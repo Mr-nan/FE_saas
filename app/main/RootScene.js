@@ -39,6 +39,7 @@ import UmengPush from 'react-native-umeng-push';
 import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi';
 import LoginGesture from '../login/LoginGesture';
 import MyOrderListScene from "../mine/newOrder/MyOrderListScene";
+import MyOrderInfoScene from "../mine/newOrder/MyOrderInfoScene";
 const IS_ANDROID = Platform.OS === 'android';
 
 export default class RootScene extends BaseComponent {
@@ -242,7 +243,7 @@ export default class RootScene extends BaseComponent {
                                             that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
-                                            that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.component = MyOrderInfoScene;
                                             that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);
@@ -253,7 +254,7 @@ export default class RootScene extends BaseComponent {
                                             that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
-                                            that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.component = MyOrderInfoScene;
                                             that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);
