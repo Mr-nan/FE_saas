@@ -24,7 +24,7 @@ import { observer } from 'mobx-react';
 export default class CarShoppingCell extends Component{
 
     render(){
-        let  {shopIndex} = this.props;
+        let  {shopIndex,isEditType} = this.props;
 
         return(
             <View style={styles.cellView}>
@@ -41,18 +41,18 @@ export default class CarShoppingCell extends Component{
                                                       this.props.citySelectClick(shopIndex,index);
                                                   }}>
                                     <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18),marginRight:Pixel.getPixel(10)}}
-                                           source={cityData.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')}/>
+                                           source={ isEditType?(cityData.delectSelect? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')):(cityData.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')) }/>
                                     <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{cityData.cityName}</Text>
                                 </TouchableOpacity>
                                 {
                                     cityData.carList.map((carData,subIndex)=>{
                                             return(
                                                 <CarCell key={`${index}+${subIndex}`}
+                                                         isEditType={isEditType}
                                                          editeNumberClick={(type)=>{this.props.carEditNumberClick(type,shopIndex,index,subIndex)}}
                                                          isShowLine={subIndex<cityData.carList.length?true:false}
                                                          data={carData}
                                                          carSelectClick={()=>{
-                                                             console.log();
                                                              this.props.carSelectClick(shopIndex,index,subIndex);
                                                          }}
                                                          carDelectClick={()=>{this.props.carDelectClick(this.props.shopIndex,index,subIndex)}}/>
@@ -159,8 +159,9 @@ class CarCell extends Component{
                             }
                         }}>
                             <View style={{flexDirection:'row', flex:1,alignItems:'center',backgroundColor:'white',width:ScreenWidth-Pixel.getPixel(30)}}>
-                                <TouchableOpacity style={{justifyContent:'center', alignItems:'center',width:Pixel.getPixel(28),height:Pixel.getPixel(80),backgroundColor:'white',}} onPress={this.props.carSelectClick}>
-                                    <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18)}} source={this.props.data.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')}/>
+                                <TouchableOpacity style={{justifyContent:'center',width:Pixel.getPixel(28),height:Pixel.getPixel(80),backgroundColor:'white',}} onPress={this.props.carSelectClick}>
+                                    <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18)}}
+                                           source={this.props.isEditType?(this.props.data.delectSelect? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')):(this.props.data.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png'))}/>
                                 </TouchableOpacity>
                                 <Image style={styles.carImage} source={require('../../../images/carSourceImages/car_null_img.png')} resizeMode={'contain'}>
                                     <Image style={{top:0,left:0,bottom:0,right:0,position: 'absolute'}} source={this.props.data.type==1? require('../../../images/carSourceImages/userCarTypeIcon.png'):require('../../../images/carSourceImages/newCarTypeIcon.png')}/>
