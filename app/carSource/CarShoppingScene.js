@@ -16,8 +16,7 @@ import *as fontAndColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
 import CarShoppingCell from  './znComponent/CarShoppingCell';
 import PixelUtil from '../utils/PixelUtil';
-import { observer } from 'mobx-react';
-import { observable } from 'mobx';
+import { observer } from 'mobx-react/native';
 
 import * as AppUrls         from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
@@ -30,13 +29,10 @@ var ScreenWidth = Dimensions.get('window').width;
 @observer
 export  default  class CarShoppingScene extends BaseComponent{
 
-    @observable isEditType = false;
      constructor(props) {
           super(props);
 
           const dataSource = new  ListView.DataSource({rowHasChanged:(r1,r2)=>r1!=r2,});
-          this.isEditType = false;
-
           this.shoppingData = [
               {
                   shopTitle:'商户1',
@@ -46,11 +42,7 @@ export  default  class CarShoppingScene extends BaseComponent{
                           select:false,
                           delectSelect:false,
                           carList:[
-                              {select:false,delectSelect:false,title:'车辆1',type:1,number:1,maxNumber:5,price:10},
-                              {select:false,delectSelect:false,title:'车辆2',type:1,number:1,maxNumber:5,price:11},
-                              {select:false,delectSelect:false,title:'车辆3',type:1,number:3,maxNumber:5,price:10},
-                              {select:false,delectSelect:false,title:'车辆1',type:1,number:1,maxNumber:5,price:10},
-                          ]
+                              {select:false,delectSelect:false,title:'车辆1',type:1,number:1,maxNumber:5,price:10}]
                       },
                       {
                           cityName:'广西壮族自治区北海市',
@@ -71,8 +63,7 @@ export  default  class CarShoppingScene extends BaseComponent{
                           carList:[
                               {select:false,delectSelect:false,title:'车辆1',type:2,number:1,maxNumber:5,price:10},
                               {select:false,delectSelect:false,title:'车辆2',type:2,number:1,maxNumber:5,price:10},
-                              {select:false,delectSelect:false,title:'车辆3',type:2,number:3,maxNumber:5,price:10},
-                              {select:false,delectSelect:false,title:'车辆1',type:2,number:1,maxNumber:5,price:10},
+
                           ]
                       },
                   ]
@@ -93,8 +84,7 @@ export  default  class CarShoppingScene extends BaseComponent{
           ];
 
           this.state = {
-              dataSource:dataSource.cloneWithRows(CarShoppingData.shoppingData),
-              isEditType:false,
+              dataSource:dataSource,
           };
       }
 
@@ -110,20 +100,20 @@ export  default  class CarShoppingScene extends BaseComponent{
         return(
             <View style={styles.rootView}>
                 {
-                  this.isEditType && (
+                  CarShoppingData.isEdit && (
                         <HeadView
                                   headViewSelectClick={this.headViewSelectClick}
                                   headViewDelectClick={this.headViewDelectClick}/>
                     )
                 }
-                <ListView style={{marginBottom:this.isEditType?Pixel.getPixel(0):Pixel.getPixel(44)}}
+                <ListView style={{marginBottom:CarShoppingData.isEdit?Pixel.getPixel(0):Pixel.getPixel(44)}}
                           dataSource={this.state.dataSource}
                           renderRow={this.renderRow}
                           renderSeparator={this.renderSeparator}
                           enableEmptySections={true}
                           />
                 {
-                    !this.isEditType &&  (
+                    !CarShoppingData.isEdit &&  (
                         <FootView allSelectActin={this.allSelectActin} financialAtion={this.financialAtion} allPriceAtion={this.allPriceAtion}/>
                     )
                 }
@@ -139,7 +129,7 @@ export  default  class CarShoppingScene extends BaseComponent{
             <TouchableOpacity style={styles.navigationRightBtn}
                               activeOpacity={1}
                               onPress={this.navigationBtnClick}>
-                <Text style={styles.navigationRightText}>{this.isEditType?'完成':'编辑'}</Text>
+                <Text style={styles.navigationRightText}>{CarShoppingData.isEdit?'完成':'编辑'}</Text>
             </TouchableOpacity>
         )
     }
@@ -148,20 +138,19 @@ export  default  class CarShoppingScene extends BaseComponent{
         return(
             <CarShoppingCell data={data}
                              shopIndex={rowID}
-                             isEditType={this.isEditType}
                              CarShoppingData={CarShoppingData}
                              citySelectClick={(shopIndex,cityIndex)=>{
 
-                                 console.log(this.isEditType);
-                                 if(this.isEditType==true){
+                                 if(CarShoppingData.isEdit){
                                      CarShoppingData.delectSelectCity(shopIndex,cityIndex);
-
                                  }else {
                                      CarShoppingData.selectCity(shopIndex,cityIndex);
                                  }
+                                 
                              }}
                              carSelectClick={(shopIndex,cityIndex,carIndex)=>{
-                                 if(this.isEditType==true){
+
+                                 if(CarShoppingData.isEdit){
                                      CarShoppingData.delectSelectCar(shopIndex,cityIndex,carIndex);
                                  }else {
                                      CarShoppingData.selectCar(shopIndex,cityIndex,carIndex);
@@ -191,7 +180,9 @@ export  default  class CarShoppingScene extends BaseComponent{
 
     navigationBtnClick=()=>{
 
-        this.isEditType = !this.isEditType;
+        console.log('navigationBtnClick');
+        CarShoppingData.isEdit=!CarShoppingData.isEdit;
+
     }
 
     headViewSelectClick=()=>{

@@ -18,13 +18,13 @@ import *as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react/native';
 
 @observer
 export default class CarShoppingCell extends Component{
 
     render(){
-        let  {shopIndex,isEditType} = this.props;
+        let  {shopIndex,CarShoppingData} = this.props;
 
         return(
             <View style={styles.cellView}>
@@ -41,14 +41,14 @@ export default class CarShoppingCell extends Component{
                                                       this.props.citySelectClick(shopIndex,index);
                                                   }}>
                                     <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18),marginRight:Pixel.getPixel(10)}}
-                                           source={ isEditType?(cityData.delectSelect? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')):(cityData.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')) }/>
+                                           source={CarShoppingData.isEdit?(cityData.delectSelect? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')):(cityData.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')) }/>
                                     <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{cityData.cityName}</Text>
                                 </TouchableOpacity>
                                 {
                                     cityData.carList.map((carData,subIndex)=>{
                                             return(
                                                 <CarCell key={`${index}+${subIndex}`}
-                                                         isEditType={isEditType}
+                                                         CarShoppingData={CarShoppingData}
                                                          editeNumberClick={(type)=>{this.props.carEditNumberClick(type,shopIndex,index,subIndex)}}
                                                          isShowLine={subIndex<cityData.carList.length?true:false}
                                                          data={carData}
@@ -149,6 +149,7 @@ class CarCell extends Component{
 
 
     render(){
+         let {CarShoppingData} = this.props;
         return(
             <View style={{paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white',width:ScreenWidth,height:Pixel.getPixel(132)}} {...this.panResponder.panHandlers}>
                 <View  style={{flexDirection:'row', flex:1,borderBottomColor:fontAndColor.COLORA3, borderBottomWidth:this.props.isShowLine ?Pixel.getPixel(1):0}}>
@@ -161,7 +162,7 @@ class CarCell extends Component{
                             <View style={{flexDirection:'row', flex:1,alignItems:'center',backgroundColor:'white',width:ScreenWidth-Pixel.getPixel(30)}}>
                                 <TouchableOpacity style={{justifyContent:'center',width:Pixel.getPixel(28),height:Pixel.getPixel(80),backgroundColor:'white',}} onPress={this.props.carSelectClick}>
                                     <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18)}}
-                                           source={this.props.isEditType?(this.props.data.delectSelect? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')):(this.props.data.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png'))}/>
+                                           source={CarShoppingData.isEdit?(this.props.data.delectSelect? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')):(this.props.data.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png'))}/>
                                 </TouchableOpacity>
                                 <Image style={styles.carImage} source={require('../../../images/carSourceImages/car_null_img.png')} resizeMode={'contain'}>
                                     <Image style={{top:0,left:0,bottom:0,right:0,position: 'absolute'}} source={this.props.data.type==1? require('../../../images/carSourceImages/userCarTypeIcon.png'):require('../../../images/carSourceImages/newCarTypeIcon.png')}/>
@@ -259,7 +260,8 @@ class DelectButton extends Component{
     render(){
         return(
                 <Animated.View style={[styles.delectBtn, {right:this.state.rightGap}]}>
-                    <TouchableOpacity style={{flex:1, alignItems:'center',justifyContent:'center',width:Pixel.getPixel(80)}} onPress={this.props.delectClick}>
+                    <TouchableOpacity style={{flex:1, alignItems:'center',justifyContent:'center',width:Pixel.getPixel(80)}}
+                                      onPress={this.props.delectClick}>
                     <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>删除</Text>
                     </TouchableOpacity>
                 </Animated.View>

@@ -11,8 +11,10 @@ class CarShoppingData {
     @observable delectAllSelect = false; //删除全选
     @observable sumPrice = 0;
     @observable sumNumber = 0;
+    @observable isEdit = false;
 
     constructor(){
+        this.isEdit = false;
         this.sumNumber=computed(()=>{
             let sumNumber = 0;
             for(let shopData of this.shoppingData){
@@ -79,7 +81,7 @@ class CarShoppingData {
         }
 
 
-    }
+    };
 
     @action // -1
     minus(shopIndex,cityIndex,carIndex){
@@ -90,7 +92,7 @@ class CarShoppingData {
         if(carData.number>1){
             carData.number-=1;
         }
-    }
+    };
 
     @action
     selectCity(shopIndex,cityIndex){
@@ -114,7 +116,7 @@ class CarShoppingData {
            }
         }
 
-    }
+    };
 
     @action
     selectCar(shopIndex,cityIndex,carIndex){
@@ -139,7 +141,7 @@ class CarShoppingData {
             }
         }
         this.isCitySelect(shopIndex,cityIndex);
-    }
+    };
 
     @action
     allDelectSelect(){
@@ -158,10 +160,11 @@ class CarShoppingData {
 
             }
         }
-    }
+    };
 
     @action
     delectSelectCity(shopIndex,cityIndex){
+        console.log(shopIndex,cityIndex);
 
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
@@ -176,12 +179,12 @@ class CarShoppingData {
 
             }
         }
-    }
+    };
 
     @action
     delectSelectCar(shopIndex,cityIndex,carIndex){
 
-
+        console.log(shopIndex,cityIndex,carIndex);
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
             for(let cityI=0;cityI<shopData.list.length;cityI++){
@@ -197,7 +200,7 @@ class CarShoppingData {
             }
         }
         this.isCityDelectSelect(shopIndex,cityIndex);
-    }
+    };
 
 
     isCityDelectSelect(shopIndex,cityIndex){
@@ -261,16 +264,14 @@ class CarShoppingData {
             shopData.list.splice(cityIndex,1);
         }
 
-        if(shopData.list.length<=0 ){
-            this.shoppingData.splice(shopIndex,1);
-        }
+        this.shoppingData = this.shoppingData.filter(e=>(e.list.length>0))
 
         this.isCitySelect(shopIndex,cityIndex);
         this.isCityDelectSelect(shopIndex,cityIndex);
 
         action && action();
 
-    }
+    };
 
 
 
