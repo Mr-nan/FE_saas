@@ -53,6 +53,7 @@ import GetPermissionUtil from '../utils/GetPermissionUtil';
 import BaseComponent from '../component/BaseComponent';
 import List from "../mine/myOrder/orderwuliu/list/List";
 import CredictManageScene from "../mine/kuaisushouxin/CredictManageScene";
+import MyOrderScene from "../mine/newOrder/MyOrderScene";
 
 
 var Pixel = new PixelUtil();
@@ -766,16 +767,16 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.component = MycarScene
                 break;
             case 52:
-                if (this.isLogistics == 0) {  //this.isLogistics == 'false'
-                    this.navigatorParams.name = 'OrderTypeSelectSceneOld'
-                    this.navigatorParams.component = OrderTypeSelectSceneOld
-                } else {
-                    this.navigatorParams.name = 'OrderTypeSelectScene'
-                    this.navigatorParams.component = OrderTypeSelectScene
-                    this.navigatorParams.params = {
-                        singleCar: this.singleCar
-                    }
-                }
+                // if (this.isLogistics == 0) {  //this.isLogistics == 'false'
+                    this.navigatorParams.name = 'MyOrderScene'
+                    this.navigatorParams.component = MyOrderScene
+                // } else {
+                //     this.navigatorParams.name = 'OrderTypeSelectScene'
+                //     this.navigatorParams.component = OrderTypeSelectScene
+                //     this.navigatorParams.params = {
+                //         singleCar: this.singleCar
+                //     }
+                // }
                 break;
             case 69:
                 this.navigatorParams.name = 'AddressManageListScene'
