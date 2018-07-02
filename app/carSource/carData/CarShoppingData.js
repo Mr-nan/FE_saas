@@ -11,7 +11,7 @@ class CarShoppingData {
     @observable delectAllSelect = false; //删除全选
     @observable sumPrice = 0;
     @observable sumNumber = 0;
-    @observable isEdit = false;
+    @observable isEdit = false; // 是否为编辑状态
 
     constructor(){
         this.isEdit = false;
@@ -278,31 +278,20 @@ class CarShoppingData {
             this.shoppingData = [];
         }else {
 
-
-
             for(let shopData of this.shoppingData){
-
                 for(let cityData of  shopData.list){
                     cityData.carList = cityData.carList.filter(e=>(e.delectSelect!=true));
                 }
 
                 shopData.list = shopData.list.filter(e=>(e.delectSelect!=true || e.carList.length>0))
-
             }
-
             this.shoppingData = this.shoppingData.filter(e=>(e.list.length>0));
-
 
         }
 
         action && action();
 
     }
-
-
-
-
-
 }
 
 export  default  new CarShoppingData();
