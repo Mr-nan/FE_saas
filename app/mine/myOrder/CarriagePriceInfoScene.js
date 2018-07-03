@@ -170,8 +170,21 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
                         <AddressInfoItemView
                             deliverModeClick={(mode) => {
-                                this.params.receive_type = mode
-                                console.log(this.params.receive_type)
+
+                                if(mode === 2){
+                                    if(this.params.startGpsLatitude == 0){
+                                        this.props.showToast('请选择始发地详细地址')
+                                        return false;
+                                    }else {
+                                        this.params.receive_type = mode;
+                                        this.loadData();
+                                        return true;
+                                    }
+                                }else {
+                                    this.params.receive_type = mode;
+                                    this.loadData();
+                                    return true;
+                                }
 
                             }}
                             contactInformationClickCallBack={() => {
@@ -194,7 +207,8 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
                         <AddressInfoItemView
                             deliverModeClick={(mode) => {
-                                this.props.showToast('该功能正在开发中...')
+                                 this.props.showToast('该功能正在开发中...')
+                                return false
 
                                 // this.params.send_type = mode;
                                 // console.log(this.params.send_type)
@@ -890,15 +904,29 @@ class AddressInfoItemView extends Component {
                         clickCallBack={(status) => {
 
                             if (this.props.switchable) {
-                                this.setState({
-                                    deliverMode: this.props.type === 1 ? 2 : 1
-                                }, () => {
-                                    this.props.deliverModeClick(this.state.deliverMode)
+
+                                let oldMode = this.state.deliverMode;
+                                this.state.deliverMode = this.props.type === 1 ? 2 : 1
+
+                                if(this.props.deliverModeClick(this.state.deliverMode)){
                                     return true;
-                                })
+                                }else {
+                                     this.state.deliverMode = oldMode;
+                                    return false;
+                                }
+                                // return this.props.deliverModeClick(this.state.deliverMode)
+                                //
+                                //
+                                //
+                                // this.setState({
+                                //
+                                // }, () => {
+                                //     return this.props.deliverModeClick(this.state.deliverMode)
+                                //
+                                // })
                             } else {
-                                this.props.deliverModeClick()
-                                return false;
+                               return this.props.deliverModeClick();
+
                             }
                         }}
                     />
@@ -907,15 +935,21 @@ class AddressInfoItemView extends Component {
                         status={this.props.type === 1 ? this.state.deliverMode === 1 ? true : false : this.state.deliverMode === 1 ? false : true}
                         clickCallBack={(status) => {
                             if (this.props.switchable) {
-                                this.setState({
-                                    deliverMode: this.props.type === 1 ? 1 : 2
-                                }, () => {
-                                    this.props.deliverModeClick(this.state.deliverMode)
+
+                                let oldMode = this.state.deliverMode;
+
+                                this.state.deliverMode = this.props.type === 1 ? 1 : 2;
+
+
+                                if(this.props.deliverModeClick(this.state.deliverMode)){
                                     return true;
-                                })
+                                }else {
+                                    this.state.deliverMode = oldMode;
+                                    return false;
+                                }
+
                             } else {
-                                this.props.deliverModeClick()
-                                return false;
+                               return this.props.deliverModeClick()
                             }
 
                         }}
@@ -1293,14 +1327,14 @@ class DeliverTypeItem extends Component {
             <TouchableOpacity
                 onPress={() => {
                     if (this.state.isChecked === true) {
-                        return
-                    }
+                        return;
+                    }else if (this.props.clickCallBack(false)) {
 
-                    if (this.props.clickCallBack(this.state.isChecked)) {
                         this.setState({
                             isChecked: !this.state.isChecked
                         })
                     }
+
                 }}
             >
                 <Image style={{width: Pixel.getPixel(18), height: Pixel.getPixel(18)}}
@@ -1538,7 +1572,7 @@ class PriceItemView extends Component {
                         color: fontAndColor.COLORA0,
                         fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
                         fontWeight: '200'
-                    }}>{value === '平台赠送' ? '' : '元'}</Text>
+                    }}>{value === '平台赠送' || value === '减免' ? '' : '元'}</Text>
                 </View>
             </View>
         )
