@@ -11,7 +11,7 @@ class CarShoppingData {
     @observable delectAllSelect = false; //删除全选
     @observable sumPrice = 0;
     @observable sumNumber = 0;
-    @observable isEdit = false;
+    @observable isEdit = false; // 是否为编辑状态
 
     constructor(){
         this.isEdit = false;
@@ -94,7 +94,7 @@ class CarShoppingData {
         }
     };
 
-    @action
+    @action // 选中城市
     selectCity(shopIndex,cityIndex){
 
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
@@ -118,7 +118,7 @@ class CarShoppingData {
 
     };
 
-    @action
+    @action   // 选中单个车辆
     selectCar(shopIndex,cityIndex,carIndex){
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
@@ -143,7 +143,7 @@ class CarShoppingData {
         this.isCitySelect(shopIndex,cityIndex);
     };
 
-    @action
+    @action  // 选中全部删除
     allDelectSelect(){
 
         let allSelect = this.delectAllSelect.get();
@@ -162,9 +162,8 @@ class CarShoppingData {
         }
     };
 
-    @action
+    @action // 选中要删除的城市
     delectSelectCity(shopIndex,cityIndex){
-        console.log(shopIndex,cityIndex);
 
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
@@ -181,10 +180,9 @@ class CarShoppingData {
         }
     };
 
-    @action
+    @action   // 选中要删除的车辆
     delectSelectCar(shopIndex,cityIndex,carIndex){
 
-        console.log(shopIndex,cityIndex,carIndex);
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
             for(let cityI=0;cityI<shopData.list.length;cityI++){
@@ -203,6 +201,7 @@ class CarShoppingData {
     };
 
 
+    // 二级删除选中状态
     isCityDelectSelect(shopIndex,cityIndex){
 
         if(shopIndex>=this.shoppingData.length){
@@ -228,7 +227,7 @@ class CarShoppingData {
     }
 
 
-
+    // 二级选中状态
     isCitySelect(shopIndex,cityIndex){
         if(shopIndex>=this.shoppingData.length){
             return;
@@ -249,10 +248,9 @@ class CarShoppingData {
     }
 
 
-    @action
+    @action  // 删除单项
     delectCar(shopIndex,cityIndex,carIndex,action){
 
-        console.log(shopIndex,cityIndex,carIndex);
         let shopData = this.shoppingData[shopIndex];
         let cityData = shopData.list[cityIndex];
 
@@ -264,7 +262,7 @@ class CarShoppingData {
             shopData.list.splice(cityIndex,1);
         }
 
-        this.shoppingData = this.shoppingData.filter(e=>(e.list.length>0))
+        this.shoppingData = this.shoppingData.filter(e=>(e.list.length>0));
 
         this.isCitySelect(shopIndex,cityIndex);
         this.isCityDelectSelect(shopIndex,cityIndex);
@@ -273,11 +271,27 @@ class CarShoppingData {
 
     };
 
+    @action  // 选择删除按钮
+    delectAction(action){
 
+        if(this.delectAllSelect.get()){
+            this.shoppingData = [];
+        }else {
 
+            for(let shopData of this.shoppingData){
+                for(let cityData of  shopData.list){
+                    cityData.carList = cityData.carList.filter(e=>(e.delectSelect!=true));
+                }
 
+                shopData.list = shopData.list.filter(e=>(e.delectSelect!=true || e.carList.length>0))
+            }
+            this.shoppingData = this.shoppingData.filter(e=>(e.list.length>0));
 
+        }
 
+        action && action();
+
+    }
 }
 
 export  default  new CarShoppingData();

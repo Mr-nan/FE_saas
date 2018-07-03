@@ -180,7 +180,6 @@ export  default  class CarShoppingScene extends BaseComponent{
 
     navigationBtnClick=()=>{
 
-        console.log('navigationBtnClick');
         CarShoppingData.isEdit=!CarShoppingData.isEdit;
 
     }
@@ -193,6 +192,11 @@ export  default  class CarShoppingScene extends BaseComponent{
 
     headViewDelectClick=()=>{
 
+        CarShoppingData.delectAction(()=>{
+                this.setState({
+                    dataSource:this.state.dataSource.cloneWithRows(CarShoppingData.shoppingData),
+                });
+        });
 
     }
 
