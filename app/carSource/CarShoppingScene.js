@@ -146,7 +146,7 @@ export  default  class CarShoppingScene extends BaseComponent{
                                  }else {
                                      CarShoppingData.selectCity(shopIndex,cityIndex);
                                  }
-                                 
+
                              }}
                              carSelectClick={(shopIndex,cityIndex,carIndex)=>{
 
