@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 var Platform = require('Platform');
 // import RootScene from '../main/RootScene';
-import RootScene from '../carSource/CarShoppingScene';
+import RootScene from '../mine/newOrder/RefundInfoScene';
 import {setAll} from '../constant/AllBackLogin';
 export default class MyNavigator extends Component {
     render() {
