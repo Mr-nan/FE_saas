@@ -16,23 +16,22 @@ import {
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import  GetImage from '../../../utils/GetOrderImageUtil'
-import  GetText from '../../../utils/GetOrderTextUtil'
 import * as fontAndColor from '../../../constant/fontAndColor';
-export  default class MyOrderInfoTitleItem extends PureComponent {
+export  default class MyOrderInfoBottomItem extends PureComponent {
 
     constructor(props) {
         super(props);
-
     }
 
     render() {
-
         return (
-            <View style={{width:width,height:Pixel.getPixel(214),backgroundColor:'#fff'}}>
-                <Image style={{flex:1}} source={GetImage.getTitle(this.props.type)}>
-                    {GetText.getTitle(this.props.type)}
-                </Image>
+            <View style={{width,height:Pixel.getPixel(66),backgroundColor:'#fff',justifyContent:'center',marginTop:Pixel.getPixel(10)}}>
+                <Text style={{fontSize:Pixel.getPixel(12),color:'#9b9b9b',marginLeft:Pixel.getPixel(20)}}>
+                    订单编号：2423435467732434
+                </Text>
+                <Text style={{fontSize:Pixel.getPixel(12),color:'#9b9b9b',marginLeft:Pixel.getPixel(20),marginTop:Pixel.getPixel(10)}}>
+                    创建日期：2018/01/29 12:01:00
+                </Text>
             </View>
         );
     }

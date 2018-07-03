@@ -16,23 +16,22 @@ import {
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import  GetImage from '../../../utils/GetOrderImageUtil'
-import  GetText from '../../../utils/GetOrderTextUtil'
 import * as fontAndColor from '../../../constant/fontAndColor';
-export  default class MyOrderInfoTitleItem extends PureComponent {
+export  default class MyOrderUploadImageItem extends PureComponent {
 
     constructor(props) {
         super(props);
-
     }
 
     render() {
-
         return (
-            <View style={{width:width,height:Pixel.getPixel(214),backgroundColor:'#fff'}}>
-                <Image style={{flex:1}} source={GetImage.getTitle(this.props.type)}>
-                    {GetText.getTitle(this.props.type)}
-                </Image>
+            <View style={{width:width,height:Pixel.getPixel(107),backgroundColor:'#fff', flexDirection:'row'}}>
+            <View style={{flex:1,justifyContent:'center'}}>
+                <Text style={{fontSize:Pixel.getPixel(14),color:'#666',marginLeft:Pixel.getPixel(15)}}>{this.props.name}</Text>
+            </View>
+                <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
+                    <Image style={{width:Pixel.getPixel(79),height:Pixel.getPixel(59),marginRight:Pixel.getPixel(15)}} source={require('../../../../images/neworder/tianjia.png')}/>
+                </View>
             </View>
         );
     }

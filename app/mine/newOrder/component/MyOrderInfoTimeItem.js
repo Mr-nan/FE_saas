@@ -16,23 +16,25 @@ import {
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import  GetImage from '../../../utils/GetOrderImageUtil'
-import  GetText from '../../../utils/GetOrderTextUtil'
 import * as fontAndColor from '../../../constant/fontAndColor';
-export  default class MyOrderInfoTitleItem extends PureComponent {
+import DepositCountDown from "./DepositCountDown";
+export  default class MyOrderInfoTimeItem extends PureComponent {
 
     constructor(props) {
         super(props);
-
     }
 
     render() {
-
         return (
-            <View style={{width:width,height:Pixel.getPixel(214),backgroundColor:'#fff'}}>
-                <Image style={{flex:1}} source={GetImage.getTitle(this.props.type)}>
-                    {GetText.getTitle(this.props.type)}
-                </Image>
+            <View style={{width:width,height:Pixel.getPixel(41),backgroundColor:'#FFF8EA',alignItems:'center',
+                flexDirection:'row'}}>
+                <Text style={{fontSize:Pixel.getPixel(13),color:'#846545',marginLeft:Pixel.getPixel(15)}}>
+                    等待支付中，剩
+                </Text>
+                <DepositCountDown leftTime={10012300}/>
+                <Text style={{fontSize:Pixel.getPixel(13),color:'#846545'}}>
+                    ，自动关闭订单
+                </Text>
             </View>
         );
     }

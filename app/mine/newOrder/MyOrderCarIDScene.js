@@ -19,23 +19,20 @@ var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
-import MyOrderInfoTitleItem from "./component/MyOrderInfoTitleItem";
-import MyOrderInfoBottomItem from "./component/MyOrderInfoBottomItem";
-import GetOrderTextUtil from "../../utils/GetOrderTextUtil";
-import MyOrderInfoTiShiItem from "./component/MyOrderInfoTiShiItem";
-import MyOrderPayItem from "./component/MyOrderPayItem";
+import {request} from '../../utils/RequestUtil';
+import MyOrderItem from "./component/MyOrderItem";
 import MyOrderListScene from "./MyOrderListScene";
-import MyOrderCarIDScene from "./MyOrderCarIDScene";
+import MyOrderCarIDItem from "./component/MyOrderCarIDItem";
+import MyOrderUploadImageItem from "./component/MyOrderUploadImageItem";
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
-export default class MyOrderInfoScene extends BaseComponent {
+export default class MyOrderCarIDScene extends BaseComponent {
     initFinish = () => {
-
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows([1,2,3,4,5,6]),
+            dataSource: ds.cloneWithRows([{name:'车架号照片',image:''},{name:'里程表照片',image:''}]),
             renderPlaceholderOnly: 'success'
         });
     }
@@ -45,8 +42,7 @@ export default class MyOrderInfoScene extends BaseComponent {
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false,
-            type:2
+            isRefreshing: false
         };
     }
 
@@ -55,64 +51,36 @@ export default class MyOrderInfoScene extends BaseComponent {
             return ( <View style={styles.container}>
 
                 {this.loadView()}
-                <NavigatorView title='订单详情' backIconClick={this.backPage}/>
+                <NavigatorView title='录入车架号' backIconClick={this.backPage}/>
             </View>);
         } else {
             return (<View style={styles.container}>
-
-                <ListView style={{backgroundColor: fontAndColor.COLORA3}}
+                <NavigatorView title='录入车架号' backIconClick={this.backPage}/>
+                <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(74)}}
                           dataSource={this.state.dataSource}
                           removeClippedSubviews={false}
                           renderRow={this._renderRow}
                           enableEmptySections={true}
-
+                          renderSeparator={this._renderSeperator}
                 />
-                <NavigatorView wrapStyle={{backgroundColor:'#00000000'}} renderRihtFootView={()=>{return <Text style={{color:'#fff',
-                    fontSize:Pixel.getPixel(15)
-                }}>取消订单</Text>}}  title='订单详情' backIconClick={this.backPage}/>
-                {GetOrderTextUtil.getPay(this.state.type)}
             </View>);
         }
     }
 
-
+    _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
+        return (
+            <View
+                key={`${sectionID}-${rowID}`}
+                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
+        )
+    }
 
 
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
-        if(rowData==1){
-            return (
-               <MyOrderInfoTitleItem type={this.state.type}/>
-            );
-        }else if(rowData==2){
-            return (
-                GetOrderTextUtil.getScend(this.state.type)
-            );
-        }else if(rowData==3){
-            return (
-                GetOrderTextUtil.getCar(this.state.type,()=>{
-                    this.toNextPage({
-                        name:'MyOrderCarIDScene',
-                        component:MyOrderCarIDScene,
-                        params:{}
-                    })
-                })
-
-            );
-        }else if(rowData==4){
-            return (
-              <MyOrderInfoBottomItem/>
-            );
-        }else if(rowData==5){
-            return(
-                <MyOrderInfoTiShiItem/>
-            );
-        }else{
-            return(
-                <View style={{width:width,height:Pixel.getPixel(45)}}></View>
-            );
-        }
-
+        return (
+          <MyOrderUploadImageItem name={rowData.name}/>
+        );
     }
 }
 

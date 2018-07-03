@@ -16,23 +16,18 @@ import {
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import  GetImage from '../../../utils/GetOrderImageUtil'
-import  GetText from '../../../utils/GetOrderTextUtil'
 import * as fontAndColor from '../../../constant/fontAndColor';
-export  default class MyOrderInfoTitleItem extends PureComponent {
+export  default class MyOrderInfoTiShiItem extends PureComponent {
 
     constructor(props) {
         super(props);
-
     }
 
     render() {
-
         return (
-            <View style={{width:width,height:Pixel.getPixel(214),backgroundColor:'#fff'}}>
-                <Image style={{flex:1}} source={GetImage.getTitle(this.props.type)}>
-                    {GetText.getTitle(this.props.type)}
-                </Image>
+            <View style={{width:width,height:Pixel.getPixel(40),alignItems:'center',flexDirection:'row'}}>
+                <Text style={{fontSize:Pixel.getPixel(11),color:'#9B9B9B',marginLeft:Pixel.getPixel(12)}}>“单车成交价”及“单车订金”提交后不可修改</Text>
+                <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14)}} source={require('../../../../images/neworder/hongtishi.png')}/>
             </View>
         );
     }
