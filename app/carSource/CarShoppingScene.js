@@ -97,6 +97,14 @@ export  default  class CarShoppingScene extends BaseComponent{
     }
 
     render(){
+         if(CarShoppingData.shoppingData.length<=0){
+             return(
+                 <View style={{flex:1, backgroundColor:fontAndColor.COLORA3,paddingTop:Pixel.getPixel(158)}}>
+                     <NullDataView click={()=>{console.log('返回首页')}}/>
+                     <NavigationView title="购物车" backIconClick={this.backPage} />
+                 </View>
+             )
+         }
         return(
             <View style={styles.rootView}>
                 {
@@ -273,6 +281,29 @@ class FootView extends Component {
              </View>
          )
      }
+}
+
+class NullDataView extends Component{
+
+    render(){
+        return(
+            <View style={{justifyContent:'center', alignItems:'center'}}>
+                    <Image source={require('../../images/carSourceImages/kongkong.png')}/>
+                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(24)}}>购物车空空如也</Text>
+                    <TouchableOpacity onPress={this.props.click}>
+                        <View style={{
+                            backgroundColor:fontAndColor.COLORB0,
+                            alignItems:'center',justifyContent:'center',
+                            borderRadius:Pixel.getPixel(2),
+                            width:Pixel.getPixel(100),
+                            height:Pixel.getPixel(33), marginTop:Pixel.getPixel(34)
+                        }}>
+                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>返回首页</Text>
+                        </View>
+                    </TouchableOpacity>
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
