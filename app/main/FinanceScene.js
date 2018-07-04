@@ -32,7 +32,7 @@ import  PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileSceneNew';
 import DDDetailScene from '../finance/lend/DDDetailScene';
 import DDApplyLendScene from '../finance/lend/DDApplyLendScene';
-var onePT = 1 / PixelRatio.get(); //一个像素
+let onePT = 1 / PixelRatio.get(); //一个像素
 
 import CGDDetailSence from '../finance/lend/CGDDetailSence';
 import SingDetaileSence from '../finance/lend/SingDetaileSenceNew';
