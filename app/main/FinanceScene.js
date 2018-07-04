@@ -1376,7 +1376,8 @@ const cellSheet = StyleSheet.create({
     rowViewStyle: {
         height: Pixel.getPixel(40),
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+
     },
     rowTopTextStyle: {
         marginLeft: Pixel.getPixel(7), fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
