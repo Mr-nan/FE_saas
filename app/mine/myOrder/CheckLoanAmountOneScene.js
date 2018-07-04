@@ -11,7 +11,8 @@ import {
     TouchableOpacity,
     Image,
     Dimensions,
-    TextInput
+    TextInput,
+    ListView
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -25,11 +26,15 @@ import ShowToast from "../../component/toast/ShowToast";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 const Pixel = new PixelUtil();
-
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 export default class CheckLoanAmountOneScene extends BaseComponent {
 
     constructor(props) {
         super(props);
+        this.selectID = -1;
+        this.state = {
+            dataSource: ds.cloneWithRows(['aaaa','bbbbb','ccccc']),
+        }
         this.number = this.props.amount === '请输入申请贷款金额' ? 0 : this.props.amount;
     }
 
@@ -39,7 +44,17 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 <NavigatorView title='确认借款额度' backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView}/>
 
                 <View style={styles.inputBar}>
-                    <View></View>
+                    <ListView
+                        removeClippedSubviews={false}
+                        style={{marginTop: 0}}
+                        dataSource={this.state.dataSource}
+                        renderRow={this._renderRow}
+                        renderSeparator={this._renderSeperator}
+                        showsVerticalScrollIndicator={false}/>
+                    <View>
+                        <Text>最大可借额度</Text>
+                        <Text></Text>
+                    </View>
                     <TextInput
                         ref='amountInput'
                         defaultValue={this.number + ''}
@@ -53,19 +68,49 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                             marginRight: Pixel.getPixel(10),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
                         }} placeholder='请输入金额'/>
-                    {/*<TouchableOpacity
-                     onPress={() => {
-                     //this.setNumber('');
-
-                     }}>
-                     <Image
-
-                     style={{marginRight: Pixel.getPixel(15)}}
-                     source={require('../../../images/login/clear.png')}/>
-                     </TouchableOpacity>*/}
                 </View>
             </View>
         )
+    }
+
+    _renderSeperator = (sectionID, rowID, adjacentRowHighlighted) => {
+        return (
+            <View
+                key={`${sectionID}-${rowID}`}
+                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(1)}}/>
+        )
+    }
+
+    _renderRow = (rowData, selectionID, rowID) => {
+        if(rowID == 0){
+            return (
+                <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(14),paddingBottom:Pixel.getPixel(14)}}>{'采车监管方式'}</Text>
+            )
+        } else {
+            return (
+                <View style={{flexDirection:'row'}}>
+                    <View>
+                        <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(14)}}>{rowData}</Text>
+                        <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(12)}}>{rowData}</Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            if(this.selectID == rowID){
+                                this.selectID = -1
+                            }else {
+                                this.selectID = rowID
+                            }
+                        }}>
+                        {
+                            this.selectID == rowID?
+                                <Image source={require('../../../images/mainImage/agreed_sign.png')}> </Image>
+                                :
+                                <Image source={require('../../../images/mainImage/un_agreed_sign.png')}> </Image>
+                        }
+                    </TouchableOpacity>
+                </View>
+            )
+        }
     }
 
     setNumber = (number) => {
