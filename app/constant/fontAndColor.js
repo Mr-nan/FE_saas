@@ -9,8 +9,10 @@ export const TITLEFONT40 = 20;
 export const NAVIGATORFONT34 = 17;
 export const BUTTONFONT30 = 15;
 export const LITTLEFONT28 = 14;
+export const LITTLEFONT26 = 13;
 export const CONTENTFONT24 = 12;
 export const MARKFONT22 = 11;
+export const MARKFONT9 = 9;
 
 export const COLORA0 = "#333333";
 export const COLORA1 = "#9e9e9e";
@@ -29,6 +31,7 @@ export const COLORB8 = "#f5deb3";
 export const COLORB9 = "#f7f7fa";
 export const COLORB10 = "#f8f8f8";
 export const COLORB11 = "#9B9B9B";
+export const COLORB12 = "#71BFEB";
 
 
 
