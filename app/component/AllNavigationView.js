@@ -50,7 +50,7 @@ export default class CarInfoNavigationView extends Component {
                 <View style={styles.content}>
                      <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
                                       onPress={backIconClick}>
-                    {backIconClick && <Image style={styles.backIcon} source={require('../../images/mainImage/navigatorBack.png')}/>}
+                    {backIconClick && <Image style={styles.backIcon}  source={ wrapStyle? require('../../images/mainImage/fan.png'):require('../../images/mainImage/navigatorBack.png')}/>}
                      </TouchableOpacity>
                     <Text allowFontScaling={false}  style={[styles.titleText,titleStyle,this.state.navigationTitleColor && {color:this.state.navigationTitleColor}]}>{title}</Text>
                     <View style={styles.imageFoot}>
