@@ -40,7 +40,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
 
     initFinish = () => {
         this.setState({
-            dataSource: ds.cloneWithRows(['aaaa','bbbbb','ccccc']),
+            dataSource: ds.cloneWithRows(['xxxx','bbbbb','ccccc']),
         });
     };
 
@@ -50,15 +50,15 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 <NavigatorView title='确认借款额度' backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView}/>
                 <ListView
                     removeClippedSubviews={false}
-                    style={{marginTop:0}}
+                    style={{marginTop:Pixel.getPixel(30),backgroundColor:'#ffffff',paddingBottom:Pixel.getPixel(0)}}
                     dataSource={this.state.dataSource}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeperator}
                     showsVerticalScrollIndicator={false}/>
                 <View style={styles.inputBar}>
-                    <View>
-                        <Text>{"最大可借额度"}</Text>
-                        <Text>{"xxxx"}</Text>
+                    <View style={{flexDirection:'row',justifyContent:'center'}}>
+                        <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(15),flex:1}}>{"最大可借额度"}</Text>
+                        <Text style={{color:'#FA5741',fontSize:Pixel.getFontPixel(15)}}>{"xxxx"}</Text>
                     </View>
                     <TextInput
                         ref='amountInput'
@@ -67,7 +67,8 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                         onChangeText={this.setNumber}
                         keyboardType='numeric'
                         clearButtonMode="always"
-                        style={{flex: 1, marginLeft: Pixel.getPixel(15), marginRight: Pixel.getPixel(10), fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+                        style={{flex: 1, marginLeft: Pixel.getPixel(15), marginRight: Pixel.getPixel(10),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),borderWidth:Pixel.getPixel(1),borderColor:'#05C5C2'
                         }} placeholder='请输入金额'/>
                 </View>
             </View>
@@ -88,8 +89,8 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
             )
         } else {
             return (
-                <View style={{flexDirection:'row'}}>
-                    <View>
+                <View style={{flexDirection:'row',paddingTop:Pixel.getPixel(15),paddingBottom:Pixel.getPixel(20),paddingLeft:Pixel.getPixel(15),alignItems:'center',paddingRight:Pixel.getPixel(15)}}>
+                    <View style={{flex:1}}>
                         <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(14)}}>{rowData}</Text>
                         <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(12)}}>{rowData}</Text>
                     </View>
@@ -205,10 +206,13 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORA3
     },
     inputBar: {
-        alignItems: 'center',
-        marginTop: Pixel.getPixel(74),
+        flex:1,
         backgroundColor: '#ffffff',
         height: Pixel.getPixel(44),
-        flexDirection: 'row'
+        flexDirection: 'column',
+        paddingLeft:Pixel.getPixel(15),
+        paddingRight:Pixel.getPixel(15),
+        marginTop:Pixel.getPixel(10),
+
     }
 });
