@@ -529,12 +529,12 @@ export default class CarInfoScene extends BaseComponent {
                                         carData.show_order !== 2 && (
                                         <View style={{flexDirection:'row'}}>
                                             <TouchableOpacity style={styles.shoppingView} onPress={() => {
-                                                this.orderClick(carData)
+                                                this.addCarOrder();
                                             }}>
                                                 <Text allowFontScaling={false}  style={styles.orderText}>加入购物车</Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity style={styles.orderView} onPress={() => {
-                                                this.orderClick(carData)
+                                                this.newCarOrder();
                                             }}>
                                                 <Text allowFontScaling={false}  style={styles.orderText}>立即订购</Text>
                                             </TouchableOpacity>
@@ -574,6 +574,62 @@ export default class CarInfoScene extends BaseComponent {
 
         this.backPage();
     };
+
+    // 添加到购物车
+
+    addCarOrder=()=>{
+        let carData =  this.state.carData
+
+        this.props.showModal(true);
+        request(AppUrls.CAR_ORDER_ADD, 'post', {
+            car_id:carData.id,
+            car_count:1,
+            v_type:carData.v_type,
+            company_id:global.companyBaseID,
+
+        }).then((response) => {
+            this.props.showModal(false);
+            this.props.showToast('已成功添加到购物车');
+
+        }, (error) => {
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
+        });
+    }
+
+    // new车辆订购
+    newCarOrder=()=>{
+
+        let carData =  this.state.carData;
+
+        if (carData.show_order == 1) {
+            this.props.showToast('该车辆已被订购');
+            return;
+        }
+
+        this.props.showModal(true);
+
+        let carsArray = [
+            {
+                car_id:carData.id,
+                car_count:1,
+            }
+        ];
+
+        request(AppUrls.CREATE_ORDER_HOME, 'post', {
+
+            cars:JSON.stringify(carsArray),
+            company_id:global.companyBaseID,
+
+        }).then((response) => {
+            this.props.showModal(false);
+            this.props.showToast('下单成功');
+
+        }, (error) => {
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
+        });
+    }
 
     // 下订单
     orderClick = (carData) => {

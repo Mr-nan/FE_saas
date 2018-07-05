@@ -243,7 +243,7 @@ export default class RootScene extends BaseComponent {
                                             that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
-                                            that.navigatorParams.component = MyOrderInfoScene;
+                                            that.navigatorParams.component = LoginGesture;
                                             that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);
@@ -254,7 +254,7 @@ export default class RootScene extends BaseComponent {
                                             that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
-                                            that.navigatorParams.component = MyOrderInfoScene;
+                                            that.navigatorParams.component = LoginGesture;
                                             that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);

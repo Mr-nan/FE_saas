@@ -10,7 +10,8 @@ import {
     Image,
     TouchableOpacity,
     ListView,
-    Dimensions
+    Dimensions,
+    InteractionManager
 } from 'react-native';
 import *as fontAndColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
@@ -22,6 +23,8 @@ import * as AppUrls         from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import BaseComponent from "../component/BaseComponent";
 import CarShoppingData from './carData/CarShoppingData';
+import  StringTransformUtil from  "../utils/StringTransformUtil";
+let stringTransform = new StringTransformUtil();
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 
@@ -60,6 +63,7 @@ export  default  class CarShoppingScene extends BaseComponent{
                       {
                           cityName:'河北省邯郸市',
                           select:false,
+                          delectSelect:false,
                           carList:[
                               {select:false,delectSelect:false,title:'车辆1',type:2,number:1,maxNumber:5,price:10},
                               {select:false,delectSelect:false,title:'车辆2',type:2,number:1,maxNumber:5,price:10},
@@ -74,6 +78,8 @@ export  default  class CarShoppingScene extends BaseComponent{
                       {
                           cityName:'北京市',
                           select:false,
+                          delectSelect:false,
+
                           carList:[
                               {select:false,delectSelect:false,title:'车辆1',type:2,number:1,maxNumber:5,price:15},
                           ]
@@ -85,22 +91,74 @@ export  default  class CarShoppingScene extends BaseComponent{
 
           this.state = {
               dataSource:dataSource,
+              renderPlaceholderOnly:'blank'
           };
+
       }
 
-    componentWillMount() {
 
-        CarShoppingData.setShoppingData(this.shoppingData);
+    initFinish=()=>{
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.loadData();
+        });
+    }
+
+    allRefresh=()=>{
+        this.initFinish();
+    }
+
+    loadData=()=>{
+
+        request(AppUrls.CAR_ORDER_LISTS, 'post', {
+
+            company_id:global.companyBaseID,
+
+        }).then((response) => {
+            console.log(response);
+            this.setData(response.mjson.data.cart);
+
+        }, (error) => {
+            this.setState({renderPlaceholderOnly: 'error'});
+
+        });
+    }
+
+    setData=(data)=>{
+
+        for (let shopData of data){
+            for (let cityData of shopData.new_cars){
+                cityData.select=false;
+                cityData.delectSelect=false;
+                for (let carData of cityData.cars){
+                    carData.select = false;
+                    carData.delectSelect = false;
+                }
+            }
+        }
+        CarShoppingData.setShoppingData(data);
         this.setState({
             dataSource:this.state.dataSource.cloneWithRows(CarShoppingData.shoppingData),
+            renderPlaceholderOnly:'success'
+
         })
+
     }
 
     render(){
+
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    {this.loadView()}
+                    <NavigationView title="购物车" backIconClick={this.backPage} />
+                </View>);
+        }
+
          if(CarShoppingData.shoppingData.length<=0){
              return(
                  <View style={{flex:1, backgroundColor:fontAndColor.COLORA3,paddingTop:Pixel.getPixel(158)}}>
-                     <NullDataView click={()=>{console.log('返回首页')}}/>
+                     <NullDataView click={()=>{this.backToTop()}}/>
                      <NavigationView title="购物车" backIconClick={this.backPage} />
                  </View>
              )
@@ -265,7 +323,7 @@ class FootView extends Component {
              <View style={styles.footView}>
                      <View style={styles.selectView}>
                          <Text style={styles.sumTitle}>合计：</Text>
-                         <Text style={[styles.selectPrice,{fontWeight:'bold'}]}>{CarShoppingData.sumPrice.get()}</Text>
+                         <Text style={[styles.selectPrice,{fontWeight:'bold'}]}>{stringTransform.carMoneyChange(CarShoppingData.sumPrice.get())}</Text>
                          <Text style={[styles.selectPrice,{fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}]}>万元</Text>
                      </View>
                  <TouchableOpacity activeOpacity={1} onPress={financialAtion}>
