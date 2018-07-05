@@ -52,9 +52,7 @@ import AddressManageListScene from '../mine/addressManage/AddressManageListScene
 import GetCarerManageListScene from '../mine/getCarerManage/GetCarerManageListScene';
 import GetPermissionUtil from '../utils/GetPermissionUtil';
 import BaseComponent from '../component/BaseComponent';
-import List from "../mine/myOrder/orderwuliu/list/List";
 import CredictManageScene from "../mine/kuaisushouxin/CredictManageScene";
-
 
 var Pixel = new PixelUtil();
 
@@ -318,13 +316,7 @@ export default class MineScene extends BaseComponent {
                 "name": name
                 , "id": id
             },);
-        } else if (id =='76') {
-            Car[2].cars.push({
-                "icon": require('../../images/mainImage/my_order.png'),
-                "name": name
-                , "id": id
-            },);
-        } else if (id == 69) {
+        }else if (id == 69) {
             Car[2].cars.push({
                 "icon": require('../../images/mine/adderss_manage.png'),
                 "name": name
