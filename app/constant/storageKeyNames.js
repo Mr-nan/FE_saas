@@ -1,5 +1,5 @@
-export const VERSON_NAME = "5.9.1"; // 版本名
-export const VERSON_CODE = "42"; // 版本号
+export const VERSON_NAME = "5.9.3"; // 版本名
+export const VERSON_CODE = "44"; // 版本号
 export const ISLOGIN = "islogin";//标识用户是否登录
 export const CAR_SEARCH = "car_search";
 export const CITY_SEARCH = "city_search";
@@ -72,3 +72,4 @@ export const HF_MINE_DID_BIND_BANKCARD = 'account_did_bind_bankcard';    //我�
 export const HF_TRANSACTION_LOG = 'transaction_log';    //账户流水时间筛选按钮蒙层01234
 export const INVOICE_TITLE = "INVOICE_TITLE";   // 发票抬头
 export const TAXPAYER_IDENTIFICATION_NUMBER = "TAXPAYER_IDENTIFICATION_NUMBER";   // 纳税人识别号
+export const LOGISTIC_ORDER_ALERT_SHOW = "LOGISTIC_ORDER_ALERT_SHOW";   //运单支付是是否显示提醒

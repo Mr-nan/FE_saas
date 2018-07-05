@@ -23,54 +23,66 @@ export default class AddressManageItem extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={styles.itemView}>
-                    <Text style={styles.itemLeftText}>{this.props.item.contact_name}</Text>
-                    <Text style={styles.itemRightText}>{this.props.item.contact_phone}</Text>
-                </View>
-                <View style={styles.itemView}>
-                    <Text style={styles.itemLeftText}>{this.props.item.full_address}</Text>
-                </View>
-                <View style={styles.itemSeparator}/>
-                <View style={styles.bottomContainer}>
-                    {
-                        this.props.item.is_default == 1
-                            ?
-                            <View style={styles.bottomLeft}>
-                                <Image source={select_img} style={styles.bottomLeftImg}/>
-                                <Text style={styles.bottomLeftText}>{'默认地址'}</Text>
-                            </View>
-                            :
-                            <TouchableOpacity
-                                activeOpacity={0.6}
-                                style={styles.bottomLeft}
-                                onPress={()=>{this.props.setDefault(this.props.item)}}
-                            >
-                                <Image source={unselect_img} style={styles.bottomLeftImg}/>
-                                <Text style={styles.bottomLeftText}>{'设为默认'}</Text>
-                            </TouchableOpacity>
-                    }
 
-                    <View style={styles.bottomRight}>
-                        <TouchableOpacity
-                            activeOpacity={0.6}
-                            style={styles.bottomRightBtn}
-                            onPress={()=>{this.props.onEdit(this.props.item)}}
-                        >
-                            <Image source={edit_img} style={styles.bottomRightImg}/>
-                            <Text style={styles.bottomRightText}>{'编辑'}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            activeOpacity={0.6}
-                            style={styles.bottomRightBtn}
-                            onPress={()=>{this.props.onDelete(this.props.item)}}
-                        >
-                            <Image source={delete_img} style={styles.bottomRightImg}/>
-                            <Text style={styles.bottomRightText}>{'删除'}</Text>
-                        </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={.8}
+                    onPress={()=>{
+                        this.props.onPress(this.props.item)
+                    }}
+                >
+                    <View style={styles.container}>
+
+                        <View style={styles.itemView}>
+                            <Text style={styles.itemLeftText}>{this.props.item.contact_name}</Text>
+                            <Text style={styles.itemRightText}>{this.props.item.contact_phone}</Text>
+                        </View>
+                        <View style={styles.itemView}>
+                            <Text style={styles.itemLeftText}>{this.props.item.full_address}</Text>
+                        </View>
+                        <View style={styles.itemSeparator}/>
+                        <View style={styles.bottomContainer}>
+                            {
+                                this.props.item.is_default == 1
+                                    ?
+                                    <View style={styles.bottomLeft}>
+                                        <Image source={select_img} style={styles.bottomLeftImg}/>
+                                        <Text style={styles.bottomLeftText}>{'默认地址'}</Text>
+                                    </View>
+                                    :
+                                    <TouchableOpacity
+                                        activeOpacity={0.6}
+                                        style={styles.bottomLeft}
+                                        onPress={()=>{this.props.setDefault(this.props.item)}}
+                                    >
+                                        <Image source={unselect_img} style={styles.bottomLeftImg}/>
+                                        <Text style={styles.bottomLeftText}>{'设为默认'}</Text>
+                                    </TouchableOpacity>
+                            }
+
+                            <View style={styles.bottomRight}>
+                                <TouchableOpacity
+                                    activeOpacity={0.6}
+                                    style={styles.bottomRightBtn}
+                                    onPress={()=>{this.props.onEdit(this.props.item)}}
+                                >
+                                    <Image source={edit_img} style={styles.bottomRightImg}/>
+                                    <Text style={styles.bottomRightText}>{'编辑'}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    activeOpacity={0.6}
+                                    style={styles.bottomRightBtn}
+                                    onPress={()=>{this.props.onDelete(this.props.item)}}
+                                >
+                                    <Image source={delete_img} style={styles.bottomRightImg}/>
+                                    <Text style={styles.bottomRightText}>{'删除'}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+
                     </View>
-                </View>
-            </View>
+                </TouchableOpacity>
+
         );
     }
 

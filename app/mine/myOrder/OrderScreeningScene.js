@@ -184,7 +184,7 @@ export default class OrderScreeningScene extends BaseComponent {
     }
 
 
-    _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
+    _renderSeperator = (sectionID, rowID, adjacentRowHighlighted) => {
         return (
             <View
                 key={`${sectionID}-${rowID}`}

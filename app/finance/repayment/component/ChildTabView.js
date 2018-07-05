@@ -30,11 +30,12 @@ export default class ChildTabView extends Component {
                 </Text>
                 {
                     this.props.subName && (
-                        <Text allowFontScaling={false}
-                                                  style={[this.props.activeTab === this.props.i ? {color: fontAndColor.COLORB0} : {color: fontAndColor.COLORB2},
-                                                      {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>
-                        {this.props.subName[this.props.i]}
-                    </Text>)
+                        <Text allowFontScaling={false} ref="ttt"
+                              style={[this.props.activeTab === this.props.i ? {color: fontAndColor.COLORB0} : {color: fontAndColor.COLORB2},
+                                  {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(5)}]}>
+                            {this.props.subName[this.props.i]}
+                        </Text>
+                    )
                 }
             </View>
             { this.props.activeTab === this.props.i ?

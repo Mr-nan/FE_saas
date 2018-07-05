@@ -50,6 +50,7 @@
 #else
     jsCodeLocation = [CodePush bundleURL];
 #endif
+  
   NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
   NSString  *idfaStr = [[ASIdentifierManager sharedManager]advertisingIdentifier].UUIDString;
   NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];

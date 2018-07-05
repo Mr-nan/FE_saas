@@ -23,6 +23,10 @@ export  default class LQInputComponent extends PureComponent {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            value:this.props.money,
+        }
     }
 
 
@@ -35,15 +39,52 @@ export  default class LQInputComponent extends PureComponent {
                     <Text style={{fontSize: Pixel.getPixel(12),color:'#222222'}}>可修改</Text>
                     <Text style={{fontSize: Pixel.getPixel(15),color:'#222222'}}>)</Text>
                 </View>
-                <View style={{flex:1,justifyContent: 'flex-end',alignItems: 'center',flexDirection: 'row'}}>
+                <View style={{alignItems: 'center',flexDirection: 'row'}}>
                     <TextInput
                         keyboardType={'numeric'}
                         style={styles.textInput}
                         maxLength={15}
                         defaultValue={this.props.money}
+                        value={this.state.value}
                         underlineColorAndroid='transparent'
                         ref={(input) => {this.instructionsInput = input}}
-                        onChangeText={(text)=>{this.props.inputMoney(text)}}
+                        onChangeText={(text)=>{
+
+                            let re = /^[0-9]*[\.]?[0-9]{0,2}$/
+                            let flag  = re.test(text);
+
+                            console.log(flag);
+
+                            if(flag){
+
+                                if(text === '.'){
+                                    text = '0.'
+                                }
+
+                                if(text === '00'){
+                                    text = '0'
+                                }
+
+                                this.setState({
+                                    value:text,
+                                }, ()=>{
+                                    this.props.inputMoney(text)
+                                })
+                            }else {
+                                this.setState({
+                                    value:this.state.value,
+                                })
+                            }
+
+                        }}
+                        onSubmitEditing={()=>{
+                            this.trim();
+
+                        }}
+                        onBlur={()=>{
+                           this.trim();
+                        }}
+
                     />
                     <Text style={{fontSize: Pixel.getPixel(12),color:'#90A1B5'}}>万元</Text>
                 </View>
@@ -52,19 +93,27 @@ export  default class LQInputComponent extends PureComponent {
     }
 
 
+    trim = ()=>{
+        if(this.state.value.substr(this.state.value.length-1,1) === '.'){
+            this.state.value = this.state.value.substr(0,this.state.value.length-1)
+            this.setState({
+                value:this.state.value
+            }, ()=>{
+                this.props.inputMoney(this.state.value)
+            })
+        }
+    }
+
 }
 
 const styles = StyleSheet.create({
     textInput: {
-        flex: 1,
+        width:Pixel.getPixel(60),
         borderColor: '#00000000',
         textAlign: 'right',
         fontSize: Pixel.getFontPixel(14),
-        paddingTop: 0,
-        paddingBottom: 0,
-        paddingLeft: 0,
-        paddingRight: 0,
-        backgroundColor: 'white',
+        padding:0,
+        backgroundColor:'white',
         color: '#90A1B5',
     },
 });

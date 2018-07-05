@@ -32,9 +32,18 @@ export default class AddressManageListScene extends BaseComponent {
     };
 
     getData = () => {
+
         let maps = {
             company_id:global.companyBaseID,
         };
+        if(!this.isNull(this.props.item)){
+            if(!this.isNull(this.props.item.district_code)){
+                maps.screen_code = this.props.item.district_code
+            }else if(!this.isNull(this.props.item.city_code) )  {
+                maps.screen_code = this.props.item.city_code
+            }
+        }
+
         request(Urls.GET_FLOWSOTHER_LIST, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
@@ -77,7 +86,10 @@ export default class AddressManageListScene extends BaseComponent {
         this.toNextPage({
             component:AddressManageEditScene,
             name:'AddressManageEditScene',
-            params:{item:{},refreshData:this.refreshingData}
+            params:{
+                screenItem:this.props.item,
+                item:{},
+                refreshData:this.refreshingData}
         });
     };
 
@@ -119,6 +131,13 @@ export default class AddressManageListScene extends BaseComponent {
             params:{item:item,isEdit:true,refreshData:this.refreshingData}
         });
     };
+
+    onPress = (item) =>{
+        if(typeof this.props.callBack !== 'undefined'){
+            this.backPage();
+            this.props.callBack(item)
+        }
+    }
 
     _setDefault = (item)=>{
         let maps = {
@@ -188,8 +207,11 @@ export default class AddressManageListScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData) => {
         return (
-            <AddressManageItem item={rowData} onEdit={this._onEdit}
-                                onDelete={this._onDelete} setDefault={this._setDefault}/>
+            <AddressManageItem
+                item={rowData}
+                onEdit={this._onEdit}
+                onPress={this.onPress}
+                onDelete={this._onDelete} setDefault={this._setDefault}/>
         );
     }
 }

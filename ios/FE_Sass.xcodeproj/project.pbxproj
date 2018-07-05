@@ -361,14 +361,14 @@
 			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
 			remoteInfo = RNImagePicker;
 		};
-		EA3DE356207A210C00FAF49A /* PBXContainerItemProxy */ = {
+		EA444C9A2074CF39008D6C09 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A08B9B7AF08C41A082FB247D /* RCTWeChat.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 10D6D7A41F160C250066F0F3;
 			remoteInfo = RCTWeChatTests;
 		};
-		EA3DE363207A210C00FAF49A /* PBXContainerItemProxy */ = {
+		EA444CA72074CF39008D6C09 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */;
 			proxyType = 2;
@@ -811,7 +811,7 @@
 			isa = PBXGroup;
 			children = (
 				7D769F0F1E6572180039526C /* libRNSpinkit.a */,
-				EA3DE364207A210C00FAF49A /* libRNSpinkit.a */,
+				EA444CA82074CF39008D6C09 /* libRNSpinkit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1034,7 +1034,7 @@
 			isa = PBXGroup;
 			children = (
 				E3B816F81E613DD400279287 /* libRCTWeChat.a */,
-				EA3DE357207A210C00FAF49A /* RCTWeChatTests.xctest */,
+				EA444C9B2074CF39008D6C09 /* RCTWeChatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1482,18 +1482,18 @@
 			remoteRef = E3B817021E613DD400279287 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		EA3DE357207A210C00FAF49A /* RCTWeChatTests.xctest */ = {
+		EA444C9B2074CF39008D6C09 /* RCTWeChatTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = RCTWeChatTests.xctest;
-			remoteRef = EA3DE356207A210C00FAF49A /* PBXContainerItemProxy */;
+			remoteRef = EA444C9A2074CF39008D6C09 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		EA3DE364207A210C00FAF49A /* libRNSpinkit.a */ = {
+		EA444CA82074CF39008D6C09 /* libRNSpinkit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNSpinkit.a;
-			remoteRef = EA3DE363207A210C00FAF49A /* PBXContainerItemProxy */;
+			remoteRef = EA444CA72074CF39008D6C09 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		EE822B071F5D57D000E4249A /* libRCTCameraRoll.a */ = {

@@ -123,6 +123,20 @@ export default class BaseComponent extends Component {
         }
     }
 
+    backToRoute =(routeName)=>{
+        if(this.isEmpty(routeName)){
+            return;
+        }
+        const navi = this.props.navigator;
+        let route = navi.getCurrentRoutes();
+        for(let i = 0; i<route.length; i++){
+            if (route[i].name === routeName){
+                navi.popToRoute(route[i])
+                break;
+            }
+        }
+    }
+
 
     showConsole = (content) => {
         Console.showConsole(content);
