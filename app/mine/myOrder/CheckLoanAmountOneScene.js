@@ -38,22 +38,27 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
         this.number = this.props.amount === '请输入申请贷款金额' ? 0 : this.props.amount;
     }
 
+    initFinish = () => {
+        this.setState({
+            dataSource: ds.cloneWithRows(['aaaa','bbbbb','ccccc']),
+        });
+    };
+
     render() {
         return (
             <View style={styles.container}>
                 <NavigatorView title='确认借款额度' backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView}/>
-
+                <ListView
+                    removeClippedSubviews={false}
+                    style={{marginTop: 100,flex:1}}
+                    dataSource={this.state.dataSource}
+                    renderRow={this._renderRow}
+                    renderSeparator={this._renderSeperator}
+                    showsVerticalScrollIndicator={false}/>
                 <View style={styles.inputBar}>
-                    <ListView
-                        removeClippedSubviews={false}
-                        style={{marginTop: 0}}
-                        dataSource={this.state.dataSource}
-                        renderRow={this._renderRow}
-                        renderSeparator={this._renderSeperator}
-                        showsVerticalScrollIndicator={false}/>
                     <View>
-                        <Text>最大可借额度</Text>
-                        <Text></Text>
+                        <Text>{"最大可借额度"}</Text>
+                        <Text>{"xxxx"}</Text>
                     </View>
                     <TextInput
                         ref='amountInput'
@@ -62,11 +67,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                         onChangeText={this.setNumber}
                         keyboardType='numeric'
                         clearButtonMode="always"
-                        style={{
-                            flex: 1,
-                            marginLeft: Pixel.getPixel(15),
-                            marginRight: Pixel.getPixel(10),
-                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+                        style={{flex: 1, marginLeft: Pixel.getPixel(15), marginRight: Pixel.getPixel(10), fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
                         }} placeholder='请输入金额'/>
                 </View>
             </View>
@@ -75,8 +76,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
 
     _renderSeperator = (sectionID, rowID, adjacentRowHighlighted) => {
         return (
-            <View
-                key={`${sectionID}-${rowID}`}
+            <View key={`${sectionID}-${rowID}`}
                 style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(1)}}/>
         )
     }
@@ -84,7 +84,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         if(rowID == 0){
             return (
-                <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(14),paddingBottom:Pixel.getPixel(14)}}>{'采车监管方式'}</Text>
+                <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(14), paddingBottom:Pixel.getPixel(14)}}>{'采车监管方式'}</Text>
             )
         } else {
             return (
@@ -103,9 +103,8 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                         }}>
                         {
                             this.selectID == rowID?
-                                <Image source={require('../../../images/mainImage/agreed_sign.png')}> </Image>
-                                :
-                                <Image source={require('../../../images/mainImage/un_agreed_sign.png')}> </Image>
+                                <Image source={require('../../../images/mainImage/agreed_sign.png')}/> :
+                                <Image source={require('../../../images/mainImage/un_agreed_sign.png')}/>
                         }
                     </TouchableOpacity>
                 </View>
