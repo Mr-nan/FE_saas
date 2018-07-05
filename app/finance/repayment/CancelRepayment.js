@@ -43,6 +43,8 @@ export  default class CancelRepayment extends BaseComponent {
         // 初始状态
         let mList = ['1', '2', '3', '4', '5', '6','7'];
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.loan_number='';
+        this.payment_number='';
         let date = new Date();
         let seperator1 = "/";
         let month = date.getMonth() + 1;
@@ -84,22 +86,22 @@ export  default class CancelRepayment extends BaseComponent {
     getData = () => {
         let maps;
         if(this.props.from === 'ChedidaiRepaymentPage'){
-             maps = {
+            maps = {
                 api: Urls.CARLOAN_LOAN_INFO,
                 loan_id: this.props.loan_id,
                 type: '2',
                 loan_number: this.props.loan_number,
                 loan_code:this.props.payment_number,
-                 page_type:'2'
+                page_type:'2'
             };
         }else{
-             maps = {
+            maps = {
                 api: Urls.PREPAYMENT_REPAYMENT_DETAIL,
                 loan_id: this.props.loan_id,
                 type: '2',
                 loan_number: this.props.loan_number,
                 loan_code:this.props.payment_number,
-                 page_type:'2'
+                page_type:'2'
             };
         }
 
@@ -119,8 +121,8 @@ export  default class CancelRepayment extends BaseComponent {
                     nameList.push({name: '开户行', data: bankInfo.bank});
                     nameList.push({name: '开户支行', data: bankInfo.branch});
                     nameList.push({name: '还款账号', data: bankInfo.repaymentnumber});
-
-
+                    this.loan_number=movies.loan_number;
+                    this.payment_number=movies.payment_number;
                     adjustLsit.push({name: '使用优惠券数量', data: movies.coupon_number});
                     adjustLsit.push({name: '使用优惠券金额', data: movies.coupon_usable});
                     adjustLsit.push({name: '优惠券还息金额', data: movies.coupon_repayment});
@@ -152,8 +154,8 @@ export  default class CancelRepayment extends BaseComponent {
             api: Urls.PREPAYMENT_CANCEL_REPAYMENT,
             /*loan_id: this.props.loan_id,
             type: '2',*/
-            loan_number: this.props.loan_number,
-            payment_number:this.props.payment_number,
+            loan_number: this.loan_number,
+            payment_number:this.payment_number,
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
@@ -174,7 +176,7 @@ export  default class CancelRepayment extends BaseComponent {
                     () => {
                         this.backPage();
                         this.props.refreshListPage();
-                },
+                    },
                     500
                 );
 
@@ -238,37 +240,37 @@ export  default class CancelRepayment extends BaseComponent {
         } else if (rowId == 1) {
             return (
                 <RepaymentInfoDateItem loanday={movies.days} time={movies.repayment_time}
-                                      /* status={movies.test_coupon_info.paymen_status}*/
+                    /* status={movies.test_coupon_info.paymen_status}*/
                                        callBack={(time)=>{
-                    let selecttime = time/1000;
-                    let lasttime = parseFloat(Date.parse(movies.list[0].dead_line)/1000);
-                    let firsttime = parseFloat(movies.loan_time);
-                    if(selecttime>=lasttime){
-                        selecttime = lasttime-(60*60*24)
-                    }else{
-                        if(selecttime-firsttime<(10*60*60*24)){
-                            selecttime = firsttime+(10*60*60*24);
-                        }
-                    }
-                    let date = new Date(selecttime*1000);
-                    let seperator1 = "/";
-                    let month = date.getMonth() + 1;
-                    let strDate = date.getDate();
-                    if (month >= 1 && month <= 9) {
-                        month = "0" + month;
-                    }
-                    if (strDate >= 0 && strDate <= 9) {
-                        strDate = "0" + strDate;
-                    }
-                    let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
-                    let newList = ['1', '2', '3', '4', '5', '6','7'];
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        source: ds.cloneWithRows(newList),
-                        loan_day:Math.ceil((selecttime-parseFloat(movies.loan_time))/60/60/24),
-                        loan_dayStr:currentdate
-                    });
-                }}/>
+                                           let selecttime = time/1000;
+                                           let lasttime = parseFloat(Date.parse(movies.list[0].dead_line)/1000);
+                                           let firsttime = parseFloat(movies.loan_time);
+                                           if(selecttime>=lasttime){
+                                               selecttime = lasttime-(60*60*24)
+                                           }else{
+                                               if(selecttime-firsttime<(10*60*60*24)){
+                                                   selecttime = firsttime+(10*60*60*24);
+                                               }
+                                           }
+                                           let date = new Date(selecttime*1000);
+                                           let seperator1 = "/";
+                                           let month = date.getMonth() + 1;
+                                           let strDate = date.getDate();
+                                           if (month >= 1 && month <= 9) {
+                                               month = "0" + month;
+                                           }
+                                           if (strDate >= 0 && strDate <= 9) {
+                                               strDate = "0" + strDate;
+                                           }
+                                           let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+                                           let newList = ['1', '2', '3', '4', '5', '6','7'];
+                                           let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                                           this.setState({
+                                               source: ds.cloneWithRows(newList),
+                                               loan_day:Math.ceil((selecttime-parseFloat(movies.loan_time))/60/60/24),
+                                               loan_dayStr:currentdate
+                                           });
+                                       }}/>
             )
         } else if (rowId == 2) {
             return (
