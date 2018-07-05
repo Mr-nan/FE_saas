@@ -50,7 +50,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 <NavigatorView title='确认借款额度' backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView}/>
                 <ListView
                     removeClippedSubviews={false}
-                    style={{marginTop: 100,flex:1}}
+                    style={{marginTop:0}}
                     dataSource={this.state.dataSource}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeperator}
