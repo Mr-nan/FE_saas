@@ -22,11 +22,13 @@ import NavigatorView from '../../component/AllNavigationView';
 import {request} from '../../utils/RequestUtil';
 import MyOrderItem from "./component/MyOrderItem";
 import MyOrderListScene from "./MyOrderListScene";
+import MyOrderCarIDItem from "./component/MyOrderCarIDItem";
+import MyOrderCarIDScene from "./MyOrderCarIDScene";
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
-export default class MyOrderScene extends BaseComponent {
+export default class MyOrderChangeDataScene extends BaseComponent {
     initFinish = () => {
 
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -50,11 +52,11 @@ export default class MyOrderScene extends BaseComponent {
             return ( <View style={styles.container}>
 
                 {this.loadView()}
-                <NavigatorView title='录入车架号' backIconClick={this.backPage}/>
+                <NavigatorView title='车架号列表' backIconClick={this.backPage}/>
             </View>);
         } else {
             return (<View style={styles.container}>
-                <NavigatorView title='录入车架号' backIconClick={this.backPage}/>
+                <NavigatorView title='车架号列表' backIconClick={this.backPage}/>
                 <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(74)}}
                           dataSource={this.state.dataSource}
                           removeClippedSubviews={false}
@@ -78,12 +80,12 @@ export default class MyOrderScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
         return (
-          <MyOrderItem data={rowData} callBack={(index)=>{
-                this.toNextPage({
-                    name:'MyOrderListScene',
-                    component:MyOrderListScene,
-                    params:{title:rowData.name}
-                })
+          <MyOrderCarIDItem callBack={()=>{
+              this.toNextPage({
+                  name:'MyOrderCarIDScene',
+                  component:MyOrderCarIDScene,
+                  params:{}
+              })
           }}/>
         );
     }

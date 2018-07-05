@@ -13,7 +13,7 @@ import {
     ListView
 } from 'react-native';
 //图片加文字
-const {width, height} = Dimensions.get('window');
+let {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
@@ -25,10 +25,16 @@ export  default class MyOrderListCarItem extends PureComponent {
     }
 
     render() {
+        let widths = width;
+        let bottomWidths = width;
+        if(!this.isNull(this.props.parentWidth)){
+            widths = this.props.parentWidth;
+            bottomWidths = widths - Pixel.getPixel(20)
+        }
 
         return (
-            <View style={{width:width,backgroundColor:'#fff'}}>
-                <View style={{marginTop:Pixel.getPixel(17),width:width,height:Pixel.getPixel(84), flexDirection:'row'}}>
+            <View style={{width:widths,backgroundColor:'#fff',alignItems:'center'}}>
+                <View style={{marginTop:Pixel.getPixel(17),width:widths,height:Pixel.getPixel(84), flexDirection:'row'}}>
                     <Image style={{width:Pixel.getPixel(120),height:Pixel.getPixel(84),marginLeft:Pixel.getPixel(15),
                         resizeMode:'stretch'}}
                            source={require('../../../../images/carSourceImages/car_null_img.png')}/>
@@ -61,9 +67,43 @@ export  default class MyOrderListCarItem extends PureComponent {
                         </View>
                     </View>
                 </View>
-                <View style={{width:width,height:1,backgroundColor:'#d8d8d8',marginTop:Pixel.getPixel(20)}}></View>
+                <View style={{width:bottomWidths,height:1,backgroundColor:'#d8d8d8',marginTop:Pixel.getPixel(20)}}></View>
             </View>
         );
+    }
+
+    /**
+     * 非空判断
+     * @param content  任意类型值
+     */
+    isNull = (content) => {
+        try {
+            if (content == undefined) {
+                return true;
+            }
+            if (content == null) {
+                return true;
+            }
+            if (content instanceof Array) {
+                if (content.length <= 0) {
+                    return true;
+                }
+            }
+            if (content instanceof Object) {
+                if (JSON.stringify(content) == '{}') {
+                    return true;
+                }
+            }
+            if (content == 'null') {
+                return true;
+            }
+            if ((content+'').trim() == '') {
+                return true;
+            }
+            return false;
+        } catch (e) {
+            return true;
+        }
     }
 
 }

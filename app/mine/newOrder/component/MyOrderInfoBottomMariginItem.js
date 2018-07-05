@@ -17,7 +17,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
-export  default class MyOrderUploadImageItem extends PureComponent {
+export  default class MyOrderInfoBottomMariginItem extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -25,14 +25,14 @@ export  default class MyOrderUploadImageItem extends PureComponent {
 
     render() {
         return (
-            <View style={{width:width,height:Pixel.getPixel(107),backgroundColor:'#fff', flexDirection:'row',
-            marginTop:Pixel.getPixel(10)}}>
-            <View style={{flex:1,justifyContent:'center'}}>
-                <Text style={{fontSize:Pixel.getPixel(14),color:'#666',marginLeft:Pixel.getPixel(15)}}>{this.props.name}</Text>
-            </View>
-                <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                    <Image style={{width:Pixel.getPixel(79),height:Pixel.getPixel(59),marginRight:Pixel.getPixel(15)}} source={require('../../../../images/neworder/tianjia.png')}/>
-                </View>
+            <View style={{width:width-Pixel.getPixel(20),height:Pixel.getPixel(66),backgroundColor:'#fff',justifyContent:'center',
+                marginTop:Pixel.getPixel(10),marginLeft:Pixel.getPixel(10),borderRadius:5}}>
+                <Text style={{fontSize:Pixel.getPixel(12),color:'#9b9b9b',marginLeft:Pixel.getPixel(20)}}>
+                    订单编号：2423435467732434
+                </Text>
+                <Text style={{fontSize:Pixel.getPixel(12),color:'#9b9b9b',marginLeft:Pixel.getPixel(20),marginTop:Pixel.getPixel(10)}}>
+                    创建日期：2018/01/29 12:01:00
+                </Text>
             </View>
         );
     }

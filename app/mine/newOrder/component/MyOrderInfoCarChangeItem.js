@@ -31,7 +31,7 @@ export  default class MyOrderInfoCarChangeItem extends PureComponent {
 
         if(this.state.isChange){
             return (
-                <View style={{width:width,backgroundColor:'#fff'}}>
+                <View style={{width:width,backgroundColor:'#fff',borderRadius:5}}>
                     <View style={{width:width, flexDirection:'row',height:Pixel.getPixel(112)}}>
                         <Image style={{marginTop:Pixel.getPixel(17),width:Pixel.getPixel(120),height:Pixel.getPixel(84),marginLeft:Pixel.getPixel(15),
                             resizeMode:'stretch'}}
@@ -115,7 +115,7 @@ export  default class MyOrderInfoCarChangeItem extends PureComponent {
             );
         }else{
             return (
-                <View style={{width:width,backgroundColor:'#fff'}}>
+                <View style={{width:width,backgroundColor:'#fff',borderRadius:5}}>
                     <View style={{marginTop:Pixel.getPixel(17),width:width, flexDirection:'row'}}>
                         <Image style={{width:Pixel.getPixel(120),height:Pixel.getPixel(84),marginLeft:Pixel.getPixel(15),
                             resizeMode:'stretch'}}

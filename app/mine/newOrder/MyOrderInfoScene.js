@@ -26,6 +26,7 @@ import MyOrderInfoTiShiItem from "./component/MyOrderInfoTiShiItem";
 import MyOrderPayItem from "./component/MyOrderPayItem";
 import MyOrderListScene from "./MyOrderListScene";
 import MyOrderCarIDScene from "./MyOrderCarIDScene";
+import MyOrderChangeDataScene from "./MyOrderChangeDataScene";
 /*
  * 获取屏幕的宽和高
  **/
@@ -35,7 +36,7 @@ export default class MyOrderInfoScene extends BaseComponent {
 
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows([1,2,3,4,5,6]),
+            dataSource: ds.cloneWithRows([1,2,3,4,6]),
             renderPlaceholderOnly: 'success'
         });
     }
@@ -46,7 +47,7 @@ export default class MyOrderInfoScene extends BaseComponent {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
-            type:2
+            type:3
         };
     }
 
@@ -92,8 +93,8 @@ export default class MyOrderInfoScene extends BaseComponent {
             return (
                 GetOrderTextUtil.getCar(this.state.type,()=>{
                     this.toNextPage({
-                        name:'MyOrderCarIDScene',
-                        component:MyOrderCarIDScene,
+                        name:'MyOrderChangeDataScene',
+                        component:MyOrderChangeDataScene,
                         params:{}
                     })
                 })
@@ -101,7 +102,7 @@ export default class MyOrderInfoScene extends BaseComponent {
             );
         }else if(rowData==4){
             return (
-              <MyOrderInfoBottomItem/>
+                GetOrderTextUtil.getBottom(this.state.type)
             );
         }else if(rowData==5){
             return(
@@ -109,7 +110,7 @@ export default class MyOrderInfoScene extends BaseComponent {
             );
         }else{
             return(
-                <View style={{width:width,height:Pixel.getPixel(45)}}></View>
+                <View style={{width:width,height:Pixel.getPixel(55)}}></View>
             );
         }
 

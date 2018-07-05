@@ -11,6 +11,8 @@ export default class GetOrderImageUtil {
          return require('../../images/neworder/daizhifu.png')
       }else if(type==2){
           return require('../../images/neworder/qingqueding.png')
+      }else if(type==3){
+          return require('../../images/neworder/dingjinchenggong.png')
       }
 
     }

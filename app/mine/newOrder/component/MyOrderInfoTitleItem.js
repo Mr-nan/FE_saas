@@ -27,12 +27,18 @@ export  default class MyOrderInfoTitleItem extends PureComponent {
     }
 
     render() {
-
+        let height = 214;
+        let imageHeight = 214;
+        if (this.props.type==3){
+            height = 249;
+            imageHeight = 226;
+        }
         return (
-            <View style={{width:width,height:Pixel.getPixel(214),backgroundColor:'#fff'}}>
-                <Image style={{flex:1}} source={GetImage.getTitle(this.props.type)}>
+            <View style={{width:width,height:Pixel.getPixel(height)}}>
+                <Image style={{width:width,height:Pixel.getPixel(imageHeight)}} source={GetImage.getTitle(this.props.type)}>
                     {GetText.getTitle(this.props.type)}
                 </Image>
+                {GetText.getTitleBottom(this.props.type)}
             </View>
         );
     }

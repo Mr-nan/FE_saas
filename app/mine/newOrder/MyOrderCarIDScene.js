@@ -24,6 +24,9 @@ import MyOrderItem from "./component/MyOrderItem";
 import MyOrderListScene from "./MyOrderListScene";
 import MyOrderCarIDItem from "./component/MyOrderCarIDItem";
 import MyOrderUploadImageItem from "./component/MyOrderUploadImageItem";
+import MyOrderInputItem from "./component/MyOrderInputItem";
+import MyOrderSelectItem from "./component/MyOrderSelectItem";
+import MyOrderDHKItem from "./component/MyOrderDHKItem";
 /*
  * 获取屏幕的宽和高
  **/
@@ -32,7 +35,8 @@ export default class MyOrderCarIDScene extends BaseComponent {
     initFinish = () => {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows([{name:'车架号照片',image:''},{name:'里程表照片',image:''}]),
+            dataSource: ds.cloneWithRows([{name:'车架号',image:''},{name:'出厂日期',image:''},{name:'车架号照片',image:''},{name:'里程表照片',image:''},
+                {name:'待还款金额',image:''},{name:'保存',image:''}]),
             renderPlaceholderOnly: 'success'
         });
     }
@@ -61,26 +65,41 @@ export default class MyOrderCarIDScene extends BaseComponent {
                           removeClippedSubviews={false}
                           renderRow={this._renderRow}
                           enableEmptySections={true}
-                          renderSeparator={this._renderSeperator}
                 />
             </View>);
         }
     }
 
-    _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
-        return (
-            <View
-                key={`${sectionID}-${rowID}`}
-                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
-        )
-    }
-
 
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
-        return (
-          <MyOrderUploadImageItem name={rowData.name}/>
-        );
+        if(rowData.name=="车架号"){
+            return(<MyOrderInputItem name={rowData.name} callBack={()=>{
+
+            }}/>);
+        }else if(rowData.name=="出厂日期"){
+            return(<MyOrderSelectItem name={rowData.name} callBack={()=>{
+
+            }} values={rowData.image}/>);
+        }else if(rowData.name=="待还款金额"){
+            return(<MyOrderDHKItem/>);
+        }else if(rowData.name=="保存"){
+            return(
+                <View style={{width:width,height:Pixel.getPixel(45),alignItems:'center',marginTop:Pixel.getPixel(21)}}>
+                    <TouchableOpacity style={{width:Pixel.getPixel(346),height:Pixel.getPixel(45),alignItems:'center',
+                        backgroundColor:'#05C5C2',justifyContent:'center'}}>
+                        <Text style={{fontSize:Pixel.getPixel(15),color:'#fff'}}>
+                           保存
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        }else{
+            return (
+                <MyOrderUploadImageItem name={rowData.name}/>
+            );
+        }
+
     }
 }
 

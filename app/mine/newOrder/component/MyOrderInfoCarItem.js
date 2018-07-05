@@ -45,7 +45,7 @@ export  default class MyOrderInfoCarItem extends PureComponent {
         }
 
         return (
-            <View style={{width:width,backgroundColor:'#fff',marginTop:Pixel.getPixel(10)}}>
+            <View style={{width:width,backgroundColor:'#fff',marginTop:Pixel.getPixel(10),borderRadius:5}}>
                 <View style={{width:width,height:Pixel.getPixel(40), flexDirection:'row'}}>
                     <View style={{flex:1,justifyContent:'center'}}>
                         <Text style={{fontSize:Pixel.getPixel(14),color:'#666666',marginLeft:Pixel.getPixel(16)}}>
