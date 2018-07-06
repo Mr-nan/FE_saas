@@ -338,7 +338,7 @@ export default class CarInfoScene extends BaseComponent {
                                 <Image style={{marginRight: Pixel.getPixel(5)}}
                                        source={require('../../images/carSourceImages/carPriceIcone.png')}/>
                                 <View style={{flexDirection:'row', alignItems:'center'}}>
-                                    <Text allowFontScaling={false}  style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30), fontWeight:'bold',color:fontAndColor.COLORA1}}>{100}</Text>
+                                    <Text allowFontScaling={false}  style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30), fontWeight:'bold',color:fontAndColor.COLORA1}}>{stringTransform.carMoneyChange(carData.earnest_money)}</Text>
                                     <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT)}}>元定金</Text>
                                 </View>
                             </View>

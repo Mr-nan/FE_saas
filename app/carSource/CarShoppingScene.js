@@ -11,7 +11,8 @@ import {
     TouchableOpacity,
     ListView,
     Dimensions,
-    InteractionManager
+    InteractionManager,
+    RefreshControl,
 } from 'react-native';
 import *as fontAndColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
@@ -91,7 +92,8 @@ export  default  class CarShoppingScene extends BaseComponent{
 
           this.state = {
               dataSource:dataSource,
-              renderPlaceholderOnly:'blank'
+              renderPlaceholderOnly:'blank',
+              isRefreshing:false,
           };
 
       }
@@ -123,6 +125,10 @@ export  default  class CarShoppingScene extends BaseComponent{
 
         });
     }
+    refreshingData=()=>{
+        this.setState({isRefreshing: true});
+        this.loadData();
+    }
 
     setData=(data)=>{
 
@@ -139,7 +145,8 @@ export  default  class CarShoppingScene extends BaseComponent{
         CarShoppingData.setShoppingData(data);
         this.setState({
             dataSource:this.state.dataSource.cloneWithRows(CarShoppingData.shoppingData),
-            renderPlaceholderOnly:'success'
+            renderPlaceholderOnly:'success',
+            isRefreshing:false,
 
         })
 
@@ -177,6 +184,14 @@ export  default  class CarShoppingScene extends BaseComponent{
                           renderRow={this.renderRow}
                           renderSeparator={this.renderSeparator}
                           enableEmptySections={true}
+                          refreshControl={
+                              <RefreshControl
+                                  refreshing={this.state.isRefreshing}
+                                  onRefresh={this.refreshingData}
+                                  tintColor={[fontAndColor.COLORB0]}
+                                  colors={[fontAndColor.COLORB0]}
+                              />
+                          }
                           />
                 {
                     !CarShoppingData.isEdit &&  (

@@ -44,7 +44,7 @@ export default class CarShoppingCell extends Component{
                                                   }}>
                                     <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18),marginRight:Pixel.getPixel(10)}}
                                            source={CarShoppingData.isEdit?(cityData.delectSelect? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')):(cityData.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')) }/>
-                                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{ `${cityData.provice_name}·${cityData.city_name}`}</Text>
+                                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{ cityData.provice_name + (cityData.provice_name === cityData.city_name ? " " : ("  " + cityData.city_name))}</Text>
                                 </TouchableOpacity>
                                 {
                                     cityData.cars.map((carData,subIndex)=>{
@@ -196,18 +196,17 @@ class CarCell extends Component{
                                                 fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                             }}>万元</Text>
                                         </View>
+
                                             <Text style={{
                                                 color:fontAndColor.COLORB2,
                                                 fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
                                             }}></Text>
                                     </View>
                                 </View>
-                                <CarNumberEditView editClick={(type)=>{this.props.editeNumberClick(type)}} number={data.car_count} maxNumber={data.stock}/>
                                 {
-                                    data.stock - data.reserve_num == 0 && (
-                                        <Image style={{width:Pixel.getPixel(60),height:Pixel.getPixel(70),right:0,bottom:Pixel.getPixel(10), position: 'absolute',}}
-                                               source={require('../../../images/carSourceImages/yishouxing.png')}/>
-                                    )
+                                    (data.stock - data.reserve_num == 0)?
+                                        (<Image style={{width:Pixel.getPixel(60),height:Pixel.getPixel(70),right:0,bottom:Pixel.getPixel(10), position: 'absolute',}}
+                                    source={require('../../../images/carSourceImages/yishouxing.png')}/>) :( <CarNumberEditView editClick={(type)=>{this.props.editeNumberClick(type)}} number={data.car_count} maxNumber={data.stock}/>)
                                 }
 
                             </View>
