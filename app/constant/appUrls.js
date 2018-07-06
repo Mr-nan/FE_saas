@@ -192,6 +192,15 @@ export const CAR_ORDER_ADD = BASEURL + 'v3/order.card/add';
  */
 export const CAR_ORDER_LISTS = BASEURL + 'v3/order.card/lists';
 
+/**
+ * 删除购物车
+ */
+export const CAR_ORDER_DELETE = BASEURL + 'v3/order.card/delete';
+
+/**
+ * 购物车设置车辆数量
+ */
+export const CAR_ORDER_SET_COUNT = BASEURL + 'v3/order.card/setCount';
 
 
 /**

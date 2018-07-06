@@ -25,6 +25,8 @@ import  {request}           from '../utils/RequestUtil';
 import BaseComponent from "../component/BaseComponent";
 import CarShoppingData from './carData/CarShoppingData';
 import  StringTransformUtil from  "../utils/StringTransformUtil";
+import CarNewInfoScene from "./CarNewInfoScene";
+import CarUserInfoScene from "./CarInfoScene";
 let stringTransform = new StringTransformUtil();
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
@@ -37,59 +39,6 @@ export  default  class CarShoppingScene extends BaseComponent{
           super(props);
 
           const dataSource = new  ListView.DataSource({rowHasChanged:(r1,r2)=>r1!=r2,});
-          this.shoppingData = [
-              {
-                  shopTitle:'商户1',
-                  list:[
-                      {
-                          cityName:'广西壮族自治区南宁市',
-                          select:false,
-                          delectSelect:false,
-                          carList:[
-                              {select:false,delectSelect:false,title:'车辆1',type:1,number:1,maxNumber:5,price:10}]
-                      },
-                      {
-                          cityName:'广西壮族自治区北海市',
-                          select:false,
-                          carList:[
-                              {select:false,delectSelect:false,title:'车辆1',type:1,number:1,maxNumber:5,price:10},
-                              {select:false,delectSelect:false,title:'车辆2',type:1,number:1,maxNumber:5,price:10},
-                          ]
-                      }
-                  ]
-              },
-              {
-                  shopTitle:'商户2',
-                  list:[
-                      {
-                          cityName:'河北省邯郸市',
-                          select:false,
-                          delectSelect:false,
-                          carList:[
-                              {select:false,delectSelect:false,title:'车辆1',type:2,number:1,maxNumber:5,price:10},
-                              {select:false,delectSelect:false,title:'车辆2',type:2,number:1,maxNumber:5,price:10},
-
-                          ]
-                      },
-                  ]
-              },
-              {
-                  shopTitle:'商户3',
-                  list:[
-                      {
-                          cityName:'北京市',
-                          select:false,
-                          delectSelect:false,
-
-                          carList:[
-                              {select:false,delectSelect:false,title:'车辆1',type:2,number:1,maxNumber:5,price:15},
-                          ]
-                      },
-                  ]
-              },
-
-          ];
-
           this.state = {
               dataSource:dataSource,
               renderPlaceholderOnly:'blank',
@@ -105,6 +54,8 @@ export  default  class CarShoppingScene extends BaseComponent{
             this.loadData();
         });
     }
+
+
 
     allRefresh=()=>{
         this.initFinish();
@@ -132,16 +83,40 @@ export  default  class CarShoppingScene extends BaseComponent{
 
     setData=(data)=>{
 
+        let isSHowContHint = false;
         for (let shopData of data){
             for (let cityData of shopData.new_cars){
                 cityData.select=false;
                 cityData.delectSelect=false;
                 for (let carData of cityData.cars){
+
+                    if(carData.car_count>carData.stock-carData.reserve_num){
+                        if(carData.stock-carData.reserve_num==0){
+                            carData.contHint = '已被订购';
+
+                        }else {
+                            carData.contHint = `仅剩${carData.stock-carData.reserve_num}台`;
+                            carData.car_count = carData.stock-carData.reserve_num;
+                        }
+
+                        this._carEditNumberAction(carData.id,carData.stock-carData.reserve_num);
+
+                        if(!isSHowContHint){
+                            isSHowContHint = true;
+                        }
+                    }
+
+
+
                     carData.select = false;
                     carData.delectSelect = false;
                 }
             }
         }
+
+        data = data.filter(e=>(e.new_cars.length>0));
+
+
         CarShoppingData.setShoppingData(data);
         this.setState({
             dataSource:this.state.dataSource.cloneWithRows(CarShoppingData.shoppingData),
@@ -149,6 +124,10 @@ export  default  class CarShoppingScene extends BaseComponent{
             isRefreshing:false,
 
         })
+
+        if(isSHowContHint){
+            this.props.showToast('部分商品可售数量不足');
+        }
 
     }
 
@@ -221,37 +200,38 @@ export  default  class CarShoppingScene extends BaseComponent{
                              shopIndex={rowID}
                              CarShoppingData={CarShoppingData}
                              citySelectClick={(shopIndex,cityIndex)=>{
-
                                  if(CarShoppingData.isEdit){
                                      CarShoppingData.delectSelectCity(shopIndex,cityIndex);
                                  }else {
-                                     CarShoppingData.selectCity(shopIndex,cityIndex);
+                                     CarShoppingData.selectCity(shopIndex,cityIndex,hintAction=()=>{
+                                         this.props.showToast('购买总数量不得超过30台');
+                                     });
                                  }
-
                              }}
                              carSelectClick={(shopIndex,cityIndex,carIndex)=>{
 
                                  if(CarShoppingData.isEdit){
                                      CarShoppingData.delectSelectCar(shopIndex,cityIndex,carIndex);
                                  }else {
-                                     CarShoppingData.selectCar(shopIndex,cityIndex,carIndex);
-                                 }
-                             }}
-                             carEditNumberClick={(type,shopIndex,cityIndex,carIndex)=>{
-                                 if(type==1){
-                                     CarShoppingData.minus(shopIndex,cityIndex,carIndex);
-                                 }else {
-                                     CarShoppingData.plus(shopIndex,cityIndex,carIndex);
-                                 }
-                             }}
-                             carDelectClick={(shopIndex,cityIndex,carIndex)=>{
-                                 CarShoppingData.delectCar(shopIndex,cityIndex,carIndex,()=>{
-                                     this.setState({
-                                         dataSource:this.state.dataSource.cloneWithRows(CarShoppingData.shoppingData),
+                                     CarShoppingData.selectCar(shopIndex,cityIndex,carIndex,hintAction=()=>{
+                                         this.props.showToast('购买总数量不得超过30台');
                                      });
-                                 });
+                                 }
+                             }}
+                             carEditNumberClick={(carID,type,shopIndex,cityIndex,carIndex)=>{
 
-                             }}/>
+                                 this._carEditNumberClick(carID,type,shopIndex,cityIndex,carIndex);
+
+                             }}
+                             carDelectClick={(carID,shopIndex,cityIndex,carIndex)=>{
+
+                                 this._carDelectClick(carID,shopIndex,cityIndex,carIndex);
+
+                             }}
+                             carInfoScreenClick={(carData)=>{
+                                 this._carInfoScreenClick(carData);
+                             }}
+            />
         )
     }
 
@@ -272,13 +252,138 @@ export  default  class CarShoppingScene extends BaseComponent{
     }
 
     headViewDelectClick=()=>{
+        if(CarShoppingData.delectAllSelect.get()==true){
 
-        CarShoppingData.delectAction(()=>{
+            request(AppUrls.CAR_ORDER_DELETE, 'post', {
+
+                company_id:global.companyBaseID,
+                del_all:1,
+
+            }).then((response) => {
+
+                CarShoppingData.delectAction(()=>{
+                    this.setState({
+                        dataSource:this.state.dataSource.cloneWithRows(CarShoppingData.shoppingData),
+                    });
+                });
+            }, (error) => {
+
+            });
+
+        }else {
+
+            let ids = [];
+            for(let shopData of CarShoppingData.shoppingData){
+                for (let cityData of shopData.new_cars){
+                  for (let carData of cityData.cars){
+                      if(carData.delectSelect==true){
+                          ids.push(carData.id);
+                      }
+                  }
+                }
+            }
+            request(AppUrls.CAR_ORDER_DELETE, 'post', {
+
+                company_id:global.companyBaseID,
+                ids:ids.toString(),
+
+            }).then((response) => {
+
+                CarShoppingData.delectAction(()=>{
+                    this.setState({
+                        dataSource:this.state.dataSource.cloneWithRows(CarShoppingData.shoppingData),
+                    });
+                });
+            }, (error) => {
+
+            });
+
+
+        }
+
+
+    }
+
+    //编辑库存
+    _carEditNumberClick=(carID,type,shopIndex,cityIndex,carIndex)=>{
+
+        let carNumber = 0;
+
+        if(type==1){
+            carNumber =  CarShoppingData.minus(shopIndex,cityIndex,carIndex);
+        }else {
+            carNumber = CarShoppingData.plus(shopIndex,cityIndex,carIndex);
+        }
+
+        this._carEditNumberAction(carID,carNumber);
+
+    }
+
+    _carEditNumberAction=(carID,carNumber)=>{
+        request(AppUrls.CAR_ORDER_SET_COUNT, 'post', {
+
+            company_id:global.companyBaseID,
+            car_id:carID,
+            car_count: carNumber,
+
+        }).then((response) => {
+
+
+        }, (error) => {
+
+        });
+    }
+
+    // 删除车辆
+    _carDelectClick=(carID,shopIndex,cityIndex,carIndex)=>{
+
+        this.props.showModal(true);
+
+        request(AppUrls.CAR_ORDER_DELETE, 'post', {
+
+            company_id:global.companyBaseID,
+            ids:carID
+
+        }).then((response) => {
+            this.props.showModal(false);
+
+            CarShoppingData.delectCar(shopIndex,cityIndex,carIndex,()=>{
                 this.setState({
                     dataSource:this.state.dataSource.cloneWithRows(CarShoppingData.shoppingData),
                 });
+            });
+
+        }, (error) => {
+            this.props.showModal(false);
+
+            this.props.showToast(error.mjson.msg);
         });
 
+    }
+
+    _carInfoScreenClick=(carData)=>{
+        if(carData.stock==0){
+            this.props.showToast('商品已下架');
+        }else {
+            let navigatorParams = {
+                name: "CarNewInfoScene",
+                component: CarNewInfoScene,
+                params: {
+                    carID: carData.id,
+                }
+            };
+
+            if(carData.v_type == 1){
+                navigatorParams = {
+                    name: "CarUserInfoScene",
+                    component: CarUserInfoScene,
+                    params: {
+                        carID: carData.id,
+                    }
+                }
+            }
+            this.toNextPage(navigatorParams);
+        }
     }
 
 
@@ -287,7 +392,37 @@ export  default  class CarShoppingScene extends BaseComponent{
         alert('全选')
     }
     financialAtion=()=>{
-        alert('金融购')
+
+        let carsArray = [];
+        for(let shopData of CarShoppingData.shoppingData){
+            for (let cityData of shopData.new_cars){
+                for (let carData of cityData.cars){
+
+                    if(carData.select==true){
+
+                        carsArray.push({car_id:carData.id,
+                            car_count:carData.car_count,})
+                    }
+                }
+            }
+        }
+
+        this.props.showModal(true);
+
+        request(AppUrls.CREATE_ORDER_HOME, 'post', {
+
+            cars:JSON.stringify(carsArray),
+            company_id:global.companyBaseID,
+
+        }).then((response) => {
+            this.props.showModal(false);
+            this.props.showToast('下单成功');
+
+        }, (error) => {
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
+        });
+
     }
     allPriceAtion=()=>{
         alert('全款');

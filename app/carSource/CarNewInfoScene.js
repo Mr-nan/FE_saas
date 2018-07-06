@@ -1425,7 +1425,6 @@ class BuyCarNumberView extends Component{
         }else  {
 
             if(this.state.carNumber>=this.props.maxNumber) return;
-
             number+=1;
         }
 

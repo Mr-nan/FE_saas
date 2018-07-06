@@ -79,6 +79,7 @@ class CarShoppingData {
             carData.car_count+=1;
         }
 
+        return carData.car_count;
 
     };
 
@@ -91,10 +92,26 @@ class CarShoppingData {
         if(carData.car_count>1){
             carData.car_count-=1;
         }
+        return carData.car_count;
     };
 
     @action // 选中城市
-    selectCity(shopIndex,cityIndex){
+    selectCity(shopIndex,cityIndex,hintAction){
+
+
+        let tmpCityData = this.shoppingData[shopIndex].new_cars[cityIndex];
+        if(tmpCityData.select==false){
+            let carSumNumber = 0;
+            for (let tmpCarData of tmpCityData.cars){
+                carSumNumber+=tmpCarData.car_count;
+            }
+
+            if(this.sumNumber.get()+carSumNumber>30){
+                hintAction && hintAction();
+                return;
+            }
+        }
+
 
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
@@ -118,7 +135,17 @@ class CarShoppingData {
     };
 
     @action   // 选中单个车辆
-    selectCar(shopIndex,cityIndex,carIndex){
+    selectCar(shopIndex,cityIndex,carIndex,hintAction){
+
+        let tmpCarData = this.shoppingData[shopIndex].new_cars[cityIndex].cars[carIndex];
+        if(tmpCarData.select==false){
+
+            if(this.sumNumber.get()+tmpCarData.car_count>30){
+                hintAction && hintAction();
+                return;
+            }
+        }
+
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
             for(let cityI=0;cityI<shopData.new_cars.length;cityI++){
@@ -128,6 +155,7 @@ class CarShoppingData {
                     if(shopIndex == shopI && cityIndex == cityI){
 
                         if(carIndex ==carI){
+
                             carData.select = !carData.select;
                         }
                     }else {
@@ -254,11 +282,11 @@ class CarShoppingData {
         let cityData = shopData.new_cars[cityIndex];
 
         if(carIndex<cityData.cars.length){
-            cityData.carList.splice(carIndex,1);
+            cityData.cars.splice(carIndex,1);
         }
 
         if(cityData.cars.length<=0){
-            shopData.list.splice(cityIndex,1);
+            shopData.new_cars.splice(cityIndex,1);
         }
 
         this.shoppingData = this.shoppingData.filter(e=>(e.new_cars.length>0));
@@ -282,7 +310,7 @@ class CarShoppingData {
                     cityData.cars = cityData.cars.filter(e=>(e.delectSelect!=true));
                 }
 
-                shopData.new_cars = shopData.new_cars.filter(e=>(e.delectSelect!=true || e.carList.length>0))
+                shopData.new_cars = shopData.new_cars.filter(e=>(e.delectSelect!=true || e.cars.length>0))
             }
             this.shoppingData = this.shoppingData.filter(e=>(e.new_cars.length>0));
 

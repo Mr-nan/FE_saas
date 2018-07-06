@@ -51,13 +51,14 @@ export default class CarShoppingCell extends Component{
                                             return(
                                                 <CarCell key={`${index}+${subIndex}`}
                                                          CarShoppingData={CarShoppingData}
-                                                         editeNumberClick={(type)=>{this.props.carEditNumberClick(type,shopIndex,index,subIndex)}}
+                                                         editeNumberClick={(type)=>{this.props.carEditNumberClick(carData.id,type,shopIndex,index,subIndex)}}
                                                          isShowLine={subIndex<cityData.cars.length?true:false}
                                                          data={carData}
                                                          carSelectClick={()=>{
                                                              this.props.carSelectClick(shopIndex,index,subIndex);
                                                          }}
-                                                         carDelectClick={()=>{this.props.carDelectClick(this.props.shopIndex,index,subIndex)}}/>
+                                                         carDelectClick={()=>{this.props.carDelectClick(carData.id,this.props.shopIndex,index,subIndex)}}
+                                                         carInfoScreenClick={()=>{this.props.carInfoScreenClick(carData)}}/>
                                             )
                                         })
                                 }
@@ -159,6 +160,8 @@ class CarCell extends Component{
                         <TouchableOpacity activeOpacity={1} onPress={()=>{
                             if(this.animationType){
                                 this.closeDelectBtn();
+                            }else {
+                                this.props.carInfoScreenClick();
                             }
                         }}>
                             <View style={{flexDirection:'row', flex:1,alignItems:'center',backgroundColor:'white',width:ScreenWidth-Pixel.getPixel(30)}}>
@@ -166,7 +169,7 @@ class CarCell extends Component{
                                     <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18)}}
                                            source={CarShoppingData.isEdit?(this.props.data.delectSelect? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')):(this.props.data.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png'))}/>
                                 </TouchableOpacity>
-                                <Image style={styles.carImage} source={data.imgs.length>0?{uri:data.imgs[0].url+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../../images/carSourceImages/car_null_img.png')} resizeMode={'contain'}>
+                                <Image style={styles.carImage} source={data.imgs.length>0?{uri:data.imgs[0].url+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../../images/carSourceImages/car_null_img.png')}>
                                     <Image style={{top:0,left:0,bottom:0,right:0,position: 'absolute'}} source={data.v_type==1? require('../../../images/carSourceImages/userCarTypeIcon.png'):require('../../../images/carSourceImages/newCarTypeIcon.png')}/>
                                 </Image>
                                 <View style={styles.carTextView}>
@@ -182,7 +185,7 @@ class CarCell extends Component{
                                         <Text style={{
                                             color:fontAndColor.COLORB2,
                                             fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                                        }}></Text>
+                                        }}>{data.contHint && data.contHint}</Text>
                                     </View>
                                     <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                                         <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -196,15 +199,14 @@ class CarCell extends Component{
                                                 fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                             }}>万元</Text>
                                         </View>
-
-                                            <Text style={{
+                                        <Text style={{
                                                 color:fontAndColor.COLORB2,
                                                 fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                                            }}></Text>
+                                        }}>{data.stock==0&& '已售罄'}</Text>
                                     </View>
                                 </View>
                                 {
-                                    (data.stock - data.reserve_num == 0)?
+                                    (data.stock == 0)?
                                         (<Image style={{width:Pixel.getPixel(60),height:Pixel.getPixel(70),right:0,bottom:Pixel.getPixel(10), position: 'absolute',}}
                                     source={require('../../../images/carSourceImages/yishouxing.png')}/>) :( <CarNumberEditView editClick={(type)=>{this.props.editeNumberClick(type)}} number={data.car_count} maxNumber={data.stock}/>)
                                 }
