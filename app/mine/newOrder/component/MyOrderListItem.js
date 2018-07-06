@@ -22,7 +22,6 @@ export  default class MyOederItem extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.carList = [1,2,3,4,5,6,7,8,9,10];
         this.state={
             zk:false
         }
@@ -30,11 +29,11 @@ export  default class MyOederItem extends PureComponent {
 
     render() {
         let itemList = [];
-        for (let i = 0;i<this.carList.length;i++){
+        for (let i = 0;i<this.props.data.car_item.length;i++){
             if(i>1&&this.state.zk==false){
                 break;
             }
-            itemList.push(<MyOrderListCarItem/>);
+            itemList.push(<MyOrderListCarItem key={i+'123'} data={this.props.data.car_item[i]}/>);
         }
 
         return (
@@ -42,7 +41,7 @@ export  default class MyOederItem extends PureComponent {
                 <View style={{width:width,height:Pixel.getPixel(40), flexDirection:'row'}}>
                     <View style={{flex:1,justifyContent:'center'}}>
                         <Text style={{fontSize:Pixel.getPixel(14),color:'#666666',marginLeft:Pixel.getPixel(16)}}>
-                            嘻哈商户
+                            {this.props.data.seller_company_name}
                         </Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
@@ -53,21 +52,26 @@ export  default class MyOederItem extends PureComponent {
                 </View>
                 <View style={{width:width,height:1,backgroundColor:'#d8d8d8'}}></View>
                 {itemList}
-                <TouchableOpacity activeOpacity={0.9} onPress={()=>{
-                    this.setState({zk:!this.state.zk});
-                }} style={{width:width,height:Pixel.getPixel(42),justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
+                {
+                    this.props.data.car_item.length>2?<TouchableOpacity activeOpacity={0.9} onPress={()=>{
+                        this.setState({zk:!this.state.zk});
+                    }} style={{width:width,height:Pixel.getPixel(42),justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
                         <View style={{width:Pixel.getPixel(11),height:Pixel.getPixel(7)}}>
 
                         </View>
-                    <Text style={{fontSize:Pixel.getPixel(13),color:'#666',marginLeft:Pixel.getPixel(9)}}>
-                        {this.state.zk?'收起':'查看全部'}
-                    </Text>
-                    <Image style={{width:Pixel.getPixel(11),height:Pixel.getPixel(7),marginLeft:Pixel.getPixel(9)}}
-                           source={this.state.zk?require('../../../../images/neworder/shang.png'):require('../../../../images/neworder/xia.png')}>
+                        <Text style={{fontSize:Pixel.getPixel(13),color:'#666',marginLeft:Pixel.getPixel(9)}}>
+                            {this.state.zk?'收起':'查看全部'}
+                        </Text>
+                        <Image style={{width:Pixel.getPixel(11),height:Pixel.getPixel(7),marginLeft:Pixel.getPixel(9)}}
+                               source={this.state.zk?require('../../../../images/neworder/shang.png'):require('../../../../images/neworder/xia.png')}>
 
-                    </Image>
-                </TouchableOpacity>
-                <View style={{width:width,height:1,backgroundColor:'#d8d8d8'}}></View>
+                        </Image>
+                    </TouchableOpacity>:<View/>
+                }
+                {
+                    this.props.data.car_item.length>2?<View style={{width:width,height:1,backgroundColor:'#d8d8d8'}}></View>:<View/>
+                }
+
                 <View style={{width:width,height:Pixel.getPixel(72)}}>
                     <View style={{flex:1,flexDirection:'row'}}>
                         <View style={{flex:8,justifyContent:'center',alignItems:'flex-end'}}>
@@ -78,7 +82,7 @@ export  default class MyOederItem extends PureComponent {
                         <View style={{flex:3,justifyContent:'center',alignItems:'flex-end'}}>
                             <Text style={{fontSize:Pixel.getPixel(12),color:'#666',marginRight:Pixel.getPixel(16)}}>
                                 <Text style={{fontSize:Pixel.getPixel(15),color:'#666', fontWeight:'bold'}}>
-                                    25.80
+                                    {this.props.data.set_deposit_amount/10000}
                                 </Text>万元
                             </Text>
                         </View>
@@ -92,7 +96,7 @@ export  default class MyOederItem extends PureComponent {
                         <View style={{flex:3,justifyContent:'center',alignItems:'flex-end'}}>
                             <Text style={{fontSize:Pixel.getPixel(12),color:'#666',marginRight:Pixel.getPixel(16)}}>
                                 <Text style={{fontSize:Pixel.getPixel(15),color:'#666', fontWeight:'bold'}}>
-                                    350.80
+                                    {this.props.data.transaction_amount/10000}
                                 </Text>万元
                             </Text>
                         </View>

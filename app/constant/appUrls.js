@@ -1,14 +1,14 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 
 /**
  * 测试地址
  *
  */
- export const BASEURL = 'http://api-gateway.test.dycd.com/';
+ // export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -1863,3 +1863,7 @@ export const STORE_GETER_REQUEST = BASEURL + "v2/order.home/storeGeterRequest";
  *   运单提车人信息
  **/
 export const GETSTOREGETER = BASEURL + "v2/order.home/getStoreGeter";
+/**
+ *   订单列表
+ **/
+export const ORDER_HOME_LISTS = BASEURL + "v3/order.home/lists";

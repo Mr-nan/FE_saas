@@ -2,8 +2,8 @@
  * Created by hanmeng on 2017/5/8.
  * 订单类型选择页
  */
-import  React, {Component, PropTypes} from  'react'
-import  {
+import React, {Component, PropTypes} from 'react'
+import {
     StyleSheet,
     View,
     TouchableOpacity,
@@ -11,10 +11,11 @@ import  {
     Dimensions,
     ListView,
     Image
-} from  'react-native'
+} from 'react-native'
 
 import * as fontAndColor from '../../constant/fontAndColor';
-import  PixelUtil from '../../utils/PixelUtil'
+import PixelUtil from '../../utils/PixelUtil'
+
 var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import BaseComponent from "../../component/BaseComponent";
@@ -36,10 +37,11 @@ export default class MyOrderInfoScene extends BaseComponent {
 
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows([1,2,3,4,6]),
+            dataSource: ds.cloneWithRows([1, 2, 3, 4, 6]),
             renderPlaceholderOnly: 'success'
         });
     }
+
     // 构造
     constructor(props) {
         super(props);
@@ -47,13 +49,13 @@ export default class MyOrderInfoScene extends BaseComponent {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
-            type:3
+            type: 3
         };
     }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
-            return ( <View style={styles.container}>
+            return (<View style={styles.container}>
 
                 {this.loadView()}
                 <NavigatorView title='订单详情' backIconClick={this.backPage}/>
@@ -68,49 +70,50 @@ export default class MyOrderInfoScene extends BaseComponent {
                           enableEmptySections={true}
 
                 />
-                <NavigatorView wrapStyle={{backgroundColor:'#00000000'}} renderRihtFootView={()=>{return <Text style={{color:'#fff',
-                    fontSize:Pixel.getPixel(15)
-                }}>取消订单</Text>}}  title='订单详情' backIconClick={this.backPage}/>
+                <NavigatorView wrapStyle={{backgroundColor: '#00000000'}} renderRihtFootView={() => {
+                    return <Text style={{
+                        color: '#fff',
+                        fontSize: Pixel.getPixel(15)
+                    }}>取消订单</Text>
+                }} title='订单详情' backIconClick={this.backPage}/>
                 {GetOrderTextUtil.getPay(this.state.type)}
             </View>);
         }
     }
 
 
-
-
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
-        if(rowData==1){
+        if (rowData == 1) {
             return (
-               <MyOrderInfoTitleItem type={this.state.type}/>
+                <MyOrderInfoTitleItem type={this.state.type}/>
             );
-        }else if(rowData==2){
+        } else if (rowData == 2) {
             return (
                 GetOrderTextUtil.getScend(this.state.type)
             );
-        }else if(rowData==3){
+        } else if (rowData == 3) {
             return (
-                GetOrderTextUtil.getCar(this.state.type,()=>{
+                GetOrderTextUtil.getCar(this.state.type, () => {
                     this.toNextPage({
-                        name:'MyOrderChangeDataScene',
-                        component:MyOrderChangeDataScene,
-                        params:{}
+                        name: 'MyOrderChangeDataScene',
+                        component: MyOrderChangeDataScene,
+                        params: {}
                     })
                 })
 
             );
-        }else if(rowData==4){
+        } else if (rowData == 4) {
             return (
                 GetOrderTextUtil.getBottom(this.state.type)
             );
-        }else if(rowData==5){
-            return(
+        } else if (rowData == 5) {
+            return (
                 <MyOrderInfoTiShiItem/>
             );
-        }else{
-            return(
-                <View style={{width:width,height:Pixel.getPixel(55)}}></View>
+        } else {
+            return (
+                <View style={{width: width, height: Pixel.getPixel(55)}}></View>
             );
         }
 

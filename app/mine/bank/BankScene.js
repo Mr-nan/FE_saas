@@ -3,15 +3,15 @@
  * 订单类型选择页
  */
 import  React, {Component, PropTypes} from  'react'
-import  {
+import {
     StyleSheet,
     View,
     TouchableOpacity,
     Text,
     Dimensions,
     ListView,
-    Image
-} from  'react-native'
+    Image, StatusBar
+} from 'react-native'
 
 import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
@@ -19,71 +19,61 @@ var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
-import MyOrderListItem from './component/MyOrderListItem';
 import {request} from '../../utils/RequestUtil';
-import * as Urls from "../../constant/appUrls";
+import BankTitleItem from "./component/BankTitleItem";
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
-export default class MyOrderListScene extends BaseComponent {
-
+export default class BankScene extends BaseComponent {
+    initFinish = () => {
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            dataSource: ds.cloneWithRows([1,2,3,4]),
+            renderPlaceholderOnly: 'success'
+        });
+    }
+    // 构造
     constructor(props) {
         super(props);
-        this.page = 1;
-        this.allPage = 1;
-        this.allData = [];
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
-        };
-    }
-    initFinish = () => {
-        this.getData();
-    }
-
-    getData=()=>{
-        let maps = {
-            business:1,
-            company_id:global.companyBaseID,
-            rows:5,
-            page:this.page,
-
+            isRefreshing: false,
+            barStyle:'default'
 
         };
-        request(Urls.ORDER_HOME_LISTS, 'Post', maps)
-            .then((response) => {
-                  this.allData.push(...response.mjson.data.info_list);
-                  this.allPage = Math.ceil(response.mjson.data.total/5);
-                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        dataSource: ds.cloneWithRows(this.allData),
-                        renderPlaceholderOnly: 'success'
-                    });
-                },
-                (error) => {
-                    if (error.mycode == '-2100045'||error.mycode == '-1') {
-                        this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
-                    } else {
-                        this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
-                    }
-                });
     }
-    // 构造
-
+    componentWillUnmount(){
+        this.setState({
+            barStyle:'light-content'
+        })
+    }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
+                <StatusBar barStyle={this.state.barStyle}/>
 
                 {this.loadView()}
-                <NavigatorView title={this.props.title} backIconClick={this.backPage}/>
+                <NavigatorView title={'收银台'}
+                                backIconClick={()=>{
+                                    this.backPage()
+
+                                } }
+                                wrapStyle={{backgroundColor:'white'}}
+                                titleStyle={{color:fontAndColor.COLORA0}}/>
             </View>);
         } else {
             return (<View style={styles.container}>
-                <NavigatorView title={this.props.title} backIconClick={this.backPage}/>
-                <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(74)}}
+                <StatusBar barStyle={this.state.barStyle}/>
+                <NavigatorView title={'收银台'}
+                                backIconClick={()=>{
+                                    this.backPage()
+                                } }
+                                wrapStyle={{backgroundColor:'white'}}
+                                titleStyle={{color:fontAndColor.COLORA0}}/>
+                <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(64)}}
                           dataSource={this.state.dataSource}
                           removeClippedSubviews={false}
                           renderRow={this._renderRow}
@@ -105,11 +95,13 @@ export default class MyOrderListScene extends BaseComponent {
 
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
-        return (
-          <MyOrderListItem data={rowData} callBack={(index)=>{
-
-          }}/>
-        );
+        if(rowData==1){
+            return(<BankTitleItem/>);
+        }else{
+            return (
+                <View/>
+            );
+        }
     }
 }
 
