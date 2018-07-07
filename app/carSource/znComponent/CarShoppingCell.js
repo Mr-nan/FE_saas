@@ -19,6 +19,8 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 import { observer } from 'mobx-react/native';
+import  StringTransformUtil from  "../../utils/StringTransformUtil";
+let stringTransform = new StringTransformUtil();
 
 @observer
 export default class CarShoppingCell extends Component{
@@ -29,9 +31,9 @@ export default class CarShoppingCell extends Component{
         return(
             <View style={styles.cellView}>
                 <ShopView ref={(ref)=>{this.shopView = ref}}
-                          shopTitle={this.props.data.shopTitle}/>
+                          shopTitle={this.props.data.enterprise_name}/>
                 {
-                    this.props.data.list.map((cityData,index)=>{
+                    this.props.data.new_cars.map((cityData,index)=>{
 
                         return(
                             <View key={index} style={{borderTopColor:fontAndColor.COLORA3,borderTopWidth:index>0?Pixel.getPixel(1):0,paddingTop:Pixel.getPixel(20)}}>
@@ -42,20 +44,21 @@ export default class CarShoppingCell extends Component{
                                                   }}>
                                     <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18),marginRight:Pixel.getPixel(10)}}
                                            source={CarShoppingData.isEdit?(cityData.delectSelect? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')):(cityData.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')) }/>
-                                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{cityData.cityName}</Text>
+                                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>{ cityData.provice_name + (cityData.provice_name === cityData.city_name ? " " : ("  " + cityData.city_name))}</Text>
                                 </TouchableOpacity>
                                 {
-                                    cityData.carList.map((carData,subIndex)=>{
+                                    cityData.cars.map((carData,subIndex)=>{
                                             return(
                                                 <CarCell key={`${index}+${subIndex}`}
                                                          CarShoppingData={CarShoppingData}
-                                                         editeNumberClick={(type)=>{this.props.carEditNumberClick(type,shopIndex,index,subIndex)}}
-                                                         isShowLine={subIndex<cityData.carList.length?true:false}
+                                                         editeNumberClick={(type)=>{this.props.carEditNumberClick(carData.id,type,shopIndex,index,subIndex)}}
+                                                         isShowLine={subIndex<cityData.cars.length?true:false}
                                                          data={carData}
                                                          carSelectClick={()=>{
                                                              this.props.carSelectClick(shopIndex,index,subIndex);
                                                          }}
-                                                         carDelectClick={()=>{this.props.carDelectClick(this.props.shopIndex,index,subIndex)}}/>
+                                                         carDelectClick={()=>{this.props.carDelectClick(carData.id,this.props.shopIndex,index,subIndex)}}
+                                                         carInfoScreenClick={()=>{this.props.carInfoScreenClick(carData)}}/>
                                             )
                                         })
                                 }
@@ -149,7 +152,7 @@ class CarCell extends Component{
 
 
     render(){
-         let {CarShoppingData} = this.props;
+         let {CarShoppingData,data} = this.props;
         return(
             <View style={{paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white',width:ScreenWidth,height:Pixel.getPixel(132)}} {...this.panResponder.panHandlers}>
                 <View  style={{flexDirection:'row', flex:1,borderBottomColor:fontAndColor.COLORA3, borderBottomWidth:this.props.isShowLine ?Pixel.getPixel(1):0}}>
@@ -157,6 +160,8 @@ class CarCell extends Component{
                         <TouchableOpacity activeOpacity={1} onPress={()=>{
                             if(this.animationType){
                                 this.closeDelectBtn();
+                            }else {
+                                this.props.carInfoScreenClick();
                             }
                         }}>
                             <View style={{flexDirection:'row', flex:1,alignItems:'center',backgroundColor:'white',width:ScreenWidth-Pixel.getPixel(30)}}>
@@ -164,23 +169,23 @@ class CarCell extends Component{
                                     <Image style={{width:Pixel.getPixel(18),height:Pixel.getPixel(18)}}
                                            source={CarShoppingData.isEdit?(this.props.data.delectSelect? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')):(this.props.data.select? require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png'))}/>
                                 </TouchableOpacity>
-                                <Image style={styles.carImage} source={require('../../../images/carSourceImages/car_null_img.png')} resizeMode={'contain'}>
-                                    <Image style={{top:0,left:0,bottom:0,right:0,position: 'absolute'}} source={this.props.data.type==1? require('../../../images/carSourceImages/userCarTypeIcon.png'):require('../../../images/carSourceImages/newCarTypeIcon.png')}/>
+                                <Image style={styles.carImage} source={data.imgs.length>0?{uri:data.imgs[0].url+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../../images/carSourceImages/car_null_img.png')}>
+                                    <Image style={{top:0,left:0,bottom:0,right:0,position: 'absolute'}} source={data.v_type==1? require('../../../images/carSourceImages/userCarTypeIcon.png'):require('../../../images/carSourceImages/newCarTypeIcon.png')}/>
                                 </Image>
                                 <View style={styles.carTextView}>
                                     <Text style={{
                                             color:fontAndColor.COLORA0,
                                             fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                    }}>{this.props.data.title}</Text>
+                                    }}>{data.model_name}</Text>
                                     <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                                         <Text style={{
                                             color:fontAndColor.COLORA1,
                                             fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                                        }}>{this.props.data.type==1?"红色":'2018年08月/1万公里'}</Text>
+                                        }}>{this.props.data.v_type==2?(data.trim_color_name):(stringTransform.dateReversal(data.manufacture+'000')+'/'+data.mileage+'万公里')}</Text>
                                         <Text style={{
                                             color:fontAndColor.COLORB2,
                                             fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                                        }}></Text>
+                                        }}>{data.contHint && data.contHint}</Text>
                                     </View>
                                     <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                                         <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -188,21 +193,24 @@ class CarCell extends Component{
                                                 color:fontAndColor.COLORB2,
                                                 fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                                 fontWeight:'bold'
-                                            }}>{this.props.data.price}</Text>
+                                            }}>{stringTransform.carMoneyChange(data.dealer_price)}</Text>
                                             <Text style={{
                                                 color:fontAndColor.COLORB2,
                                                 fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                             }}>万元</Text>
                                         </View>
-                                            <Text style={{
+                                        <Text style={{
                                                 color:fontAndColor.COLORB2,
                                                 fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                                            }}></Text>
+                                        }}>{data.stock==0&& '已售罄'}</Text>
                                     </View>
                                 </View>
-                                <CarNumberEditView editClick={(type)=>{this.props.editeNumberClick(type)}} number={this.props.data.number} maxNumber={this.props.data.maxNumber}/>
-                                {/*<Image style={{width:Pixel.getPixel(60),height:Pixel.getPixel(70),right:0,bottom:Pixel.getPixel(10), position: 'absolute',}}*/}
-                                       {/*source={require('../../../images/carSourceImages/yishouxing.png')}/>*/}
+                                {
+                                    (data.stock == 0)?
+                                        (<Image style={{width:Pixel.getPixel(60),height:Pixel.getPixel(70),right:0,bottom:Pixel.getPixel(10), position: 'absolute',}}
+                                    source={require('../../../images/carSourceImages/yishouxing.png')}/>) :( <CarNumberEditView editClick={(type)=>{this.props.editeNumberClick(type)}} number={data.car_count} maxNumber={data.stock}/>)
+                                }
+
                             </View>
                         </TouchableOpacity>
                     </Animated.View>

@@ -327,7 +327,7 @@ export default class CarNewInfoScene extends BaseComponent {
                                                 <View style={{flexDirection:'row', alignItems:'center',marginLeft:Pixel.getPixel(15)}}>
                                                     <Image style={{marginRight: Pixel.getPixel(5)}}
                                                            source={require('../../images/carSourceImages/carPriceIcone.png')}/>
-                                                    <Text allowFontScaling={false}  style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),fontWeight:'bold',color:fontAndColor.COLORA1}}>{100}</Text>
+                                                    <Text allowFontScaling={false}  style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),fontWeight:'bold',color:fontAndColor.COLORA1}}>{stringTransform.carMoneyChange(carData.earnest_money)}</Text>
                                                     <Text allowFontScaling={false}  style={[styles.browseText]}>元定金</Text>
                                                 </View>
                                             </View>
@@ -341,7 +341,7 @@ export default class CarNewInfoScene extends BaseComponent {
                                 carData.model_price  &&  (
                                     <View style={{flexDirection:'row', alignItems:'center',marginTop:Pixel.getPixel(10)}}>
                                         <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>厂家指导价： </Text>
-                                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),fontWeight:'bold'}}>{carData.model_price}</Text>
+                                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),fontWeight:'bold'}}>{stringTransform.carMoneyChange(carData.model_price)}</Text>
                                         <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>万元</Text>
                                     </View>)
                             }
@@ -467,7 +467,7 @@ export default class CarNewInfoScene extends BaseComponent {
                               text='知道了'
                               content='此质押车暂不可下单请您稍待时日再订购'/>
                 {
-                    this.state.isShowBuyCarNumber && <BuyCarNumberView type={this.showBuyCarNumberType}  buyCarNumberClick={this.buyCarNumberClick} closeClick={()=>{this.setState({isShowBuyCarNumber:false})}} />
+                    this.state.isShowBuyCarNumber && <BuyCarNumberView type={this.showBuyCarNumberType}  maxNumber={carData.stock} buyCarNumberClick={this.buyCarNumberClick} closeClick={()=>{this.setState({isShowBuyCarNumber:false})}} />
                 }
             </View>
 
@@ -570,7 +570,7 @@ export default class CarNewInfoScene extends BaseComponent {
     buyCarNumberClick=(type,number)=>{
         switch(type){
             case 1:
-                console.log('确定：',number);
+                this.addCarOrder(number);
                 break;
             case 2:
                 console.log('金融购：',number);
@@ -578,10 +578,33 @@ export default class CarNewInfoScene extends BaseComponent {
                 break;
             case 3:
                 console.log('全款购：',number);
-
+                this.newCarOrder(number);
                 break;
         }
     }
+
+    // 添加到购物车
+
+    addCarOrder=(number)=>{
+     let carData =  this.state.carData
+
+        this.props.showModal(true);
+        request(AppUrls.CAR_ORDER_ADD, 'post', {
+            car_id:carData.id,
+            car_count:number,
+            v_type:carData.v_type,
+            company_id:global.companyBaseID,
+
+        }).then((response) => {
+            this.props.showModal(false);
+            this.props.showToast('已成功添加到购物车');
+
+        }, (error) => {
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
+        });
+    }
+
     /**
      *   订单物流开关接口
      **/
@@ -617,6 +640,33 @@ export default class CarNewInfoScene extends BaseComponent {
             this.props.showToast(error.mjson.msg);
         });
     };
+
+    // new车辆订购
+    newCarOrder=(number)=>{
+        let carData =  this.state.carData
+        this.props.showModal(true);
+
+        let carsArray = [
+            {
+            car_id:carData.id,
+            car_count:number,
+            }
+        ];
+
+        request(AppUrls.CREATE_ORDER_HOME, 'post', {
+
+            cars:JSON.stringify(carsArray),
+            company_id:global.companyBaseID,
+
+        }).then((response) => {
+            this.props.showModal(false);
+            this.props.showToast('下单成功');
+
+        }, (error) => {
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
+        });
+    }
 
     // 车辆订购
     carOrder = (company_base_id, carData) => {
@@ -1318,7 +1368,7 @@ class BuyCarNumberView extends Component{
             <View style={styles.buyCarNumberView} >
                 <View style={styles.buyCarNumberItemView}>
                     <TouchableOpacity style={styles.buyCarCloseView} activeOpacity={1} onPress={this.props.closeClick}>
-                        <Image source={require('../../images/carSourceImages/closeBtn.png')}/>
+                        <Image source={require('../../images/carSourceImages/guanbi.png')}/>
                     </TouchableOpacity>
                     <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),marginTop:Pixel.getPixel(20)}}>请选择购买数量</Text>
                     <View style={styles.buyCarNumber}>
@@ -1335,25 +1385,25 @@ class BuyCarNumberView extends Component{
                         <TouchableOpacity style={{width:Pixel.getPixel(50),height:Pixel.getPixel(33),backgroundColor:fontAndColor.COLORA3,
                             alignItems:'center',justifyContent:'center'
                         }} activeOpacity={1} onPress={()=>this.editCarNumber(2)}>
-                            <Image source={require('../../images/carSourceImages/addCarNumber.png')}/>
+                            <Image source={this.state.carNumber>=this.props.maxNumber?require('../../images/carSourceImages/noAddCarNumber.png'): require('../../images/carSourceImages/addCarNumber.png')}/>
                         </TouchableOpacity>
                     </View>
                     {
                         this.props.type==1?(
                                 <View style={[styles.buyCarFootView, {justifyContent:'center'}]}>
                                     <TouchableOpacity style={{width:Pixel.getPixel(110),height:Pixel.getPixel(33),alignItems:'center',justifyContent:'center',borderRadius:Pixel.getPixel(2),backgroundColor:fontAndColor.COLORB0}}
-                                                      activeOpacity={1} onPress={()=>{this.props.buyCarNumberClick(1,this.state.carNumber)}}>
+                                                      activeOpacity={1} onPress={()=>{this.confirmClick(1,this.state.carNumber)}}>
                                         <Text style={{color:"white", fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>确定</Text>
                                     </TouchableOpacity>
                                 </View>
                             ):(
                                 <View style={styles.buyCarFootView}>
                                     <TouchableOpacity style={{width:Pixel.getPixel(100),height:Pixel.getPixel(33),alignItems:'center',justifyContent:'center',borderRadius:Pixel.getPixel(2),backgroundColor:fontAndColor.COLORA2}}
-                                                      activeOpacity={1} onPress={()=>{this.props.buyCarNumberClick(2,this.state.carNumber)}}>
+                                                      activeOpacity={1} onPress={()=>{this.confirmClick(2,this.state.carNumber)}}>
                                         <Text style={{color:"white", fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>金融购</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={{width:Pixel.getPixel(100),height:Pixel.getPixel(33),alignItems:'center',justifyContent:'center',borderRadius:Pixel.getPixel(2),backgroundColor:fontAndColor.COLORB0}}
-                                                      activeOpacity={1} onPress={()=>{this.props.buyCarNumberClick(3,this.state.carNumber)}}>
+                                                      activeOpacity={1} onPress={()=>{this.confirmClick(3,this.state.carNumber)}}>
                                         <Text style={{color:"white", fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>全款购</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -1367,18 +1417,26 @@ class BuyCarNumberView extends Component{
     editCarNumber=(type)=>{
 
         let  number = this.state.carNumber;
-        if(type==1){
+        if(type==1 ){
             if(this.state.carNumber==1) return;
 
             number-=1;
 
-        }else {
+        }else  {
+
+            if(this.state.carNumber>=this.props.maxNumber) return;
             number+=1;
         }
 
         this.setState({
             carNumber:number
         })
+    }
+
+    confirmClick=(type,number)=>{
+
+        this.props.buyCarNumberClick(type,number);
+        this.props.closeClick();
     }
 
 

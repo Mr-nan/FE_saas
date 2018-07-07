@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 
 /**
@@ -19,7 +19,7 @@
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
 
@@ -181,6 +181,27 @@ export const GET_CUSTOM_SERVICE = BASEURL + V + '/index/getCustomService';
  * 获取客服电话号码-商户号码
  */
 export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
+
+/**
+ * 添加购物车
+ */
+export const CAR_ORDER_ADD = BASEURL + 'v3/order.card/add';
+
+/**
+ * 购物车列表
+ */
+export const CAR_ORDER_LISTS = BASEURL + 'v3/order.card/lists';
+
+/**
+ * 删除购物车
+ */
+export const CAR_ORDER_DELETE = BASEURL + 'v3/order.card/delete';
+
+/**
+ * 购物车设置车辆数量
+ */
+export const CAR_ORDER_SET_COUNT = BASEURL + 'v3/order.card/setCount';
+
 
 /**
  * 获取我的车源-已上架/下架
@@ -1277,6 +1298,10 @@ export const PURCHA_AUTO_DETAIL = 'api/v2/purchaAuto/autoDetail';
  * 获取车架好是否已存在以及校验规则
  **/
 export const PURCHA_CHECK_IN = 'api/v2/purchaAuto/checkVin';
+/**
+ * 创建订单
+ */
+export const CREATE_ORDER_HOME = BASEURL + '/v3/order.home/add';
 /**
  * 订单列表
  */

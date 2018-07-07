@@ -18,10 +18,10 @@ class CarShoppingData {
         this.sumNumber=computed(()=>{
             let sumNumber = 0;
             for(let shopData of this.shoppingData){
-                for(let cityData of shopData.list){
-                    for(let carData of cityData.carList){
+                for(let cityData of shopData.new_cars){
+                    for(let carData of cityData.cars){
                         if(carData.select){
-                            sumNumber+=carData.number;
+                            sumNumber+=carData.car_count;
                         }
                     }
                 }
@@ -34,16 +34,15 @@ class CarShoppingData {
         this.sumPrice=computed(()=>{
             let sumPrice = 0;
             for(let shopData of this.shoppingData){
-                for(let cityData of shopData.list){
-                    for(let carData of cityData.carList){
+                for(let cityData of shopData.new_cars){
+                    for(let carData of cityData.cars){
                         if(carData.select){
-                            sumPrice+=carData.number * carData.price;
+                            sumPrice+=carData.car_count * carData.dealer_price;
                         }
                     }
                 }
             }
             return sumPrice;
-
         });
 
         this.delectAllSelect=computed(()=>{
@@ -54,7 +53,7 @@ class CarShoppingData {
 
             let tmpAllSelect = true;
             for(let shopData of this.shoppingData){
-                for (let cityData of shopData.list){
+                for (let cityData of shopData.new_cars){
                     if(!cityData.delectSelect){
                         tmpAllSelect = false;
                         break;
@@ -73,13 +72,14 @@ class CarShoppingData {
     @action // +1
     plus(shopIndex,cityIndex,carIndex){
         let shopData = this.shoppingData[shopIndex];
-        let cityData = shopData.list[cityIndex];
-        let carData = cityData.carList[carIndex];
+        let cityData = shopData.new_cars[cityIndex];
+        let carData = cityData.cars[carIndex];
 
-        if(carData.number< carData.maxNumber){
-            carData.number+=1;
+        if(carData.car_count< carData.stock){
+            carData.car_count+=1;
         }
 
+        return carData.car_count;
 
     };
 
@@ -87,29 +87,45 @@ class CarShoppingData {
     minus(shopIndex,cityIndex,carIndex){
 
         let shopData = this.shoppingData[shopIndex];
-        let cityData = shopData.list[cityIndex];
-        let carData = cityData.carList[carIndex];
-        if(carData.number>1){
-            carData.number-=1;
+        let cityData = shopData.new_cars[cityIndex];
+        let carData = cityData.cars[carIndex];
+        if(carData.car_count>1){
+            carData.car_count-=1;
         }
+        return carData.car_count;
     };
 
     @action // 选中城市
-    selectCity(shopIndex,cityIndex){
+    selectCity(shopIndex,cityIndex,hintAction){
+
+
+        let tmpCityData = this.shoppingData[shopIndex].new_cars[cityIndex];
+        if(tmpCityData.select==false){
+            let carSumNumber = 0;
+            for (let tmpCarData of tmpCityData.cars){
+                carSumNumber+=tmpCarData.car_count;
+            }
+
+            if(this.sumNumber.get()+carSumNumber>30){
+                hintAction && hintAction();
+                return;
+            }
+        }
+
 
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
 
-           for(let cityI=0;cityI<shopData.list.length;cityI++){
+           for(let cityI=0;cityI<shopData.new_cars.length;cityI++){
 
-               let cityData = shopData.list[cityI];
+               let cityData = shopData.new_cars[cityI];
                if(shopIndex == shopI && cityIndex == cityI){
                    cityData.select = !cityData.select;
                }else {
                    cityData.select = false;
                }
 
-               for (let carData of cityData.carList){
+               for (let carData of cityData.cars){
                    carData.select = cityData.select;
                }
 
@@ -119,16 +135,27 @@ class CarShoppingData {
     };
 
     @action   // 选中单个车辆
-    selectCar(shopIndex,cityIndex,carIndex){
+    selectCar(shopIndex,cityIndex,carIndex,hintAction){
+
+        let tmpCarData = this.shoppingData[shopIndex].new_cars[cityIndex].cars[carIndex];
+        if(tmpCarData.select==false){
+
+            if(this.sumNumber.get()+tmpCarData.car_count>30){
+                hintAction && hintAction();
+                return;
+            }
+        }
+
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
-            for(let cityI=0;cityI<shopData.list.length;cityI++){
-                let cityData = shopData.list[cityI];
-                for (let carI=0;carI<cityData.carList.length;carI++){
-                   let carData =  cityData.carList[carI];
+            for(let cityI=0;cityI<shopData.new_cars.length;cityI++){
+                let cityData = shopData.new_cars[cityI];
+                for (let carI=0;carI<cityData.cars.length;carI++){
+                   let carData =  cityData.cars[carI];
                     if(shopIndex == shopI && cityIndex == cityI){
 
                         if(carIndex ==carI){
+
                             carData.select = !carData.select;
                         }
                     }else {
@@ -149,12 +176,12 @@ class CarShoppingData {
         let allSelect = this.delectAllSelect.get();
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
-            for(let cityI=0;cityI<shopData.list.length;cityI++){
-                let cityData = shopData.list[cityI];
+            for(let cityI=0;cityI<shopData.new_cars.length;cityI++){
+                let cityData = shopData.new_cars[cityI];
 
                 cityData.delectSelect = !allSelect;
 
-                for (let carData of cityData.carList){
+                for (let carData of cityData.cars){
                     carData.delectSelect = !allSelect;
                 }
 
@@ -167,12 +194,12 @@ class CarShoppingData {
 
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
-            for(let cityI=0;cityI<shopData.list.length;cityI++){
-                let cityData = shopData.list[cityI];
+            for(let cityI=0;cityI<shopData.new_cars.length;cityI++){
+                let cityData = shopData.new_cars[cityI];
                 if(shopIndex == shopI && cityIndex == cityI){
                     cityData.delectSelect = !cityData.delectSelect;
                 }
-                for (let carData of cityData.carList){
+                for (let carData of cityData.cars){
                     carData.delectSelect = cityData.delectSelect;
                 }
 
@@ -185,10 +212,10 @@ class CarShoppingData {
 
         for(let shopI=0;shopI<this.shoppingData.length;shopI++){
             let shopData = this.shoppingData[shopI];
-            for(let cityI=0;cityI<shopData.list.length;cityI++){
-                let cityData = shopData.list[cityI];
-                for (let carI=0;carI<cityData.carList.length;carI++){
-                   let carData =  cityData.carList[carI];
+            for(let cityI=0;cityI<shopData.new_cars.length;cityI++){
+                let cityData = shopData.new_cars[cityI];
+                for (let carI=0;carI<cityData.cars.length;carI++){
+                   let carData =  cityData.cars[carI];
                     if(shopIndex == shopI && cityIndex == cityI){
                         if(carIndex ==carI){
                             carData.delectSelect = !carData.delectSelect;
@@ -210,13 +237,13 @@ class CarShoppingData {
 
         let shopData = this.shoppingData[shopIndex];
 
-        if(cityIndex>=shopData.list.length){
+        if(cityIndex>=shopData.new_cars.length){
             return;
         }
 
-        let cityData = shopData.list[cityIndex];
+        let cityData = shopData.new_cars[cityIndex];
         let tmpCitySelect = true;
-        for (let carData of cityData.carList){
+        for (let carData of cityData.cars){
             if(!carData.delectSelect){
                 tmpCitySelect = false;
                 break;
@@ -233,12 +260,12 @@ class CarShoppingData {
             return;
         }
         let shopData = this.shoppingData[shopIndex];
-        if(cityIndex>=shopData.list.length){
+        if(cityIndex>=shopData.new_cars.length){
             return;
         }
-        let cityData = shopData.list[cityIndex];
+        let cityData = shopData.new_cars[cityIndex];
         let tmpCitySelect = true;
-        for (let carData of cityData.carList){
+        for (let carData of cityData.cars){
            if(!carData.select){
                tmpCitySelect = false;
                break;
@@ -252,17 +279,17 @@ class CarShoppingData {
     delectCar(shopIndex,cityIndex,carIndex,action){
 
         let shopData = this.shoppingData[shopIndex];
-        let cityData = shopData.list[cityIndex];
+        let cityData = shopData.new_cars[cityIndex];
 
-        if(carIndex<cityData.carList.length){
-            cityData.carList.splice(carIndex,1);
+        if(carIndex<cityData.cars.length){
+            cityData.cars.splice(carIndex,1);
         }
 
-        if(cityData.carList.length<=0){
-            shopData.list.splice(cityIndex,1);
+        if(cityData.cars.length<=0){
+            shopData.new_cars.splice(cityIndex,1);
         }
 
-        this.shoppingData = this.shoppingData.filter(e=>(e.list.length>0));
+        this.shoppingData = this.shoppingData.filter(e=>(e.new_cars.length>0));
 
         this.isCitySelect(shopIndex,cityIndex);
         this.isCityDelectSelect(shopIndex,cityIndex);
@@ -279,13 +306,13 @@ class CarShoppingData {
         }else {
 
             for(let shopData of this.shoppingData){
-                for(let cityData of  shopData.list){
-                    cityData.carList = cityData.carList.filter(e=>(e.delectSelect!=true));
+                for(let cityData of  shopData.new_cars){
+                    cityData.cars = cityData.cars.filter(e=>(e.delectSelect!=true));
                 }
 
-                shopData.list = shopData.list.filter(e=>(e.delectSelect!=true || e.carList.length>0))
+                shopData.new_cars = shopData.new_cars.filter(e=>(e.delectSelect!=true || e.cars.length>0))
             }
-            this.shoppingData = this.shoppingData.filter(e=>(e.list.length>0));
+            this.shoppingData = this.shoppingData.filter(e=>(e.new_cars.length>0));
 
         }
 
