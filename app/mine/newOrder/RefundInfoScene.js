@@ -20,6 +20,8 @@ import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
+import CarInfoScene from "../../carSource/CarInfoScene";
+import RefundCauseScene from "./RefundCauseScene";
 
 /*
  * 获取屏幕的宽和高
@@ -33,9 +35,11 @@ export default class RefundInfoScene extends BaseComponent {
                 <RefundInfoHeadView/>
                 <NavigatorView title={'退款详情'} backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView} wrapStyle={{backgroundColor:'transparent'}}/>
                 <ScrollView>
-                   <RefundInfoContentView/>
+                    <RefundInfoContentView/>
                     <RefundInfoCarView/>
+                    <RefundInfoServeView/>
                 </ScrollView>
+                <FootButtonView refuseClick={this._refuseClick} confirmClick={this._confirmClick}/>
             </View>
         )
     }
@@ -48,6 +52,41 @@ export default class RefundInfoScene extends BaseComponent {
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <Image source={require('../../../images/neworder/kefu.png')}/>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    _refuseClick=()=>{
+
+    }
+
+    _confirmClick=()=>{
+
+        let navigatorParams = {
+            name: "RefundCauseScene",
+            component: RefundCauseScene,
+            params: {
+            }
+        };
+        this.toNextPage(navigatorParams);
+
+    }
+
+}
+
+class FootButtonView extends Component{
+
+    render(){
+        return(
+            <View style={{left:0,right:0,bottom:0,height:Pixel.getPixel(49), flexDirection:'row',position: 'absolute',}}>
+                <TouchableOpacity style={{width:width*0.5,height:Pixel.getPixel(49),backgroundColor:fontAndColor.COLORA2,alignItems:'center',justifyContent:'center'}}
+                                  onPress={this.props.refuseClick}>
+                    <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30}}>拒绝退款</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{width:width*0.5,height:Pixel.getPixel(49),backgroundColor:fontAndColor.COLORB0,alignItems:'center',justifyContent:'center'}}
+                                  onPress={this.props.confirmClick}>
+                    <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30}}>确定退款</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -84,7 +123,6 @@ class RefundInfoHeadView extends Component{
                                                    fontWeight:'bold'
                                                }]}>{data.title}</Text>
                                        </View>
-
                                    {
                                        index+1==this.data.length?(<Image source={require('../../../images/neworder/dangqianzhuangtai.png')}/>):( <View style={{borderRadius:Pixel.getPixel(5),width:Pixel.getPixel(10),height:Pixel.getPixel(10),backgroundColor:'white'}} opacity={myOpacity}/>)
                                    }
@@ -113,7 +151,6 @@ class RefundInfoHeadView extends Component{
         )
     }
 }
-
 class RefundInfoContentView extends Component{
     render(){
         return(
@@ -155,7 +192,6 @@ class RefundInfoContentView extends Component{
         )
     }
 }
-
 class RefundInfoCarView extends Component{
 
     // 构造
@@ -187,8 +223,13 @@ class RefundInfoCarView extends Component{
                         })
                     }
                 </View>
-                <View style={{justifyContent:'center', alignItems:'center',paddingVertical:Pixel.getPixel(16),borderBottomWidth:StyleSheet.hairlineWidth,borderBottomColor:fontAndColor.COLORA4}}>
-                    <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT26}}>查看全部</Text>
+                <View style={{justifyContent:'center', alignItems:'center',
+                    paddingVertical:Pixel.getPixel(16),
+                    borderBottomWidth:StyleSheet.hairlineWidth,
+                    borderBottomColor:fontAndColor.COLORA4,
+                    marginHorizontal:Pixel.getPixel(15),flexDirection:'row'}}>
+                    <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT26, marginRight:Pixel.getPixel(10)}}>查看全部</Text>
+                    <Image source={require('../../../images/neworder/shang.png')}/>
                 </View>
                 <View style={{marginHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(16),alignItems:'flex-end'}}>
                     <View style={{flexDirection:'row',marginBottom:Pixel.getPixel(10), alignItems:'center'}}>
@@ -210,12 +251,47 @@ class RefundInfoCarView extends Component{
         )
     }
 }
+class RefundInfoServeView extends Component{
+
+      constructor(props) {
+        super(props);
+        this.data=[{title:'服务单号', value:'2018071000012'},{title:'订单编号', value:'xx120099'},
+            {title:'创建日期', value:'20180-07-10 02：00：12'},{title:'退款原因', value:'老子不想买了'}];
+      }
+    render(){
+        return(
+            <View style={{width:width,backgroundColor:'white',marginTop:Pixel.getPixel(10)}}>
+                <View style={{height:Pixel.getPixel(44), justifyContent:'center',paddingLeft:Pixel.getPixel(15),
+                    borderBottomWidth:StyleSheet.hairlineWidth,borderBottomColor:fontAndColor.COLORA4}}>
+                    <Text style={styles.titleText}>服务信息</Text>
+                </View>
+                <View style={{paddingHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(15),paddingBottom:Pixel.getPixel(20)}}>
+                    {
+                        this.data.map((data,index)=>{
+                            return(
+                                <View key={index}>
+                                    <View style={{marginTop:Pixel.getPixel(15), flexDirection:'row',alignItems:'center',
+                                        justifyContent:'space-between'}}>
+                                        <Text style={{color:fontAndColor.COLORA1, fontSize:fontAndColor.LITTLEFONT28}}>{data.title}</Text>
+                                        <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT28}}>{data.value}</Text>
+                                    </View>
+                                </View>
+                            )
+                        })
+                    }
+                </View>
+
+            </View>
+        )
+    }
+}
 
 const styles = StyleSheet.create({
     root:{
         flex:1,
         backgroundColor:fontAndColor.COLORA3,
-        paddingTop:width*0.61-Pixel.getPixel(20)
+        paddingTop:width*0.61-Pixel.getPixel(20),
+        paddingBottom:Pixel.getPixel(49)
     },
     titleText:{
         color:fontAndColor.COLORA0,
