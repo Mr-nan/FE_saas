@@ -12,6 +12,7 @@ import  {
     Dimensions,
     Image,
     ListView,
+    TextInput,
 } from  'react-native'
 
 import * as fontAndColor from '../../constant/fontAndColor';
@@ -22,6 +23,7 @@ import NavigatorView from '../../component/AllNavigationView';
 import { observer } from 'mobx-react/native';
 import {observable} from 'mobx';
 
+var ScreenWidth = Dimensions.get('window').width;
 
 @observer
 export default class RefundCauseScene extends BaseComponent{
@@ -46,7 +48,11 @@ export default class RefundCauseScene extends BaseComponent{
                         <Text style={{color:fontAndColor.COLORA1, fontSize:fontAndColor.LITTLEFONT28}}>请选择订单取消原因</Text>
                         <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT28}}>(必填)</Text>
                     </View>
-                   <ListView dataSource={this.state.dataSource} renderRow={this.renderRow} renderSeperator={this.renderSeperator}/>
+                   <ListView dataSource={this.state.dataSource} 
+                             renderRow={this.renderRow} 
+                             renderSeperator={this.renderSeperator}
+                             renderFooter={this.renderFooter}
+                   />
                 <NavigatorView title={'订单取消'} backIconClick={this.backPage}/>
             </View>
         )
@@ -73,6 +79,84 @@ export default class RefundCauseScene extends BaseComponent{
           )
     }
 
+    renderFooter =()=> {
+        return(
+            <View style={{alignItems:'center',marginTop:Pixel.getPixel(10)}}>
+                <ZNTextInputView/>
+                <TouchableOpacity>
+                    <View style={{height:Pixel.getPixel(49),
+                        borderRadius:Pixel.getPixel(4),width:ScreenWidth-Pixel.getPixel(30),
+                        marginTop:Pixel.getPixel(20),backgroundColor:fontAndColor.COLORB0,alignItems:'center',justifyContent:'center'}}>
+                        <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30}}>提交</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+}
+
+@observer
+class ZNTextInputView extends Component{
+
+    @observable  znTextInputValue;
+    @observable  znTextInputPlaceholder
+      constructor(props) {
+        super(props);
+        this.znTextInputValue = '';
+        this.znTextInputPlaceholder = '请填写取消原因';
+        this.state = {};
+      }
+
+    render(){
+        return(
+            <View style={{backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(20)}}>
+                <TextInput
+                           ref={(ref)=>{this.znTextInput = ref}}
+                           style={{height: Pixel.getPixel(180),
+                               borderColor: fontAndColor.COLORA1,
+                               width: ScreenWidth-Pixel.getPixel(30),
+                               fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                               paddingTop: 0,
+                               paddingBottom: 0,
+                               paddingLeft: 0,
+                               paddingRight: 0,
+                               backgroundColor:fontAndColor.COLORB12
+                           }}
+                           underlineColorAndroid='transparent'
+                           onFocus={()=>{this.znTextInputPlaceholder=''}}
+                           onChangeText={(text)=>{
+
+                              if(text.length>20) {
+                                  this.znTextInputValue= text.substring(0, text.length-1);
+                              }else {
+                                  this.znTextInputValue = text;
+                              }
+                               this.znTextInput.setNativeProps({
+                                   text: this.znTextInputValue,
+                               });
+                           }}
+                           onEndEditing={()=>{
+                               if(this.znTextInputValue==''){
+                                   this.znTextInputPlaceholder = '请填写取消原因';
+                               }
+                           }}>
+                </TextInput>
+                <View style={{left:Pixel.getPixel(30),top:Pixel.getPixel(30),position: 'absolute'}}>
+                    <Text style={{color:fontAndColor.COLORA1,
+                        fontSize:fontAndColor.CONTENTFONT24,
+                        backgroundColor:'transparent'}}>{this.znTextInputPlaceholder}</Text>
+                </View>
+                <View style={{right:Pixel.getPixel(30),bottom:Pixel.getPixel(30),position: 'absolute'}}>
+                    <Text style={{color:fontAndColor.COLORA1,
+                        fontSize:fontAndColor.CONTENTFONT24,
+                        backgroundColor:'transparent'}}>
+                        {this.znTextInputValue.length}/20
+                    </Text>
+                </View>
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
