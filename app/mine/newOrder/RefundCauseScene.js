@@ -13,6 +13,8 @@ import  {
     Image,
     ListView,
     TextInput,
+    KeyboardAvoidingView,
+    Platform,
 } from  'react-native'
 
 import * as fontAndColor from '../../constant/fontAndColor';
@@ -22,38 +24,92 @@ import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import { observer } from 'mobx-react/native';
 import {observable} from 'mobx';
-
-var ScreenWidth = Dimensions.get('window').width;
+const IS_ANDROID = Platform.OS === 'android';
+let ScreenWidth = Dimensions.get('window').width;
+let ScreenHeight = Dimensions.get('window').height;
 
 @observer
 export default class RefundCauseScene extends BaseComponent{
 
 
-    @observable selectTitle ='';
+    @observable selectTitle='';
     constructor(props) {
 
         super(props);
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1== r2});
-
         this.selectTitle = '';
+        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(['row1', 'row2','row3','row4']),
+            dataSource: ds.cloneWithRows(['row1', 'row2','row3','row4', 'row2','row3','row4', 'row2','row3','row4']),
+            keyboardoffetValue:0,
         };
     }
 
     render(){
         return(
             <View style={styles.root}>
-                    <View style={{height:Pixel.getPixel(35),paddingLeft:Pixel.getPixel(15),backgroundColor:fontAndColor.COLORA3,alignItems:'center',flexDirection:'row'}}>
-                        <Text style={{color:fontAndColor.COLORA1, fontSize:fontAndColor.LITTLEFONT28}}>请选择订单取消原因</Text>
-                        <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT28}}>(必填)</Text>
-                    </View>
-                   <ListView dataSource={this.state.dataSource} 
-                             renderRow={this.renderRow} 
-                             renderSeperator={this.renderSeperator}
-                             renderFooter={this.renderFooter}
-                   />
+                {
+                    IS_ANDROID?(this.renderListView()):(
+                        <KeyboardAvoidingView
+                            behavior={'position'}
+                            keyboardVerticalOffset={this.state.keyboardoffetValue}>
+                            {
+                                this.renderListView()
+                            }
+                        </KeyboardAvoidingView>
+                    )
+                }
                 <NavigatorView title={'订单取消'} backIconClick={this.backPage}/>
+            </View>
+        )
+    }
+
+    renderListView=()=>{
+        return(
+            <ListView
+                      dataSource={this.state.dataSource}
+                      renderHeader={this.renderHeader}
+                      renderRow={this.renderRow}
+                      renderSeperator={this.renderSeperator}
+                      renderFooter={this.renderFooter}/>
+        )
+    }
+    renderHeader =()=> {
+        if(true){
+            return(
+                <View style={{alignItems:'center',justifyContent:'center',
+                    height:Pixel.getPixel(100),backgroundColor:fontAndColor.COLORA3}}>
+                    <View style={{alignItems:'center',justifyContent:'center',flexDirection:'row'}}>
+                    <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT28}}>确认取消</Text>
+                    <TextInput style={{
+                        height: Pixel.getPixel(40),
+                        borderColor: fontAndColor.COLORA1,
+                        width: Pixel.getPixel(130),
+                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                        paddingLeft: 0,
+                        paddingRight: 0,
+                        borderRadius:Pixel.getPixel(4),
+                        borderColor:fontAndColor.COLORA4,
+                        borderWidth:Pixel.getPixel(1),
+                        marginHorizontal:Pixel.getPixel(15),
+                        textAlign:'center'}}
+                               keyboardType={'number-pad'}
+                               placeholder='请输入取消的台数'
+                               underlineColorAndroid='transparent'
+                               maxLength={2}
+                               onFocus={()=>{this.setState({keyboardoffetValue: -Pixel.getTitlePixel(200)})}}
+                               onEndEditing={()=>{this.setState({keyboardoffetValue:0})}}
+                    />
+                    <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT28}}>台</Text>
+                    </View>
+                </View>
+            )
+        }
+        return(
+            <View style={{height:Pixel.getPixel(35),paddingLeft:Pixel.getPixel(15),backgroundColor:fontAndColor.COLORA3,alignItems:'center',flexDirection:'row'}}>
+                <Text style={{color:fontAndColor.COLORA1, fontSize:fontAndColor.LITTLEFONT28}}>请选择订单取消原因</Text>
+                <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT28}}>(必填)</Text>
             </View>
         )
     }
@@ -81,11 +137,12 @@ export default class RefundCauseScene extends BaseComponent{
 
     renderFooter =()=> {
         return(
-            <View style={{alignItems:'center',marginTop:Pixel.getPixel(10)}}>
+            <View style={{alignItems:'center',marginTop:Pixel.getPixel(10),width:ScreenWidth,paddingBottom:Pixel.getPixel(50)}}>
                 <ZNTextInputView/>
                 <TouchableOpacity>
                     <View style={{height:Pixel.getPixel(49),
-                        borderRadius:Pixel.getPixel(4),width:ScreenWidth-Pixel.getPixel(30),
+                        borderRadius:Pixel.getPixel(4),
+                        width:ScreenWidth-Pixel.getPixel(30),
                         marginTop:Pixel.getPixel(20),backgroundColor:fontAndColor.COLORB0,alignItems:'center',justifyContent:'center'}}>
                         <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30}}>提交</Text>
                     </View>
