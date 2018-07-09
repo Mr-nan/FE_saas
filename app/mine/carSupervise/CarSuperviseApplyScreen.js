@@ -26,6 +26,7 @@ import {CellView,CellSelectView} from '../../carSource/znComponent/CarPublishCel
 
 import * as AppUrls from "../../constant/appUrls";
 import {request} from '../../utils/RequestUtil';
+import CarSuperviseCarSelectScreen from "./CarSuperviseCarSelectScreen";
 
 const Pixel = new PixelUtil();
 const IS_ANDROID = Platform.OS === 'android';
@@ -124,6 +125,38 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                 <NavigationView title="申请监管物借出" backIconClick={this.backPage}/>
             </View>
         )
+    }
+
+    cellClick=(title)=>{
+
+
+        switch (title){
+            case  '车辆':
+                console.log(title);
+                break;
+            case  '借出物':
+                break;
+            case '借出时间':
+                break;
+            case '借出原因':
+                break;
+        }
+
+    }
+
+    cellSelectAction=(title,value)=>{
+
+        console.log(title,value);
+    }
+
+    footBtnClick=()=>{
+        this.toNextPage({
+            name: 'CarSuperviseCarSelectScreen',
+            component: CarSuperviseCarSelectScreen,
+            params: {
+
+            }
+        });
     }
 }
 

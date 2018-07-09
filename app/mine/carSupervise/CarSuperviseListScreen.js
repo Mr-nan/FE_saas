@@ -55,6 +55,14 @@ export default class CarSuperviseListScreen extends BaseComponent {
 
     }
 
+    componentWillUnmount(){
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({
+                barStyle:'light-content'
+            })
+        });
+    }
+
     render() {
         return (
             <View style={styles.root}>
@@ -62,11 +70,7 @@ export default class CarSuperviseListScreen extends BaseComponent {
                 <ListView  dataSource={this.state.dataSource} renderRow={this.renderRow}/>
                 <FootButtom footClick={this.footClick}/>
                 <NavigationView title={'监管物借出列表'}
-                                backIconClick={()=>{
-                                    this.setState({
-                                        barStyle:'light-content'
-                                    },()=>{this.backPage()})
-                                } }
+                                backIconClick={this.backPage}
                                 wrapStyle={{backgroundColor:'white'}}
                                 titleStyle={{color:fontAndColor.COLORA0}}/>
             </View>
