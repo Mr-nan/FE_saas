@@ -13,6 +13,7 @@ import  {
     Dimensions,
     Image,
     ScrollView,
+    InteractionManager,
 } from  'react-native'
 
 import * as fontAndColor from '../../constant/fontAndColor';
@@ -264,6 +265,7 @@ class RefundInfoServeView extends Component{
                 <View style={{height:Pixel.getPixel(44), justifyContent:'center',paddingLeft:Pixel.getPixel(15),
                     borderBottomWidth:StyleSheet.hairlineWidth,borderBottomColor:fontAndColor.COLORA4}}>
                     <Text style={styles.titleText}>服务信息</Text>
+                    <ZNCountdownView/>
                 </View>
                 <View style={{paddingHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(15),paddingBottom:Pixel.getPixel(20)}}>
                     {
@@ -283,6 +285,76 @@ class RefundInfoServeView extends Component{
 
             </View>
         )
+    }
+}
+
+class  ZNCountdownView extends Component{
+
+    // 构造
+      constructor(props) {
+        super(props);
+
+      }
+
+    componentWillMount() {
+        this.startAction(1*60);
+    }
+
+
+
+    render(){
+        return(
+            <Text>{`${this.state.minute<10?('0'+this.state.minute):this.state.minute}:${this.state.second<10?('0'+this.state.second):this.state.second}`}</Text>
+        )
+    }
+
+    formatSeconds=()=> {
+        let {time,second,minute} = this.state;
+
+        if(time<1){
+
+            this.stopAction();
+            return;
+        }
+
+        time-=1;
+
+        second = parseInt(time);// 秒
+        minute = 0; // 分
+        if (second > 60) {
+            minute = parseInt(second / 60);
+            second = parseInt(second % 60);
+        }
+
+        this.setState({
+            time:time,
+            second:second,
+            minute:minute,
+        })
+    }
+
+    startAction=(time)=>{
+
+        this.setState({
+            time: time,
+            minute: 0,
+            second: 0,
+
+        },()=>{
+            InteractionManager.runAfterInteractions(() => {
+                this.timer =setInterval(()=>{this.formatSeconds()},500);
+
+            });
+        })
+    }
+
+    stopAction=()=>{
+        this.setState({
+            time:0,
+            second:0,
+            minute:0,
+        })
+        this.timer && clearInterval(this.timer);
     }
 }
 
