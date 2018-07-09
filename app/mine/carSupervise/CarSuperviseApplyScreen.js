@@ -27,6 +27,7 @@ import {CellView,CellSelectView} from '../../carSource/znComponent/CarPublishCel
 import * as AppUrls from "../../constant/appUrls";
 import {request} from '../../utils/RequestUtil';
 import CarSuperviseCarSelectScreen from "./CarSuperviseCarSelectScreen";
+import CarSuperviseSelectArticleScreen from "./CarSuperviseSelectArticleScreen";
 
 const Pixel = new PixelUtil();
 const IS_ANDROID = Platform.OS === 'android';
@@ -135,6 +136,15 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                 console.log(title);
                 break;
             case  '借出物':
+
+                this.toNextPage({
+                    name: 'CarSuperviseSelectArticleScreen',
+                    component: CarSuperviseSelectArticleScreen,
+                    params: {
+
+                    }
+                });
+
                 break;
             case '借出时间':
                 break;
