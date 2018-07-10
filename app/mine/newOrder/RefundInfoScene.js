@@ -23,10 +23,9 @@ import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import CarInfoScene from "../../carSource/CarInfoScene";
 import RefundCauseScene from "./RefundCauseScene";
+import RefuseCauseShowView from './component/RefuseCauseShowView';
 
-/*
- * 获取屏幕的宽和高
- **/
+
 const {width, height} = Dimensions.get('window');
 export default class RefundInfoScene extends BaseComponent {
 
@@ -41,6 +40,7 @@ export default class RefundInfoScene extends BaseComponent {
                     <RefundInfoServeView/>
                 </ScrollView>
                 <FootButtonView refuseClick={this._refuseClick} confirmClick={this._confirmClick}/>
+                <RefuseCauseShowView ref={(ref)=>{this.refuseCauseShowView = ref}}/>
             </View>
         )
     }
@@ -59,6 +59,8 @@ export default class RefundInfoScene extends BaseComponent {
     }
 
     _refuseClick=()=>{
+
+        this.refuseCauseShowView && this.refuseCauseShowView.showModal();
 
     }
 
@@ -198,8 +200,22 @@ class RefundInfoCarView extends Component{
     // 构造
       constructor(props) {
         super(props);
-       this.data=['',''];
+
+
+          this.data = ['','','',''];
+          this.fewData = [];
+          if(this.data.length>2){
+              this.fewData.push(this.data[0]);
+              this.fewData.push(this.data[1]);
+          }else {
+              this.fewData = this.data;
+          }
+
+          this.state={
+              data:this.fewData,
+          }
       }
+
     render(){
         return(
             <View style={{width:width,backgroundColor:'white',marginTop:Pixel.getPixel(10)}}>
@@ -208,7 +224,7 @@ class RefundInfoCarView extends Component{
                 </View>
                 <View style={{marginHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(20),paddingBottom:Pixel.getPixel(10),justifyContent:'space-between',borderBottomWidth:StyleSheet.hairlineWidth,borderBottomColor:fontAndColor.COLORA4}}>
                     {
-                        this.data.map((data,index)=>{
+                        this.state.data.map((data,index)=>{
                             return(
                                 <View key={index} style={{marginBottom:Pixel.getPixel(10)}}>
                                     <View style={{flexDirection:'row', alignItems:'center',justifyContent:'space-between'}}>
@@ -224,14 +240,21 @@ class RefundInfoCarView extends Component{
                         })
                     }
                 </View>
-                <View style={{justifyContent:'center', alignItems:'center',
-                    paddingVertical:Pixel.getPixel(16),
-                    borderBottomWidth:StyleSheet.hairlineWidth,
-                    borderBottomColor:fontAndColor.COLORA4,
-                    marginHorizontal:Pixel.getPixel(15),flexDirection:'row'}}>
-                    <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT26, marginRight:Pixel.getPixel(10)}}>查看全部</Text>
-                    <Image source={require('../../../images/neworder/shang.png')}/>
-                </View>
+                {
+                    this.data.length>2 &&
+                    (
+                        <TouchableOpacity activeOpacity={1} onPress={this.showMoreData}>
+                        <View style={{justifyContent:'center', alignItems:'center',
+                            paddingVertical:Pixel.getPixel(16),
+                            borderBottomWidth:StyleSheet.hairlineWidth,
+                            borderBottomColor:fontAndColor.COLORA4,
+                            marginHorizontal:Pixel.getPixel(15),flexDirection:'row'}}>
+                            <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT26, marginRight:Pixel.getPixel(10)}}>{this.state.data.length<=2?'查看全部':'收起列表'}</Text>
+                            <Image source={this.state.data.length<=2?require('../../../images/neworder/xia.png'):require('../../../images/neworder/shang.png')}/>
+                        </View>
+                    </TouchableOpacity>)
+                }
+
                 <View style={{marginHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(16),alignItems:'flex-end'}}>
                     <View style={{flexDirection:'row',marginBottom:Pixel.getPixel(10), alignItems:'center'}}>
                         <Text style={styles.titleText}>订金合计:  </Text>
@@ -251,6 +274,27 @@ class RefundInfoCarView extends Component{
             </View>
         )
     }
+
+    setData=(array)=>{
+
+
+    }
+
+    showMoreData=()=>{
+
+        if(this.state.data.length<=2){
+            this.setState({
+                data:this.data,
+            })
+        }else {
+            this.setState({
+                data:this.fewData,
+            })
+        }
+
+    }
+
+
 }
 class RefundInfoServeView extends Component{
 
@@ -265,7 +309,6 @@ class RefundInfoServeView extends Component{
                 <View style={{height:Pixel.getPixel(44), justifyContent:'center',paddingLeft:Pixel.getPixel(15),
                     borderBottomWidth:StyleSheet.hairlineWidth,borderBottomColor:fontAndColor.COLORA4}}>
                     <Text style={styles.titleText}>服务信息</Text>
-                    <ZNCountdownView/>
                 </View>
                 <View style={{paddingHorizontal:Pixel.getPixel(15),paddingTop:Pixel.getPixel(15),paddingBottom:Pixel.getPixel(20)}}>
                     {
@@ -297,14 +340,25 @@ class  ZNCountdownView extends Component{
       }
 
     componentWillMount() {
-        this.startAction(1*60);
+        this.startAction(10*60);
     }
 
 
 
     render(){
         return(
-            <Text>{`${this.state.minute<10?('0'+this.state.minute):this.state.minute}:${this.state.second<10?('0'+this.state.second):this.state.second}`}</Text>
+            <View style={{height:Pixel.getPixel(28),
+                borderRadius:Pixel.getPixel(14),
+                paddingLeft:Pixel.getPixel(10),
+                paddingRight:Pixel.getPixel(30),
+                backgroundColor:'#09A7B4',
+                flexDirection:'row',
+                alignItems:'center',
+                width:Pixel.getPixel(150)
+            }}>
+                <Text style={{color:'white', fontSize:Pixel.getFontPixel(10)}}>支付剩余时间</Text>
+                <Text style={{color:'white', fontSize:fontAndColor.CONTENTFONT24}}> {`${this.state.minute<10?('0'+this.state.minute):this.state.minute}:${this.state.second<10?('0'+this.state.second):this.state.second}`}</Text>
+            </View>
         )
     }
 
