@@ -102,35 +102,35 @@ export  default  class  PlatformChoose extends BaseComponent{
                         paddingHorizontal:Pixel.getPixel(15),
                     }}
                 >
-                    {/*<TouchableOpacity*/}
-                        {/*activeOpacity={.8}*/}
-                        {/*onPress={()=>{*/}
-                            {/*this.setState({*/}
-                                {/*pay_way:1*/}
-                            {/*})*/}
-                        {/*}}*/}
-                    {/*>*/}
-                        {/*<View*/}
-                            {/*style={{*/}
-                                {/*backgroundColor:'white',*/}
-                                {/*flexDirection:'row',*/}
-                                {/*alignItems:'center',*/}
-                                {/*borderBottomWidth:StyleSheet.hairlineWidth,*/}
-                                {/*borderBottomColor:fontAndColor.COLORA4,*/}
-                                {/*paddingVertical:Pixel.getPixel(15)*/}
-                            {/*}}*/}
-                        {/*>*/}
+                    <TouchableOpacity
+                        activeOpacity={.8}
+                        onPress={()=>{
+                            this.setState({
+                                pay_way:1
+                            })
+                        }}
+                    >
+                        <View
+                            style={{
+                                backgroundColor:'white',
+                                flexDirection:'row',
+                                alignItems:'center',
+                                borderBottomWidth:StyleSheet.hairlineWidth,
+                                borderBottomColor:fontAndColor.COLORA4,
+                                paddingVertical:Pixel.getPixel(15)
+                            }}
+                        >
 
-                            {/*<Image source={require('../../../../../images/carriagePriceImage/platform_pay.png')}/>*/}
-                            {/*<SaasText style={{fontSize:14, fontWeight:'200', flex:1, marginLeft:Pixel.getPixel(5)}}>平台账户支付</SaasText>*/}
-                            {/*{this.state.pay_way === 1?*/}
-                                {/*<Image style={{width: Pixel.getPixel(15), height: Pixel.getPixel(15)}}*/}
-                                       {/*source={require('../../../../../images/checked.png')}/>*/}
-                                {/*:null}*/}
+                            <Image source={require('../../../../../images/carriagePriceImage/platform_pay.png')}/>
+                            <SaasText style={{fontSize:14, fontWeight:'200', flex:1, marginLeft:Pixel.getPixel(5)}}>平台账户支付</SaasText>
+                            {this.state.pay_way === 1?
+                                <Image style={{width: Pixel.getPixel(15), height: Pixel.getPixel(15)}}
+                                       source={require('../../../../../images/checked.png')}/>
+                                :null}
 
 
-                        {/*</View>*/}
-                    {/*</TouchableOpacity>*/}
+                        </View>
+                    </TouchableOpacity>
                     <TouchableOpacity
                         activeOpacity={.8}
                         onPress={()=>{
