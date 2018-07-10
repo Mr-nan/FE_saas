@@ -1,6 +1,9 @@
 /**
  * Created by zhengnan on 2018/7/9.
  */
+/**
+ * Created by zhengnan on 2018/7/9.
+ */
 
 import React, {Component} from 'react';
 import {
@@ -28,18 +31,15 @@ const Pixel = new PixelUtil();
 const IS_ANDROID = Platform.OS === 'android';
 
 
-export  default class CarSuperviseSelectArticleScreen extends BaseComponent{
+export  default class CarSuperviseSelectCauseScreen extends BaseComponent{
 
     render(){
         return(
             <View style={styles.root}>
                 <ScrollView>
-                    <View style={{justifyContent:'center',height:Pixel.getPixel(30),paddingLeft:Pixel.getPixel(15)}}>
-                        <Text style={{color:fontAndColor.COLORA1, fontSize:fontAndColor.CONTENTFONT24}}>一辆车的权证可多选</Text>
-                    </View>
                     <SelectArticleView/>
                     <View style={{marginTop:Pixel.getPixel(10)}}>
-                        <ZNTextInput placeholderText="其他权证，请在此补充权证名称"/>
+                        <ZNTextInput placeholderText="其他原因，请在此写下借用原因"/>
                     </View>
                     <View style={styles.footContainer}>
                         <TouchableOpacity onPress={this.footBtnClick}>
@@ -49,7 +49,7 @@ export  default class CarSuperviseSelectArticleScreen extends BaseComponent{
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
-                <NavigationView title="选择借出物" backIconClick={this.backPage}/>
+                <NavigationView title="选择借用原因" backIconClick={this.backPage}/>
             </View>
         )
     }
@@ -57,20 +57,21 @@ export  default class CarSuperviseSelectArticleScreen extends BaseComponent{
 
 class SelectArticleView extends Component{
 
-      constructor(props) {
+    constructor(props) {
         super(props);
         this.state = {
             data:[
-                {title:'车辆',value:'1',select:false},
-                {title:'钥匙',value:'2',select:false},
-                {title:'登记证',value:'3',select:false},
-                {title:'行驶证',value:'4',select:false},
-                {title:'关单',value:'5',select:false},
-                {title:'商检单',value:'6',select:false},
-                {title:'一致性证书',value:'7',select:false},
-                {title:'合格证',value:'8',select:false}]
+                {title:'车展',value:'1'},
+                {title:'维修',value:'2'},
+                {title:'洗车',value:'3'},
+                {title:'过户',value:'4'},
+                {title:'保险',value:'5'},
+                {title:'试驾',value:'6'}
+                ],
+            select:{}
+
         };
-      }
+    }
 
     render(){
         return(
@@ -78,18 +79,18 @@ class SelectArticleView extends Component{
                 {
                     this.state.data.map((rowData,index)=>{
                         return(
-                                <View
-                                    key={index}
-                                    style={{height:Pixel.getPixel(30),
-                                        alignItems:'center',
-                                        justifyContent:'center',
-                                        borderRadius:Pixel.getPixel(15),paddingHorizontal:Pixel.getPixel(15),
-                                        marginTop:Pixel.getPixel(20),
-                                        marginLeft:Pixel.getPixel(15),
-                                        marginRight:Pixel.getPixel(10),
-                                        backgroundColor:rowData.select?fontAndColor.COLORB0:fontAndColor.COLORA3,}}>
-                                    <Text onPress={()=>{this.selectAction(index)}} style={{fontSize:fontAndColor.LITTLEFONT28,color:rowData.select?'white':fontAndColor.COLORA0}}>{rowData.title}</Text>
-                                </View>
+                            <View
+                                key={index}
+                                style={{height:Pixel.getPixel(30),
+                                    alignItems:'center',
+                                    justifyContent:'center',
+                                    borderRadius:Pixel.getPixel(15),paddingHorizontal:Pixel.getPixel(15),
+                                    marginTop:Pixel.getPixel(20),
+                                    marginLeft:Pixel.getPixel(15),
+                                    marginRight:Pixel.getPixel(10),
+                                    backgroundColor:rowData.title==this.state.select.title?fontAndColor.COLORB0:fontAndColor.COLORA3,}}>
+                                <Text onPress={()=>{this.selectAction(index)}} style={{fontSize:fontAndColor.LITTLEFONT28,color:rowData.title==this.state.select.title?'white':fontAndColor.COLORA0}}>{rowData.title}</Text>
+                            </View>
                         )
                     })
                 }
@@ -98,11 +99,10 @@ class SelectArticleView extends Component{
     }
 
     selectAction=(index)=>{
-                let data = this.state.data;
-                data[index].select = !data[index].select;
-                this.setState({
-                data:data
-            })
+
+        this.setState({
+            select:this.state.data[index],
+        })
     }
 
 

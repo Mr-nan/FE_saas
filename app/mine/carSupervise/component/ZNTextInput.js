@@ -8,20 +8,24 @@ import {
     Image,
     Text,
     TextInput,
+    Dimensions
 
 }from 'react-native';
-let {width} = Dimensions.get('window');
-
 
 import * as fontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
+import {observable} from 'mobx';
+import {observer} from 'mobx-react/native';
+let {width} = Dimensions.get('window');
+
+
 const Pixel = new PixelUtil();
 
 @observer
-class ZNTextInput extends Component{
+export default class ZNTextInput extends Component{
 
     @observable  znTextInputValue;
-    @observable  znTextInputPlaceholder
+    @observable  znTextInputPlaceholder;
     constructor(props) {
         super(props);
         this.znTextInputValue = '';
@@ -36,13 +40,13 @@ class ZNTextInput extends Component{
                     ref={(ref)=>{this.znTextInput = ref}}
                     style={{height: Pixel.getPixel(180),
                         borderColor: fontAndColor.COLORA1,
-                        width: ScreenWidth-Pixel.getPixel(30),
+                        width: width-Pixel.getPixel(30),
                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         paddingTop: 0,
                         paddingBottom: 0,
                         paddingLeft: 0,
                         paddingRight: 0,
-                        backgroundColor:fontAndColor.COLORB12
+                        backgroundColor:fontAndColor.COLORA3
                     }}
                     underlineColorAndroid='transparent'
                     onFocus={()=>{this.znTextInputPlaceholder=''}}

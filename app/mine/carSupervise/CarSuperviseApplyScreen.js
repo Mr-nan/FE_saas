@@ -28,6 +28,7 @@ import * as AppUrls from "../../constant/appUrls";
 import {request} from '../../utils/RequestUtil';
 import CarSuperviseCarSelectScreen from "./CarSuperviseCarSelectScreen";
 import CarSuperviseSelectArticleScreen from "./CarSuperviseSelectArticleScreen";
+import CarSuperviseSelectCauseScreen from "./CarSuperviseSelectCauseScreen";
 
 const Pixel = new PixelUtil();
 const IS_ANDROID = Platform.OS === 'android';
@@ -148,7 +149,14 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                 break;
             case '借出时间':
                 break;
-            case '借出原因':
+            case '借用原因':
+                this.toNextPage({
+                    name: 'CarSuperviseSelectCauseScreen',
+                    component: CarSuperviseSelectCauseScreen,
+                    params: {
+
+                    }
+                });
                 break;
         }
 
