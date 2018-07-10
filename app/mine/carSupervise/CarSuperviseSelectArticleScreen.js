@@ -30,6 +30,31 @@ const IS_ANDROID = Platform.OS === 'android';
 
 export  default class CarSuperviseSelectArticleScreen extends BaseComponent{
 
+    constructor(props) {
+        super(props);
+        this.data= [
+            {title:'车辆',value:'1',select:false},
+            {title:'钥匙',value:'2',select:false},
+            {title:'登记证',value:'3',select:false},
+            {title:'行驶证',value:'4',select:false},
+            {title:'关单',value:'5',select:false},
+            {title:'商检单',value:'6',select:false},
+            {title:'一致性证书',value:'7',select:false},
+            {title:'合格证',value:'8',select:false}
+        ];
+
+        if(this.props.selectArticle){
+            for(let selectData of this.props.selectArticle.data){
+                for(let tmpData of this.data){
+                    if(selectData.title == tmpData.title){
+                        tmpData.select = true;
+                    }
+                }
+            }
+        }
+
+    }
+
     render(){
         return(
             <View style={styles.root}>
@@ -37,7 +62,8 @@ export  default class CarSuperviseSelectArticleScreen extends BaseComponent{
                     <View style={{justifyContent:'center',height:Pixel.getPixel(30),paddingLeft:Pixel.getPixel(15)}}>
                         <Text style={{color:fontAndColor.COLORA1, fontSize:fontAndColor.CONTENTFONT24}}>一辆车的权证可多选</Text>
                     </View>
-                    <SelectArticleView/>
+                    <SelectArticleView data={this.data}
+                                       dataReturn={(data)=>{this.data = data}}/>
                     <View style={{marginTop:Pixel.getPixel(10)}}>
                         <ZNTextInput placeholderText="其他权证，请在此补充权证名称"/>
                     </View>
@@ -53,22 +79,22 @@ export  default class CarSuperviseSelectArticleScreen extends BaseComponent{
             </View>
         )
     }
+
+    footBtnClick=()=>{
+        let selectArray =this.data.fill(e=>e.select==true);
+        console.log(selectArray);
+        // this.props.selectArticle && this.props.selectArticle();
+    }
 }
 
 class SelectArticleView extends Component{
 
       constructor(props) {
         super(props);
+
+
         this.state = {
-            data:[
-                {title:'车辆',value:'1',select:false},
-                {title:'钥匙',value:'2',select:false},
-                {title:'登记证',value:'3',select:false},
-                {title:'行驶证',value:'4',select:false},
-                {title:'关单',value:'5',select:false},
-                {title:'商检单',value:'6',select:false},
-                {title:'一致性证书',value:'7',select:false},
-                {title:'合格证',value:'8',select:false}]
+            data:this.props.data
         };
       }
 
@@ -103,6 +129,8 @@ class SelectArticleView extends Component{
                 this.setState({
                 data:data
             })
+
+        this.props.dataReturn(data);
     }
 
 

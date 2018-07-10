@@ -32,14 +32,21 @@ const IS_ANDROID = Platform.OS === 'android';
 export default class CarSuperviseCarSelectScreen extends BaseComponent{
 
 
-      constructor(props) {
+    constructor(props) {
         super(props);
 
+        this.data = [
+            {carID:'1',vin:'JGFHGFEKFERTHJ',carName:'2017款别克精英版 1.8TSI 手自一体'},
+            {carID:'2',vin:'JGFHGFEKFERTHJ',carName:'2017款别克精英版 1.9TSI 手自一体'},
+            {carID:'3',vin:'JGFHGFEKFERTHJ',carName:'2017款别克精英版 2.0TSI 手自一体'},
+            {carID:'4',vin:'JGFHGFEKFERTHJ',carName:'2017款别克精英版 2.1TSI 手自一体'}
+        ];
+        this.selectCar=this.props.selectCar;
         let ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1==r2});
         this.state = {
-            dataSource:ds.cloneWithRows(['','','','']),
+            dataSource:ds.cloneWithRows(this.data),
         };
-      }
+    }
     render(){
         return(
             <View style={styles.root}>
@@ -56,13 +63,18 @@ export default class CarSuperviseCarSelectScreen extends BaseComponent{
 
     renderRow =(rowData)=> {
         return(
-            <View style={styles.carCell}>
-                <View>
-                    <Text style={styles.cellText}>车架号: JGFHGFEKFERTHJ</Text>
-                    <Text style={[styles.cellText,{marginTop:Pixel.getPixel(10)}]}>车型信息: 2017款别克精英版 1.8TSI 手自一体</Text>
+            <TouchableOpacity onPress={()=>{
+                this.selectCar = rowData;
+                this.setState({dataSource:this.state.dataSource.cloneWithRows(this.data)})
+            }}>
+                <View style={styles.carCell}>
+                    <View>
+                        <Text style={styles.cellText}>车架号: {rowData.vin}</Text>
+                        <Text style={[styles.cellText,{marginTop:Pixel.getPixel(10)}]}>车型信息: {rowData.carName}</Text>
+                    </View>
+                    <Image source={ this.selectCar? (this.selectCar.carID==rowData.carID? require('../../../images/carSuperviseImage/xuanzhong.png'):require('../../../images/carSuperviseImage/weixuanzhong.png')):(require('../../../images/carSuperviseImage/weixuanzhong.png'))}/>
                 </View>
-                <Image source={require('../../../images/carSuperviseImage/xuanzhong.png')}/>
-            </View>
+            </TouchableOpacity>
         )
     }
     renderFooter =()=> {
@@ -75,6 +87,11 @@ export default class CarSuperviseCarSelectScreen extends BaseComponent{
                 </TouchableOpacity>
             </View>
         )
+    }
+
+    footBtnClick=()=>{
+        this.props.confirmClick && this.props.confirmClick(this.selectCar);
+        this.backPage();
     }
 }
 
