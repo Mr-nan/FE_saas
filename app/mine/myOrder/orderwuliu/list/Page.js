@@ -577,7 +577,7 @@ export class TransportOrder extends Component{
                     <SaasText style={{fontSize: 16 , width:Pixel.getPixel(65),textAlign:'center'}}>{this.props.data.start_address}</SaasText>
                 </View>
                 <View style={{alignItems: 'center', marginTop: Pixel.getPixel(7)}}>
-                    <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1}}>{this.props.data.trans_type ===1?'大板车运输':this.props.data.trans_type===2?'救援车':"代价"}</SaasText>
+                    <SaasText style={{fontSize: 13, color: fontAndColor.COLORA1}}>{this.props.data.trans_type ===1?'大板车运输':this.props.data.trans_type===2?'救援车':"代驾"}</SaasText>
                     <Image style={{
                         width: Pixel.getPixel(170),
                         height: Pixel.getPixel(6),

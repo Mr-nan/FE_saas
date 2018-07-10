@@ -1439,7 +1439,7 @@ class CarriagePriceInfoListView extends Component {
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <SaasText style={{fontWeight: '200'}}>运输方式：</SaasText>
                             <SaasText
-                                style={{fontWeight: '200'}}>{this.props.params.transportType == 1 ? '大板车' : this.props.params.transportType == 2 ? "救援" : "代价"}</SaasText>
+                                style={{fontWeight: '200'}}>{this.props.params.transportType == 1 ? '大板车' : this.props.params.transportType == 2 ? "救援" : "代驾"}</SaasText>
                         </View>
                     </View>
                     <TouchableOpacity
