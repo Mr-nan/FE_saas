@@ -119,7 +119,7 @@ class SelectArticleView extends Component{
                                         marginTop:Pixel.getPixel(20),
                                         marginLeft:Pixel.getPixel(15),
                                         marginRight:Pixel.getPixel(10),
-                                        backgroundColor:rowData.select?fontAndColor.COLORB0:fontAndColor.COLORA3,}}>
+                                        backgroundColor:rowData.select?fontAndColor.COLORB0:'#F7F6FD',}}>
                                     <Text onPress={()=>{this.selectAction(index)}} style={{fontSize:fontAndColor.LITTLEFONT28,color:rowData.select?'white':fontAndColor.COLORA0}}>{rowData.title}</Text>
                                 </View>
                         )

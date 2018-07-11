@@ -118,7 +118,7 @@ class CarSuperviseListCell extends  Component{
     render(){
         return(
             <View style={{width:width,marginTop:Pixel.getPixel(10)}}>
-                <Image style={{paddingHorizontal:Pixel.getFontPixel(20)}} source={require('../../../images/carSuperviseImage/baise.png')}>
+                <Image style={{ width:width,paddingHorizontal:Pixel.getFontPixel(20)}} source={require('../../../images/carSuperviseImage/baise.png')}>
                     <View style={{marginTop:Pixel.getPixel(25)}}>
                         <View style={{flexDirection:'row',marginBottom:Pixel.getPixel(10), alignItems:'center',justifyContent:'space-between'}}>
                             <Text style={styles.cellItemTitle}>车架号：{'JGFHGFEKFERTHJ'}</Text>
@@ -127,8 +127,19 @@ class CarSuperviseListCell extends  Component{
                         <Text style={styles.cellItemTitle}>车型信息：{'2017款别克1.8TSI 手自一体'}</Text>
                     </View>
                 </Image>
-                <Image style={{paddingHorizontal:Pixel.getFontPixel(20),justifyContent:'center',}} resizeMode={'stretch'} source={require('../../../images/carSuperviseImage/hongse.png')}>
+                <Image style={{width:width,paddingHorizontal:Pixel.getFontPixel(20),justifyContent:'center',height:Pixel.getPixel(100)+Pixel.getPixel(40*2)}} resizeMode={'stretch'} source={require('../../../images/carSuperviseImage/hongse.png')}>
                     <View>
+                        <View style={{paddingBottom:Pixel.getPixel(10)}}>
+                            <View style={{flexDirection:'row'}}>
+                                <Text style={styles.cellItemValueTitle}>验证码</Text>
+                                <Text style={styles.cellItemValueText}>999000</Text>
+                            </View>
+                            <View style={{alignItems:'center',
+                                width:Pixel.getPixel(20),position: 'absolute',top:Pixel.getPixel(0),bottom:0,left:Pixel.getPixel(70)}}>
+                                <Image  style={{marginTop:Pixel.getPixel(4)}} source={require('../../../images/carSuperviseImage/xiayigezhuangtai.png')}/>
+                                <View style={{width:Pixel.getPixel(1),backgroundColor:'white',marginTop:Pixel.getPixel(4),height:Pixel.getPixel(20)}}/>
+                            </View>
+                        </View>
                         <View style={{paddingBottom:Pixel.getPixel(10)}}>
                             <View style={{flexDirection:'row'}}>
                                 <Text style={styles.cellItemValueTitle}>验证码</Text>
@@ -153,7 +164,6 @@ class CarSuperviseListCell extends  Component{
                                     position: 'absolute',
                                     width:Pixel.getPixel(60),
                                     right:Pixel.getPixel(5)
-
                                 }}>
                                     <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>借用{1}天</Text>
                                 </View>

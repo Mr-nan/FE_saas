@@ -46,7 +46,7 @@ export default class ZNTextInput extends Component{
                         paddingBottom: 0,
                         paddingLeft: 0,
                         paddingRight: 0,
-                        backgroundColor:fontAndColor.COLORA3
+                        backgroundColor:'#F7F6FD'
                     }}
                     defaultValue={this.props.defaultValue}
                     underlineColorAndroid='transparent'

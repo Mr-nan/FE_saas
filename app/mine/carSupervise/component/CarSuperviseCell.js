@@ -127,9 +127,9 @@ export class CellSelectView extends Component {
                                     }
                                 }} activeOpacity={1} key={index}>
                                     <View
-                                        style={[styles.checkedItemView,(this.state.currentChecked==data.title?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
+                                        style={[styles.checkedItemView,(this.state.currentChecked==data.title?{borderColor:fontAndColor.COLORB0,backgroundColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2,backgroundColor:'white'})]}>
                                         <Text allowFontScaling={false}
-                                              style={[styles.checkedItemText,(this.state.currentChecked==data.title?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }>{data.title}</Text>
+                                              style={[styles.checkedItemText,(this.state.currentChecked==data.title?{color:'white'}:{color:fontAndColor.COLORA2})] }>{data.title}</Text>
                                     </View>
                                 </TouchableOpacity>
                             )
