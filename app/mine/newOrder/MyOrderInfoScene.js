@@ -28,19 +28,14 @@ import MyOrderPayItem from "./component/MyOrderPayItem";
 import MyOrderListScene from "./MyOrderListScene";
 import MyOrderCarIDScene from "./MyOrderCarIDScene";
 import MyOrderChangeDataScene from "./MyOrderChangeDataScene";
+import {request} from "../../utils/RequestUtil";
+import * as Urls from "../../constant/appUrls";
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
 export default class MyOrderInfoScene extends BaseComponent {
-    initFinish = () => {
 
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows([1, 2, 3, 4, 6]),
-            renderPlaceholderOnly: 'success'
-        });
-    }
 
     // 构造
     constructor(props) {
@@ -49,8 +44,36 @@ export default class MyOrderInfoScene extends BaseComponent {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
-            type: 3
+            allData:{},
+            from:this.props.from
         };
+    }
+
+    initFinish = () => {
+        this.getData();
+    }
+
+    getData = () => {
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.order_id
+        };
+        request(Urls.ORDER_HOME_DETAIL, 'Post', maps)
+            .then((response) => {
+                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        dataSource: ds.cloneWithRows(GetOrderTextUtil.getList(response.mjson.data.status,this.state.from)),
+                        renderPlaceholderOnly: 'success',
+                        allData:response.mjson.data,
+                    });
+                },
+                (error) => {
+                    if (error.mycode == '-2100045' || error.mycode == '-1') {
+                        this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                    } else {
+                        this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                    }
+                });
     }
 
     render() {
@@ -76,7 +99,7 @@ export default class MyOrderInfoScene extends BaseComponent {
                         fontSize: Pixel.getPixel(15)
                     }}>取消订单</Text>
                 }} title='订单详情' backIconClick={this.backPage}/>
-                {GetOrderTextUtil.getPay(this.state.type)}
+                {GetOrderTextUtil.getPay(this.state.allData.status,this.state.from,this.state.allData)}
             </View>);
         }
     }
@@ -86,26 +109,29 @@ export default class MyOrderInfoScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowData == 1) {
             return (
-                <MyOrderInfoTitleItem type={this.state.type}/>
+                <MyOrderInfoTitleItem type={this.state.allData.status} from={this.state.from}/>
             );
         } else if (rowData == 2) {
             return (
-                GetOrderTextUtil.getScend(this.state.type)
+                GetOrderTextUtil.getScend(this.state.allData.status,this.state.from,this.state.allData)
             );
         } else if (rowData == 3) {
             return (
-                GetOrderTextUtil.getCar(this.state.type, () => {
-                    this.toNextPage({
-                        name: 'MyOrderChangeDataScene',
-                        component: MyOrderChangeDataScene,
-                        params: {}
-                    })
-                })
-
+                GetOrderTextUtil.getCar(this.state.allData.status,this.state.from,this.state.allData,(topMoney,bottomMoney,model_id,type)=>{
+                    if(type==1){
+                        this.setPrice(topMoney,bottomMoney,model_id)
+                    }else{
+                        this.toNextPage({
+                            name:'MyOrderChangeDataScene',
+                            component:MyOrderChangeDataScene,
+                            params:{order_id:this.props.order_id,data:this.state.allData,index:topMoney}
+                        })
+                    }
+                },(content)=>{this.props.showToast(content)},(show)=>{this.props.showModal(show)})
             );
         } else if (rowData == 4) {
             return (
-                GetOrderTextUtil.getBottom(this.state.type)
+                GetOrderTextUtil.getBottom(this.state.allData.status,this.state.from)
             );
         } else if (rowData == 5) {
             return (
@@ -117,6 +143,25 @@ export default class MyOrderInfoScene extends BaseComponent {
             );
         }
 
+    }
+
+    setPrice=(topMoney,bottomMoney,model_id)=>{
+        this.props.showModal(true);
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.order_id,
+            deposit: parseInt(bottomMoney)*10000,
+            model_id: model_id,
+            price: parseInt(topMoney)*10000,
+        };
+        request(Urls.ORDER_HOME_SETPRICE, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast('设置成功');
+                    this.getData();
+                },
+                (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
     }
 }
 

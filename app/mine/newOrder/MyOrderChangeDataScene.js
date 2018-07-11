@@ -33,7 +33,7 @@ export default class MyOrderChangeDataScene extends BaseComponent {
 
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows([1,2,3,4]),
+            dataSource: ds.cloneWithRows(this.props.data.models[this.props.index].car_items),
             renderPlaceholderOnly: 'success'
         });
     }
@@ -80,7 +80,7 @@ export default class MyOrderChangeDataScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
         return (
-          <MyOrderCarIDItem callBack={()=>{
+          <MyOrderCarIDItem data={rowData} callBack={()=>{
               this.toNextPage({
                   name:'MyOrderCarIDScene',
                   component:MyOrderCarIDScene,

@@ -97,7 +97,7 @@ export default class MyOrderScene extends BaseComponent {
                 this.toNextPage({
                     name:'MyOrderListScene',
                     component:MyOrderListScene,
-                    params:{title:rowData.name,index:index}
+                    params:{title:rowData.name,business:parseInt(rowID)+1}
                 })
           }}/>
         );

@@ -25,13 +25,17 @@ export  default class MyOrderInfoTimeItem extends PureComponent {
     }
 
     render() {
+        let date = this.props.data.created_order_time;
+        date = date.substring(0,19);
+        date = date.replace(/-/g,'/');
+        let timestamp = new Date(date).getTime();
         return (
             <View style={{width:width,height:Pixel.getPixel(41),backgroundColor:'#FFF8EA',alignItems:'center',
                 flexDirection:'row'}}>
                 <Text style={{fontSize:Pixel.getPixel(13),color:'#846545',marginLeft:Pixel.getPixel(15)}}>
                     等待支付中，剩
                 </Text>
-                <DepositCountDown leftTime={10012300}/>
+                <DepositCountDown leftTime={timestamp}/>
                 <Text style={{fontSize:Pixel.getPixel(13),color:'#846545'}}>
                     ，自动关闭订单
                 </Text>

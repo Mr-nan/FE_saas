@@ -17,6 +17,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
+import ZNCountdownView from "./ZNCountdownView";
 export  default class BankTitleItem extends PureComponent {
 
     constructor(props) {
@@ -27,7 +28,19 @@ export  default class BankTitleItem extends PureComponent {
         return (
             <Image style={{width:width,height:Pixel.getPixel(169),resizeMode:'stretch'}} source={require('../../../../images/neworder/sanjiaobg.png')}>
                 <Image style={{width:width-Pixel.getPixel(28),marginLeft:Pixel.getPixel(14),marginTop:Pixel.getPixel(5),
-                height:Pixel.getPixel(134)}} source={require('../../../../images/neworder/qianbg.png')}></Image>
+                height:Pixel.getPixel(134),alignItems:'center',justifyContent:'center'}} source={require('../../../../images/neworder/qianbg.png')}>
+                    <Text style={{fontSize:Pixel.getPixel(14),color:'#fff',backgroundColor:'#00000000',marginTop:Pixel.getPixel(15)}}>
+                        应付金额
+                    </Text>
+                    <Text style={{fontSize:Pixel.getPixel(37),color:'#fff',marginTop:Pixel.getPixel(13), fontWeight:'bold',backgroundColor:'#00000000'}}>
+                        203,990.00<Text style={{fontSize:Pixel.getPixel(24),color:'#fff',backgroundColor:'#00000000'
+                        , fontWeight:'normal'}}>元
+                    </Text>
+                    </Text>
+                    <ZNCountdownView callBack={()=>{
+
+                    }}/>
+                </Image>
             </Image>
         );
     }

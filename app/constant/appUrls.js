@@ -1867,3 +1867,13 @@ export const GETSTOREGETER = BASEURL + "v2/order.home/getStoreGeter";
  *   订单列表
  **/
 export const ORDER_HOME_LISTS = BASEURL + "v3/order.home/lists";
+
+/**
+ *   订单详情
+ **/
+export const ORDER_HOME_DETAIL = BASEURL + "v3/order.home/detail";
+
+/**
+ *   设置定金和成交价
+ **/
+export const ORDER_HOME_SETPRICE = BASEURL + "v3/order.home/setPrice";

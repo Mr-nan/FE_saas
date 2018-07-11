@@ -17,7 +17,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
-export  default class MyOrderInfoTiShiItem extends PureComponent {
+export  default class BankTitleTextItem extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -25,9 +25,9 @@ export  default class MyOrderInfoTiShiItem extends PureComponent {
 
     render() {
         return (
-            <View style={{width:width,height:Pixel.getPixel(40),alignItems:'center',flexDirection:'row'}}>
-                <Text style={{fontSize:Pixel.getPixel(11),color:'#9B9B9B',marginLeft:Pixel.getPixel(12)}}>“单车成交价”及“单车订金”提交后不可修改</Text>
-                <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14),marginLeft:Pixel.getPixel(3)}} source={require('../../../../images/neworder/hongtishi.png')}/>
+            <View style={{width:width, backgroundColor:'#00000000'}}>
+                <Text style={{fontSize:Pixel.getPixel(12),color:'#9E9E9E',
+                marginLeft:Pixel.getPixel(33),marginBottom:Pixel.getPixel(9)}}>选择支付方式</Text>
             </View>
         );
     }

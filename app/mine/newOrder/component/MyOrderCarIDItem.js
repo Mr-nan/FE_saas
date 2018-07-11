@@ -31,7 +31,7 @@ export  default class MyOrderCarIDItem extends PureComponent {
                 this.props.callBack();
             }} style={{width:width,height:Pixel.getPixel(45),backgroundColor:'#fff',flexDirection:'row'}}>
                 <View style={{flex:1,justifyContent:'center'}}>
-                    <Text style={{color:'#666',fontAndColor:Pixel.getPixel(14),marginLeft:Pixel.getPixel(15)}}>LE4HG3GB2GL239267</Text>
+                    <Text style={{color:'#666',fontAndColor:Pixel.getPixel(14),marginLeft:Pixel.getPixel(15)}}>{this.props.data.sub_order_no}</Text>
                 </View>
                 <View style={{flex:1, flexDirection:'row',alignItems:'center',justifyContent:'flex-end',marginRight:Pixel.getPixel(15)}}>
                     <View style={{height:Pixel.getPixel(15),justifyContent:'center',alignItems:'center',borderRadius:10,

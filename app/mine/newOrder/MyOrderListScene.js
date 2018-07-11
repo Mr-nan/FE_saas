@@ -22,6 +22,7 @@ import NavigatorView from '../../component/AllNavigationView';
 import MyOrderListItem from './component/MyOrderListItem';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from "../../constant/appUrls";
+import MyOrderInfoScene from "./MyOrderInfoScene";
 /*
  * 获取屏幕的宽和高
  **/
@@ -45,7 +46,7 @@ export default class MyOrderListScene extends BaseComponent {
 
     getData=()=>{
         let maps = {
-            business:1,
+            business:this.props.business,
             company_id:global.companyBaseID,
             rows:5,
             page:this.page,
@@ -64,7 +65,7 @@ export default class MyOrderListScene extends BaseComponent {
                 },
                 (error) => {
                     if (error.mycode == '-2100045'||error.mycode == '-1') {
-                        this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
+                        this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                     } else {
                         this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                     }
@@ -106,8 +107,12 @@ export default class MyOrderListScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
         return (
-          <MyOrderListItem data={rowData} callBack={(index)=>{
-
+          <MyOrderListItem data={rowData} callBack={()=>{
+              this.toNextPage({
+                  name:'MyOrderInfoScene',
+                  component:MyOrderInfoScene,
+                  params:{order_id:rowData.order_id,from:this.props.business}
+              })
           }}/>
         );
     }

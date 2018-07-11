@@ -21,6 +21,10 @@ import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import {request} from '../../utils/RequestUtil';
 import BankTitleItem from "./component/BankTitleItem";
+import BankTitleTextItem from "./component/BankTitleTextItem";
+import BankSelectItem from "./component/BankSelectItem";
+import BankTextItem from "./component/BankTextItem";
+import BankButtonItem from "./component/BankButtonItem";
 /*
  * 获取屏幕的宽和高
  **/
@@ -29,7 +33,7 @@ export default class BankScene extends BaseComponent {
     initFinish = () => {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows([1,2,3,4]),
+            dataSource: ds.cloneWithRows([1,2,3,4,5]),
             renderPlaceholderOnly: 'success'
         });
     }
@@ -78,28 +82,26 @@ export default class BankScene extends BaseComponent {
                           removeClippedSubviews={false}
                           renderRow={this._renderRow}
                           enableEmptySections={true}
-                          renderSeparator={this._renderSeperator}
                 />
             </View>);
         }
     }
 
-    _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
-        return (
-            <View
-                key={`${sectionID}-${rowID}`}
-                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
-        )
-    }
 
 
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
         if(rowData==1){
             return(<BankTitleItem/>);
+        }else if(rowData==2){
+            return(<BankTitleTextItem/>);
+        }else if(rowData==3){
+            return(<BankSelectItem/>);
+        }else if(rowData==4){
+            return(<BankTextItem/>);
         }else{
             return (
-                <View/>
+                <BankButtonItem/>
             );
         }
     }

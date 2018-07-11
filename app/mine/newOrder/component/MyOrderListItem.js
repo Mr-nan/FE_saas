@@ -37,7 +37,9 @@ export  default class MyOederItem extends PureComponent {
         }
 
         return (
-            <View style={{width:width,backgroundColor:'#fff'}}>
+            <TouchableOpacity activeOpacity={0.9} onPress={()=>{
+                this.props.callBack();
+            }} style={{width:width,backgroundColor:'#fff'}}>
                 <View style={{width:width,height:Pixel.getPixel(40), flexDirection:'row'}}>
                     <View style={{flex:1,justifyContent:'center'}}>
                         <Text style={{fontSize:Pixel.getPixel(14),color:'#666666',marginLeft:Pixel.getPixel(16)}}>
@@ -82,7 +84,7 @@ export  default class MyOederItem extends PureComponent {
                         <View style={{flex:3,justifyContent:'center',alignItems:'flex-end'}}>
                             <Text style={{fontSize:Pixel.getPixel(12),color:'#666',marginRight:Pixel.getPixel(16)}}>
                                 <Text style={{fontSize:Pixel.getPixel(15),color:'#666', fontWeight:'bold'}}>
-                                    {this.props.data.set_deposit_amount/10000}
+                                    {this.props.data.deposit_amount/10000}
                                 </Text>万元
                             </Text>
                         </View>
@@ -103,7 +105,7 @@ export  default class MyOederItem extends PureComponent {
                     </View>
                 </View>
 
-            </View>
+            </TouchableOpacity>
         );
     }
 
