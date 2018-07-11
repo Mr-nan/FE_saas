@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
     cellValue: {
         color: fontAndColor.COLORA2,
         fontSize: fontAndColor.LITTLEFONT28,
+        width:sceneWidth - Pixel.getPixel(130),
     },
     checkedItemView: {
         borderColor: fontAndColor.COLORA2,

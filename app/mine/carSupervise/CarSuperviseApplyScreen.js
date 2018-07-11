@@ -154,9 +154,13 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                     params: {
                         selectCar:this.selectCar,
                         confirmClick:(selectCar)=>{
-                            this.selectCar= selectCar;
-                            this.titleData[0][0].value =selectCar.vin+'\n'+selectCar.carName;
-                            this.updataTitle();
+
+                            if(selectCar){
+                                this.selectCar= selectCar;
+                                this.titleData[0][0].value =selectCar.vin+'\n'+selectCar.carName;
+                                this.updataTitle();
+                            }
+
                         }
                     }
                 });
@@ -169,9 +173,35 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                     params: {
                         selectArticle:this.selectArticle,
                         confirmClick:(selectArticle)=>{
-                            this.selectArticle= selectArticle;
-                            this.titleData[0][1].value =selectCar.vin+'\n'+selectCar.carName;
-                            this.updataTitle();
+
+                            if(selectArticle){
+                                this.selectArticle= selectArticle;
+                                let value = '';
+
+                                for(let i=0;i<selectArticle.data.length;i++){
+
+                                    let data = selectArticle.data[i];
+                                    if(i>0){
+                                        value+='/';
+                                    }
+                                    value+=data.title;
+                                }
+
+                                let string = '请选择';
+
+                                if(value && selectArticle.remark){
+                                    string = value+'\n'+selectArticle.remark;
+
+                                }else if(value){
+                                    string = value;
+                                }else if(selectArticle.remark) {
+                                    string = selectArticle.remark
+                                }
+
+                                this.titleData[0][1].value =string;
+                                this.updataTitle();
+                            }
+
                         }
                     }
                 });
@@ -185,7 +215,27 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                     name: 'CarSuperviseSelectCauseScreen',
                     component: CarSuperviseSelectCauseScreen,
                     params: {
+                        selectCause:this.selectCause,
+                        confirmClick:(selectCause)=>{
 
+                            if(selectCause){
+                                this.selectCause= selectCause;
+                                let string = '请选择';
+
+                                if(selectCause.data.title && selectCause.remark){
+                                    string = selectCause.data.title+'\n'+selectCause.remark;
+
+                                }else if(selectCause.data.title){
+                                    string = selectCause.data.title;
+                                }else if(selectCause.remark) {
+                                    string = selectCause.remark
+                                }
+
+                                this.titleData[0][4].value =string;
+                                this.updataTitle();
+                            }
+
+                        }
                     }
                 });
                 break;
@@ -210,7 +260,8 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
 
     _handleDatePicked = (date)=>{
         let d = this.dateFormat(date,'yyyy-MM-dd');
-        console.log(d);
+        this.titleData[0][2].value = d;
+        this.updataTitle();
         this._hideDateTimePicker();
     };
 

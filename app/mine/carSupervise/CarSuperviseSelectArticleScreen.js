@@ -65,7 +65,10 @@ export  default class CarSuperviseSelectArticleScreen extends BaseComponent{
                     <SelectArticleView data={this.data}
                                        dataReturn={(data)=>{this.data = data}}/>
                     <View style={{marginTop:Pixel.getPixel(10)}}>
-                        <ZNTextInput placeholderText="其他权证，请在此补充权证名称"/>
+                        <ZNTextInput placeholderText="其他权证，请在此补充权证名称"
+                                     onChangeText={(text)=>{this.remark=text}}
+                                     defaultValue={this.props.selectArticle && this.props.selectArticle.remark}
+                        />
                     </View>
                     <View style={styles.footContainer}>
                         <TouchableOpacity onPress={this.footBtnClick}>
@@ -81,9 +84,12 @@ export  default class CarSuperviseSelectArticleScreen extends BaseComponent{
     }
 
     footBtnClick=()=>{
-        let selectArray =this.data.fill(e=>e.select==true);
-        console.log(selectArray);
-        // this.props.selectArticle && this.props.selectArticle();
+        let selectArray =this.data.filter(e=>e.select==true);
+        this.props.confirmClick && this.props.confirmClick({
+            data:selectArray,
+            remark:this.remark,
+        });
+        this.backPage();
     }
 }
 

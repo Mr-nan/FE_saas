@@ -33,13 +33,29 @@ const IS_ANDROID = Platform.OS === 'android';
 
 export  default class CarSuperviseSelectCauseScreen extends BaseComponent{
 
+    constructor(props) {
+        super(props);
+
+            this.data=[
+                {title:'车展',value:'1'},
+                {title:'维修',value:'2'},
+                {title:'洗车',value:'3'},
+                {title:'过户',value:'4'},
+                {title:'保险',value:'5'},
+                {title:'试驾',value:'6'}
+            ];
+            this.select=this.props.selectCause?this.props.selectCause.data:{};
+    }
+
     render(){
         return(
             <View style={styles.root}>
                 <ScrollView>
-                    <SelectArticleView/>
+                    <SelectArticleView data = {this.data} select={this.select} selectAction={(selectData)=>{this.select=selectData}}/>
                     <View style={{marginTop:Pixel.getPixel(10)}}>
-                        <ZNTextInput placeholderText="其他原因，请在此写下借用原因"/>
+                        <ZNTextInput placeholderText="其他原因，请在此写下借用原因"
+                                     onChangeText={(text)=>{this.remark=text}}
+                                     defaultValue={this.props.selectCause && this.props.selectCause.remark}/>
                     </View>
                     <View style={styles.footContainer}>
                         <TouchableOpacity onPress={this.footBtnClick}>
@@ -53,6 +69,14 @@ export  default class CarSuperviseSelectCauseScreen extends BaseComponent{
             </View>
         )
     }
+
+    footBtnClick=()=>{
+        this.props.confirmClick && this.props.confirmClick({
+            data:this.select,
+            remark:this.remark,
+        });
+        this.backPage();
+    }
 }
 
 class SelectArticleView extends Component{
@@ -60,15 +84,8 @@ class SelectArticleView extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            data:[
-                {title:'车展',value:'1'},
-                {title:'维修',value:'2'},
-                {title:'洗车',value:'3'},
-                {title:'过户',value:'4'},
-                {title:'保险',value:'5'},
-                {title:'试驾',value:'6'}
-                ],
-            select:{}
+            data:this.props.data,
+            select:this.props.select
 
         };
     }
@@ -103,6 +120,8 @@ class SelectArticleView extends Component{
         this.setState({
             select:this.state.data[index],
         })
+
+        this.props.selectAction(this.state.data[index]);
     }
 
 

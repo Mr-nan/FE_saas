@@ -28,8 +28,8 @@ export default class ZNTextInput extends Component{
     @observable  znTextInputPlaceholder;
     constructor(props) {
         super(props);
-        this.znTextInputValue = '';
-        this.znTextInputPlaceholder = this.props.placeholderText;
+        this.znTextInputValue = this.props.defaultValue? this.props.defaultValue:'';
+        this.znTextInputPlaceholder = this.props.defaultValue?'':this.props.placeholderText;
         this.state = {};
     }
 
@@ -48,6 +48,7 @@ export default class ZNTextInput extends Component{
                         paddingRight: 0,
                         backgroundColor:fontAndColor.COLORA3
                     }}
+                    defaultValue={this.props.defaultValue}
                     underlineColorAndroid='transparent'
                     onFocus={()=>{this.znTextInputPlaceholder=''}}
                     onChangeText={(text)=>{
@@ -60,12 +61,15 @@ export default class ZNTextInput extends Component{
                         this.znTextInput.setNativeProps({
                             text: this.znTextInputValue,
                         });
+
+                        this.props.onChangeText(this.znTextInputValue);
                     }}
                     onEndEditing={()=>{
                         if(this.znTextInputValue==''){
                             this.znTextInputPlaceholder = this.props.placeholderText;
                         }
-                    }}>
+                    }}
+                    multiline={true}>
                 </TextInput>
                 <View style={{left:Pixel.getPixel(30),top:Pixel.getPixel(30),position: 'absolute'}}>
                     <Text style={{color:fontAndColor.COLORA1,
