@@ -17,8 +17,7 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 正式地址
  */
-// export const BASEURL = 'https://gatewayapi.dycd.com/';
-
+//export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -1824,3 +1823,7 @@ export const STORE_GETER_REQUEST = BASEURL + "v2/order.home/storeGeterRequest";
  *   运单提车人信息
  **/
 export const GETSTOREGETER = BASEURL + "v2/order.home/getStoreGeter";
+/**
+ *  金融转发
+ **/
+export const FINANCE_API = BASEURL + "v1/finance/index";
