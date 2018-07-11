@@ -27,6 +27,8 @@ import PixelUtil from '../../utils/PixelUtil';
 import * as AppUrls from "../../constant/appUrls";
 import {request} from '../../utils/RequestUtil';
 import CarSuperviseApplyScreen from "./CarSuperviseApplyScreen";
+import  AllLoading from '../../component/AllLoading';
+
 
 const Pixel = new PixelUtil();
 const IS_ANDROID = Platform.OS === 'android';
@@ -40,7 +42,7 @@ export default class CarSuperviseListScreen extends BaseComponent {
         let ds = new ListView.DataSource({rowHasChanged:(r1,r2)=> r1!==r2});
 
         this.state = {
-            dataSource:ds.cloneWithRows(['','','','']),
+            dataSource:ds.cloneWithRows([{borrow_status:0},{borrow_status:1},{borrow_status:2},{borrow_status:3},{borrow_status:4},{borrow_status:5},{borrow_status:6},{borrow_status:7},{borrow_status:8}]),
             barStyle:'default'
         };
       }
@@ -74,13 +76,15 @@ export default class CarSuperviseListScreen extends BaseComponent {
                                 backIconClick={this.backPage}
                                 wrapStyle={{backgroundColor:'white'}}
                                 titleStyle={{color:fontAndColor.COLORA0}}/>
+                <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
+                }}/>
             </View>
         )
     }
 
     renderRow =(data)=> {
           return(
-              <CarSuperviseListCell/>
+              <CarSuperviseListCell data={data} repealButtonClick={()=>{this.refs.allloading.changeShowType(true,'是否确定撤销\n\n撤销后系统将无法恢复！')}}/>
           )
     }
 
@@ -117,6 +121,7 @@ class FootButtom extends Component{
 class CarSuperviseListCell extends  Component{
 
     render(){
+        let {data} = this.props;
         return(
             <View style={{width:width,marginTop:Pixel.getPixel(10)}}>
                 <Image style={{ width:width,paddingHorizontal:Pixel.getFontPixel(20)}} source={require('../../../images/carSuperviseImage/baise.png')}>
@@ -128,7 +133,8 @@ class CarSuperviseListCell extends  Component{
                         <Text style={styles.cellItemTitle}>车型信息：{'2017款别克1.8TSI 手自一体'}</Text>
                     </View>
                 </Image>
-                <Image style={{width:width,paddingHorizontal:Pixel.getFontPixel(20),justifyContent:'center',height:Pixel.getPixel(100)+Pixel.getPixel(40*2)}} resizeMode={'stretch'} source={require('../../../images/carSuperviseImage/hongse.png')}>
+                <Image style={{width:width,paddingHorizontal:Pixel.getFontPixel(20),justifyContent:'center',height:Pixel.getPixel(100)+Pixel.getPixel(40*2)}} resizeMode={'stretch'}
+                       source={this.getTypeBackImage(data.borrow_status)}>
                     <View>
                         <View style={{paddingBottom:Pixel.getPixel(10)}}>
                             <View style={{flexDirection:'row'}}>
@@ -184,18 +190,83 @@ class CarSuperviseListCell extends  Component{
                             </View>
                         </View>
                     </View>
-                    <Image style={{
-                        right:-Pixel.getPixel(0),
-                        bottom:-Pixel.getPixel(5),
-                        position: 'absolute',
-                        width:Pixel.getPixel(54),
-                        height:Pixel.getPixel(54),alignItems:'center',justifyContent:'center'}}
-                           source={require('../../../images/carSuperviseImage/yuananniu.png')}>
-                        <Text style={{color:fontAndColor.COLORB4, fontSize:fontAndColor.BUTTONFONT30}}>撤销</Text>
-                    </Image>
+                    {
+                        (data.borrow_status==1||data.borrow_status==2||data.borrow_status==3) &&(<TouchableOpacity style={{right:-Pixel.getPixel(0), bottom:-Pixel.getPixel(5), position: 'absolute'}}
+                                          onPress={this.props.repealButtonClick}>
+                            <Image style={{
+                                width:Pixel.getPixel(54),
+                                height:Pixel.getPixel(54),alignItems:'center',justifyContent:'center'}}
+                                   source={require('../../../images/carSuperviseImage/yuananniu.png')}>
+                                <Text style={{color:fontAndColor.COLORB4, fontSize:fontAndColor.LITTLEFONT26,backgroundColor:'transparent',marginBottom:Pixel.getPixel(6)
+                                }}>撤销</Text>
+                            </Image>
+                        </TouchableOpacity>)
+                    }
                 </Image>
             </View>
         )
+    }
+
+    getTypeBackImage=(type)=>{
+        switch (type){
+            case 0: // 借出状态
+                return require('../../../images/carSuperviseImage/lanse.png');
+                break;
+            case 1: // 待审核
+                return require('../../../images/carSuperviseImage/lanse.png');
+                break;
+            case 2: // 审核中
+                return require('../../../images/carSuperviseImage/lanse.png');
+                break;
+            case 3: // 审核通过
+                return require('../../../images/carSuperviseImage/lvse.png');
+                break;
+            case 4: // 审核未通过
+                return require('../../../images/carSuperviseImage/hongse.png');
+                break;
+            case 5: // 已撤销
+                return require('../../../images/carSuperviseImage/hongse.png');
+                break;
+            case 6: // 确认借出
+                return require('../../../images/carSuperviseImage/lanse.png');
+                break;
+            case 7: // 已还
+                return require('../../../images/carSuperviseImage/lanse.png');
+            case 8: // 已作废
+                return require('../../../images/carSuperviseImage/huise.png');
+                break;
+            default:
+        }
+
+    }
+    getTypeTitle=(type)=>{
+        switch (type){
+            case 1: // 待审核
+                return '待审核';
+                break;
+            case 2: // 审核中
+                return '审核中';
+                break;
+            case 3: // 审核通过
+                return '审核通过';
+                break;
+            case 4: // 审核未通过
+                return '审核未通过';
+                break;
+            case 5: // 已撤销
+                return '已撤销';
+                break;
+            case 6: // 确认借出
+                return '已借出';
+                break;
+            case 7: // 已还
+                return '已归还';
+            case 8: // 已作废
+                return '已作废';
+                break;
+            default:
+        }
+
     }
 }
 
@@ -223,7 +294,7 @@ const styles = StyleSheet.create({
     cellItemValueText:{
         color:'white',
         fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        // backgroundColor:'transparent',
+        backgroundColor:'transparent',
         height:Pixel.getPixel(25),
         width:width - Pixel.getPixel(170),
         marginLeft:Pixel.getPixel(20),
