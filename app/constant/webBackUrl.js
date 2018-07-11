@@ -62,3 +62,8 @@ export const PAY = 'www.pay.com';
  * 监管费支付
  **/
 export const SUPERVICEPAY = 'www.supervicepay.com';
+
+/**
+ * 支付赎车保证金
+ **/
+export const SUPERVICEPAYS = 'www.supervicepays.com';
