@@ -67,7 +67,8 @@ export default class CarSuperviseListScreen extends BaseComponent {
         return (
             <View style={styles.root}>
                 <StatusBar barStyle={this.state.barStyle}/>
-                <ListView  dataSource={this.state.dataSource} renderRow={this.renderRow}/>
+                <ListView  dataSource={this.state.dataSource}
+                           renderRow={this.renderRow}/>
                 <FootButtom footClick={this.footClick}/>
                 <NavigationView title={'监管物借出列表'}
                                 backIconClick={this.backPage}
@@ -183,6 +184,15 @@ class CarSuperviseListCell extends  Component{
                             </View>
                         </View>
                     </View>
+                    <Image style={{
+                        right:-Pixel.getPixel(0),
+                        bottom:-Pixel.getPixel(5),
+                        position: 'absolute',
+                        width:Pixel.getPixel(54),
+                        height:Pixel.getPixel(54),alignItems:'center',justifyContent:'center'}}
+                           source={require('../../../images/carSuperviseImage/yuananniu.png')}>
+                        <Text style={{color:fontAndColor.COLORB4, fontSize:fontAndColor.BUTTONFONT30}}>撤销</Text>
+                    </Image>
                 </Image>
             </View>
         )
@@ -213,9 +223,9 @@ const styles = StyleSheet.create({
     cellItemValueText:{
         color:'white',
         fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        backgroundColor:'transparent',
+        // backgroundColor:'transparent',
         height:Pixel.getPixel(25),
-        width:width - Pixel.getPixel(140),
+        width:width - Pixel.getPixel(170),
         marginLeft:Pixel.getPixel(20),
     }
 
