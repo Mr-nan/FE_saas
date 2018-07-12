@@ -45,13 +45,18 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
     constructor(props) {
         super(props);
+
+        this.flag_1 = false;
+        this.flag_2 = false;
+
+
         // 初始状态
         this.state = {
             renderPlaceholderOnly: "loading",
             isShowCallUpView: false,
             senderInfo: null,
             receiverInfo: null,
-            isChecked: true,
+            isChecked: false,
             payShow:false
         }
 
@@ -625,15 +630,13 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
         this.params.invoice_data = this.stringify(this.params.invoice_data);
         this.params.model_data = this.stringify(this.params.model_data);
-
+        let data;
         Net.request(AppUrls.ORDER_LOGISTICS_QUERY, 'post', this.params).then((response) => {
             this.props.showModal(false);
-            let data = response.mjson.data;
-            this.setState({
-                renderPlaceholderOnly: 'success',
-                priceData: data
-            });
+            data = response.mjson.data;
 
+            this.flag_1 = true;
+            this.renderUI(data)
         }, (error) => {
             this.props.showModal(false);
             this.setState({
@@ -644,21 +647,30 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
         });
 
+        if(typeof this.logistics_contract === 'undefined'){
 
-        Net.request(AppUrls.AGREEMENT_LISTS, 'post', {source_type:5, fund_channel:'物流'}).then((response) => {
+            Net.request(AppUrls.AGREEMENT_LISTS, 'post', {source_type:5, fund_channel:'物流'}).then((response) => {
+                if (response.mjson.code ==1){
+                    this.flag_2 = true;
+                    this.logistics_contract = response.mjson.data.list[0];
+                    this.renderUI(data)
+                }
 
-            if (response.mjson.code ==1){
+            }, (error) => {
 
-                this.logistics_contract = response.mjson.data.list[0];
-            }
+                this.props.showToast(error.mjson.msg);
 
-        }, (error) => {
+            });
+        }
+    }
 
-            this.props.showToast(error.mjson.msg);
-
-        });
-
-
+    renderUI = (data) => {
+        if (this.flag_1 && this.flag_2) {
+            this.setState({
+                renderPlaceholderOnly: 'success',
+                priceData: data
+            });
+        }
     }
 
     preserveOrder = (type) => {
@@ -1439,7 +1451,7 @@ class CarriagePriceInfoListView extends Component {
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <SaasText style={{fontWeight: '200'}}>运输方式：</SaasText>
                             <SaasText
-                                style={{fontWeight: '200'}}>{this.props.params.transportType == 1 ? '大板车' : this.props.params.transportType == 2 ? "救援" : "代驾"}</SaasText>
+                                style={{fontWeight: '200'}}>{this.props.params.transportType == 1 ? '大板车' : this.props.params.transportType == 2 ? "救援" : "代价"}</SaasText>
                         </View>
                     </View>
                     <TouchableOpacity
@@ -1565,12 +1577,12 @@ class PriceItemView extends Component {
                 <View style={{marginTop: Pixel.getPixel(10), flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{
                         color: fontAndColor.COLORA0,
-                        fontSize: 16,
+                        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
                         fontWeight: '200'
                     }}>{value}</Text>
                     <Text style={{
                         color: fontAndColor.COLORA0,
-                        fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
+                        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
                         fontWeight: '200'
                     }}>{value === '平台赠送' || value === '减免' ? '' : '元'}</Text>
                 </View>

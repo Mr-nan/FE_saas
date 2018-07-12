@@ -334,8 +334,152 @@ class DistrictList extends  Component{
             .then((response) => {
 
                 this.props.showLoadModel(false);
+                //广东东莞，"441900"
+                // cityCode:"441900"
+                // cityId:367
+                // cityName:"东莞"
+                // countyCode:"441900"
+                // countyName:"东莞市"
+                // id:11831
+                // initial:""
+                // provCode:"440000"
+                // provId:20
+                // provName:"广东"
+                // 海南三沙，
+                // cityCode:"460300"
+                // cityId:396
+                // cityName:"三沙"
+                // countyCode:"460321"
+                // countyName:"西沙群岛"
+                // id:11966
+                // initia:""
+                // provCode:"460000"
+                // provId:25
+                // provName:"海南"
+                // 甘肃嘉峪关，
+                // cityCode:"620200"
+                // cityId:135
+                // cityName:"嘉峪关"
+                // countyCode:"620201"
+                // countyName:"嘉峪关市"
+                // id:12612
+                // initial:""
+                // provCode:"620000"
+                // provId:21
+                // provName:"甘肃"
+                // 海南儋州，
+                // cityCode:"460400"
+                // cityId:138
+                // cityName:"儋州"
+                // countyCode:"460400"
+                // countyName:"儋州市"
+                // id:11969
+                // initial:""
+                // provCode:"460000"
+                // provId:25
+                // provName:"海南"
+                // 广东中山
+                // cityCode:"442000"
+                // cityId:373
+                // cityName:"中山"
+                // countyCode:"442000"
+                // countyName:"中山市"
+                // id:11832
+                // initial:""
+                // provCode:"440000"
+                // provId:20
+                // provName:"广东"
+
 
                 if(response.mycode ==1){
+                    if(response.mjson.data.length == 0){
+
+                        let data = [];
+                        switch (selectData.city_code){
+                            case '441900':{  // 东莞
+                                data.push({
+                                    cityCode:"441900",
+                                    cityId:367,
+                                    cityName:"东莞",
+                                    countyCode:"441900",
+                                    countyName:"东莞市",
+                                    id:11831,
+                                    initial:"",
+                                    provCode:"440000",
+                                    provId:20,
+                                    provName:"广东"
+                                })
+
+                            }
+                                break
+                            case '620200':{ // 嘉峪关
+                                data.push({
+                                    cityCode:"620200",
+                                    cityId:135,
+                                    cityName:"嘉峪关",
+                                    countyCode:"620201",
+                                    countyName:"嘉峪关市",
+                                    id:12612,
+                                    initial:"",
+                                    provCode:"620000",
+                                    provId:21,
+                                    provName:"甘肃"
+                                })
+                            }
+                                break
+                            case '442000':{ // 中山市
+                                data.push({
+                                    cityCode:"442000",
+                                    cityId:373,
+                                    cityName:"中山",
+                                    countyCode:"442000",
+                                    countyName:"中山市",
+                                    id:11832,
+                                    initial:"",
+                                    provCode:"440000",
+                                    provId:20,
+                                    provName:"广东"
+                                })
+                            }
+                                break
+                            case '460400':{ //儋州
+                                data.push({
+                                    cityCode:"460400",
+                                    cityId:138,
+                                    cityName:"儋州",
+                                    countyCode:"460400",
+                                    countyName:"儋州市",
+                                    id:11969,
+                                    initial:"",
+                                    provCode:"460000",
+                                    provId:25,
+                                    provName:"海南"
+                                })
+                            }
+                                break
+                            case '460300':{ //三沙
+                                data.push({
+                                    cityCode:"460300",
+                                    cityId:396,
+                                    cityName:"三沙",
+                                    countyCode:"460321",
+                                    countyName:"西沙群岛",
+                                    id:11966,
+                                    initia:"",
+                                    provCode:"460000",
+                                    provId:25,
+                                    provName:"海南"
+                                })
+                            }
+                                break
+
+
+
+                        }
+
+                        response.mjson.data = data;
+                    }
+
                     this.setState(
                         {dataSource:this.state.dataSource.cloneWithRows(response.mjson.data)}
                     );
