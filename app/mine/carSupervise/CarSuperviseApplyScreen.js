@@ -79,9 +79,23 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
 
         ];
 
+        this.borrow_date = '';
+        this.borrow_days='';
+        this.selectCar={};
+        this.selectArticle={
+            data:[],
+            remark:'',
+        };
+        this.selectCause={
+            data:{},
+            remark:'',
+        };
+
+
         this.state={
             isDateTimePickerVisible:false,
             titleData:this.titleData,
+            isButtonTouch:false,
         }
     }
 
@@ -131,7 +145,7 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
 
                     <View style={styles.footContainer}>
                         <TouchableOpacity onPress={this.footBtnClick}>
-                            <View style={styles.footView}>
+                            <View style={[styles.footView,{backgroundColor:this.state.isButtonTouch?fontAndColor.COLORB0:fontAndColor.COLORB5}]}>
                                 <Text allowFontScaling={false}  style={styles.footText}>提交</Text>
                             </View>
                         </TouchableOpacity>
@@ -160,7 +174,7 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                         selectCar:this.selectCar,
                         confirmClick:(selectCar)=>{
 
-                            if(selectCar){
+                            if(selectCar.vin){
                                 this.selectCar= selectCar;
                                 this.titleData[0][0].value =selectCar.vin+'\n'+selectCar.carName;
                                 this.updataTitle();
@@ -249,22 +263,45 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
     }
 
     updataTitle=()=>{
+
+        let tmIsTouch = false;
+
+        if(this.borrow_date!='' && this.borrow_days!='' && this.selectCar.vin && this.selectArticle.data && this.selectCause.data){
+            tmIsTouch = true;
+        }
+
         this.setState({
-            titleData:this.titleData
+            titleData:this.titleData,
+            isButtonTouch:tmIsTouch,
         })
     }
 
     cellSelectAction=(title,value)=>{
 
-        console.log(title,value);
+        this.borrow_days = value;
+        this.updataTitle();
+
     }
 
     footBtnClick=()=>{
+
+        if(this.state.isButtonTouch){
+            let manufactureData = new  Date(this.borrow_date);
+            let initReg = new  Date();
+            if(manufactureData.getTime() < initReg.getTime())
+            {
+                this.props.showToast('借出日期必须晚于今天');
+                return;
+            }
+
+        }
+
 
     }
 
     _handleDatePicked = (date)=>{
         let d = this.dateFormat(date,'yyyy-MM-dd');
+        this.borrow_date = d;
         this.titleData[0][2].value = d;
         this.updataTitle();
         this._hideDateTimePicker();

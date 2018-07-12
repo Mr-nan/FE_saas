@@ -42,7 +42,7 @@ export default class CarSuperviseListScreen extends BaseComponent {
         let ds = new ListView.DataSource({rowHasChanged:(r1,r2)=> r1!==r2});
 
         this.state = {
-            dataSource:ds.cloneWithRows([{borrow_status:0},{borrow_status:1},{borrow_status:2},{borrow_status:3},{borrow_status:4},{borrow_status:5},{borrow_status:6},{borrow_status:7},{borrow_status:8}]),
+            dataSource:ds.cloneWithRows([{borrow_status:1},{borrow_status:2},{borrow_status:3},{borrow_status:4},{borrow_status:5},{borrow_status:6},{borrow_status:7},{borrow_status:8}]),
             barStyle:'default'
         };
       }
@@ -127,13 +127,17 @@ class CarSuperviseListCell extends  Component{
                 <Image style={{ width:width,paddingHorizontal:Pixel.getFontPixel(20)}} source={require('../../../images/carSuperviseImage/baise.png')}>
                     <View style={{marginTop:Pixel.getPixel(25)}}>
                         <View style={{flexDirection:'row',marginBottom:Pixel.getPixel(10), alignItems:'center',justifyContent:'space-between'}}>
-                            <Text style={styles.cellItemTitle}>车架号：{'JGFHGFEKFERTHJ'}</Text>
-                            <Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA5,backgroundColor:'transparent'}}>审核不通过</Text>
+                            <Text style={[styles.cellItemTitle,data.borrow_status==8&&{color:fontAndColor.COLORA1}]}>车架号：{'JGFHGFEKFERTHJ'}</Text>
+                            {
+                                this.getTypeTitle(data.borrow_status)
+                            }
                         </View>
-                        <Text style={styles.cellItemTitle}>车型信息：{'2017款别克1.8TSI 手自一体'}</Text>
+                        <Text style={[styles.cellItemTitle,data.borrow_status==8&&{color:fontAndColor.COLORA1}]}>车型信息：{'2017款别克1.8TSI 手自一体'}</Text>
                     </View>
                 </Image>
-                <Image style={{width:width,paddingHorizontal:Pixel.getFontPixel(20),justifyContent:'center',height:Pixel.getPixel(100)+Pixel.getPixel(40*2)}} resizeMode={'stretch'}
+                <Image style={{width:width,paddingHorizontal:Pixel.getFontPixel(20),
+                    justifyContent:'center',height:Pixel.getPixel(100)+Pixel.getPixel(40*2),
+                    paddingBottom:Pixel.getPixel(16)}} resizeMode={'stretch'}
                        source={this.getTypeBackImage(data.borrow_status)}>
                     <View>
                         <View style={{paddingBottom:Pixel.getPixel(10)}}>
@@ -236,35 +240,38 @@ class CarSuperviseListCell extends  Component{
                 return require('../../../images/carSuperviseImage/huise.png');
                 break;
             default:
+                return require('../../../images/carSuperviseImage/lanse.png');
         }
 
     }
     getTypeTitle=(type)=>{
         switch (type){
             case 1: // 待审核
-                return '待审核';
+                return (<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA5,backgroundColor:'transparent'}}>待审核</Text>);
                 break;
             case 2: // 审核中
-                return '审核中';
+                return (<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA5,backgroundColor:'transparent'}}>审核中</Text>);
                 break;
             case 3: // 审核通过
-                return '审核通过';
+                return (<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORB1,backgroundColor:'transparent'}}>审核通过</Text>);
                 break;
             case 4: // 审核未通过
-                return '审核未通过';
+                return (<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORB2,backgroundColor:'transparent'}}>审核未通过</Text>);
                 break;
             case 5: // 已撤销
-                return '已撤销';
+                return (<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORB2,backgroundColor:'transparent'}}>已撤销</Text>);
                 break;
             case 6: // 确认借出
-                return '已借出';
+                return (<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA5,backgroundColor:'transparent'}}>已借出</Text>);
                 break;
             case 7: // 已还
-                return '已归还';
+                return (<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA5,backgroundColor:'transparent'}}>已还</Text>);
             case 8: // 已作废
-                return '已作废';
+                return (<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA1,backgroundColor:'transparent'}}>已作废</Text>);
                 break;
             default:
+                return (<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA5,backgroundColor:'transparent'}}></Text>);
+
         }
 
     }

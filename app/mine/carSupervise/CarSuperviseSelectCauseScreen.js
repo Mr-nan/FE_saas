@@ -17,7 +17,7 @@ import {
     TouchableOpacity,
     ScrollView,
     Dimensions,
-
+    KeyboardAvoidingView
 }from 'react-native';
 let {width} = Dimensions.get('window');
 
@@ -50,24 +50,39 @@ export  default class CarSuperviseSelectCauseScreen extends BaseComponent{
     render(){
         return(
             <View style={styles.root}>
-                <ScrollView>
-                    <SelectArticleView data = {this.data} select={this.select} selectAction={(selectData)=>{this.select=selectData}}/>
-                    <View style={{marginTop:Pixel.getPixel(10)}}>
-                        <ZNTextInput placeholderText="其他原因，请在此写下借用原因"
-                                     onChangeText={(text)=>{this.remark=text}}
-                                     defaultValue={this.props.selectCause && this.props.selectCause.remark}/>
-                    </View>
-                    <View style={styles.footContainer}>
-                        <TouchableOpacity onPress={this.footBtnClick}>
-                            <View style={styles.footView}>
-                                <Text allowFontScaling={false}  style={styles.footText}>确定</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
+                {
+                    IS_ANDROID?(this.loadScrollView()):(
+                            <KeyboardAvoidingView behavior={'position'}>
+                                {
+                                    this.loadScrollView()
+                                }
+                            </KeyboardAvoidingView>
+                        )
+                }
+
                 <NavigationView title="选择借用原因" backIconClick={this.backPage}/>
             </View>
         )
+    }
+
+    loadScrollView=()=>{
+        return(
+            <ScrollView>
+                <SelectArticleView data = {this.data} select={this.select} selectAction={(selectData)=>{this.select=selectData}}/>
+                <View style={{marginTop:Pixel.getPixel(10)}}>
+                    <ZNTextInput placeholderText="其他原因，请在此写下借用原因"
+                                 onChangeText={(text)=>{this.remark=text}}
+                                 defaultValue={this.props.selectCause && this.props.selectCause.remark}/>
+                </View>
+                <View style={styles.footContainer}>
+                    <TouchableOpacity onPress={this.footBtnClick}>
+                        <View style={styles.footView}>
+                            <Text allowFontScaling={false}  style={styles.footText}>确定</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>)
+
     }
 
     footBtnClick=()=>{

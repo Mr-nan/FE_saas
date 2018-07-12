@@ -14,6 +14,7 @@ import {
     TouchableOpacity,
     ScrollView,
     Dimensions,
+    KeyboardAvoidingView
 
 }from 'react-native';
 let {width} = Dimensions.get('window');
@@ -58,31 +59,43 @@ export  default class CarSuperviseSelectArticleScreen extends BaseComponent{
     render(){
         return(
             <View style={styles.root}>
-                <ScrollView>
-                    <View style={{justifyContent:'center',height:Pixel.getPixel(30),paddingLeft:Pixel.getPixel(15)}}>
-                        <Text style={{color:fontAndColor.COLORA1, fontSize:fontAndColor.CONTENTFONT24}}>一辆车的权证可多选</Text>
-                    </View>
-                    <SelectArticleView data={this.data}
-                                       dataReturn={(data)=>{this.data = data}}/>
-                    <View style={{marginTop:Pixel.getPixel(10)}}>
-                        <ZNTextInput placeholderText="其他权证，请在此补充权证名称"
-                                     onChangeText={(text)=>{this.remark=text}}
-                                     defaultValue={this.props.selectArticle && this.props.selectArticle.remark}
-                        />
-                    </View>
-                    <View style={styles.footContainer}>
-                        <TouchableOpacity onPress={this.footBtnClick}>
-                            <View style={styles.footView}>
-                                <Text allowFontScaling={false}  style={styles.footText}>确定</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
+                {
+                    IS_ANDROID?(this.loadScrollView()):(
+                            <KeyboardAvoidingView behavior={'position'}>
+                                {
+                                    this.loadScrollView()
+                                }
+                            </KeyboardAvoidingView>
+                        )
+                }
                 <NavigationView title="选择借出物" backIconClick={this.backPage}/>
             </View>
         )
     }
-
+    loadScrollView=()=>{
+        return(
+            <ScrollView>
+                <View style={{justifyContent:'center',height:Pixel.getPixel(30),paddingLeft:Pixel.getPixel(15)}}>
+                    <Text style={{color:fontAndColor.COLORA1, fontSize:fontAndColor.CONTENTFONT24}}>一辆车的权证可多选</Text>
+                </View>
+                <SelectArticleView data={this.data}
+                                   dataReturn={(data)=>{this.data = data}}/>
+                <View style={{marginTop:Pixel.getPixel(10)}}>
+                    <ZNTextInput placeholderText="其他权证，请在此补充权证名称"
+                                 onChangeText={(text)=>{this.remark=text}}
+                                 defaultValue={this.props.selectArticle && this.props.selectArticle.remark}
+                    />
+                </View>
+                <View style={styles.footContainer}>
+                    <TouchableOpacity onPress={this.footBtnClick}>
+                        <View style={styles.footView}>
+                            <Text allowFontScaling={false}  style={styles.footText}>确定</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
+        )
+    }
     footBtnClick=()=>{
         let selectArray =this.data.filter(e=>e.select==true);
         this.props.confirmClick && this.props.confirmClick({
