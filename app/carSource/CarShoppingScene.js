@@ -252,6 +252,8 @@ export  default  class CarShoppingScene extends BaseComponent{
     }
 
     headViewDelectClick=()=>{
+
+        this.props.showModal(true);
         if(CarShoppingData.delectAllSelect.get()==true){
 
             request(AppUrls.CAR_ORDER_DELETE, 'post', {
@@ -260,6 +262,8 @@ export  default  class CarShoppingScene extends BaseComponent{
                 del_all:1,
 
             }).then((response) => {
+
+                this.props.showModal(false);
 
                 CarShoppingData.delectAction(()=>{
                     this.setState({
@@ -289,13 +293,14 @@ export  default  class CarShoppingScene extends BaseComponent{
 
             }).then((response) => {
 
+                this.props.showModal(false);
                 CarShoppingData.delectAction(()=>{
                     this.setState({
                         dataSource:this.state.dataSource.cloneWithRows(CarShoppingData.shoppingData),
                     });
                 });
             }, (error) => {
-
+               
             });
 
 
