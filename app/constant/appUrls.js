@@ -1877,3 +1877,8 @@ export const ORDER_HOME_DETAIL = BASEURL + "v3/order.home/detail";
  *   设置定金和成交价
  **/
 export const ORDER_HOME_SETPRICE = BASEURL + "v3/order.home/setPrice";
+
+/**
+ *   录入车架号
+ **/
+export const ORDER_HOME_SETVIN = BASEURL + "v3/order.home/setVin";

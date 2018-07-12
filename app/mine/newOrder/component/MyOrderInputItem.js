@@ -36,7 +36,7 @@ export  default class MyOrderInputItem extends PureComponent {
                     <View style={{flex:2,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
                         <TextInput
                             onChangeText={(text) => {
-
+                                this.props.callBack(text);
                             }}
                             maxLength={17}
                             style={{

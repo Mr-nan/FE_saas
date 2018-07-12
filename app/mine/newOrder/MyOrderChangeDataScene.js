@@ -43,7 +43,8 @@ export default class MyOrderChangeDataScene extends BaseComponent {
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
+            isRefreshing: false,
+
         };
     }
 
@@ -64,6 +65,7 @@ export default class MyOrderChangeDataScene extends BaseComponent {
                           enableEmptySections={true}
                           renderSeparator={this._renderSeperator}
                 />
+
             </View>);
         }
     }
@@ -84,7 +86,7 @@ export default class MyOrderChangeDataScene extends BaseComponent {
               this.toNextPage({
                   name:'MyOrderCarIDScene',
                   component:MyOrderCarIDScene,
-                  params:{}
+                  params:{order_id:this.props.order_id,data:this.state.data,index:this.state.index,item_id:rowData.id}
               })
           }}/>
         );
