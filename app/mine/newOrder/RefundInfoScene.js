@@ -33,14 +33,15 @@ export default class RefundInfoScene extends BaseComponent {
         return(
             <View style={styles.root}>
                 <RefundInfoHeadView/>
-                <NavigatorView title={'退款详情'} backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView} wrapStyle={{backgroundColor:'transparent'}}/>
                 <ScrollView>
+                    <RefundInfoTypeMessageView/>
                     <RefundInfoContentView/>
                     <RefundInfoCarView/>
                     <RefundInfoServeView/>
                 </ScrollView>
                 <FootButtonView refuseClick={this._refuseClick} confirmClick={this._confirmClick}/>
                 <RefuseCauseShowView ref={(ref)=>{this.refuseCauseShowView = ref}}/>
+                <NavigatorView title={'退款详情'} backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>
         )
     }
@@ -106,58 +107,70 @@ class RefundInfoHeadView extends Component{
       }
     render(){
         return(
-            <View style={{position: 'absolute',left:0,right:0,top:0,height:width*0.61}}>
-                <Image style={{flex:1,paddingTop:Pixel.getTitlePixel(64), alignItems:'center'}}
-                       source={require('../../../images/neworder/bj.png')}>
-                 <View style={{width:width,marginTop:Pixel.getPixel(20), flexDirection:'row',}}>
-                     {
-                        this.data.map((data,index)=>{
-                            let itemWidth = (width)/Pixel.getPixel(this.data.length);
-                            let lienWidth = itemWidth/2 - Pixel.getPixel(10);
-                            let myOpacity = ((index+1)/(this.data.length));
-                            let mySubOpacity = ((index)/(this.data.length));
-                           return(
-                               <View key={index}>
-                               <View style={{alignItems:'center',justifyContent:'space-between',height:Pixel.getPixel(80),width:itemWidth}} >
-                                       <View style={[{borderRadius:Pixel.getPixel(4),backgroundColor:'transparent',paddingHorizontal:Pixel.getPixel(5),height:Pixel.getPixel(20),
-                                           justifyContent:'center'
-                                       },index+1==this.data.length && {backgroundColor:'white'}]}>
-                                               <Text style={[{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),backgroundColor:'transparent'},index+1==this.data.length && {color:fontAndColor.COLORB12,
-                                                   fontWeight:'bold'
-                                               }]}>{data.title}</Text>
-                                       </View>
-                                   {
-                                       index+1==this.data.length?(<Image source={require('../../../images/neworder/dangqianzhuangtai.png')}/>):( <View style={{borderRadius:Pixel.getPixel(5),width:Pixel.getPixel(10),height:Pixel.getPixel(10),backgroundColor:'white'}} opacity={myOpacity}/>)
-                                   }
-                                       <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),textAlign:'center',backgroundColor:'transparent'}}>{data.date}</Text>
-                               </View>
-                                   {
-                                       index!=this.data.length-1 && (<View style={{position:'absolute',height:Pixel.getPixel(2),width:lienWidth,
-                                           left:itemWidth/2+ Pixel.getPixel(10),top:(Pixel.getPixel(80)/2-Pixel.getPixel(6)),backgroundColor:'white'
-                                       }}  opacity={myOpacity}/>)
-                                   }
-                                   {
-                                       index>0&& (<View style={[{position:'absolute',height:Pixel.getPixel(2),width:lienWidth,
-                                           left:0,top:(Pixel.getPixel(80)/2-Pixel.getPixel(6)),backgroundColor:'white'
-                                       },index+1==this.data.length && {width:lienWidth-Pixel.getPixel(5)}]} opacity={mySubOpacity}/>)
-                                   }
+                <View style={{position: 'absolute',left:0,right:0,top:0,height:width*0.6133}}>
+                    <Image style={{flex:1,paddingTop:Pixel.getTitlePixel(64), alignItems:'center'}}
+                           source={require('../../../images/neworder/bj.png')}>
+                        <View style={{width:width,marginTop:Pixel.getPixel(20), flexDirection:'row',}}>
+                            {
+                                this.data.map((data,index)=>{
+                                    let itemWidth = (width)/Pixel.getPixel(this.data.length);
+                                    let lienWidth = itemWidth/2 - Pixel.getPixel(10);
+                                    let myOpacity = ((index+1)/(this.data.length));
+                                    let mySubOpacity = ((index)/(this.data.length));
+                                    return(
+                                        <View key={index}>
+                                            <View style={{alignItems:'center',justifyContent:'space-between',height:Pixel.getPixel(80),width:itemWidth}} >
+                                                <View style={[{borderRadius:Pixel.getPixel(4),backgroundColor:'transparent',paddingHorizontal:Pixel.getPixel(5),height:Pixel.getPixel(20),
+                                                    justifyContent:'center'
+                                                },index+1==this.data.length && {backgroundColor:'white'}]}>
+                                                    <Text style={[{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),backgroundColor:'transparent'},index+1==this.data.length && {color:fontAndColor.COLORB12,
+                                                        fontWeight:'bold'
+                                                    }]}>{data.title}</Text>
+                                                </View>
+                                                {
+                                                    index+1==this.data.length?(<Image source={require('../../../images/neworder/dangqianzhuangtai.png')}/>):( <View style={{borderRadius:Pixel.getPixel(5),width:Pixel.getPixel(10),height:Pixel.getPixel(10),backgroundColor:'white'}} opacity={myOpacity}/>)
+                                                }
+                                                <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),textAlign:'center',backgroundColor:'transparent'}}>{data.date}</Text>
+                                            </View>
+                                            {
+                                                index!=this.data.length-1 && (<View style={{position:'absolute',height:Pixel.getPixel(2),width:lienWidth,
+                                                    left:itemWidth/2+ Pixel.getPixel(10),top:(Pixel.getPixel(80)/2-Pixel.getPixel(6)),backgroundColor:'white'
+                                                }}  opacity={myOpacity}/>)
+                                            }
+                                            {
+                                                index>0&& (<View style={[{position:'absolute',height:Pixel.getPixel(2),width:lienWidth,
+                                                    left:0,top:(Pixel.getPixel(80)/2-Pixel.getPixel(6)),backgroundColor:'white'
+                                                },index+1==this.data.length && {width:lienWidth-Pixel.getPixel(5)}]} opacity={mySubOpacity}/>)
+                                            }
 
 
-                               </View>
-                           )
-                        })
-                     }
-                 </View>
-                </Image>
-            </View>
-
+                                        </View>
+                                    )
+                                })
+                            }
+                        </View>
+                    </Image>
+                </View>
         )
+    }
+}
+class RefundInfoTypeMessageView extends Component{
+
+    render(){
+        return(
+            <View style={{marginHorizontal:Pixel.getPixel(10),borderRadius:Pixel.getPixel(5),backgroundColor:'white',height:Pixel.getPixel(200),
+                marginTop:width*0.6133-Pixel.getPixel(45)}}>
+                <View style={{height:Pixel.getPixel(44), flexDirection:'row', alignItems:'center',justifyContent:'space-between',paddingHorizontal:Pixel.getPixel(15)}}>
+                    <Text style={{color:fontAndColor.COLORC0, fontSize:fontAndColor.LITTLEFONT28}}>退款状态</Text>
+                    <Text style={{color:fontAndColor.COLORB1, fontSize:fontAndColor.LITTLEFONT28}}>退款成功</Text>
+                </View>
+            </View>)
     }
 }
 class RefundInfoContentView extends Component{
     render(){
         return(
-            <View style={{width:width,backgroundColor:'white'}}>
+            <View style={{width:width,backgroundColor:'white',marginTop:Pixel.getPixel(10)}}>
                 <View style={{height:Pixel.getPixel(44), justifyContent:'center',paddingLeft:Pixel.getPixel(15),borderBottomWidth:StyleSheet.hairlineWidth,borderBottomColor:fontAndColor.COLORA4}}>
                     <Text style={styles.titleText}>退款信息</Text>
                 </View>
@@ -218,7 +231,8 @@ class RefundInfoCarView extends Component{
 
     render(){
         return(
-            <View style={{width:width,backgroundColor:'white',marginTop:Pixel.getPixel(10)}}>
+            <View style={{width:width,backgroundColor:'white'}}>
+                <View style={{backgroundColor:fontAndColor.COLORA3,height:Pixel.getPixel(10)}}/>
                 <View style={{height:Pixel.getPixel(44), justifyContent:'center',paddingLeft:Pixel.getPixel(15),borderBottomWidth:StyleSheet.hairlineWidth,borderBottomColor:fontAndColor.COLORA4}}>
                     <Text style={styles.titleText}>商品信息</Text>
                 </View>
@@ -305,7 +319,8 @@ class RefundInfoServeView extends Component{
       }
     render(){
         return(
-            <View style={{width:width,backgroundColor:'white',marginTop:Pixel.getPixel(10)}}>
+            <View style={{width:width,backgroundColor:'white'}}>
+                <View style={{backgroundColor:fontAndColor.COLORA3,height:Pixel.getPixel(10)}}/>
                 <View style={{height:Pixel.getPixel(44), justifyContent:'center',paddingLeft:Pixel.getPixel(15),
                     borderBottomWidth:StyleSheet.hairlineWidth,borderBottomColor:fontAndColor.COLORA4}}>
                     <Text style={styles.titleText}>服务信息</Text>
@@ -416,7 +431,7 @@ const styles = StyleSheet.create({
     root:{
         flex:1,
         backgroundColor:fontAndColor.COLORA3,
-        paddingTop:width*0.61-Pixel.getPixel(20),
+        // paddingTop:width*0.61-Pixel.getPixel(20),
         paddingBottom:Pixel.getPixel(49)
     },
     titleText:{
