@@ -45,6 +45,8 @@ export  default  class CarShoppingScene extends BaseComponent{
               isRefreshing:false,
           };
 
+         CarShoppingData.isEdit = false;
+
       }
 
 
@@ -271,7 +273,7 @@ export  default  class CarShoppingScene extends BaseComponent{
                     });
                 });
             }, (error) => {
-
+                this.props.showToast(error.mjson.msg);
             });
 
         }else {
@@ -300,7 +302,7 @@ export  default  class CarShoppingScene extends BaseComponent{
                     });
                 });
             }, (error) => {
-               
+               this.props.showToast(error.mjson.msg);
             });
 
 
