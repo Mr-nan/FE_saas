@@ -33,7 +33,7 @@ export default class RefundInfoScene extends BaseComponent {
         return(
             <View style={styles.root}>
                 <RefundInfoHeadView/>
-                <ScrollView>
+                <ScrollView onScroll={this.setNavitgationBackgroundColor}>
                     <RefundInfoTypeMessageView/>
                     <RefundInfoContentView/>
                     <RefundInfoCarView/>
@@ -41,7 +41,8 @@ export default class RefundInfoScene extends BaseComponent {
                 </ScrollView>
                 <FootButtonView refuseClick={this._refuseClick} confirmClick={this._confirmClick}/>
                 <RefuseCauseShowView ref={(ref)=>{this.refuseCauseShowView = ref}}/>
-                <NavigatorView title={'退款详情'} backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView} wrapStyle={{backgroundColor:'transparent'}}/>
+                <NavigatorView ref={(ref)=>{this.navtigation = ref}} title={'退款详情'}
+                               backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView} wrapStyle={{backgroundColor:'transparent'}}/>
             </View>
         )
     }
@@ -57,6 +58,17 @@ export default class RefundInfoScene extends BaseComponent {
                 </TouchableOpacity>
             </View>
         )
+    }
+
+    setNavitgationBackgroundColor = (event) => {
+
+        if (event.nativeEvent.contentOffset.y > (50)) {
+
+            this.navtigation.setNavigationBackgroindColor(fontAndColor.COLORB0,'white');
+
+        } else {
+            this.navtigation.setNavigationBackgroindColor('transparent','white');
+        }
     }
 
     _refuseClick=()=>{
@@ -158,44 +170,45 @@ class RefundInfoTypeMessageView extends Component{
 
     render(){
         return(
-            <View style={{marginHorizontal:Pixel.getPixel(10),borderRadius:Pixel.getPixel(5),backgroundColor:'white',height:Pixel.getPixel(200),
+            <View style={{marginHorizontal:Pixel.getPixel(10),borderRadius:Pixel.getPixel(5),backgroundColor:'white',
                 marginTop:width*0.6133-Pixel.getPixel(45)}}>
                 <View style={{height:Pixel.getPixel(44), flexDirection:'row', alignItems:'center',justifyContent:'space-between',paddingHorizontal:Pixel.getPixel(15)}}>
                     <Text style={{color:fontAndColor.COLORC0, fontSize:fontAndColor.LITTLEFONT28}}>退款状态</Text>
                     <Text style={{color:fontAndColor.COLORB1, fontSize:fontAndColor.LITTLEFONT28}}>退款成功</Text>
+                    <Image style={{left:Pixel.getPixel(10),right:Pixel.getPixel(10),bottom:0,position:'absolute'}} source={require('../../../images/neworder/xuxian.png')}/>
                 </View>
-                <View style={{marginVertical:Pixel.getPixel(20)}}>
-                    <View style={{paddingBottom:Pixel.getPixel(10)}}>
+                <View style={{justifyContent:'center',marginTop:Pixel.getPixel(20),paddingHorizontal:Pixel.getPixel(15)}}>
+                    <View style={{paddingBottom:Pixel.getPixel(15)}}>
                         <View style={{flexDirection:'row'}}>
                             <Text style={styles.cellItemValueTitle}>验证码</Text>
                             <Text style={styles.cellItemValueText}>999000</Text>
                         </View>
                         <View style={{alignItems:'center',
-                            width:Pixel.getPixel(20),position: 'absolute',top:Pixel.getPixel(0),bottom:0,left:Pixel.getPixel(70)}}>
+                            width:Pixel.getPixel(20),position: 'absolute',top:Pixel.getPixel(0),bottom:0,left:Pixel.getPixel(50)}}>
                             <Image  style={{marginTop:Pixel.getPixel(4)}} source={require('../../../images/neworder/lvse.png')}/>
-                            <View style={{width:Pixel.getPixel(1),backgroundColor:'white',marginTop:Pixel.getPixel(4),height:Pixel.getPixel(20)}}/>
+                            <View style={{width:Pixel.getPixel(1),backgroundColor:fontAndColor.COLORA4,marginTop:Pixel.getPixel(4),height:Pixel.getPixel(25)}}/>
                         </View>
                     </View>
-                    <View style={{paddingBottom:Pixel.getPixel(10)}}>
+                    <View style={{paddingBottom:Pixel.getPixel(15)}}>
                         <View style={{flexDirection:'row'}}>
                             <Text style={styles.cellItemValueTitle}>验证码</Text>
                             <Text style={styles.cellItemValueText}>999000</Text>
                         </View>
                         <View style={{alignItems:'center',
-                            width:Pixel.getPixel(20),position: 'absolute',top:Pixel.getPixel(0),bottom:0,left:Pixel.getPixel(70)}}>
+                            width:Pixel.getPixel(20),position: 'absolute',top:Pixel.getPixel(0),bottom:0,left:Pixel.getPixel(50)}}>
                             <Image  style={{marginTop:Pixel.getPixel(4)}} source={require('../../../images/neworder/huise.png')}/>
-                            <View style={{width:Pixel.getPixel(1),backgroundColor:'white',marginTop:Pixel.getPixel(4),height:Pixel.getPixel(20)}}/>
+                            <View style={{width:Pixel.getPixel(1),backgroundColor:fontAndColor.COLORA4,marginTop:Pixel.getPixel(4),height:Pixel.getPixel(25)}}/>
                         </View>
                     </View>
-                    <View style={{paddingBottom:Pixel.getPixel(10)}}>
+                    <View style={{paddingBottom:Pixel.getPixel(15)}}>
                         <View style={{flexDirection:'row'}}>
                             <Text style={styles.cellItemValueTitle}>验证码</Text>
                             <Text style={styles.cellItemValueText}>999000</Text>
                         </View>
                         <View style={{alignItems:'center',
-                            width:Pixel.getPixel(20),position: 'absolute',top:Pixel.getPixel(0),bottom:0,left:Pixel.getPixel(70)}}>
+                            width:Pixel.getPixel(20),position: 'absolute',top:Pixel.getPixel(0),bottom:0,left:Pixel.getPixel(50)}}>
                             <Image  style={{marginTop:Pixel.getPixel(4)}} source={require('../../../images/neworder/huise.png')}/>
-                            <View style={{width:Pixel.getPixel(1),backgroundColor:'white',marginTop:Pixel.getPixel(4),height:Pixel.getPixel(20)}}/>
+                            {/*<View style={{width:Pixel.getPixel(1),backgroundColor:fontAndColor.COLORA4,marginTop:Pixel.getPixel(4),height:Pixel.getPixel(20)}}/>*/}
                         </View>
                     </View>
                 </View>
@@ -480,5 +493,20 @@ const styles = StyleSheet.create({
     priceUnitText:{
         color:fontAndColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)
+    },
+    cellItemValueTitle:{
+        color:fontAndColor.COLORC0,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        // backgroundColor:'red',
+        width:Pixel.getPixel(50),
+        height:Pixel.getPixel(25),
+    } ,
+    cellItemValueText:{
+        color:fontAndColor.COLORA1,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        // backgroundColor:'red',
+        height:Pixel.getPixel(25),
+        width:width - Pixel.getPixel(130),
+        marginLeft:Pixel.getPixel(25),
     }
 })
