@@ -164,6 +164,41 @@ class RefundInfoTypeMessageView extends Component{
                     <Text style={{color:fontAndColor.COLORC0, fontSize:fontAndColor.LITTLEFONT28}}>退款状态</Text>
                     <Text style={{color:fontAndColor.COLORB1, fontSize:fontAndColor.LITTLEFONT28}}>退款成功</Text>
                 </View>
+                <View style={{marginVertical:Pixel.getPixel(20)}}>
+                    <View style={{paddingBottom:Pixel.getPixel(10)}}>
+                        <View style={{flexDirection:'row'}}>
+                            <Text style={styles.cellItemValueTitle}>验证码</Text>
+                            <Text style={styles.cellItemValueText}>999000</Text>
+                        </View>
+                        <View style={{alignItems:'center',
+                            width:Pixel.getPixel(20),position: 'absolute',top:Pixel.getPixel(0),bottom:0,left:Pixel.getPixel(70)}}>
+                            <Image  style={{marginTop:Pixel.getPixel(4)}} source={require('../../../images/neworder/lvse.png')}/>
+                            <View style={{width:Pixel.getPixel(1),backgroundColor:'white',marginTop:Pixel.getPixel(4),height:Pixel.getPixel(20)}}/>
+                        </View>
+                    </View>
+                    <View style={{paddingBottom:Pixel.getPixel(10)}}>
+                        <View style={{flexDirection:'row'}}>
+                            <Text style={styles.cellItemValueTitle}>验证码</Text>
+                            <Text style={styles.cellItemValueText}>999000</Text>
+                        </View>
+                        <View style={{alignItems:'center',
+                            width:Pixel.getPixel(20),position: 'absolute',top:Pixel.getPixel(0),bottom:0,left:Pixel.getPixel(70)}}>
+                            <Image  style={{marginTop:Pixel.getPixel(4)}} source={require('../../../images/neworder/huise.png')}/>
+                            <View style={{width:Pixel.getPixel(1),backgroundColor:'white',marginTop:Pixel.getPixel(4),height:Pixel.getPixel(20)}}/>
+                        </View>
+                    </View>
+                    <View style={{paddingBottom:Pixel.getPixel(10)}}>
+                        <View style={{flexDirection:'row'}}>
+                            <Text style={styles.cellItemValueTitle}>验证码</Text>
+                            <Text style={styles.cellItemValueText}>999000</Text>
+                        </View>
+                        <View style={{alignItems:'center',
+                            width:Pixel.getPixel(20),position: 'absolute',top:Pixel.getPixel(0),bottom:0,left:Pixel.getPixel(70)}}>
+                            <Image  style={{marginTop:Pixel.getPixel(4)}} source={require('../../../images/neworder/huise.png')}/>
+                            <View style={{width:Pixel.getPixel(1),backgroundColor:'white',marginTop:Pixel.getPixel(4),height:Pixel.getPixel(20)}}/>
+                        </View>
+                    </View>
+                </View>
             </View>)
     }
 }
