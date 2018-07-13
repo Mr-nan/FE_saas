@@ -62,13 +62,50 @@ export default class CheckStand extends BaseComponent {
     }
 
     initFinish = () => {
+        // let response = {
+        //     "token": "",
+        //     "code": 1,
+        //     "msg": "ok",
+        //     "data": {
+        //             "cashier_desk_trans_serial_no": "10101006201805251224340953533619",
+        //             "money_count": 22500,
+        //             "account_info": {
+        //                 "balance": "549388793.74",
+        //                 "bank_card_no": "85121001012280139800000080",
+        //                 "bank_card_name": "黎乐池"
+        //             },
+        //             "company_base_user_id": "7857"
+        //     },
+        //     "trace": {
+        //         "source_url": "http://",
+        //         "cost_time": "11.6496s",
+        //         "cost_mem": "1 B",
+        //         "server_ip": "",
+        //         "server_version": "5.6.32",
+        //         "file_max_size": "2M",
+        //         "post_max_size": "8M",
+        //         "source_ip": "0.0.0.0",
+        //         "sql": [
+        //             "SHOW COLUMNS FROM `dms_merge` [ RunTime:1,527,222,264.1072s ]",
+        //             "SHOW COLUMNS FROM `dms_merge` [ RunTime:-0.0001s ]"
+        //         ]
+        //     }
+        // }
+        // let data=response.data;
+        // this.cashier_desk_trans_serial_no=data.cashier_desk_trans_serial_no;
+        // this.accountInfo=data.account_info;
+        // this.payMoney=data.money_count;
+        // this.setState({
+        //     renderPlaceholderOnly: 'success',
+        //
+        // });
         this.getData();
     };
 
     getData = () => {
         let maps = {
-            api: Urls.CASHIER_TABLE,
-            supervise_order_num:this.props.orderNums
+            api: this.props.page == 'ShuCheBaoZhengJin' ? Urls.DEPOSIT_CASHIER_TABLE : Urls.CASHIER_TABLE,
+            deposit_order_num:this.props.orderNums
         };
         request(Urls.FINANCE, 'Post', maps)
 
@@ -79,7 +116,6 @@ export default class CheckStand extends BaseComponent {
                             this.props.showToast(response.mjson.msg);
                             this.props.callBack()
                         }
-
                     } else {
                         let data=response.mjson.data;
                         this.cashier_desk_trans_serial_no=data.cashier_desk_trans_serial_no;
@@ -87,11 +123,9 @@ export default class CheckStand extends BaseComponent {
                         this.payMoney=data.money_count;
                         this.setState({
                             renderPlaceholderOnly: 'success',
-
                         });
                     }
-                },
-                (error) => {
+                }, (error) => {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     }
@@ -219,21 +253,20 @@ export default class CheckStand extends BaseComponent {
 
     goInitialPay = () => {
         this.props.showModal(true);
-        let url = AppUrls.SUPERVISE_PAY;
+        let url = this.props.page == 'ShuCheBaoZhengJin' ? AppUrls.DEPOSIT_DEPOSIT_PAY : AppUrls.SUPERVISE_PAY;
         let maps = {
             cashier_desk_trans_serial_no: this.cashier_desk_trans_serial_no,
-            transfer_accounts_url: webBackUrl.SUPERVICEPAY,
+            transfer_accounts_url:this.props.page == 'ShuCheBaoZhengJin' ? webBackUrl.SUPERVICEPAYS : webBackUrl.SUPERVICEPAY,
             api:url
         };
         request(AppUrls.FINANCE, 'post', maps).then((response) => {
             this.props.showModal(false);
             if (response.mjson.code === 1) {
-                if (response.mjson.data == null  || response.mjson.data.length==0) {
+                if (response.mjson.data == null) {
                     if(!this.isEmpty(response.mjson.msg)){
                         this.props.showToast(response.mjson.msg);
                         this.props.callBack();
                     }
-
                 }else{
                     this.transSerialNo = response.mjson.data.trans_serial_no;
                     this.toNextPage({
@@ -242,7 +275,7 @@ export default class CheckStand extends BaseComponent {
                         params: {
                             title: '支付',
                             webUrl: response.mjson.data.transfer_accounts_url,
-                            backUrl: webBackUrl.SUPERVICEPAY,
+                            backUrl: this.props.page == 'ShuCheBaoZhengJin' ? webBackUrl.SUPERVICEPAYS : webBackUrl.SUPERVICEPAY,
                             callBack:
                                 ()=>{this.props.callBack()}
                         }
