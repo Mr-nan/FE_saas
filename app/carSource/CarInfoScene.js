@@ -534,7 +534,7 @@ export default class CarInfoScene extends BaseComponent {
                                                 <Text allowFontScaling={false}  style={styles.orderText}>加入购物车</Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity style={styles.orderView} onPress={() => {
-                                                this.newCarOrder();
+                                                this.orderClick(carData);
                                             }}>
                                                 <Text allowFontScaling={false}  style={styles.orderText}>立即订购</Text>
                                             </TouchableOpacity>
@@ -601,21 +601,13 @@ export default class CarInfoScene extends BaseComponent {
     newCarOrder=()=>{
 
         let carData =  this.state.carData;
-
-        if (carData.show_order == 1) {
-            this.props.showToast('该车辆已被订购');
-            return;
-        }
-
         this.props.showModal(true);
-
         let carsArray = [
             {
                 car_id:carData.id,
                 car_count:1,
             }
         ];
-
         request(AppUrls.CREATE_ORDER_HOME, 'post', {
 
             cars:JSON.stringify(carsArray),
@@ -693,7 +685,8 @@ export default class CarInfoScene extends BaseComponent {
                                             });
 
                                     } else {
-                                        this.carOrder(datas.company_base_id, carData);
+                                        // this.carOrder(datas.company_base_id, carData);
+                                        this.newCarOrder();
                                     }
                                 }
                             },

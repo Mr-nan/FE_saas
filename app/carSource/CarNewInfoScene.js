@@ -573,20 +573,92 @@ export default class CarNewInfoScene extends BaseComponent {
                 this.addCarOrder(number);
                 break;
             case 2:
-                console.log('金融购：',number);
+                // console.log('金融购：',number);
+                this.carBuyAction(number);
 
                 break;
             case 3:
-                console.log('全款购：',number);
-                this.newCarOrder(number);
+                // console.log('全款购：',number);
                 break;
         }
     }
 
-    // 添加到购物车
 
+    carBuyAction=(number)=>{
+        let carData =  this.state.carData;
+        if (carData.show_order == 1) {
+            this.props.showToast('该车辆已被订购');
+
+        } else {
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                if (data.code == 1) {
+                    let datas = JSON.parse(data.result);
+                    let maps = {
+                        enter_base_ids: datas.company_base_id,
+                        child_type: '1'
+                    };
+                    this.props.showModal(true);
+                    request(AppUrls.USER_ACCOUNT_INFO, 'Post', maps)
+                        .then((response) => {
+                                this.props.showModal(false);
+                                if (response.mjson.data.account.length == 0) {
+                                    this.props.showToast('请您先开通平台账户');
+                                } else {
+                                    lastType = response.mjson.data.account.status;
+                                    let navigatorParams = {
+                                        name: '',
+                                        component: '',
+                                        params: {
+                                            callBack: () => {
+                                            }
+                                        }
+                                    };
+                                    if (lastType == '0') {
+
+                                        navigatorParams.name = 'AccountManageScene';
+                                        navigatorParams.component = AccountManageScene;
+                                        this.refs.accountmodal.changeShowType(true,
+                                            '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                            '请尽快开通！', '去开户', '看看再说', () => {
+                                                this.toNextPage(navigatorParams);
+                                            });
+
+                                    } else if (lastType == '1') {
+                                        navigatorParams.name = 'BindCardScene';
+                                        navigatorParams.component = BindCardScene;
+                                        this.refs.accountmodal.changeShowType(true,
+                                            '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                            , '去绑卡', '看看再说', () => {
+                                                this.toNextPage(navigatorParams);
+                                            });
+
+                                    } else if (lastType == '2') {
+                                        navigatorParams.name = 'WaitActivationAccountScene';
+                                        navigatorParams.component = WaitActivationAccountScene;
+                                        this.refs.accountmodal.changeShowType(true,
+                                            '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                            , '去激活', '看看再说', () => {
+                                                this.toNextPage(navigatorParams);
+                                            });
+
+                                    } else {
+                                        this.newCarOrder(number);
+                                    }
+                                }
+                            },
+                            (error) => {
+                                this.props.showToast('用户信息查询失败');
+                            });
+                } else {
+                    this.props.showToast('用户信息查询失败');
+                }
+            });
+        }
+    }
+
+    // 添加到购物车
     addCarOrder=(number)=>{
-     let carData =  this.state.carData
+     let carData =  this.state.carData;
 
         this.props.showModal(true);
         request(AppUrls.CAR_ORDER_ADD, 'post', {
@@ -643,9 +715,10 @@ export default class CarNewInfoScene extends BaseComponent {
 
     // new车辆订购
     newCarOrder=(number)=>{
-        let carData =  this.state.carData
-        this.props.showModal(true);
 
+
+        let carData =  this.state.carData;
+        this.props.showModal(true);
         let carsArray = [
             {
             car_id:carData.id,
@@ -1397,15 +1470,15 @@ class BuyCarNumberView extends Component{
                                     </TouchableOpacity>
                                 </View>
                             ):(
-                                <View style={styles.buyCarFootView}>
-                                    <TouchableOpacity style={{width:Pixel.getPixel(100),height:Pixel.getPixel(33),alignItems:'center',justifyContent:'center',borderRadius:Pixel.getPixel(2),backgroundColor:fontAndColor.COLORA2}}
-                                                      activeOpacity={1} onPress={()=>{this.confirmClick(2,this.state.carNumber)}}>
-                                        <Text style={{color:"white", fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>金融购</Text>
-                                    </TouchableOpacity>
+                                <View style={[styles.buyCarFootView, {justifyContent:'center'}]}>
                                     <TouchableOpacity style={{width:Pixel.getPixel(100),height:Pixel.getPixel(33),alignItems:'center',justifyContent:'center',borderRadius:Pixel.getPixel(2),backgroundColor:fontAndColor.COLORB0}}
-                                                      activeOpacity={1} onPress={()=>{this.confirmClick(3,this.state.carNumber)}}>
-                                        <Text style={{color:"white", fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>全款购</Text>
+                                                      activeOpacity={1} onPress={()=>{this.confirmClick(2,this.state.carNumber)}}>
+                                        <Text style={{color:"white", fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>立即订购</Text>
                                     </TouchableOpacity>
+                                    {/*<TouchableOpacity style={{width:Pixel.getPixel(100),height:Pixel.getPixel(33),alignItems:'center',justifyContent:'center',borderRadius:Pixel.getPixel(2),backgroundColor:fontAndColor.COLORB0}}*/}
+                                                      {/*activeOpacity={1} onPress={()=>{this.confirmClick(3,this.state.carNumber)}}>*/}
+                                        {/*<Text style={{color:"white", fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>全款购</Text>*/}
+                                    {/*</TouchableOpacity>*/}
                                 </View>
                             )
                     }

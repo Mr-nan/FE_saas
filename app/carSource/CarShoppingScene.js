@@ -27,6 +27,14 @@ import CarShoppingData from './carData/CarShoppingData';
 import  StringTransformUtil from  "../utils/StringTransformUtil";
 import CarNewInfoScene from "./CarNewInfoScene";
 import CarUserInfoScene from "./CarInfoScene";
+import AccountModal from '../component/AccountModal';
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
+import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
+import BindCardScene from '../mine/accountManage/BindCardScene'
+import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
+
+
 let stringTransform = new StringTransformUtil();
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
@@ -179,6 +187,7 @@ export  default  class CarShoppingScene extends BaseComponent{
                         <FootView allSelectActin={this.allSelectActin} financialAtion={this.financialAtion} allPriceAtion={this.allPriceAtion}/>
                     )
                 }
+                <AccountModal ref="accountmodal"/>
                 <NavigationView title="购物车" backIconClick={this.backPage} renderRihtFootView={this.renderNavigationBtn}/>
             </View>
         )
@@ -400,6 +409,80 @@ export  default  class CarShoppingScene extends BaseComponent{
     }
     financialAtion=()=>{
 
+
+        if(CarShoppingData.sumNumber.get()>30){
+            this.props.showToast('购买总数量不得超过30台');
+            return;
+        }
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids: datas.company_base_id,
+                    child_type: '1'
+                };
+                this.props.showModal(true);
+                request(AppUrls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            this.props.showModal(false);
+                            if (response.mjson.data.account.length == 0) {
+                                this.props.showToast('请您先开通平台账户');
+                            } else {
+                                lastType = response.mjson.data.account.status;
+                                let navigatorParams = {
+                                    name: '',
+                                    component: '',
+                                    params: {
+                                        callBack: () => {
+                                        }
+                                    }
+                                };
+                                if (lastType == '0') {
+
+                                    navigatorParams.name = 'AccountManageScene';
+                                    navigatorParams.component = AccountManageScene;
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                        '请尽快开通！', '去开户', '看看再说', () => {
+                                            this.toNextPage(navigatorParams);
+                                        });
+
+                                } else if (lastType == '1') {
+                                    navigatorParams.name = 'BindCardScene';
+                                    navigatorParams.component = BindCardScene;
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                        , '去绑卡', '看看再说', () => {
+                                            this.toNextPage(navigatorParams);
+                                        });
+
+                                } else if (lastType == '2') {
+                                    navigatorParams.name = 'WaitActivationAccountScene';
+                                    navigatorParams.component = WaitActivationAccountScene;
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                        , '去激活', '看看再说', () => {
+                                            this.toNextPage(navigatorParams);
+                                        });
+
+                                } else {
+                                    this.carBuyAction();
+                                }
+                            }
+                        },
+                        (error) => {
+                            this.props.showToast('用户信息查询失败');
+                        });
+            } else {
+                this.props.showToast('用户信息查询失败');
+            }
+        });
+
+
+    }
+
+
+    carBuyAction=()=>{
         let carsArray = [];
         for(let shopData of CarShoppingData.shoppingData){
             for (let cityData of shopData.new_cars){
@@ -429,8 +512,8 @@ export  default  class CarShoppingScene extends BaseComponent{
             this.props.showModal(false);
             this.props.showToast(error.mjson.msg);
         });
-
     }
+
     allPriceAtion=()=>{
         alert('全款');
     }
