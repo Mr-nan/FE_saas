@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
         textAlign: 'center',
         backgroundColor: 'transparent',
+        marginLeft:Pixel.getPixel(32)
         // backgroundColor:'red'
 
     },
