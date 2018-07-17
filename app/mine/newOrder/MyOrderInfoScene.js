@@ -30,6 +30,8 @@ import MyOrderCarIDScene from "./MyOrderCarIDScene";
 import MyOrderChangeDataScene from "./MyOrderChangeDataScene";
 import {request} from "../../utils/RequestUtil";
 import * as Urls from "../../constant/appUrls";
+import BankScene from "../bank/BankScene";
+import MyOrderSelectWuliuItem from "./component/MyOrderSelectWuliuItem";
 /*
  * 获取屏幕的宽和高
  **/
@@ -45,7 +47,8 @@ export default class MyOrderInfoScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             allData:{},
-            from:this.props.from
+            from:this.props.from,
+            wuliu:{name:'',id:''}
         };
     }
 
@@ -99,9 +102,53 @@ export default class MyOrderInfoScene extends BaseComponent {
                         fontSize: Pixel.getPixel(15)
                     }}>取消订单</Text>
                 }} title='订单详情' backIconClick={this.backPage}/>
-                {GetOrderTextUtil.getPay(this.state.allData.status,this.state.from,this.state.allData)}
+                {GetOrderTextUtil.getPay(this.state.allData.status,this.state.from,this.state.allData,(types)=>{
+                    if(types==1){
+                        this.toNextPage({
+                            name:'BankScene',
+                            component:BankScene,
+                            params:{order_id:this.props.order_id,data:this.state.allData,callBack:()=>{
+                                    this.getData();
+                                },types:'dingjin'}
+                        })
+                    }else if(types==2){
+                        this.toNextPage({
+                            name:'BankScene',
+                            component:BankScene,
+                            params:{order_id:this.props.order_id,data:this.state.allData,callBack:()=>{
+                                    this.getData();
+                                },types:'quankuan'}
+                        })
+                    }else{
+                        this.sendMoney();
+                    }
+                },this.state.wuliu)}
+                <MyOrderSelectWuliuItem ref='myorderselectwuliuitem' wuliu={this.state.wuliu} callBack={(name,id)=>{
+                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        dataSource: ds.cloneWithRows(GetOrderTextUtil.getList(this.state.allData.status,this.state.from)),
+                        renderPlaceholderOnly: 'success',
+                        wuliu:{name:name,id:id}
+                    });
+                }}/>
             </View>);
         }
+    }
+
+    sendMoney=()=>{
+        this.props.showModal(true);
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.order_id,
+        };
+        request(Urls.CONFIRMORDERPRICE, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast('确认成功');
+                    this.getData();
+                },
+                (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
     }
 
 
@@ -109,7 +156,11 @@ export default class MyOrderInfoScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowData == 1) {
             return (
-                <MyOrderInfoTitleItem type={this.state.allData.status} from={this.state.from}/>
+                <MyOrderInfoTitleItem data={this.state.allData} type={GetOrderTextUtil.getStatus(this.state.allData.status,this.state.from)}
+                                      from={this.state.from} callBack={()=>{
+                    this.refs.myorderselectwuliuitem.changeShow();
+                }}
+                wuliu={this.state.wuliu}/>
             );
         } else if (rowData == 2) {
             return (

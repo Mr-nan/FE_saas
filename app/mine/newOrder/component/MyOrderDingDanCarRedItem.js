@@ -26,7 +26,7 @@ export  default class MyOrderDingDanCarItem extends PureComponent {
 
     render() {
         let widths = width;
-        let bottomWidths = width;
+        let bottomWidths = width-Pixel.getPixel(20);
         if(!this.isNull(this.props.parentWidth)){
             widths = this.props.parentWidth;
             bottomWidths = widths - Pixel.getPixel(20)
@@ -39,7 +39,7 @@ export  default class MyOrderDingDanCarItem extends PureComponent {
                     <Image style={{width:Pixel.getPixel(120),height:Pixel.getPixel(84),marginLeft:Pixel.getPixel(15),
                         resizeMode:'stretch'}}
                            source={{uri:this.props.data.car_SKU_details.imgs[0].icon_url}}/>
-                    <View style={{height:Pixel.getPixel(84), marginLeft:Pixel.getPixel(14)}}>
+                    <View style={{height:Pixel.getPixel(84), marginLeft:Pixel.getPixel(14),width:widths-Pixel.getPixel(149)}}>
                         <Text style={{fontSize:Pixel.getPixel(14),color:'#000'}}  numberOfLines={1}>{this.props.data.car_SKU_details.model_name}</Text>
                         <Text style={{fontSize:Pixel.getPixel(11),color:'#9b9b9b',
                         marginTop:Pixel.getPixel(6)}}  numberOfLines={1}>{time}/{this.props.data.car_SKU_details.mileage/10000}万公里/{this.props.data.car_SKU_details.car_color_name}/{this.props.data.car_SKU_details.provice_name}</Text>

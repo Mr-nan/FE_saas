@@ -17,9 +17,8 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import  GetImage from '../../../utils/GetOrderImageUtil'
-import  GetText from '../../../utils/GetOrderTextUtil'
 import * as fontAndColor from '../../../constant/fontAndColor';
-export  default class MyOrderInfoTitleItem extends PureComponent {
+export  default class MyOrderShenHeLeftItem extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -27,20 +26,18 @@ export  default class MyOrderInfoTitleItem extends PureComponent {
     }
 
     render() {
-        let heights = 214;
-        let imageHeight = 214;
-        if (this.props.type==4||this.props.type==5){
-            heights = 249;
-            imageHeight = 226;
-        }
+
         return (
-            <View style={{width:width,height:Pixel.getPixel(heights)}}>
-                <Image style={{width:width,height:Pixel.getPixel(imageHeight)}} source={GetImage.getTitle(this.props.data.status,this.props.from)}>
-                    {GetText.getTitle(this.props.data.status,this.props.from)}
-                </Image>
-                {GetText.getTitleBottom(this.props.data.status,this.props.from,this.props.wuliu,()=>{
-                    this.props.callBack();
-                })}
+            <View style={{marginTop:Pixel.getPixel(98),marginLeft:Pixel.getPixel(167)}}>
+                <Text style={{color:'#fff',fontSize:Pixel.getPixel(18), fontWeight:'bold',backgroundColor: '#00000000'}}>支付审核中</Text>
+               <View style={{marginTop:Pixel.getPixel(23),flexDirection:'row'}}>
+                   <TouchableOpacity activeOpacity={0.9} onPress={()=>{
+
+                   }} style={{width:Pixel.getPixel(71),height:Pixel.getPixel(25),borderColor:'#fff',borderWidth:1,borderRadius:3,
+                   justifyContent:'center',alignItems:'center'}}>
+                       <Text style={{color:'#fff',fontSize:Pixel.getPixel(13),backgroundColor: '#00000000'}}>平台客服</Text>
+                   </TouchableOpacity>
+               </View>
             </View>
         );
     }

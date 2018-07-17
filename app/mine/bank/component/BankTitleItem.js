@@ -33,7 +33,7 @@ export  default class BankTitleItem extends PureComponent {
                         应付金额
                     </Text>
                     <Text style={{fontSize:Pixel.getPixel(37),color:'#fff',marginTop:Pixel.getPixel(13), fontWeight:'bold',backgroundColor:'#00000000'}}>
-                        203,990.00<Text style={{fontSize:Pixel.getPixel(24),color:'#fff',backgroundColor:'#00000000'
+                        {this.props.types=='dingjin'?this.props.data.deposit_amount:this.props.data.amount}<Text style={{fontSize:Pixel.getPixel(24),color:'#fff',backgroundColor:'#00000000'
                         , fontWeight:'normal'}}>元
                     </Text>
                     </Text>

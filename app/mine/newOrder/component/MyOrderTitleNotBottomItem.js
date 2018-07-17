@@ -17,7 +17,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
-export  default class MyOrderTitleBottomItem extends PureComponent {
+export  default class MyOrderTitleNotBottomItem extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -32,20 +32,18 @@ export  default class MyOrderTitleBottomItem extends PureComponent {
                         收车方式
                     </Text>
                 </View>
-                <TouchableOpacity onPress={()=>{
-                    this.props.callBack();
-                }} style={{flex:1,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
+                <View  style={{flex:1,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
                     <Text
                         style={{
                             fontSize: Pixel.getFontPixel(14),
-                            color: this.props.wuliu.name==''?'#999999':'#91A2B6',
+                            color: '#91A2B6',
                             padding: 0,
                             marginRight:Pixel.getPixel(19),
                         }}
-                    >{this.props.wuliu.name==''?'请选择收车方式':this.props.wuliu.name}</Text>
+                    >自提</Text>
                     <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(15),marginRight:Pixel.getPixel(15)}}
                            source={require('../../../../images/neworder/right.png')}/>
-                </TouchableOpacity>
+                </View>
             </View>
         );
     }

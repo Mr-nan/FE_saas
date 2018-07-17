@@ -25,21 +25,68 @@ import BankTitleTextItem from "./component/BankTitleTextItem";
 import BankSelectItem from "./component/BankSelectItem";
 import BankTextItem from "./component/BankTextItem";
 import BankButtonItem from "./component/BankButtonItem";
+import * as Urls from "../../constant/appUrls";
+import AccountWebScene from "../accountManage/AccountWebScene";
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
 export default class BankScene extends BaseComponent {
     initFinish = () => {
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows([1,2,3,4,5]),
-            renderPlaceholderOnly: 'success'
-        });
+        this.getData();
+    }
+
+    getData=()=>{
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.order_id
+        };
+        request(Urls.CASHIERDETAILS, 'Post', maps)
+            .then((response) => {
+                    if(response.mjson.data.payment_type.hengfeng.available==1){
+                        if(parseInt(response.mjson.data.payment_type.hengfeng.balance)>=parseInt(this.props.data.deposit_amount)){
+                            this.selectData.push({
+                                name:'恒丰账户',
+                                image:require('../../../images/neworder/heng.png'),
+                                describe:'可用余额'+response.mjson.data.payment_type.hengfeng.balance+'元'
+                            });
+                        }else{
+                            this.selectData.push({
+                                name:'恒丰账户',
+                                image:require('../../../images/neworder/heng.png'),
+                                describe:'余额不足'
+                            });
+                        }
+                    }
+                    if(response.mjson.data.payment_type.dingcheng.available==1){
+                        this.selectData.push({
+                            name:'鼎诚代付',
+                            image:require('../../../images/neworder/ding.png')
+                        });
+                    }
+                    if(response.mjson.data.payment_type.offline.available==1){
+                        this.selectData.push({
+                            name:'线下支付',
+                            image:require('../../../images/neworder/xian.png')
+                        });
+                    }
+                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        dataSource: ds.cloneWithRows([1,2,3,4,5]),
+                        renderPlaceholderOnly: 'success'
+                    });
+                },
+                (error) => {
+                    this.setState({
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
     }
     // 构造
     constructor(props) {
         super(props);
+        this.selectData=[];
+        this.select = -1;
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
@@ -88,23 +135,112 @@ export default class BankScene extends BaseComponent {
     }
 
 
-
+    
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
         if(rowData==1){
-            return(<BankTitleItem/>);
+            return(<BankTitleItem types={this.props.types} data={this.props.data}/>);
         }else if(rowData==2){
             return(<BankTitleTextItem/>);
         }else if(rowData==3){
-            return(<BankSelectItem/>);
+            return(<BankSelectItem data={this.selectData} callBack={(index)=>{
+                this.select = index;
+            }}/>);
         }else if(rowData==4){
             return(<BankTextItem/>);
         }else{
             return (
-                <BankButtonItem/>
+                <BankButtonItem callBack={()=>{
+                    if(this.select==-1){
+                        this.props.showToast('请选择支付方式');
+                    }else{
+                        if(this.selectData[this.select].name=='恒丰账户'){
+                            this.hengfeng();
+                        }else if(this.selectData[this.select].name=='鼎诚代付'){
+                            this.dingcheng();
+                        }else{
+                            this.xianxia();
+                        }
+                    }
+                }}/>
             );
         }
     }
+    hengfeng=()=>{
+        if(this.props.types=='dingjin'){
+            this.props.showModal(true);
+            let maps = {
+                company_id: global.companyBaseID,
+                order_id: this.props.order_id,
+            };
+            request(Urls.CONFIRMORDERPRICE, 'Post', maps)
+                .then((response) => {
+                        this.props.showToast('支付成功');
+                        this.props.callBack();
+                        this.backPage();
+                    },
+                    (error) => {
+                        this.props.showToast(error.mjson.msg);
+                    });
+        }else{
+            this.props.showModal(true);
+            let maps = {
+                company_id: global.companyBaseID,
+                order_id: this.props.order_id,
+                reback_url:'www.orderzhifuweikuan.com'
+            };
+            request(Urls.ORDER_HOME_PAYBALANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showModal(false);
+                        this.toNextPage({
+                            name:'AccountWebScene',
+                            component:AccountWebScene,
+                            params:{webUrl:response.mjson.data.url,backUrl:'www.orderzhifuweikuan.com',callBack:()=>{
+                                
+                                }}
+                        })
+                    },
+                    (error) => {
+                        this.props.showToast(error.mjson.msg);
+                    });
+        }
+      
+    }
+
+    dingcheng=()=>{
+        this.props.showModal(true);
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.order_id,
+        };
+        request(Urls.DINGCHENGPAY, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast('支付成功');
+                    this.props.callBack();
+                    this.backPage();
+                },
+                (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+    }
+
+    xianxia=()=>{
+        this.props.showModal(true);
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.order_id,
+        };
+        request(Urls.OFFLINEPAY, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast('支付成功');
+                    this.props.callBack();
+                    this.backPage();
+                },
+                (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+    }
+    
 }
 
 const styles = StyleSheet.create({

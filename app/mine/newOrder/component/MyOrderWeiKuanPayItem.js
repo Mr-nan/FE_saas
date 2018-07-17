@@ -17,7 +17,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
-export  default class MyOrderPayItem extends PureComponent {
+export  default class MyOrderWeiKuanPayItem extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -28,12 +28,12 @@ export  default class MyOrderPayItem extends PureComponent {
             <View style={{width:width,height:Pixel.getPixel(45),backgroundColor:'#fff', flexDirection:'row',
                 position:'absolute',left:0,bottom:0}}>
                 <View style={{flex:2, flexDirection:'row',alignItems:'center'}}>
-                    <Text style={{fontSize:Pixel.getPixel(14),color:'#9B9B9B',marginLeft:Pixel.getPixel(14)}}>应收订金合计：</Text>
-                    <Text style={{fontSize:Pixel.getPixel(19),color:'#FA5741',marginLeft:Pixel.getPixel(5)}}>{this.props.data.deposit_amount/10000}<Text
+                    <Text style={{fontSize:Pixel.getPixel(14),color:'#9B9B9B',marginLeft:Pixel.getPixel(14)}}>合计金额：</Text>
+                    <Text style={{fontSize:Pixel.getPixel(19),color:'#FA5741',marginLeft:Pixel.getPixel(5)}}>{this.props.data.amount / 10000-this.props.data.deposit_amount / 10000}<Text
                         style={{fontSize:Pixel.getPixel(12),color:'#FA5741'}}>万元</Text></Text>
                 </View>
                 <TouchableOpacity onPress={()=>{
-                    this.props.callBack();
+                    this.props.callBack(2);
                 }} style={{flex:1,backgroundColor:'#05C5C2',alignItems:'center',justifyContent:'center'}}>
                     <Text style={{fontSize:Pixel.getPixel(15),color:'#fff'}}>支付</Text>
                 </TouchableOpacity>

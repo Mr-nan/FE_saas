@@ -50,6 +50,8 @@ export default class MyOrderInfoCarItem extends PureComponent {
                 }} data={this.props.data.models[i]} key={i + '123'} callBack={(topMoney,bottomMoney,model_id) => {
                     this.props.callBack(topMoney,bottomMoney,model_id);
                 }} showToast={(content)=>{this.props.showToast(content);}} showModal={(show)=>{this.props.showModal(show);}}/>);
+            }else if(this.props.type == 22){
+                itemList.push(<MyOrderDingDanCarRedItem data={this.props.data.models[i]} key={i + '123'}/>);
             }
         }
         let size = 0;
@@ -100,11 +102,11 @@ export default class MyOrderInfoCarItem extends PureComponent {
                     </TouchableOpacity> : <View/>}
                 {
                     this.props.data.models.length > 2 ?
-                        <View style={{width: width, height: 1, backgroundColor: '#d8d8d8'}}></View> : <View/>
+                        <View style={{width: width, height: 1, backgroundColor: '#d8d8d8'}}></View>:<View/>
                 }
                 <View style={{
                     width: width,
-                    height: Pixel.getPixel(52),
+                    height: Pixel.getPixel(46),
                     justifyContent: 'center',
                     alignItems: 'flex-end'
                 }}>
@@ -119,7 +121,28 @@ export default class MyOrderInfoCarItem extends PureComponent {
 
                     </Text>
                 </View>
+                {
+                    this.props.type == 22 ?
+                        <View style={{width: width-Pixel.getPixel(20), height: 1, backgroundColor: '#d8d8d8',
+                            marginLeft:Pixel.getPixel(10)}}></View>:<View/>
+                }
+                {this.props.type == 22?  <View style={{
+                    width: width,
+                    height: Pixel.getPixel(46),
+                    justifyContent: 'center',
+                    alignItems: 'flex-end'
+                }}>
+                    <Text style={{fontSize: Pixel.getPixel(12), color: '#666', marginRight: Pixel.getPixel(16)}}>
+                        待收订金：
+                        <Text style={{fontSize: Pixel.getPixel(19), color: '#FA5741', fontWeight: 'bold'}}>
+                            {this.props.data.deposit_amount / 10000}
+                            <Text style={{fontSize: Pixel.getPixel(12), color: '#FA5741'}}>
+                                万元
+                            </Text>
+                        </Text>
 
+                    </Text>
+                </View>:<View/>}
             </View>
         );
     }

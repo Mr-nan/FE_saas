@@ -168,22 +168,27 @@ export  default class MyOrderInfoCarChangeItem extends PureComponent {
 
                                 </View>
                             </View>
-                            <View style={{backgroundColor:'#FFE3DF',height:Pixel.getPixel(15),borderRadius:50,justifyContent:'center',
+                            {false?<View style={{backgroundColor:'#FFE3DF',height:Pixel.getPixel(15),borderRadius:50,justifyContent:'center',
                                 alignItems:'center',marginTop:Pixel.getPixel(10)}}>
                                 <Text style={{color:'#FA5741',fontSize:Pixel.getPixel(10)}}>存在质押车，成交价不得低于20.00万元 </Text>
-                            </View>
+                            </View>:<View/>}
                         </View>
                     </View>
                     <TouchableOpacity activeOpacity={0.9} onPress={()=>{
-                        this.props.changeNumber();
+                        if(this.props.data.car_items[0].v_type==1){
+
+                        }else{
+                            this.props.changeNumber();
+                        }
                     }} style={{backgroundColor:'#FAF9FF',height:Pixel.getPixel(37),width:width-Pixel.getPixel(24),marginLeft:Pixel.getPixel(12),
                         flexDirection:'row',marginTop:Pixel.getPixel(11)}}>
                         <View style={{flex:1,justifyContent:'center'}}>
                             <Text style={{fontSize:Pixel.getPixel(14),color:'#666',marginLeft:Pixel.getPixel(12)}}>车架号</Text>
                         </View>
-                        <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                            <Text style={{fontSize:Pixel.getPixel(14),color:'#666'}}>LVSHJCAC9DE166720</Text>
-                        </View>
+                        {this.props.data.car_SKU_details.v_type==1?<View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
+                            <Text style={{fontSize:Pixel.getPixel(14),color:'#666'}}>{this.props.data.car_items[0].car_vin}</Text>
+                        </View>:<View/>}
+
                     </TouchableOpacity>
                 </View>
             );

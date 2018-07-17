@@ -25,10 +25,12 @@ export  default class BankButtonItem extends PureComponent {
 
     render() {
         return (
-            <View style={{width:width-Pixel.getPixel(32),height:Pixel.getPixel(45),marginLeft:Pixel.getPixel(16),
+            <TouchableOpacity onPress={()=>{
+                this.props.callBack();
+            }} style={{width:width-Pixel.getPixel(32),height:Pixel.getPixel(45),marginLeft:Pixel.getPixel(16),
             borderRadius:2, backgroundColor:'#05C5C2',justifyContent:'center',alignItems:'center'}}>
                 <Text style={{fontSize:Pixel.getPixel(15),color:'#fff'}}>去支付</Text>
-            </View>
+            </TouchableOpacity>
         );
     }
 

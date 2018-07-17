@@ -36,9 +36,11 @@ export  default class MyOrderPaySelectItem extends PureComponent {
                     <View style={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:'#90A1B5'}}>
                         <Text style={{fontSize:Pixel.getPixel(15),color:'#fff'}}>金融购车</Text>
                     </View>
-                    <View style={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:'#05C5C2'}}>
+                    <TouchableOpacity onPress={()=>{
+                        this.props.callBack(1);
+                    }} style={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:'#05C5C2'}}>
                         <Text style={{fontSize:Pixel.getPixel(15),color:'#fff'}}>全款购车</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         );
