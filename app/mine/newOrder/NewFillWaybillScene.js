@@ -291,17 +291,29 @@ export default class NewFillWaybillScene extends BaseComponent{
     cellClick=(title,index)=>{
 
        if(title=='联系方式'&& index==0){
+
+           this.addressType = 'start';
            this.toNextPage({
                    name: 'AddressManage',
                    component: AddressManage,
                    params: {
-                       addressId: this.endId,
+                       addressId: this.startID,
                        callBack: this.updateAddress
                    }
                }
            );
-       }else {
+       }else if(title=='联系方式'&& index==1) {
 
+           this.addressType = 'stop';
+           this.toNextPage({
+                   name: 'AddressManage',
+                   component: AddressManage,
+                   params: {
+                       addressId: this.stopId,
+                       callBack: this.updateAddress
+                   }
+               }
+           );
        }
     }
 
@@ -311,8 +323,15 @@ export default class NewFillWaybillScene extends BaseComponent{
     updateAddress = (newAddress) => {
         console.log('newAddress', newAddress);
         if(newAddress.id){
-            this.endId = newAddress.id;
-            this.titleData[0][1].value = `${newAddress.contact_name}  ${newAddress.contact_phone}`;
+
+            if(this.addressType=='start'){
+                this.startID = newAddress.id;
+                this.titleData[0][1].value = `${newAddress.contact_name}  ${newAddress.contact_phone}`;
+            }else {
+                this.stopId = newAddress.id;
+                this.titleData[1][1].value = `${newAddress.contact_name}  ${newAddress.contact_phone}`;
+            }
+
             this.updateTitleData();
         }
 
