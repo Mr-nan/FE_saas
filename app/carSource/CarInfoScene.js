@@ -40,6 +40,7 @@ import CarMyListScene from "./CarMyListScene";
 import GetPermissionUtil from '../utils/GetRoleUtil';
 import MyAccountScene from "../mine/accountManage/MyAccountScene";
 import ExplainModal from "../mine/myOrder/component/ExplainModal";
+import NewFillWaybillScene from "../mine/newOrder/NewFillWaybillScene";
 
 let Platform = require('Platform');
 let getRole = new GetPermissionUtil();
@@ -782,7 +783,15 @@ export default class CarInfoScene extends BaseComponent {
 
     // 打开分享
     showShared = () => {
-        this.refs.sharedView.isVisible(true);
+        // this.refs.sharedView.isVisible(true);
+
+        this.toNextPage({
+            name: "NewFillWaybillScene",
+            component: NewFillWaybillScene,
+            params: {
+
+            }
+        })
     }
 
 

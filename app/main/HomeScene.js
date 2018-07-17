@@ -49,7 +49,7 @@ import AuthenticationModal from '../component/AuthenticationModal';
 let Platform = require('Platform');
 import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
 import PersonCertificate from "../mine/certificateManage/PersonCertificate";
-
+import HomeShoppingIcon from  './component/HomeShoppingIcon';
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
@@ -499,7 +499,7 @@ export default class HomeScene extends BaseComponet {
                     }
                 />
                 <AuthenticationModal ref="authenmodal"/>
-
+                <HomeShoppingIcon/>
             </View>
         )
     }

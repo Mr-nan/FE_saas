@@ -16,7 +16,6 @@ import {
     TextInput
 } from 'react-native';
 
-
 import BaseComponent from '../../component/BaseComponent';
 import NavigatorView from '../../component/AllNavigationView';
 import {CellView,CellSelectView} from './component/NewFillWaybillCell';
@@ -156,7 +155,8 @@ export default class NewFillWaybillScene extends BaseComponent{
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                               />
                           )
-                      }                  },
+                      }
+                  },
                   {
                       title:'联系电话',
                       isShowTag:false,
@@ -173,7 +173,8 @@ export default class NewFillWaybillScene extends BaseComponent{
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                               />
                           )
-                      }                  },
+                      }
+                  },
                   {
                       title:'所在地区',
                       isShowTag:false,
@@ -201,9 +202,11 @@ export default class NewFillWaybillScene extends BaseComponent{
 
               ],
           ];
-        this.state = {
-            titleData:this.titleData,
-        };
+
+          this.state={
+              titleData:this.titleData,
+          }
+
       }
 
      render(){
@@ -307,14 +310,24 @@ export default class NewFillWaybillScene extends BaseComponent{
      **/
     updateAddress = (newAddress) => {
         console.log('newAddress', newAddress);
-        this.endId = newAddress.id;
-        this.props.showModal(true);
-        this.getTransType();
+        if(newAddress.id){
+            this.endId = newAddress.id;
+            this.titleData[0][1].value = `${newAddress.contact_name}  ${newAddress.contact_phone}`;
+            this.updateTitleData();
+        }
 
-    };
+    }
+
 
     saveCarData=()=>{
 
+    }
+
+
+    updateTitleData=()=>{
+        this.setState({
+            titleData:this.titleData
+        });
     }
 
 
