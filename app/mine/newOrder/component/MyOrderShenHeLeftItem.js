@@ -29,12 +29,18 @@ export  default class MyOrderShenHeLeftItem extends PureComponent {
 
         return (
             <View style={{marginTop:Pixel.getPixel(98),marginLeft:Pixel.getPixel(167)}}>
-                <Text style={{color:'#fff',fontSize:Pixel.getPixel(18), fontWeight:'bold',backgroundColor: '#00000000'}}>支付审核中</Text>
+                <Text style={{color:'#fff',fontSize:Pixel.getPixel(18), fontWeight:'bold',backgroundColor: '#00000000'}}>尾款支付中</Text>
                <View style={{marginTop:Pixel.getPixel(23),flexDirection:'row'}}>
                    <TouchableOpacity activeOpacity={0.9} onPress={()=>{
 
                    }} style={{width:Pixel.getPixel(71),height:Pixel.getPixel(25),borderColor:'#fff',borderWidth:1,borderRadius:3,
                    justifyContent:'center',alignItems:'center'}}>
+                       <Text style={{color:'#fff',fontSize:Pixel.getPixel(13),backgroundColor: '#00000000'}}>卖家电话</Text>
+                   </TouchableOpacity>
+                   <TouchableOpacity activeOpacity={0.9} onPress={()=>{
+
+                   }} style={{width:Pixel.getPixel(71),height:Pixel.getPixel(25),borderColor:'#fff',borderWidth:1,borderRadius:3,
+                       justifyContent:'center',alignItems:'center',marginLeft:Pixel.getPixel(13)}}>
                        <Text style={{color:'#fff',fontSize:Pixel.getPixel(13),backgroundColor: '#00000000'}}>平台客服</Text>
                    </TouchableOpacity>
                </View>

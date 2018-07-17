@@ -41,6 +41,8 @@ export default class GetOrderTextUtil {
                 return  4
             }else if (status == 6) {
                 return  5
+            }else if (status == 7) {
+                return  4
             }
         }else{
             if (status == 0) {
