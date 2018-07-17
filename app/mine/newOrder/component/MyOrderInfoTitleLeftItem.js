@@ -16,8 +16,6 @@ import {
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import  GetImage from '../../../utils/GetOrderImageUtil'
-import * as fontAndColor from '../../../constant/fontAndColor';
 export  default class MyOrderInfoTitleLeftItem extends PureComponent {
 
     constructor(props) {

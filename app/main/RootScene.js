@@ -40,6 +40,8 @@ import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi';
 import LoginGesture from '../login/LoginGesture';
 import MyOrderListScene from "../mine/newOrder/MyOrderListScene";
 import MyOrderInfoScene from "../mine/newOrder/MyOrderInfoScene";
+import MyOrderCarIDScene from "../mine/newOrder/MyOrderCarIDScene";
+import BankScene from "../mine/bank/BankScene";
 const IS_ANDROID = Platform.OS === 'android';
 
 export default class RootScene extends BaseComponent {

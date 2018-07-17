@@ -1888,3 +1888,47 @@ export const STORE_GETER_REQUEST = BASEURL + "v2/order.home/storeGeterRequest";
  *   运单提车人信息
  **/
 export const GETSTOREGETER = BASEURL + "v2/order.home/getStoreGeter";
+/**
+ *   订单列表
+ **/
+export const ORDER_HOME_LISTS = BASEURL + "v3/order.home/lists";
+
+/**
+ *   订单详情
+ **/
+export const ORDER_HOME_DETAIL = BASEURL + "v3/order.home/detail";
+
+/**
+ *   设置定金和成交价
+ **/
+export const ORDER_HOME_SETPRICE = BASEURL + "v3/order.home/setPrice";
+
+/**
+ *   录入车架号
+ **/
+export const ORDER_HOME_SETVIN = BASEURL + "v3/order.home/setVin";
+
+/**
+ *   确认成交价
+ **/
+export const CONFIRMORDERPRICE = BASEURL + "v3/order.home/confirmOrderPrice";
+
+/**
+ *   收银台详情
+ **/
+export const CASHIERDETAILS = BASEURL + "v3/order.home/cashierDetails";
+
+/**
+ *   鼎城代付
+ **/
+export const DINGCHENGPAY = BASEURL + "v3/order.home/dingchengPay";
+
+/**
+ *   线下支付
+ **/
+export const OFFLINEPAY = BASEURL + "v3/order.home/offlinePay";
+
+/**
+ *   支付尾款
+ **/
+export const ORDER_HOME_PAYBALANCE = BASEURL + "v3/order.home/payBalance";

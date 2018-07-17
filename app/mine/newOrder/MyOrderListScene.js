@@ -21,27 +21,58 @@ import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import MyOrderListItem from './component/MyOrderListItem';
 import {request} from '../../utils/RequestUtil';
+import * as Urls from "../../constant/appUrls";
+import MyOrderInfoScene from "./MyOrderInfoScene";
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
 export default class MyOrderListScene extends BaseComponent {
-    initFinish = () => {
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows([1,2,3,4]),
-            renderPlaceholderOnly: 'success'
-        });
-    }
-    // 构造
+
     constructor(props) {
         super(props);
+        this.page = 1;
+        this.allPage = 1;
+        this.allData = [];
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
         };
     }
+    initFinish = () => {
+        this.getData();
+    }
+
+    getData=()=>{
+        let maps = {
+            business:this.props.business,
+            company_id:global.companyBaseID,
+            rows:5,
+            page:this.page,
+
+
+        };
+        request(Urls.ORDER_HOME_LISTS, 'Post', maps)
+            .then((response) => {
+                  this.allData.push(...response.mjson.data.info_list);
+                  this.allPage = Math.ceil(response.mjson.data.total/5);
+                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        dataSource: ds.cloneWithRows(this.allData),
+                        renderPlaceholderOnly: 'success'
+                    });
+                },
+                (error) => {
+                    if (error.mycode == '-2100045'||error.mycode == '-1') {
+                        this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                    } else {
+                        this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                    }
+                });
+    }
+    // 构造
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -76,8 +107,12 @@ export default class MyOrderListScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
         return (
-          <MyOrderListItem data={rowData} callBack={(index)=>{
-
+          <MyOrderListItem data={rowData} callBack={()=>{
+              this.toNextPage({
+                  name:'MyOrderInfoScene',
+                  component:MyOrderInfoScene,
+                  params:{order_id:rowData.order_id,from:this.props.business}
+              })
           }}/>
         );
     }

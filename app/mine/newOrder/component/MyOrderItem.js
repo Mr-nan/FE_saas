@@ -33,8 +33,8 @@ export  default class MyOrderItem extends PureComponent {
         }
         let itemList = [];
         for (let i = 0;i<4;i++){
-            itemList.push(<TouchableOpacity activeOpacity={0.9} onPress={()=>{
-                this.props.callBack(i);
+            itemList.push(<TouchableOpacity key={i+'123'} activeOpacity={0.9} onPress={()=>{
+                this.props.callBack(this.props.data.images[i]);
             }} style={{flex:1,height:Pixel.getPixel(50),justifyContent:'center',alignItems:'center'}}>
                 <Image style={{width:Pixel.getPixel(imageW),height:Pixel.getPixel(imageY)}} source={this.props.data.images[i]}/>
                 <Text style={{color:'#91A2B6',fontSize:Pixel.getPixel(14),marginTop:Pixel.getPixel(10)}}>{this.titles[i]}</Text>

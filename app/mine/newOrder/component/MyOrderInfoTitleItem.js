@@ -19,7 +19,6 @@ const Pixel = new PixelUtil();
 import  GetImage from '../../../utils/GetOrderImageUtil'
 import  GetText from '../../../utils/GetOrderTextUtil'
 import * as fontAndColor from '../../../constant/fontAndColor';
-import MyOrderInfoTitleLeftItem from "./MyOrderInfoTitleLeftItem";
 export  default class MyOrderInfoTitleItem extends PureComponent {
 
     constructor(props) {
@@ -28,12 +27,20 @@ export  default class MyOrderInfoTitleItem extends PureComponent {
     }
 
     render() {
-
+        let heights = 214;
+        let imageHeight = 214;
+        if (this.props.type==4||this.props.type==5){
+            heights = 249;
+            imageHeight = 226;
+        }
         return (
-            <View style={{width:width,height:Pixel.getPixel(214),backgroundColor:'#fff'}}>
-                <Image style={{flex:1}} source={GetImage.getTitle(this.props.type)}>
-                    {GetText.getTitle(this.props.type)}
+            <View style={{width:width,height:Pixel.getPixel(heights)}}>
+                <Image style={{width:width,height:Pixel.getPixel(imageHeight)}} source={GetImage.getTitle(this.props.data.status,this.props.from)}>
+                    {GetText.getTitle(this.props.data.status,this.props.from)}
                 </Image>
+                {GetText.getTitleBottom(this.props.data.status,this.props.from,this.props.wuliu,()=>{
+                    this.props.callBack();
+                })}
             </View>
         );
     }

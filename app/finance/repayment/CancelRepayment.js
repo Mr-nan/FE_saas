@@ -43,6 +43,8 @@ export  default class CancelRepayment extends BaseComponent {
         // 初始状态
         let mList = ['1', '2', '3', '4', '5', '6','7'];
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.loan_number='';
+        this.payment_number='';
         let date = new Date();
         let seperator1 = "/";
         let month = date.getMonth() + 1;
@@ -119,8 +121,8 @@ export  default class CancelRepayment extends BaseComponent {
                     nameList.push({name: '开户行', data: bankInfo.bank});
                     nameList.push({name: '开户支行', data: bankInfo.branch});
                     nameList.push({name: '还款账号', data: bankInfo.repaymentnumber});
-
-
+                    this.loan_number=movies.loan_number;
+                    this.payment_number=movies.payment_number;
                     adjustLsit.push({name: '使用优惠券数量', data: movies.coupon_number});
                     adjustLsit.push({name: '使用优惠券金额', data: movies.coupon_usable});
                     adjustLsit.push({name: '优惠券还息金额', data: movies.coupon_repayment});
@@ -152,8 +154,8 @@ export  default class CancelRepayment extends BaseComponent {
             api: Urls.PREPAYMENT_CANCEL_REPAYMENT,
             /*loan_id: this.props.loan_id,
             type: '2',*/
-            loan_number: this.props.loan_number,
-            payment_number:this.props.payment_number,
+            loan_number: this.loan_number,
+            payment_number:this.payment_number,
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
