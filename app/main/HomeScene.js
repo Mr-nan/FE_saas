@@ -46,6 +46,7 @@ import  StringTransformUtil from  '../utils/StringTransformUtil';
 let stringTransform = new StringTransformUtil();
 import * as Urls from '../constant/appUrls';
 import AuthenticationModal from '../component/AuthenticationModal';
+import CarShoppingScene from "../carSource/CarShoppingScene";
 let Platform = require('Platform');
 import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
 import PersonCertificate from "../mine/certificateManage/PersonCertificate";
@@ -298,7 +299,6 @@ export default class HomeScene extends BaseComponet {
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
 
-            console.log('==========Loan_SUBJECT',data);
             if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 this.getData(enters.prov_id);
@@ -499,7 +499,22 @@ export default class HomeScene extends BaseComponet {
                     }
                 />
                 <AuthenticationModal ref="authenmodal"/>
-                <HomeShoppingIcon/>
+                <HomeShoppingIcon click={()=> {
+                    StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                            if (res.result && res.result == 'true') {
+                               this.props.callBack({
+                                   name: 'CarShoppingScene',
+                                   component: CarShoppingScene,
+                                   params: {}
+                               });
+                            }else {
+                                this.isHomeJobItemLose = false;
+                                this.props.showLoginModal();
+                            }
+                        }
+                    );
+
+                }}/>
             </View>
         )
     }
