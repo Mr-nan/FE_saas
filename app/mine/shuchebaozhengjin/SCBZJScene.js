@@ -106,38 +106,38 @@ export  default class SCBZJScene extends BaseComponent {
         return (
             <View style={{width:width,height:height,backgroundColor: fontAndColor.COLORA3,flexDirection:'column'}}>
                 <View style={{marginTop: Pixel.getTitlePixel(64)}}>
-                {
-                    (this.state.status == 0 ||  this.state.status == 1 ||  this.state.status == 2 )&&
-                    <View style={{width:width ,height:Pixel.getPixel(40), backgroundColor:'#FFF8EA',justifyContent:'center',paddingLeft:Pixel.getPixel(15)}} >
-                        <Text style={{color:'#846545',fontSize:Pixel.getFontPixel(15)}}>
-                            {this.getStatusStr(this.state.status)}
-                        </Text>
-                    </View>
-                }
-                <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
-                <View style={{flexDirection:'row',height:Pixel.getPixel(45),paddingLeft:Pixel.getPixel(15),paddingRight:Pixel.getPixel(15),backgroundColor:'#ffffff',alignItems:'center'}}>
-                    <Text style={{fontSize:Pixel.getFontPixel(14),color:'#333333'}}>保证金总额: </Text>
-                    <Text style={{fontSize:Pixel.getFontPixel(12),color:'#FA5741',flex:1}}>{this.state.totalmoney}元</Text>
-                    <TouchableOpacity  onPress={()=>{
-                        if(this.state.details =='open'){
-                            this.setState({details: 'close'});
-                        }else {
-                            this.setState({details: 'open'});
-                        }
-                    }}>
-                        <View style={{backgroundColor:'#e6f9f9',width:Pixel.getPixel(90),borderRadius:Pixel.getPixel(9),height:Pixel.getPixel(19),flexDirection:'row',justifyContent:'center',alignItems:'center'}} >
-                            <Text style={{fontSize:Pixel.getFontPixel(12),color:'#010101'}}>
-                            { this.state.details =='open'  ?'收起详情 ':'展开详情 '}
+                    {
+                        (this.state.status == 0 ||  this.state.status == 1 ||  this.state.status == 2 )&&
+                        <View style={{width:width ,height:Pixel.getPixel(40), backgroundColor:'#FFF8EA',justifyContent:'center',paddingLeft:Pixel.getPixel(15)}} >
+                            <Text style={{color:'#846545',fontSize:Pixel.getFontPixel(15)}}>
+                                {this.getStatusStr(this.state.status)}
                             </Text>
-                            {
-                                this.state.details =='open' ?
-                                    <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(5)}} source={require('../../../images/jt_shang.png')}/>:
-                                    <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(5)}} source={require('../../../images/jt_xia.png')}/>
-                            }
-
                         </View>
-                    </TouchableOpacity>
-                </View>
+                    }
+                    <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
+                    <View style={{flexDirection:'row',height:Pixel.getPixel(45),paddingLeft:Pixel.getPixel(15),paddingRight:Pixel.getPixel(15),backgroundColor:'#ffffff',alignItems:'center'}}>
+                        <Text style={{fontSize:Pixel.getFontPixel(14),color:'#333333'}}>保证金总额: </Text>
+                        <Text style={{fontSize:Pixel.getFontPixel(12),color:'#FA5741',flex:1}}>{this.state.totalmoney}元</Text>
+                        <TouchableOpacity  onPress={()=>{
+                            if(this.state.details =='open'){
+                                this.setState({details: 'close'});
+                            }else {
+                                this.setState({details: 'open'});
+                            }
+                        }}>
+                            <View style={{backgroundColor:'#e6f9f9',width:Pixel.getPixel(90),borderRadius:Pixel.getPixel(9),height:Pixel.getPixel(19),flexDirection:'row',justifyContent:'center',alignItems:'center'}} >
+                                <Text style={{fontSize:Pixel.getFontPixel(12),color:'#010101'}}>
+                                    { this.state.details =='open'  ?'收起详情 ':'展开详情 '}
+                                </Text>
+                                {
+                                    this.state.details =='open' ?
+                                        <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(5)}} source={require('../../../images/jt_shang.png')}/>:
+                                        <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(5)}} source={require('../../../images/jt_xia.png')}/>
+                                }
+
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <View style={{width:width,height:onePT,backgroundColor:'#D8D8D8'}}/>
                 {
