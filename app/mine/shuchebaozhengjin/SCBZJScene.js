@@ -100,12 +100,11 @@ export  default class SCBZJScene extends BaseComponent {
      * 加载页面
      **/
     render() {
-        if (this.state.renderPlaceholderOnly != 'success') {
-            return this._renderPlaceholderView();
-        }
+
+
         return (
-            <View style={{width:width,height:height,backgroundColor: fontAndColor.COLORA3,flexDirection:'column'}}>
-                <View style={{marginTop: Pixel.getTitlePixel(64)}}>
+            <View style={{width:width,height:height,backgroundColor: fontAndColor.COLORA3,flexDirection:'column',paddingTop:Pixel.getPixel(64)}}>
+                <View >
                     {
                         (this.state.status == 0 ||  this.state.status == 1 ||  this.state.status == 2 )&&
                         <View style={{width:width ,height:Pixel.getPixel(40), backgroundColor:'#FFF8EA',justifyContent:'center',paddingLeft:Pixel.getPixel(15)}} >
@@ -171,6 +170,7 @@ export  default class SCBZJScene extends BaseComponent {
                 <NavigationView title="保证金" backIconClick={this.backPage}/>
             </View>
         );
+
     }
 
     /**

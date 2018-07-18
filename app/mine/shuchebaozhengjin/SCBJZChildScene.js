@@ -112,7 +112,7 @@ export default class SCBJZChildScene extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
-            return (<View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
+            return (<View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 {this.loadView()}
             </View>);
         }else{
