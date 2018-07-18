@@ -94,10 +94,20 @@ export default class MyOrderScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         return (
           <MyOrderItem data={rowData} callBack={(index)=>{
+              let status='';
+              if(index==0){
+                  status='in_the_deal';
+              }else if(index==1){
+                  status='finish';
+              }else if(index==2){
+                  status='closed';
+              }else if(index==3){
+                  status='refund';
+              }
                 this.toNextPage({
                     name:'MyOrderListScene',
                     component:MyOrderListScene,
-                    params:{title:rowData.name,business:parseInt(rowID)+1}
+                    params:{title:rowData.name,business:parseInt(rowID)+1,status:status}
                 })
           }}/>
         );

@@ -42,7 +42,11 @@ export default class MyOrderCarIDScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
-        this.allList = [{name:'车架号',value:''},{name:'出厂日期',value:''},{name:'车架号照片',image:'',id:'',icon:''},
+
+        this.car_item = this.props.data.models[this.props.index].car_items[this.props.id];
+        this.allList = [{name:'车架号',value:this.car_item.car_vin},
+            {name:'出厂日期',value:this.car_item.manufacture},
+            {name:'车架号照片',image:'',id:'',icon:''},
             {name:'里程表照片',image:'',id:'',icon:''},
             // {name:'待还款金额',image:'',id:''},
             {name:'保存',value:''}];
@@ -99,7 +103,7 @@ export default class MyOrderCarIDScene extends BaseComponent {
         this.props.showModal(true);
         let maps = {
             company_id:global.companyBaseID,
-            item_id:this.props.item_id,
+            item_id:this.car_item.id,
             manufacture:this.allList[1].value,
             mileage_pic:this.allList[3].image,
             mileage_pic_file_id:this.allList[3].id,
@@ -111,6 +115,8 @@ export default class MyOrderCarIDScene extends BaseComponent {
         request(Urls.ORDER_HOME_SETVIN, 'Post', maps)
             .then((response) => {
                   this.props.showToast('保存成功');
+                    this.props.callBack();
+                    this.backPage();
                 },
                 (error) => {
                     this.props.showToast(error.mjson.msg);

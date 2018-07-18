@@ -48,7 +48,7 @@ export  default class MyOederItem extends PureComponent {
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
                         <Text style={{fontSize:Pixel.getPixel(14),color:'red',marginRight:Pixel.getPixel(16)}}>
-                            待付订金
+                            {this.props.data.status}
                         </Text>
                     </View>
                 </View>

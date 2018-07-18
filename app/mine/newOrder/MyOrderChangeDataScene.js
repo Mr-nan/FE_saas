@@ -86,7 +86,10 @@ export default class MyOrderChangeDataScene extends BaseComponent {
               this.toNextPage({
                   name:'MyOrderCarIDScene',
                   component:MyOrderCarIDScene,
-                  params:{order_id:this.props.order_id,data:this.state.data,index:this.state.index,item_id:rowData.id}
+                  params:{order_id:this.props.order_id,data:this.props.data,index:this.props.index,id:rowID,callBack:()=>{
+                      this.props.callBack();
+                      this.backPage();
+                      }}
               })
           }}/>
         );

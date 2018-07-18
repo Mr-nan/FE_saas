@@ -23,6 +23,8 @@ export default class GetOrderImageUtil {
           return require('../../images/neworder/shenghezhong.png')
       }else if(type==8){
           return require('../../images/neworder/weikuanzhifuchenggong.png')
+      }else if(type==9){
+          return require('../../images/neworder/quankuanyifu.png')
       }else if(type==21){
           return require('../../images/neworder/qingqueding.png')
       }else if(type==22){
@@ -31,6 +33,8 @@ export default class GetOrderImageUtil {
           return require('../../images/neworder/yishoudingjing.png')
       }else if(type==24){
           return require('../../images/neworder/yishoudingjing.png')
+      }else if(type==25){
+          return require('../../images/neworder/quankuanyifu.png')
       }
 
     }

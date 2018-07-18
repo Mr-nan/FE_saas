@@ -50,18 +50,24 @@ export default class MyOrderListScene extends BaseComponent {
             company_id:global.companyBaseID,
             rows:5,
             page:this.page,
-
+            status:this.props.status
 
         };
         request(Urls.ORDER_HOME_LISTS, 'Post', maps)
             .then((response) => {
-                  this.allData.push(...response.mjson.data.info_list);
-                  this.allPage = Math.ceil(response.mjson.data.total/5);
+                if(this.isNull(response.mjson.data)){
+                    this.setState({
+                        renderPlaceholderOnly: 'null'
+                    });
+                }else{
+                    this.allData.push(...response.mjson.data.info_list);
+                    this.allPage = Math.ceil(response.mjson.data.total/5);
                     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         dataSource: ds.cloneWithRows(this.allData),
                         renderPlaceholderOnly: 'success'
                     });
+                }
                 },
                 (error) => {
                     if (error.mycode == '-2100045'||error.mycode == '-1') {
