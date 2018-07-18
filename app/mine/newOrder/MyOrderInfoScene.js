@@ -119,6 +119,8 @@ export default class MyOrderInfoScene extends BaseComponent {
                                     this.getData();
                                 },types:'quankuan'}
                         })
+                    }else if(types==3){
+                        this.jiaoyiqueren();
                     }else{
                         this.sendMoney();
                     }
@@ -133,6 +135,22 @@ export default class MyOrderInfoScene extends BaseComponent {
                 }}/>
             </View>);
         }
+    }
+
+    jiaoyiqueren=()=>{
+        this.props.showModal(true);
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.order_id,
+        };
+        request(Urls.BUYERCONFIRMORDERPRICE, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast('确认成功');
+                    this.getData();
+                },
+                (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
     }
 
     sendMoney=()=>{
@@ -175,7 +193,9 @@ export default class MyOrderInfoScene extends BaseComponent {
                         this.toNextPage({
                             name:'MyOrderChangeDataScene',
                             component:MyOrderChangeDataScene,
-                            params:{order_id:this.props.order_id,data:this.state.allData,index:topMoney}
+                            params:{order_id:this.props.order_id,data:this.state.allData,index:topMoney,callBack:()=>{
+                                this.getData();
+                                }}
                         })
                     }
                 },(content)=>{this.props.showToast(content)},(show)=>{this.props.showModal(show)})

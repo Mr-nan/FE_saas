@@ -30,7 +30,13 @@ export  default class MyOrderInfoCarChangeItem extends PureComponent {
 
     render() {
         let date = new Date(this.props.data.car_SKU_details.manufacture*1000);
-        let time = date.getFullYear()+'年'+date.getMonth()+'月'
+        let time = date.getFullYear()+'年'+date.getMonth()+'月';
+        let success = 0;
+        for (let i = 0;i<this.props.data.car_items.length;i++){
+            if(this.props.data.car_items[i].car_vin_status==1){
+                success = success+1;
+            }
+        }
         if(this.state.isChange){
             return (
                 <View style={{width:width,backgroundColor:'#fff',borderRadius:5}}>
@@ -187,7 +193,11 @@ export  default class MyOrderInfoCarChangeItem extends PureComponent {
                         </View>
                         {this.props.data.car_SKU_details.v_type==1?<View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
                             <Text style={{fontSize:Pixel.getPixel(14),color:'#666'}}>{this.props.data.car_items[0].car_vin}</Text>
-                        </View>:<View/>}
+                        </View>:<View style={{flex:1,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
+                            <Text style={{fontSize:Pixel.getPixel(14),color:'#666', marginRight:Pixel.getPixel(5)}}>{success}/{this.props.data.car_items.length}</Text>
+                            <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(15),marginRight:Pixel.getPixel(12)}}
+                                   source={require('../../../../images/neworder/right.png')}/>
+                        </View>}
 
                     </TouchableOpacity>
                 </View>

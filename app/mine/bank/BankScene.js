@@ -172,12 +172,19 @@ export default class BankScene extends BaseComponent {
             let maps = {
                 company_id: global.companyBaseID,
                 order_id: this.props.order_id,
+                reback_url:'www.orderzhifudingjin.com'
             };
-            request(Urls.CONFIRMORDERPRICE, 'Post', maps)
+            request(Urls.ORDER_HOME_PAYDEPOSIT, 'Post', maps)
                 .then((response) => {
-                        this.props.showToast('支付成功');
-                        this.props.callBack();
-                        this.backPage();
+                        this.props.showModal(false);
+                        this.toNextPage({
+                            name:'AccountWebScene',
+                            component:AccountWebScene,
+                            params:{webUrl:response.mjson.data.url,backUrl:'www.orderzhifuweikuan.com',callBack:()=>{
+                                    this.props.callBack();
+                                    this.backPage();
+                                }}
+                        })
                     },
                     (error) => {
                         this.props.showToast(error.mjson.msg);
@@ -196,7 +203,8 @@ export default class BankScene extends BaseComponent {
                             name:'AccountWebScene',
                             component:AccountWebScene,
                             params:{webUrl:response.mjson.data.url,backUrl:'www.orderzhifuweikuan.com',callBack:()=>{
-                                
+                                    this.props.callBack();
+                                    this.backPage();
                                 }}
                         })
                     },

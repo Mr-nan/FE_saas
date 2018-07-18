@@ -1932,3 +1932,13 @@ export const OFFLINEPAY = BASEURL + "v3/order.home/offlinePay";
  *   支付尾款
  **/
 export const ORDER_HOME_PAYBALANCE = BASEURL + "v3/order.home/payBalance";
+
+/**
+ *   支付定金
+ **/
+export const ORDER_HOME_PAYDEPOSIT = BASEURL + "v3/order.home/payDeposit";
+
+/**
+ *   买家确认验收
+ **/
+export const BUYERCONFIRMORDERPRICE = BASEURL + "v3/order.home/buyerConfirmOrderPrice";
