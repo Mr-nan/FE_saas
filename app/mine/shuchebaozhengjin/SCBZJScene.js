@@ -103,7 +103,7 @@ export  default class SCBZJScene extends BaseComponent {
 
 
         return (
-            <View style={{width:width,height:height,backgroundColor: fontAndColor.COLORA3,flexDirection:'column',paddingTop:Pixel.getPixel(64)}}>
+            <View style={{width:width,height:height,backgroundColor: fontAndColor.COLORA3,flexDirection:'column',paddingTop:Pixel.getTitlePixel(64)}}>
                 <View >
                     {
                         (this.state.status == 0 ||  this.state.status == 1 ||  this.state.status == 2 )&&
