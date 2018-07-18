@@ -26,7 +26,6 @@ import PixelUtil from '../../utils/PixelUtil';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import AddressManage from "../myOrder/orderwuliu/AddressManage";
-
 const {width} = Dimensions.get('window');
 const Pixel = new PixelUtil();
 const IS_ANDROID = Platform.OS === 'android';
@@ -77,7 +76,7 @@ export default class NewFillWaybillScene extends BaseComponent{
                       title:'目的地',
                       isShowTag:false,
                       value:'请选择',
-                      isShowTail:true,
+                      isShowTail:false,
                   },
                   {
                       title:'联系方式',
@@ -291,17 +290,29 @@ export default class NewFillWaybillScene extends BaseComponent{
     cellClick=(title,index)=>{
 
        if(title=='联系方式'&& index==0){
+
+           this.addressType = 'start';
            this.toNextPage({
                    name: 'AddressManage',
                    component: AddressManage,
                    params: {
-                       addressId: this.endId,
+                       addressId: this.startID,
                        callBack: this.updateAddress
                    }
                }
            );
-       }else {
+       }else if(title=='联系方式'&& index==1) {
 
+           this.addressType = 'stop';
+           this.toNextPage({
+                   name: 'AddressManage',
+                   component: AddressManage,
+                   params: {
+                       addressId: this.stopId,
+                       callBack: this.updateAddress
+                   }
+               }
+           );
        }
     }
 
@@ -311,8 +322,18 @@ export default class NewFillWaybillScene extends BaseComponent{
     updateAddress = (newAddress) => {
         console.log('newAddress', newAddress);
         if(newAddress.id){
-            this.endId = newAddress.id;
-            this.titleData[0][1].value = `${newAddress.contact_name}  ${newAddress.contact_phone}`;
+
+            if(this.addressType=='start'){
+                this.startID = newAddress.id;
+                this.titleData[0][0].value = `${newAddress.province} ${newAddress.city} ${newAddress.district}`
+                this.titleData[0][1].value = `${newAddress.contact_name}  ${newAddress.contact_phone}`;
+
+            }else {
+                this.stopId = newAddress.id;
+                this.titleData[1][0].value = `${newAddress.province} ${newAddress.city} ${newAddress.district}`
+                this.titleData[1][1].value = `${newAddress.contact_name}  ${newAddress.contact_phone}`;
+            }
+
             this.updateTitleData();
         }
 

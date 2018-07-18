@@ -779,6 +779,11 @@ export default class NewCarPublishFirstScene extends BaseComponent {
             return;
         }
 
+        if (this.carData.earnest_money == ''||!this.carData.earnest_money) {
+            this.props.showToast('请输入定金');
+            return;
+        }
+
         if (!this.carData.online_retail_price) {
             this.props.showToast('填写网上零售价');
             return;

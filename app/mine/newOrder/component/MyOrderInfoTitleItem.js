@@ -29,7 +29,7 @@ export  default class MyOrderInfoTitleItem extends PureComponent {
     render() {
         let heights = 214;
         let imageHeight = 214;
-        if (this.props.type==4||this.props.type==5||this.props.type==6||this.props.type==7|this.props.type==8){
+        if (this.props.type==4||this.props.type==5||this.props.type==6||this.props.type==7||this.props.type==8||this.props.type==23||this.props.type==24){
             heights = 249;
             imageHeight = 226;
         }

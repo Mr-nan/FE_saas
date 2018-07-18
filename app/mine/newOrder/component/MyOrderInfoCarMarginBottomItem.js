@@ -130,8 +130,8 @@ export  default class MyOrderInfoCarMarginBottomItem extends PureComponent {
                         </Text>
                         <Text style={{fontSize:Pixel.getPixel(12),color:'#FA5741',marginRight:Pixel.getPixel(16)}}>
                             <Text style={{fontSize:Pixel.getPixel(19),color:'#FA5741', fontWeight:'bold'}}>
-                                {this.props.data.amount}
-                            </Text>元
+                                {this.props.data.amount/10000}
+                            </Text>万元
                         </Text>
                 </View>
             </View>

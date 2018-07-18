@@ -56,6 +56,7 @@ export default class AddressManage extends BaseComponent {
                                 contact_name:data.contact_name,
                                 contact_phone:data.contact_phone,
                                 full_address:data.full_address,
+                                address:data.address,
                                 id:data.id,
                                 is_default:data.id==this.props.addressId?1:0,
                                 province: data.province,
@@ -72,6 +73,7 @@ export default class AddressManage extends BaseComponent {
                                     full_address:d.full_address,
                                     id:d.id,
                                     province: d.province,
+                                    address:d.address,
                                     city: d.city,
                                     district: d.district,
                                     is_port: d.is_port,
@@ -122,6 +124,8 @@ export default class AddressManage extends BaseComponent {
             is_port: accountInfo[index].is_port,
             contact_name:accountInfo[index].contact_name,
             contact_phone:accountInfo[index].contact_phone,
+            address:accountInfo[index].address,
+
         }
         accountInfo[index].is_default = 1;
         this.setState({
@@ -146,7 +150,7 @@ export default class AddressManage extends BaseComponent {
                         <Text style={styles.content_title_text}>{data.contact_name}</Text>
                         <Text style={styles.content_base_Right}>{data.contact_phone}</Text>
                     </View>
-                    <Text style={styles.address_text}>{data.full_address}</Text>
+                    <Text style={styles.address_text}>{data.address}</Text>
                 </View>
             </TouchableOpacity>
         )

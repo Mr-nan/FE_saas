@@ -120,7 +120,7 @@ export default class MyOrderInfoScene extends BaseComponent {
                                 },types:'quankuan'}
                         })
                     }else if(types==3){
-
+                        this.jiaoyiqueren();
                     }else{
                         this.sendMoney();
                     }
@@ -135,6 +135,22 @@ export default class MyOrderInfoScene extends BaseComponent {
                 }}/>
             </View>);
         }
+    }
+
+    jiaoyiqueren=()=>{
+        this.props.showModal(true);
+        let maps = {
+            company_id: global.companyBaseID,
+            order_id: this.props.order_id,
+        };
+        request(Urls.BUYERCONFIRMORDERPRICE, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast('确认成功');
+                    this.getData();
+                },
+                (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
     }
 
     sendMoney=()=>{

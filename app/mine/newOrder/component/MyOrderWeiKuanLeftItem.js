@@ -28,11 +28,11 @@ export  default class MyOrderWeiKuanLeftItem extends PureComponent {
     render() {
 
         return (
-            <View style={{marginTop:Pixel.getPixel(81),marginLeft:Pixel.getPixel(167)}}>
+            <View style={{marginTop:Pixel.getPixel(79),marginLeft:Pixel.getPixel(167)}}>
                 <Text style={{color:'#fff',fontSize:Pixel.getPixel(18), fontWeight:'bold',backgroundColor: '#00000000'}}>尾款及运费支付成功</Text>
-                <Text style={{color:'#fff',fontSize:Pixel.getPixel(12),marginTop:Pixel.getPixel(8),backgroundColor: '#00000000'}}>请等待物流验车结果，车辆验收</Text>
-                <Text style={{color:'#fff',fontSize:Pixel.getPixel(12),backgroundColor: '#00000000'}}>通过后，卖家可提款</Text>
-                <View style={{marginTop:Pixel.getPixel(21),flexDirection:'row'}}>
+                <Text style={{color:'#fff',fontSize:Pixel.getPixel(11),marginTop:Pixel.getPixel(8),backgroundColor: '#00000000'}}>请等待物流验车结果，车辆验收</Text>
+                <Text style={{color:'#fff',fontSize:Pixel.getPixel(11),backgroundColor: '#00000000'}}>通过后，卖家可提款</Text>
+                <View style={{marginTop:Pixel.getPixel(17),flexDirection:'row'}}>
                     <TouchableOpacity activeOpacity={0.9} onPress={()=>{
 
                     }} style={{width:Pixel.getPixel(71),height:Pixel.getPixel(25),borderColor:'#fff',borderWidth:1,borderRadius:3,

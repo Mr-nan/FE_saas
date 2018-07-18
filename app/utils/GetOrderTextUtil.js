@@ -27,6 +27,9 @@ import MyOrderXianXiaLeftItem from "../mine/newOrder/component/MyOrderXianXiaLef
 import MyOrderPayQueRenItem from "../mine/newOrder/component/MyOrderPayQueRenItem";
 import MyOrderWeiKuanLeftItem from "../mine/newOrder/component/MyOrderWeiKuanLeftItem";
 import MyOrderInfoCarMarginBottomItem from "../mine/newOrder/component/MyOrderInfoCarMarginBottomItem";
+import MyOrderYiZhiFuLeftItem from "../mine/newOrder/component/MyOrderYiZhiFuLeftItem";
+import MyOrderTitleAddressItem from "../mine/newOrder/component/MyOrderTitleAddressItem";
+import MyOrderWKYiZhiFuLeftItem from "../mine/newOrder/component/MyOrderWKYiZhiFuLeftItem";
 
 export default class GetOrderTextUtil {
 
@@ -66,6 +69,14 @@ export default class GetOrderTextUtil {
                 return  22
             }else if (status == 4) {
                 return  22
+            }else if (status == 5) {
+                return  23
+            }else if (status == 6) {
+                return  23
+            }else if (status == 7) {
+                return  23
+            }else if (status == 8) {
+                return  24
             }
         }
     }
@@ -92,6 +103,10 @@ export default class GetOrderTextUtil {
             return [1,2,3,4,5,6];
         }else if (type == 22) {
             return [1,2,3,4];
+        }else if (type == 23) {
+            return [1,3,4,6];
+        }else if (type == 24) {
+            return [1,3,4,6];
         }
 
     }
@@ -119,6 +134,10 @@ export default class GetOrderTextUtil {
             return <MyOrderQueRenLeftItem/>
         }else if (type == 22) {
             return <MyOrderDaiZhiFuLeftItem/>
+        }else if (type == 23) {
+            return <MyOrderYiZhiFuLeftItem/>
+        }else if (type == 24) {
+            return <MyOrderWKYiZhiFuLeftItem/>
         }
 
     }
@@ -145,6 +164,12 @@ export default class GetOrderTextUtil {
             return <MyOrderTitleNotBottomItem/>
         }else if (type == 21) {
             return <View/>
+        }else if (type == 22) {
+            return <View/>
+        }else if (type == 23) {
+            return <MyOrderTitleAddressItem/>
+        }else if (type == 24) {
+            return <MyOrderTitleAddressItem/>
         }
 
     }
@@ -176,19 +201,19 @@ export default class GetOrderTextUtil {
         }  else if (type == 3) {
             return <MyOrderInfoCarItem data={carData} type={type} name={"合计"}/>
         }else if (type == 4) {
-            return <MyOrderInfoCarMarginItem data={carData} type={type} name={"成交价合计"} callBack={() => {
+            return <MyOrderInfoCarMarginItem topText={'已付订金：'} bottomText={'应付尾款：'}  data={carData} type={type} name={"成交价合计"} callBack={() => {
                 callBack()
             }}/>
         }else if (type == 5) {
-            return <MyOrderInfoCarMarginItem data={carData} type={type} name={"成交价合计"} callBack={() => {
+            return <MyOrderInfoCarMarginItem topText={'已付订金：'} bottomText={'应付尾款：'}  data={carData} type={type} name={"成交价合计"} callBack={() => {
                 callBack()
             }}/>
         }else if (type == 6) {
-            return <MyOrderInfoCarMarginItem data={carData} type={type} name={"成交价合计"} callBack={() => {
+            return <MyOrderInfoCarMarginItem topText={'已付订金：'} bottomText={'应付尾款：'}  data={carData} type={type} name={"成交价合计"} callBack={() => {
                 callBack()
             }}/>
         }else if (type == 7) {
-            return <MyOrderInfoCarMarginItem data={carData} type={type} name={"成交价合计"} callBack={() => {
+            return <MyOrderInfoCarMarginItem  topText={'已付订金：'} bottomText={'应付尾款：'}  data={carData} type={type} name={"成交价合计"} callBack={() => {
                 callBack()
             }}/>
         }else if (type == 8) {
@@ -203,6 +228,14 @@ export default class GetOrderTextUtil {
             }} showToast={(content)=>{showToast(content);}} showModal={(show)=>{showModal(show);}}/>
         } else if (type == 22) {
             return <MyOrderInfoCarItem data={carData} type={type} name={"成交价合计"}/>
+        } else if (type == 23) {
+            return <MyOrderInfoCarMarginItem topText={'已收订金：'} bottomText={'应收尾款：'} data={carData} type={type} name={"成交价合计"} callBack={() => {
+                callBack()
+            }}/>
+        }else if (type == 24) {
+            return <MyOrderInfoCarMarginBottomItem data={carData} from={'实收'} type={type} name={"成交价合计"} callBack={() => {
+                callBack()
+            }}/>
         }
 
     }
@@ -255,6 +288,10 @@ export default class GetOrderTextUtil {
             return <View></View>
         }else if (type == 22) {
             return <View></View>
+        }else if (type == 23) {
+            return <View></View>
+        }else if (type == 24) {
+            return <View></View>
         }
 
     }
@@ -281,6 +318,10 @@ export default class GetOrderTextUtil {
             return <MyOrderInfoBottomItem/>
         }else if (type == 22) {
             return <MyOrderInfoBottomItem/>
+        } else if (type == 23) {
+            return <MyOrderInfoBottomMariginItem/>
+        } else if (type == 24) {
+            return <MyOrderInfoBottomMariginItem/>
         }
 
     }

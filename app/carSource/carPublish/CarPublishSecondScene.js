@@ -635,6 +635,10 @@ export default class CarPublishSecondScene extends BaseComponent {
             this.props.showToast('请输入分销批发价');
             return;
         }
+        if (this.carData.earnest_money == ''||!this.carData.earnest_money) {
+            this.props.showToast('请输入定金');
+            return;
+        }
 
         if (parseFloat(this.carData.dealer_price) <= 0) {
             this.props.showToast('分销批发价不能等于0');

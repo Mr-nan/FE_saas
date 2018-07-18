@@ -96,7 +96,7 @@ export  default class MyOrderInfoCarMarginItem extends PureComponent {
                     <View style={{flex:1,flexDirection:'row',paddingTop:Pixel.getPixel(10)}}>
                         <View style={{flex:8,justifyContent:'center',alignItems:'flex-end'}}>
                             <Text style={{fontSize:Pixel.getPixel(12),color:'#666'}}>
-                                已付订金：
+                                {this.props.topText}
                             </Text>
                         </View>
                         <View style={{flex:3,justifyContent:'center',alignItems:'flex-end'}}>
@@ -110,7 +110,7 @@ export  default class MyOrderInfoCarMarginItem extends PureComponent {
                     <View style={{flex:1,flexDirection:'row',paddingBottom:Pixel.getPixel(10)}}>
                         <View style={{flex:8,justifyContent:'center',alignItems:'flex-end'}}>
                             <Text style={{fontSize:Pixel.getPixel(12),color:'#666'}}>
-                                应付尾款：
+                                {this.props.bottomText}
                             </Text>
                         </View>
                         <View style={{flex:3,justifyContent:'center',alignItems:'flex-end'}}>
