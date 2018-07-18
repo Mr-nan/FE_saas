@@ -875,15 +875,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 } else if (!transOrder && this.orderState == 2 && this.logisticsType === 1) {
                                     this.props.showToast('选择物流请填写运单');
                                 } else {
+
                                     this.toNextPage({
                                         name: 'CheckStand',
                                         component: CheckStand,
                                         params: {
                                             payAmount: this.orderState === 1 ?
-                                                this.orderDetail.deposit_amount :
-                                                parseFloat(balanceAmount - applyAmount +
-                                                    parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) +
-                                                    parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
+                                                this.orderDetail.deposit_amount : parseFloat(balanceAmount - applyAmount + parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) + parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
                                             orderId: this.props.orderId,
                                             orderNo: this.orderDetail.order_no,
                                             seller_company_id:this.orderDetail.seller_company_id,
@@ -1329,7 +1327,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.bottomState = 4;
                 }
                 break;
-            case 2: // 待付订金  2=>'订单定价完成'
+            case 2: {// 待付订金  2=>'订单定价完成'
+                this.applyLoanAmount = '请输入申请贷款金额';
+            }
             case 3: // 3=>'订金支付中'
             case 4:  // 4=>'订金支付失败'
                 if (this.orderDetail.set_deposit_amount == 0)
