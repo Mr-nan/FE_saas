@@ -33,6 +33,7 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import BindCardScene from '../mine/accountManage/BindCardScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
+import MyOrderInfoScene from "../mine/newOrder/MyOrderInfoScene";
 
 
 let stringTransform = new StringTransformUtil();
@@ -507,6 +508,13 @@ export  default  class CarShoppingScene extends BaseComponent{
         }).then((response) => {
             this.props.showModal(false);
             this.props.showToast('下单成功');
+            this.toNextPage({
+                name:'MyOrderInfoScene',
+                component:MyOrderInfoScene,
+                params:{order_id:response.mjson.data.order_id,from:1}
+            });
+            this.loadData();
+
 
         }, (error) => {
             this.props.showModal(false);
