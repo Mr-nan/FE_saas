@@ -101,14 +101,13 @@ export default class NewFillWaybillScene extends BaseComponent{
                   {
                       title:'开具发票',
                       isShowTag:false,
-                      value:'请选择',
                       isShowTail:false,
                       subTitle:'(当前仅支持增殖普通发票)'
                   },
                   {
                       title:'发票抬头',
                       isShowTag:false,
-                      value:'请输入或选择历史记录',
+                      value:'请输入',
                       isShowTail:true,
 
                   },
