@@ -26,7 +26,6 @@ import PixelUtil from '../../utils/PixelUtil';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import AddressManage from "../myOrder/orderwuliu/AddressManage";
-
 const {width} = Dimensions.get('window');
 const Pixel = new PixelUtil();
 const IS_ANDROID = Platform.OS === 'android';
@@ -77,7 +76,7 @@ export default class NewFillWaybillScene extends BaseComponent{
                       title:'目的地',
                       isShowTag:false,
                       value:'请选择',
-                      isShowTail:true,
+                      isShowTail:false,
                   },
                   {
                       title:'联系方式',
@@ -326,9 +325,12 @@ export default class NewFillWaybillScene extends BaseComponent{
 
             if(this.addressType=='start'){
                 this.startID = newAddress.id;
+                this.titleData[0][0].value = `${newAddress.province} ${newAddress.city} ${newAddress.district}`
                 this.titleData[0][1].value = `${newAddress.contact_name}  ${newAddress.contact_phone}`;
+
             }else {
                 this.stopId = newAddress.id;
+                this.titleData[1][0].value = `${newAddress.province} ${newAddress.city} ${newAddress.district}`
                 this.titleData[1][1].value = `${newAddress.contact_name}  ${newAddress.contact_phone}`;
             }
 

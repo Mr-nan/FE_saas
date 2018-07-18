@@ -18,11 +18,22 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
+import {observable} from 'mobx';
+import {observer} from 'mobx-react/native'
+
+@observer
 export  default class  ZNCountdownView extends Component{
 
-    // 构造
+    @observable time;
+    @observable minute;
+    @observable second;
+
     constructor(props) {
         super(props);
+
+        this.time=0;
+        this.minute = 0;
+        this.second = 0;
 
     }
 
@@ -47,57 +58,46 @@ export  default class  ZNCountdownView extends Component{
                 right:-Pixel.getPixel(34)
             }}>
                 <Text style={{color:'white', fontSize:Pixel.getFontPixel(10)}}>支付剩余时间</Text>
-                <Text style={{color:'white', fontSize:fontAndColor.CONTENTFONT24}}> {`${this.state.minute<10?('0'+this.state.minute):this.state.minute}:${this.state.second<10?('0'+this.state.second):this.state.second}`}</Text>
+                <Text style={{color:'white', fontSize:fontAndColor.CONTENTFONT24}}> {`${this.minute<10?('0'+this.minute):this.minute}:${this.second<10?('0'+this.second):this.second}`}</Text>
             </View>
         )
     }
 
     formatSeconds=()=> {
-        let {time,second,minute} = this.state;
 
-        if(time<1){
+        if(this.time<1){
 
             this.stopAction();
             return;
         }
 
-        time-=1;
+        this.time-=1;
 
-        second = parseInt(time);// 秒
-        minute = 0; // 分
-        if (second > 60) {
-            minute = parseInt(second / 60);
-            second = parseInt(second % 60);
+        this.second = parseInt(this.time);// 秒
+        this.minute = 0; // 分
+        if (this.second > 60) {
+            this.minute = parseInt(this.second / 60);
+            this.second = parseInt(this.second % 60);
         }
 
-        this.setState({
-            time:time,
-            second:second,
-            minute:minute,
-        })
     }
 
     startAction=(time)=>{
 
-        this.setState({
-            time: time,
-            minute: 0,
-            second: 0,
+        this.time=time;
+        this.minute=0;
+        this.second=0;
 
-        },()=>{
-            InteractionManager.runAfterInteractions(() => {
-                this.timer =setInterval(()=>{this.formatSeconds()},1000);
+        InteractionManager.runAfterInteractions(() => {
+            this.timer =setInterval(()=>{this.formatSeconds()},1000);
 
-            });
-        })
+        });
     }
 
     stopAction=()=>{
-        this.setState({
-            time:0,
-            second:0,
-            minute:0,
-        })
+        this.time=0;
+        this.minute=0;
+        this.second=0;
         this.timer && clearInterval(this.timer);
         this.props.callBack();
     }

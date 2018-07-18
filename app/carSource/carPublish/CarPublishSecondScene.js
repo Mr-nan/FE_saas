@@ -190,7 +190,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            keyboardType={'numeric'}
                                            maxLength={10}
                                            underlineColorAndroid='transparent'
-                                           defaultValue={this.carData.earnest_money?this.carMoneyChange(this.carData.earnest_money):''}
+                                           defaultValue={this.carData.earnest_money?stringTransform.carMoneyChange(this.carData.earnest_money):''}
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                                if(text.length>7&&text.indexOf('.')==-1){
@@ -633,6 +633,10 @@ export default class CarPublishSecondScene extends BaseComponent {
 
         if (this.carData.dealer_price == '' || !this.carData.dealer_price) {
             this.props.showToast('请输入分销批发价');
+            return;
+        }
+        if (this.carData.earnest_money == ''||!this.carData.earnest_money) {
+            this.props.showToast('请输入定金');
             return;
         }
 
