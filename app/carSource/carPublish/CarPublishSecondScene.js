@@ -190,7 +190,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            keyboardType={'numeric'}
                                            maxLength={10}
                                            underlineColorAndroid='transparent'
-                                           defaultValue={this.carData.earnest_money?this.carMoneyChange(this.carData.earnest_money):''}
+                                           defaultValue={this.carData.earnest_money?stringTransform.carMoneyChange(this.carData.earnest_money):''}
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                                if(text.length>7&&text.indexOf('.')==-1){

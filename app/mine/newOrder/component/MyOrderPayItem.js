@@ -35,7 +35,7 @@ export  default class MyOrderPayItem extends PureComponent {
                 <TouchableOpacity onPress={()=>{
                     this.props.callBack();
                 }} style={{flex:1,backgroundColor:'#05C5C2',alignItems:'center',justifyContent:'center'}}>
-                    <Text style={{fontSize:Pixel.getPixel(15),color:'#fff'}}>支付</Text>
+                    <Text style={{fontSize:Pixel.getPixel(15),color:'#fff'}}>提交</Text>
                 </TouchableOpacity>
             </View>
         );

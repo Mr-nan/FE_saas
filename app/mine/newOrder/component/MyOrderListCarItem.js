@@ -50,7 +50,7 @@ export  default class MyOrderListCarItem extends PureComponent {
                             <View style={{flex:9}}>
                                 <Text style={{fontSize:Pixel.getPixel(9),color:'#666',marginRight:Pixel.getPixel(16)}}>
                                     <Text style={{fontSize:Pixel.getPixel(14),color:'#666', fontWeight:'bold'}}>
-                                        {this.props.data.transaction_price/1000}
+                                        {this.props.data.transaction_price/10000}
                                     </Text>万元
                                 </Text>
                             </View>
@@ -61,7 +61,7 @@ export  default class MyOrderListCarItem extends PureComponent {
                             <View style={{flex:9}}>
                                 <Text style={{fontSize:Pixel.getPixel(9),color:'#666',marginRight:Pixel.getPixel(16)}}>
                                     <Text style={{fontSize:Pixel.getPixel(14),color:'#666', fontWeight:'bold'}}>
-                                        {this.props.data.deposit_amount/1000}
+                                        {this.props.data.deposit_amount/10000}
                                     </Text>万元
                                 </Text>
                             </View>

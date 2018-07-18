@@ -21,7 +21,7 @@ import MyOrderListCarItem from "./MyOrderListCarItem";
 import MyOrderInfoCarChangeItem from "./MyOrderInfoCarChangeItem";
 import LineItem from "./LineItem";
 import MyOrderDingDanCarItem from "./MyOrderDingDanCarItem";
-export  default class MyOrderInfoCarMarginItem extends PureComponent {
+export  default class MyOrderInfoCarMarginBottomItem extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -92,7 +92,7 @@ export  default class MyOrderInfoCarMarginItem extends PureComponent {
                     </Text>
                 </View>
                 <View style={{width:width-Pixel.getPixel(40),height:1,backgroundColor:'#d8d8d8',marginLeft:Pixel.getPixel(10)}}></View>
-                <View style={{width:width-Pixel.getPixel(20),height:Pixel.getPixel(88)}}>
+                <View style={{width:width-Pixel.getPixel(20),height:Pixel.getPixel(82)}}>
                     <View style={{flex:1,flexDirection:'row',paddingTop:Pixel.getPixel(10)}}>
                         <View style={{flex:8,justifyContent:'center',alignItems:'flex-end'}}>
                             <Text style={{fontSize:Pixel.getPixel(12),color:'#666'}}>
@@ -110,17 +110,29 @@ export  default class MyOrderInfoCarMarginItem extends PureComponent {
                     <View style={{flex:1,flexDirection:'row',paddingBottom:Pixel.getPixel(10)}}>
                         <View style={{flex:8,justifyContent:'center',alignItems:'flex-end'}}>
                             <Text style={{fontSize:Pixel.getPixel(12),color:'#666'}}>
-                                应付尾款：
+                                已付尾款：
                             </Text>
                         </View>
                         <View style={{flex:3,justifyContent:'center',alignItems:'flex-end'}}>
-                            <Text style={{fontSize:Pixel.getPixel(12),color:'#FA5741',marginRight:Pixel.getPixel(16)}}>
-                                <Text style={{fontSize:Pixel.getPixel(19),color:'#FA5741', fontWeight:'bold'}}>
+                            <Text style={{fontSize:Pixel.getPixel(12),color:'#666',marginRight:Pixel.getPixel(16)}}>
+                                <Text style={{fontSize:Pixel.getPixel(19),color:'#666', fontWeight:'bold'}}>
                                     {this.props.data.amount / 10000-this.props.data.deposit_amount / 10000}
                                 </Text>万元
                             </Text>
                         </View>
                     </View>
+                </View>
+                <LineItem/>
+                <View style={{width:width-Pixel.getPixel(20),flexDirection:'row',height:Pixel.getPixel(53),alignItems:'center',
+                justifyContent:'flex-end'}}>
+                        <Text style={{fontSize:Pixel.getPixel(12),color:'#666'}}>
+                            {this.props.from}：
+                        </Text>
+                        <Text style={{fontSize:Pixel.getPixel(12),color:'#FA5741',marginRight:Pixel.getPixel(16)}}>
+                            <Text style={{fontSize:Pixel.getPixel(19),color:'#FA5741', fontWeight:'bold'}}>
+                                {this.props.data.amount}
+                            </Text>元
+                        </Text>
                 </View>
             </View>
         );

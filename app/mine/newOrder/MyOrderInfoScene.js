@@ -119,6 +119,8 @@ export default class MyOrderInfoScene extends BaseComponent {
                                     this.getData();
                                 },types:'quankuan'}
                         })
+                    }else if(types==3){
+
                     }else{
                         this.sendMoney();
                     }
