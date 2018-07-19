@@ -42,10 +42,10 @@ export default class HomeShoppingIcon extends Component{
 
     componentWillMount() {
         this.panResponder = PanResponder.create({
-            onStartShouldSetPanResponder: (evt, gestureState) => true,
+            onStartShouldSetPanResponder: (evt, gestureState) => false,
             onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
             onMoveShouldSetPanResponder: (evt, gestureState) => true,
-            onMoveShouldSetPanResponderCapture: (evt, gestureState) => false,
+            onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
             onPanResponderMove: (evt, gestureState) => {
 
                 this.setMove(gestureState.moveX-Pixel.getPixel(31),gestureState.moveY-Pixel.getPixel(31));
@@ -67,14 +67,14 @@ export default class HomeShoppingIcon extends Component{
                 }
 
             }
+        });
 
-        })
     }
 
     render(){
         return(
-            <View style={{position:'absolute',left:this.state.leftGap,top:this.state.topGap}} {...this.panResponder.panHandlers}>
-                <TouchableOpacity onPress={this.props.click}>
+            <View style={{position:'absolute',left:this.state.leftGap,top:this.state.topGap}} >
+                <TouchableOpacity  {...this.panResponder.panHandlers} onPress={this.props.click}>
                     <Image source={require('../../../images/carSourceImages/gouwucherukou.png')}/>
                 </TouchableOpacity>
             </View>
