@@ -28,10 +28,10 @@ export  default class MyOrderInfoBottomMariginItem extends PureComponent {
             <View style={{width:width-Pixel.getPixel(20),height:Pixel.getPixel(66),backgroundColor:'#fff',justifyContent:'center',
                 marginTop:Pixel.getPixel(10),marginLeft:Pixel.getPixel(10),borderRadius:5}}>
                 <Text style={{fontSize:Pixel.getPixel(12),color:'#9b9b9b',marginLeft:Pixel.getPixel(20)}}>
-                    订单编号：2423435467732434
+                    订单编号：{this.props.data.order_no.substring(2,this.props.data.order_no.length)}
                 </Text>
                 <Text style={{fontSize:Pixel.getPixel(12),color:'#9b9b9b',marginLeft:Pixel.getPixel(20),marginTop:Pixel.getPixel(10)}}>
-                    创建日期：2018/01/29 12:01:00
+                    创建日期：{this.props.data.created_order_time}
                 </Text>
             </View>
         );

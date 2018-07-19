@@ -30,8 +30,8 @@ export  default class MyOrderDingChengLeftItem extends PureComponent {
         return (
             <View style={{marginTop:Pixel.getPixel(81),marginLeft:Pixel.getPixel(167)}}>
                 <Text style={{color:'#fff',fontSize:Pixel.getPixel(18), fontWeight:'bold',backgroundColor: '#00000000'}}>支付审核中</Text>
-                <Text style={{color:'#fff',fontSize:Pixel.getPixel(12),marginTop:Pixel.getPixel(8),backgroundColor: '#00000000'}}>您选择使用鼎诚代付方式支付尾款，</Text>
-                <Text style={{color:'#fff',fontSize:Pixel.getPixel(12),backgroundColor: '#00000000'}}>请等待平台审核支付凭证</Text>
+                <Text style={{color:'#fff',fontSize:Pixel.getPixel(11),marginTop:Pixel.getPixel(8),backgroundColor: '#00000000'}}>您选择使用鼎诚代付方式支付尾款，</Text>
+                <Text style={{color:'#fff',fontSize:Pixel.getPixel(11),backgroundColor: '#00000000',marginTop:Pixel.getPixel(4)}}>请等待平台审核支付凭证</Text>
                 <View style={{marginTop:Pixel.getPixel(21),flexDirection:'row'}}>
                     <TouchableOpacity activeOpacity={0.9} onPress={()=>{
 

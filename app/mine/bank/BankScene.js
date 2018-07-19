@@ -44,6 +44,9 @@ export default class BankScene extends BaseComponent {
         request(Urls.CASHIERDETAILS, 'Post', maps)
             .then((response) => {
                     if(response.mjson.data.payment_type.hengfeng.available==1){
+                        if(response.mjson.data.payment_type.hengfeng.entrust==1){
+                            this.xintuo = true;
+                        }
                         if(parseInt(response.mjson.data.payment_type.hengfeng.balance)>=parseInt(this.props.data.deposit_amount)){
                             this.selectData.push({
                                 name:'恒丰账户',
@@ -87,6 +90,7 @@ export default class BankScene extends BaseComponent {
         super(props);
         this.selectData=[];
         this.select = -1;
+        this.xintuo = false;
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
@@ -147,7 +151,7 @@ export default class BankScene extends BaseComponent {
                 this.select = index;
             }}/>);
         }else if(rowData==4){
-            return(<BankTextItem/>);
+            return(<BankTextItem xintuo={this.xintuo}/>);
         }else{
             return (
                 <BankButtonItem callBack={()=>{

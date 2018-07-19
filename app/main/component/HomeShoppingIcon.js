@@ -42,7 +42,7 @@ export default class HomeShoppingIcon extends Component{
 
     componentWillMount() {
         this.panResponder = PanResponder.create({
-            onStartShouldSetPanResponder: (evt, gestureState) => true,
+            onStartShouldSetPanResponder: (evt, gestureState) => false,
             onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
             onMoveShouldSetPanResponder: (evt, gestureState) => true,
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => false,

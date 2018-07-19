@@ -202,7 +202,7 @@ export default class MyOrderInfoScene extends BaseComponent {
             );
         } else if (rowData == 4) {
             return (
-                GetOrderTextUtil.getBottom(this.state.allData.status,this.state.from)
+                GetOrderTextUtil.getBottom(this.state.allData.status,this.state.from,this.state.allData)
             );
         } else if (rowData == 5) {
             return (
