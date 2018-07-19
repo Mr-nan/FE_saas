@@ -41,6 +41,10 @@ import GetPermissionUtil from '../utils/GetRoleUtil';
 import MyAccountScene from "../mine/accountManage/MyAccountScene";
 import ExplainModal from "../mine/myOrder/component/ExplainModal";
 import NewFillWaybillScene from "../mine/newOrder/NewFillWaybillScene";
+import CarShoppingScene from "./CarShoppingScene";
+import HomeShoppingIcon from  '../main/component/HomeShoppingIcon';
+import MyOrderInfoScene from "../mine/newOrder/MyOrderInfoScene";
+
 
 let Platform = require('Platform');
 let getRole = new GetPermissionUtil();
@@ -565,6 +569,21 @@ export default class CarInfoScene extends BaseComponent {
                               textStyle={styles.expText}
                               text='知道了'
                               content='此质押车暂不可下单请您稍待时日再订购'/>
+                <HomeShoppingIcon click={()=> {
+                    StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                            if (res.result && res.result == 'true') {
+                                this.toNextPage({
+                                    name: 'CarShoppingScene',
+                                    component: CarShoppingScene,
+                                    params: {}
+                                });
+                            }else {
+                                this.isHomeJobItemLose = false;
+                                this.props.showLoginModal();
+                            }
+                        }
+                    );
+                }}/>
             </View>
 
         )
@@ -616,8 +635,11 @@ export default class CarInfoScene extends BaseComponent {
 
         }).then((response) => {
             this.props.showModal(false);
-            this.props.showToast('下单成功');
-
+            this.toNextPage({
+                name:'MyOrderInfoScene',
+                component:MyOrderInfoScene,
+                params:{order_id:response.mjson.data.order_id,from:1}
+            });
         }, (error) => {
             this.props.showModal(false);
             this.props.showToast(error.mjson.msg);

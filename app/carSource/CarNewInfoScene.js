@@ -41,6 +41,7 @@ import CarMyListScene from "./CarMyListScene";
 import GetPermissionUtil from '../utils/GetRoleUtil';
 import CarCell from './znComponent/CarCell';
 import CarShoppingScene from "./CarShoppingScene";
+import MyOrderInfoScene from "../mine/newOrder/MyOrderInfoScene";
 let Platform = require('Platform');
 let getRole = new GetPermissionUtil();
 const Pixel = new PixelUtil();
@@ -49,6 +50,8 @@ import  StringTransformUtil from  "../utils/StringTransformUtil";
 let stringTransform = new StringTransformUtil();
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
+import HomeShoppingIcon from  '../main/component/HomeShoppingIcon';
+
 
 var ScreenWidth = Dimensions.get('window').width;
 let resolveAssetSource = require('resolveAssetSource');
@@ -466,6 +469,21 @@ export default class CarNewInfoScene extends BaseComponent {
                               textStyle={styles.expText}
                               text='知道了'
                               content='此质押车暂不可下单请您稍待时日再订购'/>
+                <HomeShoppingIcon click={()=> {
+                    StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                            if (res.result && res.result == 'true') {
+                                this.toNextPage({
+                                    name: 'CarShoppingScene',
+                                    component: CarShoppingScene,
+                                    params: {}
+                                });
+                            }else {
+                                this.isHomeJobItemLose = false;
+                                this.props.showLoginModal();
+                            }
+                        }
+                    );
+                }}/>
                 {
                     this.state.isShowBuyCarNumber && <BuyCarNumberView type={this.showBuyCarNumberType}  maxNumber={carData.stock} buyCarNumberClick={this.buyCarNumberClick} closeClick={()=>{this.setState({isShowBuyCarNumber:false})}} />
                 }
@@ -733,7 +751,11 @@ export default class CarNewInfoScene extends BaseComponent {
 
         }).then((response) => {
             this.props.showModal(false);
-            this.props.showToast('下单成功');
+            this.toNextPage({
+                name:'MyOrderInfoScene',
+                component:MyOrderInfoScene,
+                params:{order_id:response.mjson.data.order_id,from:1}
+            });
 
         }, (error) => {
             this.props.showModal(false);
@@ -873,16 +895,7 @@ export default class CarNewInfoScene extends BaseComponent {
     // 添加收藏
     addStoreAction = (isStoreClick) => {
 
-        let navigationParams = {
-            name: "CarShoppingScene",
-            component: CarShoppingScene,
-            params: {
-            }
-        }
-        this.toNextPage(navigationParams);
-        return;
 
-        let url = AppUrls.BASEURL + 'v1/user.favorites/create';
         StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
                 if (res.result && res.result == 'true') {
                     let url = AppUrls.BASEURL + 'v1/user.favorites/create';

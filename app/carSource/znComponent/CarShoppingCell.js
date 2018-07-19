@@ -128,10 +128,13 @@ class CarCell extends Component{
 
      componentWillMount() {
          this.panResponder = PanResponder.create({
-             onStartShouldSetPanResponder: (evt, gestureState) => true,
+             onStartShouldSetPanResponder: (evt, gestureState) => false,
              onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
-             onMoveShouldSetPanResponder: (evt, gestureState) => true,
-             onMoveShouldSetPanResponderCapture: (evt, gestureState) => false,
+             onMoveShouldSetPanResponder: (evt, gestureState) => {
+
+                 return true;
+             },
+             onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
              onPanResponderMove: (evt, gestureState) => {
                  if(gestureState.dx<-10 && !this.animationType){
                      this.openDelectBtn();

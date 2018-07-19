@@ -13,7 +13,7 @@ import {
     Dimensions,
     KeyboardAvoidingView,
     Platform,
-    TextInput
+    TextInput,
 } from 'react-native';
 
 import BaseComponent from '../../component/BaseComponent';
@@ -37,6 +37,8 @@ export default class NewFillWaybillScene extends BaseComponent{
 
       constructor(props) {
         super(props);
+
+          this.isAddBillInfo = false; //同步发票地址
           this.titleData = [
               [
                   {
@@ -45,7 +47,7 @@ export default class NewFillWaybillScene extends BaseComponent{
                       leftImage:require('../../../images/carriagePriceImage/startLocation.png'),
                       title:'始发地',
                       isShowTag:false,
-                      value:'请选择',
+                      value:'',
                       isShowTail:false,
                   },
                   {
@@ -75,7 +77,7 @@ export default class NewFillWaybillScene extends BaseComponent{
                       leftImage:require('../../../images/carriagePriceImage/stopLocation.png'),
                       title:'目的地',
                       isShowTag:false,
-                      value:'请选择',
+                      value:'',
                       isShowTail:false,
                   },
                   {
@@ -101,16 +103,25 @@ export default class NewFillWaybillScene extends BaseComponent{
                   {
                       title:'开具发票',
                       isShowTag:false,
-                      value:'请选择',
                       isShowTail:false,
                       subTitle:'(当前仅支持增殖普通发票)'
                   },
                   {
                       title:'发票抬头',
                       isShowTag:false,
-                      value:'请输入或选择历史记录',
-                      isShowTail:true,
-
+                      tailView:()=>{
+                          return(
+                              <TextInput
+                                  style={styles.textInput}
+                                  placeholder='请输入'
+                                  underlineColorAndroid='transparent'
+                                  onChangeText={(text)=>{}}
+                                  onEndEditing={()=>{this.saveCarData();}}
+                                  placeholderTextColor={fontAndColor.COLORA1}
+                                  placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                              />
+                          )
+                      }
                   },
                   {
                       title:'纳税人识别号',
@@ -136,7 +147,11 @@ export default class NewFillWaybillScene extends BaseComponent{
                       title:'发票收取地址与目的地址相同',
                       isShowTag:false,
                       value:'请选择',
-                      isShowTail:false,
+                      tailView:()=>{
+                          return(
+                             <ZNSwitch value={this.isAddBillInfo} onValueChange={(value)=>{this.addBillInfoAction(value)}}/>
+                          )
+                      }
                   },
                   {
                       title:'收件人',
@@ -145,6 +160,7 @@ export default class NewFillWaybillScene extends BaseComponent{
                       tailView:()=>{
                           return(
                               <TextInput
+                                  ref={(ref)=>{this.billNameInput = ref}}
                                   style={styles.textInput}
                                   placeholder='请输入'
                                   underlineColorAndroid='transparent'
@@ -163,6 +179,7 @@ export default class NewFillWaybillScene extends BaseComponent{
                       tailView:()=>{
                           return(
                               <TextInput
+                                  ref={(ref)=>{this.billPhoneInput = ref}}
                                   style={styles.textInput}
                                   placeholder='请输入'
                                   underlineColorAndroid='transparent'
@@ -187,6 +204,7 @@ export default class NewFillWaybillScene extends BaseComponent{
                       tailView:()=>{
                           return(
                               <TextInput
+                                  ref={(ref)=>{this.billAddressInput = ref}}
                                   style={styles.textInput}
                                   placeholder='请输入'
                                   underlineColorAndroid='transparent'
@@ -194,6 +212,7 @@ export default class NewFillWaybillScene extends BaseComponent{
                                   onEndEditing={()=>{this.saveCarData();}}
                                   placeholderTextColor={fontAndColor.COLORA1}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                                  multiline={true}
                               />
                           )
                       }
@@ -324,16 +343,50 @@ export default class NewFillWaybillScene extends BaseComponent{
         if(newAddress.id){
 
             if(this.addressType=='start'){
+                this.startAddressData = newAddress;
                 this.startID = newAddress.id;
-                this.titleData[0][0].value = `${newAddress.province} ${newAddress.city} ${newAddress.district}`
+                this.titleData[0][0].value = `${newAddress.province} ${newAddress.city} ${newAddress.district}`;
                 this.titleData[0][1].value = `${newAddress.contact_name}  ${newAddress.contact_phone}`;
 
             }else {
+                this.stopAddressData = newAddress;
                 this.stopId = newAddress.id;
-                this.titleData[1][0].value = `${newAddress.province} ${newAddress.city} ${newAddress.district}`
+                this.titleData[1][0].value = `${newAddress.province} ${newAddress.city} ${newAddress.district}`;
                 this.titleData[1][1].value = `${newAddress.contact_name}  ${newAddress.contact_phone}`;
+
+                if(this.isAddBillInfo){
+                    this.billNameInput.setNativeProps({text: this.stopAddressData.contact_name});
+                    this.billPhoneInput.setNativeProps({text: this.stopAddressData.contact_phone});
+                    this.billAddressInput.setNativeProps({text: this.stopAddressData.address});
+                    this.titleData[3][3].value = `${this.stopAddressData.province} ${this.stopAddressData.city} ${this.stopAddressData.district}`;
+                }
             }
 
+            this.updateTitleData();
+        }
+
+    }
+
+    addBillInfoAction=(value)=>{
+
+        this.isAddBillInfo = value;
+
+        if(value){
+            if(this.stopAddressData){
+                this.billNameInput.setNativeProps({text: this.stopAddressData.contact_name});
+                this.billPhoneInput.setNativeProps({text: this.stopAddressData.contact_phone});
+                this.billAddressInput.setNativeProps({text: this.stopAddressData.address});
+                this.titleData[3][3].value = `${this.stopAddressData.province} ${this.stopAddressData.city} ${this.stopAddressData.district}`;
+                this.updateTitleData();
+
+            }else {
+                this.props.showToast('请选择收车地址');
+            }
+        }else {
+            this.billNameInput.setNativeProps({text:''});
+            this.billPhoneInput.setNativeProps({text:''});
+            this.billAddressInput.setNativeProps({text:''});
+            this.titleData[3][3].value = '请选择';
             this.updateTitleData();
         }
 
@@ -549,6 +602,25 @@ class PriceItemView extends Component {
     }
 }
 
+class ZNSwitch extends Component{
+
+
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+            value:this.props.value,
+        };
+      }
+    render(){
+        return(
+            <TouchableOpacity onPress={()=>{this.props.onValueChange && this.props.onValueChange(!this.state.value); this.setState({value:!this.state.value})}}>
+                <Image source={ this.state.value?require('../../../images/carSourceImages/shopSelect.png'):require('../../../images/carSourceImages/shopNoSelect.png')}/>
+            </TouchableOpacity>
+        )
+    }
+}
+
 
 const styles = StyleSheet.create({
     root:{
@@ -576,7 +648,7 @@ const styles = StyleSheet.create({
         marginBottom:Pixel.getPixel(10)
     },
     textInput:{
-        height: Pixel.getPixel(30),
+        height: Pixel.getPixel(35),
         borderColor: fontAndColor.COLORA0,
         width:width -  Pixel.getPixel(130),
         textAlign:'right',

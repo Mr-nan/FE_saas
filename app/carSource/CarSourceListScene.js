@@ -29,6 +29,8 @@ import CarNewListScene from './CarNewListScene';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import StorageUtil from '../utils/StorageUtil';
 import CarSeekScene from "./CarSeekScene";
+import CarShoppingScene from "./CarShoppingScene";
+import HomeShoppingIcon from  '../main/component/HomeShoppingIcon';
 
 
 
@@ -201,8 +203,21 @@ export  default  class carSourceListScene extends BaseComponent {
                     <CarUserListScene ref={(ref)=>{this.carUserListScene = ref}} showModal={this.props.showModal} callBack={this.props.callBack}/>
                     <CarNewListScene ref={(ref)=>{this.carNewListScene = ref}} showModal={this.props.showModal} callBack={this.props.callBack}/>
                 </ScrollView>
-
-
+                <HomeShoppingIcon click={()=> {
+                    StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                            if (res.result && res.result == 'true') {
+                                this.props.callBack({
+                                    name: 'CarShoppingScene',
+                                    component: CarShoppingScene,
+                                    params: {}
+                                });
+                            }else {
+                                this.isHomeJobItemLose = false;
+                                this.props.showLoginModal();
+                            }
+                        }
+                    );
+                }}/>
             </View>
 
         )

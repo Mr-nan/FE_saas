@@ -118,6 +118,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
     setLoanOne = (movie) => {
 
+
         global.companyBaseID = movie.company_base_id;
         global.ISCOMPANY = movie.iscompany;
 	    global.MERGE_ID = movie.merge_id;
