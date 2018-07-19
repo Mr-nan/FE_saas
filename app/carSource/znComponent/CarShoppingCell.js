@@ -130,7 +130,10 @@ class CarCell extends Component{
          this.panResponder = PanResponder.create({
              onStartShouldSetPanResponder: (evt, gestureState) => false,
              onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
-             onMoveShouldSetPanResponder: (evt, gestureState) => true,
+             onMoveShouldSetPanResponder: (evt, gestureState) => {
+
+                 return true;
+             },
              onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
              onPanResponderMove: (evt, gestureState) => {
                  if(gestureState.dx<-10 && !this.animationType){
@@ -154,7 +157,7 @@ class CarCell extends Component{
     render(){
          let {CarShoppingData,data} = this.props;
         return(
-            <View style={{paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white',width:ScreenWidth,height:Pixel.getPixel(132)}} /*{...this.panResponder.panHandlers}*/>
+            <View style={{paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white',width:ScreenWidth,height:Pixel.getPixel(132)}} {...this.panResponder.panHandlers}>
                 <View  style={{flexDirection:'row', flex:1,borderBottomColor:fontAndColor.COLORA3, borderBottomWidth:this.props.isShowLine ?Pixel.getPixel(1):0}}>
                     <Animated.View style={[styles.carCell,{left:this.state.leftGap}]}>
                         <TouchableOpacity activeOpacity={1} onPress={()=>{

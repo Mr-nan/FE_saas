@@ -513,7 +513,6 @@ export default class HomeScene extends BaseComponet {
                             }
                         }
                     );
-
                 }}/>
             </View>
         )
