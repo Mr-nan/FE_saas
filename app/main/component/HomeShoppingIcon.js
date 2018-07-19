@@ -20,17 +20,15 @@ var Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
 
 
-
 @observer
 export default class HomeShoppingIcon extends Component{
 
-    @observable originData = {};
+
+
+     @observable originData = {};
       constructor(props) {
         super(props);
-        this.originData = {
-            leftGap: width-Pixel.getPixel(62),
-            topGap:height - Pixel.getPixel(105),
-        };
+        this.originData ={leftGap: width-Pixel.getPixel(62),topGap:height - Pixel.getPixel(105)};
       }
 
 
@@ -44,6 +42,8 @@ export default class HomeShoppingIcon extends Component{
           leftGap:movex,
           topGap: movey,
       }
+
+
     }
 
     componentWillMount() {
@@ -51,10 +51,7 @@ export default class HomeShoppingIcon extends Component{
             onStartShouldSetPanResponder: (evt, gestureState) => false,
             onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
             onMoveShouldSetPanResponder: (evt, gestureState) => {
-                if (gestureState.dx === 0 || gestureState.dy === 0) {
-                    this.props.click();
-                    return false;
-                }
+
                 return true;
             },
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
@@ -67,7 +64,6 @@ export default class HomeShoppingIcon extends Component{
                 return true;
             },
             onPanResponderEnd:(evt, gestureState)=>{
-
                 if(gestureState.moveX>width/2){
                     this.originData.leftGap= width-Pixel.getPixel(62);
 
@@ -78,6 +74,7 @@ export default class HomeShoppingIcon extends Component{
                 if (gestureState.dx === 0 || gestureState.dy === 0) {
                     this.props.click();
                 }
+
 
             }
         });

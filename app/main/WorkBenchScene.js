@@ -27,9 +27,12 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AuthenticationModal from '../component/AuthenticationModal';
+import CarShoppingScene from "../carSource/CarShoppingScene";
 let Platform = require('Platform');
 import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
 import PersonCertificate from "../mine/certificateManage/PersonCertificate";
+import HomeShoppingIcon from  '../main/component/HomeShoppingIcon';
+
 
 export default class NonCreditScene extends BaseComponent {
 
@@ -124,6 +127,21 @@ export default class NonCreditScene extends BaseComponent {
                     renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                 />
+                <HomeShoppingIcon click={()=> {
+                    StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                            if (res.result && res.result == 'true') {
+                                this.props.callBack({
+                                    name: 'CarShoppingScene',
+                                    component: CarShoppingScene,
+                                    params: {}
+                                });
+                            }else {
+                                this.isHomeJobItemLose = false;
+                                this.props.showLoginModal();
+                            }
+                        }
+                    );
+                }}/>
                 <NavigationView
                     title="工作台"
                 />

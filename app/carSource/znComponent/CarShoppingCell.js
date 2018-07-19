@@ -157,7 +157,7 @@ class CarCell extends Component{
     render(){
          let {CarShoppingData,data} = this.props;
         return(
-            <View style={{paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white',width:ScreenWidth,height:Pixel.getPixel(132)}} {...this.panResponder.panHandlers}>
+            <View style={{paddingHorizontal:Pixel.getPixel(15),backgroundColor:'white',width:ScreenWidth,height:Pixel.getPixel(132)}} /*{...this.panResponder.panHandlers}*/>
                 <View  style={{flexDirection:'row', flex:1,borderBottomColor:fontAndColor.COLORA3, borderBottomWidth:this.props.isShowLine ?Pixel.getPixel(1):0}}>
                     <Animated.View style={[styles.carCell,{left:this.state.leftGap}]}>
                         <TouchableOpacity activeOpacity={1} onPress={()=>{

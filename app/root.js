@@ -10,7 +10,6 @@ import {
     Alert,
     AppState,
     NetInfo,
-
 } from 'react-native';
 
 import MyNavigator  from './component/MyNavigator';

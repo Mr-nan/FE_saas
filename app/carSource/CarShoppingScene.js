@@ -79,7 +79,6 @@ export  default  class CarShoppingScene extends BaseComponent{
             company_id:global.companyBaseID,
 
         }).then((response) => {
-            console.log(response);
             this.setData(response.mjson.data.cart);
 
         }, (error) => {
@@ -507,7 +506,6 @@ export  default  class CarShoppingScene extends BaseComponent{
 
         }).then((response) => {
             this.props.showModal(false);
-            this.props.showToast('下单成功');
             this.toNextPage({
                 name:'MyOrderInfoScene',
                 component:MyOrderInfoScene,
