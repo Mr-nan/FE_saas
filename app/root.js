@@ -42,6 +42,7 @@ export default class root extends Component {
         global.phoneModel = this.props.phoneModel;
         global.appVersion = this.props.appVersion;
 
+        console.log('phoneModel', global.phoneModel);
         NetInfo.addEventListener('change',this.handleConnectionInfoChange);
 
     }

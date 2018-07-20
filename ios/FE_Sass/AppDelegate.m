@@ -81,10 +81,11 @@
   struct utsname systemInfo;
   uname(&systemInfo);
   NSString  *deviceString = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
-  if ([deviceString isEqualToString:@"iPhone10,1"])    return @"iPhone 8 Plus";
-  if ([deviceString isEqualToString:@"iPhone10,2"])    return @"iPhone 8";
-  if ([deviceString isEqualToString:@"iPhone9,1"])    return @"iPhone 7 Plus";
-  if ([deviceString isEqualToString:@"iPhone9,2"])    return @"iPhone 7";
+  if ([deviceString isEqualToString:@"iPhone10,3"])    return @"iPhone X";
+  if ([deviceString isEqualToString:@"iPhone10,2"])    return @"iPhone 8 Plus";
+  if ([deviceString isEqualToString:@"iPhone10,1"])    return @"iPhone 8";
+  if ([deviceString isEqualToString:@"iPhone9,2"])    return @"iPhone 7 Plus";
+  if ([deviceString isEqualToString:@"iPhone9,1"])    return @"iPhone 7";
   if ([deviceString isEqualToString:@"iPhone3,1"])    return @"iPhone 4";
   if ([deviceString isEqualToString:@"iPhone3,2"])    return @"iPhone 4";
   if ([deviceString isEqualToString:@"iPhone3,3"])    return @"iPhone 4";
