@@ -44,12 +44,24 @@ export default class MyOrderCarIDScene extends BaseComponent {
         super(props);
 
         this.car_item = this.props.data.models[this.props.index].car_items[this.props.id];
+        console.log(this.car_item);
         this.allList = [{name:'车架号',value:this.car_item.car_vin},
             {name:'出厂日期',value:this.car_item.manufacture},
             {name:'车架号照片',image:'',id:'',icon:''},
             {name:'里程表照片',image:'',id:'',icon:''},
             // {name:'待还款金额',image:'',id:''},
             {name:'保存',value:''}];
+        for (let i = 0; i < this.car_item.pictures.length; i++){
+            if(this.car_item.pictures[i].name=='vin_no'){
+                this.allList[2].image=this.car_item.pictures[i].url;
+                this.allList[2].icon=this.car_item.pictures[i].url;
+                this.allList[2].id=this.car_item.pictures[i].file_id;
+            }else if(this.car_item.pictures[i].name=='mileage'){
+                this.allList[3].image=this.car_item.pictures[i].url;
+                this.allList[3].icon=this.car_item.pictures[i].url;
+                this.allList[3].id=this.car_item.pictures[i].file_id;
+            }
+        }
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
@@ -127,7 +139,7 @@ export default class MyOrderCarIDScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData, selectionID, rowID) => {
         if(rowData.name=="车架号"){
-            return(<MyOrderInputItem name={rowData.name} callBack={(text)=>{
+            return(<MyOrderInputItem value={rowData.value} name={rowData.name} callBack={(text)=>{
                 this.allList[0].value=text;
             }}/>);
         }else if(rowData.name=="出厂日期"){

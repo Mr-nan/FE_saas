@@ -48,6 +48,7 @@ export  default class MyOrderInputItem extends PureComponent {
                                 height:Pixel.getPixel(44),
                                 width:width-width/3-Pixel.getPixel(48)
                             }}
+                            defaultValue={this.props.value}
                             placeholder='必填'
                             placeholderTextColor={'#91A2B6'}
                             underlineColorAndroid="transparent"

@@ -65,6 +65,7 @@ export  default class MyOrderInfoCarChangeItem extends PureComponent {
                                     onChangeText={(text) => {
                                         this.topMoney = text;
                                     }}
+                                    autoCapitalize="characters"
                                     style={{
                                         textAlign: 'center',
                                         fontSize: Pixel.getFontPixel(19),
@@ -77,7 +78,7 @@ export  default class MyOrderInfoCarChangeItem extends PureComponent {
                                         marginTop: Pixel.getPixel(19),
                                         fontWeight:'bold'
                                     }}
-                                    keyboardType={'numeric'}
+                                    keyboardType={'ascii-capable'}
                                     underlineColorAndroid="transparent"
                                 />
                                 <TextInput
@@ -123,9 +124,13 @@ export  default class MyOrderInfoCarChangeItem extends PureComponent {
                         <View style={{flex:1,justifyContent:'center'}}>
                             <Text style={{fontSize:Pixel.getPixel(14),color:'#666',marginLeft:Pixel.getPixel(12)}}>车架号</Text>
                         </View>
-                        <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                            <Text style={{fontSize:Pixel.getPixel(14),color:'#666'}}>LVSHJCAC9DE166720</Text>
-                        </View>
+                        {this.props.data.car_SKU_details.v_type==1?<View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
+                            <Text style={{fontSize:Pixel.getPixel(14),color:'#666'}}>{this.props.data.car_items[0].car_vin}</Text>
+                        </View>:<View style={{flex:1,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
+                            <Text style={{fontSize:Pixel.getPixel(14),color:'#666', marginRight:Pixel.getPixel(5)}}>{success}/{this.props.data.car_items.length}</Text>
+                            <Image style={{width:Pixel.getPixel(9),height:Pixel.getPixel(15),marginRight:Pixel.getPixel(12)}}
+                                   source={require('../../../../images/neworder/right.png')}/>
+                        </View>}
                     </TouchableOpacity>
                 </View>
             );

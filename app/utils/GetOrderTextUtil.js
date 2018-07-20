@@ -83,6 +83,10 @@ export default class GetOrderTextUtil {
                 return  23
             }else if (status == 7) {
                 return  23
+            }else if (status == 50) {
+                return  23
+            }else if (status == 51) {
+                return  23
             }else if (status == 8) {
                 return  24
             }else if (status == 10) {
@@ -185,7 +189,7 @@ export default class GetOrderTextUtil {
         } else if (type == 8) {
             return <MyOrderTitleNotBottomItem/>
         } else if (type == 9) {
-            return <MyOrderTitleWuLiuXinXiItem/>
+            return <MyOrderTitleNotBottomItem/>
         }else if (type == 21) {
             return <View/>
         }else if (type == 22) {
@@ -195,7 +199,7 @@ export default class GetOrderTextUtil {
         }else if (type == 24) {
             return <MyOrderTitleAddressItem/>
         }else if (type == 25) {
-            return <MyOrderTitleWuLiuXinXiItem/>
+            return <MyOrderTitleAddressItem/>
         }
 
     }
@@ -334,36 +338,36 @@ export default class GetOrderTextUtil {
 
     }
 
-    static getBottom(type,from) {
+    static getBottom(type,from,data) {
         type =  this.getStatus(type,from);
         if (type == 1) {
-            return <MyOrderInfoBottomItem></MyOrderInfoBottomItem>
+            return <MyOrderInfoBottomItem data={data}></MyOrderInfoBottomItem>
         } else if (type == 2) {
-            return <MyOrderInfoBottomItem/>
+            return <MyOrderInfoBottomItem data={data}/>
         } else if (type == 3) {
-            return <MyOrderInfoBottomItem/>
+            return <MyOrderInfoBottomItem data={data}/>
         }else if (type == 4) {
-            return <MyOrderInfoBottomMariginItem/>
+            return <MyOrderInfoBottomMariginItem data={data}/>
         } else if (type == 5) {
-            return <MyOrderInfoBottomMariginItem/>
+            return <MyOrderInfoBottomMariginItem data={data}/>
         }  else if (type == 6) {
-            return <MyOrderInfoBottomMariginItem/>
+            return <MyOrderInfoBottomMariginItem data={data}/>
         }  else if (type == 7) {
-            return <MyOrderInfoBottomMariginItem/>
+            return <MyOrderInfoBottomMariginItem data={data}/>
         } else if (type == 8) {
-            return <MyOrderInfoBottomMariginItem/>
+            return <MyOrderInfoBottomMariginItem data={data}/>
         } else if (type == 9) {
-            return <MyOrderInfoBottomMariginItem/>
+            return <MyOrderInfoBottomMariginItem data={data}/>
         }else if (type == 21) {
-            return <MyOrderInfoBottomItem/>
+            return <MyOrderInfoBottomItem data={data}/>
         }else if (type == 22) {
-            return <MyOrderInfoBottomItem/>
+            return <MyOrderInfoBottomItem data={data}/>
         } else if (type == 23) {
-            return <MyOrderInfoBottomMariginItem/>
+            return <MyOrderInfoBottomMariginItem data={data}/>
         } else if (type == 24) {
-            return <MyOrderInfoBottomMariginItem/>
+            return <MyOrderInfoBottomMariginItem data={data}/>
         }else if (type == 25) {
-            return <MyOrderInfoBottomMariginItem/>
+            return <MyOrderInfoBottomMariginItem data={data}/>
         }
 
     }
