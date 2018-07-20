@@ -46,7 +46,6 @@ const PixelUtil = React.createClass({
         if (Platform.OS === 'android') {
             return Math.round(((px + 20) / 375.0) * width);
         } else {
-
             if(height==812){
                 return Math.round(((px + 34) / 375.0) * width);
             }
