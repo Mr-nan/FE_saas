@@ -1745,7 +1745,7 @@ export const CHECKTRANSTYPE = BASEURL + "v2/order.logistics/check";
  *
  *物流运价查询
  */
-export const ORDER_LOGISTICS_QUERY = BASEURL + "v2//order.logistics/query";
+export const ORDER_LOGISTICS_QUERY = BASEURL + "v2/order.logistics_flows/getFreight";
 /**
  *
  *获取发票信息
