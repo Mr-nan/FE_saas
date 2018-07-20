@@ -408,6 +408,7 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor:fontAndColor.COLORA3,
         paddingTop:Pixel.getTitlePixel(64),
+        paddingBottom:Pixel.getBottomPixel(0)
     },
     Separator: {
         backgroundColor: fontAndColor.COLORA3,

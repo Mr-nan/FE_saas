@@ -183,7 +183,7 @@ export default class NewBrowsingHistoryScene extends BaceComponent {
         return (
             <View style={styles.rootContainer}>
                 {/*<View style={{height:Pixel.getPixel(1) ,backgroundColor:fontAndColor.COLORA3}}></View>*/}
-                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(20)}}
+                <ListView style={{backgroundColor:fontAndColor.COLORA3}}
                           dataSource={this.state.carData}
                           showsVerticalScrollIndicator={false}
                           removeClippedSubviews={false}

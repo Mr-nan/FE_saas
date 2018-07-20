@@ -9,7 +9,7 @@ import PixelUtil from "../utils/PixelUtil";
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
-const Top = (Height - Width) / 1.1;
+const Top = Pixel.getTitlePixel(300);
 const Radius = Width / 12;
 const Left = (Width - Radius * 8) / 2
 
@@ -98,10 +98,10 @@ export default class PwdGesture extends Component {
         return (
             <View style={[styles.container, this.props.style]}>
                 {this.props.NavigationBar}
-                <View style={styles.bodyStyle} {...this._panResponder.panHandlers}>
-                    {this.renderCircles()}
-                    {this.renderLines()}
-                    <Line ref='line' color={color}/>
+                    <View style={styles.bodyStyle} {...this._panResponder.panHandlers}>
+                        {this.renderCircles()}
+                        {this.renderLines()}
+                        <Line ref='line' color={color}/>
                 </View>
                 {this.props.Bottom}
             </View>

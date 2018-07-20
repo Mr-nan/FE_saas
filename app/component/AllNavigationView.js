@@ -67,7 +67,6 @@ export default class CarInfoNavigationView extends Component {
 
 const styles = StyleSheet.create({
 
-
     content: {
         marginTop: Pixel.getTitlePixel(20),
         height: Pixel.getPixel(44),

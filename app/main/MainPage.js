@@ -620,8 +620,9 @@ const styles = StyleSheet.create({
     flex: {
         flex: 1,
         backgroundColor: '#fff',
-        width: width, height: height,
-        paddingBottom: 0,
+        width: width,
+        height: height,
+        paddingBottom:Pixel.getBottomPixel(0),
     },
     img: {
 

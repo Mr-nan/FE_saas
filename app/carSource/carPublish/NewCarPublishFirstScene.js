@@ -965,7 +965,8 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
         backgroundColor: fontAndColor.COLORA3,
-        paddingTop: Pixel.getTitlePixel(64)
+        paddingTop: Pixel.getTitlePixel(64),
+        paddingBottom:Pixel.getBottomPixel(0)
     },
     footContainer: {
         justifyContent: 'center',

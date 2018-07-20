@@ -26,15 +26,18 @@ export default class HomeShoppingIcon extends Component{
 
 
      @observable originData = {};
+
       constructor(props) {
         super(props);
-        this.originData ={leftGap: width-Pixel.getPixel(62),topGap:height - Pixel.getPixel(105)};
+        this.width = width;
+        this.height = height - Pixel.getBottomPixel(0);
+          this.originData ={leftGap: this.width-Pixel.getPixel(62),topGap:this.height - Pixel.getPixel(105)};
       }
 
 
     setMove=(movex,movey)=>{
 
-      if(movex>=width-Pixel.getPixel(62) || movey>=height-Pixel.getPixel(105) || movex<=0||movey<=0)
+      if(movex>=this.width-Pixel.getPixel(62) || movey>=this.height-Pixel.getPixel(105) || movex<=0||movey<=0)
       {
           return;
       }

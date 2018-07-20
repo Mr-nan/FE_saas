@@ -303,7 +303,7 @@ export default class MineCreditApplyScene extends BaseComponent {
 			return this.loadView();
 		}
 		return (
-			<View style={{flex: 1,backgroundColor: 'white',paddingTop: Pixel.getPixel(64),}}>
+			<View style={{flex: 1,backgroundColor: 'white',paddingTop: Pixel.getTitlePixel(64),}}>
 				{
 					this.loadScrollView()
 				}
@@ -352,8 +352,6 @@ export default class MineCreditApplyScene extends BaseComponent {
 							<Text allowFontScaling={false}
 							      style={{color:'rgba(237,120,92,1.00)',fontSize: Pixel.getFontPixel(14),marginTop:Pixel.getPixel(10)}}>
 								{this.ZongheResult}</Text>
-
-
 						</TouchableOpacity>
 						: null}
 
@@ -365,7 +363,6 @@ export default class MineCreditApplyScene extends BaseComponent {
 								<Text allowFontScaling={false}
 								      style={{backgroundColor:'#00000000',color:'white',fontSize: Pixel.getFontPixel(14),marginLeft:Pixel.getPixel(15)}}>
 									新车订单授信
-
 								</Text>
 								<Text allowFontScaling={false}
 								      style={{backgroundColor:'#00000000',color:'white',fontSize: Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(5)}}>

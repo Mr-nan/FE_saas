@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: Width,
-        paddingBottom: Pixel.getPixel(60),
+        backgroundColor:FontAndColor.COLORA3,
     },
     topMessageStyle: {
         fontSize: Pixel.getFontPixel(17),
