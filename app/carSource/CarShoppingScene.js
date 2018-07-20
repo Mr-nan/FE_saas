@@ -498,7 +498,6 @@ export  default  class CarShoppingScene extends BaseComponent{
         }
 
         this.props.showModal(true);
-
         request(AppUrls.CREATE_ORDER_HOME, 'post', {
 
             cars:JSON.stringify(carsArray),
@@ -506,12 +505,12 @@ export  default  class CarShoppingScene extends BaseComponent{
 
         }).then((response) => {
             this.props.showModal(false);
+            this.refreshingData();
             this.toNextPage({
                 name:'MyOrderInfoScene',
                 component:MyOrderInfoScene,
                 params:{order_id:response.mjson.data.order_id,from:1}
             });
-            this.loadData();
 
 
         }, (error) => {
