@@ -7,7 +7,7 @@
  * 测试地址
  *
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
@@ -1740,12 +1740,63 @@ export const WAYBILL_DETAIL = BASEURL + "v2/order.logistics/detail";
  *物流运价数据检查（获取运输类型对应的费）
  */
 export const CHECKTRANSTYPE = BASEURL + "v2/order.logistics/check";
+/**
+* 支付运单
+*/
+export const LOGISTICS_ORDER_PAY = BASEURL + "v2/order.logistics_flows/payFreight";
 
+/**
+ *
+ * 上传凭证
+ */
+export const LOGISTICS_ORDER_PROOF = BASEURL + "v2/order.logistics_flows/uploadPayVoucher";
+
+/**
+ *
+ * 支付运单回调
+ */
+export const LOGISTICS_ORDER_PAY_CALLBACK = BASEURL + "v2/order.logistics_flows/payFreightCallBack";
+/**
+ *
+ * 取消运单
+ */
+export const LOGISTICS_ORDER_CANCEL = BASEURL + "v2/order.logistics_flows/cancelTrans";
+/**
+ *
+ * 运单列表
+ */
+export const LOGISTICS_ORDER_LIST = BASEURL + "v2/order.logistics_flows/getMeWaybill";
+/**
+ *
+ * 创建运单
+ */
+export const LOGISTICS_ORDER_CREATE = BASEURL + "v2/order.logistics_flows/create";
+/**
+ *
+ * 搜索运单
+ */
+export const LOGISTICS_ORDER_SEARCH = BASEURL + "v2/order.logistics_flows/getTransSearch";
+
+/**
+ *
+ * 运单详情
+ */
+export const ORDER_LOGISTICS_ORDER_DETAIL = BASEURL + "v2/order.logistics_flows/getTransDetails";
+/**
+ *
+ * 单车详情
+ */
+export const ORDER_LOGISTICS_CAR_DETAIL = BASEURL + "v2/order.logistics_flows/getCarDetails";
+/**
+ *
+ * 物流详情
+ */
+export const ORDER_LOGISTICS_DETIAL = BASEURL + "v2/order.logistics_flows/getLogisticsDetails";
 /**
  *
  *物流运价查询
  */
-export const ORDER_LOGISTICS_QUERY = BASEURL + "v2//order.logistics/query";
+export const ORDER_LOGISTICS_QUERY = BASEURL + "v2/order.logistics_flows/getFreight";
 /**
  *
  *获取发票信息
