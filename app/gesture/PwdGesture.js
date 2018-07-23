@@ -9,7 +9,7 @@ import PixelUtil from "../utils/PixelUtil";
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
-const Top = 0;
+const Top = Pixel.getTitlePixel(64)+Pixel.getPixel(200);
 const Radius = Width / 12;
 const Left = (Width - Radius * 8) / 2
 
@@ -197,8 +197,8 @@ export default class PwdGesture extends Component {
     }
 
     onStart(e, g) {
-        let x = g.pageX - Left;
-        let y = g.pageY - Top;
+        let x = e.nativeEvent.pageX-Left;
+        let y = e.nativeEvent.pageY-Top;
 
         let lastChar = this.getTouchChar({x, y});
         if (lastChar) {
@@ -224,9 +224,8 @@ export default class PwdGesture extends Component {
     }
 
     onMove(e, g) {
-        let x = g.pageX - Left;
-        let y = g.pageY - Top;
-        console.log('x:',x,'y:',y);
+        let x = e.nativeEvent.pageX-Left;
+        let y = e.nativeEvent.pageY-Top;
         if (this.isMoving) {
             this.refs.line.setNativeProps({end: {x, y}});
 
@@ -306,13 +305,13 @@ export default class PwdGesture extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: FontAndColor.COLORA3,
     },
     bodyStyle: {
         position: 'absolute',
-        left: Left,
-        top: Top,
-        width: Width,
+        height:Radius*8,
+        width:Radius*8,
+        backgroundColor: FontAndColor.COLORA3,
+        left:(Width-Radius*8)/2
     },
 });

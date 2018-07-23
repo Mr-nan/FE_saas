@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 var Platform = require('Platform');
 import RootScene from '../main/RootScene';
-// import RootScene from '../mine/newOrder/NewFillWaybillScene';
+// import RootScene from '../login/SetLoginPwdGesture';
 import {setAll} from '../constant/AllBackLogin';
 export default class MyNavigator extends Component {
     render() {

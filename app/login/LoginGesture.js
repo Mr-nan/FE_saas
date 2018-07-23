@@ -92,9 +92,9 @@ export default class GesturePassword extends BaseComponent {
             </TouchableWithoutFeedback>);
         }
         return (
-            <View style={{flex:1,paddingBottom:Pixel.getBottomPixel(0),backgroundColor:'yellow',paddingTop:Pixel.getTitlePixel(64)}}>
+            <View style={{flex:1,paddingBottom:Pixel.getBottomPixel(0),backgroundColor:FontAndColor.COLORA3,paddingTop:Pixel.getTitlePixel(64)}}>
                 <AllNavigationView title="解锁手势密码"/>
-                <View style={{alignItems:'center'}} >
+                <View style={{alignItems:'center',height:Pixel.getPixel(200)}} >
                     {this.state.url ? <Image style={styles.avatarStyle}
                                              source={{uri: this.state.url}}/> :
                         <Image style={styles.avatarStyle}
@@ -111,11 +111,10 @@ export default class GesturePassword extends BaseComponent {
                 ref='pg'
                 us={this.state.status}
                 message={this.state.message}
-                style={styles.gestureStyle}
                 interval={500}
                 onStart={() => this.onStart()}
                 onEnd={(password) => this.onEnd(password)}/>
-                <View style={{flexDirection: 'row',marginTop:Pixel.getPixel(10),backgroundColor:FontAndColor.COLORB0}}>
+                <View style={{flexDirection: 'row',marginTop:(Width / 12)*8 +Pixel.getPixel(40)}}>
                     <TouchableOpacity onPress={() => {
                         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
                             if (data.code == 1) {
