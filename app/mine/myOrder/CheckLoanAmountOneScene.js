@@ -93,7 +93,8 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 </View>
                 <View style={{backgroundColor:'#f0eff5',paddingTop:Pixel.getPixel(25)}}>
                     <TouchableOpacity
-                        onPress={() => {   // 充值
+                        onPress={() => {
+                            this.renderRihtFootView
                         }}
                         activeOpacity={0.8}
                         style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#05C5C2', height:Pixel.getPixel(45),
@@ -106,7 +107,12 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
 
     _renderRow = (rowData, selectionID, rowID) => {
         return (<SelectLoanAmount rowData={rowData} selectID={this.state.selectID }
-                                  selectIdB={(id)=>{this.setState({selectID: id, number: id,});}}
+                                  selectIdB={(id,credit_record_id,supervision_code)=>{
+                                      this.setState({selectID: id});
+                                      this.credit_id = credit_record_id;
+                                      this.supervise_type = supervision_code;
+                                      this.orderPaymentMaxLoanmny()
+                                  }}
         />)
     }
 
@@ -114,6 +120,29 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
         this.number = number;
         this.setState({
             number: number,
+        });
+    }
+
+    orderPaymentMaxLoanmny = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    api: AppUrls.ORDER_PAYMENT_MAX_LOANMNY,
+                    credit_id: this.credit_id,
+                    loan_code: this.props.financeNo,
+                    merge_id:datas.merge_id,
+                };
+                this.props.showModal(true);
+                request(AppUrls.FINANCE, 'Post', maps)
+                    .then((response) => {
+                        this.props.showModal(false);
+
+                    }, (error) => {
+                        this.props.showModal(false);
+
+                    });
+            }
         });
     }
 
@@ -167,65 +196,70 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
      *
      **/
     getCreditRequestType = () => {
-        // let maps = {
-        //     company_id: "xxxx",
-        //     order_id: "xxx",
-        // };
-        // this.props.showModal(true);
-        // request(AppUrls.USER_ACCOUNT_INFO, 'post', maps).then((response) => {
-            // this.props.showModal(false);
-            // let data = JSON.parse(data.result);
-            this.data = {
-                "data": {
-                    "request": {
-                        "device_code": "sss",
-                        "token": "127",
-                        "merge_id": "2493",
-                        "user_ip": "127.0.0.1"
-                    },
-                    "response": [
-                        {
-                            "merge_id": "2492",
-                            "credit_record_id": "100394",
-                            "credit_request_type": "1",
-                            "credit_maxloanmny": 0,
-                            "supervision_code": 1,
-                            "supervision_name": "展厅监管"
-                        },
-                        {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                };
+                // this.props.showModal(true);
+                // request(AppUrls.USER_ACCOUNT_INFO, 'post', maps).then((response) => {
+                // this.props.showModal(false);
+                // let data = JSON.parse(data.result);
+                // if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                this.data = {
+                    "data": {
+                        "request": {
+                            "device_code": "sss",
+                            "token": "127",
                             "merge_id": "2493",
-                            "credit_record_id": "100395",
-                            "credit_request_type": "1",
-                            "credit_maxloanmny": 0,
-                            "supervision_code": 2,
-                            "supervision_name": "在库监管"
-                        }
-                    ]
-                },
-                "code": 0,
-                "msg": "ok",
-                "trace": {
-                    "start_time": "2018-07-20 15:53:08",
-                    "source_ip": "127.0.0.1",
-                    "source_url": "http://credit.dev.dycd.com/Home/Credit/getCreditRequestType",
-                    "server_version": "5.5.12",
-                    "file_max_size": "128M",
-                    "post_max_size": "128M",
-                    "server_ip": "127.0.0.1",
-                    "cost_time": "0.5930s",
-                    "cost_mem": "5,059k",
+                            "user_ip": "127.0.0.1"
+                        },
+                        "response": [
+                            {
+                                "merge_id": "2492",
+                                "credit_record_id": "100394",
+                                "credit_request_type": "1",
+                                "credit_maxloanmny": 0,
+                                "supervision_code": 1,
+                                "supervision_name": "展厅监管"
+                            },
+                            {
+                                "merge_id": "2493",
+                                "credit_record_id": "100395",
+                                "credit_request_type": "1",
+                                "credit_maxloanmny": 0,
+                                "supervision_code": 2,
+                                "supervision_name": "在库监管"
+                            }
+                        ]
+                    },
+                    "code": 0,
+                    "msg": "ok",
+                    "trace": {
+                        "start_time": "2018-07-20 15:53:08",
+                        "source_ip": "127.0.0.1",
+                        "source_url": "http://credit.dev.dycd.com/Home/Credit/getCreditRequestType",
+                        "server_version": "5.5.12",
+                        "file_max_size": "128M",
+                        "post_max_size": "128M",
+                        "server_ip": "127.0.0.1",
+                        "cost_time": "0.5930s",
+                        "cost_mem": "5,059k",
+                    }
                 }
-            }
-            // if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                 this.setState({
                     dataSource: ds.cloneWithRows(this.data.data.response),
                 });
-            // } else {
-            //     this.props.showToast(response.mjson.msg);
-            // }}, (error) => {
-            //     this.props.showToast(error.mjson.msg);
-            // });
-    }
+                // } else {
+                //     this.props.showToast(response.mjson.msg);
+                // }}, (error) => {
+                //     this.props.showToast(error.mjson.msg);
+                // });
+            }
+        });
+    };
 
     /**
      * from @hanmeng
@@ -242,8 +276,8 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                     order_id: this.props.orderId,
                     loan_amount: price,
                     finance_no: this.props.financeNo,
-                    credit_id:'xxx',
-                    supervise_type:'xxxx',
+                    credit_id:this.credit_id ,
+                    supervise_type:this.supervise_type,
 
                 };
                 let url = AppUrls.ORDER_LOAN_AMOUNT_CHECK;

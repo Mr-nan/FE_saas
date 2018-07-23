@@ -1641,6 +1641,11 @@ export const OFFLINE_PAY = BASEURL + "v2/order.pay/offline";
  * 监管费列表
  */
 export const SUPERVISE_LIST = BASEURL + V + "finance/superviseList";
+
+/**
+ * 获取订单贷最大可借额度
+ */
+export const ORDER_PAYMENT_MAX_LOANMNY = BASEURL + "api/v5/NewLoanPlan/order_payment_max_loanmny";
 /**
  *
  * 监管费收银台

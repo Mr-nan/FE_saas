@@ -19,7 +19,7 @@ class SelectLoanAmount extends Component {
         const {rowData,selectID,selectIdB} = this.props;
         return (
             <TouchableOpacity
-                onPress={()=>selectIdB(rowData.merge_id)}>
+                onPress={()=>selectIdB(rowData.merge_id,rowData.credit_record_id,rowData.supervision_code)}>
                 <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(19),paddingLeft:Pixel.getPixel(15),alignItems:'center',paddingRight:Pixel.getPixel(15),paddingTop:Pixel.getPixel(17),backgroundColor:'#ffffff'}}>
                     <View style={{flex:1}}>
                         <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(14)}}>{rowData.supervision_name}</Text>
