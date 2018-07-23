@@ -646,6 +646,8 @@ const  styles = StyleSheet.create({
 
         flex: 1,
         backgroundColor: fontAndColor.COLORA3,
+        paddingBottom:Pixel.getBottomPixel(0)
+
     },
     navigatorSousuoView: {
         height: Pixel.getPixel(30),
@@ -684,7 +686,7 @@ const  styles = StyleSheet.create({
     },
     footBtn:{
         left:0,
-        bottom:0,
+        bottom:Pixel.getBottomPixel(0),
         right:0,
         backgroundColor:fontAndColor.COLORB0,
         justifyContent:'center',

@@ -9,7 +9,7 @@ import PixelUtil from "../utils/PixelUtil";
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
-const Top = Pixel.getTitlePixel(300);
+const Top = 0;
 const Radius = Width / 12;
 const Left = (Width - Radius * 8) / 2
 
@@ -97,13 +97,11 @@ export default class PwdGesture extends Component {
 
         return (
             <View style={[styles.container, this.props.style]}>
-                {this.props.NavigationBar}
                     <View style={styles.bodyStyle} {...this._panResponder.panHandlers}>
                         {this.renderCircles()}
                         {this.renderLines()}
                         <Line ref='line' color={color}/>
                 </View>
-                {this.props.Bottom}
             </View>
         )
     }
@@ -199,8 +197,8 @@ export default class PwdGesture extends Component {
     }
 
     onStart(e, g) {
-        let x = e.nativeEvent.pageX - Left;
-        let y = e.nativeEvent.pageY - Top;
+        let x = g.pageX - Left;
+        let y = g.pageY - Top;
 
         let lastChar = this.getTouchChar({x, y});
         if (lastChar) {
@@ -226,8 +224,9 @@ export default class PwdGesture extends Component {
     }
 
     onMove(e, g) {
-        let x = e.nativeEvent.pageX - Left;
-        let y = e.nativeEvent.pageY - Top;
+        let x = g.pageX - Left;
+        let y = g.pageY - Top;
+        console.log('x:',x,'y:',y);
         if (this.isMoving) {
             this.refs.line.setNativeProps({end: {x, y}});
 

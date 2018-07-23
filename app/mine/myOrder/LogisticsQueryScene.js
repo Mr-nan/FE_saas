@@ -255,7 +255,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                 <NavigatorView title='物流服务' backIconClick={this.backPage} wrapStyle={{backgroundColor: 'transparent'}}/>
             </View>);
         } else {
-            return (<View style={{flex: 1, backgroundColor: fontAndColor.COLORA3}}>
+            return (<View style={{flex: 1, backgroundColor: fontAndColor.COLORA3,paddingBottom:Pixel.getBottomPixel(0)}}>
                 {IS_ANDROID ? (<ListView
                     removeClippedSubviews={false}
                     dataSource={this.state.dataSource}
@@ -306,7 +306,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                                       backgroundColor: this.state.canClick ? fontAndColor.COLORB0 : '#69DCDA',
                                       position: 'absolute',
                                       left: 0,
-                                      bottom: 0,
+                                      bottom: Pixel.getBottomPixel(0),
                                       justifyContent: 'center',
                                       alignItems: 'center'
                                   }}>
