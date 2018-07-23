@@ -76,18 +76,18 @@ export default class LoanInfo extends BaseComponent {
                     </View>
                 </TouchableOpacity>
                 <View style={styles.separatedLine}/>
-                <View style={{
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    marginLeft: Pixel.getPixel(15),
-                    marginTop: Pixel.getPixel(20),
-                    marginRight: Pixel.getPixel(15)
-                }}>
-                    <Text allowFontScaling={false} style={styles.orderInfo}>最大可贷额度</Text>
-                    <View style={{flex: 1}}/>
-                    <Text allowFontScaling={false}
-                          style={styles.infoContent}>{this.state.financeInfo.max_loanmny ? parseFloat(this.state.financeInfo.max_loanmny).toFixed(2) : '0.00'}元</Text>
-                </View>
+                {/*<View style={{*/}
+                    {/*alignItems: 'center',*/}
+                    {/*flexDirection: 'row',*/}
+                    {/*marginLeft: Pixel.getPixel(15),*/}
+                    {/*marginTop: Pixel.getPixel(20),*/}
+                    {/*marginRight: Pixel.getPixel(15)*/}
+                {/*}}>*/}
+                    {/*<Text allowFontScaling={false} style={styles.orderInfo}>最大可贷额度</Text>*/}
+                    {/*<View style={{flex: 1}}/>*/}
+                    {/*<Text allowFontScaling={false}*/}
+                          {/*style={styles.infoContent}>{this.state.financeInfo.max_loanmny ? parseFloat(this.state.financeInfo.max_loanmny).toFixed(2) : '0.00'}元</Text>*/}
+                {/*</View>*/}
                 {/*<View style={{
                  alignItems: 'center',
                  marginLeft: Pixel.getPixel(15),
@@ -231,6 +231,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(40),
         marginTop: Pixel.getPixel(13),
         flexDirection: 'row',
+        backgroundColor:'#000000'
     },
     inputStyle: {
         flex: 1,

@@ -25,6 +25,7 @@ import {request} from "../../utils/RequestUtil";
 import ShowToast from "../../component/toast/ShowToast";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import SelectLoanAmount from "../../carSource/znComponent/SelectLoanAmount";
 const Pixel = new PixelUtil();
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 export default class CheckLoanAmountOneScene extends BaseComponent {
@@ -33,15 +34,14 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
         super(props);
         this.selectID = -1;
         this.state = {
-            dataSource: ds.cloneWithRows(['aaaa','bbbbb','ccccc']),
+            selectID: -1,
+            dataSource: ds.cloneWithRows([]),
         }
         this.number = this.props.amount === '请输入申请贷款金额' ? 0 : this.props.amount;
     }
 
     initFinish = () => {
-        this.setState({
-            dataSource: ds.cloneWithRows(['xxxx','bbbbb','ccccc','ddddddd','eeeeeeee']),
-        });
+        this.getCreditRequestType()
     };
 
     render() {
@@ -52,7 +52,9 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                     removeClippedSubviews={false}
                     style={{marginTop:Pixel.getPixel(45),backgroundColor:'#f0eff5',paddingBottom:Pixel.getPixel(0),marginBottom:Pixel.getPixel(0)}}
                     dataSource={this.state.dataSource}
+                    renderHeader={this._renderHeader}
                     renderRow={this._renderRow}
+                    renderFooter={this.renderListFooter}
                     renderSeparator={this._renderSeperator}
                     showsVerticalScrollIndicator={false}/>
             </View>
@@ -65,14 +67,15 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(1)}}/>
         )
     }
-
-    _renderRow = (rowData, selectionID, rowID) => {
-        if(rowID == 0){
+    _renderHeader = () => {
             return (
-                <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(14), paddingBottom:Pixel.getPixel(14),backgroundColor:'#ffffff'}}>{'采车监管方式'}</Text>
+                <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(14),
+                    paddingBottom:Pixel.getPixel(14),backgroundColor:'#ffffff'}}>{'采车监管方式'}</Text>
             )
-        } else if(rowData == "ddddddd"){
-            return (
+    }
+
+    renderListFooter = () => {
+            return (<View>
                 <View style={styles.inputBar}>
                     <View style={{flexDirection:'row',justifyContent:'center',paddingTop:Pixel.getPixel(20),paddingBottom:Pixel.getPixel(20)}}>
                         <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(15),flex:1}}>{"最大可借额度"}</Text>
@@ -80,7 +83,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                     </View>
                     <TextInput
                         ref='amountInput'
-                        defaultValue={this.number + ''}
+                        value={this.state.number}
                         underlineColorAndroid='transparent'
                         onChangeText={this.setNumber}
                         keyboardType='numeric'
@@ -88,53 +91,30 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                         style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),borderWidth:Pixel.getPixel(1),borderColor:'#05C5C2',height:Pixel.getPixel(40)}}
                         placeholder='请输入金额'/>
                 </View>
-            )
-        } else if(rowData == 'eeeeeeee'){
-            return(
                 <View style={{backgroundColor:'#f0eff5',paddingTop:Pixel.getPixel(25)}}>
                     <TouchableOpacity
                         onPress={() => {   // 充值
-
                         }}
                         activeOpacity={0.8}
                         style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#05C5C2', height:Pixel.getPixel(45),
                             marginLeft:Pixel.getPixel(15), marginRight:Pixel.getPixel(15),borderRadius:Pixel.getPixel(3)}}>
-                        <Text allowFontScaling={false}
-                              style={{color:'#FFFFFF', fontSize: Pixel.getFontPixel(15)}}>确定</Text>
+                        <Text allowFontScaling={false} style={{color:'#FFFFFF', fontSize: Pixel.getFontPixel(15)}}>确定</Text>
                     </TouchableOpacity>
                 </View>
-            )
-        } else  {
-            return (
-                <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(19),paddingLeft:Pixel.getPixel(15),alignItems:'center',paddingRight:Pixel.getPixel(15),paddingTop:Pixel.getPixel(17),backgroundColor:'#ffffff'}}>
-                    <View style={{flex:1}}>
-                        <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(14)}}>{rowData}</Text>
-                        <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(12)}}>{rowData}</Text>
-                    </View>
-                    <TouchableOpacity
-                        onPress={() => {
-                            if(this.selectID == rowID){
-                                this.selectID = -1
-                            }else {
-                                this.selectID = rowID
-                            }
-                        }}>
-                        {
-                            this.selectID == rowID?
-                                <Image source={require('../../../images/mainImage/agreed_sign.png')}/> :
-                                <Image source={require('../../../images/mainImage/un_agreed_sign.png')}/>
-                        }
-                    </TouchableOpacity>
-                </View>
-            )
-        }
+            </View>)
+    }
+
+    _renderRow = (rowData, selectionID, rowID) => {
+        return (<SelectLoanAmount rowData={rowData} selectID={this.state.selectID }
+                                  selectIdB={(id)=>{this.setState({selectID: id, number: id,});}}
+        />)
     }
 
     setNumber = (number) => {
         this.number = number;
-        /*        this.setState({
-         number: number,
-         });*/
+        this.setState({
+            number: number,
+        });
     }
 
     /**
@@ -182,6 +162,72 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
     }
 
     /**
+     * from @huangning
+     *
+     *
+     **/
+    getCreditRequestType = () => {
+        // let maps = {
+        //     company_id: "xxxx",
+        //     order_id: "xxx",
+        // };
+        // this.props.showModal(true);
+        // request(AppUrls.USER_ACCOUNT_INFO, 'post', maps).then((response) => {
+            // this.props.showModal(false);
+            // let data = JSON.parse(data.result);
+            this.data = {
+                "data": {
+                    "request": {
+                        "device_code": "sss",
+                        "token": "127",
+                        "merge_id": "2493",
+                        "user_ip": "127.0.0.1"
+                    },
+                    "response": [
+                        {
+                            "merge_id": "2492",
+                            "credit_record_id": "100394",
+                            "credit_request_type": "1",
+                            "credit_maxloanmny": 0,
+                            "supervision_code": 1,
+                            "supervision_name": "展厅监管"
+                        },
+                        {
+                            "merge_id": "2493",
+                            "credit_record_id": "100395",
+                            "credit_request_type": "1",
+                            "credit_maxloanmny": 0,
+                            "supervision_code": 2,
+                            "supervision_name": "在库监管"
+                        }
+                    ]
+                },
+                "code": 0,
+                "msg": "ok",
+                "trace": {
+                    "start_time": "2018-07-20 15:53:08",
+                    "source_ip": "127.0.0.1",
+                    "source_url": "http://credit.dev.dycd.com/Home/Credit/getCreditRequestType",
+                    "server_version": "5.5.12",
+                    "file_max_size": "128M",
+                    "post_max_size": "128M",
+                    "server_ip": "127.0.0.1",
+                    "cost_time": "0.5930s",
+                    "cost_mem": "5,059k",
+                }
+            }
+            // if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.data.data.response),
+                });
+            // } else {
+            //     this.props.showToast(response.mjson.msg);
+            // }}, (error) => {
+            //     this.props.showToast(error.mjson.msg);
+            // });
+    }
+
+    /**
      * from @hanmeng
      *
      *
@@ -193,10 +239,12 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 let maps = {
                     company_id: datas.company_base_id,
-                    //car_id: this.props.carId,
                     order_id: this.props.orderId,
                     loan_amount: price,
-                    finance_no: this.props.financeNo
+                    finance_no: this.props.financeNo,
+                    credit_id:'xxx',
+                    supervise_type:'xxxx',
+
                 };
                 let url = AppUrls.ORDER_LOAN_AMOUNT_CHECK;
                 request(url, 'post', maps).then((response) => {
