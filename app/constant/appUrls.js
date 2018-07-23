@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 
 /**
@@ -532,7 +532,12 @@ export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
  * 获取用户功能权限
  **/
 export const GETFUNCTIONBYTOKENENTER = BASEURL + 'v1/user/getFunctionByTokenEnter';
-
+/**
+ * from @zhaojian
+ *
+ * 获取借款人当前有效的授信类型
+ **/
+export const GETCREDITREQUESTTYPE = BASEURL + 'v2/credit.home/getCreditRequestType';
 
 /**
  * from @zhaojian
@@ -1289,6 +1294,11 @@ export const ORDER_SEARCH = BASEURL + V + 'order/search';
  * 订单详情
  */
 export const ORDER_DETAIL = BASEURL + V + 'order/detail';
+
+/**
+ * 获取放款前条件落实状态
+ */
+export const GETCREDITPUBLICCONTRACTSTATUS = BASEURL + 'v2/credit.home/getCreditPublicContractStatus';
 /**
  * 订金、尾款支付
  */

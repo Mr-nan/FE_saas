@@ -171,8 +171,8 @@ export default class LoanInfo extends BaseComponent {
      *
      *
      **/
-    refreshLoanInfo = (newLoanInfo) => {
-        this.props.refreshLoanInfo(newLoanInfo);
+    refreshLoanInfo = (newLoanInfo,credit_record_id) => {
+        this.props.refreshLoanInfo(newLoanInfo,credit_record_id);
         //this.props.updateLoanAmount(newLoanInfo.loan_amount);
         newLoanInfo.loan_code = newLoanInfo.finance_no;
         this.setState({
@@ -231,7 +231,6 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(40),
         marginTop: Pixel.getPixel(13),
         flexDirection: 'row',
-        backgroundColor:'#000000'
     },
     inputStyle: {
         flex: 1,

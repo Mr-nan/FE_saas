@@ -203,68 +203,25 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
                 };
-                // this.props.showModal(true);
-                // request(AppUrls.USER_ACCOUNT_INFO, 'post', maps).then((response) => {
-                // this.props.showModal(false);
+                this.props.showModal(true);
+                request(AppUrls.GETCREDITREQUESTTYPE, 'post', maps).then((response) => {
+                this.props.showModal(false);
                 // let data = JSON.parse(data.result);
-                // if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                this.data = {
-                    "data": {
-                        "request": {
-                            "device_code": "sss",
-                            "token": "127",
-                            "merge_id": "2493",
-                            "user_ip": "127.0.0.1"
-                        },
-                        "response": [
-                            {
-                                "merge_id": "2492",
-                                "credit_record_id": "100394",
-                                "credit_request_type": "1",
-                                "credit_maxloanmny": 0,
-                                "supervision_code": 1,
-                                "supervision_name": "展厅监管"
-                            },
-                            {
-                                "merge_id": "2493",
-                                "credit_record_id": "100395",
-                                "credit_request_type": "1",
-                                "credit_maxloanmny": 0,
-                                "supervision_code": 2,
-                                "supervision_name": "在库监管"
-                            }
-                        ]
-                    },
-                    "code": 0,
-                    "msg": "ok",
-                    "trace": {
-                        "start_time": "2018-07-20 15:53:08",
-                        "source_ip": "127.0.0.1",
-                        "source_url": "http://credit.dev.dycd.com/Home/Credit/getCreditRequestType",
-                        "server_version": "5.5.12",
-                        "file_max_size": "128M",
-                        "post_max_size": "128M",
-                        "server_ip": "127.0.0.1",
-                        "cost_time": "0.5930s",
-                        "cost_mem": "5,059k",
-                    }
-                }
+                if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                 this.setState({
-                    dataSource: ds.cloneWithRows(this.data.data.response),
+                    dataSource: ds.cloneWithRows(response.mjson.response),
                 });
-                // } else {
-                //     this.props.showToast(response.mjson.msg);
-                // }}, (error) => {
-                //     this.props.showToast(error.mjson.msg);
-                // });
+                } else {
+                    this.props.showToast(response.mjson.msg);
+                }}, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
             }
         });
     };
 
     /**
      * from @hanmeng
-     *
-     *
      **/
     checkPrice = (price) => {
         this.props.showModal(true);
@@ -284,7 +241,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.showModal(false);
-                        this.props.refreshLoanInfo(response.mjson.data);
+                        this.props.refreshLoanInfo(response.mjson.data,this.credit_id);
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }

@@ -861,10 +861,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             onPress={() => {
                                 let transOrder = this.existTransOrder(this.ordersTrans);
                                 let isStore = this.orderDetail.orders_item_data[0].is_store;  // 是否在店 0没有申请 1申请中 2驳回 3同意
-/*                                console.log('this.ordersTrans=====', this.ordersTrans);
+/*                              console.log('this.ordersTrans=====', this.ordersTrans);
                                 console.log('transOrder=====', transOrder);
                                 console.log('this.logisticsType=====', this.logisticsType);
                                 console.log('111111ticsType=====', this.logisticsType === 1 && transOrder);*/
+
                                 if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 6) {
                                     this.props.showToast('请输入申请贷款金额');
                                 } else if (!transOrder && (isStore == 0 || isStore == 2) && this.orderState == 6) {
@@ -874,32 +875,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 } else if (!transOrder && this.orderState == 2 && this.logisticsType === 1) {
                                     this.props.showToast('选择物流请填写运单');
                                 } else {
-                                    this.toNextPage({
-                                        name: 'CheckStand',
-                                        component: CheckStand,
-                                        params: {
-                                            payAmount: this.orderState === 1 ?
-                                                this.orderDetail.deposit_amount :
-                                                parseFloat(balanceAmount - applyAmount +
-                                                    parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) +
-                                                    parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
-                                            orderId: this.props.orderId,
-                                            orderNo: this.orderDetail.order_no,
-                                            seller_company_id:this.orderDetail.seller_company_id,
-                                            payType: this.orderState,
-                                            payFull: this.orderDetail.totalpay_amount > 0,
-                                            sellerId: this.orderDetail.seller_id,
-                                            carId: this.orderDetail.orders_item_data[0].car_id,
-                                            pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
-                                            pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
-                                            isSellerFinance: this.orderDetail.is_seller_finance,
-                                            applyLoanAmount: this.applyLoanAmount,
-                                            financeNo: this.orderDetail.finance_no,
-                                            callBack: this.payCallBack,
-                                            logisticsType: this.logisticsType === 1 && transOrder,
-                                            transAmount: transOrder ? this.ordersTrans.total_amount : 0
-                                        }
-                                    });
+                                    // credit_record_id
+                                    if(typeof(this.credit_record_id) != "undefined" || this.credit_record_id != ""){
+                                        this.getCreditPublicconTractstatus(this.credit_record_id);
+                                    } else {
+                                        this.props.showToast('授信id不能为空');
+                                    }
                                 }
                             }}>
                             <View style={styles.buttonConfirm}>
@@ -1794,6 +1775,53 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * from @hanmeng
+     * 获取放款前条件落实状态
+     **/
+    getCreditPublicconTractstatus = (credit_record_id) => {
+                let maps = {
+                    credit_record_id: credit_record_id,
+                };
+                this.props.showModal(true);
+                request(AppUrls.GETCREDITPUBLICCONTRACTSTATUS, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.toNextPage({
+                            name: 'CheckStand',
+                            component: CheckStand,
+                            params: {
+                                payAmount: this.orderState === 1 ?
+                                    this.orderDetail.deposit_amount :
+                                    parseFloat(balanceAmount - applyAmount +
+                                        parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) +
+                                        parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
+                                orderId: this.props.orderId,
+                                orderNo: this.orderDetail.order_no,
+                                seller_company_id:this.orderDetail.seller_company_id,
+                                payType: this.orderState,
+                                payFull: this.orderDetail.totalpay_amount > 0,
+                                sellerId: this.orderDetail.seller_id,
+                                carId: this.orderDetail.orders_item_data[0].car_id,
+                                pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
+                                pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
+                                isSellerFinance: this.orderDetail.is_seller_finance,
+                                applyLoanAmount: this.applyLoanAmount,
+                                financeNo: this.orderDetail.finance_no,
+                                callBack: this.payCallBack,
+                                logisticsType: this.logisticsType === 1 && transOrder,
+                                transAmount: transOrder ? this.ordersTrans.total_amount : 0
+                            }
+                        });
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+    };
+
+    /**
+     * from @hanmeng
      * 详情页数据加载
      **/
     loadData = () => {
@@ -1903,9 +1931,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * from @hanmeng
      * 根据输入的贷款额度，更新贷款数据
      **/
-    refreshLoanInfo = (financeInfo) => {
+    refreshLoanInfo = (financeInfo,credit_record_id) => {
         //console.log('new.financeInfo==='+financeInfo.obd_mny);
         this.financeInfo = financeInfo;
+        this.credit_record_id = credit_record_id;
     };
 
     /**
