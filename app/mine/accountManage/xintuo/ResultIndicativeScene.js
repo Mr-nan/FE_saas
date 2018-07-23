@@ -83,9 +83,9 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
 
         let navi_title = '';
         if (this.state.type === 0) {
-            navi_title = '开通车贷粮票';
+            navi_title = '开通1车粮票';
         } else if (this.state.type === 1) {
-            navi_title = '开通车贷粮票'
+            navi_title = '开通1车粮票'
         } else if (this.state.type === 2) {
             navi_title = '充值'
         } else if (this.state.type === 3) {
@@ -383,7 +383,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                         return '恭喜您开通成功'
                     }
                     case 2: {
-                        return '车贷粮票开通未成功'
+                        return '1车粮票开通未成功'
                     }
                     case 3: {
                         return '提交资料成功'
@@ -463,7 +463,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                 let bank_name = this.props.append;
                 return <View style={{alignItems: 'center'}}>
                     <Text allowFontScaling={false}
-                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已成功开车贷粮票</Text>
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已成功开1车粮票</Text>
                 </View>
             } else if (this.state.status === 2) {
                 return <View style={{alignItems: 'center'}}>

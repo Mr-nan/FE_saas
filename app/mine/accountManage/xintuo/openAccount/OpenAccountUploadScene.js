@@ -122,7 +122,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                     leftImageShow={false}
                     leftTextShow={true}
                     leftText={""}
-                    centerText={'开通车贷粮票'}
+                    centerText={'开通1车粮票'}
                     rightText={""}
                     leftImageCallBack={this.backPage}
                 />
@@ -163,7 +163,7 @@ export default class OpenAccountBaseScene extends BaseComponent {
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
-                    centerText={'开通车贷粮票'}
+                    centerText={'开通1车粮票'}
                     rightText={""}
                     leftImageCallBack={this.backPage}
                 />
