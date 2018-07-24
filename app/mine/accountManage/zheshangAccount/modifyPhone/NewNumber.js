@@ -132,7 +132,8 @@ export default class NameAndIdScene extends ZSBaseComponent {
                     enter_base_id: result.company_base_id,
                     mobile_no: new_mobile,
                     sub_acct_no: this.props.account.bank_card_no,
-                    type: 2
+                    type: 2,
+                    customer_type:'B'
                 }
 
                 request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {
@@ -180,6 +181,7 @@ export default class NameAndIdScene extends ZSBaseComponent {
                     old_sms_no:this.props.old_sms_no,
                     sub_acct_no: this.props.account.bank_card_no,
                     enter_base_id: result.company_base_id,
+                    customer_type:'B'
 
                 }
 

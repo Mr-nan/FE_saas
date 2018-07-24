@@ -225,7 +225,8 @@ export default class ModifyBankCard extends ZSBaseComponent {
                     sub_acct_no: this.props.account.bank_card_no,
                     bank_name: bank_name,
                     sub_bank_no: sub_bank_no,
-                    sub_bank_name:sub_bank_name
+                    sub_bank_name:sub_bank_name,
+                    customer_type:'B'
                 }
 
 

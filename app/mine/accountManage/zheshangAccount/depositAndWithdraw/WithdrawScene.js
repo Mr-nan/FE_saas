@@ -26,7 +26,7 @@ import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import SText from '../component/SaasText'
 import SmsFillScene from './SmsFillScene'
 import ResultIndicativeScene from '../ResultIndicativeScene'
-import ZSBaseComponent from  '../component/ZSBaseComponent'
+import ZSBaseComponent from '../component/ZSBaseComponent'
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -58,6 +58,7 @@ export default class WithdrawScene extends ZSBaseComponent {
                 //this.isOpenContract = datas.is_open_electron_repayment_contract;
                 let maps = {
                     enter_base_id: datas.company_base_id,
+                    customer_type: 'B'
                 };
 
                 //TODO
@@ -137,7 +138,8 @@ export default class WithdrawScene extends ZSBaseComponent {
                         <Image source={require('../../../../../images/account/zheshang_bank.png')}
                                style={{width: 55, height: 55, marginHorizontal: 15}}/>
                         <View>
-                            <SText style={{fontSize: 17, marginBottom: 10}}>{this.props.account.bind_sub_bank_name}</SText>
+                            <SText
+                                style={{fontSize: 17, marginBottom: 10}}>{this.props.account.bind_sub_bank_name}</SText>
                             <SText
                                 style={{color: FontAndColor.COLORA1}}>{this.props.account.bind_bank_card_name}{s}</SText>
                         </View>
@@ -163,19 +165,25 @@ export default class WithdrawScene extends ZSBaseComponent {
                                         keyboardType={'numeric'}
                                         underlineColorAndroid={"#00000000"}
                                         onChangeText={(text) => {
-                                                this.setState({
-                                                    money_input: text
-                                                })
+                                            this.setState({
+                                                money_input: text
+                                            })
                                         }}
                                         value={this.state.money_input}
                                     />
                                 </View>
                             </View>
                             <View style={{paddingVertical: 10}}>
-                                <View style={{flexDirection: 'row', marginBottom: 5}}>
-                                    <SText
-                                        style={{color: FontAndColor.COLORA1}}>{this.props.account.bank_name}现金余额:</SText>
-                                    <SText>{this.props.account.balance}元</SText>
+                                {/*<View style={{flexDirection: 'row', marginBottom: 5}}>*/}
+                                {/*<SText*/}
+                                {/*style={{color: FontAndColor.COLORA1}}>{this.props.account.bank_name}现金余额:</SText>*/}
+                                {/*<SText>{this.props.account.balance}元</SText>*/}
+
+
+                                {/*</View>*/}
+                                <View style={{flexDirection: 'row'}}>
+                                    <SText style={{color: FontAndColor.COLORA1}}>可取余额:</SText>
+                                    <SText>{this.state.allow_withdraw_amount}元</SText>
                                     <SText
                                         style={{color: FontAndColor.COLORB4, fontSize: 16, textAlign: 'right', flex: 1}}
                                         onPress={() => {
@@ -185,11 +193,6 @@ export default class WithdrawScene extends ZSBaseComponent {
                                             })
                                         }}
                                     >全部提现</SText>
-
-                                </View>
-                                <View style={{flexDirection: 'row'}}>
-                                    <SText style={{color: FontAndColor.COLORA1}}>可取余额:</SText>
-                                    <SText>{this.state.allow_withdraw_amount}元</SText>
                                 </View>
 
                             </View>
@@ -226,9 +229,13 @@ export default class WithdrawScene extends ZSBaseComponent {
                             <SText style={{color: FontAndColor.COLORA1}}>温馨提示</SText>
                             <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginLeft: 15}}/>
                         </View>
-                        <SText style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>1  个人7*24小时，实时到账。</SText>
+                        <SText style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>1
+                            个人7*24小时，实时到账。</SText>
 
-                        <SText style={{color: FontAndColor.COLORA1, lineHeight: 20}}>{"2  企业工作日 9:00-16:30实时到账，其他时间单笔  <=5w 实时到账"}</SText>
+                        <SText style={{
+                            color: FontAndColor.COLORA1,
+                            lineHeight: 20
+                        }}>{"2  企业工作日 9:00-16:30实时到账，其他时间单笔  <=5w 实时到账"}</SText>
 
 
                     </View>
@@ -270,7 +277,8 @@ export default class WithdrawScene extends ZSBaseComponent {
                     enter_base_id: result.company_base_id,
                     sub_acct_no: this.props.account.bank_card_no,
                     sms_code: sms_code,
-                    sms_no: sms_no?sms_no:"000000"
+                    sms_no: sms_no ? sms_no : "000000",
+                    customer_type: 'B'
                 }
 
                 request(AppUrls.ZS_WITHDRAW, 'POST', params).then((response) => {
@@ -286,7 +294,7 @@ export default class WithdrawScene extends ZSBaseComponent {
                             type: 3,
                             status: 1,
                             params: params,
-                            callBack:this.props.callBack,
+                            callBack: this.props.callBack,
                         }
                     })
                 }, (error) => {
@@ -297,10 +305,10 @@ export default class WithdrawScene extends ZSBaseComponent {
                     })
 
 
-                    if(error.mycode === 8050324){  // 不在服务时间内
+                    if (error.mycode === 8050324) {  // 不在服务时间内
                         this.setState({
-                            out_of_service_msg:error.mjson.msg,
-                            alert:true
+                            out_of_service_msg: error.mjson.msg,
+                            alert: true
                         })
                         return
                     }
@@ -313,14 +321,14 @@ export default class WithdrawScene extends ZSBaseComponent {
                                 type: 3,
                                 status: 0,
                                 params: params,
-                                error:error.mjson,
-                                callBack:this.props.callBack,
+                                error: error.mjson,
+                                callBack: this.props.callBack,
                             }
                         })
 
-                    }else if(error.mycode === -300 || error.mycode === -500){
+                    } else if (error.mycode === -300 || error.mycode === -500) {
                         this.props.showToast(error.mjson.msg)
-                    }else {
+                    } else {
                         this.toNextPage({
                             component: ResultIndicativeScene,
                             name: 'ResultIndicativeScene',
@@ -328,8 +336,8 @@ export default class WithdrawScene extends ZSBaseComponent {
                                 type: 3,
                                 status: 2,
                                 params: params,
-                                error:error.mjson,
-                                callBack:this.props.callBack,
+                                error: error.mjson,
+                                callBack: this.props.callBack,
                             }
                         })
                     }

@@ -153,7 +153,7 @@ export default class ZheShangAccountTitle extends PureComponent {
                         <View style={{flexDirection: 'row'}}>
                             <View style={{flex: 1, alignItems:'center', justifyContent: 'center',}}>
                                 <Text allowFontScaling={false}
-                                      style={{fontSize: Pixel.getFontPixel(14), color: '#fff'}}>
+                                      style={{fontSize: Pixel.getFontPixel(14), color: '#fff', marginBottom:Pixel.getPixel(10)}}>
                                     可用余额(元)</Text>
                                 <Text allowFontScaling={false} style={{
                                     fontSize: Pixel.getFontPixel(18), color: '#fff',
@@ -164,7 +164,7 @@ export default class ZheShangAccountTitle extends PureComponent {
                             <View style={{marginVertical:15, width:1, height:Pixel.getPixel(100), backgroundColor:'white'}} />
                             <View style={{flex: 1, alignItems:'center', justifyContent: 'center',}}>
                                 <Text allowFontScaling={false}
-                                      style={{fontSize: Pixel.getFontPixel(14), color: '#fff'}}>
+                                      style={{fontSize: Pixel.getFontPixel(14), color: '#fff',marginBottom:Pixel.getPixel(10)}}>
                                     冻结金额(元)</Text>
                                 <Text allowFontScaling={false} style={{
                                     fontSize: Pixel.getFontPixel(18),
