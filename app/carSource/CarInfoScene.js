@@ -710,6 +710,7 @@ export default class CarInfoScene extends BaseComponent {
 
     // 打开分享
     showShared = () => {
+
         this.refs.sharedView.isVisible(true);
     }
 

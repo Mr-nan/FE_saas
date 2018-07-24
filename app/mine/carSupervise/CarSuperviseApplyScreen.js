@@ -144,7 +144,7 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                     }
 
                     <View style={styles.footContainer}>
-                        <TouchableOpacity onPress={this.footBtnClick}>
+                        <TouchableOpacity onPress={this.footBtnClick} activeOpacity={1}>
                             <View style={[styles.footView,{backgroundColor:this.state.isButtonTouch?fontAndColor.COLORB0:fontAndColor.COLORB5}]}>
                                 <Text allowFontScaling={false}  style={styles.footText}>提交</Text>
                             </View>
@@ -174,9 +174,9 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                         selectCar:this.selectCar,
                         confirmClick:(selectCar)=>{
 
-                            if(selectCar.vin){
+                            if(selectCar.auto_vin){
                                 this.selectCar= selectCar;
-                                this.titleData[0][0].value =selectCar.vin+'\n'+selectCar.carName;
+                                this.titleData[0][0].value =selectCar.auto_vin+'\n'+selectCar.model_name;
                                 this.updataTitle();
                             }
 
@@ -266,7 +266,7 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
 
         let tmIsTouch = false;
 
-        if(this.borrow_date!='' && this.borrow_days!='' && this.selectCar.vin && this.selectArticle.data && this.selectCause.data){
+        if(this.borrow_date!='' && this.borrow_days!='' && this.selectCar.auto_vin && this.selectArticle.data.length && this.selectCause.data.title){
             tmIsTouch = true;
         }
 
@@ -276,9 +276,9 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
         })
     }
 
-    cellSelectAction=(title,value)=>{
+    cellSelectAction=(data)=>{
 
-        this.borrow_days = value;
+        this.borrow_days = data.value;
         this.updataTitle();
 
     }
@@ -294,9 +294,43 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                 return;
             }
 
+            this.carApplyAction();
+
         }
 
+    }
 
+    carApplyAction=()=>{
+
+        let borrow_goods = [];
+        for (let data of this.selectArticle.data){
+            borrow_goods.push(data.value);
+        }
+
+        this.props.showModal(true);
+        request(AppUrls.FINANCE, 'Post', {
+            api: AppUrls.PLEDGE_CAR_APPLY,
+            regulation_list_id:this.selectCar.id,
+            borrow_date:this.borrow_date,
+            borrow_days:this.borrow_days,
+            borrow_goods:borrow_goods.toString(),
+            borrow_other_goods:this.selectArticle.remark?this.selectArticle.remark:'',
+            borrow_uses:this.selectCause.data.value,
+            borrow_other_uses:this.selectCause.remark?this.selectCause.remark:''
+
+        })
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.props.showToast('申请成功');
+                    this.props.loadAction();
+                    this.backPage();
+
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+
+                });
     }
 
     _handleDatePicked = (date)=>{

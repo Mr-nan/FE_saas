@@ -63,7 +63,7 @@ export class CellView extends Component {
                     </View>
                 </View>
                 <View style={{flexDirection:'row', alignItems:'center'}}>
-                    <Text allowFontScaling={false} style={[styles.cellValue,{textAlign:'right'}]}>{cellData.value}</Text>
+                    <Text allowFontScaling={false} style={[styles.cellValue,{textAlign:'right'}]} numberOfLines={2}>{cellData.value}</Text>
                     {
                         cellData.isShowTail &&
                         <Image style={{marginLeft:Pixel.getPixel(5)}}

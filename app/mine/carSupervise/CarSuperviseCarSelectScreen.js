@@ -1,7 +1,9 @@
 /**
  * Created by zhengnan on 2018/7/9.
  */
-import React, {Component} from 'react';
+
+import React,{Component} from 'react';
+
 import {
     View,
     Image,
@@ -35,19 +37,63 @@ export default class CarSuperviseCarSelectScreen extends BaseComponent{
     constructor(props) {
         super(props);
 
-        this.data = [
-            {carID:'1',vin:'JGFHGFEKFERTHJ',carName:'2017款别克精英版 1.8TSI 手自一体'},
-            {carID:'2',vin:'JGFHGFEKFERTHJ',carName:'2017款别克精英版 1.9TSI 手自一体'},
-            {carID:'3',vin:'JGFHGFEKFERTHJ',carName:'2017款别克精英版 2.0TSI 手自一体'},
-            {carID:'4',vin:'JGFHGFEKFERTHJ',carName:'2017款别克精英版 2.1TSI 手自一体'}
-        ];
+        this.carList=[];
         this.selectCar=this.props.selectCar;
         let ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1==r2});
         this.state = {
-            dataSource:ds.cloneWithRows(this.data),
+            dataSource:ds,
+            renderPlaceholderOnly:'blank',
         };
     }
+
+    initFinish=()=>{
+        this.loadData();
+    }
+
+    loadData=()=>{
+
+        this.setState({
+            renderPlaceholderOnly:'loading',
+
+        })
+        request(AppUrls.FINANCE, 'Post', {
+            api: AppUrls.PLEDGE_CAR_LIST,
+        })
+            .then((response) => {
+
+                     this.carList = response.mjson.data.list;
+                    if(this.carList.length<=0){
+                        this.setState({renderPlaceholderOnly: 'null'});
+
+                    }else {
+
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            dataSource:this.state.dataSource.cloneWithRows(this.carList),
+                        });
+                    }
+
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
+    }
+
+    allRefresh=()=>{
+        this.loadData();
+    }
+
     render(){
+        if(this.state.renderPlaceholderOnly!='success'){
+            return(
+                <View style={{flex:1,backgroundColor:fontAndColor.COLORA3,}}>
+                    {
+                        this.loadView()
+                    }
+                    <NavigationView title="选择车辆" backIconClick={this.backPage}/>
+                </View>
+            )
+        }
         return(
             <View style={styles.root}>
                 <ListView
@@ -65,14 +111,15 @@ export default class CarSuperviseCarSelectScreen extends BaseComponent{
         return(
             <TouchableOpacity onPress={()=>{
                 this.selectCar = rowData;
-                this.setState({dataSource:this.state.dataSource.cloneWithRows(this.data)})
+                this.setState({dataSource:this.state.dataSource.cloneWithRows(this.carList)})
+
             }}>
                 <View style={styles.carCell}>
                     <View>
-                        <Text style={styles.cellText}>车架号: {rowData.vin}</Text>
-                        <Text style={[styles.cellText,{marginTop:Pixel.getPixel(10)}]}>车型信息: {rowData.carName}</Text>
+                        <Text style={styles.cellText}>车架号: {rowData.auto_vin}</Text>
+                        <Text style={[styles.cellText,{marginTop:Pixel.getPixel(10)}]}>车型信息: {rowData.model_name}</Text>
                     </View>
-                    <Image source={ this.selectCar? (this.selectCar.carID==rowData.carID? require('../../../images/carSuperviseImage/xuanzhong.png'):require('../../../images/carSuperviseImage/weixuanzhong.png')):(require('../../../images/carSuperviseImage/weixuanzhong.png'))}/>
+                    <Image source={ this.selectCar? (this.selectCar.id==rowData.id? require('../../../images/carSuperviseImage/xuanzhong.png'):require('../../../images/carSuperviseImage/weixuanzhong.png')):(require('../../../images/carSuperviseImage/weixuanzhong.png'))}/>
                 </View>
             </TouchableOpacity>
         )

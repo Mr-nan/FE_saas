@@ -1,14 +1,14 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 
 /**
  * 测试地址
  *
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -19,7 +19,7 @@
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
 
@@ -1863,6 +1863,25 @@ export const STORE_GETER_REQUEST = BASEURL + "v2/order.home/storeGeterRequest";
  *   运单提车人信息
  **/
 export const GETSTOREGETER = BASEURL + "v2/order.home/getStoreGeter";
+/**
+ *   监管物借出-质押车列表
+ **/
+export const PLEDGE_CAR_LIST ="/api/v1/car/pledge_car_list";
+/**
+ *   监管物借出-借出列表
+ **/
+export const PLEDGE_BORROW_LIST = "/api/v1/car/borrow_list";
+/**
+ *   监管物借出-申请借出
+ **/
+export const PLEDGE_CAR_APPLY = "/api/v1/car/apply";
+/**
+ *   监管物借出-申请撤销
+ **/
+export const PLEDGE_CAR_CANCEL = "/api/v1/car/cancel";
+
+
+
 /**
  *  金融转发
  **/
