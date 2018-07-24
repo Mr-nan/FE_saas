@@ -181,16 +181,21 @@ export default class WithdrawScene extends ZSBaseComponent {
 
 
                                 {/*</View>*/}
-                                <View style={{flexDirection: 'row'}}>
-                                    <SText style={{color: FontAndColor.COLORA1}}>可取余额:</SText>
-                                    <SText>{this.state.allow_withdraw_amount}元</SText>
+                                <View style={{flexDirection: 'row', alignItems:'center'}}>
+                                    <SText style={{color: FontAndColor.COLORA1, marginVertical:Pixel.getPixel(2)}}>可取余额:</SText>
+                                    {
+                                        this.state.allow_withdraw_amount?
+                                            <SText>{this.state.allow_withdraw_amount}元</SText>:
+                                        <Image style={{width:21,height:21, marginLeft:Pixel.getPixel(3)}} source={require('../../../../../images/setDataLoading.gif')}/>
+                                    }
                                     <SText
-                                        style={{color: FontAndColor.COLORB4, fontSize: 16, textAlign: 'right', flex: 1}}
+                                        style={{color: this.state.allow_withdraw_amount?FontAndColor.COLORB4:FontAndColor.COLORA1, fontSize: 16, textAlign: 'right', flex: 1}}
                                         onPress={() => {
-
-                                            this.setState({
-                                                money_input: this.state.allow_withdraw_amount,
-                                            })
+                                            if(this.state.allow_withdraw_amount){
+                                                this.setState({
+                                                    money_input: this.state.allow_withdraw_amount,
+                                                })
+                                            }
                                         }}
                                     >全部提现</SText>
                                 </View>
