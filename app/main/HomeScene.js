@@ -206,9 +206,7 @@ export default class HomeScene extends BaseComponet {
 
                         if (response.mjson.data.flag === 'T') {
 
-                            if (response.mjson.data.accountStatus == 2) {  //开户成功，走激活
-
-                                if (response.mjson.data.activateStatus == 1) { // 激活成功，走授权
+                            if (response.mjson.data.accountStatus == 2) {  //开户成功，走授权
 
                                     //授权
                                     request(Urls.FINANCE_API, 'post', {api: 'api/v4/account/accountAuth'}).then((response) => {
@@ -221,17 +219,6 @@ export default class HomeScene extends BaseComponet {
                                         this.props.showToast(error.mjson.msg);
                                     })
 
-
-                                } else {
-                                    //激活
-                                    request(Urls.FINANCE_API, 'post', {api: 'api/v4/account/accountActivate'}).then((response) => {
-                                        this.toSuiShouJiWeb(response);
-                                    }, (error) => {
-
-                                        this.props.showModal(false)
-                                        this.props.showToast(error.mjson.msg);
-                                    })
-                                }
                             } else {
 
                                 // 开户
