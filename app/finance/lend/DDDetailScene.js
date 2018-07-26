@@ -29,7 +29,7 @@ import ImagePageView from 'react-native-viewpager'
 import AmountConfirm from './AmountConfirm';
 import PurchaseLoanStatusScene from './PurchaseLoanStatusScene';
 import DDCarInfoCheckScene from "./DDCarInfoCheckScene";
-import {LendSuccessAlert, ModalAlert, DDModalAlert} from './component/ModelComponent'
+import {LendSuccessAlert, ModalAlert, DDModalAlert,MMSModalAlert} from './component/ModelComponent'
 let ControlState = [];
 let loan_code;
 import ContractInfoScene from './ContractInfoScene';
@@ -172,9 +172,11 @@ export default class DDDetailScene extends BaseComponent {
      * 点击取消借款，确定，取消借款
      * canclelend
      **/
-    canclelend = () => {
+    canclelend = (imgSid,code) => {
 
         let maps = {
+            img_sid : imgSid,
+            img_code : code,
             api: apis.CANCEL_LOAN,
             loan_code: this.props.financeNo
         };
@@ -526,10 +528,17 @@ export default class DDDetailScene extends BaseComponent {
                     this.cancle = deleteCar
                 }} title='取消借款' subtitle='您确定要取消借款' confimClick={(setHide) => {
                     setHide(false);
-                    this.canclelend();
+                    this.MMScanleAlert.setModelVisible(true);
                 }} cancleClick={(setHide) => {
                     setHide(false)
                 }}/>
+
+                <MMSModalAlert ref={(cancle)=>{this.MMScanleAlert = cancle}}
+                               confimClick={(setModelVis,imgSid,code)=>{
+                                   setModelVis(false);
+                                   this.canclelend(imgSid,code)
+                               }}
+                               cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
 
 
                 <DDModalAlert ref={(deleteCar) => {

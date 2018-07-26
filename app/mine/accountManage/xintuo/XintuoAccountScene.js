@@ -170,7 +170,7 @@ export default class ZheShangAccountScene extends BaseComponent {
                     </TouchableOpacity>
                 </View>
                 <NavigationView
-                    title="车贷粮票"
+                    title="1 车粮票"
                     backIconClick={this.backPage}
                 />
 

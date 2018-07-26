@@ -189,6 +189,16 @@ export  default class AccountWebScene extends BaseComponent {
                         }
                     }
                 }
+            }else if(oldUrl=='http://' + webBackUrl.SUPERVICEPAYS + '/'){
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                        if (navigator.getCurrentRoutes()[i].name == 'SCBZJScene') {
+                            navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                            break;
+                        }
+                    }
+                }
             }else{
                 this.backPage();
             }

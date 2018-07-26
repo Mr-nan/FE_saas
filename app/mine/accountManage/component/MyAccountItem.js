@@ -294,7 +294,7 @@ export default class MyAccountItem extends BaseComponent {
         } else {   // 信托
             back = require('../../../../images/account/xintuo_background.png');
             bank = require('../../../../images/account/xintuo.png');
-            bankName = '车贷粮票';
+            bankName = '1 车粮票';
 
             let b = (this.state.data.bind_bank_card_type === 1 && this.state.data.account_open_type === 1) ? this.state.data.bank_card_no : this.state.data.cz_elec_account
 
@@ -473,7 +473,7 @@ export default class MyAccountItem extends BaseComponent {
                                             textAlign: 'left',
                                             fontSize: Pixel.getPixel(12),
                                             color: fontAndColor.COLORA1
-                                        }}>什么是车贷粮票？</Text>
+                                        }}>什么是1车粮票？</Text>
 
 
                                 </View>

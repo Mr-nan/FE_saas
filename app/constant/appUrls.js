@@ -3,13 +3,16 @@
  */
 // export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
-
 /**
  * 测试地址
  *
  */
+<<<<<<< HEAD
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
+=======
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
+>>>>>>> develop
 
 /**
  * 测试地址2
@@ -21,12 +24,10 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
  */
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
 
-
-
 /**
  * 预发布地址
  */
-//export const BASEURL = 'https://stgatewayapi.dycd.com/';
+// export const BASEURL = 'https://stgatewayapi.dycd.com/';
 
 /**
  * 版本号1
@@ -1242,6 +1243,11 @@ export const CONTRACTLIST = 'api/v1/Contract/contract_list';
 export const CONTRACT_CONTRACT_LIST = 'api/v1/Contract/contract_list';
 
 /**
+ * 赎车保证金支付单列表
+ */
+export const DEPOSIT_DEPOSIT_LIST = 'Api/V1/Deposit/deposit_list';
+
+/**
  * 转债权合同列表
  */
 export const GET_CTC_CONTRACT_LIST_FOR_APP = 'api/v1/contract/get_ctc_contract_list_for_app';
@@ -1646,11 +1652,24 @@ export const SUPERVISE_LIST = BASEURL + V + "finance/superviseList";
  * 监管费收银台
  */
 export const CASHIER_TABLE = BASEURL + V + "finance.supervise/cashierTable";
+
+/**
+ *
+ * 赎车保证金支付调取收银台
+ */
+export const DEPOSIT_CASHIER_TABLE =  "Api/V1/Deposit/cashier_table";
 /**
  *
  * 监管费支付
  */
 export const SUPERVISE_PAY = BASEURL + V + "finance.supervise/pay";
+
+/**
+ *
+ * 赎车保证金确认支付接口
+ */
+export const DEPOSIT_DEPOSIT_PAY =  "Api/V1/Deposit/deposit_pay";
+
 /**
  *
  * 监管费支付
@@ -1726,11 +1745,9 @@ export const WAYBILL_DETAIL = BASEURL + "v2/order.logistics/detail";
  *物流运价数据检查（获取运输类型对应的费）
  */
 export const CHECKTRANSTYPE = BASEURL + "v2/order.logistics/check";
-
 /**
- *
- * 支付运单
- */
+* 支付运单
+*/
 export const LOGISTICS_ORDER_PAY = BASEURL + "v2/order.logistics_flows/payFreight";
 
 /**
@@ -1780,7 +1797,6 @@ export const ORDER_LOGISTICS_CAR_DETAIL = BASEURL + "v2/order.logistics_flows/ge
  * 物流详情
  */
 export const ORDER_LOGISTICS_DETIAL = BASEURL + "v2/order.logistics_flows/getLogisticsDetails";
-
 /**
  *
  *物流运价查询
@@ -1886,4 +1902,3 @@ export const PLEDGE_CAR_CANCEL = "/api/v1/car/cancel";
  *  金融转发
  **/
 export const FINANCE_API = BASEURL + "v1/finance/index";
-

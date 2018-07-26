@@ -590,7 +590,7 @@ export default class FillWaybill extends BaseComponent {
                                 <Text style={{
                                     color: 'white',
                                     fontSize: Pixel.getPixel(15)
-                                }}> {this.state.collectAddress}</Text>
+                                }}> {this.state.collectAddress?this.state.collectAddress:"请选择"}</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

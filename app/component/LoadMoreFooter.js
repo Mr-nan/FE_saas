@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 40,
+        height: Pixel.getPixel(40),
     },
     footerTitle: {
         marginLeft: 10,
