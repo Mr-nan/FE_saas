@@ -48,7 +48,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
-                <NavigatorView title='确认借款额度' backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView}/>
+                <NavigatorView title='确认借款额度' backIconClick={this.backPage} />
                 <ListView
                     style={{marginTop:Pixel.getPixel(45),backgroundColor:'#f0eff5',paddingBottom:Pixel.getPixel(0),marginBottom:Pixel.getPixel(0)}}
                     dataSource={this.state.dataSource}
@@ -99,7 +99,17 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 <View style={{backgroundColor:'#f0eff5',paddingTop:Pixel.getPixel(25)}}>
                     <TouchableOpacity
                         onPress={() => {
-                            this.renderRihtFootView
+                            if (this.isNumberByHundred(this.number)) {
+                                if (this.number > this.state.maxLoanmny) {
+                                    this.props.showToast("不能超过最大贷款额度");
+                                } else {
+                                    this.checkPrice(this.number);
+                                }
+                            } else if (this.number == 0) {
+                                this.props.showToast("金额不能为零");
+                            } else {
+                                this.props.showToast("请输入整百金额");
+                            }
                         }}
                         activeOpacity={0.8}
                         style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#05C5C2', height:Pixel.getPixel(45),
@@ -143,7 +153,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                     .then((response) => {
                         this.props.showModal(false);
                         this.setState({
-                            maxLoanmny: "1000",
+                            maxLoanmny:response.mjson.data.max_loanmny,
                         });
                     }, (error) => {
                         this.props.showModal(false);
@@ -177,7 +187,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
             <TouchableOpacity
                 onPress={() => {
                     if (this.isNumberByHundred(this.number)) {
-                        if (this.number > this.props.maxLoanmny) {
+                        if (this.number > this.state.maxLoanmny) {
                             this.props.showToast("不能超过最大贷款额度");
                         } else {
                             this.props.updateAmount(this.number);
@@ -247,9 +257,11 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_LOAN_AMOUNT_CHECK;
                 request(url, 'post', maps).then((response) => {
+                    this.props.updateAmount(this.number);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.showModal(false);
                         this.props.refreshLoanInfo(response.mjson.data,this.credit_id);
+                        this.backPage();
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }

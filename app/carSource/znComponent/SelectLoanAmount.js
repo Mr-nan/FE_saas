@@ -22,9 +22,10 @@ class SelectLoanAmount extends Component {
                 onPress={()=>selectIdB(rowData.merge_id,rowData.credit_record_id,rowData.supervision_code)}>
                 <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(19),paddingLeft:Pixel.getPixel(15),alignItems:'center',paddingRight:Pixel.getPixel(15),paddingTop:Pixel.getPixel(17),backgroundColor:'#ffffff'}}>
                     <View style={{flex:1}}>
-                        <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(14)}}>{rowData.credit_maxloanmny_txt}
-                        <Text style={{color:'#FA5741',fontSize:Pixel.getFontPixel(14)}}>{rowData.credit_maxloanmny}</Text>
-                        </Text>
+                        <View style={{flexDirection:'row'}}>
+                            <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(14)}}>{rowData.credit_maxloanmny_txt}</Text>
+                            <Text style={{color:'#FA5741',fontSize:Pixel.getFontPixel(14),backgroundColor:'#fee3e2',borderRadius:Pixel.getPixel(10),paddingTop:0,paddingBottom:0,paddingLeft:Pixel.getPixel(3),paddingRight:Pixel.getPixel(3),textAlign:'center'}}>{rowData.credit_maxloanmny}</Text>
+                        </View>
                         <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(12),marginTop:Pixel.getPixel(3)}}>{rowData.supervision_msg}</Text>
                     </View>
                         {
