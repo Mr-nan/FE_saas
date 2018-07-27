@@ -135,7 +135,7 @@ export default class LoanInfo extends BaseComponent {
                     </View>
                 </TouchableOpacity>
                 {/*</View>*/}
-                <View style={styles.infoItem}>
+                <View style={[styles.infoItem,{marginTop:0}]}>
                     <Text allowFontScaling={false} style={styles.orderInfo}>需支付服务费</Text>
                     <View style={{flex: 1}}/>
                     <Text allowFontScaling={false}
@@ -229,7 +229,6 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(15),
         marginRight: Pixel.getPixel(15),
         height: Pixel.getPixel(40),
-        marginTop: Pixel.getPixel(13),
         flexDirection: 'row',
     },
     inputStyle: {

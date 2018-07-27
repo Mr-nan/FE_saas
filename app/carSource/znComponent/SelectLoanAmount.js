@@ -22,13 +22,15 @@ class SelectLoanAmount extends Component {
                 onPress={()=>selectIdB(rowData.merge_id,rowData.credit_record_id,rowData.supervision_code)}>
                 <View style={{flexDirection:'row',paddingBottom:Pixel.getPixel(19),paddingLeft:Pixel.getPixel(15),alignItems:'center',paddingRight:Pixel.getPixel(15),paddingTop:Pixel.getPixel(17),backgroundColor:'#ffffff'}}>
                     <View style={{flex:1}}>
-                        <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(14)}}>{rowData.supervision_name}</Text>
-                        <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(12)}}>{rowData.supervision_name}</Text>
+                        <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(14)}}>{rowData.credit_maxloanmny_txt}
+                        <Text style={{color:'#FA5741',fontSize:Pixel.getFontPixel(14)}}>{rowData.credit_maxloanmny}</Text>
+                        </Text>
+                        <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(12),marginTop:Pixel.getPixel(3)}}>{rowData.supervision_msg}</Text>
                     </View>
                         {
-                            selectID == rowData.merge_id?
-                                <Image source={require('../../../images/mainImage/agreed_sign.png')}/> :
-                                <Image source={require('../../../images/mainImage/un_agreed_sign.png')}/>
+                            selectID == rowData.merge_id +rowData.supervision_code?
+                                <Image style={{width:Pixel.getPixel(20),height:Pixel.getPixel(20)}} source={require('../../../images/mainImage/agreed_sign.png')}/> :
+                                <Image style={{width:Pixel.getPixel(20),height:Pixel.getPixel(20)}} source={require('../../../images/mainImage/un_agreed_sign.png')}/>
                         }
                 </View>
             </TouchableOpacity>

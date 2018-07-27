@@ -525,7 +525,6 @@ export default class CheckStand extends BaseComponent {
 
 
     render() {
-
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
                 {this.loadView()}

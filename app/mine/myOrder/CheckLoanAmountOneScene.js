@@ -36,6 +36,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
         this.state = {
             selectID: -1,
             dataSource: ds.cloneWithRows([]),
+            maxLoanmny:'0',
         }
         this.number = this.props.amount === '请输入申请贷款金额' ? 0 : this.props.amount;
     }
@@ -49,28 +50,31 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
             <View style={styles.container}>
                 <NavigatorView title='确认借款额度' backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView}/>
                 <ListView
-                    removeClippedSubviews={false}
                     style={{marginTop:Pixel.getPixel(45),backgroundColor:'#f0eff5',paddingBottom:Pixel.getPixel(0),marginBottom:Pixel.getPixel(0)}}
                     dataSource={this.state.dataSource}
                     renderHeader={this._renderHeader}
                     renderRow={this._renderRow}
                     renderFooter={this.renderListFooter}
-                    renderSeparator={this._renderSeperator}
-                    showsVerticalScrollIndicator={false}/>
+                    enableEmptySections={true}
+                    renderSeparator={this._renderSeperator}/>
             </View>
         )
     }
 
     _renderSeperator = (sectionID, rowID, adjacentRowHighlighted) => {
         return (
-            <View key={`${sectionID}-${rowID}`}
-                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(1)}}/>
+            <View key={`${sectionID}-${rowID}`} style={{backgroundColor: '#FFFFFF', height: Pixel.getPixel(1),width:width}}>
+                <View style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(1),marginLeft:Pixel.getPixel(15),marginLeft:Pixel.getPixel(15),width:width-Pixel.getPixel(30)}}/>
+            </View>
         )
     }
     _renderHeader = () => {
             return (
-                <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(14),
-                    paddingBottom:Pixel.getPixel(14),backgroundColor:'#ffffff'}}>{'采车监管方式'}</Text>
+                <View style={{flexDirection:'column'}}>
+                    <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(14),
+                        paddingBottom:Pixel.getPixel(14),backgroundColor:'#ffffff'}}>{'采车监管方式'}</Text>
+                    <View style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(1)}}/>
+                </View>
             )
     }
 
@@ -79,7 +83,8 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 <View style={styles.inputBar}>
                     <View style={{flexDirection:'row',justifyContent:'center',paddingTop:Pixel.getPixel(20),paddingBottom:Pixel.getPixel(20)}}>
                         <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(15),flex:1}}>{"最大可借额度"}</Text>
-                        <Text style={{color:'#FA5741',fontSize:Pixel.getFontPixel(15)}}>{"xxxx"}</Text>
+                        <Text style={{color:'#FA5741',fontSize:Pixel.getFontPixel(15)}}>{this.state.maxLoanmny}</Text>
+                        <Text style={{color:'#FA5741',fontSize:Pixel.getFontPixel(14)}}>{'元'}</Text>
                     </View>
                     <TextInput
                         ref='amountInput'
@@ -108,7 +113,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         return (<SelectLoanAmount rowData={rowData} selectID={this.state.selectID }
                                   selectIdB={(id,credit_record_id,supervision_code)=>{
-                                      this.setState({selectID: id});
+                                      this.setState({selectID: id +supervision_code});
                                       this.credit_id = credit_record_id;
                                       this.supervise_type = supervision_code;
                                       this.orderPaymentMaxLoanmny()
@@ -137,7 +142,9 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 request(AppUrls.FINANCE, 'Post', maps)
                     .then((response) => {
                         this.props.showModal(false);
-
+                        this.setState({
+                            maxLoanmny: "1000",
+                        });
                     }, (error) => {
                         this.props.showModal(false);
 
@@ -200,8 +207,9 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
                 let maps = {
-                    company_id: datas.company_base_id,
-                    order_id: this.props.orderId,
+                    // company_id: datas.company_base_id,
+                    // order_id: this.props.orderId,
+                    merge_id:datas.merge_id,
                 };
                 this.props.showModal(true);
                 request(AppUrls.GETCREDITREQUESTTYPE, 'post', maps).then((response) => {
@@ -209,7 +217,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                 // let data = JSON.parse(data.result);
                 if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                 this.setState({
-                    dataSource: ds.cloneWithRows(response.mjson.response),
+                    dataSource: ds.cloneWithRows(response.mjson.data),
                 });
                 } else {
                     this.props.showToast(response.mjson.msg);
