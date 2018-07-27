@@ -1870,6 +1870,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.orderDetail = response.mjson.data;
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
+                        if(response.mjson.data.credit_id != 0){
+                            this.credit_record_id = response.mjson.data.credit_id;//授信id
+                            this.applyLoanAmount = response.mjson.data.finance_amount
+                        }
                         this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.created_time);
                         //console.log('this.leftTime====', this.leftTime);
                         //this.props.showToast('this.leftTime===='+ this.leftTime);

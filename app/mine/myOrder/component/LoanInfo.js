@@ -153,7 +153,7 @@ export default class LoanInfo extends BaseComponent {
                     <Text allowFontScaling={false}
                           style={styles.infoContent}>{this.state.financeInfo.supervision_fee ? parseFloat(this.state.financeInfo.supervision_fee).toFixed(2) : '0.00'}元</Text>
                 </View>
-                <View style={styles.infoItem}>
+                <View style={[styles.infoItem,{marginBottom:Pixel.getPixel(15)}]}>
                     <Text allowFontScaling={false} style={styles.orderInfo}>应付首付款</Text>
                     <View style={{flex: 1}}/>
                     <Text allowFontScaling={false}
@@ -202,7 +202,6 @@ const styles = StyleSheet.create({
     },
     itemType5: {
         backgroundColor: '#ffffff',
-        height: Pixel.getPixel(230)
     },
     backIcon: {
         marginRight: Pixel.getPixel(15),
