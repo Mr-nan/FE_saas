@@ -844,7 +844,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 );
                 break;
             case 1:
-                let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
+                let applyAmount = this.applyLoanAmount === '待设置借款金额' ? 0 : this.applyLoanAmount;
                 let balanceAmount = this.orderDetail.totalpay_amount > 0 ? this.orderDetail.totalpay_amount : this.orderDetail.balance_amount;
                 return (
                     <View style={styles.bottomBar}>
@@ -866,8 +866,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 console.log('this.logisticsType=====', this.logisticsType);
                                 console.log('111111ticsType=====', this.logisticsType === 1 && transOrder);*/
 
-                                if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 6) {
-                                    this.props.showToast('请输入申请贷款金额');
+                                if (this.applyLoanAmount === '待设置借款金额' && this.orderState == 6) {
+                                    this.props.showToast('待设置借款金额');
                                 } else if (!transOrder && (isStore == 0 || isStore == 2) && this.orderState == 6) {
                                     this.props.showToast('请选择交车方式');
                                 } else if (isStore == 1 && this.orderState == 6) {
@@ -886,6 +886,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                         console.log('applyAmount' + applyAmount)
                                         console.log('this.financeInfo.fee_mny' + this.financeInfo.fee_mny)
                                         console.log('this.financeInfo.supervision_fee' + this.financeInfo.supervision_fee)
+                                        console.log('this.orderState' + this.orderState)
                                         this.toNextPage({
                                             name: 'CheckStand',
                                             component: CheckStand,
@@ -1344,8 +1345,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 2: // 待付订金  2=>'订单定价完成'
             case 3: // 3=>'订金支付中'
             case 4:  // 4=>'订金支付失败'
-                if (this.orderDetail.set_deposit_amount == 0)
-                {
+                if (this.orderDetail.set_deposit_amount == 0) {
                     if (cancelStatus === 0) {
                         this.orderState = 2;
                         this.topState = -1;
@@ -1399,8 +1399,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             this.bottomState = 4;
                         }
                     }
-                }
-                else {
+                } else {
                     if (cancelStatus === 0) {
                         this.orderState = 1;
                         this.topState = 0;
