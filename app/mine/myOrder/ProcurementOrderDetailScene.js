@@ -877,11 +877,15 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 } else {
                                     if(this.orderState == 6){
                                         if(typeof(this.credit_record_id) != "undefined" || this.credit_record_id != ""){
-                                            this.getCreditPublicconTractstatus(this.credit_record_id);
+                                            this.getCreditPublicconTractstatus(this.credit_record_id,balanceAmount,applyAmount,transOrder);
                                         } else {
                                             this.props.showToast('授信id不能为空');
                                         }
                                     }else {
+                                        console.log('balanceAmount' + balanceAmount)
+                                        console.log('applyAmount' + applyAmount)
+                                        console.log('this.financeInfo.fee_mny' + this.financeInfo.fee_mny)
+                                        console.log('this.financeInfo.supervision_fee' + this.financeInfo.supervision_fee)
                                         this.toNextPage({
                                             name: 'CheckStand',
                                             component: CheckStand,
@@ -1805,7 +1809,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * from @hanmeng
      * 获取放款前条件落实状态
      **/
-    getCreditPublicconTractstatus = (credit_record_id) => {
+    getCreditPublicconTractstatus = (credit_record_id,balanceAmount,applyAmount,transOrder) => {
                 let maps = {
                     credit_record_id: credit_record_id,
                 };
