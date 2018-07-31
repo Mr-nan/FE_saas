@@ -26,6 +26,8 @@ import ShowToast from "../../component/toast/ShowToast";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import SelectLoanAmount from "../../carSource/znComponent/SelectLoanAmount";
+import ChooseModal from "./component/ChooseModal";
+import AddressManage from "./orderwuliu/AddressManage";
 const Pixel = new PixelUtil();
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 export default class CheckLoanAmountOneScene extends BaseComponent {
@@ -57,6 +59,15 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                     renderFooter={this.renderListFooter}
                     enableEmptySections={true}
                     renderSeparator={this._renderSeperator}/>
+                <ChooseModal ref='chooseModal' title='提示'
+                             negativeButtonStyle={styles.negativeButtonStyle}
+                             negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                             positiveButtonStyle={styles.positiveButtonStyle}
+                             positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
+                             buttonsMargin={Pixel.getPixel(20)}
+                             positiveOperation={() => {
+                             }}
+                             content=''/>
             </View>
         )
     }
@@ -108,7 +119,11 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                                 }else if(this.number < 30000){
                                     this.props.showToast("最低需借款3万元");
                                 } else {
-                                    this.checkPrice(this.number);
+                                    this.refs.chooseModal.changeShowType(true, '取消', '确定', '提交借款额度后不可更改',
+                                        () => {
+                                            this.checkPrice(this.number);
+                                        });
+
                                 }
                             } else if (this.number == 0) {
                                 this.props.showToast("金额不能为零");
@@ -295,5 +310,33 @@ const styles = StyleSheet.create({
         paddingRight:Pixel.getPixel(15),
         paddingBottom:Pixel.getPixel(15)
 
+    },
+    positiveTextStyle: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: '#ffffff'
+    },
+    positiveButtonStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: Pixel.getPixel(15),
+        backgroundColor: fontAndColor.COLORB0,
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    negativeTextStyle: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB0
+    },
+    negativeButtonStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
     }
 });
