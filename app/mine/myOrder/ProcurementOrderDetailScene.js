@@ -1816,32 +1816,36 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 request(AppUrls.GETCREDITPUBLICCONTRACTSTATUS, 'post', maps).then((response) => {
                     this.props.showModal(false);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        this.toNextPage({
-                            name: 'CheckStand',
-                            component: CheckStand,
-                            params: {
-                                payAmount: this.orderState === 1 ?
-                                    this.orderDetail.deposit_amount :
-                                    parseFloat(balanceAmount - applyAmount +
-                                        parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) +
-                                        parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
-                                orderId: this.props.orderId,
-                                orderNo: this.orderDetail.order_no,
-                                seller_company_id:this.orderDetail.seller_company_id,
-                                payType: this.orderState,
-                                payFull: this.orderDetail.totalpay_amount > 0,
-                                sellerId: this.orderDetail.seller_id,
-                                carId: this.orderDetail.orders_item_data[0].car_id,
-                                pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
-                                pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
-                                isSellerFinance: this.orderDetail.is_seller_finance,
-                                applyLoanAmount: this.applyLoanAmount,
-                                financeNo: this.orderDetail.finance_no,
-                                callBack: this.payCallBack,
-                                logisticsType: this.logisticsType === 1 && transOrder,
-                                transAmount: transOrder ? this.ordersTrans.total_amount : 0
-                            }
-                        });
+                        if(response.mjson.data.contract_public_status == 0){
+                            this.props.showToast(response.mjson.data.contract_public_msg);
+                        }else {
+                            this.toNextPage({
+                                name: 'CheckStand',
+                                component: CheckStand,
+                                params: {
+                                    payAmount: this.orderState === 1 ?
+                                        this.orderDetail.deposit_amount :
+                                        parseFloat(balanceAmount - applyAmount +
+                                            parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) +
+                                            parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
+                                    orderId: this.props.orderId,
+                                    orderNo: this.orderDetail.order_no,
+                                    seller_company_id: this.orderDetail.seller_company_id,
+                                    payType: this.orderState,
+                                    payFull: this.orderDetail.totalpay_amount > 0,
+                                    sellerId: this.orderDetail.seller_id,
+                                    carId: this.orderDetail.orders_item_data[0].car_id,
+                                    pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
+                                    pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
+                                    isSellerFinance: this.orderDetail.is_seller_finance,
+                                    applyLoanAmount: this.applyLoanAmount,
+                                    financeNo: this.orderDetail.finance_no,
+                                    callBack: this.payCallBack,
+                                    logisticsType: this.logisticsType === 1 && transOrder,
+                                    transAmount: transOrder ? this.ordersTrans.total_amount : 0
+                                }
+                            });
+                        }
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
