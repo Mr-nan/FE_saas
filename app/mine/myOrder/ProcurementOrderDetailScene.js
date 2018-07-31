@@ -1875,8 +1875,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         let cancelStatus = response.mjson.data.cancel_status;
                         if(response.mjson.data.credit_id != 0){
                             this.credit_record_id = response.mjson.data.credit_id;//授信id
-                            this.applyLoanAmount = response.mjson.data.finance_amount
+                            this.applyLoanAmount = response.mjson.data.finance_amount;
                         }
+                        this.supervise_type = response.mjson.data.supervise_type;
                         this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.created_time);
                         //console.log('this.leftTime====', this.leftTime);
                         //this.props.showToast('this.leftTime===='+ this.leftTime);
@@ -1966,10 +1967,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * from @hanmeng
      * 根据输入的贷款额度，更新贷款数据
      **/
-    refreshLoanInfo = (financeInfo,credit_record_id) => {
+    refreshLoanInfo = (financeInfo,credit_record_id , supervision_code) => {
         //console.log('new.financeInfo==='+financeInfo.obd_mny);
         this.financeInfo = financeInfo;
         this.credit_record_id = credit_record_id;
+        this.supervise_type = supervision_code;
     };
 
     /**
@@ -2272,6 +2274,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let transOrder = this.existTransOrder(this.ordersTrans);
             return (
                 <LogisticsModeForFinancing navigator={this.props.navigator}
+                                           supervisetype={this.supervise_type}
                                            buttonCU={this.applyLoanAmount}
                                            showModal={this.props.showModal}
                                            showToast={this.props.showToast}

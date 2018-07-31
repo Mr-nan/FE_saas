@@ -74,17 +74,18 @@ export default class LogisticsModeForFinancing extends BaseComponent {
         if(this.props.buttonCU !='待设置借款金额'){
             if (index === 0) {
                 // 使用物流  跳转到选择目的地页
-                this.toNextPage({
-                    name: 'SelectDestination',
-                    component: SelectDestination,
-                    params: {
-                        orderId: this.props.orderDetail.id,
-                        vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
-                        callBack: this.updateOrdersTrans,
-                        maxLoanmny: this.props.financeInfo.max_loanmny  // 订单融资最大可贷额度
-                    }
-
-                });
+                // this.toNextPage({
+                //     name: 'SelectDestination',
+                //     component: SelectDestination,
+                //     params: {
+                //         orderId: this.props.orderDetail.id,
+                //         vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
+                //         callBack: this.updateOrdersTrans,
+                //         maxLoanmny: this.props.financeInfo.max_loanmny  // 订单融资最大可贷额度
+                //     }
+                //
+                // });
+                this.toPageXX(this.props.supervisetype)
             } else {
                 // 同城同市场
                 this.refs.chooseModal.changeShowType(true, '取消', '确定', '选择同城同市场需要风控人员后台审核确认，是否继续？',
@@ -103,6 +104,30 @@ export default class LogisticsModeForFinancing extends BaseComponent {
             this.props.showToast('请先设置借款金额');
         }
     };
+
+    toPageXX = (index) => {
+        if (index == 3) {//到库
+            this.logisticsType='3';
+            this.toStore='1'
+        }else {//到店
+            this.logisticsType='2';
+            this.toStore='0';
+        }
+        this.toNextPage({
+            name: 'FillWaybill',
+            component: FillWaybill,
+            params: {
+                toStore: this.toStore,
+                orderId: this.props.orderDetail.id,
+                vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
+                callBack: this.updateOrdersTrans,
+                maxLoanmny: this.props.financeInfo.max_loanmny,
+                logisticsType:this.logisticsType
+            }
+
+        });
+
+    }
 
     /**
      * 同城同市场
