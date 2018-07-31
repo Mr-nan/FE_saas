@@ -116,7 +116,7 @@ export default class LoanInfo extends BaseComponent {
                             });
                         }
                     }}>
-                    <View style={styles.inputBorder}>
+                    <View style={[styles.inputBorder,{}]}>
                         <Text allowFontScaling={false} style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                         }}>借款金额</Text>
@@ -229,6 +229,7 @@ const styles = StyleSheet.create({
         marginRight: Pixel.getPixel(15),
         height: Pixel.getPixel(40),
         flexDirection: 'row',
+        backgroundColor:'#F8F8F8'
     },
     inputStyle: {
         flex: 1,

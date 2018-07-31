@@ -50,7 +50,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
             <View style={styles.container}>
                 <NavigatorView title='确认借款额度' backIconClick={this.backPage} />
                 <ListView
-                    style={{marginTop:Pixel.getPixel(45),backgroundColor:'#f0eff5',paddingBottom:Pixel.getPixel(0),marginBottom:Pixel.getPixel(0)}}
+                    style={{marginTop:Pixel.getTitlePixel(64),backgroundColor:'#f0eff5',paddingBottom:Pixel.getPixel(0),marginBottom:Pixel.getPixel(0)}}
                     dataSource={this.state.dataSource}
                     renderHeader={this._renderHeader}
                     renderRow={this._renderRow}
@@ -81,11 +81,12 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
     renderListFooter = () => {
             return (<View>
                 <View style={styles.inputBar}>
-                    <View style={{flexDirection:'row',justifyContent:'center',paddingTop:Pixel.getPixel(20),paddingBottom:Pixel.getPixel(20)}}>
-                        <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(15),flex:1}}>{"最大可借额度"}</Text>
-                        <Text style={{color:'#FA5741',fontSize:Pixel.getFontPixel(15)}}>{this.state.maxLoanmny}</Text>
-                        <Text style={{color:'#FA5741',fontSize:Pixel.getFontPixel(14)}}>{'元'}</Text>
+                    <View style={{flexDirection:'row',justifyContent:'center',paddingTop:Pixel.getPixel(20),paddingBottom:Pixel.getPixel(20),alignItems:'center'}}>
+                        <Text style={{color:'#333333',fontSize:Pixel.getFontPixel(15),flex:1,padding:0}}>{"最大可借额度"}</Text>
+                        <Text style={{color:'#FA5741',fontSize:Pixel.getFontPixel(15),padding:0,fontWeight: "bold" }}>{this.state.maxLoanmny}</Text>
+                        <Text style={{color:'#FA5741',fontSize:Pixel.getFontPixel(14),padding:0}}>{'元'}</Text>
                     </View>
+                    <View style={{justifyContent:'center'}}>
                     <TextInput
                         ref='amountInput'
                         value={this.state.number}
@@ -95,6 +96,8 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                         clearButtonMode="always"
                         style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),borderWidth:Pixel.getPixel(1),borderColor:'#05C5C2',height:Pixel.getPixel(40)}}
                         placeholder='请输入金额'/>
+                        <Text style={{color:'#000000',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),position: 'absolute',right:Pixel.getPixel(8),marginTop:Pixel.getPixel(8)}}>{'元'}</Text>
+                    </View>
                 </View>
                 <View style={{backgroundColor:'#f0eff5',paddingTop:Pixel.getPixel(25)}}>
                     <TouchableOpacity
