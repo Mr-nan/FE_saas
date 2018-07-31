@@ -2272,6 +2272,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let transOrder = this.existTransOrder(this.ordersTrans);
             return (
                 <LogisticsModeForFinancing navigator={this.props.navigator}
+                                           buttonCU={this.applyLoanAmount}
                                            showModal={this.props.showModal}
                                            showToast={this.props.showToast}
                                            financeInfo={this.financeInfo}

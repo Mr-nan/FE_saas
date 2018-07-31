@@ -105,6 +105,8 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                             if (this.isNumberByHundred(this.number)) {
                                 if (this.number > this.state.maxLoanmny) {
                                     this.props.showToast("不能超过最大贷款额度");
+                                }else if(this.number < 30000){
+                                    this.props.showToast("最低需借款3万元");
                                 } else {
                                     this.checkPrice(this.number);
                                 }
