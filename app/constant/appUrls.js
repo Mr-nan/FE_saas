@@ -1364,6 +1364,10 @@ export const ORDER_GET_MERGE_WHITE_PO_STATUS = 'api/v3/account/get_merge_white_p
  */
 export const ADD_PLATFORM_ORDER_CAR = BASEURL + V + 'order_finance_car/add';
 /**
+ *  查询尾款支付状态
+ */
+export const ORDER_HOME_BALANCEPAYSTATUS = BASEURL + 'v2/order.home/balancePayStatus';
+/**
  *  融资订单贷款全额检查
  */
 export const ORDER_LOAN_AMOUNT_CHECK = BASEURL + V + 'order_finance/orderLoanAmountCheck';

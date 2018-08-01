@@ -764,30 +764,46 @@ export default class CheckStand extends BaseComponent {
                     let datas = JSON.parse(data.result);
                     let mergeId = datas.merge_id;
                     let maps = {
-                        //api: AppUrls.ADD_PLATFORM_ORDER_CAR,
-                        merge_id: mergeId,
-                        platform_car_id: this.props.carId,
-                        platform_order_number: this.props.orderNo,
-                        register_seller_user_id: this.props.sellerId
+                        company_id: datas.company_base_id,
+                        order_id: this.props.orderId,
                     };
-                    let url = AppUrls.ADD_PLATFORM_ORDER_CAR;
+                    let url = AppUrls.ORDER_HOME_BALANCEPAYSTATUS;
                     request(url, 'Post', maps).then((response) => {
                         if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                            if (response.mjson.data.status === 1) {
-                                this.props.showModal(false);
-                                this.toNextPage({
-                                    name: 'DDApplyLendScene',
-                                    component: DDApplyLendScene,
-                                    params: {
-                                        orderNo: this.props.orderNo,
-                                        orderId: this.props.orderId,
-                                        callBack: this.props.callBack,
-                                        sceneName: 'CheckStand'
+                            // if (response.mjson.data.status === 1) {
+                                let maps = {
+                                    merge_id: mergeId,
+                                    platform_car_id: this.props.carId,
+                                    platform_order_number: this.props.orderNo,
+                                    register_seller_user_id: this.props.sellerId
+                                };
+                                let url = AppUrls.ADD_PLATFORM_ORDER_CAR;
+                                request(url, 'Post', maps).then((response) => {
+                                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                                        if (response.mjson.data.status === 1) {
+                                            this.props.showModal(false);
+                                            this.toNextPage({
+                                                name: 'DDApplyLendScene',
+                                                component: DDApplyLendScene,
+                                                params: {
+                                                    orderNo: this.props.orderNo,
+                                                    orderId: this.props.orderId,
+                                                    callBack: this.props.callBack,
+                                                    sceneName: 'CheckStand'
+                                                }
+                                            });
+                                        } else {
+                                            this.props.showToast(response.mjson.msg);
+                                        }
+                                    } else {
+                                        this.props.showToast(response.mjson.msg);
                                     }
+                                }, (error) => {
+                                    this.props.showToast('添加订单融资车辆失败');
                                 });
-                            } else {
-                                this.props.showToast(response.mjson.msg);
-                            }
+                            // } else {
+                            //     this.props.showToast(response.mjson.msg);
+                            // }
                         } else {
                             this.props.showToast(response.mjson.msg);
                         }
