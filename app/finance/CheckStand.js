@@ -98,16 +98,16 @@ export default class CheckStand extends BaseComponent {
                 })
 
                 // 查看卖家是否在信托白名单
-                request(AppUrls.CAN_XINTUO, 'POST', {
-                    enter_base_id: this.props.seller_company_id,
-                    type: 0
-                }).then((response) => {
-                    this.is_seller_inWhite = true;
-                    this.loadContractList()
-
-                }, (error) => {
-                    console.log(error.msg)
-                })
+                // request(AppUrls.CAN_XINTUO, 'POST', {
+                //     enter_base_id: this.props.seller_company_id,
+                //     type: 0
+                // }).then((response) => {
+                //     this.is_seller_inWhite = true;
+                //     this.loadContractList()
+                //
+                // }, (error) => {
+                //     console.log(error.msg)
+                // })
 
 
                 this.isDoneCredit = datas.is_done_credit;
@@ -334,7 +334,12 @@ export default class CheckStand extends BaseComponent {
                     let url = AppUrls.FINANCE;
                     request(url, 'post', maps).then((response) => {
                         if (response.mjson.code === 1) {
-                            this.isShowFinancing = 1;
+                            if(response.mjson.data.data.response.minpaymentloanlimtflags == '1' &&
+                                response.mjson.data.code == '0'){
+                                this.isShowFinancing = 1;
+                            }else{
+                                this.isShowFinancing = 0;
+                            }
                             this.setState({
                                 isRefreshing: false,
                                 renderPlaceholderOnly: 'success',
