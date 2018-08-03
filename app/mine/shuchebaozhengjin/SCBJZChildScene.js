@@ -199,8 +199,13 @@ export default class SCBJZChildScene extends BaseComponent {
                                    }
                                }
                            }}>
-                           <Text allowFontScaling={false}  style={{color: '#ffffff',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
-                               {this.getStatusStr(this.props.status,rowData.status)}</Text>
+                           {
+                               rowData.status == 4 ?
+                                   <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
+                                       {this.getStatusStr(this.props.status,rowData.status)}</Text>:
+                                   <Text allowFontScaling={false}  style={{color: '#ffffff',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
+                                       {this.getStatusStr(this.props.status,rowData.status)}</Text>
+                           }
                        </TouchableOpacity>
                     }
                 </View>
@@ -227,7 +232,7 @@ export default class SCBJZChildScene extends BaseComponent {
             }else if(state == 3){
                 tempTitle = ['处理失败']
             }else if(state == 4){
-                tempTitle = ['订单已取消']
+                tempTitle = ['已取消']
             }
         }
         return tempTitle;
@@ -286,13 +291,12 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     buttonCancel: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: Pixel.getPixel(15),
-        height: Pixel.getPixel(32),
-        width: Pixel.getPixel(100),
-        borderRadius: Pixel.getPixel(2),
-        borderWidth: Pixel.getPixel(1),
-        borderColor: fontAndColor.COLORA2
+        height: Pixel.getPixel(25),
+        width: Pixel.getPixel(73),
+        borderRadius: Pixel.getPixel(1),
+        justifyContent:'center',
+        alignItems:'center',
+        borderWidth:Pixel.getPixel(1),
+        borderColor:fontAndColor.COLORA2
     },
 });
