@@ -168,7 +168,7 @@ export default class SCBJZChildScene extends BaseComponent {
                     {
                        this.props.page == '未支付' &&
                        <TouchableOpacity
-                           style={styles.buttonStyle}
+                           style={rowData.status == 4 ? styles.buttonCancel:styles.buttonStyle}
                            onPress={() => {
                                if(this.props.status != 3){
                                    this.toNextPage({
@@ -227,7 +227,7 @@ export default class SCBJZChildScene extends BaseComponent {
             }else if(state == 3){
                 tempTitle = ['处理失败']
             }else if(state == 4){
-                tempTitle = ['订单取消']
+                tempTitle = ['订单已取消']
             }
         }
         return tempTitle;
@@ -284,5 +284,15 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORB0,
         justifyContent:'center',
         alignItems:'center',
-    }
+    },
+    buttonCancel: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: Pixel.getPixel(15),
+        height: Pixel.getPixel(32),
+        width: Pixel.getPixel(100),
+        borderRadius: Pixel.getPixel(2),
+        borderWidth: Pixel.getPixel(1),
+        borderColor: fontAndColor.COLORA2
+    },
 });
