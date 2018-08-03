@@ -29,7 +29,7 @@ class SelectLoanAmount extends Component {
                         <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(12),marginTop:Pixel.getPixel(3)}}>{rowData.supervision_msg}</Text>
                     </View>
                         {
-                            selectID == rowData.merge_id +rowData.supervision_code?
+                            selectID == rowData.merge_id + rowData.supervision_code + rowData.credit_record_id ?
                                 <Image style={{width:Pixel.getPixel(20),height:Pixel.getPixel(20)}} source={require('../../../images/mainImage/agreed_sign.png')}/> :
                                 <Image style={{width:Pixel.getPixel(20),height:Pixel.getPixel(20)}} source={require('../../../images/mainImage/un_agreed_sign.png')}/>
                         }

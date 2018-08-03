@@ -143,7 +143,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         return (<SelectLoanAmount rowData={rowData} selectID={this.state.selectID }
                                   selectIdB={(id,credit_record_id,supervision_code)=>{
-                                      this.setState({selectID: id +supervision_code});
+                                      this.setState({selectID: id +supervision_code + credit_record_id});
                                       this.credit_id = credit_record_id;
                                       this.supervise_type = supervision_code;
                                       this.orderPaymentMaxLoanmny()
