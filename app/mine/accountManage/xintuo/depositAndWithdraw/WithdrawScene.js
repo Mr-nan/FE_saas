@@ -84,7 +84,7 @@ export default class WithdrawScene extends ZSBaseComponent {
 
                 for (let i = 0; i < this.contractList.length; i++) {
 
-                    if (this.contractList[i].name==='信托利益分配申请' ){
+                    if (this.contractList[i].name==='提款权变更' ){
                         this.contract.push(<Text
                             key={i + 'contractList'}
                             allowFontScaling={false}

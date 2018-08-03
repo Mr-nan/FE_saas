@@ -11,19 +11,18 @@ import {
     InteractionManager,
     TouchableWithoutFeedback
 } from "react-native";
-import BaseComponent from "../../../component/BaseComponent";
-import NavigationBar from "../../../component/NavigationBar";
-import * as FontAndColor from "../../../constant/fontAndColor";
-import PixelUtil from "../../../utils/PixelUtil";
-import MyButton from "../../../component/MyButton";
-import {request} from "../../../utils/RequestUtil";
-import * as AppUrls from "../../../constant/appUrls";
+import BaseComponent from "../component/BaseComponent";
+import NavigationBar from "../component/NavigationBar";
+import * as FontAndColor from "../constant/fontAndColor";
+import PixelUtil from "../utils/PixelUtil";
+import MyButton from "../component/MyButton";
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
 import md5 from "react-native-md5";
-import StorageUtil from "../../../utils/StorageUtil";
-import * as StorageKeyNames from "../../../constant/storageKeyNames";
-import SaasText from "./component/SaasText";
-import ZSBaseComponent from  './component/ZSBaseComponent'
-
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
+import SaasText from "../mine/accountManage/zheshangAccount/component/SaasText";
+import ZSBaseComponent from  '../mine/accountManage/zheshangAccount/component/ZSBaseComponent'
 
 
 let Dimensions = require('Dimensions');
@@ -47,7 +46,7 @@ let Platform = require('Platform');
 //    3：提交资料 （开通企业账户ONLY）
 
 
-export default class ResultIndicativeScene extends ZSBaseComponent {
+export default class SuishoujiIndicativeScene extends ZSBaseComponent {
 
     constructor(props) {
         super(props)
@@ -61,14 +60,11 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
 
 
     backPage=()=>{
-        if (this.state.status == 1){
-            this.buttonAction()
-        }else {
-            const navigator = this.props.navigator;
-            if (navigator) {
-                navigator.pop();
-            }
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.pop();
         }
+
     }
 
     initFinish() {
@@ -83,13 +79,13 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
 
         let navi_title = '';
         if (this.state.type === 0) {
-            navi_title = '开通1车粮票';
+            navi_title = '个人开户';
         } else if (this.state.type === 1) {
-            navi_title = '开通1车粮票'
+            navi_title = '广发银行开户'
         } else if (this.state.type === 2) {
             navi_title = '充值'
         } else if (this.state.type === 3) {
-            navi_title = '粮票提现'
+            navi_title = '提现'
         } else if (this.state.type === 4) {
             navi_title = '更换银行卡'
         } else if (this.state.type === 5) {
@@ -166,29 +162,21 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                     }} source={this.image()}/>
                     <Text allowFontScaling={false} style={{fontSize: 20, marginBottom: 10}}>{this.tips()}</Text>
                     {this.renderAnnotation()}
-
-                    {
-                        this.state.type !== 3?
-                            <MyButton
-                                buttonType={MyButton.TEXTBUTTON}
-                                content={this.buttonTitle()}
-                                parentStyle={{
-                                    backgroundColor: FontAndColor.COLORB0,
-                                    borderRadius: 3,
-                                    marginTop: 25,
-                                    height: 35,
-                                    width: 100,
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}
-                                childStyle={{color: 'white', fontSize: 16}}
-                                mOnPress={this.buttonAction}
-                            />
-
-                            :null
-
-                    }
-
+                    {/*<MyButton*/}
+                        {/*buttonType={MyButton.TEXTBUTTON}*/}
+                        {/*content={this.buttonTitle()}*/}
+                        {/*parentStyle={{*/}
+                            {/*backgroundColor: FontAndColor.COLORB0,*/}
+                            {/*borderRadius: 3,*/}
+                            {/*marginTop: 25,*/}
+                            {/*height: 35,*/}
+                            {/*width: 100,*/}
+                            {/*alignItems: 'center',*/}
+                            {/*justifyContent: 'center'*/}
+                        {/*}}*/}
+                        {/*childStyle={{color: 'white', fontSize: 16}}*/}
+                        {/*mOnPress={this.buttonAction}*/}
+                    {/*/>*/}
                 </View>
                 {this.renderFooter()}
                 {this.out_of_service()}
@@ -215,37 +203,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
     buttonAction = () => {
 
         switch (this.state.type) {
-            case 0: {
-
-                switch (this.state.status) {
-                    case 0: {
-                        this.refresh()
-                    }
-                        break;
-                    case 1: {
-
-                        InteractionManager.runAfterInteractions(() => {
-                            this.props.callBack()
-
-                        });
-                        this.backN(1)  //开户成功跳卡片页
-                        this.props.callBack()
-                    }
-                        break;
-                    case 2: {
-                        this.backN(1)  //开户失败跳选择开户类型页
-
-                    }
-                        break;
-                    case 3: {
-                        this.backN(1)  //提交资料成功跳卡片页
-                    }
-                        break
-                }
-
-            }
-
-                break
+            case 0:
             case 1: {
                 switch (this.state.status) {
                     case 0: {
@@ -258,17 +216,15 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                         this.props.callBack()
 
                         });
-                        this.backN(3)  //开户成功跳卡片页
-                        this.props.callBack()
+                        this.backN(4)  //开户成功跳卡片页
                     }
                         break;
                     case 2: {
-                        this.backN(1)  //开户失败跳选择开户类型页
-
+                        this.backN(3)  //开户失败跳选择开户类型页
                     }
                         break;
                     case 3: {
-                        this.backN(3)  //提交资料成功跳卡片页
+                        this.backN(4)  //提交资料成功跳卡片页
                     }
                         break
                 }
@@ -314,9 +270,35 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
 
                 }
             }
-                break;
+                break
+            case 5: { //更换手机号
+                switch (this.state.status) {
+                    case 0: {
+                        this.refresh()
+                    }
+                        break
+                    case 1: {
+                        if (this.props.dose_need_old_number_sms_code === false) {
+                            this.props.callBack()
+                            this.backN(2)
+                        } else {
+                            this.props.callBack()
+                            this.backN(3)
+                        }
+                    }
+                        break
+                    case 2: {
+                        if (this.props.dose_need_old_number_sms_code === false) {
+                            this.backN(1)
+                        } else {
+                            this.backN(2)
 
+                        }
+                    }
+                        break
 
+                }
+            }
         }
 
     }
@@ -328,9 +310,8 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                 let datas = JSON.parse(data.result);
                 let maps = {
                     enter_base_id: datas.company_base_id,
-                    bank_id: 'zsyxt',
-                    serial_no: typeof this.props.error.data.serial_no === 'undefined' || this.props.error.data.serial_no === null ?'':this.props.error.data.serial_no,
-                    operate_type: this.state.type === 0||this.state.type === 1 ?'99':""
+                    bank_id: 316,
+                    serial_no: this.props.error.data.serial_no,
                 };
 
                 this.setState({
@@ -377,13 +358,13 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
             case 1: {
                 switch (this.state.status) {
                     case 0: {
-                        return '处理中'
+                        return this.props.msg;   //'开户审核中'
                     }
                     case 1: {
-                        return '恭喜您开通成功'
+                        return '恭喜您开户成功'
                     }
                     case 2: {
-                        return '1车粮票开通未成功'
+                        return '开户未成功'
                     }
                     case 3: {
                         return '提交资料成功'
@@ -408,7 +389,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
             case 3: {
                 switch (this.state.status) {
                     case 0: {
-                        return '提现申请受理成功'
+                        return '提现处理中'
                     }
                     case 1: {
                         return '提现成功'
@@ -429,7 +410,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                         return '恭喜您更换成功'
                     }
                     case 2: {
-                        return '您的银行卡更换失败'
+                        return '银行卡更换失败'
                     }
 
                 }
@@ -444,7 +425,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                         return '手机号码修改成功'
                     }
                     case 2: {
-                        return '您的手机号修改失败'
+                        return '手机号修改失败'
                     }
 
                 }
@@ -459,14 +440,16 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
                 return null;
             } else if (this.state.status === 1) {
 
-                let bank_no = '';
+                let bank_no = this.props.params.acct_no.substr(this.props.params.acct_no.length - 4, 4);
                 let bank_name = this.props.append;
                 return <View style={{alignItems: 'center'}}>
                     <Text allowFontScaling={false}
-                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已成功开1车粮票</Text>
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5}}>您已成功开通浙商银行账户啦</Text>
+                    <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}> 并已经绑定{bank_name}（尾号{bank_no}）的银行卡</Text>
                 </View>
             } else if (this.state.status === 2) {
                 return <View style={{alignItems: 'center'}}>
+
                     <SaasText style={{
                         color: FontAndColor.COLORA1,
                         marginBottom: 5,
@@ -529,40 +512,40 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
         if (this.state.type === 0 || this.state.type === 1 || this.state.type === 4) { // 个人开户、企业开户、更换银行卡
             switch (this.state.status) {
                 case 0: {
-                    return require('../../../../images/account/processing.png')
+                    return require('../../images/account/processing.png')
                 }
                 case 1: {
-                    return require('../../../../images/account/open_account_success.png')
+                    return require('../../images/account/open_account_success.png')
                 }
                 case 2: {
-                    return require('../../../../images/account/open_account_failure.png')
+                    return require('../../images/account/open_account_failure.png')
                 }
                 case 3: {
-                    return require('../../../../images/account/commit_success.png')
+                    return require('../../images/account/commit_success.png')
                 }
             }
         } else if (this.state.type === 2 || this.state.type === 3) { // 提现、充值
             switch (this.state.status) {
                 case 0: {
-                    return require('../../../../images/account/processing.png')
+                    return require('../../images/account/processing.png')
                 }
                 case 1: {
-                    return require('../../../../images/account/withdraw_success.png')
+                    return require('../../images/account/withdraw_success.png')
                 }
                 case 2: {
-                    return require('../../../../images/account/withdraw_failure.png')
+                    return require('../../images/account/withdraw_failure.png')
                 }
             }
         } else if (this.state.type === 5) {  //修改手机号
             switch (this.state.status) {
                 case 0: {
-                    return require('../../../../images/account/processing.png')
+                    return require('../../images/account/processing.png')
                 }
                 case 1: {
-                    return require('../../../../images/account/mobile_success.png')
+                    return require('../../images/account/mobile_success.png')
                 }
                 case 2: {
-                    return require('../../../../images/account/mobile_fail.png')
+                    return require('../../images/account/mobile_fail.png')
                 }
             }
 
@@ -574,6 +557,7 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
         switch (this.state.type) {
             case 0: {  // 个人开户
                 return <View style={{alignItems: 'center', marginBottom: 35, marginTop: 150}}>
+                    <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}>温馨提示：此账户暂时仅支持SP业务</Text>
                 </View>
 
             }
@@ -600,15 +584,17 @@ export default class ResultIndicativeScene extends ZSBaseComponent {
             } break;
             case 3: {  //提现
 
-                return <View style={{marginHorizontal: 30, height: 180, alignItems:'center'}}>
+                return <View style={{marginHorizontal: 30, height: 180}}>
                     <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
                         <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginRight: 15}}/>
                         <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1}}>温馨提示</Text>
                         <View style={{height: 1, backgroundColor: FontAndColor.COLORA4, flex: 1, marginLeft: 15}}/>
                     </View>
                     <Text allowFontScaling={false}
-                          multiline={true}
-                          style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>提现到个人用户5W以下预计2小时内到账提现到个人用户5W以上或公司用户到账时间以银行受理时间为准。</Text>
+                          style={{color: FontAndColor.COLORA1, marginBottom: 5, lineHeight: 20}}>1  个人7*24小时，实时到账。</Text>
+
+                    <Text allowFontScaling={false} style={{color: FontAndColor.COLORA1, lineHeight: 20}}>{"2  企业工作日 9:00-16:30实时到账，其他时间单笔  <=5w 实时到账"}</Text>
+
                 </View>
             }
                 break;

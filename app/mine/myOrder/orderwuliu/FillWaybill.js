@@ -61,13 +61,23 @@ export default class FillWaybill extends BaseComponent {
         this.fromSingle = false;//来自地址管理
         this.totalMoney = 0;
         this.store_amount = 0;
-        this.transTypeTags = [{
-            name: '平台上门取车',
-            check: true,
-        }, {
-            name: '客户送车到网点',
-            check: false,
-        }]
+
+
+        if(this.props.orderDetail.is_finance == 1){
+            this.transTypeTags = [{
+                name: '平台上门取车',
+                check: true,
+            }]
+        }else {
+            this.transTypeTags = [{
+                name: '平台上门取车',
+                check: true,
+            }, {
+                name: '客户送车到网点',
+                check: false,
+            }]
+        }
+
         if (this.toStore == '2') {
             this.title = '填写运单（到店）';
         } else if (this.toStore == '3') {//到库
@@ -284,7 +294,7 @@ export default class FillWaybill extends BaseComponent {
             if(this.sendType!==-1){
                 maps['send_type']=this.sendType;
             }else {
-                maps['send_type']='1';
+                maps['send_type']=0;
             }
         }
         this.props.showModal(true);
@@ -580,7 +590,7 @@ export default class FillWaybill extends BaseComponent {
                                 <Text style={{
                                     color: 'white',
                                     fontSize: Pixel.getPixel(15)
-                                }}> {this.state.collectAddress}</Text>
+                                }}> {this.state.collectAddress?this.state.collectAddress:"请选择"}</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

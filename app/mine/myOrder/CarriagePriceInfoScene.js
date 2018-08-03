@@ -45,13 +45,18 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
     constructor(props) {
         super(props);
+
+        this.flag_1 = false;
+        this.flag_2 = false;
+
+
         // 初始状态
         this.state = {
             renderPlaceholderOnly: "loading",
             isShowCallUpView: false,
             senderInfo: null,
             receiverInfo: null,
-            isChecked: true,
+            isChecked: false,
             payShow:false
         }
 
@@ -170,8 +175,21 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
                         <AddressInfoItemView
                             deliverModeClick={(mode) => {
-                                this.params.receive_type = mode
-                                console.log(this.params.receive_type)
+
+                                if(mode === 2){
+                                    if(this.params.startGpsLatitude == 0){
+                                        this.props.showToast('请选择始发地详细地址')
+                                        return false;
+                                    }else {
+                                        this.params.receive_type = mode;
+                                        this.loadData();
+                                        return true;
+                                    }
+                                }else {
+                                    this.params.receive_type = mode;
+                                    this.loadData();
+                                    return true;
+                                }
 
                             }}
                             contactInformationClickCallBack={() => {
@@ -194,7 +212,8 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
                         <AddressInfoItemView
                             deliverModeClick={(mode) => {
-                                this.props.showToast('该功能正在开发中...')
+                                 this.props.showToast('该功能正在开发中...')
+                                return false
 
                                 // this.params.send_type = mode;
                                 // console.log(this.params.send_type)
@@ -611,15 +630,13 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
         this.params.invoice_data = this.stringify(this.params.invoice_data);
         this.params.model_data = this.stringify(this.params.model_data);
-
+        let data;
         Net.request(AppUrls.ORDER_LOGISTICS_QUERY, 'post', this.params).then((response) => {
             this.props.showModal(false);
-            let data = response.mjson.data;
-            this.setState({
-                renderPlaceholderOnly: 'success',
-                priceData: data
-            });
+            data = response.mjson.data;
 
+            this.flag_1 = true;
+            this.renderUI(data)
         }, (error) => {
             this.props.showModal(false);
             this.setState({
@@ -630,21 +647,30 @@ export default class CarriagePriceInfoScene extends BaseComponent {
 
         });
 
+        if(typeof this.logistics_contract === 'undefined'){
 
-        Net.request(AppUrls.AGREEMENT_LISTS, 'post', {source_type:5, fund_channel:'物流'}).then((response) => {
+            Net.request(AppUrls.AGREEMENT_LISTS, 'post', {source_type:5, fund_channel:'物流'}).then((response) => {
+                if (response.mjson.code ==1){
+                    this.flag_2 = true;
+                    this.logistics_contract = response.mjson.data.list[0];
+                    this.renderUI(data)
+                }
 
-            if (response.mjson.code ==1){
+            }, (error) => {
 
-                this.logistics_contract = response.mjson.data.list[0];
-            }
+                this.props.showToast(error.mjson.msg);
 
-        }, (error) => {
+            });
+        }
+    }
 
-            this.props.showToast(error.mjson.msg);
-
-        });
-
-
+    renderUI = (data) => {
+        if (this.flag_1 && this.flag_2) {
+            this.setState({
+                renderPlaceholderOnly: 'success',
+                priceData: data
+            });
+        }
     }
 
     preserveOrder = (type) => {
@@ -890,15 +916,29 @@ class AddressInfoItemView extends Component {
                         clickCallBack={(status) => {
 
                             if (this.props.switchable) {
-                                this.setState({
-                                    deliverMode: this.props.type === 1 ? 2 : 1
-                                }, () => {
-                                    this.props.deliverModeClick(this.state.deliverMode)
+
+                                let oldMode = this.state.deliverMode;
+                                this.state.deliverMode = this.props.type === 1 ? 2 : 1
+
+                                if(this.props.deliverModeClick(this.state.deliverMode)){
                                     return true;
-                                })
+                                }else {
+                                     this.state.deliverMode = oldMode;
+                                    return false;
+                                }
+                                // return this.props.deliverModeClick(this.state.deliverMode)
+                                //
+                                //
+                                //
+                                // this.setState({
+                                //
+                                // }, () => {
+                                //     return this.props.deliverModeClick(this.state.deliverMode)
+                                //
+                                // })
                             } else {
-                                this.props.deliverModeClick()
-                                return false;
+                               return this.props.deliverModeClick();
+
                             }
                         }}
                     />
@@ -907,15 +947,21 @@ class AddressInfoItemView extends Component {
                         status={this.props.type === 1 ? this.state.deliverMode === 1 ? true : false : this.state.deliverMode === 1 ? false : true}
                         clickCallBack={(status) => {
                             if (this.props.switchable) {
-                                this.setState({
-                                    deliverMode: this.props.type === 1 ? 1 : 2
-                                }, () => {
-                                    this.props.deliverModeClick(this.state.deliverMode)
+
+                                let oldMode = this.state.deliverMode;
+
+                                this.state.deliverMode = this.props.type === 1 ? 1 : 2;
+
+
+                                if(this.props.deliverModeClick(this.state.deliverMode)){
                                     return true;
-                                })
+                                }else {
+                                    this.state.deliverMode = oldMode;
+                                    return false;
+                                }
+
                             } else {
-                                this.props.deliverModeClick()
-                                return false;
+                               return this.props.deliverModeClick()
                             }
 
                         }}
@@ -1293,14 +1339,14 @@ class DeliverTypeItem extends Component {
             <TouchableOpacity
                 onPress={() => {
                     if (this.state.isChecked === true) {
-                        return
-                    }
+                        return;
+                    }else if (this.props.clickCallBack(false)) {
 
-                    if (this.props.clickCallBack(this.state.isChecked)) {
                         this.setState({
                             isChecked: !this.state.isChecked
                         })
                     }
+
                 }}
             >
                 <Image style={{width: Pixel.getPixel(18), height: Pixel.getPixel(18)}}
@@ -1531,14 +1577,14 @@ class PriceItemView extends Component {
                 <View style={{marginTop: Pixel.getPixel(10), flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{
                         color: fontAndColor.COLORA0,
-                        fontSize: 16,
+                        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
                         fontWeight: '200'
                     }}>{value}</Text>
                     <Text style={{
                         color: fontAndColor.COLORA0,
-                        fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
+                        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
                         fontWeight: '200'
-                    }}>{value === '平台赠送' ? '' : '元'}</Text>
+                    }}>{value === '平台赠送' || value === '减免' ? '' : '元'}</Text>
                 </View>
             </View>
         )

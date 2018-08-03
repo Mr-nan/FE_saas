@@ -27,7 +27,7 @@ import ImagePageView from 'react-native-viewpager'
 import AmountConfirm from './AmountConfirm';
 import CGDCarDetailScenes from './CGDCarDetailScenes'
 import PurchaseLoanStatusScene from './PurchaseLoanStatusScene'
-import {LendSuccessAlert, ModalAlert} from './component/ModelComponent'
+import {LendSuccessAlert, ModalAlert,MMSModalAlert} from './component/ModelComponent'
 let ControlState = [];
 let loan_code;
 import ContractInfoScene from './ContractInfoScene';
@@ -126,9 +126,10 @@ export default class CGDDetailSence extends BaseComponent {
         }
         this.toNextPage(navigatorParams);
     }
-    canclelend = () => {
-
+    canclelend = (imgSid,code) => {
         let maps = {
+            img_sid : imgSid,
+            img_code : code,
             api: apis.CANCEL_LOAN,
             loan_code: this.props.loanNumber
         };
@@ -374,13 +375,19 @@ export default class CGDDetailSence extends BaseComponent {
 
                 <ModalAlert ref={(deleteCar)=>{this.cancle=deleteCar}} title='取消借款' subtitle='您确定要取消借款' confimClick={(setHide)=>{
                     setHide(false);
-                    this.canclelend();
+                    this.MMScanleAlert.setModelVisible(true);
                 }} cancleClick={(setHide)=>{setHide(false)}}/>
                 <LendSuccessAlert title="取消成功" subtitle='恭喜您取消成功' ref={(success)=>{this.cancleSuccess=success}}
                                   confimClick={()=>{
                       this.props.backRefresh();
                       this.backToTop()
                 }}/>
+                <MMSModalAlert ref={(cancle)=>{this.MMScanleAlert = cancle}}
+                               confimClick={(setModelVis,imgSid,code)=>{
+                                   setModelVis(false);
+                                   this.canclelend(imgSid,code)
+                               }}
+                               cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
             </View>
         )
     }

@@ -663,6 +663,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             component: FillWaybill,
                             params: {
                                 orderId: this.orderDetail.id,
+                                orderDetail:this.orderDetail,
                                 logisticsType: 4,
                                 vType: this.orderDetail.orders_item_data[0].car_data.v_type,
                                 callBack: this.payCallBack,
@@ -1342,7 +1343,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.bottomState = 4;
                 }
                 break;
-            case 2: // 待付订金  2=>'订单定价完成'
+            case 2: {// 待付订金  2=>'订单定价完成'
+                this.applyLoanAmount = '请输入申请贷款金额';
+            }
             case 3: // 3=>'订金支付中'
             case 4:  // 4=>'订金支付失败'
                 if (this.orderDetail.set_deposit_amount == 0) {

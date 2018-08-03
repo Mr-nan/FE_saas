@@ -165,6 +165,7 @@ export default class LogisticsMode1 extends BaseComponent {
                                     component: FillWaybill,
                                     params: {
                                         orderId: this.props.orderDetail.id,
+                                        orderDetail:this.props.orderDetail,
                                         logisticsType: this.logisticsTypeRouting(this.props.orderState),
                                         //transId: this.props.orderDetail.orders_item_data[0].trans_id,
                                         vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
@@ -178,6 +179,7 @@ export default class LogisticsMode1 extends BaseComponent {
                                     component: CheckWaybill,
                                     params: {
                                         orderId: this.props.orderDetail.id,
+                                        orderDetail:this.props.orderDetail,
                                         transId: this.props.orderDetail.orders_trans[0].id,
                                     }
 

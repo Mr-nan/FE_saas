@@ -301,7 +301,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
                         height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                         paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                     }}>
-                        <Text >运单信息</Text>
+                        <Text >运单信息----</Text>
                         <View style={{flex: 1}}/>
                         <Text style={{color: fontAndColor.COLORB0}}>{alreadyChoose.waybillState}</Text>
                         <Image source={require('../../../../images/mainImage/celljiantou.png')}/>

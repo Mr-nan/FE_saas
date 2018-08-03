@@ -362,7 +362,6 @@
 			remoteInfo = RNImagePicker;
 		};
 		EA444C9A2074CF39008D6C09 /* PBXContainerItemProxy */ = {
-
 			isa = PBXContainerItemProxy;
 			containerPortal = A08B9B7AF08C41A082FB247D /* RCTWeChat.xcodeproj */;
 			proxyType = 2;
@@ -370,7 +369,6 @@
 			remoteInfo = RCTWeChatTests;
 		};
 		EA444CA72074CF39008D6C09 /* PBXContainerItemProxy */ = {
-
 			isa = PBXContainerItemProxy;
 			containerPortal = F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */;
 			proxyType = 2;
@@ -814,7 +812,6 @@
 			children = (
 				7D769F0F1E6572180039526C /* libRNSpinkit.a */,
 				EA444CA82074CF39008D6C09 /* libRNSpinkit.a */,
-
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1038,7 +1035,6 @@
 			children = (
 				E3B816F81E613DD400279287 /* libRCTWeChat.a */,
 				EA444C9B2074CF39008D6C09 /* RCTWeChatTests.xctest */,
-
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1142,7 +1138,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 8RXU2MG5MH;
+						DevelopmentTeam = 3BH2YRLSPK;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -1498,7 +1494,6 @@
 			fileType = archive.ar;
 			path = libRNSpinkit.a;
 			remoteRef = EA444CA72074CF39008D6C09 /* PBXContainerItemProxy */;
-
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		EE822B071F5D57D000E4249A /* libRCTCameraRoll.a */ = {
@@ -1748,7 +1743,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 8RXU2MG5MH;
+				DEVELOPMENT_TEAM = 3BH2YRLSPK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1786,7 +1781,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1805,7 +1800,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8RXU2MG5MH;
+				DEVELOPMENT_TEAM = 3BH2YRLSPK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1843,7 +1838,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1899,7 +1894,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8RXU2MG5MH;
+				DEVELOPMENT_TEAM = 3BH2YRLSPK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1937,7 +1932,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
