@@ -105,9 +105,9 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                         onChangeText={this.setNumber}
                         keyboardType='numeric'
                         clearButtonMode="always"
-                        style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),borderWidth:Pixel.getPixel(1),borderColor:'#05C5C2',height:Pixel.getPixel(40)}}
+                        style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),borderWidth:Pixel.getPixel(1),borderColor:'#05C5C2',height:Pixel.getPixel(40),paddingLeft:Pixel.getPixel(5)}}
                         placeholder='请输入金额'/>
-                        <Text style={{color:'#000000',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),position: 'absolute',right:Pixel.getPixel(8),marginTop:Pixel.getPixel(8)}}>{'元'}</Text>
+                        <Text style={{color:'#000000',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),position: 'absolute',right:Pixel.getPixel(8),marginTop:Pixel.getPixel(10)}}>{'元'}</Text>
                     </View>
                 </View>
                 <View style={{backgroundColor:'#f0eff5',paddingTop:Pixel.getPixel(25)}}>
