@@ -63,12 +63,12 @@ export default class FillWaybill extends BaseComponent {
         this.store_amount = 0;
 
 
-        if(this.props.orderDetail.is_finance == 1){
-            this.transTypeTags = [{
-                name: '平台上门取车',
-                check: true,
-            }]
-        }else {
+        // if(this.props.orderDetail.is_finance == 1){
+        //     this.transTypeTags = [{
+        //         name: '平台上门取车',
+        //         check: true,
+        //     }]
+        // }else {
             this.transTypeTags = [{
                 name: '平台上门取车',
                 check: true,
@@ -76,7 +76,7 @@ export default class FillWaybill extends BaseComponent {
                 name: '客户送车到网点',
                 check: false,
             }]
-        }
+        // }
 
         if (this.toStore == '2') {
             this.title = '填写运单（到店）';

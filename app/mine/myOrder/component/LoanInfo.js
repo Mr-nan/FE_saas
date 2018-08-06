@@ -171,8 +171,8 @@ export default class LoanInfo extends BaseComponent {
      *
      *
      **/
-    refreshLoanInfo = (newLoanInfo,credit_record_id) => {
-        this.props.refreshLoanInfo(newLoanInfo,credit_record_id);
+    refreshLoanInfo = (newLoanInfo,credit_record_id,supervision_code) => {
+        this.props.refreshLoanInfo(newLoanInfo,credit_record_id,supervision_code);
         //this.props.updateLoanAmount(newLoanInfo.loan_amount);
         newLoanInfo.loan_code = newLoanInfo.finance_no;
         this.setState({

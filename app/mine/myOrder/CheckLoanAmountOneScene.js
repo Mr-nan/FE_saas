@@ -280,7 +280,7 @@ export default class CheckLoanAmountOneScene extends BaseComponent {
                     this.props.updateAmount(this.number);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.showModal(false);
-                        this.props.refreshLoanInfo(response.mjson.data,this.credit_id);
+                        this.props.refreshLoanInfo(response.mjson.data,this.credit_id, this.supervise_type);
                         this.backPage();
                     } else {
                         this.props.showToast(response.mjson.msg);
