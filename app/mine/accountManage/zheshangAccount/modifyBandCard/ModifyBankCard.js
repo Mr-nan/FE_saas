@@ -354,7 +354,8 @@ export default class ModifyBankCard extends ZSBaseComponent {
                     from_bank_id: bank_no,
                     mobile_no: mobile_no,
                     sub_acct_no: this.props.account.sub_acc_no,
-                    type: 2  //2变更结算账号或客户信息，
+                    type: 2,  //2变更结算账号或客户信息，
+                    customer_type:'B'
                 }
 
                 request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {

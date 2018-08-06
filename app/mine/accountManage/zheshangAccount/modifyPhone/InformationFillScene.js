@@ -173,7 +173,8 @@ export default class InformationFillScene extends ZSBaseComponent {
                     enter_base_id: result.company_base_id,
                     mobile_no: mobile_no,
                     sub_acct_no: this.props.account.bank_card_no,
-                    type: 2
+                    type: 2,
+                    customer_type:'B'
                 }
 
                 request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {
