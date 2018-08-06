@@ -71,7 +71,7 @@ export default class LogisticsModeForFinancing extends BaseComponent {
          });
          this.tagSelect[index].check = !this.tagSelect[index].check;
          this.tagRef.refreshData(this.tagSelect);*/
-        if(this.props.buttonCU !='待设置借款金额'){
+        if(this.props.buttonCU !='0'){
             if (index === 0) {
                 // 使用物流  跳转到选择目的地页
                 // this.toNextPage({

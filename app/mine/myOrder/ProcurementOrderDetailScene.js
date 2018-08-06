@@ -2282,7 +2282,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             return (
                 <LogisticsModeForFinancing navigator={this.props.navigator}
                                            supervisetype={this.supervise_type}
-                                           buttonCU={this.applyLoanAmount}
+                                           buttonCU={this.credit_record_id}
                                            showModal={this.props.showModal}
                                            showToast={this.props.showToast}
                                            financeInfo={this.financeInfo}
