@@ -1344,7 +1344,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 2: {// 待付订金  2=>'订单定价完成'
-                this.applyLoanAmount = '请输入申请贷款金额';
+                this.applyLoanAmount = '待设置借款金额';
             }
             case 3: // 3=>'订金支付中'
             case 4:  // 4=>'订金支付失败'
