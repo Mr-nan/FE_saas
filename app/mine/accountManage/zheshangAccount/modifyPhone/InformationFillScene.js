@@ -234,6 +234,7 @@ export default class InformationFillScene extends ZSBaseComponent {
                         new_sms_no:sms_no,
                         sub_acct_no:this.props.account.bank_card_no,
                         enter_base_id: result.company_base_id,
+                        customer_type:'B',
                     }
 
 
