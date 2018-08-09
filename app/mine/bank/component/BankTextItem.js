@@ -24,13 +24,13 @@ export  default class BankTextItem extends PureComponent {
         super(props);
         this.consList = [];
         if(this.props.xintuo){
-            this.consList = [{name:'《机动车车辆买卖合同协议》',value:''},
+            this.consList = [{name:'《机动车车辆买卖合同协议》',value:'http://dms.dycd.com/Uploads/agreement/jidongcheliangmaimaihetonglinshi_v1.0.html'},
                 {name:'、',value:''},
-                {name:'《机动车车辆买卖合同补充协议》',value:''},
+                {name:'《机动车车辆买卖合同补充协议》',value:'http://dms.dycd.com/Uploads/agreement/jidongchemaimaihetongbuchongxieyi_v1.0.html'},
                 {name:'和',value:''},
-                {name:'《信托利益分配申请及代为支付指令函》',value:''},];
+                {name:'《信托利益分配申请及代为支付指令函》',value:'http://dms.dycd.com/Uploads/agreement/xintuoliyifenpeishenqingjidaiweizhifuzhilinghan_v1.0.html'},];
         }else{
-            this.consList = [{name:'《机动车车辆买卖合同协议》',value:''}];
+            this.consList = [{name:'《机动车车辆买卖合同协议》',value:'http://dms.dycd.com/Uploads/agreement/jidongcheliangmaimaihetonglinshi_v1.0.html'}];
         }
     }
 
@@ -40,14 +40,7 @@ export  default class BankTextItem extends PureComponent {
         for (let i = 0; i < this.consList.length; i++) {
             itemList.push(<Text key={i+'123'} onPress={()=>{
                 if(this.consList[i].value!=''){
-                    this.toNextPage({
-                        name: 'TrustAccountContractScene',
-                        component: TrustAccountContractScene,
-                        params: {
-                            title: '合同',
-                            webUrl: this.consList[i].value
-                        }
-                    })
+                    this.props.callBack(this.consList[i].value);
                 }
             }} style={{fontSize:Pixel.getPixel(12),color:'#91A2B6'}}>
                 {this.consList[i].name}

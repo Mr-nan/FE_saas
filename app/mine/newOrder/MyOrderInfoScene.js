@@ -17,16 +17,11 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil'
 
 var Pixel = new PixelUtil();
-const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import MyOrderInfoTitleItem from "./component/MyOrderInfoTitleItem";
-import MyOrderInfoBottomItem from "./component/MyOrderInfoBottomItem";
 import GetOrderTextUtil from "../../utils/GetOrderTextUtil";
 import MyOrderInfoTiShiItem from "./component/MyOrderInfoTiShiItem";
-import MyOrderPayItem from "./component/MyOrderPayItem";
-import MyOrderListScene from "./MyOrderListScene";
-import MyOrderCarIDScene from "./MyOrderCarIDScene";
 import MyOrderChangeDataScene from "./MyOrderChangeDataScene";
 import {request} from "../../utils/RequestUtil";
 import * as Urls from "../../constant/appUrls";

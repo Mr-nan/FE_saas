@@ -27,6 +27,7 @@ import BankTextItem from "./component/BankTextItem";
 import BankButtonItem from "./component/BankButtonItem";
 import * as Urls from "../../constant/appUrls";
 import AccountWebScene from "../accountManage/AccountWebScene";
+import TrustAccountContractScene from "../accountManage/trustAccount/TrustAccountContractScene";
 /*
  * 获取屏幕的宽和高
  **/
@@ -151,7 +152,16 @@ export default class BankScene extends BaseComponent {
                 this.select = index;
             }}/>);
         }else if(rowData==4){
-            return(<BankTextItem xintuo={this.xintuo}/>);
+            return(<BankTextItem xintuo={this.xintuo} callBack={(url)=>{
+                this.toNextPage({
+                    name: 'TrustAccountContractScene',
+                    component: TrustAccountContractScene,
+                    params: {
+                        title: '合同',
+                        webUrl: url
+                    }
+                })
+            }}/>);
         }else{
             return (
                 <BankButtonItem callBack={()=>{
