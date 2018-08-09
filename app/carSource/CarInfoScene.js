@@ -1629,8 +1629,8 @@ const styles = StyleSheet.create({
         right: 0,
         borderTopColor: fontAndColor.COLORA4,
         borderTopWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: fontAndColor.COLORA4,
-        borderBottomWidth: StyleSheet.hairlineWidth,
+        // borderBottomColor: fontAndColor.COLORA4,
+        // borderBottomWidth: StyleSheet.hairlineWidth,
     },
     callView: {
         justifyContent: 'center',
