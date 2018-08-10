@@ -1883,6 +1883,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         if(response.mjson.data.credit_id != 0){
                             this.credit_record_id = response.mjson.data.credit_id;//授信id
                             this.applyLoanAmount = response.mjson.data.finance_amount;
+                        }else {
+                            this.credit_record_id = 0
                         }
                         this.supervise_type = response.mjson.data.supervise_type;
                         this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.created_time);
@@ -1979,6 +1981,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.financeInfo = financeInfo;
         this.credit_record_id = credit_record_id;
         this.supervise_type = supervision_code;
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            dataSource: ds.cloneWithRows(this.mList),
+            isRefreshing: false,
+            renderPlaceholderOnly: 'success'
+        });
     };
 
     /**
