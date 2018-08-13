@@ -12,6 +12,7 @@ import {
     Image,
     ScrollView,
     TextInput,
+    TouchableOpacity
 
 } from 'react-native';
 
@@ -23,50 +24,82 @@ import  {observer} from 'mobx-react'
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 
+
+@observer
 export default class  NewLoginScreen extends BaseComponent{
 
-    // 构造
+
+    @observable isShowLogin;
     constructor(props) {
         super(props);
-        // 初始状态
+
+        this.isShowLogin = false;
         this.state = {
             pointValue:new Animated.Value(Pixel.getTitlePixel(40)),
             widthValue:new Animated.Value(Pixel.getPixel(89)),
             heightValue:new Animated.Value(Pixel.getPixel(89)),
             pointX:new Animated.Value((width - Pixel.getPixel(89))/2),
-            radius:new  Animated.Value(Pixel.getPixel(89)/2)
+            radius:new  Animated.Value(Pixel.getPixel(89)/2),
+            bounceValue:new Animated.Value(1),
+            rotateValue:new Animated.Value(0),
         };
     }
 
     render(){
         return(
             <Image style={styles.root} source={require('../../images/login/bg.png')}>
-                <Animated.View style={[styles.headImage,{top:this.state.pointValue,width:this.state.widthValue,height:this.state.heightValue,left:this.state.pointX,borderRadius:this.state.radius}]}>
-                    <Image style={{ width:Pixel.getPixel(89),height:Pixel.getPixel(89),
-                    }} source={require('../../images/login/xiaoren.png')}/>
-                </Animated.View>
-                <View style={{marginTop:Pixel.getPixel(150), alignItems:'center'}}>
-                    <ZNSelectButton/>
-                    <ScrollView style={{marginTop:Pixel.getPixel(30)}}>
+                <View style={{marginTop:Pixel.getPixel(150), alignItems:'center',backgroundColor:'white'}}>
+                    <ZNSelectButton click={(type)=>{
+                        this.scrollView.scrollTo({x:type *width, y:0, animated: true});
+                    }}/>
+                    <View style={{height:Pixel.getPixel(100),marginTop:Pixel.getPixel(30)}}>
+                    <ScrollView ref={(ref)=>{this.scrollView = ref}}
+                                showsHorizontalScrollIndicator={false}
+                                showsVerticalScrollIndicator={false}
+                                horizontal={true}
+                                overScrollMode="never"
+                                scrollEnabled={false}>
                       <View style={{width:width,alignItems:'center'}}>
                           <ZNTextInputView placeholder={'请输入手机号'}/>
                           <View style={{marginTop:Pixel.getPixel(30)}}/>
                           <ZNTextInputView placeholder={'请输入验证码'} rightView={()=>{
                               return(
-                                  <View>
-
+                                  <View style={{height:Pixel.getPixel(26),borderRadius:Pixel.getPixel(13),paddingHorizontal:Pixel.getPixel(10),justifyContent:'center',backgroundColor:fontAndColor.COLORC1}}>
+                                      <Text style={{color:fontAndColor.COLORC2, fontSize:fontAndColor.CONTENTFONT24}}>获取验证码</Text>
                                   </View>
                               )
                           }}/>
                       </View>
+                        <View style={{width:width,alignItems:'center'}}>
+                            <ZNTextInputView placeholder={'请输入手机号'}/>
+                            <View style={{marginTop:Pixel.getPixel(30)}}/>
+                            <ZNTextInputView placeholder={'请输入登录密码'}/>
+                        </View>
                     </ScrollView>
-                    <Text style={{backgroundColor: fontAndColor.COLORB0,width:Pixel.getPixel(150),textAlign:'center',paddingVertical:10}} onPress={()=>{
-                        this.startAnimation()
-                    }}>点击开始</Text>
-                    <Text style={{backgroundColor: fontAndColor.COLORB0,width:Pixel.getPixel(150),textAlign:'center',paddingVertical:10,marginTop:Pixel.getPixel(20)}} onPress={()=>{
-                        this.stopAnimation()
-                    }}>点击停止</Text>
+                    </View>
+                    <TouchableOpacity activeOpacity={1} onPress={()=>{this.startAnimation()}} style={{marginTop:Pixel.getPixel(20)}}>
+                    <Image source={require('../../images/login/anniu-no.png')} style={{height:Pixel.getPixel(43),width:width-Pixel.getPixel(80),
+                        alignItems:'center',justifyContent:'center',resizeMode:'cover'
+                    }}>
+                        <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30, backgroundColor:'transparent'}}>登录</Text>
+                    </Image>
+                    </TouchableOpacity>
                 </View>
+
+                {
+                    this.isShowLogin && (
+                        <View style={{top:0,left:0,right:0,bottom:0,position:'absolute',backgroundColor:'rgba(0,0,0,0.3)'}}/>
+                    )
+                }
+                <Animated.Image style={[styles.headImage,{top:this.state.pointValue,width:this.state.widthValue,height:this.state.heightValue,left:this.state.pointX,borderRadius:this.state.radius}]}
+                                source={this.isShowLogin && require('../../images/login/xiaorenzhuanquan.png')}>
+                    <Image style={{ width:Pixel.getPixel(89),height:Pixel.getPixel(89),
+                    }} source={require('../../images/login/xiaoren.png')}/>
+                </Animated.Image>
+
+                <Text style={{backgroundColor: fontAndColor.COLORB0,width:Pixel.getPixel(150),textAlign:'center',paddingVertical:10,marginTop:Pixel.getPixel(100)}} onPress={()=>{
+                    this.stopAnimation()
+                }}>点击停止</Text>
             </Image>
         )
     }
@@ -76,6 +109,7 @@ export default class  NewLoginScreen extends BaseComponent{
         if(this.isStart) return;
 
         this.isStart = true;
+        this.isShowLogin = true;
         this.animation = Animated.spring(                            // 随时间变化而执行的动画类型
             this.state.pointValue,                      // 动画中的变量值
             {
@@ -83,12 +117,13 @@ export default class  NewLoginScreen extends BaseComponent{
                 friction: 20
 
             }
-        ).start(()=>{this.sizeAnimation()});
+        ).start(()=>{this.rotateAnimation()});
     }
     stopAnimation(){
 
         console.log('结束动画');
         this.isStart = false;
+        this.isShowLogin = false;
 
         Animated.parallel([
             Animated.spring(                            // 随时间变化而执行的动画类型
@@ -107,11 +142,32 @@ export default class  NewLoginScreen extends BaseComponent{
             }),
             Animated.timing(this.state.pointX, {
                 toValue: (width - Pixel.getPixel(89))/2,
-            }),  Animated.timing(this.state.radius, {
+            }),
+            Animated.timing(this.state.radius, {
                 toValue: (Pixel.getPixel(89))/2,
             }),
         ]).start();
     }
+
+    rotateAnimation(){
+       this.state.bounceValue.setValue(1);
+       this.state.rotateValue.setValue(0);
+       Animated.parallel(
+           [
+               Animated.spring(this.state.bounceValue,{
+                   toValue:1,
+                   friction:20,
+               }),
+               Animated.timing(this.state.rotateValue,{
+                   toValue:1,
+                   duration:15000,
+                   easing: Easing.out(Easing.linear())
+               })
+           ]
+       ).start(()=>{this.isStart && this.sizeAnimation()});
+    }
+
+
     sizeAnimation(){
         this.sizeAnimationAction = Animated.sequence([
             Animated.parallel([
@@ -194,6 +250,7 @@ class  ZNSelectButton extends Component{
     }
     click=(type)=>{
         this.selectType = type;
+        this.props.click && this.props.click(type)
     }
 }
 
@@ -214,7 +271,8 @@ class ZNTextInputView extends Component{
             <View style={{
                 flexDirection:'row',
                 alignItems:'center',
-                height:Pixel.getPixel(35),width:width-Pixel.getPixel(80),
+                height:Pixel.getPixel(35),
+                width:width-Pixel.getPixel(80),
                 borderBottomColor:fontAndColor.COLORA3,
                 borderBottomWidth:1,
                 justifyContent:'space-between'
@@ -248,13 +306,13 @@ const styles = StyleSheet.create({
     },
     headImage:{
         position:'absolute',
-        // width:Pixel.getPixel(89),
-        // height:Pixel.getPixel(89),
+        width:Pixel.getPixel(89),
+        height:Pixel.getPixel(89),
         // top:Pixel.getTitlePixel(40),
         // left:(width - Pixel.getPixel(89))/2,
         alignItems:'center',
         justifyContent:'center',
-        backgroundColor:'rgba(0,0,0,0.3)'
+        backgroundColor:'transparent'
 
     }
 

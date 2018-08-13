@@ -30,6 +30,8 @@ export const COLORB8 = "#f5deb3";
 export const COLORB9 = "#f7f7fa";
 export const COLORB10 = "#f8f8f8";
 export const COLORC0 = "#F8433C";
+export const COLORC1 = "#fdf0ea";
+export const COLORC2 = "#FA6C3E";
 
 
 
