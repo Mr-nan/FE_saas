@@ -168,7 +168,7 @@ export default class SCBJZChildScene extends BaseComponent {
                     {
                        this.props.page == '未支付' &&
                        <TouchableOpacity
-                           style={styles.buttonStyle}
+                           style={rowData.status == 4 ? styles.buttonCancel:styles.buttonStyle}
                            onPress={() => {
                                if(this.props.status != 3){
                                    this.toNextPage({
@@ -199,8 +199,13 @@ export default class SCBJZChildScene extends BaseComponent {
                                    }
                                }
                            }}>
-                           <Text allowFontScaling={false}  style={{color: '#ffffff',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
-                               {this.getStatusStr(this.props.status,rowData.status)}</Text>
+                           {
+                               rowData.status == 4 ?
+                                   <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
+                                       {this.getStatusStr(this.props.status,rowData.status)}</Text>:
+                                   <Text allowFontScaling={false}  style={{color: '#ffffff',fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
+                                       {this.getStatusStr(this.props.status,rowData.status)}</Text>
+                           }
                        </TouchableOpacity>
                     }
                 </View>
@@ -227,7 +232,7 @@ export default class SCBJZChildScene extends BaseComponent {
             }else if(state == 3){
                 tempTitle = ['处理失败']
             }else if(state == 4){
-                tempTitle = ['订单取消']
+                tempTitle = ['已取消']
             }
         }
         return tempTitle;
@@ -284,5 +289,14 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORB0,
         justifyContent:'center',
         alignItems:'center',
-    }
+    },
+    buttonCancel: {
+        height: Pixel.getPixel(25),
+        width: Pixel.getPixel(73),
+        borderRadius: Pixel.getPixel(1),
+        justifyContent:'center',
+        alignItems:'center',
+        borderWidth:Pixel.getPixel(1),
+        borderColor:fontAndColor.COLORA2
+    },
 });
