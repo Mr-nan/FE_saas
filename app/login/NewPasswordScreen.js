@@ -15,27 +15,38 @@ import {
 import BaseComponent from "../component/BaseComponent";
 import * as fontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
+import  {observable} from 'mobx';
+import  {observer} from 'mobx-react'
 import  ZNTextInputView from './component/ZNTextInputView';
+import  ZNGetNoteButton from './component/ZNGetNoteButton';
 import  AllNavigationView from '../component/AllNavigationView';
 
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 
-export default class NewSetPasswordScreen extends BaseComponent{
+export default class NewPasswordScreen extends BaseComponent{
 
     // 构造
-      constructor(props) {
+    constructor(props) {
         super(props);
         // 初始状态
         this.state = {
             isShowPassword:false,
 
         };
-      }
+    }
     render(){
         return(
             <View style={styles.root}>
-                <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.TITLEFONT40, width:width - Pixel.getPixel(80),marginTop:Pixel.getPixel(20),marginBottom:Pixel.getPixel(40)}}>密码设置</Text>
+                <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.TITLEFONT40, width:width - Pixel.getPixel(80),marginTop:Pixel.getPixel(20),marginBottom:Pixel.getPixel(40)}}>密码重置</Text>
+                <ZNTextInputView placeholder={'请输入您的注册手机号'}/>
+                <View style={{marginTop:Pixel.getPixel(35)}}/>
+                <ZNTextInputView placeholder={'请输入您收到的验证码'} rightView={()=>{
+                    return(
+                        <ZNGetNoteButton/>
+                    )
+                }}/>
+                <View style={{marginTop:Pixel.getPixel(35)}}/>
                 <ZNTextInputView placeholder={'请输入至少6位密码'} rightView={()=>{
                     return(
                         <TouchableOpacity style={{paddingHorizontal:Pixel.getPixel(10)}} onPress={()=>{
@@ -51,7 +62,7 @@ export default class NewSetPasswordScreen extends BaseComponent{
                     <Image source={require('../../images/login/anniu-no.png')} style={{height:Pixel.getPixel(43),width:width-Pixel.getPixel(80),
                         alignItems:'center',justifyContent:'center',resizeMode:'cover'
                     }}>
-                        <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30, backgroundColor:'transparent'}}>提交</Text>
+                        <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30, backgroundColor:'transparent'}}>确认</Text>
                     </Image>
                 </TouchableOpacity>
                 <AllNavigationView backIconClick={this.backPage} wrapStyle={{backgroundColor:'white'}}/>
