@@ -18,6 +18,7 @@ import * as FontAndColor from "../../constant/fontAndColor";
 import PixelUtil from "../../utils/PixelUtil";
 import {all} from '../../constant/AllBackLogin';
 import LoginScene from "../../login/LoginScene";
+// import LoginScene from "../../login/NewLoginScreen";
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');

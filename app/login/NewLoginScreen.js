@@ -26,6 +26,7 @@ import  {observable} from 'mobx';
 import  {observer} from 'mobx-react'
 import  ZNTextInputView from './component/ZNTextInputView';
 import  ZNGetNoteButton from './component/ZNGetNoteButton';
+import MainPage from "../main/MainPage";
 
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
@@ -98,6 +99,16 @@ export default class  NewLoginScreen extends BaseComponent{
                     </Image>
                     </TouchableOpacity>
                 </View>
+                    <TouchableOpacity style={{width:Pixel.getPixel(19),height:Pixel.getPixel(19),right:Pixel.getPixel(23),top:Pixel.getTitlePixel(38),position:'absolute'}}
+                                      onPress={()=>{
+                                          this.toNextPage({
+                                              name: 'MainPage',
+                                              component: MainPage,
+                                              params: {},
+                                          })
+                                      }}>
+                        <Image style={{width:Pixel.getPixel(19),height:Pixel.getPixel(19)}} source={require('../../images/login/guanbi.png')}/>
+                    </TouchableOpacity>
                 {
                     this.isShowLogin && (
                         <View style={{top:0,left:0,right:0,bottom:0,position:'absolute',backgroundColor:'rgba(0,0,0,0.6)'}}/>

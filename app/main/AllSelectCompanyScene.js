@@ -12,7 +12,8 @@ import {
     TouchableOpacity,
     ListView,
     InteractionManager,
-    Platform
+    Platform,
+    StatusBar
 
 } from 'react-native';
 //图片加文字
@@ -38,7 +39,8 @@ export  default class AllSelectCompanyScene extends BaseComponent {
         // 初始状态
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: []
+            source: [],
+            barStyle:'dark-content'
         };
     }
 
@@ -95,12 +97,29 @@ export  default class AllSelectCompanyScene extends BaseComponent {
                 });
     }
 
+    componentWillMount() {
+
+        this.setState({
+            barStyle:'dark-content',
+
+        })
+    }
+
+    componentWillUnMount() {
+
+        this.setState({
+            barStyle:'light-content',
+
+        })
+    }
+
     render() {
         if (this.state.renderPlaceholderOnly != 'success') {
             return this._renderPlaceholderView();
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+                <StatusBar barStyle={this.state.barStyle}/>
                 <ListView
                     removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
@@ -109,9 +128,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
                     renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                 />
-                <NavigationView
-                    title="选择公司"
-                />
+                <NavigationView title="选择公司" titleStyle={{color:fontAndColor.COLORA0}}  wrapStyle = {{backgroundColor:'white'}}/>
             </View>
         );
     }
@@ -259,25 +276,39 @@ export  default class AllSelectCompanyScene extends BaseComponent {
                 }}
                 activeOpacity={0.8}
                 style={{
-                    width: width, height: Pixel.getPixel(77),
+                    width: width, height: Pixel.getPixel(78),
                     backgroundColor: '#fff', paddingLeft: Pixel.getPixel(15),
-                    paddingRight: Pixel.getPixel(15), flexDirection: 'row'
+                    paddingRight: Pixel.getPixel(15), flexDirection: 'row',borderRadius:Pixel.getPixel(6)
                 }}>
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                    <Image style={{width: Pixel.getPixel(38), height: Pixel.getPixel(33)}}
-                           source={require('../../images/financeImages/companyIcon.png')}></Image>
-                </View>
+                {/*<View style={{flex: 1, justifyContent: 'center'}}>*/}
+                    {/*<Image style={{width: Pixel.getPixel(38), height: Pixel.getPixel(33)}}*/}
+                           {/*source={require('../../images/financeImages/companyIcon.png')}></Image>*/}
+                {/*</View>*/}
                 <View style={{flex: 4, justifyContent: 'center'}}>
                     <Text allowFontScaling={false} 
                         style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), color: fontAndColor.COLORA0}}>
                         {names}</Text>
-                    <Text allowFontScaling={false} 
-                        style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                            color: fontAndColor.COLORA1,
-                            marginTop: Pixel.getPixel(10)
-                        }}>{movie.is_done_credit == '1' ? '授信额度' + movie.credit_mny / 10000 + '万' : '未完成授信'}
-                    </Text>
+                    {
+                        movie.is_done_credit == '1' ?(
+                                <Image style={{alignItems:'center',marginTop:Pixel.getPixel(9),justifyContent:'center',width:Pixel.getPixel(117),height:Pixel.getPixel(16.5)}} source={require('../../images/login/edu.png')}>
+                                    <Text style={{fontSize:fontAndColor.CONTENTFONT24,color:'white',backgroundColor:'transparent'}}>{'授信额度' + movie.credit_mny / 10000 + '万'}</Text>
+                                </Image>
+                            ):(
+                                <View style={{height:Pixel.getPixel(15),marginTop:Pixel.getPixel(9),
+                                    borderRadius:Pixel.getPixel(6),backgroundColor:fontAndColor.COLORC1,justifyContent:'center',width:Pixel.getPixel(75),
+                                    alignItems:'center'
+                                }}>
+                                    <Text style={{fontSize:fontAndColor.MARKFONT22,color:fontAndColor.COLORC2}}>未完成授信</Text>
+                                </View>
+                            )
+                    }
+                    {/*<Text allowFontScaling={false} */}
+                        {/*style={{*/}
+                            {/*fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),*/}
+                            {/*color: fontAndColor.COLORA1,*/}
+                            {/*marginTop: Pixel.getPixel(10)*/}
+                        {/*}}>{movie.is_done_credit == '1' ? '授信额度' + movie.credit_mny / 10000 + '万' : '未完成授信'}*/}
+                    {/*</Text>*/}
                 </View>
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
                     <Image style={{width: Pixel.getPixel(12), height: Pixel.getPixel(12)}}
