@@ -24,5 +24,6 @@ allprojects {
             url "$rootDir/../node_modules/react-native/android"
         }
         maven { url 'https://dl.bintray.com/growingioreactnative/maven/' }
+
     }
 }

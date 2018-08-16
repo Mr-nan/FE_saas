@@ -13,7 +13,9 @@ import {
     ScrollView,
     TextInput,
     TouchableOpacity,
-    Easing
+    Easing,
+    TouchableWithoutFeedback,
+    Keyboard,
 
 } from 'react-native';
 
@@ -48,9 +50,11 @@ export default class  NewLoginScreen extends BaseComponent{
 
     render(){
         return(
-            <Image style={styles.root} source={require('../../images/login/bg.png')}>
+            <Image style={styles.root} source={require('../../images/login/bg.png')} >
+                <TouchableOpacity style={{flex:1}} activeOpacity={1} onPress={()=>{Keyboard.dismiss()}}>
                 <View style={{marginTop:Pixel.getPixel(150), alignItems:'center',backgroundColor:'white'}}>
                     <ZNSelectButton click={(type)=>{
+                        Keyboard.dismiss();
                         this.scrollView.scrollTo({x:type *width, y:0, animated: true});
                     }}/>
                     <View style={{height:Pixel.getPixel(100),marginTop:Pixel.getPixel(30)}}>
@@ -61,7 +65,9 @@ export default class  NewLoginScreen extends BaseComponent{
                                 overScrollMode="never"
                                 scrollEnabled={false}>
                       <View style={{width:width,alignItems:'center'}}>
-                          <ZNTextInputView placeholder={'请输入手机号'} onChangeText={(text)=>{console.log(text)}}/>
+                          <ZNTextInputView placeholder={'请输入手机号'}
+                                           onChangeText={(text)=>{console.log(text)}}
+                                           keyboardType={'phone-pad'}/>
                           <View style={{marginTop:Pixel.getPixel(30)}}/>
                           <ZNTextInputView placeholder={'请输入验证码'} rightView={()=>{
                               return(<ZNGetNoteButton/>)
@@ -85,10 +91,10 @@ export default class  NewLoginScreen extends BaseComponent{
                     </ScrollView>
                     </View>
                     <TouchableOpacity activeOpacity={1} onPress={()=>{this.startAnimation()}} style={{marginTop:Pixel.getPixel(34)}}>
-                    <Image source={require('../../images/login/anniu-no.png')} style={{height:Pixel.getPixel(43),width:width-Pixel.getPixel(80),
-                        alignItems:'center',justifyContent:'center',resizeMode:'cover'
+                    <Image source={require('../../images/login/anniu-no.png')} style={{height:Pixel.getPixel(61),width:width-Pixel.getPixel(80),
+                        alignItems:'center',justifyContent:'center',
                     }}>
-                        <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30, backgroundColor:'transparent'}}>登录</Text>
+                        <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30, backgroundColor:'transparent',marginBottom:Pixel.getPixel(15)}}>登录</Text>
                     </Image>
                     </TouchableOpacity>
                 </View>
@@ -122,6 +128,7 @@ export default class  NewLoginScreen extends BaseComponent{
                         this.stopAnimation()
                     }}>登录认证后即可将免息券存入口袋</Text>
                 </View>
+                </TouchableOpacity>
             </Image>
         )
     }
@@ -134,7 +141,8 @@ export default class  NewLoginScreen extends BaseComponent{
             this.state.pointValue,                      // 动画中的变量值
             {
                 toValue:  Pixel.getTitlePixel(200),
-                friction: 20
+                friction: 1,
+                tension: 5,
             }
         ).start();
         this.rotateAnimation();
@@ -266,9 +274,10 @@ class  ZNSelectButton extends Component{
 const styles = StyleSheet.create({
 
     root:{
-        flex:1,
         backgroundColor:fontAndColor.COLORA3,
         alignItems:'center',
+        width:width,
+        height:height,
     },
     headImage:{
         position:'absolute',

@@ -9,7 +9,8 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    Dimensions
+    Dimensions,
+    StatusBar
 } from 'react-native';
 
 import BaseComponent from "../component/BaseComponent";
@@ -24,29 +25,48 @@ var Pixel = new PixelUtil();
 export default class NewSetPasswordScreen extends BaseComponent{
 
     // 构造
-      constructor(props) {
+    constructor(props) {
         super(props);
         // 初始状态
         this.state = {
             isShowPassword:false,
-
+            barStyle:'dark-content',
         };
-      }
+    }
+
+    componentWillMount() {
+
+        this.setState({
+            barStyle:'dark-content',
+
+        })
+    }
+
+    componentWillUnMount() {
+
+        this.setState({
+            barStyle:'light-content',
+
+        })
+    }
     render(){
         return(
             <View style={styles.root}>
+                <StatusBar barStyle={this.state.barStyle}/>
                 <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.TITLEFONT40, width:width - Pixel.getPixel(80),marginTop:Pixel.getPixel(20),marginBottom:Pixel.getPixel(40)}}>密码设置</Text>
-                <ZNTextInputView placeholder={'请输入至少6位密码'} rightView={()=>{
-                    return(
-                        <TouchableOpacity style={{paddingHorizontal:Pixel.getPixel(10)}} onPress={()=>{
-                            this.setState({
-                                isShowPassword :!this.state.isShowPassword
-                            })
-                        }}>
-                            <Image source={this.state.isShowPassword? require('../../images/login/kejian.png'):require('../../images/login/bukejian.png')}/>
-                        </TouchableOpacity>
-                    )
-                }}/>
+                <ZNTextInputView placeholder={'请输入至少6位密码'}
+                                 secureTextEntry={!this.state.isShowPassword}
+                                 rightView={()=>{
+                                     return(
+                                         <TouchableOpacity style={{paddingHorizontal:Pixel.getPixel(10)}} onPress={()=>{
+                                             this.setState({
+                                                 isShowPassword :!this.state.isShowPassword
+                                             })
+                                         }}>
+                                             <Image source={this.state.isShowPassword? require('../../images/login/kejian.png'):require('../../images/login/bukejian.png')}/>
+                                         </TouchableOpacity>
+                                     )
+                                 }}/>
                 <TouchableOpacity activeOpacity={1} onPress={()=>{}} style={{marginTop:Pixel.getPixel(34)}}>
                     <Image source={require('../../images/login/anniu-no.png')} style={{height:Pixel.getPixel(43),width:width-Pixel.getPixel(80),
                         alignItems:'center',justifyContent:'center',resizeMode:'cover'

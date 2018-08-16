@@ -35,6 +35,7 @@ export const COLORC0 = "#F8433C";
 export const COLORC1 = "#fdf0ea";
 export const COLORC2 = "#FA6C3E";
 export const COLORC3 = "#705AE7";
+export const COLORC4 = "#A3A3A3";
 
 
 

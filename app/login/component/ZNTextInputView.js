@@ -52,7 +52,8 @@ export default class ZNTextInputView extends Component{
                 borderBottomWidth:1,
                 justifyContent:'space-between'
             }}>
-                <TextInput style={{
+                <TextInput
+                    style={{
                     fontSize:fontAndColor.BUTTONFONT30,
                     color:fontAndColor.COLORA0,
                     height: Pixel.getPixel(30),
@@ -63,7 +64,10 @@ export default class ZNTextInputView extends Component{
                     paddingLeft: 0,
                     paddingRight: 0,
                     backgroundColor: 'white'}}
-                           placeholder={this.props.placeholder}
+                    underlineColorAndroid='transparent'
+                    placeholderTextColor={fontAndColor.COLORC4}
+                    placheolderFontSize={Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}
+                    placeholder={this.props.placeholder}
                            {...this.props} />
                 {
                     this.props.rightView? this.props.rightView():(<View/>)
