@@ -7,11 +7,7 @@
  * 测试地址
  *
  */
-<<<<<<< HEAD
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
-=======
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
->>>>>>> develop
 
 /**
  * 测试地址2
