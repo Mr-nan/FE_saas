@@ -154,7 +154,7 @@ export default class ZheShangAccountTitle extends PureComponent {
                             <View style={{flex: 1, alignItems:'center', justifyContent: 'center',}}>
                                 <Text allowFontScaling={false}
                                       style={{fontSize: Pixel.getFontPixel(14), color: '#fff', marginBottom:Pixel.getPixel(10)}}>
-                                    账户余额(元)</Text>
+                                    账户金额(元)</Text>
                                 <Text allowFontScaling={false} style={{
                                     fontSize: Pixel.getFontPixel(18), color: '#fff',
                                     marginTop: Pixel.getPixel(2)
