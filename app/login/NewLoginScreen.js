@@ -16,10 +16,15 @@ import {
     Easing,
     TouchableWithoutFeedback,
     Keyboard,
+    Platform,
 
 } from 'react-native';
 
 import BaseComponent from "../component/BaseComponent";
+import LoginGesture from "./LoginGesture";
+import SetLoginPwdGesture from "./SetLoginPwdGesture";
+import NewSetPasswordScreen from  './NewSetPasswordScreen';
+
 import * as fontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
 import  {observable} from 'mobx';
@@ -27,6 +32,12 @@ import  {observer} from 'mobx-react'
 import  ZNTextInputView from './component/ZNTextInputView';
 import  ZNGetNoteButton from './component/ZNGetNoteButton';
 import MainPage from "../main/MainPage";
+
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
+
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
@@ -37,10 +48,21 @@ export default class  NewLoginScreen extends BaseComponent{
 
 
     @observable isShowLogin;
+    @observable phoneOneNumber;
+    @observable phoneTwoNumber;
+    @observable noteCodeNumber;
+    @observable passwordNumber;
+    @observable loginType;
     constructor(props) {
         super(props);
 
         this.isShowLogin = false;
+        this.loginType = 0;
+        this.phoneOneNumber = '';
+        this.phoneTwoNumber = '';
+        this.noteCodeNumber = '';
+        this.passwordNumber = '';
+
         this.state = {
             pointValue:new Animated.Value(Pixel.getTitlePixel(40)),
             bounceValue:new Animated.Value(1),
@@ -53,52 +75,67 @@ export default class  NewLoginScreen extends BaseComponent{
         return(
             <Image style={styles.root} source={require('../../images/login/bg.png')} >
                 <TouchableOpacity style={{flex:1}} activeOpacity={1} onPress={()=>{Keyboard.dismiss()}}>
-                <View style={{marginTop:Pixel.getPixel(150), alignItems:'center',backgroundColor:'white'}}>
-                    <ZNSelectButton click={(type)=>{
-                        Keyboard.dismiss();
-                        this.scrollView.scrollTo({x:type *width, y:0, animated: true});
-                    }}/>
-                    <View style={{height:Pixel.getPixel(100),marginTop:Pixel.getPixel(30)}}>
-                    <ScrollView ref={(ref)=>{this.scrollView = ref}}
-                                showsHorizontalScrollIndicator={false}
-                                showsVerticalScrollIndicator={false}
-                                horizontal={true}
-                                overScrollMode="never"
-                                scrollEnabled={false}>
-                      <View style={{width:width,alignItems:'center'}}>
-                          <ZNTextInputView placeholder={'请输入手机号'}
-                                           onChangeText={(text)=>{console.log(text)}}
-                                           keyboardType={'phone-pad'}/>
-                          <View style={{marginTop:Pixel.getPixel(30)}}/>
-                          <ZNTextInputView placeholder={'请输入验证码'} rightView={()=>{
-                              return(<ZNGetNoteButton/>)
-                          }}/>
-                      </View>
-                        <View style={{width:width,alignItems:'center'}}>
-                            <ZNTextInputView placeholder={'请输入手机号'}/>
-                             <View style={{marginTop:Pixel.getPixel(30)}}/>
-                            <ZNTextInputView placeholder={'请输入登录密码'}  secureTextEntry={!this.state.isShowPassword} rightView={()=>{
-                                return(
-                                    <TouchableOpacity style={{paddingHorizontal:Pixel.getPixel(10)}} onPress={()=>{
-                                        this.setState({
-                                            isShowPassword :!this.state.isShowPassword
-                                        })
-                                    }}>
-                                        <Image source={this.state.isShowPassword? require('../../images/login/kejian.png'):require('../../images/login/bukejian.png')}/>
-                                    </TouchableOpacity>
-                                )
-                            }}/>
+                    <View style={{marginTop:Pixel.getPixel(150), alignItems:'center',backgroundColor:'white'}}>
+                        <ZNSelectButton click={(type)=>{
+                            Keyboard.dismiss();
+                            this.loginType = type;
+                            this.scrollView.scrollTo({x:type *width, y:0, animated: true});
+                        }}/>
+                        <View style={{height:Pixel.getPixel(100),marginTop:Pixel.getPixel(30)}}>
+                            <ScrollView ref={(ref)=>{this.scrollView = ref}}
+                                        showsHorizontalScrollIndicator={false}
+                                        showsVerticalScrollIndicator={false}
+                                        horizontal={true}
+                                        overScrollMode="never"
+                                        scrollEnabled={false}>
+                                <View style={{width:width,alignItems:'center'}}>
+                                    <ZNTextInputView placeholder={'请输入手机号'}
+                                                     onChangeText={(text)=>{this.phoneOneNumber = text}}
+                                                     keyboardType={'phone-pad'}
+                                                     maxLength={11}/>
+                                    <View style={{marginTop:Pixel.getPixel(30)}}/>
+                                    <ZNTextInputView placeholder={'请输入验证码'}
+                                                     rightView={()=>{
+                                                         return(<ZNGetNoteButton getNoteClick={(setTime)=>{this.getAuthCode(setTime)}}/>)}}
+                                                     onChangeText={(text)=>{this.noteCodeNumber = text}}
+                                                     maxLength={6}/>
+                                </View>
+                                <View style={{width:width,alignItems:'center'}}>
+                                    <ZNTextInputView placeholder={'请输入手机号'}
+                                                     onChangeText={(text)=>{this.phoneTwoNumber = text}}
+                                                     keyboardType={'phone-pad'}
+                                                     maxLength={11}/>
+                                    <View style={{marginTop:Pixel.getPixel(30)}}/>
+                                    <ZNTextInputView placeholder={'请输入登录密码'}
+                                                     secureTextEntry={!this.state.isShowPassword}
+                                                     onChangeText={(text)=>{this.passwordNumber = text}}
+                                                     rightView={()=>{
+                                                         return(
+                                                             <TouchableOpacity style={{paddingHorizontal:Pixel.getPixel(10)}} onPress={()=>{
+                                                                 this.setState({
+                                                                     isShowPassword :!this.state.isShowPassword
+                                                                 })
+                                                             }}>
+                                                                 <Image source={this.state.isShowPassword? require('../../images/login/kejian.png'):require('../../images/login/bukejian.png')}/>
+                                                             </TouchableOpacity>
+                                                         )
+                                                     }}/>
+                                </View>
+                            </ScrollView>
                         </View>
-                    </ScrollView>
+                        <TouchableOpacity activeOpacity={1} onPress={()=>{this.loginAction()}} style={{marginTop:Pixel.getPixel(34)}}>
+                            <Image source={this.loginType==0?((this.phoneOneNumber.length>0 && this.noteCodeNumber.length>0)? require('../../images/login/anniu.png'):require('../../images/login/anniu-no.png')):((this.phoneTwoNumber.length>0 && this.passwordNumber.length>0)? require('../../images/login/anniu.png'):require('../../images/login/anniu-no.png'))}
+                                   style={{height:Pixel.getPixel(61),width:width-Pixel.getPixel(80),
+                                       alignItems:'center',justifyContent:'center',
+                                   }}>
+                                <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30, backgroundColor:'transparent',marginBottom:Pixel.getPixel(15)}}>登录</Text>
+                            </Image>
+                        </TouchableOpacity>
+                        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',marginTop:Pixel.getPixel(34)}}>
+                            <Image source={require('../../images/login/dengpaotishi.png')}/>
+                            <Text style={{backgroundColor:'transparent',marginLeft:Pixel.getPixel(8), fontSize:fontAndColor.FONTSIZE13,color:fontAndColor.COLORC3}}>登录认证后即可将免息券存入口袋</Text>
+                        </View>
                     </View>
-                    <TouchableOpacity activeOpacity={1} onPress={()=>{this.startAnimation()}} style={{marginTop:Pixel.getPixel(34)}}>
-                    <Image source={require('../../images/login/anniu-no.png')} style={{height:Pixel.getPixel(61),width:width-Pixel.getPixel(80),
-                        alignItems:'center',justifyContent:'center',
-                    }}>
-                        <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30, backgroundColor:'transparent',marginBottom:Pixel.getPixel(15)}}>登录</Text>
-                    </Image>
-                    </TouchableOpacity>
-                </View>
                     <TouchableOpacity style={{width:Pixel.getPixel(19),height:Pixel.getPixel(19),right:Pixel.getPixel(23),top:Pixel.getTitlePixel(38),position:'absolute'}}
                                       onPress={()=>{
                                           this.toNextPage({
@@ -109,42 +146,37 @@ export default class  NewLoginScreen extends BaseComponent{
                                       }}>
                         <Image style={{width:Pixel.getPixel(19),height:Pixel.getPixel(19)}} source={require('../../images/login/guanbi.png')}/>
                     </TouchableOpacity>
-                {
-                    this.isShowLogin && (
-                        <View style={{top:0,left:0,right:0,bottom:0,position:'absolute',backgroundColor:'rgba(0,0,0,0.6)'}}/>
-                    )
-                }
-                <Animated.View style={[styles.headImage,{top:this.state.pointValue}]}>
-                    <Image style={{
-                        top:0,left:0,right:0,bottom:0,position:'absolute',
-                    }} source={require('../../images/login/xiaoren.png')}/>
                     {
                         this.isShowLogin && (
-                            <Animated.Image style={{
-                                top:5,left:0,right:5,bottom:4.5,position:'absolute',
-                                transform:[
-                                    {scale:this.state.bounceValue},
-                                    {rotateZ:this.state.rotateValue.interpolate({inputRange:[0,1],outputRange:['360deg','0deg']})}]}}
-                                            source={ require('../../images/login/guangquan-xx.png')}/>
+                            <View style={{top:0,left:0,right:0,bottom:0,position:'absolute',backgroundColor:'rgba(0,0,0,0.6)'}}/>
                         )
                     }
-
-                    <Image style={{
-                        top:0,left:0,right:0,bottom:0,position:'absolute',
-                    }} source={require('../../images/login/xiaorentfa.png')}/>
-                </Animated.View>
-                <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',marginTop:Pixel.getPixel(34)}}>
-                    <Image source={require('../../images/login/dengpaotishi.png')}/>
-                    <Text style={{backgroundColor:'transparent',marginLeft:Pixel.getPixel(8), fontSize:fontAndColor.FONTSIZE13,color:fontAndColor.COLORC3}} onPress={()=>{
-                        this.stopAnimation()
-                    }}>登录认证后即可将免息券存入口袋</Text>
-                </View>
+                    <Animated.View style={[styles.headImage,{top:this.state.pointValue}]}>
+                        <Image style={{
+                            top:0,left:0,right:0,bottom:0,position:'absolute',
+                        }} source={require('../../images/login/xiaoren.png')}/>
+                        {
+                            this.isShowLogin && (
+                                <Animated.Image style={{
+                                    top:5,left:0,right:5,bottom:4.5,position:'absolute',
+                                    transform:[
+                                        {scale:this.state.bounceValue},
+                                        {rotateZ:this.state.rotateValue.interpolate({inputRange:[0,1],outputRange:['360deg','0deg']})}]}}
+                                                source={ require('../../images/login/guangquan-xx.png')}/>
+                            )
+                        }
+                        <Image style={{
+                            top:0,left:0,right:0,bottom:0,position:'absolute',
+                        }} source={require('../../images/login/xiaorentfa.png')}/>
+                    </Animated.View>
                 </TouchableOpacity>
             </Image>
         )
     }
 
     startAnimation(){
+
+        console.log('开始动画');
         if(this.isStart) return;
         this.isStart = true;
         this.isShowLogin = true;
@@ -155,11 +187,11 @@ export default class  NewLoginScreen extends BaseComponent{
                 friction: 1,
                 tension: 5,
             }
-        ).start();
+        ).start(()=>{this.startLogin()});
         this.rotateAnimation();
 
     }
-    stopAnimation(){
+    stopAnimation(errorAction){
 
         console.log('结束动画');
         this.isStart = false;
@@ -174,84 +206,203 @@ export default class  NewLoginScreen extends BaseComponent{
                     friction: 20
                 }
             ),
-        ]).start();
+        ]).start(()=>{
+            errorAction && errorAction();
+        });
     }
     rotateAnimation(){
-       this.state.bounceValue.setValue(1);
-       this.state.rotateValue.setValue(0);
-       Animated.parallel(
-           [
-               Animated.spring(this.state.bounceValue,{
-                   toValue:1,
-                   friction:30,
-               }),
-               Animated.timing(this.state.rotateValue, {
-                   toValue: 1,  //角度从0变1
-                   duration: 1000,  //从0到1的时间
-                   easing: Easing.out(Easing.linear),//线性变化，匀速旋转
-               }),
-           ]
-       ).start(()=>{this.isStart && this.rotateAnimation()});
+        this.state.bounceValue.setValue(1);
+        this.state.rotateValue.setValue(0);
+        Animated.parallel(
+            [
+                Animated.spring(this.state.bounceValue,{
+                    toValue:1,
+                    friction:30,
+                }),
+                Animated.timing(this.state.rotateValue, {
+                    toValue: 1,  //角度从0变1
+                    duration: 1000,  //从0到1的时间
+                    easing: Easing.out(Easing.linear),//线性变化，匀速旋转
+                }),
+            ]
+        ).start(()=>{this.isStart && this.rotateAnimation()});
     }
-    sizeAnimation(){
-        this.sizeAnimationAction = Animated.sequence([
-            Animated.parallel([
-                Animated.timing(this.state.widthValue, {
-                    toValue: Pixel.getPixel(89),
-                }),
-                Animated.timing(this.state.heightValue, {
-                    toValue:Pixel.getPixel(89),
-                }),
-                Animated.timing(this.state.pointX, {
-                    toValue: (width - Pixel.getPixel(89))/2,
-                }),  Animated.timing(this.state.radius, {
-                    toValue: (Pixel.getPixel(89))/2,
-                }),
-            ]),
-            Animated.parallel([
-                Animated.timing(this.state.widthValue, {
-                    toValue: Pixel.getPixel(89) * 1.5,
-                }),
-                Animated.timing(this.state.heightValue, {
-                    toValue: Pixel.getPixel(89) *1.5,
-                }),
-                Animated.timing(this.state.pointX, {
-                    toValue: (width - Pixel.getPixel(89) *1.5)/2,
-                }),
-                Animated.timing(this.state.radius, {
-                    toValue: (Pixel.getPixel(89) *1.5)/2,
-                }),
-            ]),
 
-            Animated.parallel([
-                Animated.timing(this.state.widthValue, {
-                    toValue: Pixel.getPixel(89) *0.8,
-                }),
-                Animated.timing(this.state.heightValue, {
-                    toValue:Pixel.getPixel(89)* 0.8,
-                }),
-                Animated.timing(this.state.pointX, {
-                    toValue: (width- Pixel.getPixel(89) *0.8)/2,
-                }),
-                Animated.timing(this.state.radius, {
-                    toValue: (Pixel.getPixel(89)*0.8)/2,
-                }),
-            ]),
+    getAuthCode=(setTime)=>{
 
 
-        ]).start(()=>{ this.isStart && this.sizeAnimation()});
+        if(this.phoneOneNumber.length<11) {
+            this.props.showToast('请输入正确的手机号');
+            return;
+        }
+
+        this.props.showModal(true);
+        request(AppUrls.GET_AUTH_CODE,'POST',{
+            phone:this.phoneOneNumber
+        }).then((response)=>{
+            this.props.showModal(false);
+            setTime();
+
+        },(error)=>{
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
+        });
+
+
     }
+
+
+    loginAction=()=>{
+
+        if(this.loginType==0){
+
+            if(this.phoneOneNumber.length<11){
+                this.props.showToast('请输入正确的手机号');
+                return;
+            }
+            if(this.noteCodeNumber.length<=0){
+                this.props.showToast('请输入短信验证码');
+                return;
+            }
+
+        }else {
+
+            if(this.phoneTwoNumber.length<11){
+                this.props.showToast('请输入正确的手机号');
+                return;
+            }
+
+            if(this.passwordNumber.length<6){
+                this.props.showToast('请输入正确的密码');
+                return;
+            }
+        }
+
+        this.startAnimation();
+    }
+
+    startLogin=()=>{
+        console.log('开始登录');
+        request(AppUrls.SIGN_AND_SIGNUP,'POST',{
+            code:this.noteCodeNumber,
+            phone:this.phoneOneNumber
+        }).then((response)=>{
+            this.stopAnimation();
+
+            if (Platform.OS === 'android') {
+                NativeModules.GrowingIOModule.setCS1("user_id", response.mjson.data.phone);
+            } else {
+                // NativeModules.growingSetCS1("user_id", userName);
+            }
+
+            if(response.mjson.data.type==1){
+
+                this.loginSucceed(response.mjson.data);
+                this.loginPage({
+                    name: 'NewSetPasswordScreen',
+                    component: NewSetPasswordScreen,
+                    params: {}
+                })
+                return;
+            }
+
+            if (response.mjson.data.user_level == 2 || response.mjson.data.user_level == 1) {
+                if (response.mjson.data.enterprise_list == [] || response.mjson.data.enterprise_list == "") {
+                    this.props.showToast("您的账号未绑定企业");
+                    return;
+                }
+            }
+
+            this.loginSucceed(response.mjson.data);
+
+        },(error)=>{
+            this.stopAnimation(this.props.showToast(error.mjson.msg));
+            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+        });
+
+    }
+
+    loginSucceed=(loginData)=>{
+
+        let userName = loginData.phone;
+
+        StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
+        // 保存登录成功后的用户信息
+        StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
+            if (data.code == 1) {
+                if (data.result == null || data.result == "") {
+                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
+                } else if (data.result.indexOf(userName) == -1) {
+                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
+                } else if (data.result == userName) {
+                } else {
+                    let names;
+                    if (data.result.indexOf(userName + ",") == -1) {
+                        if (data.result.indexOf("," + userName) == -1) {
+                            names = data.result.replace(userName, "")
+                        } else {
+                            names = data.result.replace("," + userName, "")
+                        }
+                    } else {
+                        names = data.result.replace(userName + ",", "")
+                    }
+                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + names);
+                }
+            }
+        })
+
+        StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(loginData.data));
+        // 保存用户信息
+        StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, loginData.base_user_id + "");
+        StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(loginData.enterprise_list));
+        StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, loginData.head_portrait_url + "");
+        StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, loginData.idcard_number + "");
+        StorageUtil.mSetItem(StorageKeyNames.PHONE, loginData.phone + "");
+        StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, loginData.real_name + "");
+        StorageUtil.mSetItem(StorageKeyNames.TOKEN, loginData.token + "");
+        StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, loginData.user_level + "");
+        StorageUtil.mGetItem(loginData.phone + "", (data) => {
+            if (data.code == 1) {
+                if (data.result != null) {
+                    this.loginPage({
+                        name: 'LoginGesture',
+                        component: LoginGesture,
+                        params: {from:'RootScene'}
+                    })
+                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                } else {
+                    this.loginPage({
+                        name: 'SetLoginPwdGesture',
+                        component: SetLoginPwdGesture,
+                        params: {
+                            from: 'login'
+                        }
+                    })
+                }
+            }
+        })
+    }
+
+    loginPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
+        }
+    }
+
 }
 
 @observer
 class  ZNSelectButton extends Component{
 
     @observable selectType;
-      constructor(props) {
+    constructor(props) {
         super(props);
         this.selectType = 0;
         this.state = {};
-      }
+    }
     render(){
         return(
             <View style={{flexDirection:'row'}}>
@@ -259,14 +410,14 @@ class  ZNSelectButton extends Component{
                     <Text style={{fontSize:fontAndColor.FONTSIZE18,
                         color:this.selectType==0?fontAndColor.COLORA0:fontAndColor.COLORA1,
                         backgroundColor:'transparent'}} onPress={()=>{
-                            this.click(0);
+                        this.click(0);
                     }}>短信登录</Text>
                 </View>
                 <View style={{paddingVertical:Pixel.getPixel(12),borderBottomWidth: this.selectType==1?Pixel.getPixel(2):0,borderBottomColor:fontAndColor.COLORC0}}>
                     <Text style={{fontSize:fontAndColor.FONTSIZE18,
                         color:this.selectType==1?fontAndColor.COLORA0:fontAndColor.COLORA1,
                         backgroundColor:'transparent'}} onPress={()=>{
-                            this.click(1);
+                        this.click(1);
                     }}>密码登录</Text>
                 </View>
             </View>

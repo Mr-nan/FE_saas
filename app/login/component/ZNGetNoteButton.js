@@ -47,15 +47,14 @@ export default class ZNGetNoteButton extends Component{
             </TouchableOpacity>
         )
     }
-    getNoteClick=()=>{
+    getNoteClick=(setTime)=>{
 
         if(this.time==0){
-            this.props.getNoteClick && this.props.getNoteClick();
-            this.setTime();
+            this.props.getNoteClick && this.props.getNoteClick(this.setTime);
         }
     }
 
-    setTime(){
+    setTime=()=>{
         this.time = this.props.defaultTime;
         this.myInterval =setInterval(()=>{
             this.time--;

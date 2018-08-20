@@ -1222,6 +1222,19 @@ export const SETPWD = BASEURL + V + "user/setPwd";
  * pwd
  */
 export const CHANGEPWD = BASEURL + V + "user/resetPwd";
+
+
+/**
+ *  手机快速登录注册接口
+ */
+export const  SIGN_AND_SIGNUP = BASEURL+'v2/user.guest/signInAndSignUp';
+
+
+/**
+ *  短信验证码（无图片验证）
+ */
+export const  GET_AUTH_CODE = BASEURL+'v2/user.guest/getAuthCode';
+
 /**
  * 注册，图片上传
  */

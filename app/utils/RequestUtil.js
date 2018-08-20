@@ -2,7 +2,8 @@ import StorageUtil from "./StorageUtil";
 var Platform = require('Platform');
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import {all} from '../constant/AllBackLogin';
-import LoginScene from '../login/LoginScene';
+// import LoginScene from '../login/LoginScene';
+import LoginScene from '../login/NewLoginScreen';
 const request = (url, method, params, backToLogin) => {
     let loginSuccess = {
         name: 'LoginScene',

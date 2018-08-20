@@ -33,7 +33,6 @@ export default class NewSetPasswordScreen extends BaseComponent{
             barStyle:'dark-content',
         };
     }
-
     componentWillMount() {
 
         this.setState({
@@ -41,7 +40,6 @@ export default class NewSetPasswordScreen extends BaseComponent{
 
         })
     }
-
     componentWillUnMount() {
 
         this.setState({
@@ -77,6 +75,9 @@ export default class NewSetPasswordScreen extends BaseComponent{
                 <AllNavigationView backIconClick={this.backPage} wrapStyle={{backgroundColor:'white'}}/>
             </View>
         )
+    }
+
+    confirm=()=>{
 
     }
 
