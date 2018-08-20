@@ -7,7 +7,11 @@
  * 测试地址
  *
  */
+<<<<<<< HEAD
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
+=======
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+>>>>>>> develop
 
 /**
  * 测试地址2
@@ -528,7 +532,12 @@ export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
  * 获取用户功能权限
  **/
 export const GETFUNCTIONBYTOKENENTER = BASEURL + 'v1/user/getFunctionByTokenEnter';
-
+/**
+ * from @zhaojian
+ *
+ * 获取借款人当前有效的授信类型
+ **/
+export const GETCREDITREQUESTTYPE = BASEURL + 'v2/credit.home/getCreditRequestType';
 
 /**
  * from @zhaojian
@@ -1290,6 +1299,11 @@ export const ORDER_SEARCH = BASEURL + V + 'order/search';
  * 订单详情
  */
 export const ORDER_DETAIL = BASEURL + V + 'order/detail';
+
+/**
+ * 获取放款前条件落实状态
+ */
+export const GETCREDITPUBLICCONTRACTSTATUS = BASEURL + 'v2/credit.home/getCreditPublicContractStatus';
 /**
  * 订金、尾款支付
  */
@@ -1354,6 +1368,10 @@ export const ORDER_GET_MERGE_WHITE_PO_STATUS = 'api/v3/account/get_merge_white_p
  *  添加订单融资车辆
  */
 export const ADD_PLATFORM_ORDER_CAR = BASEURL + V + 'order_finance_car/add';
+/**
+ *  查询尾款支付状态
+ */
+export const ORDER_HOME_BALANCEPAYSTATUS = BASEURL + 'v2/order.home/balancePayStatus';
 /**
  *  融资订单贷款全额检查
  */
@@ -1642,6 +1660,11 @@ export const OFFLINE_PAY = BASEURL + "v2/order.pay/offline";
  * 监管费列表
  */
 export const SUPERVISE_LIST = BASEURL + V + "finance/superviseList";
+
+/**
+ * 获取订单贷最大可借额度
+ */
+export const ORDER_PAYMENT_MAX_LOANMNY = /*BASEURL + */"api/v5/NewLoanPlan/order_payment_max_loanmny";
 /**
  *
  * 监管费收银台

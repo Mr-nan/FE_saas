@@ -204,7 +204,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 {title: '保证金余额', key: jsonData.deposit_amount + "元"},
                 {title: '保证金比例', key: jsonData.deposit_rate + '%'},
                 {title: '借款期限', key: this.period},
-                {title: '借款额度', key: "30000" + "~" + jsonData.max_loanmny + "元"},
+                // {title: '借款额度', key: "30000" + "~" + jsonData.max_loanmny + "元"},
             ]
         } else {
             section1 = [
@@ -213,7 +213,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 {title: '保证金余额', key: jsonData.deposit_amount + "元"},
                 {title: '保证金比例', key: jsonData.deposit_rate + '%'},
                 {title: '借款期限', key: this.period},
-                {title: '借款额度', key: "30000" + "~" + jsonData.paymnet_maxloanmny + "元"},
+                // {title: '借款额度', key: "30000" + "~" + jsonData.paymnet_maxloanmny + "元"},
             ]
         }
 
