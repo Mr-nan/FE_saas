@@ -25,10 +25,11 @@ const request = (url, method, params, backToLogin) => {
     return new Promise((resolve, reject) => {
         StorageUtil.mGetItem(StorageKeyNames.TOKEN, (data) => {
             let token = '';
-            if (data.code === 1) {
+            if (data.code === 1 && data.result) {
                 token = data.result;
+                console.log('data.result',data.result);
             }
-            // console.log('token===' + token);
+            console.log('token===',token);
             let device_code = '';
 
             if (Platform.OS === 'android') {
@@ -39,7 +40,6 @@ const request = (url, method, params, backToLogin) => {
 
             console.log(url + '?token=' + token + '&device_code=' + device_code+
                 '&version='+StorageKeyNames.VERSON_CODE+'&'+body);
-            // token='c14147e5cbcab32f9a7fa449ddfad746';
             fetch(url + '?token=' + token + '&device_code=' + device_code+'&version='+StorageKeyNames.VERSON_CODE, {
                 method,
                 headers: {

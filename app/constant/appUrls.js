@@ -1223,6 +1223,12 @@ export const SETPWD = BASEURL + V + "user/setPwd";
  */
 export const CHANGEPWD = BASEURL + V + "user/resetPwd";
 
+/**
+ * 找回密码
+ * @type {string}
+ */
+export const AUTH_FORGET_PWD = BASEURL + V + "auth/forgetPwd";
+
 
 /**
  *  手机快速登录注册接口

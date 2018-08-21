@@ -283,10 +283,23 @@ export default class  NewLoginScreen extends BaseComponent{
 
     startLogin=()=>{
         console.log('开始登录');
-        request(AppUrls.SIGN_AND_SIGNUP,'POST',{
-            code:this.noteCodeNumber,
-            phone:this.phoneOneNumber
-        }).then((response)=>{
+
+        let params = {};
+
+        if(this.loginType==0){
+            params = {
+                code:this.noteCodeNumber,
+                phone:this.phoneOneNumber
+            }
+        }else {
+
+            params = {
+                pwd:this.passwordNumber,
+                phone:this.phoneTwoNumber
+            }
+        }
+
+        request(AppUrls.SIGN_AND_SIGNUP,'POST',params).then((response)=>{
             this.stopAnimation();
 
             if (Platform.OS === 'android') {
@@ -298,6 +311,7 @@ export default class  NewLoginScreen extends BaseComponent{
             if(response.mjson.data.type==1){
 
                 this.loginSucceed(response.mjson.data);
+
                 this.loginPage({
                     name: 'NewSetPasswordScreen',
                     component: NewSetPasswordScreen,
@@ -314,6 +328,25 @@ export default class  NewLoginScreen extends BaseComponent{
             }
 
             this.loginSucceed(response.mjson.data);
+            StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
+                if (data.code == 1) {
+                    if (data.result != null) {
+                        this.loginPage({
+                            name: 'LoginGesture',
+                            component: LoginGesture,
+                            params: {from:'RootScene'}
+                        })
+                    } else {
+                        this.loginPage({
+                            name: 'SetLoginPwdGesture',
+                            component: SetLoginPwdGesture,
+                            params: {
+                                from: 'login'
+                            }
+                        })
+                    }
+                }
+            })
 
         },(error)=>{
             this.stopAnimation(this.props.showToast(error.mjson.msg));
@@ -327,6 +360,8 @@ export default class  NewLoginScreen extends BaseComponent{
         let userName = loginData.phone;
 
         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
+        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+
         // 保存登录成功后的用户信息
         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
             if (data.code == 1) {
@@ -351,7 +386,7 @@ export default class  NewLoginScreen extends BaseComponent{
             }
         })
 
-        StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(loginData.data));
+        StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(loginData));
         // 保存用户信息
         StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, loginData.base_user_id + "");
         StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(loginData.enterprise_list));
@@ -361,26 +396,7 @@ export default class  NewLoginScreen extends BaseComponent{
         StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, loginData.real_name + "");
         StorageUtil.mSetItem(StorageKeyNames.TOKEN, loginData.token + "");
         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, loginData.user_level + "");
-        StorageUtil.mGetItem(loginData.phone + "", (data) => {
-            if (data.code == 1) {
-                if (data.result != null) {
-                    this.loginPage({
-                        name: 'LoginGesture',
-                        component: LoginGesture,
-                        params: {from:'RootScene'}
-                    })
-                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
-                } else {
-                    this.loginPage({
-                        name: 'SetLoginPwdGesture',
-                        component: SetLoginPwdGesture,
-                        params: {
-                            from: 'login'
-                        }
-                    })
-                }
-            }
-        })
+
     }
 
     loginPage = (mProps) => {
