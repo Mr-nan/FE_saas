@@ -38,6 +38,8 @@ import * as AppUrls from "../constant/appUrls";
 
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
+import md5 from "react-native-md5";
+
 
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
@@ -98,7 +100,9 @@ export default class  NewLoginScreen extends BaseComponent{
                                                      rightView={()=>{
                                                          return(<ZNGetNoteButton getNoteClick={(setTime)=>{this.getAuthCode(setTime)}}/>)}}
                                                      onChangeText={(text)=>{this.noteCodeNumber = text}}
-                                                     maxLength={6}/>
+                                                     maxLength={6}
+                                                     keyboardType={"numeric"}
+                                    />
                                 </View>
                                 <View style={{width:width,alignItems:'center'}}>
                                     <ZNTextInputView placeholder={'请输入手机号'}
@@ -109,6 +113,12 @@ export default class  NewLoginScreen extends BaseComponent{
                                     <ZNTextInputView placeholder={'请输入登录密码'}
                                                      secureTextEntry={!this.state.isShowPassword}
                                                      onChangeText={(text)=>{this.passwordNumber = text}}
+                                                     keyboardType={"default"}
+                                                     replaceAction={(text)=>{
+                                                         text = text.replace(/[ ]/g, "");
+                                                         text = text.replace(/[\u4E00-\u9FA5]/g, "");
+                                                         return text;
+                                                     }}
                                                      rightView={()=>{
                                                          return(
                                                              <TouchableOpacity style={{paddingHorizontal:Pixel.getPixel(10)}} onPress={()=>{
@@ -230,7 +240,7 @@ export default class  NewLoginScreen extends BaseComponent{
 
     getAuthCode=(setTime)=>{
 
-
+        Keyboard.dismiss();
         if(this.phoneOneNumber.length<11) {
             this.props.showToast('请输入正确的手机号');
             return;
@@ -254,6 +264,7 @@ export default class  NewLoginScreen extends BaseComponent{
 
     loginAction=()=>{
 
+        Keyboard.dismiss();
         if(this.loginType==0){
 
             if(this.phoneOneNumber.length<11){
@@ -294,7 +305,7 @@ export default class  NewLoginScreen extends BaseComponent{
         }else {
 
             params = {
-                pwd:this.passwordNumber,
+                pwd:md5.hex_md5(this.passwordNumber),
                 phone:this.phoneTwoNumber
             }
         }

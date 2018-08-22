@@ -10,7 +10,8 @@ import {
     TouchableOpacity,
     Image,
     Dimensions,
-    StatusBar
+    StatusBar,
+    Keyboard,
 } from 'react-native';
 
 import BaseComponent from "../component/BaseComponent";
@@ -22,6 +23,7 @@ import {observable} from 'mobx';
 import {observer} from 'mobx-react';
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
+import md5 from "react-native-md5";
 
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
@@ -57,12 +59,18 @@ export default class NewSetPasswordScreen extends BaseComponent{
     }
     render(){
         return(
-            <View style={styles.root}>
+            <TouchableOpacity activeOpacity={1} style={styles.root} onPress={()=>{Keyboard.dismiss()}}>
                 <StatusBar barStyle={this.state.barStyle}/>
                 <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.TITLEFONT40, width:width - Pixel.getPixel(80),marginTop:Pixel.getPixel(20),marginBottom:Pixel.getPixel(40)}}>密码设置</Text>
                 <ZNTextInputView placeholder={'请输入至少6位密码'}
+                                 keyboardType={"default"}
                                  secureTextEntry={!this.state.isShowPassword}
                                  onChangeText={(text)=>{this.passwordNumber = text}}
+                                 replaceAction={(text)=>{
+                                     text = text.replace(/[ ]/g, "");
+                                     text = text.replace(/[\u4E00-\u9FA5]/g, "");
+                                     return text;
+                                 }}
                                  rightView={()=>{
                                      return(
                                          <TouchableOpacity style={{paddingHorizontal:Pixel.getPixel(10)}} onPress={()=>{
@@ -82,14 +90,13 @@ export default class NewSetPasswordScreen extends BaseComponent{
                     </Image>
                 </TouchableOpacity>
                 <AllNavigationView  wrapStyle={{backgroundColor:'white'}}/>
-            </View>
+            </TouchableOpacity>
         )
     }
 
     buttonClick=()=>{
 
-        console.log('============');
-
+        Keyboard.dismiss();
         if(this.passwordNumber.length<6){
             this.props.showToast('密码不少于六位');
             return;
@@ -99,7 +106,7 @@ export default class NewSetPasswordScreen extends BaseComponent{
         request(AppUrls.SETPWD,'post',{
 
             confirm_pwd:this.passwordNumber,
-            pwd:this.passwordNumber,
+            pwd:md5.hex_md5(this.passwordNumber),
 
         }).then((response)=>{
 

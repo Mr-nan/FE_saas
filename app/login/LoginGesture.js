@@ -18,7 +18,8 @@ import * as FontAndColor from "../constant/fontAndColor";
 import NavigationBar from "../component/NavigationBar";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import LoginScene from "./LoginScene";
+// import LoginScene from "./LoginScene";
+import LoginScene from "./NewLoginScreen";
 import AllSelectCompanyScene from "../main/AllSelectCompanyScene";
 
 let Pixel = new PixelUtil();

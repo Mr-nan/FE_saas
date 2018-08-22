@@ -7,7 +7,8 @@ import React,{Component,PropTypes} from 'react';
 import {
     TextInput,
     View,
-    Dimensions
+    Dimensions,
+    Modal,
 } from 'react-native';
 
 import * as fontAndColor from "../../constant/fontAndColor";
@@ -35,6 +36,7 @@ export default class ZNTextInputView extends Component{
     static propTypes={
         placeholder:PropTypes.string,
         rightView:PropTypes.func,
+        replaceAction:PropTypes.func,
     }
 
     static defaultProps={
@@ -53,6 +55,7 @@ export default class ZNTextInputView extends Component{
                 justifyContent:'space-between'
             }}>
                 <TextInput
+                    ref={(ref)=>{this.input = ref}}
                     style={{
                     fontSize:fontAndColor.BUTTONFONT30,
                     color:fontAndColor.COLORA0,
@@ -68,7 +71,19 @@ export default class ZNTextInputView extends Component{
                     placeholderTextColor={fontAndColor.COLORC4}
                     placheolderFontSize={Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}
                     placeholder={this.props.placeholder}
-                           {...this.props} />
+                           {...this.props}
+                    onChangeText={(text)=>{
+
+                        let newText = text;
+                        if(this.props.replaceAction){
+                            newText = this.props.replaceAction(text);
+                            this.input.setNativeProps({
+                                text:newText,
+                            });
+                        }
+
+                        this.props.onChangeText && this.props.onChangeText(newText);
+                    }}/>
                 {
                     this.props.rightView? this.props.rightView():(<View/>)
                 }

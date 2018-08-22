@@ -25,7 +25,8 @@ import LoginAndRegister from "../../login/LoginAndRegister";
 import YJZButton from '../../mine/setting/YJZButton';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
-import LoginScene from "../../login/LoginScene";
+// import LoginScene from "../../login/LoginScene";
+import LoginScene from "../../login/NewLoginScreen";
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;

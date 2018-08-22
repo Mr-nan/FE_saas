@@ -13,7 +13,8 @@ import {
 import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
-import LoginScene from "./LoginScene";
+// import LoginScene from "./LoginScene";
+import LoginScene from "./NewLoginScreen";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
 import QuotaApplication from './QuotaApplication';
