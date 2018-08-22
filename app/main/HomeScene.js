@@ -53,7 +53,8 @@ let Platform = require('Platform');
 import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
 import PersonCertificate from "../mine/certificateManage/PersonCertificate";
 
-import SuishoujiIndicativeScene from './SuishoujiIndicativeScene'
+import SuishoujiIndicativeScene from './SuishoujiIndicativeScene';
+import ActivityView from './component/ActivityView';
 
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -299,6 +300,10 @@ export default class HomeScene extends BaseComponet {
             <View>
                 <View style={{flexDirection: 'row'}}>
                     <ViewPagers callBack={(urls) => {
+
+                        this.ActivityView && this.ActivityView.setVisible(true);
+                        return;
+
                         if (urls == 'https://gatewayapi.dycd.com/suishouji') {
                             this.suishouji(urls);
                         } else {
@@ -630,7 +635,7 @@ export default class HomeScene extends BaseComponet {
                     }
                 />
                 <AuthenticationModal ref="authenmodal"/>
-
+                <ActivityView ref={(ref)=>{this.ActivityView = ref}}/>
             </View>
         )
     }
