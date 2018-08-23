@@ -85,10 +85,18 @@ export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
  */
 export const INVITE_SHARECOUNT = BASEURL + V + "invite/shareCount";// v1/index/captcha
 
+
+ /**
+ * 获取活动分享数据
+ */
+export const GET_ACTIVITY_SHARED = BASEURL +'v2/user.guest/getActivityInfo';
+
+
+
 /**
  * 注册邀请码分享接口
  */
-export const INVITE_SHARE = BASEURL + V + "invite/share";// v1/index/captcha
+export const INVITE_SHARE = BASEURL + V + "invite/share";
 
 /**
  * 获取车型

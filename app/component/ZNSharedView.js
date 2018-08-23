@@ -12,11 +12,14 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    Dimensions
+    Dimensions,
+    Modal,
 } from 'react-native';
 
-
+import *as weChat from 'react-native-wechat';
+import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
+
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 export default class ZNSharedView extends Component {
@@ -29,17 +32,21 @@ export default class ZNSharedView extends Component {
         };
     }
 
-    isVisible = (visible) => {
+    isVisible = (visible,sharedData) => {
 
+        if(this.state.isVisible == visible) return;
+        this.sharedData = sharedData;
         this.setState({
             isVisible: visible,
         });
     }
 
 
-
     // 分享好友
     sharedWechatSession = (sharedData) => {
+
+        if(!sharedData){ console.log('请传入分享数据');return;}
+
         weChat.isWXAppInstalled()
             .then((isInstalled) => {
                 if (isInstalled) {
@@ -69,6 +76,8 @@ export default class ZNSharedView extends Component {
 
     // 分享朋友圈
     sharedWechatTimeline = (sharedData) => {
+
+        if(!sharedData){ console.log('请传入分享数据');return;}
         weChat.isWXAppInstalled()
             .then((isInstalled) => {
                 if (isInstalled) {
@@ -78,7 +87,6 @@ export default class ZNSharedView extends Component {
                         description: sharedData.content,
                         webpageUrl: sharedData.url,
                         thumbImage: sharedData.image,
-
                     }).then((resp)=>{
 
                         this.props.sharedSucceedAction && this.props.sharedSucceedAction();
@@ -109,15 +117,12 @@ export default class ZNSharedView extends Component {
                     this.isVisible(false)
                 }}
                 animationType={'fade'}>
-
-                <TouchableOpacity style={styles.sharedContaier} onPress={() => {
-                    this.isVisible(false)
-                }}>
+                <View style={styles.sharedContaier}>
                     <View style={styles.sharedView}>
                         <View style={{flexDirection: 'row',paddingVertical:Pixel.getPixel(15)}}>
                             <TouchableOpacity style={styles.sharedItemView}
                                               onPress={() => {
-                                                  this.sharedWechatSession(this.props.sharedData);
+                                                  this.sharedWechatSession(this.sharedData);
                                                   this.isVisible(false);
                                               }}>
                                 <View style={styles.sharedImageBack}>
@@ -127,7 +132,7 @@ export default class ZNSharedView extends Component {
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.sharedItemView}
                                               onPress={() => {
-                                                  this.sharedWechatTimeline(this.props.sharedData);
+                                                  this.sharedWechatTimeline(this.sharedData);
                                                   this.isVisible(false);
                                               }}>
                                 <View style={styles.sharedImageBack}>
@@ -136,16 +141,66 @@ export default class ZNSharedView extends Component {
                                 <Text allowFontScaling={false}  style={styles.sharedText}>朋友圈</Text>
                             </TouchableOpacity>
                         </View>
-                        <View  style={{justifyContent:'center',alignItems:'center',borderTopWidth:Pixel.getPixel(1),borderTopColor:fontAndColor.COLORA3,height:Pixel.getPixel(44),
+                        <TouchableOpacity  style={{justifyContent:'center',alignItems:'center',borderTopWidth:Pixel.getPixel(1),borderTopColor:fontAndColor.COLORA3,height:Pixel.getPixel(44),
                             width:ScreenWidth
-                        }}>
+                        }} activeOpacity={1}  onPress={() => {this.isVisible(false)}}>
                             <Text style={styles.sharedViewHeadText}>取消</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
+                </View>
             </Modal>
-
         )
     }
 
 }
+
+const styles = StyleSheet.create({
+    sharedContaier: {
+        flex: 1,
+        backgroundColor: 'rgba(1,1,1,0.5)',
+    },
+    sharedView: {
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+    },
+    sharedViewHead: {
+        height: Pixel.getPixel(44),
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: ScreenWidth
+    },
+    sharedViewHeadText: {
+
+        color: fontAndColor.COLORA1,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+    },
+    sharedImageBack:{
+        backgroundColor:fontAndColor.COLORB9,
+        borderRadius:Pixel.getPixel(10),
+        width:Pixel.getPixel(50),
+        height:Pixel.getPixel(50),
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    sharedItemView: {
+
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: Pixel.getPixel(20),
+        marginRight: Pixel.getPixel(20),
+        marginTop: Pixel.getPixel(10),
+        marginBottom: Pixel.getPixel(10),
+    },
+    sharedText: {
+        color: fontAndColor.COLORA1,
+        textAlign: 'center',
+        marginTop: Pixel.getPixel(10),
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+    },
+})

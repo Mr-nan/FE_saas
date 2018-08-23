@@ -28,7 +28,10 @@ let oldUrl = '';
 import WebViewTitle from '../mine/accountManage/component/WebViewTitle';
 import CarInfoScene from '../carSource/CarInfoScene';
 import MainPage from './MainPage'
-import SuishoujiIndicativeScene from './SuishoujiIndicativeScene'
+import SuishoujiIndicativeScene from './SuishoujiIndicativeScene';
+import  ZNSharedView from '../component/ZNSharedView';
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
 
 export default class WebScene extends BaseComponent {
 
@@ -89,6 +92,7 @@ export default class WebScene extends BaseComponent {
                     }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
+                <ZNSharedView ref={(ref)=>{this.sharedView=ref}}/>
                 <NavigationView
                     title={this.props.title ? this.props.title : '公告'}
                     backIconClick={() => {
@@ -137,10 +141,8 @@ export default class WebScene extends BaseComponent {
         }
 
         if (oldUrl.indexOf('https://gatewayapi.dycd.com')==0) {
-
             this.backPage();
             return;
-
             if(oldUrl.indexOf('message')>0){
                 let msg = oldUrl.split('=');
                 const navigator = this.props.navigator;
@@ -158,7 +160,6 @@ export default class WebScene extends BaseComponent {
                     });
                 }
             }
-
             if(oldUrl.indexOf('params')>0){
 
                 let msg = oldUrl.split('=');
@@ -178,9 +179,13 @@ export default class WebScene extends BaseComponent {
                 }
 
             }
-
-
         }
+
+        // 分享
+        if(urls[0] == 'https://xw.qq.com/'){
+            this.sharedView && this.sharedView.isVisible(true);
+        }
+
     }
 
     loginPage = (mProps, mainParams) => {
@@ -207,7 +212,25 @@ export default class WebScene extends BaseComponent {
     }
 
 
+    // 获取分享数据
+    getSharedData=()=>{
+      request(AppUrls.GET_ACTIVITY_SHARED,'POST',{
+          active_name:'',
+          id:''
+      }).then((response)=>{
+
+            this.props.showModal(false);
+
+
+        },(error)=>{
+            this.props.showModal(false);
+            this.props.showToast('获取分享数据失败');
+        })
+    }
 }
+
+
+
 const styles = StyleSheet.create({
 
     image: {
