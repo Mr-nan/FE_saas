@@ -32,7 +32,6 @@ import  AllLoading from '../../component/AllLoading';
 import ListFooter  from '../../carSource/znComponent/LoadMoreFooter';
 
 
-
 const Pixel = new PixelUtil();
 const IS_ANDROID = Platform.OS === 'android';
 
