@@ -27,7 +27,7 @@ export default class ActivityView extends Component{
       constructor(props) {
         super(props);
         this.state = {
-            visible:true
+            visible:false
         };
 
       }
@@ -37,11 +37,16 @@ export default class ActivityView extends Component{
             <View>
             <Modal visible={this.state.visible} transparent={true} onChangeVisibleRows={()=>{this.setVisible(false)}}>
                 <View style={styles.root}>
-                  <Image source={require('../../../images/login/tanchuang.png')}/>
-                    <TouchableOpacity activeOpacity={1} onPress={()=>{this.setState({
-                        visible:false
-                    })}}>
-                  <Image source={require('../../../images/login/guanbi-x.png')}/>
+                    <Image source={require('../../../images/login/tanchuang.png')} style={{justifyContent:'flex-end',
+                        alignItems:'center'
+                    }}>
+                        <TouchableOpacity style={{height:45,width:250}} activeOpacity={1} onPress={()=>{
+                            this.props.click && this.props.click();
+                            this.setVisible(false);
+                        }}/>
+                    </Image>
+                    <TouchableOpacity activeOpacity={1} onPress={()=>{this.setVisible(false)}}>
+                  <Image source={require('../../../images/login/guanbi-x.png')} style={{marginTop:20}}/>
                     </TouchableOpacity>
                 </View>
             </Modal>

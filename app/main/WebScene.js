@@ -97,6 +97,7 @@ export default class WebScene extends BaseComponent {
                             this.backPage();
                             return;
                         }
+                        console.log('========',oldUrl);
 
                         if (oldUrl == this.props.webUrl || this.props.webUrl === '') {
                             this.backPage();
@@ -114,6 +115,9 @@ export default class WebScene extends BaseComponent {
         oldUrl = navState.url;
 
         let urls = oldUrl.split('?');
+
+        console.log('url-host',urls);
+
         if (urls[0] == 'http://dycd.tocarsource.com/') {
             let id = urls[1].replace('id=', '');
             let navigatorParams = {

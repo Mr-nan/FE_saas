@@ -635,7 +635,7 @@ export default class HomeScene extends BaseComponet {
                     }
                 />
                 <AuthenticationModal ref="authenmodal"/>
-                <ActivityView ref={(ref)=>{this.ActivityView = ref}}/>
+                <ActivityView ref={(ref)=>{this.ActivityView = ref}} click={this.activityViewClick}/>
             </View>
         )
     }
@@ -778,6 +778,33 @@ export default class HomeScene extends BaseComponet {
         return (date.getFullYear() + "年" + (date.getMonth() + 1) + "月");
 
     };
+
+    activityViewClick=()=>{
+        StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                if (res.result && res.result == 'true') {
+
+                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT,(resData)=>{
+
+                        if(resData.result){
+                            let data = JSON.parse(resData.result);
+                            if(data.is_done_credit=='1'){
+                                console.log('已经授信');
+                            }else {
+                                console.log('未授信');
+                            }
+                        }
+
+                    });
+
+                    this.props.callBack(
+                        {name: 'WebScene', component: WebScene, params: {webUrl:'https://www.hao123.com',title:'hao123'}}
+                    );
+                } else {
+                    this.props.showLoginModal();
+                }
+            }
+        );
+    }
 }
 
 
