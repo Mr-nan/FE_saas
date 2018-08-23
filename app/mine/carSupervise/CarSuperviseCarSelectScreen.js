@@ -99,9 +99,14 @@ export default class CarSuperviseCarSelectScreen extends BaseComponent{
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
-                    renderFooter={this.renderFooter}
                     renderSeparator={(sectionID,rowID)=>{return(<View key={`${sectionID}+${rowID}`} style={{backgroundColor:fontAndColor.COLORA4,height:StyleSheet.hairlineWidth}}/>)}}
                     enableEmptySections={true} />
+                <TouchableOpacity
+                    style={{position: 'absolute',backgroundColor:fontAndColor.COLORB0, alignItems:'center',justifyContent:'center',bottom:Pixel.getBottomPixel(0),left:0,
+                        right:0,height:Pixel.getPixel(44)
+                    }} activeOpacity={1} onPress={this.footBtnClick}>
+                    <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>确定</Text>
+                </TouchableOpacity>
                 <NavigationView title="选择车辆" backIconClick={this.backPage}/>
             </View>
         )
@@ -124,17 +129,7 @@ export default class CarSuperviseCarSelectScreen extends BaseComponent{
             </TouchableOpacity>
         )
     }
-    renderFooter =()=> {
-        return(
-            <View style={styles.footContainer}>
-                <TouchableOpacity onPress={this.footBtnClick}>
-                    <View style={styles.footView}>
-                        <Text allowFontScaling={false}  style={styles.footText}>确定</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        )
-    }
+
 
     footBtnClick=()=>{
         this.props.confirmClick && this.props.confirmClick(this.selectCar);
@@ -147,6 +142,7 @@ const styles = StyleSheet.create({
        flex:1,
        backgroundColor:fontAndColor.COLORA3,
        paddingTop:Pixel.getTitlePixel(64),
+       paddingBottom:Pixel.getBottomPixel(44)
    },
     carCell:{
         height:Pixel.getPixel(75),
@@ -160,24 +156,5 @@ const styles = StyleSheet.create({
         color:fontAndColor.COLORA0,
         fontSize:fontAndColor.LITTLEFONT26,
     },
-    footContainer:{
-        justifyContent:'center',
-        alignItems:'center',
-        marginTop:Pixel.getPixel(30),
 
-    },
-    footView:{
-        backgroundColor:fontAndColor.COLORB0,
-        height:Pixel.getPixel(44),
-        justifyContent:'center',
-        alignItems:'center',
-        width:width-Pixel.getPixel(30),
-        borderRadius:Pixel.getPixel(3),
-        marginBottom:Pixel.getPixel(20),
-    },
-    footText:{
-        textAlign:'center',
-        color:'white',
-        fontSize:fontAndColor.BUTTONFONT30
-    },
 });

@@ -103,14 +103,14 @@ export default class CarSuperviseListScreen extends BaseComponent {
                         }
                         for (let typeData of this.dataList){
                             let typeArray = [];
-                            if(typeData.laudit_status =='4'){
+                            if(typeData.borrow_status =='4'){
                                 typeArray = [{title:'退回原因',value:typeData.return_remark}];
                             }
-                            else if(typeData.laudit_status =='3'){
+                            else if(typeData.borrow_status =='3'){
 
                                 typeArray = [{title:'验证码',value:typeData.verification_code}];
 
-                            }else if(typeData.laudit_status =='6'){
+                            }else if(typeData.borrow_status =='6'){
                                 typeArray = [{title:'需归还时间',value:typeData.return_remark}];
 
                             }
@@ -237,7 +237,7 @@ export default class CarSuperviseListScreen extends BaseComponent {
                 },
                 (error) => {
                     this.props.showModal(false);
-                    this.props.showToast(error.mjson.msg);
+                    this.props.showToast('撤销失败');
 
                 });
     }

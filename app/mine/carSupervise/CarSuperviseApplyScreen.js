@@ -291,7 +291,7 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                 this.props.showToast('请选择车辆！！');
                 return;
             }
-            if(this.selectArticle.data.length<0){
+            if(this.selectArticle.data.length<=0){
                 this.props.showToast('请选择借出物！！');
                 return;
             }
