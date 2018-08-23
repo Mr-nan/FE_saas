@@ -285,7 +285,33 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
 
     footBtnClick=()=>{
 
-        if(this.state.isButtonTouch){
+        if(this.borrow_date!='' && this.borrow_days!='' && this.selectCar.auto_vin && this.selectArticle.data.length && this.selectCause.data.title){}
+
+            if(!this.selectCar.auto_vin){
+                this.props.showToast('请选择车辆！！');
+                return;
+            }
+            if(this.selectArticle.data.length<0){
+                this.props.showToast('请选择借出物！！');
+                return;
+            }
+
+            if(!this.borrow_date){
+                this.props.showToast('请选择借出时间！！');
+                return;
+            }
+            if(!this.borrow_days){
+                this.props.showToast('请选择借出天数！！');
+                return;
+            }
+            if(!this.selectCause.data.title){
+                this.props.showToast('请选择借出原因！！');
+                return;
+            }
+
+
+
+            if(this.state.isButtonTouch){
             let manufactureData = new  Date(this.borrow_date);
             let initReg = new  Date();
             if(manufactureData.getTime() < initReg.getTime())
