@@ -274,7 +274,7 @@ class CarSuperviseListCell extends  Component{
                     </View>
                 </Image>
                 <Image style={{width:width,paddingHorizontal:Pixel.getFontPixel(20),
-                    justifyContent:'center',height:Pixel.getPixel(100)+Pixel.getPixel(40)*data.typeArray.length,
+                    justifyContent:'center',height:Pixel.getPixel(120)+Pixel.getPixel(40)*data.typeArray.length,
                     paddingBottom:Pixel.getPixel(16)}} resizeMode={'stretch'}
                        source={this.getTypeBackImage(data.borrow_status)}>
                     <View style={{marginTop:Pixel.getPixel(5)}}>
@@ -321,7 +321,7 @@ class CarSuperviseListCell extends  Component{
                                 <Text style={styles.cellItemValueText} numberOfLines={2}>{data.borrow_uses_text}  {data.borrow_other_uses}</Text>
                             </View>
                             <View style={{alignItems:'center',
-                                width:Pixel.getPixel(20),height:Pixel.getPixel(75),position: 'absolute',top:Pixel.getPixel(0),left:Pixel.getPixel(70)}}>
+                                width:Pixel.getPixel(20),height:Pixel.getPixel(90),position: 'absolute',top:Pixel.getPixel(0),left:Pixel.getPixel(70)}}>
                                 <Image  style={{marginTop:Pixel.getPixel(4)}} source={require('../../../images/carSuperviseImage/xiayigezhuangtai.png')}/>
                                 <Image  style={{marginTop:Pixel.getPixel(5)}} source={require('../../../images/carSuperviseImage/shuxian.png')}/>
                             </View>
@@ -411,11 +411,7 @@ class CarSuperviseListCell extends  Component{
         getType=(data)=>{
 
             let typeArray=[];
-
-
-
             return typeArray;
-
 
         }
 }
@@ -443,9 +439,9 @@ const styles = StyleSheet.create({
     } ,
     cellItemValueText:{
         color:'white',
-        fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
         backgroundColor:'transparent',
-        height:Pixel.getPixel(25),
+        height:Pixel.getPixel(30),
         width:width - Pixel.getPixel(170),
         marginLeft:Pixel.getPixel(20),
     }
