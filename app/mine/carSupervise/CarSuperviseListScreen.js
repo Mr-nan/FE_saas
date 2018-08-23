@@ -17,7 +17,6 @@ import {
     StatusBar,
     InteractionManager,
     RefreshControl
-
 }from 'react-native';
 let {width} = Dimensions.get('window');
 
