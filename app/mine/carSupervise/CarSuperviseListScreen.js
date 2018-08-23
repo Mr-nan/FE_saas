@@ -111,7 +111,7 @@ export default class CarSuperviseListScreen extends BaseComponent {
                                 typeArray = [{title:'验证码',value:typeData.verification_code}];
 
                             }else if(typeData.borrow_status =='6'){
-                                typeArray = [{title:'需归还时间',value:typeData.return_remark}];
+                                typeArray = [{title:'需归还时间',value:typeData.return_date}];
 
                             }
                             typeData.typeArray = typeArray;
@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
     } ,
     cellItemValueText:{
         color:'white',
-        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
         backgroundColor:'transparent',
         height:Pixel.getPixel(25),
         width:width - Pixel.getPixel(170),
