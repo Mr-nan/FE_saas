@@ -185,7 +185,6 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                 });
                 break;
             case  '借出物':
-
                 this.toNextPage({
                     name: 'CarSuperviseSelectArticleScreen',
                     component: CarSuperviseSelectArticleScreen,
