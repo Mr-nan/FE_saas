@@ -265,7 +265,7 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
 
         let tmIsTouch = false;
 
-        if(this.borrow_date!='' && this.borrow_days!='' && this.selectCar.auto_vin && this.selectArticle.data.length && this.selectCause.data.title){
+        if(this.borrow_date!='' && this.borrow_days!='' && this.selectCar.auto_vin && (this.selectArticle.data.length||this.selectArticle.data.remark!='') && (this.selectCause.data.title||this.selectCause.remark!='')){
             tmIsTouch = true;
         }
 
@@ -290,7 +290,7 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                 this.props.showToast('请选择车辆！！');
                 return;
             }
-            if(this.selectArticle.data.length<=0){
+            if(this.selectArticle.data.length<=0 && this.selectArticle.remark==''){
                 this.props.showToast('请选择借出物！！');
                 return;
             }
@@ -303,12 +303,10 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
                 this.props.showToast('请选择借出天数！！');
                 return;
             }
-            if(!this.selectCause.data.title){
+            if(!this.selectCause.data.title && this.selectCause.remark==''){
                 this.props.showToast('请选择借出原因！！');
                 return;
             }
-
-
 
             if(this.state.isButtonTouch){
             let manufactureData = new  Date(this.borrow_date);
@@ -338,9 +336,9 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
             regulation_list_id:this.selectCar.id,
             borrow_date:this.borrow_date,
             borrow_days:this.borrow_days,
-            borrow_goods:borrow_goods.toString(),
+            borrow_goods:borrow_goods.length>0? borrow_goods.toString():'',
             borrow_other_goods:this.selectArticle.remark?this.selectArticle.remark:'',
-            borrow_uses:this.selectCause.data.value,
+            borrow_uses:this.selectCause.data.value?this.selectCause.data.value:'',
             borrow_other_uses:this.selectCause.remark?this.selectCause.remark:''
 
         })
