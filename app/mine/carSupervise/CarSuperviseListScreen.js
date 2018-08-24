@@ -110,7 +110,6 @@ export default class CarSuperviseListScreen extends BaseComponent {
 
                             }else if(typeData.borrow_status =='6'){
                                 typeArray = [{title:'需归还时间',value:typeData.return_date}];
-
                             }
                             typeData.typeArray = typeArray;
                         }
@@ -272,10 +271,10 @@ class CarSuperviseListCell extends  Component{
                     </View>
                 </Image>
                 <Image style={{width:width,paddingHorizontal:Pixel.getFontPixel(20),
-                    justifyContent:'center',height:Pixel.getPixel(120)+Pixel.getPixel(40)*data.typeArray.length,
+                    justifyContent:'center',height:Pixel.getPixel(135)+Pixel.getPixel(40)*data.typeArray.length,
                     paddingBottom:Pixel.getPixel(16)}} resizeMode={'stretch'}
                        source={this.getTypeBackImage(data.borrow_status)}>
-                    <View style={{marginTop:Pixel.getPixel(5)}}>
+                    <View style={{marginTop:Pixel.getPixel(15)}}>
                         {
                             data.typeArray.map((subData,index)=>{
                                 return(
@@ -310,7 +309,7 @@ class CarSuperviseListCell extends  Component{
                                     <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>借用{data.borrow_days}天</Text>
                                 </View>
                             </View>
-                            <View style={{flexDirection:'row'}}>
+                            <View style={{flexDirection:'row',marginVertical:Pixel.getPixel(5)}}>
                                 <Text style={styles.cellItemValueTitle}>借出物</Text>
                                 <Text style={styles.cellItemValueText}>{data.borrow_goods_text}  {data.borrow_other_goods}</Text>
                             </View>
@@ -319,7 +318,7 @@ class CarSuperviseListCell extends  Component{
                                 <Text style={styles.cellItemValueText} numberOfLines={2}>{data.borrow_uses_text}  {data.borrow_other_uses}</Text>
                             </View>
                             <View style={{alignItems:'center',
-                                width:Pixel.getPixel(20),height:Pixel.getPixel(90),position: 'absolute',top:Pixel.getPixel(0),left:Pixel.getPixel(70)}}>
+                                width:Pixel.getPixel(20),height:Pixel.getPixel(100),position: 'absolute',top:Pixel.getPixel(0),left:Pixel.getPixel(70)}}>
                                 <Image  style={{marginTop:Pixel.getPixel(4)}} source={require('../../../images/carSuperviseImage/xiayigezhuangtai.png')}/>
                                 <Image  style={{marginTop:Pixel.getPixel(5)}} source={require('../../../images/carSuperviseImage/shuxian.png')}/>
                             </View>
@@ -442,6 +441,7 @@ const styles = StyleSheet.create({
         height:Pixel.getPixel(30),
         width:width - Pixel.getPixel(170),
         marginLeft:Pixel.getPixel(20),
+        // backgroundColor:'red'
     }
 
 })

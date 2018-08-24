@@ -104,12 +104,12 @@ export default class CarSuperviseApplyScreen extends BaseComponent{
             <View style={styles.root}>
                 <StatusBar barStyle={'light-content'}/>
                 <ScrollView  ref={(ref)=>{this.scrollView = ref}}>
-                    <View style={{padding:Pixel.getPixel(15), flexDirection:'row',
-                        alignItems:'center',backgroundColor:fontAndColor.COLORB6,
-                        borderBottomColor:fontAndColor.COLORA4,borderBottomWidth:StyleSheet.hairlineWidth,
-                    }}>
-                        <Text style={{color:fontAndColor.COLORB7, fontSize:fontAndColor.CONTENTFONT24,width:width-Pixel.getPixel(30)}}>仅限从您当前质押的车辆中申请借出质押物(车辆、权证、钥匙)</Text>
-                    </View>
+                    {/*<View style={{padding:Pixel.getPixel(15), flexDirection:'row',*/}
+                        {/*alignItems:'center',backgroundColor:fontAndColor.COLORB6,*/}
+                        {/*borderBottomColor:fontAndColor.COLORA4,borderBottomWidth:StyleSheet.hairlineWidth,*/}
+                    {/*}}>*/}
+                        {/*<Text style={{color:fontAndColor.COLORB7, fontSize:fontAndColor.CONTENTFONT24,width:width-Pixel.getPixel(30)}}>仅限从您当前质押的车辆中申请借出质押物(车辆、权证、钥匙)</Text>*/}
+                    {/*</View>*/}
                     {
                         this.state.titleData.map((data,index)=>{
                             return(
