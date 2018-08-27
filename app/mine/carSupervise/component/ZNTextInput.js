@@ -54,7 +54,7 @@ export default class ZNTextInput extends Component{
                     onChangeText={(text)=>{
 
                         if(text.length>20) {
-                            this.znTextInputValue= text.substring(0, text.length-1);
+                            this.znTextInputValue= text.substring(0, 20);
                         }else {
                             this.znTextInputValue = text;
                         }
