@@ -1878,3 +1878,24 @@ export const GETSTOREGETER = BASEURL + "v2/order.home/getStoreGeter";
  *  金融转发
  **/
 export const FINANCE_API = BASEURL + "v1/finance/index";
+
+
+/**
+ *  随手记获取账户状态
+ **/
+export const SUISHOUJI_GETSTATUS = BASEURL + "v2/credit.sui/queryBorrowerInfo";
+/**
+ *  随手记开户
+ **/
+export const SUISHOUJI_OPEN = BASEURL + "v2/credit.sui/accountOpen";
+/**
+ *  随手记激活
+ **/
+export const SUISHOUJI_ACTIVE = BASEURL + "v2/credit.sui/accountActivate";
+/**
+ *  随手记授权
+ **/
+export const SUISHOUJI_AUTH = BASEURL + "v2/credit.sui/accountAuth";
+
+
+

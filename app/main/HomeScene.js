@@ -197,7 +197,7 @@ export default class HomeScene extends BaseComponet {
                 if (res.result) {
                     this.props.showModal(true)
                     //查询状态
-                    request(Urls.FINANCE_API, 'post', {api: 'api/v4/account/borrowerInfo'}).then((response) => {
+                    request(Urls.SUISHOUJI_GETSTATUS, 'post', {merge_id: global.MERGE_ID}).then((response) => {
 
                         // accountStatus	开户状态（flag为T才有值）	number	0:未开户; 1:开户中; 2:开户成功，3:开户失败 4：锁定
                         // activateStatus	激活状态（flag为T才有值）	number	0 未激活，1 已激活，2：激活中 3：激活失败
@@ -211,7 +211,7 @@ export default class HomeScene extends BaseComponet {
                                 if (response.mjson.data.activateStatus == 1) { // 激活成功，走授权
 
                                     //授权
-                                    request(Urls.FINANCE_API, 'post', {api: 'api/v4/account/accountAuth'}).then((response) => {
+                                    request(Urls.SUISHOUJI_AUTH, 'post', {merge_id: global.MERGE_ID}).then((response) => {
 
                                         this.toSuiShouJiWeb(response);
 
@@ -224,7 +224,7 @@ export default class HomeScene extends BaseComponet {
 
                                 } else {
                                     //激活
-                                    request(Urls.FINANCE_API, 'post', {api: 'api/v4/account/accountActivate'}).then((response) => {
+                                    request(Urls.SUISHOUJI_ACTIVE, 'post', {merge_id: global.MERGE_ID}).then((response) => {
                                         this.toSuiShouJiWeb(response);
                                     }, (error) => {
 
@@ -235,7 +235,7 @@ export default class HomeScene extends BaseComponet {
                             } else {
 
                                 // 开户
-                                request(Urls.FINANCE_API, 'Post', {api: '/api/v4/account/accountopen'})
+                                request(Urls.SUISHOUJI_OPEN, 'Post', {merge_id: global.MERGE_ID})
                                     .then((response) => {
                                             this.toSuiShouJiWeb(response);
                                         },
