@@ -109,7 +109,7 @@ export default class CarSuperviseListScreen extends BaseComponent {
                                 typeArray = [{title:'验证码',value:typeData.verification_code}];
 
                             }else if(typeData.borrow_status =='6'){
-                                typeArray = [{title:'需归还时间',value:typeData.return_date}];
+                                typeArray = [{title:'需归还时间',value:typeData.return_date},{title:'发放时间',value:typeData.borrow_confirm_date}];
                             }
                             typeData.typeArray = typeArray;
                         }
@@ -280,8 +280,8 @@ class CarSuperviseListCell extends  Component{
                                 return(
                                     <View style={{paddingBottom:Pixel.getPixel(10)}} key={index}>
                                         <View style={{flexDirection:'row'}}>
-                                            <Text style={styles.cellItemValueTitle}>{subData.title}</Text>
-                                            <Text style={styles.cellItemValueText}>{subData.value}</Text>
+                                            <Text style={styles.cellItemValueTitle} numberOfLines={2}>{subData.title}</Text>
+                                            <Text style={styles.cellItemValueText} numberOfLines={2}>{subData.value}</Text>
                                         </View>
                                         <View style={{alignItems:'center',
                                             width:Pixel.getPixel(20),position: 'absolute',top:Pixel.getPixel(0),bottom:0,left:Pixel.getPixel(70)}}>
