@@ -299,7 +299,7 @@ class CarSuperviseListCell extends  Component{
                                 <View style={{
                                     height:Pixel.getPixel(20),
                                     borderRadius:Pixel.getPixel(10),
-                                    backgroundColor:'rgba(0,0,0,0.3)',
+                                    backgroundColor:'rgba(0,0,0,0.1)',
                                     alignItems:'center',
                                     justifyContent:'center',
                                     position: 'absolute',
@@ -319,8 +319,8 @@ class CarSuperviseListCell extends  Component{
                             </View>
                             <View style={{alignItems:'center',
                                 width:Pixel.getPixel(20),height:Pixel.getPixel(100),position: 'absolute',top:Pixel.getPixel(0),left:Pixel.getPixel(70)}}>
-                                <Image  style={{marginTop:Pixel.getPixel(4)}} source={require('../../../images/carSuperviseImage/xiayigezhuangtai.png')}/>
-                                <Image  style={{marginTop:Pixel.getPixel(5)}} source={require('../../../images/carSuperviseImage/shuxian.png')}/>
+                                <Image  style={{marginTop:Pixel.getPixel(4),height:Pixel.getPixel(7.5),width:Pixel.getPixel(7.5)}} source={require('../../../images/carSuperviseImage/xiayigezhuangtai.png')}/>
+                                <Image  style={{marginTop:Pixel.getPixel(5),height:Pixel.getPixel(73)}} source={require('../../../images/carSuperviseImage/shuxian.png')}/>
                             </View>
                         </View>
                     </View>
