@@ -1705,7 +1705,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 8RXU2MG5MH;
 				INFOPLIST_FILE = FE_SassTests/Info.plist;
@@ -1739,7 +1739,7 @@
 				CODEPUSH_KEY = "4Wr88ywryi8HoitS9eM4T_LMBKUNe1b7b22b-ea3f-4c77-abcc-72586c814b3c";
 				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -1785,7 +1785,7 @@
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = iphoneos10.3;
+				SDKROOT = iphoneos;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1797,7 +1797,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3BH2YRLSPK;
@@ -1842,7 +1842,7 @@
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = iphoneos10.3;
+				SDKROOT = iphoneos;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1865,7 +1865,8 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODEPUSH_KEY = "TXKA_1RB5rKvXMOuBTMqPoon2c5Pe1b7b22b-ea3f-4c77-abcc-72586c814b3c";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1890,8 +1891,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3BH2YRLSPK;
@@ -1936,7 +1937,7 @@
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = iphoneos10.3;
+				SDKROOT = iphoneos;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Staging;
@@ -1945,7 +1946,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 8RXU2MG5MH;
 				INFOPLIST_FILE = FE_SassTests/Info.plist;
@@ -2242,6 +2243,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODEPUSH_KEY = "TXKA_1RB5rKvXMOuBTMqPoon2c5Pe1b7b22b-ea3f-4c77-abcc-72586c814b3c";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
