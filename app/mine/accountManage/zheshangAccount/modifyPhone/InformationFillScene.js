@@ -215,7 +215,8 @@ export default class InformationFillScene extends ZSBaseComponent {
                 params:{
                     account:this.props.account,
                     old_sms_code:sms_code,
-                    old_sms_no:sms_no
+                    old_sms_no:sms_no,
+                    callBack:this.props.callBack
                 }
             })
         } else {
