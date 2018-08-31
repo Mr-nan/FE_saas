@@ -70,7 +70,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.logisticsType = 1;
         this.ordersTrans = {};
         this.geterData = {};
-        this.applyLoanAmount = '请输入申请贷款金额';
+        this.applyLoanAmount = '待设置借款金额';
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -845,7 +845,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 );
                 break;
             case 1:
-                let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
+                let applyAmount = this.applyLoanAmount === '待设置借款金额' ? 0 : this.applyLoanAmount;
                 let balanceAmount = this.orderDetail.totalpay_amount > 0 ? this.orderDetail.totalpay_amount : this.orderDetail.balance_amount;
                 return (
                     <View style={styles.bottomBar}>
@@ -862,12 +862,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             onPress={() => {
                                 let transOrder = this.existTransOrder(this.ordersTrans);
                                 let isStore = this.orderDetail.orders_item_data[0].is_store;  // 是否在店 0没有申请 1申请中 2驳回 3同意
-/*                                console.log('this.ordersTrans=====', this.ordersTrans);
+/*                              console.log('this.ordersTrans=====', this.ordersTrans);
                                 console.log('transOrder=====', transOrder);
                                 console.log('this.logisticsType=====', this.logisticsType);
                                 console.log('111111ticsType=====', this.logisticsType === 1 && transOrder);*/
-                                if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 6) {
-                                    this.props.showToast('请输入申请贷款金额');
+
+                                if (this.applyLoanAmount === '待设置借款金额' && this.orderState == 6) {
+                                    this.props.showToast('待设置借款金额');
                                 } else if (!transOrder && (isStore == 0 || isStore == 2) && this.orderState == 6) {
                                     this.props.showToast('请选择交车方式');
                                 } else if (isStore == 1 && this.orderState == 6) {
@@ -875,30 +876,45 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 } else if (!transOrder && this.orderState == 2 && this.logisticsType === 1) {
                                     this.props.showToast('选择物流请填写运单');
                                 } else {
-
-                                    this.toNextPage({
-                                        name: 'CheckStand',
-                                        component: CheckStand,
-                                        params: {
-                                            payAmount: this.orderState === 1 ?
-                                                this.orderDetail.deposit_amount : parseFloat(balanceAmount - applyAmount + parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) + parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
-                                            orderId: this.props.orderId,
-                                            orderNo: this.orderDetail.order_no,
-                                            seller_company_id:this.orderDetail.seller_company_id,
-                                            payType: this.orderState,
-                                            payFull: this.orderDetail.totalpay_amount > 0,
-                                            sellerId: this.orderDetail.seller_id,
-                                            carId: this.orderDetail.orders_item_data[0].car_id,
-                                            pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
-                                            pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
-                                            isSellerFinance: this.orderDetail.is_seller_finance,
-                                            applyLoanAmount: this.applyLoanAmount,
-                                            financeNo: this.orderDetail.finance_no,
-                                            callBack: this.payCallBack,
-                                            logisticsType: this.logisticsType === 1 && transOrder,
-                                            transAmount: transOrder ? this.ordersTrans.total_amount : 0
+                                    if(this.orderState == 6){
+                                        if(typeof(this.credit_record_id) != "undefined" || this.credit_record_id != ""){
+                                            this.getCreditPublicconTractstatus(this.credit_record_id,balanceAmount,applyAmount,transOrder);
+                                        } else {
+                                            this.props.showToast('授信id不能为空');
                                         }
-                                    });
+                                    }else {
+                                        console.log('balanceAmount' + balanceAmount)
+                                        console.log('applyAmount' + applyAmount)
+                                        console.log('this.financeInfo.fee_mny' + this.financeInfo.fee_mny)
+                                        console.log('this.financeInfo.supervision_fee' + this.financeInfo.supervision_fee)
+                                        console.log('this.orderState' + this.orderState)
+                                        this.toNextPage({
+                                            name: 'CheckStand',
+                                            component: CheckStand,
+                                            params: {
+                                                payAmount: this.orderState === 1 ?
+                                                    this.orderDetail.deposit_amount :
+                                                    parseFloat(balanceAmount - applyAmount +
+                                                        parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) +
+                                                        parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
+                                                orderId: this.props.orderId,
+                                                orderNo: this.orderDetail.order_no,
+                                                seller_company_id:this.orderDetail.seller_company_id,
+                                                payType: this.orderState,
+                                                payFull: this.orderDetail.totalpay_amount > 0,
+                                                sellerId: this.orderDetail.seller_id,
+                                                carId: this.orderDetail.orders_item_data[0].car_id,
+                                                pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
+                                                pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
+                                                isSellerFinance: this.orderDetail.is_seller_finance,
+                                                applyLoanAmount: this.applyLoanAmount,
+                                                financeNo: this.orderDetail.finance_no,
+                                                callBack: this.payCallBack,
+                                                logisticsType: this.logisticsType === 1 && transOrder,
+                                                transAmount: transOrder ? this.ordersTrans.total_amount : 0
+                                            }
+                                        });
+                                    }
                                 }
                             }}>
                             <View style={styles.buttonConfirm}>
@@ -1328,12 +1344,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 2: {// 待付订金  2=>'订单定价完成'
-                this.applyLoanAmount = '请输入申请贷款金额';
+                this.applyLoanAmount = '待设置借款金额';
             }
             case 3: // 3=>'订金支付中'
             case 4:  // 4=>'订金支付失败'
-                if (this.orderDetail.set_deposit_amount == 0)
-                {
+                if (this.orderDetail.set_deposit_amount == 0) {
                     if (cancelStatus === 0) {
                         this.orderState = 2;
                         this.topState = -1;
@@ -1387,8 +1402,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             this.bottomState = 4;
                         }
                     }
-                }
-                else {
+                } else {
                     if (cancelStatus === 0) {
                         this.orderState = 1;
                         this.topState = 0;
@@ -1795,6 +1809,57 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * from @hanmeng
+     * 获取放款前条件落实状态
+     **/
+    getCreditPublicconTractstatus = (credit_record_id,balanceAmount,applyAmount,transOrder) => {
+                let maps = {
+                    credit_record_id: credit_record_id,
+                };
+                this.props.showModal(true);
+                request(AppUrls.GETCREDITPUBLICCONTRACTSTATUS, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        if(response.mjson.data.contract_public_status == 0){
+                            this.props.showToast(response.mjson.data.contract_public_msg);
+                        }else {
+                            this.toNextPage({
+                                name: 'CheckStand',
+                                component: CheckStand,
+                                params: {
+                                    payAmount: this.orderState === 1 ?
+                                        this.orderDetail.deposit_amount :
+                                        parseFloat(balanceAmount - applyAmount +
+                                            parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0) +
+                                            parseFloat(this.financeInfo.supervision_fee ? this.financeInfo.supervision_fee : 0)).toFixed(2),
+                                    orderId: this.props.orderId,
+                                    orderNo: this.orderDetail.order_no,
+                                    seller_company_id: this.orderDetail.seller_company_id,
+                                    payType: this.orderState,
+                                    payFull: this.orderDetail.totalpay_amount > 0,
+                                    sellerId: this.orderDetail.seller_id,
+                                    carId: this.orderDetail.orders_item_data[0].car_id,
+                                    pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
+                                    pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
+                                    isSellerFinance: this.orderDetail.is_seller_finance,
+                                    applyLoanAmount: this.applyLoanAmount,
+                                    financeNo: this.orderDetail.finance_no,
+                                    callBack: this.payCallBack,
+                                    logisticsType: this.logisticsType === 1 && transOrder,
+                                    transAmount: transOrder ? this.ordersTrans.total_amount : 0
+                                }
+                            });
+                        }
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+    };
+
+    /**
+     * from @hanmeng
      * 详情页数据加载
      **/
     loadData = () => {
@@ -1815,6 +1880,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.orderDetail = response.mjson.data;
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
+                        if(response.mjson.data.credit_id != 0){
+                            this.credit_record_id = response.mjson.data.credit_id;//授信id
+                            this.applyLoanAmount = response.mjson.data.finance_amount;
+                        }else {
+                            this.credit_record_id = 0
+                        }
+                        this.supervise_type = response.mjson.data.supervise_type;
                         this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.created_time);
                         //console.log('this.leftTime====', this.leftTime);
                         //this.props.showToast('this.leftTime===='+ this.leftTime);
@@ -1904,9 +1976,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * from @hanmeng
      * 根据输入的贷款额度，更新贷款数据
      **/
-    refreshLoanInfo = (financeInfo) => {
+    refreshLoanInfo = (financeInfo,credit_record_id , supervision_code) => {
         //console.log('new.financeInfo==='+financeInfo.obd_mny);
         this.financeInfo = financeInfo;
+        this.credit_record_id = credit_record_id;
+        this.supervise_type = supervision_code;
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            dataSource: ds.cloneWithRows(this.mList),
+            isRefreshing: false,
+            renderPlaceholderOnly: 'success'
+        });
     };
 
     /**
@@ -2209,6 +2289,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let transOrder = this.existTransOrder(this.ordersTrans);
             return (
                 <LogisticsModeForFinancing navigator={this.props.navigator}
+                                           supervisetype={this.supervise_type}
+                                           buttonCU={this.credit_record_id}
                                            showModal={this.props.showModal}
                                            showToast={this.props.showToast}
                                            financeInfo={this.financeInfo}
