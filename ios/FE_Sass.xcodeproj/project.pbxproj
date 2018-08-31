@@ -1138,8 +1138,8 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 8RXU2MG5MH;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = 3BH2YRLSPK;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1738,12 +1738,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODEPUSH_KEY = "4Wr88ywryi8HoitS9eM4T_LMBKUNe1b7b22b-ea3f-4c77-abcc-72586c814b3c";
 				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai FengZhiXing Automobile Finance Information Service Co.,Ltd. (3BH2YRLSPK)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 8RXU2MG5MH;
+				DEVELOPMENT_TEAM = 3BH2YRLSPK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1781,10 +1781,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
 				PRODUCT_NAME = FE_Sass;
-				PROVISIONING_PROFILE = "c2d54ec8-79fc-4970-a3e2-c18960ffa317";
-				PROVISIONING_PROFILE_SPECIFIER = dycd_enterprise_distribute;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos10.3;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1796,11 +1796,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai FengZhiXing Automobile Finance Information Service Co.,Ltd. (3BH2YRLSPK)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8RXU2MG5MH;
+				DEVELOPMENT_TEAM = 3BH2YRLSPK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1838,10 +1838,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
 				PRODUCT_NAME = FE_Sass;
-				PROVISIONING_PROFILE = "c2d54ec8-79fc-4970-a3e2-c18960ffa317";
-				PROVISIONING_PROFILE_SPECIFIER = dycd_enterprise_distribute;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos10.3;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1890,11 +1890,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = FE_Sass/FE_Sass.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai FengZhiXing Automobile Finance Information Service Co.,Ltd. (3BH2YRLSPK)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3BH2YRLSPK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1932,7 +1932,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
