@@ -83,6 +83,7 @@ export default class DepositScene extends ZSBaseComponent {
                 //this.isOpenContract = datas.is_open_electron_repayment_contract;
                 let maps = {
                     enter_base_id: datas.company_base_id,
+                    customer_type:'B'
                 };
 
                 //TODO
@@ -419,7 +420,8 @@ export default class DepositScene extends ZSBaseComponent {
                     enter_base_id: result.company_base_id,
                     sub_acct_no: this.props.account.bank_card_no,
                     sms_code: sms_code,
-                    sms_no: sms_no ? sms_no : "000000"
+                    sms_no: sms_no ? sms_no : "000000",
+                    customer_type:'B'
 
                 }
 

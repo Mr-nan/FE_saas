@@ -127,7 +127,8 @@ export default class SmsFillScene extends ZSBaseComponent {
                     from_bank_id:this.props.account.bind_bank_card_no,
                     mobile_no:this.props.account.operate_mobile,
                     sub_acct_no:this.props.account.bank_card_no,
-                    type:1
+                    type:1,
+                    customer_type:'B'
             }
 
             this.props.showModal(true)
