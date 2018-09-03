@@ -301,18 +301,20 @@ export default class HomeScene extends BaseComponet {
                 <View style={{flexDirection: 'row'}}>
                     <ViewPagers callBack={(urls) => {
 
-                        this.ActivityView && this.ActivityView.setVisible(true);
-                        return;
-
                         if (urls == 'https://gatewayapi.dycd.com/suishouji') {
                             this.suishouji(urls);
-                        } else {
+                        }else if(urls == 'userActivityInvite'){
+                            this.ActivityView && this.ActivityView.setVisible(true);
+
+                        }
+                        else {
                             this.props.callBack(
-                                {name: 'WebScene', component: WebScene, params: {webUrl: urls}}
+                                {name: 'WebScene', component: WebScene, params: {webUrl:urls}}
                             );
                         }
-                    }} items={this.state.allData} toNext={() => {
-                        this.props.jumpScene('financePage', '');
+                    }}
+                                items={this.state.allData}
+                                toNext={() => {this.props.jumpScene('financePage', '');
                     }}/>
                     <TouchableOpacity onPress={() => {
                         this.props.jumpScene('carpage', 'true');
