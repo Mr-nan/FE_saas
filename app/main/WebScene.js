@@ -90,7 +90,7 @@ export default class WebScene extends BaseComponent {
                     onLoadEnd={() => {
                         this.refs.webviewtitle.lastProgress();
                     }}
-                    onMessage={(event)=>{console.log(event.nativeEvent.data)}}
+                    onMessage={(event)=>{this.onMessage(event.nativeEvent.data)}}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
                 <ZNSharedView ref={(ref)=>{this.sharedView=ref}}/>
@@ -102,8 +102,6 @@ export default class WebScene extends BaseComponent {
                             this.backPage();
                             return;
                         }
-                        console.log('========',oldUrl);
-
                         if (oldUrl == this.props.webUrl || this.props.webUrl === '') {
                             this.backPage();
                         } else {
@@ -118,11 +116,8 @@ export default class WebScene extends BaseComponent {
     onNavigationStateChange = (navState) => {
 
         oldUrl = navState.url;
-
         let urls = oldUrl.split('?');
-
         console.log('url-host',urls);
-
         if (urls[0] == 'http://dycd.tocarsource.com/') {
             let id = urls[1].replace('id=', '');
             let navigatorParams = {
@@ -182,11 +177,12 @@ export default class WebScene extends BaseComponent {
             }
         }
 
-        // 分享
-        if(urls[0] == 'https://xw.qq.com/'){
-            this.sharedView && this.sharedView.isVisible(true);
-        }
+    }
 
+    onMessage=(data)=>{
+        if(data == 1){
+            this.getSharedData();
+        }
     }
 
     loginPage = (mProps, mainParams) => {
@@ -197,6 +193,7 @@ export default class WebScene extends BaseComponent {
             }])
         }
     }
+
 
     _renderPlaceholderView() {
         return (
@@ -216,11 +213,21 @@ export default class WebScene extends BaseComponent {
     // 获取分享数据
     getSharedData=()=>{
       request(AppUrls.GET_ACTIVITY_SHARED,'POST',{
-          active_name:'',
-          id:''
+          id:1
       }).then((response)=>{
 
-            this.props.showModal(false);
+          let parameter = oldUrl.split('?')[1];
+
+          let url = 'http://devwd.bms.dycd.com/platform/activity_shareuser.html?'+parameter;
+
+          this.props.showModal(false);
+          let data = response.mjson.data;
+            this.sharedView.isVisible(true,{
+                title:data.enjoy_title,
+                content:data.enjoy_body,
+                image:data.icon,
+                url:url,
+            });
 
 
         },(error)=>{

@@ -18,11 +18,12 @@ import {
 
 import {observable} from 'mobx';
 import {observer} from 'mobx-react'
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
+
 
 @observer
 export default class ActivityView extends Component{
-
-
 
       constructor(props) {
         super(props);
@@ -37,17 +38,19 @@ export default class ActivityView extends Component{
             <View>
             <Modal visible={this.state.visible} transparent={true} onChangeVisibleRows={()=>{this.setVisible(false)}}>
                 <View style={styles.root}>
-                    <Image source={require('../../../images/login/tanchuang.png')} style={{justifyContent:'flex-end',
-                        alignItems:'center'
-                    }}>
-                        <TouchableOpacity style={{height:45,width:250}} activeOpacity={1} onPress={()=>{
-                            this.props.click && this.props.click();
-                            this.setVisible(false);
-                        }}/>
-                    </Image>
-                    <TouchableOpacity activeOpacity={1} onPress={()=>{this.setVisible(false)}}>
-                  <Image source={require('../../../images/login/guanbi-x.png')} style={{marginTop:20}}/>
-                    </TouchableOpacity>
+                    <View style={{alignItems:'center',paddingBottom:Pixel.getPixel(20)}}>
+                        <Image source={require('../../../images/login/tanchuang.png')} style={{justifyContent:'flex-end',
+                            alignItems:'center'
+                        }}>
+                            <TouchableOpacity style={{height:Pixel.getPixel(45),width:Pixel.getPixel(250)}} activeOpacity={1} onPress={()=>{
+                                this.props.click && this.props.click();
+                                this.setVisible(false);
+                            }}/>
+                        </Image>
+                        <TouchableOpacity activeOpacity={1} onPress={()=>{this.setVisible(false)}}>
+                            <Image source={require('../../../images/login/guanbi-xx.png')} style={{marginTop:Pixel.getPixel(30)}}/>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </Modal>
             </View>
@@ -55,12 +58,10 @@ export default class ActivityView extends Component{
     }
 
     setVisible=(type)=>{
-        console.log(type);
         this.setState({
             visible:type
         })
     }
-
 
 }
 
@@ -70,6 +71,7 @@ const  styles = StyleSheet.create({
         flex:1,
         justifyContent:'center',
         alignItems:'center',
-        backgroundColor:'rgba(0,0,0,0.3)'
+        backgroundColor:'rgba(0,0,0,0.6)',
+
     }
 })

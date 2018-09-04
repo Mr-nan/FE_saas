@@ -301,11 +301,12 @@ export default class HomeScene extends BaseComponet {
                 <View style={{flexDirection: 'row'}}>
                     <ViewPagers callBack={(urls) => {
 
+                        this.ActivityView && this.ActivityView.setVisible(true);
+                        return;
                         if (urls == 'https://gatewayapi.dycd.com/suishouji') {
                             this.suishouji(urls);
                         }else if(urls == 'userActivityInvite'){
                             this.ActivityView && this.ActivityView.setVisible(true);
-
                         }
                         else {
                             this.props.callBack(
@@ -789,18 +790,60 @@ export default class HomeScene extends BaseComponet {
 
                         if(resData.result){
                             let data = JSON.parse(resData.result);
-                            if(data.is_done_credit=='1'){
-                                console.log('已经授信');
+                            if(data.is_done_credit!='1'){
+                                // 已授信
+                                let home = 'http://devwd.bms.dycd.com/platform/activity_olduser.html?';
+                                StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
+                                    if (userData.code === 1 && userData.result) {
+                                        let boss_id = JSON.parse(userData.result).boss_id;
+                                        StorageUtil.mGetItem(storageKeyNames.TOKEN, (data) => {
+                                            let token = '';
+                                            if (data.code === 1 && data.result) {
+                                                token = data.result;
+                                            }
+
+                                            let url = home+'compid='+global.companyBaseID+'&user_token='+token+'&boss_id='+boss_id;
+
+                                            this.props.callBack(
+                                                {name: 'WebScene', component: WebScene, params: {webUrl:url,title:'老用户福利'}}
+                                            );
+                                        });
+                                    }else {
+                                        this.props.showToast('获取用户信息失败');
+                                    }
+
+                                });
+
                             }else {
-                                console.log('未授信');
+                                // 未授信
+
+                                let home = 'http://devwd.bms.dycd.com/platform/activity_newuser.html?';
+                                StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
+                                    if (userData.code === 1 && userData.result) {
+                                        let boss_id = JSON.parse(userData.result).boss_id;
+                                        StorageUtil.mGetItem(storageKeyNames.TOKEN, (data) => {
+                                            let token = '';
+                                            if (data.code === 1 && data.result) {
+                                                token = data.result;
+                                            }
+
+                                            let url = home+'compid='+global.companyBaseID+'&user_token='+token+'&boss_id='+boss_id;
+
+                                            this.props.callBack(
+                                                {name: 'WebScene', component: WebScene, params: {webUrl:url,title:'新用户福利'}}
+                                            );
+                                        });
+                                    }else {
+                                        this.props.showToast('获取用户信息失败');
+                                    }
+
+                                });
                             }
                         }
 
                     });
 
-                    this.props.callBack(
-                        {name: 'WebScene', component: WebScene, params: {webUrl:'https://www.hao123.com',title:'hao123'}}
-                    );
+
                 } else {
                     this.props.showLoginModal();
                 }
