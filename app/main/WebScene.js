@@ -218,7 +218,7 @@ export default class WebScene extends BaseComponent {
 
           let parameter = oldUrl.split('?')[1];
 
-          let url = 'http://devwd.bms.dycd.com/platform/activity_shareuser.html?'+parameter;
+          let url = AppUrls.SHARE_USER_ACTIVITY_INVITE+'?'+parameter;
 
           this.props.showModal(false);
           let data = response.mjson.data;

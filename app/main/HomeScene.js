@@ -301,8 +301,6 @@ export default class HomeScene extends BaseComponet {
                 <View style={{flexDirection: 'row'}}>
                     <ViewPagers callBack={(urls) => {
 
-                        this.ActivityView && this.ActivityView.setVisible(true);
-                        return;
                         if (urls == 'https://gatewayapi.dycd.com/suishouji') {
                             this.suishouji(urls);
                         }else if(urls == 'userActivityInvite'){
@@ -792,7 +790,7 @@ export default class HomeScene extends BaseComponet {
                             let data = JSON.parse(resData.result);
                             if(data.is_done_credit!='1'){
                                 // 已授信
-                                let home = 'http://devwd.bms.dycd.com/platform/activity_olduser.html?';
+                                let home = Urls.OLD_USER_ACTIVITY_INVITE;
                                 StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
                                     if (userData.code === 1 && userData.result) {
                                         let boss_id = JSON.parse(userData.result).boss_id;
@@ -817,7 +815,7 @@ export default class HomeScene extends BaseComponet {
                             }else {
                                 // 未授信
 
-                                let home = 'http://devwd.bms.dycd.com/platform/activity_newuser.html?';
+                                let home = Urls.NEW_USER_ACTIVITY_INVITE;
                                 StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
                                     if (userData.code === 1 && userData.result) {
                                         let boss_id = JSON.parse(userData.result).boss_id;

@@ -39,6 +39,39 @@ export const V = "v1/";
  */
 // export const V3 = "v3/";
 
+
+/**
+ * 老带新 开发地址
+ */
+// export const USER_ACTIVITY_INVITE_HOME = 'http://devwd.bms.dycd.com';
+
+/**
+ * 老带新 测试地址
+ */
+export const USER_ACTIVITY_INVITE_HOME = 'http://test.bms.dycd.com';
+
+/**
+ * 老带新 线上地址
+ */
+// export const USER_ACTIVITY_INVITE_HOME = 'http://bms.dycd.com';
+
+/**
+ * 老带新-新用户活动地址
+ */
+export const NEW_USER_ACTIVITY_INVITE = USER_ACTIVITY_INVITE_HOME + '/platform/activity_newuser.html';
+
+/**
+ * 老带新-老用户活动地址
+ */
+export const OLD_USER_ACTIVITY_INVITE = USER_ACTIVITY_INVITE_HOME + '/platform/activity_olduser.html';
+
+/**
+ * 老带新-分享活动地址
+ */
+export const SHARE_USER_ACTIVITY_INVITE = USER_ACTIVITY_INVITE_HOME + '/platform/activity_shareuser.html';
+
+
+
 /**
  *  分享二手车测试地址
  */
