@@ -199,7 +199,7 @@ export default class CarSuperviseListScreen extends BaseComponent {
           return(
               <CarSuperviseListCell data={data} repealButtonClick={(borrow_id)=>{
                   this.borrow_id = borrow_id;
-                  this.refs.allloading.changeShowType(true,'是否确定撤销\n\n撤销后系统将无法恢复！')}
+                  this.refs.allloading.changeShowType(true,'是否确定撤销?\n\n撤销后系统将无法恢复！')}
               }/>
           )
     }
