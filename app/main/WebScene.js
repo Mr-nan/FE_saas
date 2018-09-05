@@ -13,7 +13,8 @@ import {
     ListView,
     InteractionManager,
     WebView,
-    BackAndroid
+    BackAndroid,
+    StatusBar
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -40,6 +41,7 @@ export default class WebScene extends BaseComponent {
         // 初始状态
         this.state = {
             renderPlaceholderOnly: true,
+            StatusBarStyle:'default'
         };
     }
 
@@ -56,6 +58,20 @@ export default class WebScene extends BaseComponent {
         }
     }
 
+    componentWillMount() {
+        this.setState({
+            StatusBarStyle:'default'
+        });
+    }
+
+    componentWillUnmount(){
+        this.setState({
+            StatusBarStyle:'light-content'
+        });
+    }
+
+
+
     handleBack = () => {
         this.props.showModal(false);
         if (oldUrl == this.props.webUrl) {
@@ -67,12 +83,14 @@ export default class WebScene extends BaseComponent {
     }
 
 
+
     render() {
         if (this.state.renderPlaceholderOnly) {
             return this._renderPlaceholderView();
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+                <StatusBar barStyle={this.state.StatusBarStyle}/>
                 <WebViewTitle ref="webviewtitle"/>
                 <WebView
                     ref="www"
@@ -93,8 +111,10 @@ export default class WebScene extends BaseComponent {
                     onMessage={(event)=>{this.onMessage(event.nativeEvent.data)}}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
-                <ZNSharedView ref={(ref)=>{this.sharedView=ref}}/>
+                <ZNSharedView ref={(ref)=>{this.sharedView=ref}} sharedFaultAction={(msg)=>{this.props.showToast(msg)}}/>
                 <NavigationView
+                    titleStyle={{color:fontAndColor.COLORA0}}
+                    wrapStyle={{backgroundColor:'white'}}
                     title={this.props.title ? this.props.title : '公告'}
                     backIconClick={() => {
                         this.props.showModal(false);
@@ -102,9 +122,6 @@ export default class WebScene extends BaseComponent {
                             this.backPage();
                             return;
                         }
-
-                        console.log('oldUrl',oldUrl);
-                        console.log('this.props.webUrl',oldUrl.indexOf('http'));
                         if (oldUrl == this.props.webUrl || this.props.webUrl === '' || oldUrl.indexOf('http')==-1) {
                             this.backPage();
                         } else {

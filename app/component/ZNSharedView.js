@@ -63,11 +63,11 @@ export default class ZNSharedView extends Component {
                         console.log('分享成功');
 
                     },(error) => {
-                        console.log('分享失败');
+                        this.props.sharedFaultAction && this.props.sharedFaultAction('分享失败');
 
                     })
                 } else {
-                    this.isVisible(false);
+                    this.props.sharedFaultAction && this.props.sharedFaultAction('没安装微信');
                 }
             });
 
@@ -90,15 +90,14 @@ export default class ZNSharedView extends Component {
                     }).then((resp)=>{
 
                         this.props.sharedSucceedAction && this.props.sharedSucceedAction();
-                        console.log('分享成功');
 
                     },(error) => {
-                        console.log('分享失败');
+                        this.props.sharedFaultAction && this.props.sharedFaultAction('分享失败');
 
                     })
 
                 } else {
-                    this.isVisible(false);
+                    this.props.sharedFaultAction && this.props.sharedFaultAction('没安装微信');
                 }
             });
 
