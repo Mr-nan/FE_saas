@@ -527,7 +527,14 @@ export default class CarInfoScene extends BaseComponent {
                     ref="navtigation"
                     wrapStyle={{backgroundColor: 'rgba(0,0,0,0)'}}
                     title="车源详情"
-                    backIconClick={this.backIconClick}
+                    backIconClick={()=>{
+                        if(this.props.isPoPo){
+                            this.backPage();
+                        }else {
+                            this.backIconClick();
+                        }
+                    }
+                    }
                     isStore={this.state.carData.is_collection == 0 ? false : true} addStoreAction={this.addStoreAction}
                     cancelStoreAction={this.cancelStoreAction} showShared={this.showShared}
                 />

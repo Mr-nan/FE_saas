@@ -102,7 +102,10 @@ export default class WebScene extends BaseComponent {
                             this.backPage();
                             return;
                         }
-                        if (oldUrl == this.props.webUrl || this.props.webUrl === '') {
+
+                        console.log('oldUrl',oldUrl);
+                        console.log('this.props.webUrl',oldUrl.indexOf('http'));
+                        if (oldUrl == this.props.webUrl || this.props.webUrl === '' || oldUrl.indexOf('http')==-1) {
                             this.backPage();
                         } else {
                             this.refs.www.goBack();
@@ -117,7 +120,7 @@ export default class WebScene extends BaseComponent {
 
         oldUrl = navState.url;
         let urls = oldUrl.split('?');
-        console.log('url-host',urls);
+        console.log(navState);
         if (urls[0] == 'http://dycd.tocarsource.com/') {
             let id = urls[1].replace('id=', '');
             let navigatorParams = {
@@ -125,7 +128,8 @@ export default class WebScene extends BaseComponent {
                 component: CarInfoScene,
                 params: {
                     carID: id,
-                    from: 'webview'
+                    from: 'webview',
+                    isPoPo:true,
                 }
             };
             let mainParams = {
@@ -212,7 +216,9 @@ export default class WebScene extends BaseComponent {
 
     // 获取分享数据
     getSharedData=()=>{
-      request(AppUrls.GET_ACTIVITY_SHARED,'POST',{
+        this.refs.webviewtitle.lastProgress();
+
+        request(AppUrls.GET_ACTIVITY_SHARED,'POST',{
           id:1
       }).then((response)=>{
 
