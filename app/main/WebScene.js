@@ -122,7 +122,7 @@ export default class WebScene extends BaseComponent {
                             this.backPage();
                             return;
                         }
-                        if (oldUrl == this.props.webUrl || this.props.webUrl === '' || oldUrl.indexOf('http')==-1) {
+                        if (oldUrl == this.props.webUrl || this.props.webUrl === '' || !this.navStateCanGoBack) {
                             this.backPage();
                         } else {
                             this.refs.www.goBack();
@@ -134,7 +134,7 @@ export default class WebScene extends BaseComponent {
     }
 
     onNavigationStateChange = (navState) => {
-
+        this.navStateCanGoBack = navState.canGoBack;
         oldUrl = navState.url;
         let urls = oldUrl.split('?');
         console.log(navState);
@@ -149,6 +149,11 @@ export default class WebScene extends BaseComponent {
                     isPoPo:true,
                 }
             };
+            this.refs.www.goBack();
+
+            this.toNextPage(navigatorParams);
+            return;
+
             let mainParams = {
                 name: "MainPage",
                 component: MainPage,
