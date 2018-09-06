@@ -149,11 +149,6 @@ export default class WebScene extends BaseComponent {
                     isPoPo:true,
                 }
             };
-            this.refs.www.goBack();
-
-            this.toNextPage(navigatorParams);
-            return;
-
             let mainParams = {
                 name: "MainPage",
                 component: MainPage,
