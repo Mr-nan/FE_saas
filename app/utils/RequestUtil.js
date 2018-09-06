@@ -90,7 +90,7 @@ const request = (url, method, params, backToLogin) => {
                 })
                 .catch((error) => {
                     console.log("error----------error" + error);
-                    reject({mycode: -500, error: error});
+                    reject({mycode: -500, error: error, mjson:{msg:'网络错误'}});
                 });
         })
     });

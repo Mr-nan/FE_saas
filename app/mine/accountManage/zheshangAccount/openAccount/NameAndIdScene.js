@@ -217,6 +217,7 @@ export default class NameAndIdScene extends ZSBaseComponent {
                     cert_type:type === 1?2:1,
                     enter_base_id:result.company_base_id,
                     cust_name:name,
+                    customer_type:'B'
 
                 }
 
