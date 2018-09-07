@@ -113,6 +113,7 @@ export default class WebScene extends BaseComponent {
                 />
                 <ZNSharedView ref={(ref)=>{this.sharedView=ref}} sharedFaultAction={(msg)=>{this.props.showToast(msg)}}/>
                 <NavigationView
+                    ref = {(ref)=>{this.navigationView = ref}}
                     titleStyle={{color:fontAndColor.COLORA0}}
                     wrapStyle={{backgroundColor:'white'}}
                     title={this.props.title ? this.props.title : '公告'}
@@ -135,6 +136,9 @@ export default class WebScene extends BaseComponent {
 
     onNavigationStateChange = (navState) => {
         this.navStateCanGoBack = navState.canGoBack;
+        if(navState.title.length<8 && navState.title){
+            this.navigationView.setNavigationTitle(navState.title);
+        }
         oldUrl = navState.url;
         let urls = oldUrl.split('?');
         console.log(navState);
