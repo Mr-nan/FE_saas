@@ -197,65 +197,64 @@ export default class HomeScene extends BaseComponet {
                 if (res.result) {
                     this.props.showModal(true)
                     //查询状态
-                    request(Urls.FINANCE_API, 'post', {api: 'api/v4/account/borrowerInfo'}).then((response) => {
+                    request(Urls.SUISHOUJI_GETSTATUS, 'post', {merge_id: global.MERGE_ID}).then((response) => {
 
-                        // accountStatus	开户状态（flag为T才有值）	number	0:未开户; 1:开户中; 2:开户成功，3:开户失败 4：锁定
-                        // activateStatus	激活状态（flag为T才有值）	number	0 未激活，1 已激活，2：激活中 3：激活失败
-                        // authStatus	授权状态（flag为T才有值）	number	0：未授权 1：授权中 2：授权成功 3：授权失败
-
-
-                        if (response.mjson.data.flag === 'T') {
-
-                            if (response.mjson.data.accountStatus == 2) {  //开户成功，走激活
-
-                                if (response.mjson.data.activateStatus == 1) { // 激活成功，走授权
-
-                                    //授权
-                                    request(Urls.FINANCE_API, 'post', {api: 'api/v4/account/accountAuth'}).then((response) => {
-
-                                        this.toSuiShouJiWeb(response);
-
-                                    }, (error) => {
-
-                                        this.props.showModal(false)
-                                        this.props.showToast(error.mjson.msg);
-                                    })
+                            // accountStatus	开户状态（flag为T才有值）	number	0:未开户; 1:开户中; 2:开户成功，3:开户失败 4：锁定
+                            // activateStatus	激活状态（flag为T才有值）	number	0 未激活，1 已激活，2：激活中 3：激活失败
+                            // authStatus	授权状态（flag为T才有值）	number	0：未授权 1：授权中 2：授权成功 3：授权失败
 
 
-                                } else {
-                                    //激活
-                                    request(Urls.FINANCE_API, 'post', {api: 'api/v4/account/accountActivate'}).then((response) => {
-                                        this.toSuiShouJiWeb(response);
-                                    }, (error) => {
+                            if (response.mjson.data.flag === 'T') {
 
-                                        this.props.showModal(false)
-                                        this.props.showToast(error.mjson.msg);
-                                    })
-                                }
-                            } else {
+                                if (response.mjson.data.accountStatus == 2) {  //开户成功, 走激活
 
-                                // 开户
-                                request(Urls.FINANCE_API, 'Post', {api: '/api/v4/account/accountopen'})
-                                    .then((response) => {
+                                    if (response.mjson.data.activateStatus == 1) {  // 激活成功, 走授权
+
+                                        //授权
+                                        request(Urls.SUISHOUJI_AUTH, 'post', {merge_id: global.MERGE_ID}).then((response) => {
+
                                             this.toSuiShouJiWeb(response);
-                                        },
-                                        (error) => {
+
+                                        }, (error) => {
+
                                             this.props.showModal(false)
                                             this.props.showToast(error.mjson.msg);
-                                        });
+                                        })
+                                    } else {
+                                        //激活
+                                        request(Urls.SUISHOUJI_ACTIVE, 'post', {merge_id: global.MERGE_ID}).then((response) => {
+                                            this.toSuiShouJiWeb(response);
+                                        }, (error) => {
+
+                                            this.props.showModal(false)
+                                            this.props.showToast(error.mjson.msg);
+                                        })
+                                    }
+                                } else {
+
+                                    // 开户
+                                    request(Urls.SUISHOUJI_OPEN, 'Post', {merge_id: global.MERGE_ID})
+                                        .then((response) => {
+                                                this.toSuiShouJiWeb(response);
+                                            },
+                                            (error) => {
+                                                this.props.showModal(false)
+                                                this.props.showToast(error.mjson.msg);
+                                            });
+                                }
+
+                            } else {
+                                this.props.showModal(false)
+                                this.props.showToast(response.mjson.data.remark);
+
                             }
 
-                        } else {
+                        }, (error) => {
                             this.props.showModal(false)
-                            this.props.showToast(response.mjson.data.remark);
+                            this.props.showToast(error.mjson.msg);
 
                         }
-
-                    }, (error) => {
-                        this.props.showModal(false)
-                        this.props.showToast(error.mjson.msg);
-
-                    })
+                    )
                 } else {
                     this.props.showLoginModal();
                 }

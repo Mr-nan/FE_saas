@@ -30,7 +30,7 @@ import codePush from 'react-native-code-push'
 import SQLiteUtil from "../utils/SQLiteUtil";
 import PromotionScene from "./PromotionScene";
 const SQLite = new SQLiteUtil();
-const versionCode = 48.0;
+const versionCode = 49.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
