@@ -105,7 +105,7 @@ export default class NewSetPasswordScreen extends BaseComponent{
         this.props.showModal(true);
         request(AppUrls.SETPWD,'post',{
 
-            confirm_pwd:this.passwordNumber,
+            confirm_pwd:md5.hex_md5(this.passwordNumber),
             pwd:md5.hex_md5(this.passwordNumber),
 
         }).then((response)=>{
