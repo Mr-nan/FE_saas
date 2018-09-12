@@ -311,11 +311,11 @@ class CarSuperviseListCell extends  Component{
                             </View>
                             <View style={{flexDirection:'row',marginVertical:Pixel.getPixel(5)}}>
                                 <Text style={styles.cellItemValueTitle}>借出物</Text>
-                                <Text style={styles.cellItemValueText}>{data.borrow_goods_text}  {data.borrow_other_goods}</Text>
+                                <Text style={styles.cellItemValueText}>{data.borrow_goods_text}</Text>
                             </View>
                             <View style={{flexDirection:'row'}}>
                                 <Text style={styles.cellItemValueTitle}>申请原因</Text>
-                                <Text style={styles.cellItemValueText} numberOfLines={2}>{data.borrow_uses_text}  {data.borrow_other_uses}</Text>
+                                <Text style={styles.cellItemValueText} numberOfLines={2}>{data.borrow_uses_text}</Text>
                             </View>
                             <View style={{alignItems:'center',
                                 width:Pixel.getPixel(20),height:Pixel.getPixel(100),position: 'absolute',top:Pixel.getPixel(0),left:Pixel.getPixel(70)}}>
