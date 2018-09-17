@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
@@ -68,6 +68,11 @@ export const OLD_USER_ACTIVITY_INVITE = USER_ACTIVITY_INVITE_HOME + '/platform/a
  * 老带新-分享活动地址
  */
 export const SHARE_USER_ACTIVITY_INVITE = USER_ACTIVITY_INVITE_HOME + '/platform/activity_shareuser.html';
+
+/**
+ * 获取活动弹窗
+ */
+export const GET_JUMP_INFO = BASEURL + 'v2/user.guest/getJumpInfo';
 
 
 

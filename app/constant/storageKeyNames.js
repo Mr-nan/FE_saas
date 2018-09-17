@@ -29,6 +29,7 @@ export const NEED_CHECK_USER_CAR = "checkUserCar";        // 选择二手车列�
 export const NEED_USER_CHECK_RECOMMEND = "userCarcheckRecommend";   // 取消二手车推荐车源
 export const NEED_NEW_CHECK_RECOMMEND = "newCarcheckRecommend";   // 取消新车推荐车源
 export const NEED_TOAST_ERROR = "need_toast_error";   // 登录界面是否需要弹出异常提示
+export const ACTIVITY_ALTER = "Activity";   // 首页活动弹窗提示
 /* message start*/
 export const ADVERTISEMENT_LAST_MESSAGE_TIME = "advertisement_last_message_time"; //车市头条数据库中缓存的最近一条数据的时间
 export const SYSTEMS_LAST_MESSAGE_TIME = "systems_last_message_time"; //系统消息数据库中缓存的最近一条数据的时间

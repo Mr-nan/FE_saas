@@ -433,8 +433,6 @@ export default class HomeScene extends BaseComponet {
     loadData = () => {
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
-
-            console.log('==========Loan_SUBJECT', data);
             if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 this.getData(enters.prov_id);
@@ -471,14 +469,13 @@ export default class HomeScene extends BaseComponet {
                     this.getCarData(6);
                     this.getCarSubscriptionData(5);
                     this.getCarSubscriptionData(7);
-
+                    this.getActivityData();
                     status = response.mjson.data.carList.pageCount;
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     }
-
     getCarData(type) {
         let maps = {
             brand_id: 0,
@@ -522,7 +519,6 @@ export default class HomeScene extends BaseComponet {
                 }
             )
     }
-
     // 获取订阅车源
     getCarSubscriptionData = (type) => {
         let maps = {
@@ -571,7 +567,6 @@ export default class HomeScene extends BaseComponet {
                 }
             )
     }
-
     setCarData = (carArray) => {
         let dataBlob = {}, sectionIDS = [], rowIDS = [], rows = [];
         for (var i = 0; i < carArray.length; i++) {
@@ -588,6 +583,31 @@ export default class HomeScene extends BaseComponet {
         this.setState({
             source: this.state.source.cloneWithRowsAndSections(dataBlob, sectionIDS, rowIDS),
         });
+    }
+    // 获取活动弹窗接口
+    getActivityData=()=>{
+
+        request(Urls.GET_JUMP_INFO, 'Post', {},)
+            .then((response) => {
+                    let  responseData = response.mjson.data;
+                    StorageUtil.mGetItem(storageKeyNames.ACTIVITY_ALTER+responseData.id, (data) => {
+                        if (data.code == 1 && data.result) {
+                            let enters = JSON.parse(data.result);
+
+                        } else {
+                            // 出现弹框 比较活动时间结束和当前时间
+                            let currentData = new  Date();
+                            let end_time = new  Date(responseData.end_time);
+                            if(currentData.getTime() < end_time.getTime())
+                            {
+                                this.ActivityView && this.ActivityView.setVisible(responseData);
+                            }
+                        }
+                    });
+                },
+                (error) => {
+
+                });
     }
 
 
@@ -611,7 +631,6 @@ export default class HomeScene extends BaseComponet {
         return (
 
             <View style={cellSheet.container}>
-
                 <ListView
                     enableEmptySections={true}
                     removeClippedSubviews={false}
@@ -779,68 +798,99 @@ export default class HomeScene extends BaseComponet {
 
     };
 
-    activityViewClick=()=>{
+    activityViewClick=(contentData)=>{
+
+
+        // 非登录
+        if(contentData.login_type == 2){
+
+            StorageUtil.mSetItem(storageKeyNames.ACTIVITY_ALTER+contentData.id,contentData.end_time);
+            if(contentData.general_url!=''){
+                this.props.callBack(
+                    {name: 'WebScene', component: WebScene, params: {webUrl:contentData.general_url,title:'活动'}}
+                );
+            }
+            return;
+        }
+
+
         StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
                 if (res.result && res.result == 'true') {
-
-                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT,(resData)=>{
-
-                        if(resData.result){
-                            let data = JSON.parse(resData.result);
-                            if(data.is_done_credit!='1'){
-                                // 已授信
-                                let home = Urls.OLD_USER_ACTIVITY_INVITE;
-                                StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
-                                    if (userData.code === 1 && userData.result) {
-                                        let boss_id = JSON.parse(userData.result).boss_id;
-                                        StorageUtil.mGetItem(storageKeyNames.TOKEN, (data) => {
-                                            let token = '';
-                                            if (data.code === 1 && data.result) {
-                                                token = data.result;
-                                            }
-
-                                            let url = home+'compid='+global.companyBaseID+'&user_token='+token+'&boss_id='+boss_id;
-
-                                            this.props.callBack(
-                                                {name: 'WebScene', component: WebScene, params: {webUrl:url,title:'老用户福利'}}
-                                            );
-                                        });
-                                    }else {
-                                        this.props.showToast('获取用户信息失败');
-                                    }
-
-                                });
-
-                            }else {
-                                // 未授信
-
-                                let home = Urls.NEW_USER_ACTIVITY_INVITE;
-                                StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
-                                    if (userData.code === 1 && userData.result) {
-                                        let boss_id = JSON.parse(userData.result).boss_id;
-                                        StorageUtil.mGetItem(storageKeyNames.TOKEN, (data) => {
-                                            let token = '';
-                                            if (data.code === 1 && data.result) {
-                                                token = data.result;
-                                            }
-
-                                            let url = home+'compid='+global.companyBaseID+'&user_token='+token+'&boss_id='+boss_id;
-
-                                            this.props.callBack(
-                                                {name: 'WebScene', component: WebScene, params: {webUrl:url,title:'新用户福利'}}
-                                            );
-                                        });
-                                    }else {
-                                        this.props.showToast('获取用户信息失败');
-                                    }
-
-                                });
+                    StorageUtil.mSetItem(storageKeyNames.ACTIVITY_ALTER+contentData.id,contentData.end_time);
+                    if(contentData.general_url!='')
+                    {
+                        let home = contentData.general_url;
+                        StorageUtil.mGetItem(storageKeyNames.TOKEN, (data) => {
+                            let token = '';
+                            if (data.code === 1 && data.result) {
+                                token = data.result;
                             }
-                        }
 
-                    });
+                            let url = home+'&user_token='+token;
+                            this.props.callBack(
+                                {name: 'WebScene', component: WebScene, params: {webUrl:url,title:'活动'}}
+                                    );
+                        });
 
 
+                    }else {
+                        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT,(resData)=>{
+                            if(resData.result){
+                                let data = JSON.parse(resData.result);
+                                if(data.is_done_credit!='1'){
+                                    // 已授信
+                                    // let home = Urls.OLD_USER_ACTIVITY_INVITE;
+                                    let home = contentData.old_url;
+                                    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
+                                        if (userData.code === 1 && userData.result) {
+                                            let boss_id = JSON.parse(userData.result).boss_id;
+                                            StorageUtil.mGetItem(storageKeyNames.TOKEN, (data) => {
+                                                let token = '';
+                                                if (data.code === 1 && data.result) {
+                                                    token = data.result;
+                                                }
+
+                                                let url = home+'compid='+global.companyBaseID+'&user_token='+token+'&boss_id='+boss_id;
+
+                                                this.props.callBack(
+                                                    {name: 'WebScene', component: WebScene, params: {webUrl:url,title:'老用户福利'}}
+                                                );
+                                            });
+                                        }else {
+                                            this.props.showToast('获取用户信息失败');
+                                        }
+
+                                    });
+
+                                }else {
+                                    // 未授信
+                                    // let home = Urls.NEW_USER_ACTIVITY_INVITE;
+                                    let home = contentData.new_url;
+                                    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
+                                        if (userData.code === 1 && userData.result) {
+                                            let boss_id = JSON.parse(userData.result).boss_id;
+                                            StorageUtil.mGetItem(storageKeyNames.TOKEN, (data) => {
+                                                let token = '';
+                                                if (data.code === 1 && data.result) {
+                                                    token = data.result;
+                                                }
+
+                                                let url = home+'compid='+global.companyBaseID+'&user_token='+token+'&boss_id='+boss_id;
+
+                                                this.props.callBack(
+                                                    {name: 'WebScene', component: WebScene, params: {webUrl:url,title:'新用户福利'}}
+                                                );
+                                            });
+                                        }else {
+                                            this.props.showToast('获取用户信息失败');
+                                        }
+
+                                    });
+                                }
+                            }
+
+                        });
+                    }
                 } else {
                     this.props.showLoginModal();
                 }
