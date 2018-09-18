@@ -302,10 +302,7 @@ export default class HomeScene extends BaseComponet {
 
                         if (urls == 'https://gatewayapi.dycd.com/suishouji') {
                             this.suishouji(urls);
-                        }else if(urls == 'userActivityInvite'){
-                            this.ActivityView && this.ActivityView.setVisible(true);
-                        }
-                        else {
+                        }else {
                             this.props.callBack(
                                 {name: 'WebScene', component: WebScene, params: {webUrl:urls}}
                             );
