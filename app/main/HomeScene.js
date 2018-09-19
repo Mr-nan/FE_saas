@@ -466,7 +466,7 @@ export default class HomeScene extends BaseComponet {
                     this.getCarData(6);
                     this.getCarSubscriptionData(5);
                     this.getCarSubscriptionData(7);
-                    this.getActivityData();
+                    // this.getActivityData();
                     status = response.mjson.data.carList.pageCount;
                 },
                 (error) => {
@@ -651,7 +651,7 @@ export default class HomeScene extends BaseComponet {
                     }
                 />
                 <AuthenticationModal ref="authenmodal"/>
-                <ActivityView ref={(ref)=>{this.ActivityView = ref}} click={this.activityViewClick}/>
+                {/*<ActivityView ref={(ref)=>{this.ActivityView = ref}} click={this.activityViewClick}/>*/}
             </View>
         )
     }

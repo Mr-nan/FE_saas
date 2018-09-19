@@ -108,7 +108,6 @@ export default class WebScene extends BaseComponent {
                     onLoadEnd={() => {
                         this.refs.webviewtitle.lastProgress();
                     }}
-                    onMessage={(event)=>{this.onMessage(event.nativeEvent.data)}}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
                 <ZNSharedView ref={(ref)=>{this.sharedView=ref}} sharedFaultAction={(msg)=>{this.props.showToast(msg)}}/>
