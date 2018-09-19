@@ -141,10 +141,10 @@ export default class  NewLoginScreen extends BaseComponent{
                                 <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30, backgroundColor:'transparent',marginBottom:Pixel.getPixel(15)}}>登录</Text>
                             </Image>
                         </TouchableOpacity>
-                        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',marginTop:Pixel.getPixel(34)}}>
-                            <Image source={require('../../images/login/dengpaotishi.png')}/>
-                            <Text style={{backgroundColor:'transparent',marginLeft:Pixel.getPixel(8), fontSize:fontAndColor.FONTSIZE13,color:fontAndColor.COLORC3}}>登录认证后即可将免息券存入口袋</Text>
-                        </View>
+                        {/*<View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',marginTop:Pixel.getPixel(34)}}>*/}
+                            {/*<Image source={require('../../images/login/dengpaotishi.png')}/>*/}
+                            {/*<Text style={{backgroundColor:'transparent',marginLeft:Pixel.getPixel(8), fontSize:fontAndColor.FONTSIZE13,color:fontAndColor.COLORC3}}>登录认证后即可将免息券存入口袋</Text>*/}
+                        {/*</View>*/}
                     </View>
                     <TouchableOpacity style={{width:Pixel.getPixel(19),height:Pixel.getPixel(19),right:Pixel.getPixel(23),top:Pixel.getTitlePixel(38),position:'absolute'}}
                                       onPress={()=>{
@@ -433,14 +433,14 @@ class  ZNSelectButton extends Component{
     render(){
         return(
             <View style={{flexDirection:'row'}}>
-                <View style={{paddingVertical:Pixel.getPixel(12),marginRight:Pixel.getPixel(73),borderBottomWidth: this.selectType==0?Pixel.getPixel(2):0,borderBottomColor:fontAndColor.COLORC0}}>
+                <View style={{paddingVertical:Pixel.getPixel(12),marginRight:Pixel.getPixel(73),borderBottomWidth: this.selectType==0?Pixel.getPixel(2):0,borderBottomColor:fontAndColor.COLORB0}}>
                     <Text style={{fontSize:fontAndColor.FONTSIZE18,
                         color:this.selectType==0?fontAndColor.COLORA0:fontAndColor.COLORA1,
                         backgroundColor:'transparent'}} onPress={()=>{
                         this.click(0);
                     }}>短信登录</Text>
                 </View>
-                <View style={{paddingVertical:Pixel.getPixel(12),borderBottomWidth: this.selectType==1?Pixel.getPixel(2):0,borderBottomColor:fontAndColor.COLORC0}}>
+                <View style={{paddingVertical:Pixel.getPixel(12),borderBottomWidth: this.selectType==1?Pixel.getPixel(2):0,borderBottomColor:fontAndColor.COLORB0}}>
                     <Text style={{fontSize:fontAndColor.FONTSIZE18,
                         color:this.selectType==1?fontAndColor.COLORA0:fontAndColor.COLORA1,
                         backgroundColor:'transparent'}} onPress={()=>{
