@@ -11,11 +11,8 @@ export const NAVIGATORFONT34 = 17;
 export const FONTSIZE16 = 16;
 export const BUTTONFONT30 = 15;
 export const LITTLEFONT28 = 14;
-<<<<<<< HEAD
 export const FONTSIZE13 = 13;
-=======
 export const LITTLEFONT26 = 13;
->>>>>>> develop
 export const CONTENTFONT24 = 12;
 export const MARKFONT22 = 11;
 
