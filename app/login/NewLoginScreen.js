@@ -17,6 +17,7 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
     Platform,
+    NativeModules,
 
 } from 'react-native';
 
@@ -83,7 +84,7 @@ export default class  NewLoginScreen extends BaseComponent{
                             this.loginType = type;
                             this.scrollView.scrollTo({x:type *width, y:0, animated: true});
                         }}/>
-                        <View style={{height:Pixel.getPixel(100),marginTop:Pixel.getPixel(30)}}>
+                        <View style={{height:Pixel.getPixel(102),marginTop:Pixel.getPixel(30)}}>
                             <ScrollView ref={(ref)=>{this.scrollView = ref}}
                                         showsHorizontalScrollIndicator={false}
                                         showsVerticalScrollIndicator={false}
@@ -466,9 +467,9 @@ const styles = StyleSheet.create({
     },
     headImage:{
         position:'absolute',
-        width:Pixel.getPixel(95),
-        height:Pixel.getPixel(95),
-        left:(width - Pixel.getPixel(95))/2,
+        width:Pixel.getPixel(100),
+        height:Pixel.getPixel(100),
+        left:(width - Pixel.getPixel(100))/2,
         alignItems:'center',
         justifyContent:'center',
         backgroundColor:'transparent',
