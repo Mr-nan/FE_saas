@@ -101,12 +101,7 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
         textAlign: 'center',
         backgroundColor: 'transparent',
-<<<<<<< HEAD
-        // backgroundColor:'red',
-        marginLeft:Pixel.getPixel(20)
-=======
         marginLeft: Pixel.getPixel(12),
->>>>>>> develop
 
     },
     imageFoot: {
