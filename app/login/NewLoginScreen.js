@@ -186,7 +186,6 @@ export default class  NewLoginScreen extends BaseComponent{
 
     startAnimation(){
 
-        console.log('开始动画');
         if(this.isStart) return;
         this.isStart = true;
         this.isShowLogin = true;
@@ -203,7 +202,6 @@ export default class  NewLoginScreen extends BaseComponent{
     }
     stopAnimation(errorAction){
 
-        console.log('结束动画');
         this.isStart = false;
         this.isShowLogin = false;
         this.state.bounceValue.setValue(1);
@@ -293,8 +291,6 @@ export default class  NewLoginScreen extends BaseComponent{
     }
 
     startLogin=()=>{
-        console.log('开始登录');
-
         let params = {};
 
         if(this.loginType==0){
