@@ -54,6 +54,7 @@ import GetPermissionUtil from '../utils/GetPermissionUtil';
 import BaseComponent from '../component/BaseComponent';
 import List from "../mine/myOrder/orderwuliu/list/List";
 import CredictManageScene from "../mine/kuaisushouxin/CredictManageScene";
+import CarSuperviseListScreen from "../mine/carSupervise/CarSuperviseListScreen";
 
 var Pixel = new PixelUtil();
 
@@ -388,6 +389,12 @@ export default class MineScene extends BaseComponent {
         } else if (id == 67) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/supervision_fee.png'),
+                "name": name
+                , "id": id
+            },);
+        }else if (id == 80) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/jie-icon.png'),
                 "name": name
                 , "id": id
             },);
@@ -779,6 +786,10 @@ export default class MineScene extends BaseComponent {
             case 76:
                 this.navigatorParams.name = 'List'
                 this.navigatorParams.component = List
+                break;
+            case 80:
+                this.navigatorParams.name = 'CarSuperviseListScreen'
+                this.navigatorParams.component = CarSuperviseListScreen
                 break;
         }
         this.props.callBack(this.navigatorParams);

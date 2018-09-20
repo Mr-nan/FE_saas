@@ -59,11 +59,18 @@ export default class CarInfoNavigationView extends Component {
         return (
             <View style={[styles.navigation,wrapStyle,this.state.navigationBackgroundColor && {backgroundColor:this.state.navigationBackgroundColor}]}>
                 <View style={styles.content}>
-                     <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
+                    <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
                                       onPress={backIconClick}>
+<<<<<<< HEAD
                     {backIconClick && <Image style={styles.backIcon} source={wrapStyle? (wrapStyle.backgroundColor=='white'?require('../../images/mainImage/fan.png'):require('../../images/mainImage/navigatorBack.png')):require('../../images/mainImage/navigatorBack.png')}/>}
                      </TouchableOpacity>
                     <Text allowFontScaling={false}  style={[styles.titleText,titleStyle,this.state.navigationTitleColor && {color:this.state.navigationTitleColor}]}>{this.state.title}</Text>
+=======
+                    {backIconClick && <Image style={styles.backIcon}  source={ wrapStyle?(wrapStyle.backgroundColor=='white'? require('../../images/mainImage/fan.png'):require('../../images/mainImage/navigatorBack.png')):require('../../images/mainImage/navigatorBack.png')}/>}
+                     </TouchableOpacity>
+                    <Text allowFontScaling={false}  style={[styles.titleText,titleStyle,this.state.navigationTitleColor && {color:this.state.navigationTitleColor}]}>{title}</Text>
+
+>>>>>>> develop
                     <View style={styles.imageFoot}>
                         {
                             renderRihtFootView && renderRihtFootView()
@@ -101,8 +108,12 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
         textAlign: 'center',
         backgroundColor: 'transparent',
+<<<<<<< HEAD
         // backgroundColor:'red',
         marginLeft:Pixel.getPixel(20)
+=======
+        marginLeft: Pixel.getPixel(12),
+>>>>>>> develop
 
     },
     imageFoot: {

@@ -11,7 +11,11 @@ export const NAVIGATORFONT34 = 17;
 export const FONTSIZE16 = 16;
 export const BUTTONFONT30 = 15;
 export const LITTLEFONT28 = 14;
+<<<<<<< HEAD
 export const FONTSIZE13 = 13;
+=======
+export const LITTLEFONT26 = 13;
+>>>>>>> develop
 export const CONTENTFONT24 = 12;
 export const MARKFONT22 = 11;
 
@@ -20,6 +24,7 @@ export const COLORA1 = "#9e9e9e";
 export const COLORA2 = "#90a1b5";
 export const COLORA3 = "#f0eff5";
 export const COLORA4 = "#d8d8d8";
+export const COLORA5 = "#FF9C00";
 export const COLORB0 = "#05c5c2";
 export const COLORB1 = "#3ac87e";
 export const COLORB2 = "#fa5741";
