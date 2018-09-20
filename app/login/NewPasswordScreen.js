@@ -152,7 +152,7 @@ export default class NewPasswordScreen extends BaseComponent{
             return;
         }
 
-        if(this.noteCodeNumber<0){
+        if(this.noteCodeNumber.length<=0){
             this.props.showToast('请输入短信验证码');
             return;
         }
