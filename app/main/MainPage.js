@@ -622,7 +622,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         width: width, height: height,
-        paddingBottom: 0,
+        paddingBottom: Pixel.getBottomPixel(0),
     },
     img: {
 
