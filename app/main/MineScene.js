@@ -937,7 +937,6 @@ export default class MineScene extends BaseComponent {
 
     _renderHeader = () => {
         return (
-            <View style={{width:width}}>
                 <Image style={styles.headerViewStyle} source={require('../../images/mine/bg.png')}>
                     <Image style={{width:Pixel.getPixel(62),height:Pixel.getPixel(69),marginLeft:Pixel.getPixel(21)}} source={require('../../images/mine/xiaoren.png')}/>
                     <View style={{marginLeft:Pixel.getPixel(21),justifyContent:'space-between',height:Pixel.getPixel(80)}}>
@@ -965,74 +964,9 @@ export default class MineScene extends BaseComponent {
                     })}}>
                     <View style={{width:Pixel.getPixel(95),height:Pixel.getPixel(28),borderRadius:Pixel.getPixel(14),backgroundColor:'rgba(0,0,0,0.3)',justifyContent:'center',}}>
                         <Text style={{color:'white', fontSize:Pixel.getPixel(13),marginLeft:Pixel.getPixel(16),marginRight:Pixel.getPixel(7)}}>去认证</Text>
-                        <Image source={require()}/>
                     </View>
                     </TouchableOpacity>
                 </Image>
-                {this.renzhengData.RenZhengVisiable != '222' ? null : <View
-                        style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-
-                        <TouchableOpacity onPress={() => {
-                        if(this.renzhengData.personRenZheng == 2 || this.renzhengData.personRenZheng == 1){
-                            //0-> 未审核 1->审核中 2->通过  3->未通过
-
-                        }else {
-                            this._gerenrenzheng();
-                        }
-                    }} activeOpacity={0.8}
-                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-                            <Image
-                                source={this.renzhengData.personRenZheng == 2  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
-                                style={{
-                                width: Pixel.getPixel(27),
-                                height: Pixel.getPixel(20),
-                                resizeMode: 'stretch',
-                                marginLeft:Pixel.getPixel(37)
-                            }}
-                            />
-                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
-
-                                <Text allowFontScaling={false}
-                                      style={{color:this.mColor[this.renzhengData.personRenZheng]}}
-
-                                >
-                                    {this._getRenZhengResult(this.renzhengData.personRenZheng)}
-
-                                </Text>
-                            </Text>
-                        </TouchableOpacity>
-
-                        <Image source={require('../../images/login/xuxian.png')}
-                               style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
-
-                        <TouchableOpacity onPress={() => {
-                        if(this.renzhengData.enterpriseRenZheng == 2  || this.renzhengData.enterpriseRenZheng == 1){
-                            //0-> 未审核 1->审核中 2->通过  3->未通过
-                        }else {
-                            this._qiyerenzheng();
-                        }
-                    }} activeOpacity={0.8}
-                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-                            <Image
-                                source={this.renzhengData.enterpriseRenZheng == 2  ? require('../../images/login/qiyeyirenzheng.png') : require('../../images/login/qiyeweirenzheng.png')}
-                                style={{
-                                width: Pixel.getPixel(27),
-                                height: Pixel.getPixel(20),
-                                resizeMode: 'stretch',
-                                marginLeft:Pixel.getPixel(37)
-                            }}
-                            />
-                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
-
-                                <Text allowFontScaling={false}
-                                      style={{color:this.mColor[this.renzhengData.enterpriseRenZheng]}}
-                                >
-                                    {this._getRenZhengResult(this.renzhengData.enterpriseRenZheng)}
-                                </Text>
-                            </Text>
-                        </TouchableOpacity>
-                    </View>}
-            </View>
         )
     }
 
@@ -1127,6 +1061,7 @@ const styles = StyleSheet.create({
         width: width,
         flexDirection:'row',
         alignItems:'center',
+        paddingTop:Pixel.getPixel(20)
     },
 
     headerNameStyle: {

@@ -167,7 +167,7 @@ export default class FinanceCreditApplyScene extends BaseComponent {
 
 				<View
 					style={{width:width,alignItems:'center',backgroundColor:'white',paddingBottom:Pixel.getPixel(20)}}>
-					<Text style={{color: 'black',fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34), lineHeight:24,marginTop:Pixel.getPixel(11),marginTop:Pixel.getPixel(20)}}>
+					<Text style={{color: 'black',fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34), lineHeight:24,marginTop:Pixel.getTitlePixel(20)}}>
 						金融
 					</Text>
 					{this.state.APPEAR ?

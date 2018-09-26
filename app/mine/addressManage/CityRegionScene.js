@@ -584,7 +584,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         position:'absolute',
         right:Pixel.getPixel(5),
-        bottom:0
+        bottom:Pixel.getBottomPixel(0),
     },
     rootDelImage:{
         height:Pixel.getPixel(16),
