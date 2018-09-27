@@ -7,9 +7,8 @@ import {
     TouchableHighlight
 } from 'react-native';
 var Platform = require('Platform');
-import RootScene from '../main/RootScene';
-// import RootScene from '../login/NewLoginScreen';
-// import RootScene from '../login/NewSetPasswordScreen';
+// import RootScene from '../main/RootScene';
+import RootScene from '../mine/certificateManage/CertificateManageScene';
 import {setAll} from '../constant/AllBackLogin';
 export default class MyNavigator extends Component {
     render() {

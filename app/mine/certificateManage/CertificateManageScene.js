@@ -23,6 +23,8 @@ import BaseComponent from '../../component/BaseComponent';
 import AllNavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
+import PersonCertificate from "./PersonCertificate";
+import EnterpriseCertificate from "./EnterpriseCertificate";
 
 
 const Pixel = new PixelUtil();
@@ -37,6 +39,7 @@ const Pixel = new PixelUtil();
          this.state = {
              statusStyle:'default'
          };
+
        }
 
 
@@ -53,8 +56,8 @@ const Pixel = new PixelUtil();
             <View style={styles.root}>
                 <StatusBar barStyle={this.state.statusStyle}/>
                 <ScrollView>
-                    <CertificateNullItem image ={require('../../../images/mine/geren-da.png')} title="申请个人认证"/>
-                    <CertificateNullItem image ={require('../../../images/mine/qiye-da.png')} title="申请企业认证"/>
+                    <CertificateNullItem image ={require('../../../images/mine/geren-da.png')} title="申请个人认证" click={this._gerenrenzheng}/>
+                    <CertificateNullItem image ={require('../../../images/mine/qiye-da.png')} title="申请企业认证" click={this._qiyerenzheng}/>
                     <CertificateItem image ={require('../../../images/mine/geren-da.png')} title="雪大胆" content="210404*********2430" type="已通过"/>
                     <CertificateItem image ={require('../../../images/mine/qiye-da.png')} title="申请企业认证"  content="实际控制人: 名称最多可以十六个字" type="审核中"/>
                 </ScrollView>
@@ -62,15 +65,56 @@ const Pixel = new PixelUtil();
             </View>
         )
     }
-}
+
+     _gerenrenzheng = () => {
+
+         this.toNextPage({
+             name:'PersonCertificate',
+             component:PersonCertificate,
+             params:{
+                 callBack:this.props.allRefresh,
+             }
+         });
+     };
+
+     _qiyerenzheng = () => {
+
+         this.toNextPage({
+             name:'EnterpriseCertificate',
+             component:EnterpriseCertificate,
+             params:{
+                 qiye_id:this.props.baseID,
+                 callBack:this.props.allRefresh,
+             }
+         });
+     };
+
+     _getRenZhengResult = (result) => {
+         let renzheng = '(未认证)';
+         if (result == 1) {
+             renzheng = '(审核中)';
+         }
+         if (result == 2) {
+             renzheng = '(已认证)';
+         }
+         if (result == 3) {
+             renzheng = '(未通过)';
+         }
+         return renzheng;
+
+     };
+
+ }
 
 class CertificateNullItem extends Component{
      render(){
          return(
+             <TouchableOpacity onPress={this.props.click}>
              <View style={styles.itme}>
                 <Image style={{width:Pixel.getPixel(26),height:Pixel.getPixel(26),marginRight:Pixel.getPixel(16)}} source={this.props.image}/>
-                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>{this.props.title}</Text>
+                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),marginTop:Pixel.getPixel(3)}}>{this.props.title}</Text>
              </View>
+             </TouchableOpacity>
          )
      }
 }
@@ -112,6 +156,10 @@ const styles = StyleSheet.create({
         width:width-Pixel.getPixel(30),
         borderRadius:Pixel.getPixel(5),
         marginTop:Pixel.getPixel(16),
-        flexDirection:'row'
+        flexDirection:'row',
+        shadowColor:'#e8eaf4',
+        shadowOffset:{width:0,height:Pixel.getPixel(5)},
+        shadowOpacity:0.3,
+        shadowRadius:2,
     }
 })

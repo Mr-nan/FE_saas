@@ -405,78 +405,26 @@ export default class MineScene extends BaseComponent {
         this.getUnpay_num();
         Car = [
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/zhanghuguanli.png'),
-                    //     "name": "账户管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/yuangongguanli.png'),
-                    //     "name": "员工管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/switchcompony.png'),
-                    //     "name": "切换公司"
-                    // },
-                ],
+                "cars": [],
                 "title": "section0"
             },
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
-                    //     "name": "优惠券管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/hetongguanli.png'),
-                    //     "name": "合同管理"
-                    // },
-                ],
+                "cars": [],
                 "title": "section1"
             },
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/myCarSource.png'),
-                    //     "name": "我的车源"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/my_order.png'),
-                    //     "name": "我的订单"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/shoucangjilu.png'),
-                    //     "name": "收藏记录"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/liulanlishi.png'),
-                    //     "name": "浏览历史"
-                    // },
-
-                ],
+                "cars": [],
                 "title": "section2"
             },
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/shezhi.png'),
-                    //     "name": "设置"
-                    // },
-                ],
+                "cars": [],
                 "title": "section3"
             },
             {
-                "cars": [
-                    {
-                        "icon": require('../../images/mainImage/shezhi.png'),
-                        "name": "blank"
-                    },
-                ],
+                "cars": [],
                 "title": "section3"
             },
         ]
-
-
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -493,6 +441,7 @@ export default class MineScene extends BaseComponent {
                         request(Urls.GETCHECKSTATUS, 'post', maps).then((response) => {
                             if (response.mycode == "1") {
                                 let dataResult = response.mjson.data;
+                                console.log('========',dataResult);
                                 this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
                                 this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
                                 this.toCompany();
@@ -815,7 +764,6 @@ export default class MineScene extends BaseComponent {
                 <TouchableOpacity style={styles.rowView} onPress={() => {
                     this._navigator(rowData)
                 }}>
-
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
                     <Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
@@ -947,10 +895,10 @@ export default class MineScene extends BaseComponent {
                             {componyname}
                         </Text>
                         <View style={{flexDirection:'row'}}>
-                            <View style={{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),backgroundColor:'rgba(0,0,0,0.7)'}}>
+                            <View style={{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),backgroundColor:'rgba(255,255,255,0.3)',borderWidth:StyleSheet.hairlineWidth,borderColor:'#3170d6'}}>
                                 <Text style={{color:'white', fontSize:Pixel.getPixel(13)}}>企业认证</Text>
                             </View>
-                            <View style={{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),backgroundColor:'rgba(0,0,0,0.7)',marginLeft:Pixel.getPixel(12)}}>
+                            <View style={{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),backgroundColor:'rgba(255,255,255,0.3)',marginLeft:Pixel.getPixel(12),borderWidth:StyleSheet.hairlineWidth,borderColor:'#3170d6'}}>
                                 <Text style={{color:'white', fontSize:Pixel.getPixel(13)}}>个人认证</Text>
                             </View>
                         </View>
@@ -959,11 +907,18 @@ export default class MineScene extends BaseComponent {
                         right:-Pixel.getPixel(15), position: 'absolute'}} onPress={()=>{this.props.callBack({
                         name:'CertificateManageScene',
                         component:CertificateManageScene,
-                        params:{}
+                        params:{
+                            allRefresh:this.allRefresh,
+                            baseID:BASE_ID[0],
+                        }
 
                     })}}>
-                    <View style={{width:Pixel.getPixel(95),height:Pixel.getPixel(28),borderRadius:Pixel.getPixel(14),backgroundColor:'rgba(0,0,0,0.3)',justifyContent:'center',}}>
+                    <View style={{width:Pixel.getPixel(95),height:Pixel.getPixel(28),borderRadius:Pixel.getPixel(14),backgroundColor:'rgba(0,0,0,0.3)',
+                        flexDirection:'row',
+                        alignItems:'center'
+                    }}>
                         <Text style={{color:'white', fontSize:Pixel.getPixel(13),marginLeft:Pixel.getPixel(16),marginRight:Pixel.getPixel(7)}}>去认证</Text>
+                        <Image source={require('../../images/mine/baise-jiantou.png')}/>
                     </View>
                     </TouchableOpacity>
                 </Image>
@@ -1012,7 +967,6 @@ export default class MineScene extends BaseComponent {
         this.navigatorParams.name = 'PersonCertificate'
         this.navigatorParams.component = PersonCertificate
         this.navigatorParams.params.callBack = this.allRefresh
-
         this.props.callBack(this.navigatorParams);
     };
 
@@ -1096,8 +1050,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
-        borderBottomColor: fontAndClolr.COLORA4,
-        borderBottomWidth: 1
+        borderBottomColor: '#E6E6E6',
+        borderBottomWidth: StyleSheet.hairlineWidth
     },
     rowLeftImage: {
         width: Pixel.getPixel(26),
