@@ -19,7 +19,7 @@ import NavigationBar from "../component/NavigationBar";
 import AllNavigationView from "../component/AllNavigationView";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import LoginScene from "./LoginScene";
+import LoginScene from "./NewLoginScreen";
 import AllSelectCompanyScene from "../main/AllSelectCompanyScene";
 
 let Pixel = new PixelUtil();

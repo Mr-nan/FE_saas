@@ -42,24 +42,52 @@ const Pixel = new PixelUtil();
 
        }
 
-
-
      componentWillUnmount(){
             this.setState({
                 statusStyle:'light-content'
-
             })
      }
 
     render(){
+
+        let  authData = this.props.authData;
         return(
             <View style={styles.root}>
                 <StatusBar barStyle={this.state.statusStyle}/>
                 <ScrollView>
-                    <CertificateNullItem image ={require('../../../images/mine/geren-da.png')} title="申请个人认证" click={this._gerenrenzheng}/>
-                    <CertificateNullItem image ={require('../../../images/mine/qiye-da.png')} title="申请企业认证" click={this._qiyerenzheng}/>
-                    <CertificateItem image ={require('../../../images/mine/geren-da.png')} title="雪大胆" content="210404*********2430" type="已通过"/>
-                    <CertificateItem image ={require('../../../images/mine/qiye-da.png')} title="申请企业认证"  content="实际控制人: 名称最多可以十六个字" type="审核中"/>
+                    {
+                        authData.person_auth==0?
+                            (
+                                <CertificateNullItem image ={require('../../../images/mine/geren-da.png')}
+                                                     title="申请个人认证" click={this._gerenrenzheng}/>
+                            )
+                            :
+                            (
+                                <CertificateItem numberOfLines={20}
+                                                 image ={require('../../../images/mine/geren-da.png')}
+                                                 title={authData.real_name}
+                                                 content={authData.idcard_number.substring(0,6)+'********'+authData.idcard_number.substring(14,authData.idcard_number.length)}
+                                                 type={this._getRenZhengResult(authData.person_auth)}/>
+                            )
+                    }
+
+                    {
+                        authData.enter_auth ==0?
+                            (
+                                <CertificateNullItem image ={require('../../../images/mine/qiye-da.png')}
+                                                     title="申请企业认证" click={this._qiyerenzheng}/>
+
+                            )
+                            :
+                            (
+                                <CertificateItem  numberOfLines={16}
+                                                  image ={require('../../../images/mine/qiye-da.png')}
+                                                  title={authData.enterprise_name}
+                                                  content={'实际控制人：'+authData.real_name}
+                                                  type={this._getRenZhengResult(authData.enter_auth)}/>
+                            )
+                    }
+
                 </ScrollView>
                 <AllNavigationView title="用户认证" backIconClick={this.backPage} wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
             </View>
@@ -90,18 +118,17 @@ const Pixel = new PixelUtil();
      };
 
      _getRenZhengResult = (result) => {
-         let renzheng = '(未认证)';
+
          if (result == 1) {
-             renzheng = '(审核中)';
+             renzheng = '审核中';
          }
          if (result == 2) {
-             renzheng = '(已认证)';
+             renzheng = '已认证';
          }
          if (result == 3) {
-             renzheng = '(未通过)';
+             renzheng = '未通过';
          }
          return renzheng;
-
      };
 
  }
@@ -127,7 +154,7 @@ class CertificateItem extends Component{
                      <Image style={{width:Pixel.getPixel(17),height:Pixel.getPixel(17),marginRight:Pixel.getPixel(6)}} source={this.props.image}/>
                      <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>{this.props.title}</Text>
                  </View>
-                 <Text style={{color:'#999999', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(15),marginLeft:Pixel.getPixel(28)}}>{this.props.content}</Text>
+                 <Text style={{color:'#999999', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(15),marginLeft:Pixel.getPixel(28)}} numberOfLines={this.props.numberOfLines}>{this.props.content}</Text>
                  <View style={{height:Pixel.getPixel(20),borderRadius:Pixel.getPixel(10),paddingHorizontal:Pixel.getPixel(8),
                      alignItems:'center',justifyContent:'center',backgroundColor:'#FFD2CB',
                      top:Pixel.getPixel(19),right:Pixel.getPixel(15),position: 'absolute',

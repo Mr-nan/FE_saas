@@ -436,14 +436,13 @@ export default class MineScene extends BaseComponent {
                     if (data2.code == 1 && data2.result != null) {
                         BASE_ID.push(data2.result)
                         let maps = {
-                            base_id: BASE_ID,
+                            enterprise_id: BASE_ID,
                         };
-                        request(Urls.GETCHECKSTATUS, 'post', maps).then((response) => {
+                        request(Urls.NEW_AUTH, 'post', maps).then((response) => {
                             if (response.mycode == "1") {
-                                let dataResult = response.mjson.data;
-                                console.log('========',dataResult);
-                                this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
-                                this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
+                                this.authData = response.mjson.data;
+                                this.renzhengData.enterpriseRenZheng = this.authData.enter_auth;
+                                this.renzhengData.personRenZheng = this.authData.person_auth;
                                 this.toCompany();
                             } else {
                                 this.setState({
@@ -452,7 +451,7 @@ export default class MineScene extends BaseComponent {
                                 });
                             }
                         }, (error) => {
-                            this.props.showToast(error.msg);
+                            this.props.showToast(error.mjson.msg);
                             this.setState({
                                 renderPlaceholderOnly: 'error',
                                 isRefreshing: false
@@ -895,12 +894,22 @@ export default class MineScene extends BaseComponent {
                             {componyname}
                         </Text>
                         <View style={{flexDirection:'row'}}>
-                            <View style={{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),backgroundColor:'rgba(255,255,255,0.3)',borderWidth:StyleSheet.hairlineWidth,borderColor:'#3170d6'}}>
+                            {
+                                this.renzhengData.enterpriseRenZheng ==2  && (
+                                <View style={{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),backgroundColor:'rgba(255,255,255,0.3)',borderWidth:StyleSheet.hairlineWidth,borderColor:'#3170d6'}}>
                                 <Text style={{color:'white', fontSize:Pixel.getPixel(13)}}>企业认证</Text>
-                            </View>
-                            <View style={{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),backgroundColor:'rgba(255,255,255,0.3)',marginLeft:Pixel.getPixel(12),borderWidth:StyleSheet.hairlineWidth,borderColor:'#3170d6'}}>
-                                <Text style={{color:'white', fontSize:Pixel.getPixel(13)}}>个人认证</Text>
-                            </View>
+                                </View>
+                                )
+                            }
+                            {
+                                this.renzhengData.personRenZheng ==2 &&(
+                                    <View style={[{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),
+                                        backgroundColor:'rgba(255,255,255,0.3)',borderWidth:StyleSheet.hairlineWidth,borderColor:'#3170d6'},this.renzhengData.enterpriseRenZheng ==2 && {marginLeft:Pixel.getPixel(12)}]}>
+                                        <Text style={{color:'white', fontSize:Pixel.getPixel(13)}}>个人认证</Text>
+                                    </View>
+                                )
+                            }
+
                         </View>
                     </View>
                     <TouchableOpacity style={{top:Pixel.getPixel(58),
@@ -910,6 +919,7 @@ export default class MineScene extends BaseComponent {
                         params:{
                             allRefresh:this.allRefresh,
                             baseID:BASE_ID[0],
+                            authData:this.authData,
                         }
 
                     })}}>
