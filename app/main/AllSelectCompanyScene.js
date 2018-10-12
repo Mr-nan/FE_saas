@@ -34,20 +34,20 @@ import {observer} from 'mobx-react';
 const IS_ANDROID = Platform.OS === 'android';
 
 
-@observer
 export  default class AllSelectCompanyScene extends BaseComponent {
 
-    @observable currentBaseID
 
     constructor(props) {
         super(props);
-        // 初始状态
+
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 == r2});
+
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: [],
+            source: ds.cloneWithRows([]),
             barStyle:'dark-content',
+            currentBaseID:this.props.currentBaseID,
         };
-        this.currentBaseID = this.props.currentBaseID;
 
     }
 
@@ -77,19 +77,20 @@ export  default class AllSelectCompanyScene extends BaseComponent {
                 };
                 request(Urls.FINANCE, 'Post', maps)
                     .then((response) => {
-                            if(response.mjson.data==null||response.mjson.data.length<=0){
+
+                            this.data  = response.mjson.data;
+                            if(this.data==null||this.data.length<=0){
                                 this.setState({
                                     renderPlaceholderOnly: 'null',
                                 });
                             }
-                            else if(response.mjson.data.length==1){
-                                this.setLoanOne(response.mjson.data[0]);
+                            else if(this.data.length==1){
+                                this.setLoanOne(this.data[0]);
                             }
                             else{
-                                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                                 this.setState({
                                     renderPlaceholderOnly: 'success',
-                                    source: ds.cloneWithRows(response.mjson.data)
+                                    source: this.state.source.cloneWithRows(this.data)
                                 });
                             }
 
@@ -219,7 +220,11 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
     setLoan = (movie) => {
 
-        this.currentBaseID = movie.company_base_id;
+        this.setState({
+            source: this.state.source.cloneWithRows(this.data),
+            currentBaseID:movie.company_base_id
+        });
+
         global.companyBaseID = movie.company_base_id;
         global.ISCOMPANY = movie.iscompany;
 	    global.MERGE_ID = movie.merge_id;
@@ -290,7 +295,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
 
         return (
-            <CertificateItem movie={movie} click={()=>{ this.setLoan(movie);}} userData ={this.userData} currentBaseID={this.currentBaseID}/>
+            <CertificateItem movie={movie} click={()=>{ this.setLoan(movie);}} userData ={this.userData} currentBaseID={this.state.currentBaseID}/>
         )
     }
 
@@ -315,16 +320,9 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
 }
 
-@observer
 class CertificateItem extends Component{
 
 
-     @observable currentBaseID
-      constructor(props) {
-        super(props);
-        // 初始状态
-        this.currentBaseID = this.props.currentBaseID;
-      }
 
     render(){
 
@@ -347,13 +345,16 @@ class CertificateItem extends Component{
         }
 
         return(
-            <TouchableOpacity activeOpacity={0.8} onPress={this.props.click} style={{width:width, alignItems:'center'}}>
+            <TouchableOpacity activeOpacity={0.8} onPress={()=>{
+                this.props.click();
+
+            }} style={{width:width, alignItems:'center'}}>
                 <View style={[styles.itme,{alignItems:'flex-start',flexDirection:'column'}]}>
                     <View style={{marginLeft:Pixel.getPixel(28), flexDirection:'row',alignItems:'center'}}>
                         <Image style={{width:Pixel.getPixel(17),height:Pixel.getPixel(17),marginRight:Pixel.getPixel(6)}} source={image}/>
                         <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>{title}</Text>
                     </View>
-                    <Text style={{color:'#999999', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(15),marginLeft:Pixel.getPixel(28)}} numberOfLines={numberOfLines}>{content}</Text>
+                    <Text style={{color:'#999999', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(15),marginLeft:Pixel.getPixel(28)}} numberOfLines={1} >{content}</Text>
                     {
                         movie.is_done_credit == '1' ?(
                                 <Image style={{alignItems:'center',marginTop:Pixel.getPixel(13),justifyContent:'center',width:Pixel.getPixel(117),height:Pixel.getPixel(16.5),marginLeft:Pixel.getPixel(28)}} source={require('../../images/login/edu.png')}>
@@ -374,19 +375,8 @@ class CertificateItem extends Component{
                     top: Pixel.getPixel(54),right:Pixel.getPixel(15),position: 'absolute',
                     width:Pixel.getPixel(40),
                 }}>
-                    {
-                        this.currentBaseID?
-                            (
-                                <Image style={{width: Pixel.getPixel(29), height: Pixel.getPixel(29)}}
-                                                         source={this.currentBaseID== movie.company_base_id? require('../../images/mine/xuanzhong.png'):require('../../images/mine/weixuanzhong.png')}/>
-                            )
-                            :
-                            (
-                                <Image style={{width: Pixel.getPixel(12), height: Pixel.getPixel(12)}}
-                                                            source={require('../../images/mainImage/celljiantou.png')}/>
-                            )
-                    }
-
+                    <Image style={{width: Pixel.getPixel(29), height: Pixel.getPixel(29)}}
+                           source={this.props.currentBaseID== movie.company_base_id? require('../../images/mine/xuanzhong.png'):require('../../images/mine/weixuanzhong.png')}/>
                 </View>
             </TouchableOpacity>
         )
