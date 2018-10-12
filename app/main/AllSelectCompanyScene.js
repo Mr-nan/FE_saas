@@ -29,11 +29,15 @@ import BaseComponent from '../component/BaseComponent';
 import MainPage from './MainPage';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
+import {observable} from 'mobx';
+import {observer} from 'mobx-react';
 const IS_ANDROID = Platform.OS === 'android';
 
 
-
+@observer
 export  default class AllSelectCompanyScene extends BaseComponent {
+
+    @observable currentBaseID
 
     constructor(props) {
         super(props);
@@ -42,8 +46,9 @@ export  default class AllSelectCompanyScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             source: [],
             barStyle:'dark-content',
-            currentBaseID:this.props.currentBaseID,
         };
+        this.currentBaseID = this.props.currentBaseID;
+
     }
 
     initFinish = () => {
@@ -214,7 +219,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
     setLoan = (movie) => {
 
-        this.setState({currentBaseID:movie.company_base_id});
+        this.currentBaseID = movie.company_base_id;
         global.companyBaseID = movie.company_base_id;
         global.ISCOMPANY = movie.iscompany;
 	    global.MERGE_ID = movie.merge_id;
@@ -285,7 +290,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
 
         return (
-            <CertificateItem movie={movie} click={()=>{ this.setLoan(movie);}} userData ={this.userData} currentBaseID={this.state.currentBaseID}/>
+            <CertificateItem movie={movie} click={()=>{ this.setLoan(movie);}} userData ={this.userData} currentBaseID={this.currentBaseID}/>
         )
     }
 
@@ -310,9 +315,19 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
 }
 
+@observer
 class CertificateItem extends Component{
 
+
+     @observable currentBaseID
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.currentBaseID = this.props.currentBaseID;
+      }
+
     render(){
+
         let  movie = this.props.movie;
         let image = require('../../images/mine/qiye-da.png');
         let title =movie.companyname;
@@ -360,10 +375,10 @@ class CertificateItem extends Component{
                     width:Pixel.getPixel(40),
                 }}>
                     {
-                        this.props.currentBaseID?
+                        this.currentBaseID?
                             (
                                 <Image style={{width: Pixel.getPixel(29), height: Pixel.getPixel(29)}}
-                                                         source={this.props.currentBaseID== movie.company_base_id? require('../../images/mine/xuanzhong.png'):require('../../images/mine/weixuanzhong.png')}/>
+                                                         source={this.currentBaseID== movie.company_base_id? require('../../images/mine/xuanzhong.png'):require('../../images/mine/weixuanzhong.png')}/>
                             )
                             :
                             (

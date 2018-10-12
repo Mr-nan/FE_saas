@@ -176,13 +176,6 @@ export default class MineScene extends BaseComponent {
                 }],
             };
 
-            this.mColor = {
-                //0-> 未审核 1->审核中 2->通过  3->未通过
-                0: 'gray',
-                1: 'black',
-                2: 'black',
-                3: 'red'
-            }
             this.getData();
         });
 
@@ -912,25 +905,30 @@ export default class MineScene extends BaseComponent {
 
                         </View>
                     </View>
-                    <TouchableOpacity style={{top:Pixel.getPixel(58),
-                        right:-Pixel.getPixel(15), position: 'absolute'}} onPress={()=>{this.props.callBack({
-                        name:'CertificateManageScene',
-                        component:CertificateManageScene,
-                        params:{
-                            allRefresh:this.allRefresh,
-                            baseID:BASE_ID[0],
-                            authData:this.authData,
-                        }
+                    {
+                        this.renzhengData.RenZhengVisiable && (
+                            <TouchableOpacity style={{top:Pixel.getPixel(58),
+                                right:-Pixel.getPixel(15), position: 'absolute'}} onPress={()=>{this.props.callBack({
+                                name:'CertificateManageScene',
+                                component:CertificateManageScene,
+                                params:{
+                                    allRefresh:this.allRefresh,
+                                    baseID:BASE_ID[0],
+                                    authData:this.authData,
+                                }
 
-                    })}}>
-                    <View style={{width:Pixel.getPixel(95),height:Pixel.getPixel(28),borderRadius:Pixel.getPixel(14),backgroundColor:'rgba(0,0,0,0.3)',
-                        flexDirection:'row',
-                        alignItems:'center'
-                    }}>
-                        <Text style={{color:'white', fontSize:Pixel.getPixel(13),marginLeft:Pixel.getPixel(16),marginRight:Pixel.getPixel(7)}}>去认证</Text>
-                        <Image source={require('../../images/mine/baise-jiantou.png')}/>
-                    </View>
-                    </TouchableOpacity>
+                            })}}>
+                                <View style={{width:Pixel.getPixel(95),height:Pixel.getPixel(28),borderRadius:Pixel.getPixel(14),backgroundColor:'rgba(0,0,0,0.3)',
+                                    flexDirection:'row',
+                                    alignItems:'center'
+                                }}>
+                                    <Text style={{color:'white', fontSize:Pixel.getPixel(13),marginLeft:Pixel.getPixel(16),marginRight:Pixel.getPixel(7)}}>去认证</Text>
+                                    <Image source={require('../../images/mine/baise-jiantou.png')}/>
+                                </View>
+                            </TouchableOpacity>
+                        )
+                    }
+
                 </Image>
         )
     }
