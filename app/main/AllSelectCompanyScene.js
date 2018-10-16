@@ -330,7 +330,6 @@ class CertificateItem extends Component{
         let image = require('../../images/mine/qiye-da.png');
         let title =movie.companyname;
         let content = '实际控制人：'+ movie.name;
-        let numberOfLines = 16;
 
         if(movie.role_type instanceof Array){
             for(let item of movie.role_type){
@@ -338,7 +337,6 @@ class CertificateItem extends Component{
                     image = require('../../images/mine/geren-da.png');
                     title =this.props.userData.real_name;
                     content = this.props.userData.idcard_number.substring(0,6)+'********'+this.props.userData.idcard_number.substring(14,this.props.userData.idcard_number.length);
-                    numberOfLines=20;
                     break;
                 }
             }
@@ -352,9 +350,9 @@ class CertificateItem extends Component{
                 <View style={[styles.itme,{alignItems:'flex-start',flexDirection:'column'}]}>
                     <View style={{marginLeft:Pixel.getPixel(28), flexDirection:'row',alignItems:'center'}}>
                         <Image style={{width:Pixel.getPixel(17),height:Pixel.getPixel(17),marginRight:Pixel.getPixel(6)}} source={image}/>
-                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>{title}</Text>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),width:width-Pixel.getPixel(98)}} numberOfLines={1}>{title}</Text>
                     </View>
-                    <Text style={{color:'#999999', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(15),marginLeft:Pixel.getPixel(28)}} numberOfLines={1} >{content}</Text>
+                    <Text style={{color:'#999999', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(15),marginLeft:Pixel.getPixel(28),width:width-Pixel.getPixel(108)}} numberOfLines={1} >{content}</Text>
                     {
                         movie.is_done_credit == '1' ?(
                                 <Image style={{alignItems:'center',marginTop:Pixel.getPixel(13),justifyContent:'center',width:Pixel.getPixel(117),height:Pixel.getPixel(16.5),marginLeft:Pixel.getPixel(28)}} source={require('../../images/login/edu.png')}>
@@ -369,14 +367,18 @@ class CertificateItem extends Component{
                                 </View>
                             )
                     }
-                </View>
-                <View style={{height:Pixel.getPixel(40),
-                    alignItems:'center',justifyContent:'center',
-                    top: Pixel.getPixel(54),right:Pixel.getPixel(15),position: 'absolute',
-                    width:Pixel.getPixel(40),
-                }}>
-                    <Image style={{width: Pixel.getPixel(29), height: Pixel.getPixel(29)}}
-                           source={this.props.currentBaseID== movie.company_base_id? require('../../images/mine/xuanzhong.png'):require('../../images/mine/weixuanzhong.png')}/>
+                    <View style={{
+                        height:Pixel.getPixel(30),
+                        alignItems:'center',
+                        justifyContent:'center',
+                        top: Pixel.getPixel(34),
+                        right:Pixel.getPixel(15),
+                        position: 'absolute',
+                        width:Pixel.getPixel(30),
+                    }}>
+                        <Image style={{width: Pixel.getPixel(29), height: Pixel.getPixel(29)}}
+                               source={this.props.currentBaseID== movie.company_base_id? require('../../images/mine/xuanzhong.png'):require('../../images/mine/weixuanzhong.png')}/>
+                    </View>
                 </View>
             </TouchableOpacity>
         )

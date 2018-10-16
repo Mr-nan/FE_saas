@@ -63,7 +63,7 @@ const Pixel = new PixelUtil();
                             )
                             :
                             (
-                                <CertificateItem numberOfLines={20}
+                                <CertificateItem
                                                  image ={require('../../../images/mine/geren-da.png')}
                                                  title={authData.real_name}
                                                  content={authData.idcard_number.substring(0,6)+'********'+authData.idcard_number.substring(14,authData.idcard_number.length)}
@@ -80,7 +80,7 @@ const Pixel = new PixelUtil();
                             )
                             :
                             (
-                                <CertificateItem  numberOfLines={16}
+                                <CertificateItem
                                                   image ={require('../../../images/mine/qiye-da.png')}
                                                   title={authData.enterprise_name}
                                                   content={'实际控制人：'+authData.real_name}
@@ -139,7 +139,7 @@ class CertificateNullItem extends Component{
              <TouchableOpacity onPress={this.props.click}>
              <View style={styles.itme}>
                 <Image style={{width:Pixel.getPixel(26),height:Pixel.getPixel(26),marginRight:Pixel.getPixel(16)}} source={this.props.image}/>
-                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),marginTop:Pixel.getPixel(3)}}>{this.props.title}</Text>
+                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),marginTop:Pixel.getPixel(3)}} numberOfLines={1}>{this.props.title}</Text>
              </View>
              </TouchableOpacity>
          )
@@ -152,9 +152,10 @@ class CertificateItem extends Component{
              <View style={[styles.itme,{alignItems:'flex-start',flexDirection:'column'}]}>
                  <View style={{marginLeft:Pixel.getPixel(28), flexDirection:'row',alignItems:'center'}}>
                      <Image style={{width:Pixel.getPixel(17),height:Pixel.getPixel(17),marginRight:Pixel.getPixel(6)}} source={this.props.image}/>
-                     <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>{this.props.title}</Text>
+                     <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),width:width-Pixel.getPixel(150)}}>{this.props.title}</Text>
                  </View>
-                 <Text style={{color:'#999999', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(15),marginLeft:Pixel.getPixel(28)}} numberOfLines={this.props.numberOfLines}>{this.props.content}</Text>
+                 <Text style={{color:'#999999', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(15),marginLeft:Pixel.getPixel(28),width:width-Pixel.getPixel(128)}}
+                       numberOfLines={1}>{this.props.content}</Text>
                  <View style={{height:Pixel.getPixel(20),borderRadius:Pixel.getPixel(10),paddingHorizontal:Pixel.getPixel(8),
                      alignItems:'center',justifyContent:'center',backgroundColor:'#FFD2CB',
                      top:Pixel.getPixel(19),right:Pixel.getPixel(15),position: 'absolute',
