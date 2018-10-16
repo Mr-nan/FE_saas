@@ -286,9 +286,6 @@ export default class MyAccountItem extends BaseComponent {
             bankName = '浙商银行';
 
             let b = (this.state.data.bind_bank_card_type === 1 && this.state.data.account_open_type === 1) ? this.state.data.bank_card_no.replace(/^(....).*(....)$/, "$1****$2") : this.state.data.cz_elec_account.replace(/^(....).*(....)$/, "$1****$2")
-
-
-
             bankNo = b && this.state.data.status != 0 ? b :
                 '***** ***** *****';
         } else {   // 信托
@@ -302,7 +299,7 @@ export default class MyAccountItem extends BaseComponent {
                 '***** ***** *****';
         }
         if (this.state.data.status === 0 || !this.state.data.status) {
-            accountState = '未开户';
+            accountState = '去开户';
         } else if (this.state.data.status === 1) {
             accountState = '未绑卡';
             bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
@@ -310,12 +307,13 @@ export default class MyAccountItem extends BaseComponent {
             accountState = '未激活';
             bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
         } else {
+            accountState = '个人账户';
             bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
         }
         return (
             <View style={{alignItems: 'center'}}>
                 <Image
-                    style={{width: Pixel.getPixel(345), height: Pixel.getPixel(205), resizeMode: "stretch"}}
+                    style={{width: Pixel.getPixel(345), height: Pixel.getPixel(195), resizeMode: "stretch"}}
                     source={back}>
                     <TouchableOpacity
                         style={{
@@ -348,7 +346,7 @@ export default class MyAccountItem extends BaseComponent {
                                     fontSize: Pixel.getPixel(15),
                                     color: fontAndColor.COLORA0
                                 }}>{bankName}</Text>
-                            {!this.state.data.status || this.state.data.status === 0 || this.state.data.status === 1 || this.state.data.status === 2 ?
+                            {this.state.data.status === 0 || this.state.data.status === 1 || this.state.data.status === 2 ?
                                 <Text
                                     allowFontScaling={false}
                                     style={{
@@ -359,16 +357,16 @@ export default class MyAccountItem extends BaseComponent {
                                         fontSize: Pixel.getPixel(15),
                                         color: fontAndColor.COLORB2
                                     }}>{accountState}</Text> :
-                                <View
+                                <Text
                                     allowFontScaling={false}
                                     style={{
                                         flex: 1,
-                                        alignItems: 'flex-end',
+                                        backgroundColor: '#ffffff',
                                         marginRight: Pixel.getPixel(10),
-                                        justifyContent: 'center',
-                                        backgroundColor: '#ffffff'
-                                    }}>
-                                </View>
+                                        textAlign: 'right',
+                                        fontSize: Pixel.getPixel(15),
+                                        color: '#666666'
+                                    }}>{accountState}</Text>
                             }
                             <Image source={cellJianTou}/>
                         </View>
@@ -396,7 +394,7 @@ export default class MyAccountItem extends BaseComponent {
                                     //includeFontPadding: false,
                                     textAlign: 'left',
                                     fontSize: Pixel.getPixel(12),
-                                    color: fontAndColor.COLORA1
+                                    color: fontAndColor.COLORA0
                                 }}>{this.props.type == 'zsyxt' ? "粮票余额（元）" : "账号余额（元）"}</Text>
                             <Text
                                 allowFontScaling={false}
@@ -405,7 +403,7 @@ export default class MyAccountItem extends BaseComponent {
                                     marginTop: Pixel.getPixel(3),
                                     textAlign: 'left',
                                     fontSize: Pixel.getPixel(25),
-                                    color: fontAndColor.COLORA0
+                                    color:'#151515'
                                 }}>{this.state.data.balance}</Text>
 
                         </View>
@@ -428,7 +426,7 @@ export default class MyAccountItem extends BaseComponent {
                     </View>
                     <View style={{
                         height: Pixel.getPixel(45),
-                        marginTop: Pixel.getPixel(15),
+                        marginTop: Pixel.getPixel(6),
                         alignItems: 'center',
                         marginLeft: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(20),
@@ -497,10 +495,10 @@ export default class MyAccountItem extends BaseComponent {
                                     marginTop: Pixel.getPixel(3),
                                     textAlign: 'right',
                                     fontSize: Pixel.getPixel(15),
-                                    color: fontAndColor.COLORA0
-                                }}>{!this.state.data.account_open_date || this.state.data.account_open_date.substr(0, 10) === '0000-00-00' ?
-                                '****-**-**' : this.state.data.account_open_date.substr(0, 10)}</Text>
-
+                                    color: fontAndColor.COLORA1
+                                }}>
+                                {this.state.data.account_open_date.substr(0, 10)}
+                               </Text>
                         </View>
                     </View>
                 </Image>

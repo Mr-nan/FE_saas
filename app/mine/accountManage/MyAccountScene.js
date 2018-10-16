@@ -374,7 +374,8 @@ export default class MyAccountScene extends BaseComponent {
                 dataSource: ds.cloneWithRows(dataList),
                 renderPlaceholderOnly: 'success',
                 isRefreshing: false,
-                backColor: fontAndColor.COLORB0
+                //backColor: fontAndColor.COLORB0
+                backColor:'transparent',
             });
 
             flag1 = 0;
@@ -388,21 +389,30 @@ export default class MyAccountScene extends BaseComponent {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             // 加载中....
-            return ( <View style={{
+            return (
+                <View style={{
                 flex: 1,
                 backgroundColor: this.state.backColor
             }}>
                 {this.loadView()}
-                <NavigatorView title='我的账户' backIconClick={this.backPage}
-                               renderRihtFootView={this.renderRihtFootView}/>
+                <NavigatorView
+                    title='我的账户' backIconClick={this.backPage}
+                               renderRihtFootView={this.renderRihtFootView}
+                               />
             </View>);
         } else {
-            return (<View style={{
+            return (<Image style={{flex:1}} source={require('../../../images/mine/guangfa_account/bg.png')}
+                           resizeMode='stretch'>
+                <View style={{
                 flex: 1,
                 backgroundColor: this.state.backColor
             }}>
-                <NavigatorView title='我的账户' backIconClick={this.backPage}
-                               renderRihtFootView={this.renderRihtFootView}/>
+                <NavigatorView title='我的账户'
+                               backIconClick={this.backPage}
+                               renderRihtFootView={this.renderRihtFootView}
+                               wrapStyle={{backgroundColor:'transparent'}}
+                               //ref={(a)=>{ a && a.setNavigationBackgroindColor('transparent','white')}}
+                />
                 <ListView style={{marginTop: Pixel.getTitlePixel(80)}}
                           dataSource={this.state.dataSource}
                           removeClippedSubviews={false}
@@ -578,7 +588,7 @@ export default class MyAccountScene extends BaseComponent {
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
-            </View>);
+                </View></Image>);
         }
     }
 
@@ -717,7 +727,7 @@ export default class MyAccountScene extends BaseComponent {
         return (
             <View
                 key={`${sectionID}-${rowID}`}
-                style={{backgroundColor: fontAndColor.COLORB0, height: Pixel.getPixel(20)}}/>
+                style={{ height: Pixel.getPixel(20)}}/>
         )
     };
 
