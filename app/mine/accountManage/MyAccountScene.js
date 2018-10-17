@@ -47,6 +47,9 @@ let dataList = [];
 let flag1 = 0;
 let flag2 = 0;
 let flag3 = 0;
+let flag4 = 0;
+
+
 
 export default class MyAccountScene extends BaseComponent {
 
@@ -61,6 +64,7 @@ export default class MyAccountScene extends BaseComponent {
         super(props);
         this.hengFengInfo = {};
         this.zheShangInfo = {};
+        this.is_hengfeng_in_whitelist = false;
         this.is_zheshang_in_whitelist = false;
         this.xintuoInfo = {};
         this.is_xintuo_in_whitelist = false;
@@ -145,16 +149,25 @@ export default class MyAccountScene extends BaseComponent {
     };
 
     /**
-     *   页面起调，浙商开关接口
+     *   页面起调，恒丰、浙商开关接口
      **/
     loadData = () => {
 
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
-
                 let datas = JSON.parse(data.result);
-
                 this.getAccountInfo(datas.company_base_id);
+                /*********查询是否在恒丰白名单中*********/
+                request(Urls.HF_IS_IN_WHITE_LIST,'Post',{enter_base_id:datas.company_base_id,user_id:datas.user_id,bank_id:'315'})
+                .then((response)=>{
+                        this.is_hengfeng_in_whitelist = true;
+                        flag4 = 1;
+                        this.renderUI();
+                },(error)=>{
+                    this.is_hengfeng_in_whitelist = false;
+                    flag4 = 1;
+                    this.renderUI();
+                });
 
                 request(Urls.IS_IN_WHITE_LIST, 'Post', {enter_base_id: datas.company_base_id})
                     .then((response) => {
@@ -250,7 +263,7 @@ export default class MyAccountScene extends BaseComponent {
 
                 this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
                 this.xintuoInfo = response.mjson.data['zsyxt'][0] ? response.mjson.data['zsyxt'][0] : {};
-
+                console.log("this.props.data",response.mjson);
                 if (response.mjson.data['315'][0]) {
                     this.hengFengInfo = response.mjson.data['315'][0];
 
@@ -356,11 +369,14 @@ export default class MyAccountScene extends BaseComponent {
     renderUI = () => {
 
 
-        if (flag1 == 1 && flag2 == 1 && flag3 == 1) {
+        if (flag1 == 1 && flag2 == 1 && flag3 == 1 && flag4 == 1) {
 
             dataList = []
 
-            dataList.push('315');
+            if(this.is_hengfeng_in_whitelist){
+                dataList.push('315');
+            }
+
 
             if (this.is_zheshang_in_whitelist) {
                 dataList.push('316');
@@ -750,7 +766,8 @@ export default class MyAccountScene extends BaseComponent {
                 showModal={this.props.showModal}
                 type={rowData}     //账户类型
                 data={info}        //账户数据
-                callBack={this.allRefresh}/>
+                callBack={this.allRefresh}
+                />
         );
     }
 

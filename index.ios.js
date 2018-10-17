@@ -10,7 +10,6 @@ import {
 
 import Root from './app/root';
 
-
 AppRegistry.registerComponent('FE_Sass', () => Root);
 
 

@@ -1539,6 +1539,11 @@ export const UPDATE_CAR_WELFARE = BASEURL + "cheshang/tenure_customer/updateCarW
  */
 export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySearch";
 /**
+*   商户是否在(恒丰)白名单中查询
+ */
+export const HF_IS_IN_WHITE_LIST = BASEURL +"v2/account.guest/isInWhiteList";
+
+/**
  *   商户是否在(浙商)白名单中查询
  */
 export const IS_IN_WHITE_LIST = BASEURL + "v1/account.cz_bank/isInWhiteList";
