@@ -55,6 +55,7 @@ import BaseComponent from '../component/BaseComponent';
 import List from "../mine/myOrder/orderwuliu/list/List";
 import CredictManageScene from "../mine/kuaisushouxin/CredictManageScene";
 import CarSuperviseListScreen from "../mine/carSupervise/CarSuperviseListScreen";
+import CertificateManageScene from "../mine/certificateManage/CertificateManageScene";
 
 var Pixel = new PixelUtil();
 
@@ -175,13 +176,6 @@ export default class MineScene extends BaseComponent {
                 }],
             };
 
-            this.mColor = {
-                //0-> 未审核 1->审核中 2->通过  3->未通过
-                0: 'gray',
-                1: 'black',
-                2: 'black',
-                3: 'red'
-            }
             this.getData();
         });
 
@@ -404,78 +398,26 @@ export default class MineScene extends BaseComponent {
         this.getUnpay_num();
         Car = [
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/zhanghuguanli.png'),
-                    //     "name": "账户管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/yuangongguanli.png'),
-                    //     "name": "员工管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/switchcompony.png'),
-                    //     "name": "切换公司"
-                    // },
-                ],
+                "cars": [],
                 "title": "section0"
             },
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
-                    //     "name": "优惠券管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/hetongguanli.png'),
-                    //     "name": "合同管理"
-                    // },
-                ],
+                "cars": [],
                 "title": "section1"
             },
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/myCarSource.png'),
-                    //     "name": "我的车源"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/my_order.png'),
-                    //     "name": "我的订单"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/shoucangjilu.png'),
-                    //     "name": "收藏记录"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/liulanlishi.png'),
-                    //     "name": "浏览历史"
-                    // },
-
-                ],
+                "cars": [],
                 "title": "section2"
             },
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/shezhi.png'),
-                    //     "name": "设置"
-                    // },
-                ],
+                "cars": [],
                 "title": "section3"
             },
             {
-                "cars": [
-                    {
-                        "icon": require('../../images/mainImage/shezhi.png'),
-                        "name": "blank"
-                    },
-                ],
+                "cars": [],
                 "title": "section3"
             },
         ]
-
-
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -487,13 +429,13 @@ export default class MineScene extends BaseComponent {
                     if (data2.code == 1 && data2.result != null) {
                         BASE_ID.push(data2.result)
                         let maps = {
-                            base_id: BASE_ID,
+                            enterprise_id: BASE_ID,
                         };
-                        request(Urls.GETCHECKSTATUS, 'post', maps).then((response) => {
+                        request(Urls.NEW_AUTH, 'post', maps).then((response) => {
                             if (response.mycode == "1") {
-                                let dataResult = response.mjson.data;
-                                this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
-                                this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
+                                this.authData = response.mjson.data;
+                                this.renzhengData.enterpriseRenZheng = this.authData.enter_auth;
+                                this.renzhengData.personRenZheng = this.authData.person_auth;
                                 this.toCompany();
                             } else {
                                 this.setState({
@@ -502,7 +444,7 @@ export default class MineScene extends BaseComponent {
                                 });
                             }
                         }, (error) => {
-                            this.props.showToast(error.msg);
+                            this.props.showToast(error.mjson.msg);
                             this.setState({
                                 renderPlaceholderOnly: 'error',
                                 isRefreshing: false
@@ -814,7 +756,6 @@ export default class MineScene extends BaseComponent {
                 <TouchableOpacity style={styles.rowView} onPress={() => {
                     this._navigator(rowData)
                 }}>
-
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
                     <Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
@@ -936,89 +877,59 @@ export default class MineScene extends BaseComponent {
 
     _renderHeader = () => {
         return (
-            <View style={{width:width}}>
-                <View style={styles.headerViewStyle}>
-                    <TouchableOpacity style={[styles.headerImageStyle]}>
-                        <Image
-                            source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
-                            style={{
-                                width: Pixel.getPixel(65),
-                                height: Pixel.getPixel(65), resizeMode: 'stretch'
-                            }}
-                        />
-                    </TouchableOpacity>
-                    <Text allowFontScaling={false} style={styles.headerNameStyle}>
-                        {this.state.name}
-                    </Text>
-                    <Text allowFontScaling={false} style={styles.headerPhoneStyle}>
-                        {componyname}
-                    </Text>
+                <Image style={styles.headerViewStyle} source={require('../../images/mine/bg.png')}>
+                    <Image style={{width:Pixel.getPixel(62),height:Pixel.getPixel(69),marginLeft:Pixel.getPixel(21)}} source={require('../../images/mine/xiaoren.png')}/>
+                    <View style={{marginLeft:Pixel.getPixel(21),justifyContent:'space-between',height:Pixel.getPixel(80)}}>
+                        <Text allowFontScaling={false} style={styles.headerNameStyle}>
+                            {this.state.name}
+                        </Text>
+                        <Text allowFontScaling={false} style={styles.headerPhoneStyle}>
+                            {componyname}
+                        </Text>
+                        <View style={{flexDirection:'row'}}>
+                            {
+                                this.renzhengData.enterpriseRenZheng ==2  && (
+                                <View style={{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),backgroundColor:'rgba(255,255,255,0.3)',borderWidth:StyleSheet.hairlineWidth,borderColor:'#3170d6'}}>
+                                <Text style={{color:'white', fontSize:Pixel.getPixel(13)}}>企业认证</Text>
+                                </View>
+                                )
+                            }
+                            {
+                                this.renzhengData.personRenZheng ==2 &&(
+                                    <View style={[{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),
+                                        backgroundColor:'rgba(255,255,255,0.3)',borderWidth:StyleSheet.hairlineWidth,borderColor:'#3170d6'},this.renzhengData.enterpriseRenZheng ==2 && {marginLeft:Pixel.getPixel(12)}]}>
+                                        <Text style={{color:'white', fontSize:Pixel.getPixel(13)}}>个人认证</Text>
+                                    </View>
+                                )
+                            }
 
-                </View>
-                {this.renzhengData.RenZhengVisiable != true ? null : <View
-                        style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+                        </View>
+                    </View>
+                    {
+                        this.renzhengData.RenZhengVisiable && (
+                            <TouchableOpacity style={{top:Pixel.getPixel(58),
+                                right:-Pixel.getPixel(15), position: 'absolute'}} onPress={()=>{this.props.callBack({
+                                name:'CertificateManageScene',
+                                component:CertificateManageScene,
+                                params:{
+                                    allRefresh:this.allRefresh,
+                                    baseID:BASE_ID[0],
+                                    authData:this.authData,
+                                }
 
-                        <TouchableOpacity onPress={() => {
-                        if(this.renzhengData.personRenZheng == 2 || this.renzhengData.personRenZheng == 1){
-                            //0-> 未审核 1->审核中 2->通过  3->未通过
+                            })}}>
+                                <View style={{width:Pixel.getPixel(95),height:Pixel.getPixel(28),borderRadius:Pixel.getPixel(14),backgroundColor:'rgba(0,0,0,0.3)',
+                                    flexDirection:'row',
+                                    alignItems:'center'
+                                }}>
+                                    <Text style={{color:'white', fontSize:Pixel.getPixel(13),marginLeft:Pixel.getPixel(16),marginRight:Pixel.getPixel(7)}}>去认证</Text>
+                                    <Image source={require('../../images/mine/baise-jiantou.png')}/>
+                                </View>
+                            </TouchableOpacity>
+                        )
+                    }
 
-                        }else {
-                            this._gerenrenzheng();
-                        }
-                    }} activeOpacity={0.8}
-                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-                            <Image
-                                source={this.renzhengData.personRenZheng == 2  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
-                                style={{
-                                width: Pixel.getPixel(27),
-                                height: Pixel.getPixel(20),
-                                resizeMode: 'stretch',
-                                marginLeft:Pixel.getPixel(37)
-                            }}
-                            />
-                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
-
-                                <Text allowFontScaling={false}
-                                      style={{color:this.mColor[this.renzhengData.personRenZheng]}}
-
-                                >
-                                    {this._getRenZhengResult(this.renzhengData.personRenZheng)}
-
-                                </Text>
-                            </Text>
-                        </TouchableOpacity>
-
-                        <Image source={require('../../images/login/xuxian.png')}
-                               style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
-
-                        <TouchableOpacity onPress={() => {
-                        if(this.renzhengData.enterpriseRenZheng == 2  || this.renzhengData.enterpriseRenZheng == 1){
-                            //0-> 未审核 1->审核中 2->通过  3->未通过
-                        }else {
-                            this._qiyerenzheng();
-                        }
-                    }} activeOpacity={0.8}
-                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-                            <Image
-                                source={this.renzhengData.enterpriseRenZheng == 2  ? require('../../images/login/qiyeyirenzheng.png') : require('../../images/login/qiyeweirenzheng.png')}
-                                style={{
-                                width: Pixel.getPixel(27),
-                                height: Pixel.getPixel(20),
-                                resizeMode: 'stretch',
-                                marginLeft:Pixel.getPixel(37)
-                            }}
-                            />
-                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
-
-                                <Text allowFontScaling={false}
-                                      style={{color:this.mColor[this.renzhengData.enterpriseRenZheng]}}
-                                >
-                                    {this._getRenZhengResult(this.renzhengData.enterpriseRenZheng)}
-                                </Text>
-                            </Text>
-                        </TouchableOpacity>
-                    </View>}
-            </View>
+                </Image>
         )
     }
 
@@ -1044,10 +955,6 @@ export default class MineScene extends BaseComponent {
         this.navigatorParams.component = EnterpriseCertificate
         this.navigatorParams.params.callBack = this.allRefresh
         this.navigatorParams.params.qiye_id = BASE_ID[0]
-        console.log('1111111111111111111');
-
-        console.log(this.navigatorParams.params.qiye_id);
-        console.log('1111111111111111111');
         this.props.callBack(this.navigatorParams);
     };
     _getRenZhengResult = (result) => {
@@ -1068,7 +975,6 @@ export default class MineScene extends BaseComponent {
         this.navigatorParams.name = 'PersonCertificate'
         this.navigatorParams.component = PersonCertificate
         this.navigatorParams.params.callBack = this.allRefresh
-
         this.props.callBack(this.navigatorParams);
     };
 
@@ -1113,28 +1019,25 @@ export default class MineScene extends BaseComponent {
 
 const styles = StyleSheet.create({
     headerViewStyle: {
-        height: Pixel.getPixel(190),
+        height: Pixel.getPixel(144),
         width: width,
-        backgroundColor: fontAndClolr.COLORB0,
-        alignItems: 'center',
+        flexDirection:'row',
+        alignItems:'center',
+        paddingTop:Pixel.getPixel(20)
     },
-    headerImageStyle: {
-        width: Pixel.getPixel(65),
-        height: Pixel.getPixel(65),
-        marginTop: Pixel.getPixel(45),
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+
     headerNameStyle: {
         color: 'white',
-        fontSize: Pixel.getFontPixel(15),
-        marginTop: Pixel.getPixel(10),
-        marginBottom: Pixel.getPixel(10),
-        fontWeight: 'bold'
+        fontSize: Pixel.getFontPixel(16),
+        fontWeight: 'bold',
+        backgroundColor: '#00000000',
+
     },
     headerPhoneStyle: {
         color: 'white',
         fontSize: Pixel.getFontPixel(12),
+        backgroundColor: '#00000000',
+
     },
     container: {
         flex: 1,
@@ -1155,8 +1058,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
-        borderBottomColor: fontAndClolr.COLORA4,
-        borderBottomWidth: 1
+        borderBottomColor: '#E6E6E6',
+        borderBottomWidth: StyleSheet.hairlineWidth
     },
     rowLeftImage: {
         width: Pixel.getPixel(26),

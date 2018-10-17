@@ -29,12 +29,9 @@ export default class CarInfoNavigationView extends Component {
 
             navigationBackgroundColor:null,
             navigationTitleColor:null,
-            title:this.props.title,
 
         };
       }
-
-
 
       setNavigationBackgroindColor=(color,titleColor)=>{
 
@@ -44,25 +41,22 @@ export default class CarInfoNavigationView extends Component {
           });
       }
 
-      setNavigationTitle=(title)=>{
-
-          if(title==this.state.title) return;
-          this.setState({
-              title:title,
-          })
-      }
-
     render() {
 
+<<<<<<< HEAD
         const {backIconClick, renderRihtFootView,wrapStyle,titleStyle} = this.props;
+=======
+        const {title, backIconClick, renderRihtFootView,wrapStyle,titleStyle} = this.props;
+
+>>>>>>> newRenZheng
         return (
             <View style={[styles.navigation,wrapStyle,this.state.navigationBackgroundColor && {backgroundColor:this.state.navigationBackgroundColor}]}>
                 <View style={styles.content}>
                     <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
                                       onPress={backIconClick}>
-                    {backIconClick && <Image style={styles.backIcon} source={wrapStyle? (wrapStyle.backgroundColor=='white'?require('../../images/mainImage/fan.png'):require('../../images/mainImage/navigatorBack.png')):require('../../images/mainImage/navigatorBack.png')}/>}
-                     </TouchableOpacity>
-                    <Text allowFontScaling={false}  style={[styles.titleText,titleStyle,this.state.navigationTitleColor && {color:this.state.navigationTitleColor}]}>{this.state.title}</Text>
+                        {backIconClick && <Image style={styles.backIcon}  source={ wrapStyle? (wrapStyle.backgroundColor!='white'?require('../../images/mainImage/navigatorBack.png'):require('../../images/mainImage/fan.png')):require('../../images/mainImage/navigatorBack.png')}/>}
+                    </TouchableOpacity>
+                    <Text allowFontScaling={false}  style={[styles.titleText,titleStyle,this.state.navigationTitleColor && {color:this.state.navigationTitleColor}]}>{title}</Text>
                     <View style={styles.imageFoot}>
                         {
                             renderRihtFootView && renderRihtFootView()
@@ -76,7 +70,6 @@ export default class CarInfoNavigationView extends Component {
 }
 
 const styles = StyleSheet.create({
-
 
     content: {
         marginTop: Pixel.getTitlePixel(20),
@@ -100,7 +93,8 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
         textAlign: 'center',
         backgroundColor: 'transparent',
-        marginLeft: Pixel.getPixel(12),
+        marginLeft:Pixel.getPixel(12)
+        // backgroundColor:'red'
 
     },
     imageFoot: {

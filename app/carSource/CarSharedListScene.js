@@ -717,7 +717,7 @@ const styles = StyleSheet.create({
     footView:{
         left:0,
         right:0,
-        bottom:0,
+        bottom:Pixel.getBottomPixel(0),
         backgroundColor:'white',
         height:Pixel.getPixel(88),
     },

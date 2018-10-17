@@ -319,7 +319,6 @@ export default class  NewLoginScreen extends BaseComponent{
             if(response.mjson.data.type==1){
 
                 this.loginSucceed(response.mjson.data);
-
                 this.loginPage({
                     name: 'NewSetPasswordScreen',
                     component: NewSetPasswordScreen,
@@ -336,25 +335,13 @@ export default class  NewLoginScreen extends BaseComponent{
             }
 
             this.loginSucceed(response.mjson.data);
-            StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
-                if (data.code == 1) {
-                    if (data.result != null) {
-                        this.loginPage({
-                            name: 'LoginGesture',
-                            component: LoginGesture,
-                            params: {from:'RootScene'}
-                        })
-                    } else {
-                        this.loginPage({
-                            name: 'SetLoginPwdGesture',
-                            component: SetLoginPwdGesture,
-                            params: {
-                                from: 'login'
-                            }
-                        })
-                    }
+            this.loginPage({
+                name: 'SetLoginPwdGesture',
+                component: SetLoginPwdGesture,
+                params: {
+                    from: 'login'
                 }
-            })
+            });
 
         },(error)=>{
             this.stopAnimation(this.props.showToast(error.mjson.msg));
@@ -369,7 +356,6 @@ export default class  NewLoginScreen extends BaseComponent{
 
         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
-
         // 保存登录成功后的用户信息
         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
             if (data.code == 1) {

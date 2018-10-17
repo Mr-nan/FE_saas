@@ -903,7 +903,8 @@ export default class FinanceSence extends BaseComponet {
                         style={{
                             width: width, height: Pixel.getPixel(40), backgroundColor: 'rgba(56,199,232,0.35)',
                             paddingRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(15), flexDirection: 'row',
-                            bottom:0,position: 'absolute',
+                            bottom:Pixel.getBottomPixel(0)
+                            ,position: 'absolute',
                         }}>
 
                         <View

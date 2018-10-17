@@ -17,7 +17,10 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
  * 正式地址
  */
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
+<<<<<<< HEAD
 
+=======
+>>>>>>> newRenZheng
 
 /**
  * 预发布地址
@@ -1700,6 +1703,15 @@ export const ZHUCE = BASEURL + "v2/auth/register";//注册(新)
  * 通过用户base_id,企业base_id 查看审核状态
  */
 export const GETCHECKSTATUS = BASEURL + V + "user.identity/getCheckStatus";//通过用户base_id,企业base_id 查看审核状态
+
+
+ /**
+ *
+ * 认证状态接口
+ */
+export const NEW_AUTH = BASEURL + V + "user/newAuth";
+
+
 /**
  *
  * 重新申请个人认证获取用户信息
