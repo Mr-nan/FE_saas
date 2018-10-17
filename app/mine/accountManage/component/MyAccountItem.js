@@ -108,30 +108,13 @@ export default class MyAccountItem extends BaseComponent {
                     };
                     break;
                 default:
-                    // this.navigatorParams.name = 'AccountScene';
-                    // this.navigatorParams.component = AccountScene;
-                    // this.navigatorParams.params = {
-                    //     callBack: () => {
-                    //         this.props.callBack();
-                    //     }
-                    // };
-                    if(iscompany){
-                        this.navigatorParams.name = 'OpenCompanyCountScene';
-                        this.navigatorParams.component = OpenCompanyCountScene;
-                        this.navigatorParams.params = {
-                            callBack: () => {
-                                this.props.callBack();
-                            }
-                        };
-                    }else{
-                        this.navigatorParams.name = 'OpenPersonalCountScene';
-                        this.navigatorParams.component = OpenPersonalCountScene;
-                        this.navigatorParams.params = {
-                            callBack: () => {
-                                this.props.callBack();
-                            }
-                        };
-                    }
+                    this.navigatorParams.name = 'AccountScene';
+                    this.navigatorParams.component = AccountScene;
+                    this.navigatorParams.params = {
+                        callBack: () => {
+                            this.props.callBack();
+                        }
+                    };
                     break;
             }
             this.toNextPage(this.navigatorParams);
@@ -186,27 +169,10 @@ export default class MyAccountItem extends BaseComponent {
                     this.props.showToast('您的资料已经提交，请耐心等待');
                     break;
                 default:  //已开户
-                    // this.navigatorParams.name = 'XintuoAccountScene';
-                    // this.navigatorParams.component = XintuoAccountScene;
-                    // this.navigatorParams.params = {};
-                    // this.toNextPage(this.navigatorParams);
-                    if(iscompany){
-                        this.navigatorParams.name = 'OpenCompanyCountScene';
-                        this.navigatorParams.component = OpenCompanyCountScene;
-                        this.navigatorParams.params = {
-                            callBack: () => {
-                                this.props.callBack();
-                            }
-                        };
-                    }else{
-                        this.navigatorParams.name = 'OpenPersonalCountScene';
-                        this.navigatorParams.component = OpenPersonalCountScene;
-                        this.navigatorParams.params = {
-                            callBack: () => {
-                                this.props.callBack();
-                            }
-                        };
-                    }
+                    this.navigatorParams.name = 'XintuoAccountScene';
+                    this.navigatorParams.component = XintuoAccountScene;
+                    this.navigatorParams.params = {};
+                    this.toNextPage(this.navigatorParams);
                     break;
             }
 
