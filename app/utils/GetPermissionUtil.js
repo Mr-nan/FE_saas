@@ -284,6 +284,7 @@ const GetPermissionUtil = React.createClass({
     },getCertificateVisiable(callBack){
 		this.getData((data) => {
 		    let back = false;
+		    console.log(data,'===============');
 			for (let i = 0; i < data.data.length; i++) {
 				if (data.data[i].id == 5) {
 					for (let j = 0; j < data.data[i].children.length; j++) {

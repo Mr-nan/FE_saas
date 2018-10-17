@@ -144,11 +144,10 @@ export  default class AllSelectCompanyScene extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1,paddingTop:Pixel.getTitlePixel(64)}}>
                 <StatusBar barStyle={this.state.barStyle}/>
                 <ListView
                     removeClippedSubviews={false}
-                    style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -393,8 +392,7 @@ const styles = StyleSheet.create({
     },
     Separator: {
         backgroundColor: fontAndColor.COLORA3,
-        height: Pixel.getPixel(10),
-
+        height: Pixel.getPixel(1),
     },
     margin: {
         marginRight: Pixel.getPixel(15),
