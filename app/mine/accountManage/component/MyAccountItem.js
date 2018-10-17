@@ -30,8 +30,9 @@ import ZSAccountTypeSelectScene from "../zheshangAccount/ZSAccountTypeSelectScen
 import WebScene from '../../../main/WebScene';
 import {BASEURL} from '../../../constant/appUrls';
 import XintuoAccountScene from '../xintuo/XintuoAccountScene'
-import OpenAccountBaseScene from '../xintuo/openAccount/OpenAccountBaseScene'
-
+import OpenAccountBaseScene from '../xintuo/openAccount/OpenAccountBaseScene';
+import OpenPersonalCountScene from '../../accountManage/OpenPersonalCountScene';
+import OpenCompanyCountScene from '../../accountManage/OpenCompanyCountScene';
 const Pixel = new PixelUtil();
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
@@ -48,9 +49,11 @@ export default class MyAccountItem extends BaseComponent {
             component: '',
             params: {}
         };
-        this.state = {
-            data: this.props.data
-        };
+        console.log("this.props.data",this.props.data);
+            this.state = {
+                data: this.props.data
+            };
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -64,17 +67,27 @@ export default class MyAccountItem extends BaseComponent {
      *   type 315恒丰 316浙商
      *   state 开户状态
      **/
-    pageDispense = (type, state) => {
+    pageDispense = (type, state,iscompany) => {
         if (type == '315') {
             switch (state) {
                 case 0:
-                    this.navigatorParams.name = 'AccountManageScene';
-                    this.navigatorParams.component = AccountManageScene;
-                    this.navigatorParams.params = {
-                        callBack: () => {
-                            this.props.callBack();
-                        }
-                    };
+                    if(iscompany){
+                                this.navigatorParams.name = 'OpenCompanyCountScene';
+                                this.navigatorParams.component = OpenCompanyCountScene;
+                                this.navigatorParams.params = {
+                                    callBack: () => {
+                                        this.props.callBack();
+                                    }
+                                };
+                            }else{
+                                this.navigatorParams.name = 'OpenPersonalCountScene';
+                                this.navigatorParams.component = OpenPersonalCountScene;
+                                this.navigatorParams.params = {
+                                    callBack: () => {
+                                        this.props.callBack();
+                                    }
+                                };
+                            }
                     break;
                 case 1:
                     this.navigatorParams.name = 'BindCardScene';
@@ -171,13 +184,12 @@ export default class MyAccountItem extends BaseComponent {
      *   type 315恒丰 316浙商
      **/
     jumpDetailPage = (type) => {
-
-
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            console.log(data);
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
-
+                let iscompany = datas.iscompany;
                 let maps = {
                     enter_base_ids: datas.company_base_id,
                     child_type: '1',
@@ -187,7 +199,7 @@ export default class MyAccountItem extends BaseComponent {
                     .then((response) => {
                         this.props.showModal(false);
                         //this.pageDispense(type, 0);
-                        this.pageDispense(type, response.mjson.data[type][0].status);
+                        this.pageDispense(type, response.mjson.data[type][0].status,iscompany);
 
                     }, (error) => {
                         this.props.showModal(false);
@@ -286,9 +298,6 @@ export default class MyAccountItem extends BaseComponent {
             bankName = '浙商银行';
 
             let b = (this.state.data.bind_bank_card_type === 1 && this.state.data.account_open_type === 1) ? this.state.data.bank_card_no.replace(/^(....).*(....)$/, "$1****$2") : this.state.data.cz_elec_account.replace(/^(....).*(....)$/, "$1****$2")
-
-
-
             bankNo = b && this.state.data.status != 0 ? b :
                 '***** ***** *****';
         } else {   // 信托
@@ -302,7 +311,7 @@ export default class MyAccountItem extends BaseComponent {
                 '***** ***** *****';
         }
         if (this.state.data.status === 0 || !this.state.data.status) {
-            accountState = '未开户';
+            accountState = '去开户';
         } else if (this.state.data.status === 1) {
             accountState = '未绑卡';
             bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
@@ -310,12 +319,13 @@ export default class MyAccountItem extends BaseComponent {
             accountState = '未激活';
             bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
         } else {
+            accountState = '个人账户';
             bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
         }
         return (
-            <View style={{alignItems: 'center'}}>
+            <View style={{alignItems: 'center',width:Pixel.getPixel(345), height: Pixel.getPixel(204),marginLeft:Pixel.getPixel(15)}}>
                 <Image
-                    style={{width: Pixel.getPixel(345), height: Pixel.getPixel(205), resizeMode: "stretch"}}
+                    style={{width:Pixel.getPixel(345), height: Pixel.getPixel(204), resizeMode: "stretch"}}
                     source={back}>
                     <TouchableOpacity
                         style={{
@@ -337,18 +347,18 @@ export default class MyAccountItem extends BaseComponent {
                             alignItems: 'center',
                             justifyContent: 'center',
                         }}>
-                            <Image source={bank}/>
+                            <Image source={bank} style={{width:Pixel.getPixel(40),height:Pixel.getPixel(40),resizeMode:'stretch'}}/>
                             <Text
                                 allowFontScaling={false}
                                 style={{
                                     backgroundColor: 'white',
-                                    marginLeft: Pixel.getPixel(10),
+                                    marginLeft: Pixel.getPixel(12),
                                     includeFontPadding: false,
                                     textAlign: 'left',
                                     fontSize: Pixel.getPixel(15),
                                     color: fontAndColor.COLORA0
                                 }}>{bankName}</Text>
-                            {!this.state.data.status || this.state.data.status === 0 || this.state.data.status === 1 || this.state.data.status === 2 ?
+                            {this.state.data.status === 0 || this.state.data.status === 1 || this.state.data.status === 2 ?
                                 <Text
                                     allowFontScaling={false}
                                     style={{
@@ -359,16 +369,16 @@ export default class MyAccountItem extends BaseComponent {
                                         fontSize: Pixel.getPixel(15),
                                         color: fontAndColor.COLORB2
                                     }}>{accountState}</Text> :
-                                <View
+                                <Text
                                     allowFontScaling={false}
                                     style={{
                                         flex: 1,
-                                        alignItems: 'flex-end',
+                                        backgroundColor: '#ffffff',
                                         marginRight: Pixel.getPixel(10),
-                                        justifyContent: 'center',
-                                        backgroundColor: '#ffffff'
-                                    }}>
-                                </View>
+                                        textAlign: 'right',
+                                        fontSize: Pixel.getPixel(15),
+                                        color: '#666666'
+                                    }}>{accountState}</Text>
                             }
                             <Image source={cellJianTou}/>
                         </View>
@@ -396,7 +406,7 @@ export default class MyAccountItem extends BaseComponent {
                                     //includeFontPadding: false,
                                     textAlign: 'left',
                                     fontSize: Pixel.getPixel(12),
-                                    color: fontAndColor.COLORA1
+                                    color: fontAndColor.COLORA0
                                 }}>{this.props.type == 'zsyxt' ? "粮票余额（元）" : "账号余额（元）"}</Text>
                             <Text
                                 allowFontScaling={false}
@@ -404,9 +414,9 @@ export default class MyAccountItem extends BaseComponent {
                                     includeFontPadding: false,
                                     marginTop: Pixel.getPixel(3),
                                     textAlign: 'left',
-                                    fontSize: Pixel.getPixel(25),
-                                    color: fontAndColor.COLORA0
-                                }}>{this.state.data.balance}</Text>
+                                    fontSize: Pixel.getPixel(26),
+                                    color:'#151515'
+                                }}>{this.state.data.status === 0 || !this.state.data.status ? '****.**' : this.state.data.balance}</Text>
 
                         </View>
 
@@ -428,7 +438,7 @@ export default class MyAccountItem extends BaseComponent {
                     </View>
                     <View style={{
                         height: Pixel.getPixel(45),
-                        marginTop: Pixel.getPixel(15),
+                        marginTop: Pixel.getPixel(6),
                         alignItems: 'center',
                         marginLeft: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(20),
@@ -455,7 +465,7 @@ export default class MyAccountItem extends BaseComponent {
                                             includeFontPadding: false,
                                             marginTop: Pixel.getPixel(3),
                                             textAlign: 'left',
-                                            fontSize: Pixel.getPixel(21),
+                                            fontSize: Pixel.getPixel(20),
                                             color: fontAndColor.COLORA1
                                         }}>{bankNo}</Text>
 
@@ -497,10 +507,10 @@ export default class MyAccountItem extends BaseComponent {
                                     marginTop: Pixel.getPixel(3),
                                     textAlign: 'right',
                                     fontSize: Pixel.getPixel(15),
-                                    color: fontAndColor.COLORA0
-                                }}>{!this.state.data.account_open_date || this.state.data.account_open_date.substr(0, 10) === '0000-00-00' ?
-                                '****-**-**' : this.state.data.account_open_date.substr(0, 10)}</Text>
-
+                                    color: fontAndColor.COLORA1
+                                }}>
+                                {this.state.data.account_open_date ?  this.state.data.account_open_date.substr(0, 10):'****-**-**'}
+                               </Text>
                         </View>
                     </View>
                 </Image>

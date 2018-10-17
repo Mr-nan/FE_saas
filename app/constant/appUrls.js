@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -16,7 +16,11 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 正式地址
  */
+<<<<<<< HEAD
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
+=======
+//export const BASEURL = 'https://gatewayapi.dycd.com/';
+>>>>>>> 4e925e5f81d5b688c824682c9bdaaac043fe8828
 
 /**
  * 预发布地址
@@ -1538,6 +1542,11 @@ export const UPDATE_CAR_WELFARE = BASEURL + "cheshang/tenure_customer/updateCarW
  *  搜索保有客户数据
  */
 export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySearch";
+/**
+*   商户是否在(恒丰)白名单中查询
+ */
+export const HF_IS_IN_WHITE_LIST = BASEURL +"v2/account.guest/isInWhiteList";
+
 /**
  *   商户是否在(浙商)白名单中查询
  */
