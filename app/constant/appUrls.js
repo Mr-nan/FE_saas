@@ -17,10 +17,7 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
  * 正式地址
  */
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
-<<<<<<< HEAD
 
-=======
->>>>>>> newRenZheng
 
 /**
  * 预发布地址

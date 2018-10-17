@@ -43,12 +43,9 @@ export default class CarInfoNavigationView extends Component {
 
     render() {
 
-<<<<<<< HEAD
-        const {backIconClick, renderRihtFootView,wrapStyle,titleStyle} = this.props;
-=======
+
         const {title, backIconClick, renderRihtFootView,wrapStyle,titleStyle} = this.props;
 
->>>>>>> newRenZheng
         return (
             <View style={[styles.navigation,wrapStyle,this.state.navigationBackgroundColor && {backgroundColor:this.state.navigationBackgroundColor}]}>
                 <View style={styles.content}>
