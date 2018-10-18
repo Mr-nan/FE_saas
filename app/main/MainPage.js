@@ -587,7 +587,11 @@ export default class MainPage extends BaseComponent {
 					showToast={(content)=>{this.props.showToast(content)}}
 					toNextPage={(params) => {this.toNextPage(params); }}
 					toSelect={()=>{
-                        let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
+                        let mProps = {name: 'AllSelectCompanyScene',
+                            component: AllSelectCompanyScene,
+                            params: {
+                                currentBaseID: global.companyBaseID
+                            }};
                         const navigator = this.props.navigator;
                         if (navigator) {
 
@@ -604,7 +608,11 @@ export default class MainPage extends BaseComponent {
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }} showLoginModal={this.props.showLoginModal} toSelect={()=>{
-                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
+                let mProps = {name: 'AllSelectCompanyScene',
+                    component: AllSelectCompanyScene,
+                    params: {
+                        currentBaseID: global.companyBaseID
+                    }};
                 const navigator = this.props.navigator;
                 if (navigator) {
                     navigator.immediatelyResetRouteStack([{
@@ -622,7 +630,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         width: width, height: height,
-        paddingBottom: 0,
+        paddingBottom: Pixel.getBottomPixel(0),
     },
     img: {
 

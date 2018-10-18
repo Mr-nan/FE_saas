@@ -73,9 +73,21 @@ export  default class RepaymentScene extends BaseComponent {
                                          showModal={(show)=>{this.props.showModal(show);}}
                                          callBack={
                     (loan_id,loan_number,type,payment_number,payment_status,refreshListPage)=>
-                    {this.toNext({name:'RepaymentInfoScene',component:RepaymentInfoScene,
-                        params:{loan_id:loan_id,loan_number:loan_number,payment_number:payment_number,type:type,from:'SingleRepaymentPage',refreshListPage:refreshListPage}},
-                        loan_id,loan_number,type,payment_number,payment_status,'SingleRepaymentPage',refreshListPage)}} tabLabel="ios-paper"/>
+                    {
+                        this.toNext({
+                            name:'RepaymentInfoScene',
+                            component:RepaymentInfoScene,
+                            params:{
+                                loan_id:loan_id,
+                                loan_number:loan_number,
+                                payment_number:payment_number,
+                                type:type,
+                                from:'SingleRepaymentPage',
+                                refreshListPage:refreshListPage
+                            }
+                        },loan_id,loan_number,type,payment_number,payment_status,'SingleRepaymentPage',refreshListPage)
+                    }
+                                         } tabLabel="ios-paper"/>
 
                     <InventoryRepaymentPage customerName={this.props.customerName}
                                              showModal={(show)=>{this.props.showModal(show);}}

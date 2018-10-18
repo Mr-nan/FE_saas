@@ -978,7 +978,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        paddingTop: Pixel.getPixel(64),
+        paddingTop: Pixel.getTitlePixel(64),
     },
     alignTop: {
         marginTop: Pixel.getPixel(59)
@@ -1042,7 +1042,7 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORB0,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: Pixel.getPixel(15),
+        marginBottom: Pixel.getBottomPixel(15),
         borderRadius: Pixel.getFontPixel(2),
     },
     btnFont: {

@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -16,7 +16,8 @@
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
+
 
 /**
  * 预发布地址
@@ -1539,6 +1540,11 @@ export const UPDATE_CAR_WELFARE = BASEURL + "cheshang/tenure_customer/updateCarW
  */
 export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySearch";
 /**
+*   商户是否在(恒丰)白名单中查询
+ */
+export const HF_IS_IN_WHITE_LIST = BASEURL +"v2/account.guest/isInWhiteList";
+
+/**
  *   商户是否在(浙商)白名单中查询
  */
 export const IS_IN_WHITE_LIST = BASEURL + "v1/account.cz_bank/isInWhiteList";
@@ -1694,6 +1700,15 @@ export const ZHUCE = BASEURL + "v2/auth/register";//注册(新)
  * 通过用户base_id,企业base_id 查看审核状态
  */
 export const GETCHECKSTATUS = BASEURL + V + "user.identity/getCheckStatus";//通过用户base_id,企业base_id 查看审核状态
+
+
+ /**
+ *
+ * 认证状态接口
+ */
+export const NEW_AUTH = BASEURL + V + "user/newAuth";
+
+
 /**
  *
  * 重新申请个人认证获取用户信息

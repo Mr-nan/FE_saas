@@ -750,7 +750,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        paddingTop: Pixel.getPixel(64),
+        paddingTop: Pixel.getTitlePixel(64),
     },
     alignTop: {
         marginTop: Pixel.getPixel(59)

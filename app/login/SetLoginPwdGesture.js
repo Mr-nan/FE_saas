@@ -14,7 +14,7 @@ import SetPwdGesture from "../gesture/SetPwdGesture";
 import BaseComponent from "../component/BaseComponent";
 import PixelUtil from "../utils/PixelUtil";
 import * as FontAndColor from "../constant/fontAndColor";
-import NavigationBar from "../component/NavigationBar";
+import AllNavigationView from '../component/AllNavigationView';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import MainPage from "../main/MainPage";
@@ -52,78 +52,56 @@ export default class SetLoginPwdGesture extends BaseComponent {
                 });
             }}>
                 <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
-                    <NavigationBar
-                        leftImageShow={false}
-                        leftTextShow={true}
-                        leftText={""}
-                        centerText={"设置手势密码"}
-                        rightText={""}
-                    />
+                    <AllNavigationView
+                        title={"设置手势密码"}/>
                 </View>
             </TouchableWithoutFeedback>);
         }
         return (
-            <SetPwdGesture
-                ref='pg'
-                NavigationBar={
-                    <View style={styles.topStyle}>
-                        {
-                            this.props.from == 'login' ?
-                                <NavigationBar
-                                    leftImageShow={false}
-                                    leftTextShow={true}
-                                    centerText={"设置手势密码"}
-                                    rightText={""}
-                                    leftText={''}
-                                    leftImageCallBack={this.backPage}/>
-                                :
-                                <NavigationBar
-                                    leftImageShow={true}
-                                    leftTextShow={false}
-                                    centerText={"设置手势密码"}
-                                    rightText={""}
-                                    leftImageCallBack={this.backPage}/>
-                        }
-                        <View style={styles.padResultsStyle}>
-                            <View style={{flexDirection: 'row'}}>
-                                {this.savePwd.indexOf("1") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                                {this.savePwd.indexOf("2") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                                {this.savePwd.indexOf("3") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                            </View>
-                            <View style={{flexDirection: 'row'}}>
-                                {this.savePwd.indexOf("4") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                                {this.savePwd.indexOf("5") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                                {this.savePwd.indexOf("6") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                            </View>
-                            <View style={{flexDirection: 'row'}}>
-                                {this.savePwd.indexOf("7") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                                {this.savePwd.indexOf("8") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                                {this.savePwd.indexOf("9") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                            </View>
-                        </View>
-                        <Text allowFontScaling={false}  style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
-                            {this.state.message}
-                        </Text>
 
-                        <Text allowFontScaling={false}  style={{
-                            color: FontAndColor.COLORA1,
-                            fontSize: Pixel.getFontPixel(14),
-                            height: Pixel.getPixel(20),
-                        }}>   {this.savePwd == '' ? " 请至少连接4个圆，完成手势密码" : ""}</Text>
+        <View style={{flex:1,backgroundColor:FontAndColor.COLORA3,paddingTop:Pixel.getTitlePixel(64)}}>
+            <AllNavigationView
+                title={"设置手势密码"}
+                backIconClick={this.props.from == 'login'?null:this.backPage}/>
+            <View style={styles.topStyle}>
+                <View style={styles.padResultsStyle}>
+                    <View style={{flexDirection: 'row'}}>
+                        {this.savePwd.indexOf("1") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                            <View style={styles.cycleStyle}/>}
+                        {this.savePwd.indexOf("2") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                            <View style={styles.cycleStyle}/>}
+                        {this.savePwd.indexOf("3") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                            <View style={styles.cycleStyle}/>}
                     </View>
-                }
+                    <View style={{flexDirection: 'row'}}>
+                        {this.savePwd.indexOf("4") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                            <View style={styles.cycleStyle}/>}
+                        {this.savePwd.indexOf("5") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                            <View style={styles.cycleStyle}/>}
+                        {this.savePwd.indexOf("6") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                            <View style={styles.cycleStyle}/>}
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                        {this.savePwd.indexOf("7") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                            <View style={styles.cycleStyle}/>}
+                        {this.savePwd.indexOf("8") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                            <View style={styles.cycleStyle}/>}
+                        {this.savePwd.indexOf("9") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                            <View style={styles.cycleStyle}/>}
+                    </View>
+                </View>
+                <Text allowFontScaling={false}  style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
+                    {this.state.message}
+                </Text>
+                <Text allowFontScaling={false}  style={{
+                    color: FontAndColor.COLORA1,
+                    fontSize: Pixel.getFontPixel(14),
+                    height: Pixel.getPixel(20),
+                }}>   {this.savePwd == '' ? " 请至少连接4个圆，完成手势密码" : ""}</Text>
+            </View>
+            <SetPwdGesture
                 status={this.state.status}
                 message={this.state.message}
-                style={styles.gestureStyle}
                 interval={500}
                 onStart={() => this.onStart()}
                 onUpdatePwd={(password) => {
@@ -134,19 +112,22 @@ export default class SetLoginPwdGesture extends BaseComponent {
                         });
                     }
                 }}
-                onEnd={(password) => this.onEnd(password)}
-                BottomView={
-                    <TouchableOpacity style={{marginTop: Height / 2 - Pixel.getPixel(30)}} onPress={() => {
-                        this.savePwd = '';
-                        this.Passwords = '';
-                        this.setCount = 4;
-                        this.setState({
-                            status: 'normal',
-                            message: '重新绘制解锁图案',
-                        });
-                    }}>
-                        <Text allowFontScaling={false}  style={styles.bottomSytle }>重置手势密码</Text>
-                    </TouchableOpacity>}/>
+                onEnd={(password) => this.onEnd(password)}/>
+            <View style={{width:Width, alignItems:'center',marginTop: (Width / 12)*8+Pixel.getPixel(50)}}>
+            <TouchableOpacity onPress={() => {
+                this.savePwd = '';
+                this.Passwords = '';
+                this.setCount = 4;
+                this.setState({
+                    status: 'normal',
+                    message: '重新绘制解锁图案',
+                });
+            }}>
+                <Text allowFontScaling={false}  style={styles.bottomSytle }>重置手势密码</Text>
+            </TouchableOpacity>
+            </View>
+        </View>
+
         );
     }
 
@@ -249,16 +230,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: FontAndColor.COLORA3,
     },
-    gestureStyle: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: FontAndColor.COLORA3,
-    },
     topStyle: {
         alignItems: 'center',
         justifyContent: 'center',
         width: Width,
-        paddingBottom: Pixel.getPixel(60),
+        height:Pixel.getPixel(200),
+
     },
     cycleStyle: {
         width: Pixel.getPixel(15),
@@ -287,8 +264,8 @@ const styles = StyleSheet.create({
     },
     padResultsStyle: {
         flexDirection: 'column',
-        marginBottom: 35,
-        marginTop: 35
+        marginVertical:Pixel.getPixel(20)
+
     },
     bottomSytle: {
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
