@@ -186,10 +186,18 @@ export default class MyAccountItem extends BaseComponent {
     jumpDetailPage = (type) => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            console.log(data);
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
-                let iscompany = datas.iscompany;
+                let iscompany = true;
+                if(datas.role_type instanceof Array){
+                    for(let item of datas.role_type){
+                        if(item == 19){
+                           iscompany = false;
+                            break;
+                        }
+                    }
+                }
+
                 let maps = {
                     enter_base_ids: datas.company_base_id,
                     child_type: '1',
