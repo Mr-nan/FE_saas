@@ -50,7 +50,7 @@ export default class OpenPersonalCountScene extends BaseComponent{
         }
         return (
             <View style={{flex: 1,backgroundColor:'#F4F6F8'}}>
-                <NavigationView backIconClick='true' title='开通个人账户'
+                <NavigationView backIconClick={true} title='开通个人账户'
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <StatusBar barStyle="default"/>
                 <View style={styles.inputTextsStyleView}>
@@ -98,7 +98,7 @@ export default class OpenPersonalCountScene extends BaseComponent{
                     <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
                     <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>请确认信息的准确性，开户时间为7*24小时 </Text>
                 </View>
-                <SubmitComponent text="确认提交"/>
+                <SubmitComponent title="确认提交"/>
             </View>
 
         );

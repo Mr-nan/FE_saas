@@ -13,7 +13,6 @@ import {
     StatusBar,
     Text,
     Image,
-    TouchableOpacity,
     ScrollView
 
 } from 'react-native';
@@ -51,11 +50,12 @@ export default class OpenCompanyCountScene extends BaseComponent{
             this.renderPlaceholderView();
         }
         return (
-            <ScrollView style={{flex: 1,backgroundColor:'#F4F6F8'}}>
-                <NavigationView backIconClick='true' title='开通企业账户'
+            <View style={{flex: 1,backgroundColor:'#F4F6F8'}}>
+                <NavigationView backIconClick={true} title='开通企业账户'
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <StatusBar barStyle="default"/>
-                <View style={{marginTop:Pixel.getPixel(79),backgroundColor:'#ffffff'}}>
+                <ScrollView style={{backgroundColor:'#F4F6F8',marginTop:Pixel.getPixel(64)}}>
+                <View style={{marginTop:Pixel.getPixel(15),backgroundColor:'#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15)}}>
                     <LoginInputText
                         textPlaceholder={'请输入企业名称'}
                         leftText = '企业名称'
@@ -81,7 +81,7 @@ export default class OpenCompanyCountScene extends BaseComponent{
                         rightIcon={false}
                         rightButton={false}/>
                 </View>
-                <View style={{marginTop:Pixel.getPixel(10)}}>
+                <View style={{marginTop:Pixel.getPixel(10),backgroundColor:'#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15)}}>
                     <LoginInputText
                         textPlaceholder={'请输入法人姓名'}
                         leftText = '法人代表姓名'
@@ -99,7 +99,7 @@ export default class OpenCompanyCountScene extends BaseComponent{
                         rightIcon={false}
                         rightButton={false}/>
                 </View>
-                <View style={{marginTop:Pixel.getPixel(10)}}>
+                <View style={{marginTop:Pixel.getPixel(10),backgroundColor:'#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15)}}>
                     <LoginInputText
                         textPlaceholder={'请输入联系人姓名'}
                         leftText = '企业联系人姓名'
@@ -125,7 +125,7 @@ export default class OpenCompanyCountScene extends BaseComponent{
                         rightIcon={false}
                         rightButton={false}/>
                 </View>
-                <View style={{marginTop:Pixel.getPixel(10)}}>
+                <View style={{marginTop:Pixel.getPixel(10),backgroundColor:'#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15)}}>
                     <LoginInputText
                         textPlaceholder={'请输入银行账号'}
                         leftText = '银行账'
@@ -134,7 +134,7 @@ export default class OpenCompanyCountScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}/>
-                    <View style={{flexDirection: 'row',flex:1,alignItems:'center',width:Pixel.getPixel(345)}}>
+                    <View style={{flexDirection: 'row',flex:1,alignItems:'center',width:Pixel.getPixel(345),height:Pixel.getPixel(45)}}>
                         <Text style={{color:fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(14),justifyContent: 'flex-start'}}>银行</Text>
                         <View style={{flexDirection:'row',justifyContent:'flex-end',marginRight: Pixel.getPixel(15),width:Pixel.getPixel(316)}}>
                             <Text allowFontScaling={false} style={{fontSize:Pixel.getFontPixel(14),color:'#AEAEAE',marginRight:Pixel.getPixel(20)}}>请选择银行</Text>
@@ -142,13 +142,13 @@ export default class OpenCompanyCountScene extends BaseComponent{
                         </View>
                     </View>
                 </View>
-
-                <View style={{flexDirection:'row',width:width,height:Pixel.getPixel(18),marginLeft:Pixel.getPixel(18),marginTop: Pixel.getPixel(21),alignItems:'flex-end' }}>
+                </ScrollView>
+                <View style={{flexDirection:'row',width:width,height:Pixel.getPixel(18),marginLeft:Pixel.getPixel(18),marginTop: Pixel.getPixel(19),alignItems:'flex-end' }}>
                     <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
                     <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>请确认信息的准确性，开户时间为7*24小时 </Text>
                 </View>
-                <SubmitComponent text="确认提交"/>
-            </ScrollView>
+                <SubmitComponent title="确认提交" warpStyle={{marginTop:Pixel.getPixel(17)}}/>
+            </View>
         );
     }
 }

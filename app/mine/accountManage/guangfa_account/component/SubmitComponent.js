@@ -30,11 +30,16 @@ export default class SubmitComponent extends BaseComponent{
     }
 
     render(){
+        const warpStyle = this.props;
         return(
-            <TouchableOpacity style={styles.btn}>
-                <Text style={{color:"#ffffff",fontSize:Pixel.getPixel(15)}}>{this.props.text}</Text>
+            <TouchableOpacity style={[styles.btn,warpStyle]} onPress={this.sub}>
+                <Text style={{color:"#ffffff",fontSize:Pixel.getPixel(15)}}>{this.props.title}</Text>
             </TouchableOpacity>
         )
+    }
+
+    sub = () => {
+         this.loadView();
     }
 
 
