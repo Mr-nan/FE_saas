@@ -43,14 +43,17 @@ export default class OpenPersonalCountScene extends BaseComponent{
     _renderPlaceholderView = () => {
         this.loadView();
     }
+    backPage = () => {
+        this.loadView();
+    }
 
     render() {
         if(this.state.renderPlaceholderOnly != 'success'){
             this._renderPlaceholderView()
         }
         return (
-            <View style={{flex: 1,backgroundColor:'#F4F6F8'}}>
-                <NavigationView backIconClick={true} title='开通个人账户'
+            <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3}}>
+                <NavigationView backIconClick={this.backPage} title='开通个人账户'
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <StatusBar barStyle="default"/>
                 <View style={styles.inputTextsStyleView}>
@@ -61,7 +64,8 @@ export default class OpenPersonalCountScene extends BaseComponent{
                         import={false}
                         clearValue={true}
                         rightIcon={false}
-                        rightButton={false}/>
+                        rightButton={false}
+                        inputTextStyle = {{marginLeft:Pixel.getPixel(56),paddingLeft:0}}/>
                     <LoginInputText
                         textPlaceholder={'请输入身份证号'}
                         leftText = '身份证号'
@@ -69,7 +73,8 @@ export default class OpenPersonalCountScene extends BaseComponent{
                         import={false}
                         clearValue={true}
                         rightIcon={false}
-                        rightButton={false}/>
+                        rightButton={false}
+                        inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}/>
                     <LoginInputText
                         textPlaceholder={'请输入手机号码'}
                         leftText = '手机号'
@@ -77,7 +82,8 @@ export default class OpenPersonalCountScene extends BaseComponent{
                         import={false}
                         clearValue={true}
                         rightIcon={false}
-                        rightButton={false}/>
+                        rightButton={false}
+                        inputTextStyle = {{marginLeft:Pixel.getPixel(42),paddingLeft:0}}/>
                     <LoginInputText
                         textPlaceholder={'请输入银行卡号'}
                         leftText = '银行卡号'
@@ -85,7 +91,8 @@ export default class OpenPersonalCountScene extends BaseComponent{
                         import={false}
                         clearValue={true}
                         rightIcon={false}
-                        rightButton={false}/>
+                        rightButton={false}
+                        inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}/>
                     <View style={{flexDirection: 'row',flex:1,alignItems:'center',width:Pixel.getPixel(345)}}>
                         <Text style={{color:fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(14),justifyContent: 'flex-start'}}>银行</Text>
                         <View style={{flexDirection:'row',justifyContent:'flex-end',marginRight: Pixel.getPixel(15),width:Pixel.getPixel(316)}}>
@@ -98,7 +105,7 @@ export default class OpenPersonalCountScene extends BaseComponent{
                     <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
                     <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>请确认信息的准确性，开户时间为7*24小时 </Text>
                 </View>
-                <SubmitComponent title="确认提交"/>
+                <SubmitComponent title="确认提交" warpStyle={{marginTop:Pixel.getPixel(30)}}/>
             </View>
 
         );
