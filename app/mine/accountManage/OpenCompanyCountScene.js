@@ -60,7 +60,7 @@ export default class OpenCompanyCountScene extends BaseComponent{
                             <Image style={styles.icon} source={require('../../../images/mine/guangfa_account/xin-h.png')}/>
                             <Text allowFontScaling={false} style={styles.text}>企业新开户</Text>
                         </View>
-                        <Text allowFontScaling={false} style={styles.tip}>绑定企业信息，每个企业用户仅限开通1个企业账户</Text>
+                        <Text allowFontScaling={false} style={styles.tip}>每个企业用户仅限开通1个企业账户，并将绑定企业信息</Text>
                 </TouchableOpacity>
 
                 <View style={{width:width,height:Pixel.getPixel(18),marginLeft:Pixel.getPixel(38),flexDirection: 'row',marginTop:Pixel.getPixel(25),alignItems: 'flex-end'}}>
