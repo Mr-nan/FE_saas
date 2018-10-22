@@ -326,9 +326,14 @@ export default class MyAccountItem extends BaseComponent {
         } else if (this.state.data.status === 2) {
             accountState = '未激活';
             bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
-        } else {
-            accountState = '个人账户';
-            bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
+        }else {
+            if(this.state.data.account_open_type === 1){
+                accountState = '企业账户';
+                bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
+            }else  if(this.state.data.account_open_type === 2){
+                accountState = '个人账户';
+                bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
+            }
         }
         return (
             <View style={{alignItems: 'center',width:Pixel.getPixel(345), height: Pixel.getPixel(204),marginLeft:Pixel.getPixel(15)}}>
