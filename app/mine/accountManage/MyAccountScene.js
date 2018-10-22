@@ -98,6 +98,7 @@ export default class MyAccountScene extends BaseComponent {
         flag1 = 0;
         flag2 = 0;
         flag3 = 0;
+        flag4 = 0;
     }
 
     initFinish = () => {
