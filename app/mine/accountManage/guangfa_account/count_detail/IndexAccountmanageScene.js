@@ -112,12 +112,6 @@ export default class IndexAccountmanageScene extends BaseComponent{
                         </View>
                         <Image source={require('../../../../../images/mine/guangfa_account/xiangqing.png')}/>
                     </TouchableOpacity>
-
-
-
-
-
-
                 </View>
                 <View style={{width:width,height:Pixel.getPixel(44),flexDirection:'row',marginTop:Pixel.getPixel(127)}}>
                     <TouchableOpacity style={{flex:1,backgroundColor:'#ffffff',alignItems:'center',justifyContent:'center'}}>

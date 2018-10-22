@@ -18,7 +18,10 @@ import RechargeScene from './app/mine/accountManage/guangfa_account/count_detail
 import WithDrawDepositTipComponent from './app/mine/accountManage/guangfa_account/component/WithDrawDepositTipComponent'
 import BankCardScene from './app/mine/accountManage/guangfa_account/count_detail/BankcardScene';
 import AddBankcardMessageComponent from './app/mine/accountManage/guangfa_account/component/AddBankcardMessageComponent';
-import AccountSettingScene from './app/mine/accountManage/guangfa_account/count_detail/AccountSettingScene'
-AppRegistry.registerComponent('FE_Sass', () => AccountSettingScene);
+import AccountSettingScene from './app/mine/accountManage/guangfa_account/count_detail/AccountSettingScene';
+import CancelAccountScene from './app/mine/accountManage/guangfa_account/count_detail/CancelAccountScene';
+import NoAccountScene from './app/mine/accountManage/guangfa_account/count_detail/NoAccountScene';
+import WattingTenScendsScene from './app/mine/accountManage/guangfa_account/count_detail/WattingTenScendsScene'
+AppRegistry.registerComponent('FE_Sass', () => WattingTenScendsScene);
 
 
