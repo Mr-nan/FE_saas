@@ -35,7 +35,6 @@ const PixelUtil = React.createClass({
                 return Math.round(((px + 24) / 375.0) * width);
             }
 
-
             return Math.round((px / 375.0) * width);
 
 

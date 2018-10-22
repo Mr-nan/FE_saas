@@ -246,7 +246,7 @@ export default class MainPage extends BaseComponent {
                         if (childdata.code == 1) {
                             let childdatas = JSON.parse(childdata.result);
                             this.is_done_credit = childdatas.is_done_credit;
-                            this.getUserPermission(childdatas.company_base_id);
+                            this.getUserPermission(childdatas.company_base_id,childdatas.iscompany,childdatas.merge_id);
                         } else {
                             this.setState({renderPlaceholderOnly: 'error'});
                         }
@@ -266,9 +266,12 @@ export default class MainPage extends BaseComponent {
         this.initFinish();
     }
 
-    getUserPermission = (id) => {
+    getUserPermission = (id,iscompany,merge_id) => {
         let maps = {
-            enterprise_uid: id
+            enterprise_uid: id,
+            sx_is_company:iscompany,
+            sx_merge_id:merge_id
+
         };
         request(Urls.GETFUNCTIONBYTOKENENTER, 'Post', maps)
             .then((response) => {
