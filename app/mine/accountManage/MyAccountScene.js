@@ -48,6 +48,7 @@ let flag1 = 0;
 let flag2 = 0;
 let flag3 = 0;
 let flag4 = 0;
+let flag5 = 0;
 
 
 
@@ -62,8 +63,10 @@ export default class MyAccountScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+        this.guangfaInfo = {};
         this.hengFengInfo = {};
         this.zheShangInfo = {};
+        this.is_guangfa_in_whitelist = false;
         this.is_hengfeng_in_whitelist = false;
         this.is_zheshang_in_whitelist = false;
         this.xintuoInfo = {};
@@ -99,6 +102,7 @@ export default class MyAccountScene extends BaseComponent {
         flag2 = 0;
         flag3 = 0;
         flag4 = 0;
+        flag5 = 0;
     }
 
     initFinish = () => {
@@ -158,6 +162,29 @@ export default class MyAccountScene extends BaseComponent {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
                 this.getAccountInfo(datas.company_base_id);
+                /***********判断是否在广发白名单中************/
+                request(Urls.HF_IS_IN_WHITE_LIST,'Post',{enter_base_id:datas.company_base_id,user_id:datas.user_id,bank_id:'gfyh'})
+                    .then((response)=>{
+                        this.is_guangfa_in_whitelist = true;
+                        flag5 = 1;
+                        this.renderUI();
+                    },(error)=>{
+                        this.is_guangfa_in_whitelist = false;
+                        flag5 = 1;
+                        this.renderUI();
+                    });
+
+                request(Urls.HF_IS_IN_WHITE_LIST,'Post',{enter_base_id:datas.company_base_id,user_id:datas.user_id,bank_id:'315'})
+                    .then((response)=>{
+                        this.is_hengfeng_in_whitelist = true;
+                        flag4 = 1;
+                        this.renderUI();
+                    },(error)=>{
+                        this.is_hengfeng_in_whitelist = false;
+                        flag4 = 1;
+                        this.renderUI();
+                    });
+
                 /*********查询是否在恒丰白名单中*********/
                 request(Urls.HF_IS_IN_WHITE_LIST,'Post',{enter_base_id:datas.company_base_id,user_id:datas.user_id,bank_id:'315'})
                 .then((response)=>{
@@ -370,9 +397,13 @@ export default class MyAccountScene extends BaseComponent {
     renderUI = () => {
 
 
-        if (flag1 == 1 && flag2 == 1 && flag3 == 1 && flag4 == 1) {
+        if (flag1 == 1 && flag2 == 1 && flag3 == 1 && flag4 == 1 && flag5 == 1) {
 
             dataList = []
+
+            if(this.is_guangfa_in_whitelist){
+                dataList.push('gfyh')
+            }
 
             if(this.is_hengfeng_in_whitelist){
                 dataList.push('315');
@@ -399,6 +430,7 @@ export default class MyAccountScene extends BaseComponent {
             flag2 = 0;
             flag3 = 0;
             flag4 = 0;
+            flag5 = 0;
         }
 
     }
@@ -750,8 +782,12 @@ export default class MyAccountScene extends BaseComponent {
     };
 
     _renderRow = (rowData, selectionID, rowID) => {
+        console.log('rowData',rowData);
         let info = {};
-        if (rowData == '315') {
+        if(rowData == 'gfyj'){
+            info = this.guangfaInfo;
+        }
+        else if (rowData == '315') {
             info = this.hengFengInfo;
         } else if (rowData == '316') {
             info = this.zheShangInfo;

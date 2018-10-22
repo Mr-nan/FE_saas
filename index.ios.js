@@ -22,6 +22,6 @@ import AccountSettingScene from './app/mine/accountManage/guangfa_account/count_
 import CancelAccountScene from './app/mine/accountManage/guangfa_account/count_detail/CancelAccountScene';
 import NoAccountScene from './app/mine/accountManage/guangfa_account/count_detail/NoAccountScene';
 import WattingTenScendsScene from './app/mine/accountManage/guangfa_account/count_detail/WattingTenScendsScene'
-AppRegistry.registerComponent('FE_Sass', () => WattingTenScendsScene);
+AppRegistry.registerComponent('FE_Sass', () => Root);
 
 
