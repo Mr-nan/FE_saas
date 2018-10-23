@@ -30,6 +30,12 @@ export default class OpenPersonalCountScene extends BaseComponent{
             renderPlaceholderOnly:'blank'
         }
     }
+
+    initFinish(){
+        this.setState({
+            renderPlaceholderOnly:'success'
+        })
+    }
     _renderPlaceholderView() {
      return(
          <view style={{width:width,height:height,backgroundColor:fontColor.COLORA3}}>
@@ -41,7 +47,7 @@ export default class OpenPersonalCountScene extends BaseComponent{
     }
 
     render() {
-        if(this.state.renderPlaceholderOnly != 'success'){
+        if(this.state.renderPlaceholderOnly !== 'success'){
             this._renderPlaceholderView();
         }
         return (
@@ -107,7 +113,6 @@ const styles = StyleSheet.create({
         fontSize:Pixel.getFontPixel(15),
     },
     tip:{
-        width:Pixel.getPixel(298),
         height:Pixel.getPixel(17),
         marginLeft:Pixel.getPixel(24),
         marginTop: Pixel.getPixel(12),

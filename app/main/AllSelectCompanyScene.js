@@ -358,8 +358,8 @@ class CertificateItem extends Component{
                                     <Text style={{fontSize:fontAndColor.CONTENTFONT24,color:'white',backgroundColor:'transparent'}}>{'授信额度' + movie.credit_mny / 10000 + '万'}</Text>
                                 </Image>
                             ):(
-                                <View style={{height:Pixel.getPixel(15),marginTop:Pixel.getPixel(11),
-                                    borderRadius:Pixel.getPixel(6),backgroundColor:fontAndColor.COLORC1,justifyContent:'center',width:Pixel.getPixel(75),
+                                <View style={{height:Pixel.getPixel(16),marginTop:Pixel.getPixel(11),
+                                    borderRadius:Pixel.getPixel(8),backgroundColor:fontAndColor.COLORC1,justifyContent:'center',width:Pixel.getPixel(75),
                                     alignItems:'center',marginLeft:Pixel.getPixel(28)
                                 }}>
                                     <Text style={{fontSize:fontAndColor.MARKFONT22,color:fontAndColor.COLORC2}}>未完成授信</Text>

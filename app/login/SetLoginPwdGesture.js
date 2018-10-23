@@ -113,18 +113,18 @@ export default class SetLoginPwdGesture extends BaseComponent {
                     }
                 }}
                 onEnd={(password) => this.onEnd(password)}/>
-            <View style={{width:Width, alignItems:'center',marginTop: (Width / 12)*8+Pixel.getPixel(50)}}>
-            <TouchableOpacity onPress={() => {
-                this.savePwd = '';
-                this.Passwords = '';
-                this.setCount = 4;
-                this.setState({
-                    status: 'normal',
-                    message: '重新绘制解锁图案',
-                });
-            }}>
-                <Text allowFontScaling={false}  style={styles.bottomSytle }>重置手势密码</Text>
-            </TouchableOpacity>
+            <View style={{width:Width, alignItems:'center',marginTop:Pixel.getPixel(50)}}>
+                <TouchableOpacity onPress={() => {
+                    this.savePwd = '';
+                    this.Passwords = '';
+                    this.setCount = 4;
+                    this.setState({
+                        status: 'normal',
+                        message: '重新绘制解锁图案',
+                    });
+                }}>
+                    <Text allowFontScaling={false}  style={styles.bottomSytle }>重置手势密码</Text>
+                </TouchableOpacity>
             </View>
         </View>
 

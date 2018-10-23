@@ -317,6 +317,8 @@ export default class SetPwdGesture extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: FontAndColor.COLORA3,
+        height:Radius*8,
+        width:Width,
     },
     bodyStyle: {
         position: 'absolute',
@@ -324,5 +326,7 @@ const styles = StyleSheet.create({
         top: 0,
         width: Radius * 8,
         height:Radius * 8,
+        backgroundColor:'red'
+
     },
 });

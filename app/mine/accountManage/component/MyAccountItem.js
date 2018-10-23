@@ -461,15 +461,6 @@ export default class MyAccountItem extends BaseComponent {
                                     fontSize: Pixel.getFontPixel(12),
                                     color: fontAndColor.COLORA0
                                 }}>{this.props.type == 'zsyxt' ? "粮票余额（元）" : "账号余额（元）"}</Text>
-                            {/*<Text*/}
-                                {/*allowFontScaling={false}*/}
-                                {/*style={{*/}
-                                    {/*includeFontPadding: false,*/}
-                                    {/*marginTop: Pixel.getPixel(3),*/}
-                                    {/*textAlign: 'left',*/}
-                                    {/*fontSize: Pixel.getFontPixel(26),*/}
-                                    {/*color:'#333333',*/}
-                                {/*}}>{this.state.data.status === 0 || !this.state.data.status ? '****.**' : this.state.data.balance}</Text>*/}
                             {
                                 this.state.data.status == 0 || !this.state.data.status ?
                                     <View style={{flexDirection:'row',marginTop:Pixel.getPixel(3)}}>
@@ -514,6 +505,7 @@ export default class MyAccountItem extends BaseComponent {
                                             color:'#333333',
                                         }}>{this.state.data.balance}</Text>
                             }
+
 
                         </View>
 
