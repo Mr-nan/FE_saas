@@ -429,7 +429,7 @@ export default class MineScene extends BaseComponent {
                     if (data2.code == 1 && data2.result != null) {
                         BASE_ID.push(data2.result)
                         let maps = {
-                            enterprise_id: BASE_ID,
+                            enterprise_id: datas.company_base_id,
                         };
                         request(Urls.NEW_AUTH, 'post', maps).then((response) => {
                             if (response.mycode == "1") {

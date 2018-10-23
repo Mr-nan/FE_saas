@@ -306,12 +306,16 @@ export default class PwdGesture extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: FontAndColor.COLORA3,
+        height:Radius*8,
+        width:Width,
     },
     bodyStyle: {
         position: 'absolute',
         height:Radius*8,
         width:Radius*8,
         backgroundColor: FontAndColor.COLORA3,
-        left:(Width-Radius*8)/2
+        left:(Width-Radius*8)/2,
+        top:0,
+
     },
 });

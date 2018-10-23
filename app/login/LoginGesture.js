@@ -107,14 +107,14 @@ export default class GesturePassword extends BaseComponent {
                         {this.state.message}
                     </Text>
                 </View>
-            <PwdGesture
+                <PwdGesture
                 ref='pg'
                 us={this.state.status}
                 message={this.state.message}
                 interval={500}
                 onStart={() => this.onStart()}
                 onEnd={(password) => this.onEnd(password)}/>
-                <View style={{flexDirection: 'row',marginTop:(Width / 12)*8 +Pixel.getPixel(40)}}>
+                <View style={{flexDirection: 'row',marginTop:Pixel.getPixel(40),backgroundColor:'yellow'}}>
                     <TouchableOpacity onPress={() => {
                         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
                             if (data.code == 1) {
