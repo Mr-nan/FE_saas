@@ -506,7 +506,6 @@ export default class MyAccountItem extends BaseComponent {
                                         }}>{this.state.data.balance}</Text>
                             }
 
-
                         </View>
 
                         {
@@ -636,62 +635,6 @@ export default class MyAccountItem extends BaseComponent {
                                 </View> : null
                         }
 
-                        <View
-                            style={{flex: 1}}
-                        >
-                            <Text
-                                allowFontScaling={false}
-                                style={{
-                                    includeFontPadding: false,
-                                    textAlign: 'right',
-                                    fontSize: Pixel.getPixel(12),
-                                    color: fontAndColor.COLORA1
-                                }}>开通时间</Text>
-                            {
-                                this.state.data.status == 0 || !this.state.data.status ?
-                                    <View style={{flexDirection:'row',marginTop:Pixel.getPixel(3)}}>
-                                        <Text
-                                            allowFontScaling={false}
-                                            style={{
-                                                includeFontPadding: false,
-                                                textAlign: 'left',
-                                                fontSize: Pixel.getFontPixel(26),
-                                                color:'#333333',
-                                            }}>****
-                                        </Text>
-                                        <Text
-                                            allowFontScaling={false}
-                                            style={{
-                                                includeFontPadding: false,
-                                                textAlign: 'left',
-                                                fontSize: Pixel.getFontPixel(14),
-                                                marginTop:Pixel.getPixel(3),
-                                                color:'#333333',
-
-                                            }}>.
-                                        </Text>
-                                        <Text
-                                            allowFontScaling={false}
-                                            style={{
-                                                includeFontPadding: false,
-                                                textAlign: 'left',
-                                                fontSize: Pixel.getFontPixel(26),
-                                                color:'#333333',
-                                            }}>**
-                                        </Text>
-                                    </View>
-                                    :
-                                    <Text
-                                        allowFontScaling={false}
-                                        style={{
-                                            includeFontPadding: false,
-                                            marginTop: Pixel.getPixel(3),
-                                            textAlign: 'left',
-                                            fontSize: Pixel.getFontPixel(26),
-                                            color:'#333333',
-                                        }}>{this.state.data.balance}</Text>
-                            }
-                        </View>
                     </View>
                 </Image>
             </View>
