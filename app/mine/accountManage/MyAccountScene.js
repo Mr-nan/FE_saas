@@ -288,9 +288,10 @@ export default class MyAccountScene extends BaseComponent {
         request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
             .then((response) => {
                 this.props.showModal(false);
+                this.guangfaInfo = response.mjson.data['gfyh'][0] ? response.mjson.data['gfyh'][0] : {};
                 this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
                 this.xintuoInfo = response.mjson.data['zsyxt'][0] ? response.mjson.data['zsyxt'][0] : {};
-                console.log("this.props.data",response.mjson);
+              //  console.log("this.props.data",response.mjson);
 
                 if (response.mjson.data['315'][0]) {
                     this.hengFengInfo = response.mjson.data['315'][0];
@@ -782,9 +783,8 @@ export default class MyAccountScene extends BaseComponent {
     };
 
     _renderRow = (rowData, selectionID, rowID) => {
-        console.log('rowData',rowData);
         let info = {};
-        if(rowData == 'gfyj'){
+        if(rowData == 'gfyh'){
             info = this.guangfaInfo;
         }
         else if (rowData == '315') {

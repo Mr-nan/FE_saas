@@ -10,7 +10,7 @@ import {
 
 import Root from './app/root';
 import OpenPersonalCountScene from './app/mine/accountManage/guangfa_account/open_count/OpenPersonalCountScene';
-import OpenCompanyCountScene from './app/mine/accountManage/guangfa_account/open_count/OpenCompanyCountScene';
+import GfOpenCompanyCountScene from './app/mine/accountManage/guangfa_account/open_count/GfOpenCompanyCountScene';
 import ACCountManageScene from './app/mine/accountManage/guangfa_account/count_detail/ACCountManageScene';
 import AuthenticatePublicScene from './app/mine/accountManage/guangfa_account/count_detail/AuthenticatePublicScene';
 import IndexAccountmanageScene from './app/mine/accountManage/guangfa_account/count_detail/IndexAccountmanageScene';

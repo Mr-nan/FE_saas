@@ -13,8 +13,8 @@ import {
     StatusBar,
     Text,
     Image,
-    ScrollView
-
+    ScrollView,
+    KeyboardAvoidingView
 } from 'react-native';
 
 import *as fontAndColor from '../../../../constant/fontAndColor';
@@ -26,12 +26,13 @@ import SubmitComponent from "../component/SubmitComponent";
 const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
 
-export default class OpenCompanyCountScene extends BaseComponent{
+export default class GfOpenCompanyCountScene extends BaseComponent{
 
     constructor(props) {
         super(props);
         this.state = {
-            renderPlaceholderOnly:'blank'
+            renderPlaceholderOnly:'blank',
+            topSize:-179
         }
     }
 
@@ -42,21 +43,28 @@ export default class OpenCompanyCountScene extends BaseComponent{
     }
 
     renderPlaceholderView = () => {
-        this.loadView();
-    }
-    backPage = () => {
-        this.loadView();
+        return(
+            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
+                {this.loadView()}
+                <NavigationView
+                    title='开通企业账户'
+                    backIconClick={this.backPage}
+                />
+            </View>
+            )
+
     }
 
     render() {
-        if(this.state.renderPlaceholderOnly != 'success'){
-            this.renderPlaceholderView();
+        if(this.state.renderPlaceholderOnly !== 'success'){
+            return this.renderPlaceholderView();
         }
         return (
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3}}>
                 <NavigationView backIconClick={this.backPage} title='开通企业账户'
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <StatusBar barStyle="default"/>
+                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.topSize}>
                 <ScrollView style={{marginTop:Pixel.getPixel(64)}}>
                 <View style={{marginTop:Pixel.getPixel(15),backgroundColor:'#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15)}}>
                     <LoginInputText
@@ -67,7 +75,14 @@ export default class OpenCompanyCountScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
-                        inputTextStyle = {{marginLeft:Pixel.getPixel(84),paddingLeft:0}}/>
+                        inputTextStyle = {{marginLeft:Pixel.getPixel(84),paddingLeft:0}}
+                        foucsChange = {()=>{
+                            if(this.state.topSize == 5){
+                                this.setState({
+                                    topSize:-179
+                                })
+                            }
+                        }}/>
                     <LoginInputText
                         textPlaceholder={'请输入企业固定电话'}
                         leftText = '企业固定电话'
@@ -161,7 +176,7 @@ export default class OpenCompanyCountScene extends BaseComponent{
                     </View>
                     <SubmitComponent title="确认提交"/>
                 </ScrollView>
-
+                </KeyboardAvoidingView>
             </View>
         );
     }

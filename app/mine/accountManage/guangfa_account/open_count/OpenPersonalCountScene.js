@@ -43,13 +43,9 @@ export default class OpenPersonalCountScene extends BaseComponent{
     _renderPlaceholderView = () => {
         this.loadView();
     }
-    backPage = () => {
-        this.loadView();
-    }
-
     render() {
         if(this.state.renderPlaceholderOnly != 'success'){
-            this._renderPlaceholderView()
+           return this._renderPlaceholderView()
         }
         return (
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3}}>
