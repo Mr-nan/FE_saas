@@ -38,11 +38,11 @@ export default class OpenPersonalCountScene extends BaseComponent{
     }
     _renderPlaceholderView() {
      return(
-         <view style={{width:width,height:height,backgroundColor:fontColor.COLORA3}}>
+         <View style={{width:width,height:height,backgroundColor:fontColor.COLORA3}}>
              {this.loadView()}
              <NavigationView backIconClick={this.backPage} title='选择账户' wrapStyle={{backgroundColor:'white'}}
                              titleStyle={{color:fontColor.COLORD2}}/>
-         </view>
+         </View>
      )
     }
 
