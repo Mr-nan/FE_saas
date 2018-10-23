@@ -428,7 +428,7 @@ export default class MyAccountItem extends BaseComponent {
                                     marginTop: Pixel.getPixel(3),
                                     textAlign: 'left',
                                     fontSize: Pixel.getPixel(26),
-                                    color:'#151515'
+                                    color:'#333333'
                                 }}>{this.state.data.status === 0 || !this.state.data.status ? '****.**' : this.state.data.balance}</Text>
 
                         </View>
