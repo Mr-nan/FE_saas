@@ -9,7 +9,19 @@ import {
 } from 'react-native';
 
 import Root from './app/root';
-
+import OpenPersonalCountScene from './app/mine/accountManage/guangfa_account/open_count/OpenPersonalCountScene';
+import GfOpenCompanyCountScene from './app/mine/accountManage/guangfa_account/open_count/GfOpenCompanyCountScene';
+import ACCountManageScene from './app/mine/accountManage/guangfa_account/count_detail/ACCountManageScene';
+import AuthenticatePublicScene from './app/mine/accountManage/guangfa_account/count_detail/AuthenticatePublicScene';
+import IndexAccountmanageScene from './app/mine/accountManage/guangfa_account/count_detail/IndexAccountmanageScene';
+import RechargeScene from './app/mine/accountManage/guangfa_account/count_detail/RechargeScene';
+import WithDrawDepositTipComponent from './app/mine/accountManage/guangfa_account/component/WithDrawDepositTipComponent'
+import BankCardScene from './app/mine/accountManage/guangfa_account/count_detail/BankcardScene';
+import AddBankcardMessageComponent from './app/mine/accountManage/guangfa_account/component/AddBankcardMessageComponent';
+import AccountSettingScene from './app/mine/accountManage/guangfa_account/count_detail/AccountSettingScene';
+import CancelAccountScene from './app/mine/accountManage/guangfa_account/count_detail/CancelAccountScene';
+import NoAccountScene from './app/mine/accountManage/guangfa_account/count_detail/NoAccountScene';
+import WattingTenScendsScene from './app/mine/accountManage/guangfa_account/count_detail/WattingTenScendsScene'
 AppRegistry.registerComponent('FE_Sass', () => Root);
 
 

@@ -33,6 +33,9 @@ import XintuoAccountScene from '../xintuo/XintuoAccountScene'
 import OpenAccountBaseScene from '../xintuo/openAccount/OpenAccountBaseScene';
 import OpenPersonalCountScene from '../../accountManage/OpenPersonalCountScene';
 import OpenCompanyCountScene from '../../accountManage/OpenCompanyCountScene';
+import IndexAccountmanageScene from '../guangfa_account/count_detail/IndexAccountmanageScene';
+import SelectCountCompany from '../guangfa_account/open_count/SelectCountCompany';
+import SelectCountPersonal from '../guangfa_account/open_count/SelectCountPersonal';
 const Pixel = new PixelUtil();
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
@@ -68,7 +71,40 @@ export default class MyAccountItem extends BaseComponent {
      *   state 开户状态
      **/
     pageDispense = (type, state,iscompany) => {
-        if (type == '315') {
+        if(type == 'gfyh'){
+            switch (state) {
+                case 0:
+                    if(iscompany){
+                        this.navigatorParams.name = 'SelectCountCompany';
+                        this.navigatorParams.component = SelectCountCompany;
+                        this.navigatorParams.params = {
+                            callBack:() =>{
+                                this.props.callBack();
+                            }
+                        };
+                    }else{
+                        this.navigatorParams.name = 'SelectCountPersonal';
+                        this.navigatorParams.component = SelectCountPersonal;
+                        this.navigatorParams.params = {
+                            callBack: () => {
+                                this.props.callBack();
+                            }
+                        };
+                    }
+                    break;
+                default:
+                    this.navigatorParams.name = 'IndexAccountmanageScene';
+                    this.navigatorParams.component = IndexAccountmanageScene;
+                    this.navigatorParams.params = {
+                        callBack: () =>{
+                            this.props.callBack();
+                        }
+                    }
+                    break;
+            }
+            this.toNextPage(this.navigatorParams);
+        }
+       else if (type == '315') {
             switch (state) {
                 case 0:
                     if(iscompany){
@@ -219,69 +255,68 @@ export default class MyAccountItem extends BaseComponent {
             }
         });
 
-        return;
+        //return;
 
-        if (type == '315') {
-            this.props.showModal(true);
-            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                if (data.code == 1) {
-                    let datas = JSON.parse(data.result);
-
-
-                    let maps = {
-                        enter_base_ids: datas.company_base_id,
-                        child_type: '1'
-                    };
-                    request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                        .then((response) => {
-                            this.props.showModal(false);
-                            this.pageDispense(type, response.mjson.data.account.status);
-                        }, (error) => {
-                            this.props.showModal(false);
-                            this.props.showToast('用户信息查询失败');
-                        });
-                } else {
-                    this.props.showModal(false);
-                    this.props.showToast('用户信息查询失败');
-                }
-            });
-        } else if (type == '316') {
-            this.props.showModal(true);
-            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                if (data.code == 1) {
-                    let datas = JSON.parse(data.result);
-
-                    let maps = {
-                        enter_base_ids: datas.company_base_id,
-                        child_type: '1',
-                        bank_id: type
-                    };
-                    request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
-                        .then((response) => {
-                            this.props.showModal(false);
-                            //this.pageDispense(type, 0);
-                            this.pageDispense(type, response.mjson.data[type][0].status);
-
-                        }, (error) => {
-                            this.props.showModal(false);
-                            this.props.showToast('用户信息查询失败');
-                        });
-                } else {
-                    this.props.showModal(false);
-                    this.props.showToast('用户信息查询失败');
-                }
-            });
-        } else if (type == 'zsyxt') {
-
-
-            if (this.data.status = 'undefined' || this.data == {} || this.data.state == 0) {
-                this.props.clickCallBack();
-            } else {
-                this.pageDispense(type)
-            }
-
-
-        }
+        // if (type == '315') {
+        //     this.props.showModal(true);
+        //     StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+        //         if (data.code == 1) {
+        //             let datas = JSON.parse(data.result);
+        //             console.log('1111111111111111111111');
+        //             let maps = {
+        //                 enter_base_ids: datas.company_base_id,
+        //                 child_type: '1'
+        //             };
+        //             request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+        //                 .then((response) => {
+        //                     this.props.showModal(false);
+        //                     this.pageDispense(type, response.mjson.data.account.status);
+        //                 }, (error) => {
+        //                     this.props.showModal(false);
+        //                     this.props.showToast('用户信息查询失败');
+        //                 });
+        //         } else {
+        //             this.props.showModal(false);
+        //             this.props.showToast('用户信息查询失败');
+        //         }
+        //     });
+        // } else if (type == '316') {
+        //     this.props.showModal(true);
+        //     StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+        //         if (data.code == 1) {
+        //             let datas = JSON.parse(data.result);
+        //
+        //             let maps = {
+        //                 enter_base_ids: datas.company_base_id,
+        //                 child_type: '1',
+        //                 bank_id: type
+        //             };
+        //             request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
+        //                 .then((response) => {
+        //                     this.props.showModal(false);
+        //                     //this.pageDispense(type, 0);
+        //                     this.pageDispense(type, response.mjson.data[type][0].status);
+        //
+        //                 }, (error) => {
+        //                     this.props.showModal(false);
+        //                     this.props.showToast('用户信息查询失败');
+        //                 });
+        //         } else {
+        //             this.props.showModal(false);
+        //             this.props.showToast('用户信息查询失败');
+        //         }
+        //     });
+        // } else if (type == 'zsyxt') {
+        //
+        //
+        //     if (this.data.status = 'undefined' || this.data == {} || this.data.state == 0) {
+        //         this.props.clickCallBack();
+        //     } else {
+        //         this.pageDispense(type)
+        //     }
+        //
+        //
+        // }
     };
 
     /**
@@ -294,7 +329,12 @@ export default class MyAccountItem extends BaseComponent {
         let accountState = ''; //账户状态
         let bankNo = ''; // 资金账号
         let bindBankName = '**********'; // 绑定银行卡开户行
-        if (this.props.type == '315') {   //恒丰
+        if(this.props.type == 'gfyh'){
+           back = require('../../../../images/mine/guangfa_account/guangfa-bg.png');
+           bank = require('../../../../images/mine/guangfa_account/广发银行 copy.png');
+           bankName = '广发银行';
+        }
+         else if (this.props.type == '315') {   //恒丰
             back = require('../../../../images/account/hengfengback.png');
             bank = require('../../../../images/account/hengfengbank.png');
             bankName = '恒丰银行';
@@ -418,18 +458,9 @@ export default class MyAccountItem extends BaseComponent {
                                 style={{
                                     //includeFontPadding: false,
                                     textAlign: 'left',
-                                    fontSize: Pixel.getPixel(12),
+                                    fontSize: Pixel.getFontPixel(12),
                                     color: fontAndColor.COLORA0
                                 }}>{this.props.type == 'zsyxt' ? "粮票余额（元）" : "账号余额（元）"}</Text>
-                            {/*<Text*/}
-                                {/*allowFontScaling={false}*/}
-                                {/*style={{*/}
-                                    {/*includeFontPadding: false,*/}
-                                    {/*marginTop: Pixel.getPixel(3),*/}
-                                    {/*textAlign: 'left',*/}
-                                    {/*fontSize: Pixel.getPixel(26),*/}
-                                    {/*color:'#333333'*/}
-                                {/*}}>{this.state.data.status === 0 || !this.state.data.status ? '****.**' : this.state.data.balance}</Text>*/}
                             {
                                 this.state.data.status == 0 || !this.state.data.status ?
                                     <View style={{flexDirection:'row',marginTop:Pixel.getPixel(3)}}>
@@ -502,9 +533,11 @@ export default class MyAccountItem extends BaseComponent {
                         justifyContent: 'center',
                         backgroundColor: 'transparent',
                         flexDirection: 'row',
+
                     }}>
+
                         {
-                            this.props.type != "zsyxt" ?
+                            this.props.type != "zsyxt" && this.props.type != 'gfyh' ?
                                 <View
                                     style={{flex: 2}}
                                 >
@@ -527,48 +560,81 @@ export default class MyAccountItem extends BaseComponent {
                                         }}>{bankNo}</Text>
 
                                 </View>
-                                : <View
+                                :
+                               null
+                        }
+                        {
+                            this.props.type == 'gfyh' ?
+                                <View
                                     style={{flex: 2}}
                                 >
                                     <Text
                                         allowFontScaling={false}
-                                        onPress={()=>{
-                                            this.props.questionClick(this.props.type)
-                                        }}
                                         style={{
-                                            includeFontPadding: false,
+
                                             textAlign: 'left',
                                             fontSize: Pixel.getPixel(12),
                                             color: fontAndColor.COLORA1
-                                        }}>什么是1车粮票？</Text>
+                                        }}>开通时间</Text>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            includeFontPadding: false,
+                                            marginTop: Pixel.getPixel(3),
+                                            textAlign: 'left',
+                                            fontSize: Pixel.getPixel(15),
+                                            color: fontAndColor.COLORA1
+                                        }}>{this.state.data.account_open_date ?  this.state.data.account_open_date.substr(0, 10):'****-**-**'}</Text>
 
+                                </View> :null
 
-                                </View>
+                        }
+                        {
+                            this.props.type == 'zsyxt' ?
+                                <View
+                                style={{flex: 2}}
+                            >
+                                <Text
+                                    allowFontScaling={false}
+                                    onPress={()=>{
+                                        this.props.questionClick(this.props.type)
+                                    }}
+                                    style={{
+                                        includeFontPadding: false,
+                                        textAlign: 'left',
+                                        fontSize: Pixel.getPixel(12),
+                                        color: fontAndColor.COLORA1
+                                    }}>什么是1车粮票？</Text>
+                            </View> : null
                         }
 
-                        <View
-                            style={{flex: 1}}
-                        >
-                            <Text
-                                allowFontScaling={false}
-                                style={{
-                                    includeFontPadding: false,
-                                    textAlign: 'right',
-                                    fontSize: Pixel.getPixel(12),
-                                    color: fontAndColor.COLORA1
-                                }}>开通时间</Text>
-                            <Text
-                                allowFontScaling={false}
-                                style={{
-                                    includeFontPadding: false,
-                                    marginTop: Pixel.getPixel(3),
-                                    textAlign: 'right',
-                                    fontSize: Pixel.getFontPixel(15),
-                                    color:fontAndColor.COLORA1,
-                                }}>{
-                                    this.state.data.account_open_date ? this.state.data.account_open_date.substr(0,10):'****-**-**'}</Text>
+                        {
+                            this.props.type != 'gfyh' ?
+                                <View
+                                    style={{flex: 1}}
+                                >
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            includeFontPadding: false,
+                                            textAlign: 'right',
+                                            fontSize: Pixel.getPixel(12),
+                                            color: fontAndColor.COLORA1
+                                        }}>开通时间</Text>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            includeFontPadding: false,
+                                            marginTop: Pixel.getPixel(3),
+                                            textAlign: 'right',
+                                            fontSize: Pixel.getPixel(15),
+                                            color: fontAndColor.COLORA1
+                                        }}>
+                                        {this.state.data.account_open_date ?  this.state.data.account_open_date.substr(0, 10):'****-**-**'}
+                                    </Text>
+                                </View> : null
+                        }
 
-                        </View>
                     </View>
                 </Image>
             </View>
