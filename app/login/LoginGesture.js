@@ -114,7 +114,7 @@ export default class GesturePassword extends BaseComponent {
                 interval={500}
                 onStart={() => this.onStart()}
                 onEnd={(password) => this.onEnd(password)}/>
-                <View style={{flexDirection: 'row',marginTop:Pixel.getPixel(40),backgroundColor:'yellow'}}>
+                <View style={{flexDirection: 'row',marginTop:Pixel.getPixel(40)}}>
                     <TouchableOpacity onPress={() => {
                         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
                             if (data.code == 1) {
