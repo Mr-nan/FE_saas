@@ -289,12 +289,20 @@ export  default class SelectBankScene extends BaseComponent {
 
     _indexAndScrollClick = (index)=> {
 
+        console.log('length',this.new_bankData.length-1,'index',index-2,':',index);
         let listView = this.refs.listView;
-        let scrollY = index * Pixel.getPixel(40);
+        if(index<2){
+            listView.scrollTo({x: 0, y: 0, animated: true});
+            return;
 
-        for (let i = 0; i < index-2; i++) {
-            let rowIndex =this.new_bankData[i-1].data.length;
-            scrollY += +rowIndex * Pixel.getPixel(44);
+        }
+
+        let scrollY = index * Pixel.getPixel(40);
+        let  headHeight = 0;
+
+        for (let i = 2; i < index-2; i++) {
+            let rowIndex =this.new_bankData[i-2].data.length;
+            scrollY +=(rowIndex * Pixel.getPixel(44))+ headHeight;
         }
 
         listView.scrollTo({x: 0, y: scrollY, animated: true});
@@ -314,6 +322,7 @@ export  default class SelectBankScene extends BaseComponent {
                 {
                     this.hotBankData.map((data,index)=>{
                         return(
+                        <TouchableOpacity key={index} onPress={()=>{ this.props.getBankData && this.props.getBankData(data); this.backPage()}}>
                             <View style={{
                                 backgroundColor: 'white',
                                 alignItems: 'center',
@@ -324,7 +333,7 @@ export  default class SelectBankScene extends BaseComponent {
                                 borderBottomColor:fontAnColor.COLORA3,
                                 borderRightWidth:StyleSheet.hairlineWidth,
                                 borderRightColor:fontAnColor.COLORA3,
-                            }} key={index}>
+                            }} >
                                 <Image  style={{marginBottom:Pixel.getPixel(15)}} source={this.getBankImage(data.bankName)}/>
                                 <Text style={{ width:(width-Pixel.getPixel(33))/4 ,textAlign:'center',
                                     fontSize:fontAnColor.LITTLEFONT26,
@@ -335,6 +344,8 @@ export  default class SelectBankScene extends BaseComponent {
                                     height:Pixel.getPixel(25)
                                 }} numberOfLines={1}>{ (data.bankName.indexOf('中国',0)==0 && data.bankName.indexOf('中国银行',0)!==0)?data.bankName.substring(2,data.bankName.length) :data.bankName}</Text>
                             </View>
+                        </TouchableOpacity>
+
                         )
                     })
                 }
@@ -346,7 +357,7 @@ export  default class SelectBankScene extends BaseComponent {
     renderRow = (rowData, sectionID, rowID) => {
 
         return (
-            <TouchableOpacity onPress={() => {console.log(rowData.bankName)}}>
+            <TouchableOpacity onPress={() => {this.props.getBankData && this.props.getBankData(rowData); this.backPage()}}>
                 <View style={styles.rowCell}>
                     <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.bankName}</Text>
                 </View>
