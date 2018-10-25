@@ -389,7 +389,7 @@ export default class EnterpriseCertificate extends BaseComponent {
                     }
                     this.timer = setTimeout(
                         () => {
-                            this.backPage();
+                            this.backToTop();
                         },
                         200
                     );

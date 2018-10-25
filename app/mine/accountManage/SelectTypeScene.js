@@ -42,7 +42,7 @@ export  default class SelectTypeScene extends BaseComponent {
         });
     }
 
-
+w
 
     render() {
         if (this.state.renderPlaceholderOnly != 'success') {
