@@ -1649,6 +1649,13 @@ export const ZS_HEAD_BANK = BASEURL + "v1/bankRoute.query/findSubBankNo";
 export const ZS_SUB_BANK = BASEURL + "v1/bankRoute.query/findChildBankNo";
 
 /**
+ *  from @dingnyonggang
+ *
+ *  查询银行总行联行号
+ */
+export const GET_BANK_LIST = BASEURL + "v1/bankroute.Query/findSubBankXtNo";
+
+/**
  *   获取用户的账户详情(我的账户页面-卡片页  调用)
  */
 export const GET_USER_ACCOUNT_DETAIL = BASEURL + "v1/user.account/getUserAccountDetail";
