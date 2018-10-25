@@ -314,7 +314,6 @@ export  default class SelectBankScene extends BaseComponent {
                         return(
                             <View style={{
                                 backgroundColor: 'white',
-                                flexDirection: 'row',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 height: (width-Pixel.getPixel(30))/4,
@@ -390,8 +389,7 @@ export  default class SelectBankScene extends BaseComponent {
         }else if(name.indexOf('兴业银行')>-1){
             imageName = 'xy.png';
         }
-        console.log(imageName);
-        return require('../../../images/mine/guangfa_account/'+imageName);
+        return require('../../../images/mine/guangfa_account/gs.png');
     }
 
 

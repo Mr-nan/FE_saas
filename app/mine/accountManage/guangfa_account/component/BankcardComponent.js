@@ -34,7 +34,7 @@ export default class BankcardComponent extends BaseComponent{
         return(
             <Image source={require('../../../../../images/mine/guangfa_account/ka-hong.png')} style={{marginTop:Pixel.getPixel(84)}}>
                 <View style={{flexDirection:'row'}}>
-                    <Image source={require('../../../../../images/mine/guangfa_account/工商银行 copy.png')} style={{marginLeft: Pixel.getPixel(19),marginTop:Pixel.getPixel(26),width:Pixel.getPixel(28),height:Pixel.getPixel(28)}}/>
+                    <Image source={require('../../../../../images/mine/guangfa_account/gs.png')} style={{marginLeft: Pixel.getPixel(19),marginTop:Pixel.getPixel(26),width:Pixel.getPixel(28),height:Pixel.getPixel(28)}}/>
                     <View style={{flexDirection:'row',width:Pixel.getPixel(298),paddingLeft: Pixel.getPixel(16),paddingRight: Pixel.getPixel(10),justifyContent:'space-between',marginTop:Pixel.getPixel(17)}}>
                         <View style={{flexDirection:'column',justifyContent: 'center'}}>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(15),lineHeight:Pixel.getPixel(21)}}>中国工商银行</Text>

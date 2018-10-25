@@ -331,7 +331,7 @@ export default class MyAccountItem extends BaseComponent {
         let bindBankName = '**********'; // 绑定银行卡开户行
         if(this.props.type == 'gfyh'){
            back = require('../../../../images/mine/guangfa_account/guangfa-bg.png');
-           bank = require('../../../../images/mine/guangfa_account/广发银行 copy.png');
+           bank = require('../../../../images/mine/guangfa_account/gf.png');
            bankName = '广发银行';
         }
          else if (this.props.type == '315') {   //恒丰
