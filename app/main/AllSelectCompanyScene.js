@@ -326,6 +326,9 @@ class CertificateItem extends Component{
         let movie = this.props.movie;
         let image = require('../../images/mine/qiye-da.png');
         let title = movie.is_done_credit == '1'?movie.companyname:movie.name;
+        if(movie.iscompany>0){
+            title = `${this.props.userData.boss_name}(${movie.name})`
+        }
         let content = '实际控制人：'+ this.props.userData.boss_name;
         let isPersonage = 0;
         if(movie.role_type instanceof Array){
