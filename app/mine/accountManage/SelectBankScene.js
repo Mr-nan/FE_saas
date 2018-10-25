@@ -302,32 +302,34 @@ export  default class SelectBankScene extends BaseComponent {
     renderHeader=()=>{
 
         return(
-            <View style={{alignItems:'center',justifyContent:'center'}}>
             <View style={{
-                backgroundColor: 'red',
+                backgroundColor: fontAnColor.COLORA3,
                 flexDirection: 'row',
                 alignItems: 'center',
                 flexWrap: 'wrap',
-                width:width-Pixel.getPixel(20),
+                width:width-Pixel.getPixel(30),
             }}>
                 {
                     this.hotBankData.map((data,index)=>{
                         return(
                             <View style={{
-                                backgroundColor: '#FFFFFF',
+                                backgroundColor: 'white',
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                height: (width-Pixel.getPixel(20))/4,
-                                borderRadius: 4,
-                                width:(width-Pixel.getPixel(20))/4
+                                height: (width-Pixel.getPixel(30))/4,
+                                width:(width-Pixel.getPixel(30))/4,
+                                borderBottomWidth:StyleSheet.hairlineWidth,
+                                borderBottomColor:fontAnColor.COLORA3,
+                                borderRightWidth:StyleSheet.hairlineWidth,
+                                borderRightColor:fontAnColor.COLORA3,
                             }} key={index}>
-                                <Text style={{ width:(width-Pixel.getPixel(20))/4}}>{data.bankName}</Text>
+                                <Image style={{width:Pixel.getPixel(30),height:Pixel.getPixel(30),backgroundColor:fontAnColor.COLORA3,borderRadius:Pixel.getPixel(15)}} source={this.getBankImage(data.bankName)}/>
+                                <Text style={{ width:(width-Pixel.getPixel(33))/4 ,textAlign:'center',marginTop:Pixel.getPixel(5)}} numberOfLines={1}>{ (data.bankName.indexOf('中国',0)==0 && data.bankName.indexOf('中国银行',0)!==0)?data.bankName.substring(2,data.bankName.length) :data.bankName}</Text>
                             </View>
                         )
                     })
                 }
-            </View>
             </View>
         )
 
@@ -352,6 +354,44 @@ export  default class SelectBankScene extends BaseComponent {
                 <Text allowFontScaling={false}  style={styles.sectionText}>{sectionData}</Text>
             </View>
         );
+    }
+
+    getBankImage=(name)=>{
+
+        let imageName = '';
+        if(name.indexOf('工商银行')>-1){
+            imageName = 'gs.png';
+        }else if(name.indexOf('中国银行')>-1){
+            imageName = 'zh.png';
+        }else if(name.indexOf('建设银行')>-1){
+            imageName = 'js.png';
+        }else if(name.indexOf('农业银行')>-1){
+            imageName = 'ny.png';
+        }else if(name.indexOf('交通银行')>-1){
+            imageName = 'jt.png';
+        }else if(name.indexOf('邮政银行')>-1){
+            imageName = 'yz.png';
+        }else if(name.indexOf('招商银行')>-1){
+            imageName = 'zs.png';
+        }else if(name.indexOf('平安银行')>-1){
+            imageName = 'pa.png';
+        }else if(name.indexOf('民生银行')>-1){
+            imageName = 'ms.png';
+        }else if(name.indexOf('光大银行')>-1){
+            imageName = 'gd.png';
+        }else if(name.indexOf('华夏银行')>-1){
+            imageName = 'hx.png';
+        }else if(name.indexOf('中信银行')>-1){
+            imageName = 'zx.png';
+        }else if(name.indexOf('浦发银行')>-1){
+            imageName = 'pf.png';
+        }else if(name.indexOf('广发银行')>-1){
+            imageName = 'gf.png';
+        }else if(name.indexOf('兴业银行')>-1){
+            imageName = 'xy.png';
+        }
+        console.log(imageName);
+        return require('../../../images/mine/guangfa_account/'+imageName);
     }
 
 
