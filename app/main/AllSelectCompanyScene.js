@@ -71,7 +71,6 @@ export  default class AllSelectCompanyScene extends BaseComponent {
             if(userData.code ==1 && userData.result != null){
 
                 this.userData = JSON.parse(userData.result);
-                console.log('userData',userData);
                 let maps = {
                     api: Urls.LOAN_SUBJECT
                 };
@@ -327,8 +326,8 @@ class CertificateItem extends Component{
 
         let movie = this.props.movie;
         let image = require('../../images/mine/qiye-da.png');
-        let title =movie.companyname;
-        let content = '实际控制人：'+ movie.name;
+        let title =movie.name;
+        let content = '实际控制人：'+ this.props.userData.boss_name;
         let isPersonage = 0;
         if(movie.role_type instanceof Array){
             for(let item of movie.role_type){
