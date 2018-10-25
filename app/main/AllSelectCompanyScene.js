@@ -67,7 +67,6 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (userData) => {
-
             if(userData.code ==1 && userData.result != null){
 
                 this.userData = JSON.parse(userData.result);
