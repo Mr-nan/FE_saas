@@ -38,9 +38,9 @@ export  default class SelectBankScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
         };
         this.base_bankData = [];
-        this.new_bankData=[{title:'A',data:{}},{title:'B',data:{}},{title:'C',data:{}},{title:'D',data:{}},{title:'E',data:{}},{title:'F',data:{}},{title:'G',data:{}},{title:'H',data:{}},{title:'I',data:{}},{title:'J',data:{}},
-            {title:'K',data:{}},{title:'L',data:{}},{title:'M',data:{}},{title:'N',data:{}},{title:'O',data:{}},{title:'P',data:{}},{title:'Q',data:{}},{title:'R',data:{}},{title:'S',data:{}},{title:'T',data:{}},{title:'U',data:{}}
-            ,{title:'V',data:{}},{title:'W',data:{}},{title:'X',data:{}},{title:'Y',data:{}},{title:'Z',data:{}}
+        this.new_bankData=[{title:'A',data:[]},{title:'B',data:[]},{title:'C',data:[]},{title:'D',data:[]},{title:'E',data:[]},{title:'F',data:[]},{title:'G',data:[]},{title:'H',data:[]},{title:'I',data:[]},{title:'J',data:[]},
+            {title:'K',data:[]},{title:'L',data:[]},{title:'M',data:[]},{title:'N',data:[]},{title:'O',data:[]},{title:'P',data:[]},{title:'Q',data:[]},{title:'R',data:[]},{title:'S',data:[]},{title:'T',data:[]},{title:'U',data:[]}
+            ,{title:'V',data:[]},{title:'W',data:[]},{title:'X',data:[]},{title:'Y',data:[]},{title:'Z',data:[]}
         ];
     }
 
@@ -72,21 +72,24 @@ export  default class SelectBankScene extends BaseComponent {
         for(bankItem of this.base_bankData){
 
             let  bankName = bankItem.bankName;
-            console.log('开始',bankName);
-            console.log(bankName.indexOf('中国',0));
+            // console.log('开始',bankName);
+            // console.log(bankName.indexOf('中国',0));
             if(bankName.indexOf('中国',0)==0 && bankName.indexOf('中国银行',0)!==0){
                 bankName = bankName.substring(2,bankName.length);
-                console.log(bankName);
+                // console.log(bankName);
             }
-
             let zimu = this.checkCh(bankName.charAt(0));
-            console.log('开始zimu',zimu);
+            // console.log('开始zimu',zimu);
             if(zimu.length>1){
                 zimu = zimu.substring(0,1);
             }
-
             console.log('bankName',bankName,'zimu',zimu);
+
+            let index =  this.zimuIndex(zimu);
+            this.new_bankData[index].data.push(bankName);
         }
+
+        console.log(this.new_bankData);
 
 
     }
