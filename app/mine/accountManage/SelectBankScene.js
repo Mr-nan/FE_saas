@@ -86,9 +86,9 @@ export  default class SelectBankScene extends BaseComponent {
             console.log('bankName',bankName,'zimu',zimu);
 
             let index =  this.zimuIndex(zimu);
-            this.new_bankData[index].data.push(bankName);
+            this.new_bankData[index].data.push(bankItem);
         }
-
+        this.new_bankData=this.new_bankData.filter(item=>item.data.length>0);
         console.log(this.new_bankData);
 
 
