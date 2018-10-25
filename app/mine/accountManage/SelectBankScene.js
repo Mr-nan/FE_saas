@@ -124,7 +124,7 @@ export  default class SelectBankScene extends BaseComponent {
 
     setListData = (array)=> {
 
-        var dataBlob = {}, sectionIDs = [], rowIDs = [], cars = [], sectionTitleArray = [];
+        var dataBlob = {}, sectionIDs = [], rowIDs = [], cars = [], sectionTitleArray = ['热','门'];
         for (var i = 0; i < array.length; i++) {
             //把组号放入sectionIDs数组中
             sectionIDs.push(i);
@@ -291,10 +291,12 @@ export  default class SelectBankScene extends BaseComponent {
 
         let listView = this.refs.listView;
         let scrollY = index * Pixel.getPixel(40);
-        for (let i = 0; i < index; i++) {
-            let rowIndex =this.new_bankData[i].data.length;
+
+        for (let i = 0; i < index-2; i++) {
+            let rowIndex =this.new_bankData[i-1].data.length;
             scrollY += +rowIndex * Pixel.getPixel(44);
         }
+
         listView.scrollTo({x: 0, y: scrollY, animated: true});
 
     };
@@ -303,11 +305,11 @@ export  default class SelectBankScene extends BaseComponent {
 
         return(
             <View style={{
-                backgroundColor: fontAnColor.COLORA3,
+                backgroundColor: 'white',
                 flexDirection: 'row',
                 alignItems: 'center',
                 flexWrap: 'wrap',
-                width:width-Pixel.getPixel(30),
+                width:width,
             }}>
                 {
                     this.hotBankData.map((data,index)=>{
@@ -323,8 +325,15 @@ export  default class SelectBankScene extends BaseComponent {
                                 borderRightWidth:StyleSheet.hairlineWidth,
                                 borderRightColor:fontAnColor.COLORA3,
                             }} key={index}>
-                                <Image style={{width:Pixel.getPixel(30),height:Pixel.getPixel(30),backgroundColor:fontAnColor.COLORA3,borderRadius:Pixel.getPixel(15)}} source={this.getBankImage(data.bankName)}/>
-                                <Text style={{ width:(width-Pixel.getPixel(33))/4 ,textAlign:'center',marginTop:Pixel.getPixel(5)}} numberOfLines={1}>{ (data.bankName.indexOf('中国',0)==0 && data.bankName.indexOf('中国银行',0)!==0)?data.bankName.substring(2,data.bankName.length) :data.bankName}</Text>
+                                <Image  style={{marginBottom:Pixel.getPixel(15)}} source={this.getBankImage(data.bankName)}/>
+                                <Text style={{ width:(width-Pixel.getPixel(33))/4 ,textAlign:'center',
+                                    fontSize:fontAnColor.LITTLEFONT26,
+                                    position: 'absolute',
+                                    bottom:Pixel.getPixel(5),
+                                    left:0,
+                                    right:0,
+                                    height:Pixel.getPixel(25)
+                                }} numberOfLines={1}>{ (data.bankName.indexOf('中国',0)==0 && data.bankName.indexOf('中国银行',0)!==0)?data.bankName.substring(2,data.bankName.length) :data.bankName}</Text>
                             </View>
                         )
                     })
@@ -357,39 +366,37 @@ export  default class SelectBankScene extends BaseComponent {
 
     getBankImage=(name)=>{
 
-        let imageName = '';
         if(name.indexOf('工商银行')>-1){
-            imageName = 'gs.png';
+            return require('../../../images/mine/guangfa_account/gs.png');
         }else if(name.indexOf('中国银行')>-1){
-            imageName = 'zh.png';
+            return require('../../../images/mine/guangfa_account/zh.png');
         }else if(name.indexOf('建设银行')>-1){
-            imageName = 'js.png';
+            return require('../../../images/mine/guangfa_account/js.png');
         }else if(name.indexOf('农业银行')>-1){
-            imageName = 'ny.png';
+            return require('../../../images/mine/guangfa_account/ny.png');
         }else if(name.indexOf('交通银行')>-1){
-            imageName = 'jt.png';
+            return require('../../../images/mine/guangfa_account/jt.png');
         }else if(name.indexOf('邮政银行')>-1){
-            imageName = 'yz.png';
+            return require('../../../images/mine/guangfa_account/yz.png');
         }else if(name.indexOf('招商银行')>-1){
-            imageName = 'zs.png';
+            return require('../../../images/mine/guangfa_account/zs.png');
         }else if(name.indexOf('平安银行')>-1){
-            imageName = 'pa.png';
+            return require('../../../images/mine/guangfa_account/pa.png');
         }else if(name.indexOf('民生银行')>-1){
-            imageName = 'ms.png';
+            return require('../../../images/mine/guangfa_account/ms.png');
         }else if(name.indexOf('光大银行')>-1){
-            imageName = 'gd.png';
+            return require('../../../images/mine/guangfa_account/gd.png');
         }else if(name.indexOf('华夏银行')>-1){
-            imageName = 'hx.png';
+            return require('../../../images/mine/guangfa_account/hx.png');
         }else if(name.indexOf('中信银行')>-1){
-            imageName = 'zx.png';
+            return require('../../../images/mine/guangfa_account/zx.png');
         }else if(name.indexOf('浦发银行')>-1){
-            imageName = 'pf.png';
+            return require('../../../images/mine/guangfa_account/pf.png');
         }else if(name.indexOf('广发银行')>-1){
-            imageName = 'gf.png';
+            return require('../../../images/mine/guangfa_account/gf.png');
         }else if(name.indexOf('兴业银行')>-1){
-            imageName = 'xy.png';
+            return require('../../../images/mine/guangfa_account/zx.png');
         }
-        return require('../../../images/mine/guangfa_account/gs.png');
     }
 
 
