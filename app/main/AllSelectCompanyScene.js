@@ -391,8 +391,8 @@ class CertificateItem extends Component{
                         position: 'absolute',
                         width:Pixel.getPixel(30),
                     }}>
-                        <Image style={{width: Pixel.getPixel(29), height: Pixel.getPixel(29)}}
-                               source={require('../../images/mine/xuanzhong.png')/>
+                        <Image style={{width: Pixel.getPixel(20), height: Pixel.getPixel(20)}}
+                               source={require('../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </View>
             </TouchableOpacity>
