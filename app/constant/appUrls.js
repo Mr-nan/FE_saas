@@ -553,7 +553,12 @@ export const USER_BANK_BIND = BASEURL + 'v1/user.bank/bind';
  * 开通企业账户
  **/
 export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company';
-
+/*
+*
+* from marongting
+*
+* 开通广发企业账户*/
+export const USER_OPEN_GUANGFA_ACCOUNT_COMPANY = BASEURL +'v2/account.Open/orgAccount';
 /**
  * from @zhaojian
  *

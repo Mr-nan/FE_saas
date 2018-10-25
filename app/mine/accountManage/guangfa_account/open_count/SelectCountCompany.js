@@ -73,7 +73,7 @@ export default class SelectCountCompany extends BaseComponent{
                     this.toNextPage({
                         name:GfOpenCompanyCountScene,
                         component:GfOpenCompanyCountScene,
-                        params:{callBack:()=>{this.props.callBack()}}
+                        params:{callBack:()=>{this.props.callBack()},title:'开通企业账户',btnText:'确认提交'}
                     })
                 }}>
                     <View style={styles.header}>

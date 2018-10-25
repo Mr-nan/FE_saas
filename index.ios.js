@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import Root from './app/root';
-import OpenPersonalCountScene from './app/mine/accountManage/guangfa_account/open_count/OpenPersonalCountScene';
+import GfOpenPersonalCountScene from './app/mine/accountManage/guangfa_account/open_count/GfOpenPersonalCountScene';
 import GfOpenCompanyCountScene from './app/mine/accountManage/guangfa_account/open_count/GfOpenCompanyCountScene';
 import ACCountManageScene from './app/mine/accountManage/guangfa_account/count_detail/ACCountManageScene';
 import AuthenticatePublicScene from './app/mine/accountManage/guangfa_account/count_detail/AuthenticatePublicScene';
@@ -22,6 +22,7 @@ import AccountSettingScene from './app/mine/accountManage/guangfa_account/count_
 import CancelAccountScene from './app/mine/accountManage/guangfa_account/count_detail/CancelAccountScene';
 import NoAccountScene from './app/mine/accountManage/guangfa_account/count_detail/NoAccountScene';
 import WattingTenScendsScene from './app/mine/accountManage/guangfa_account/count_detail/WattingTenScendsScene'
+import WithdrawDepositScene from './app/mine/accountManage/guangfa_account/count_detail/WithdrawDepositScene';
 AppRegistry.registerComponent('FE_Sass', () => Root);
 
 

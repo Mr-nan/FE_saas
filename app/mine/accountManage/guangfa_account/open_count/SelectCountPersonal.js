@@ -21,7 +21,7 @@ const Pixel = new PixelUtil;
 import * as fontColor from '../../../../constant/fontAndColor';
 import BaseComponent from '../../../../component/BaseComponent';
 import NavigationView from '../../../../component/AllNavigationView';
-import OpenPersonalCountScene from './OpenPersonalCountScene';
+import GfOpenPersonalCountScene from './GfOpenPersonalCountScene';
 
 export default class SelectCountPersonal extends BaseComponent{
     constructor(props){
@@ -57,8 +57,8 @@ export default class SelectCountPersonal extends BaseComponent{
                                 titleStyle={{color:fontColor.COLORD2}} />
                 <TouchableOpacity activeOpacity={0.8} onPress={()=>{
                     this.toNextPage({
-                        name:'OpenPersonalCountScene',
-                        component:OpenPersonalCountScene,
+                        name:'GfOpenPersonalCountScene',
+                        component:GfOpenPersonalCountScene,
                         params:{callBack:()=>{this.props.callBack();
                             }}
                     })

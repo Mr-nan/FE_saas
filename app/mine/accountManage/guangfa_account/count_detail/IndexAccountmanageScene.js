@@ -128,7 +128,5 @@ export default class IndexAccountmanageScene extends BaseComponent{
     renderPlaceholderView = () => {
         this.loadView();
     }
-    backPage = () => {
-        this.loadView();
-    }
+
 }

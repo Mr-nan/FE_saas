@@ -27,7 +27,7 @@ import NavigationView from '../../../../component/AllNavigationView';
 import LoginInputText from "../../../../login/component/LoginInputText";
 import SubmitComponent from '../component/SubmitComponent';
 
-export default class OpenPersonalCountScene extends BaseComponent{
+export default class GfOpenPersonalCountScene extends BaseComponent{
     constructor(props) {
         super(props);
         this.state = {
