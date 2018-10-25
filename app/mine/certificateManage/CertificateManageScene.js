@@ -56,7 +56,7 @@ const Pixel = new PixelUtil();
                 <StatusBar barStyle={this.state.statusStyle}/>
                 <ScrollView>
                     {
-                        authData.person_auth==0?
+                        authData.person.person_auth==0?
                             (
                                 <CertificateNullItem image ={require('../../../images/mine/geren-da.png')}
                                                      title="申请个人认证" click={this._gerenrenzheng}/>
@@ -65,14 +65,14 @@ const Pixel = new PixelUtil();
                             (
                                 <CertificateItem
                                                  image ={require('../../../images/mine/geren-da.png')}
-                                                 title={authData.real_name}
-                                                 content={authData.idcard_number.substring(0,6)+'********'+authData.idcard_number.substring(14,authData.idcard_number.length)}
-                                                 type={this._getRenZhengResult(authData.person_auth)}/>
+                                                 title={authData.person.real_name}
+                                                 content={authData.person.idcard_number.substring(0,6)+'********'+authData.person.idcard_number.substring(14,authData.person.idcard_number.length)}
+                                                 type={this._getRenZhengResult(authData.person.person_auth)}/>
                             )
                     }
 
                     {
-                        authData.enter_auth ==0?
+                        authData.enterprise_list.length==0?
                             (
                                 <CertificateNullItem image ={require('../../../images/mine/qiye-da.png')}
                                                      title="申请企业认证" click={this._qiyerenzheng}/>
@@ -80,11 +80,18 @@ const Pixel = new PixelUtil();
                             )
                             :
                             (
-                                <CertificateItem
-                                                  image ={require('../../../images/mine/qiye-da.png')}
-                                                  title={authData.enterprise_name}
-                                                  content={'实际控制人：'+authData.real_name}
-                                                  type={this._getRenZhengResult(authData.enter_auth)}/>
+                            authData.enterprise_list.map((data,index)=>{
+                                return(
+                                    <CertificateItem
+                                        key={index}
+                                        image ={require('../../../images/mine/qiye-da.png')}
+                                        title={data.enterprise_name}
+                                        content={'实际控制人：'+authData.person.real_name}
+                                        type={this._getRenZhengResult(data.enter_auth)}/>
+                                )
+                            })
+
+
                             )
                     }
 

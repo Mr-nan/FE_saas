@@ -434,8 +434,8 @@ export default class MineScene extends BaseComponent {
                         request(Urls.NEW_AUTH, 'post', maps).then((response) => {
                             if (response.mycode == "1") {
                                 this.authData = response.mjson.data;
-                                this.renzhengData.enterpriseRenZheng = this.authData.enter_auth;
-                                this.renzhengData.personRenZheng = this.authData.person_auth;
+                                this.renzhengData.enterpriseRenZheng = this.authData.enterprise_list.length>0?2:1;
+                                this.renzhengData.personRenZheng = this.authData.person.person_auth;
                                 this.toCompany();
                             } else {
                                 this.setState({
