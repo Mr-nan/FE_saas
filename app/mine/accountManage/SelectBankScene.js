@@ -62,6 +62,7 @@ export  default class SelectBankScene extends BaseComponent {
             {title:'K',data:[]},{title:'L',data:[]},{title:'M',data:[]},{title:'N',data:[]},{title:'O',data:[]},{title:'P',data:[]},{title:'Q',data:[]},{title:'R',data:[]},{title:'S',data:[]},{title:'T',data:[]},{title:'U',data:[]}
             ,{title:'V',data:[]},{title:'W',data:[]},{title:'X',data:[]},{title:'Y',data:[]},{title:'Z',data:[]}
         ];
+        this.hotBankData = [];
 
 
     }
@@ -95,6 +96,9 @@ export  default class SelectBankScene extends BaseComponent {
 
         for(bankItem of this.base_bankData){
 
+            if(this.hotBankData.length<10){
+                this.hotBankData.push(bankItem);
+            }
             let  bankName = bankItem.bankName;
             // console.log('开始',bankName);
             // console.log(bankName.indexOf('中国',0));
@@ -268,7 +272,7 @@ export  default class SelectBankScene extends BaseComponent {
                                   dataSource={this.state.dataSource}
                                   renderRow={this.renderRow}
                                   renderSectionHeader={this.renderSectionHeader}
-
+                                  renderHeader={this.renderHeader}
                                   contentContainerStyle={styles.listStyle}
                                   pageSize={300}
 
@@ -295,6 +299,39 @@ export  default class SelectBankScene extends BaseComponent {
 
     };
 
+    renderHeader=()=>{
+
+        return(
+            <View style={{alignItems:'center',justifyContent:'center'}}>
+            <View style={{
+                backgroundColor: 'red',
+                flexDirection: 'row',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                width:width-Pixel.getPixel(20),
+            }}>
+                {
+                    this.hotBankData.map((data,index)=>{
+                        return(
+                            <View style={{
+                                backgroundColor: '#FFFFFF',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                height: (width-Pixel.getPixel(20))/4,
+                                borderRadius: 4,
+                                width:(width-Pixel.getPixel(20))/4
+                            }} key={index}>
+                                <Text style={{ width:(width-Pixel.getPixel(20))/4}}>{data.bankName}</Text>
+                            </View>
+                        )
+                    })
+                }
+            </View>
+            </View>
+        )
+
+    }
     // 每一行中的数据
     renderRow = (rowData, sectionID, rowID) => {
 
