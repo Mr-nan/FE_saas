@@ -70,13 +70,22 @@ export  default class SelectBankScene extends BaseComponent {
     bankDataDispose=()=>{
 
         for(bankItem of this.base_bankData){
+
             let  bankName = bankItem.bankName;
-            if(bankName.indexOf('中国',0)!=-1){
-
-            }else {
-                bankName
-
+            console.log('开始',bankName);
+            console.log(bankName.indexOf('中国',0));
+            if(bankName.indexOf('中国',0)==0 && bankName.indexOf('中国银行',0)!==0){
+                bankName = bankName.substring(2,bankName.length);
+                console.log(bankName);
             }
+
+            let zimu = this.checkCh(bankName.charAt(0));
+            console.log('开始zimu',zimu);
+            if(zimu.length>1){
+                zimu = zimu.substring(0,1);
+            }
+
+            console.log('bankName',bankName,'zimu',zimu);
         }
 
 
