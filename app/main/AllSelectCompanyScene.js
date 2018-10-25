@@ -71,7 +71,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
             if(userData.code ==1 && userData.result != null){
 
                 this.userData = JSON.parse(userData.result);
-
+                console.log('userData',userData);
                 let maps = {
                     api: Urls.LOAN_SUBJECT
                 };
@@ -325,17 +325,22 @@ class CertificateItem extends Component{
 
     render(){
 
-        let  movie = this.props.movie;
+        let movie = this.props.movie;
         let image = require('../../images/mine/qiye-da.png');
         let title =movie.companyname;
         let content = '实际控制人：'+ movie.name;
-
+        let isPersonage = 0;
         if(movie.role_type instanceof Array){
             for(let item of movie.role_type){
                 if(item == 19){
+                    isPersonage = 1;
                     image = require('../../images/mine/geren-da.png');
                     title =this.props.userData.real_name;
-                    content = this.props.userData.idcard_number.substring(0,6)+'********'+this.props.userData.idcard_number.substring(14,this.props.userData.idcard_number.length);
+                    if(this.props.userData.idcard_number){
+                        content = this.props.userData.idcard_number.substring(0,6)+'********'+this.props.userData.idcard_number.substring(14,this.props.userData.idcard_number.length);
+                    }else {
+                        content='';
+                    }
                     break;
                 }
             }
@@ -353,18 +358,24 @@ class CertificateItem extends Component{
                     </View>
                     <Text style={{color:'#999999', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(15),marginLeft:Pixel.getPixel(28),width:width-Pixel.getPixel(108)}} numberOfLines={1} >{content}</Text>
                     {
-                        movie.is_done_credit == '1' ?(
-                                <Image style={{alignItems:'center',marginTop:Pixel.getPixel(13),justifyContent:'center',width:Pixel.getPixel(117),height:Pixel.getPixel(16.5),marginLeft:Pixel.getPixel(28)}} source={require('../../images/login/edu.png')}>
-                                    <Text style={{fontSize:fontAndColor.CONTENTFONT24,color:'white',backgroundColor:'transparent'}}>{'授信额度' + movie.credit_mny / 10000 + '万'}</Text>
-                                </Image>
-                            ):(
-                                <View style={{height:Pixel.getPixel(16),marginTop:Pixel.getPixel(11),
-                                    borderRadius:Pixel.getPixel(8),backgroundColor:fontAndColor.COLORC1,justifyContent:'center',width:Pixel.getPixel(75),
-                                    alignItems:'center',marginLeft:Pixel.getPixel(28)
-                                }}>
-                                    <Text style={{fontSize:fontAndColor.MARKFONT22,color:fontAndColor.COLORC2}}>未完成授信</Text>
-                                </View>
-                            )
+                        isPersonage ==0 && (
+                            <View>
+                                {
+                                    movie.is_done_credit == '1' ?(
+                                            <Image style={{alignItems:'center',marginTop:Pixel.getPixel(13),justifyContent:'center',width:Pixel.getPixel(117),height:Pixel.getPixel(16.5),marginLeft:Pixel.getPixel(28)}} source={require('../../images/login/edu.png')}>
+                                                <Text style={{fontSize:fontAndColor.CONTENTFONT24,color:'white',backgroundColor:'transparent'}}>{'授信额度' + movie.credit_mny / 10000 + '万'}</Text>
+                                            </Image>
+                                        ):(
+                                            <View style={{height:Pixel.getPixel(16),marginTop:Pixel.getPixel(11),
+                                                borderRadius:Pixel.getPixel(8),backgroundColor:fontAndColor.COLORC1,justifyContent:'center',width:Pixel.getPixel(75),
+                                                alignItems:'center',marginLeft:Pixel.getPixel(28)
+                                            }}>
+                                                <Text style={{fontSize:fontAndColor.MARKFONT22,color:fontAndColor.COLORC2}}>未完成授信</Text>
+                                            </View>
+                                        )
+                                }
+                            </View>
+                        )
                     }
                     <View style={{
                         height:Pixel.getPixel(30),

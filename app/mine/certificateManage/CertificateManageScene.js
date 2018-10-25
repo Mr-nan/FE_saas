@@ -66,7 +66,7 @@ const Pixel = new PixelUtil();
                                 <CertificateItem
                                                  image ={require('../../../images/mine/geren-da.png')}
                                                  title={authData.person.real_name}
-                                                 content={authData.person.idcard_number.substring(0,6)+'********'+authData.person.idcard_number.substring(14,authData.person.idcard_number.length)}
+                                                 content={ authData.person.idcard_number?(authData.person.idcard_number.substring(0,6)+'********'+authData.person.idcard_number.substring(14,authData.person.idcard_number.length)):''}
                                                  type={this._getRenZhengResult(authData.person.person_auth)}/>
                             )
                     }
@@ -126,6 +126,7 @@ const Pixel = new PixelUtil();
 
      _getRenZhengResult = (result) => {
 
+         let  renzheng='已认证';
          if (result == 1) {
              renzheng = '审核中';
          }
