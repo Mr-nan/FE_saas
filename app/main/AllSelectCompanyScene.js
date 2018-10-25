@@ -326,9 +326,13 @@ class CertificateItem extends Component{
         let movie = this.props.movie;
         let image = require('../../images/mine/qiye-da.png');
         let title = movie.is_done_credit == '1'?movie.companyname:movie.name;
-        if(movie.iscompany>0 && movie.merge_id>0){
-            title = `${this.props.userData.boss_name}(${movie.name})`
+        if(movie.iscompany==0 && movie.merge_id>0){
+            title = `${this.props.userData.boss_name}(${movie.companyname})`;
         }
+        if(movie.iscompany>0 && movie.merge_id>0){
+            title = movie.name;
+        }
+
         let content = '实际控制人：'+ this.props.userData.boss_name;
         let isPersonage = 0;
         if(movie.role_type instanceof Array){
@@ -388,7 +392,7 @@ class CertificateItem extends Component{
                         width:Pixel.getPixel(30),
                     }}>
                         <Image style={{width: Pixel.getPixel(29), height: Pixel.getPixel(29)}}
-                               source={this.props.currentBaseID== movie.company_base_id? require('../../images/mine/xuanzhong.png'):require('../../images/mine/weixuanzhong.png')}/>
+                               source={require('../../images/mine/xuanzhong.png')/>
                     </View>
                 </View>
             </TouchableOpacity>
