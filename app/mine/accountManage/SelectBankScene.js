@@ -288,7 +288,7 @@ export  default class SelectBankScene extends BaseComponent {
         let listView = this.refs.listView;
         let scrollY = index * Pixel.getPixel(40);
         for (let i = 0; i < index; i++) {
-            let rowIndex =this.state.carData[i].list.length;
+            let rowIndex =this.new_bankData[i].data.length;
             scrollY += +rowIndex * Pixel.getPixel(44);
         }
         listView.scrollTo({x: 0, y: scrollY, animated: true});
