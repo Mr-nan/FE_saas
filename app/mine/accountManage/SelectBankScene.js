@@ -19,7 +19,7 @@ import {
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import * as fontAndColor from '../../constant/fontAndColor';
+import * as fontAnColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import {request} from '../../utils/RequestUtil';
@@ -33,28 +33,50 @@ export  default class SelectBankScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        // 初始状态
-        this.state = {
-            renderPlaceholderOnly: 'blank',
+
+
+        let getSectionData = (dataBlob, sectionID) => {
+            return dataBlob[sectionID];
         };
+
+        let getRowData = (dataBlob, sectionID, rowID) => {
+            return dataBlob[sectionID + ":" + rowID];
+        };
+
+
+        const dataSource =  new ListView.DataSource({
+            getSectionData: getSectionData,
+            getRowData: getRowData,
+            rowHasChanged: (r1, r2) => r1 !== r2,
+            sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+        });
+        this.state = {
+
+            renderPlaceholderOnly: 'blank',
+            dataSource: dataSource,
+
+        };
+
         this.base_bankData = [];
         this.new_bankData=[{title:'A',data:[]},{title:'B',data:[]},{title:'C',data:[]},{title:'D',data:[]},{title:'E',data:[]},{title:'F',data:[]},{title:'G',data:[]},{title:'H',data:[]},{title:'I',data:[]},{title:'J',data:[]},
             {title:'K',data:[]},{title:'L',data:[]},{title:'M',data:[]},{title:'N',data:[]},{title:'O',data:[]},{title:'P',data:[]},{title:'Q',data:[]},{title:'R',data:[]},{title:'S',data:[]},{title:'T',data:[]},{title:'U',data:[]}
             ,{title:'V',data:[]},{title:'W',data:[]},{title:'X',data:[]},{title:'Y',data:[]},{title:'Z',data:[]}
         ];
+
+
     }
 
 
     initFinish = () => {
         this.setState({
-            renderPlaceholderOnly: 'success',
+            renderPlaceholderOnly: 'loading',
         });
 
         this.loadData();
     }
 
     loadData=()=>{
-        request(Url.GET_BANK_LIST,'post',{bankName:'中国'}).then((response) => {
+        request(Url.GET_BANK_LIST,'post',{bankName:'银行'}).then((response) => {
 
             console.log(response);
              this.base_bankData = response.mjson.data.info_list;
@@ -62,7 +84,9 @@ export  default class SelectBankScene extends BaseComponent {
 
             },
             (error) => {
-               console.log(error);
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                });
             });
 
     }
@@ -89,10 +113,42 @@ export  default class SelectBankScene extends BaseComponent {
             this.new_bankData[index].data.push(bankItem);
         }
         this.new_bankData=this.new_bankData.filter(item=>item.data.length>0);
-        console.log(this.new_bankData);
-
+        this.setListData(this.new_bankData);
 
     }
+
+
+    setListData = (array)=> {
+
+        var dataBlob = {}, sectionIDs = [], rowIDs = [], cars = [], sectionTitleArray = [];
+        for (var i = 0; i < array.length; i++) {
+            //把组号放入sectionIDs数组中
+            sectionIDs.push(i);
+            //把组中内容放入dataBlob对象中
+            dataBlob[i] = array[i].title;
+            sectionTitleArray.push(array[i].title);
+            //把组中的每行数据的数组放入cars
+            cars = array[i].data;
+            //先确定rowIDs的第一维
+            rowIDs[i] = [];
+            //遍历cars数组,确定rowIDs的第二维
+            for (var j = 0; j < cars.length; j++) {
+                rowIDs[i].push(j);
+                //把每一行中的内容放入dataBlob对象中
+                dataBlob[i + ':' + j] = cars[j];
+            }
+
+        }
+
+        this.setState({
+
+            dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+            sectionTitleArray: sectionTitleArray,
+            renderPlaceholderOnly: 'success',
+
+
+        });
+    };
 
     checkCh=(ch)=>{
         var uni = ch.charCodeAt(0);
@@ -204,6 +260,21 @@ export  default class SelectBankScene extends BaseComponent {
         }
         return (
             <View style={styles.root}>
+                {
+                    this.state.dataSource && (
+                        <ListView ref="listView"
+                                  style={{flex: 1}}
+                                  removeClippedSubviews={false}
+                                  dataSource={this.state.dataSource}
+                                  renderRow={this.renderRow}
+                                  renderSectionHeader={this.renderSectionHeader}
+
+                                  contentContainerStyle={styles.listStyle}
+                                  pageSize={300}
+
+                        />)
+                }
+                <ZNListIndexView indexTitleArray={this.state.sectionTitleArray} indexClick={this._indexAndScrollClick}/>
                 <NavigationView
                     title={'选择银行'}
                     backIconClick={this.backPage}
@@ -212,14 +283,128 @@ export  default class SelectBankScene extends BaseComponent {
         );
     }
 
+    _indexAndScrollClick = (index)=> {
 
+        let listView = this.refs.listView;
+        let scrollY = index * Pixel.getPixel(40);
+        for (let i = 0; i < index; i++) {
+            let rowIndex =this.state.carData[i].list.length;
+            scrollY += +rowIndex * Pixel.getPixel(44);
+        }
+        listView.scrollTo({x: 0, y: scrollY, animated: true});
+
+    };
+
+    // 每一行中的数据
+    renderRow = (rowData, sectionID, rowID) => {
+
+        return (
+            <TouchableOpacity onPress={() => {console.log(rowData.bankName)}}>
+                <View style={styles.rowCell}>
+                    <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.bankName}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    };
+
+    // 每一组对应的数据
+    renderSectionHeader = (sectionData, sectionId) => {
+
+        return (
+            <View style={styles.sectionHeader}>
+                <Text allowFontScaling={false}  style={styles.sectionText}>{sectionData}</Text>
+            </View>
+        );
+    }
+
+
+}
+class ZNListIndexView extends Component{
+
+    render(){
+        const {indexTitleArray}=this.props;
+        return(
+            <View style={styles.indexView}>
+                {
+                    indexTitleArray.map((data,index)=>{
+                        return(
+                            <TouchableOpacity key={index} style={styles.indexItem} onPress={()=>{
+
+                                this.props.indexClick(index);
+
+                            }}>
+                                <Text allowFontScaling={false}  style={styles.indexItemText}>{data}</Text>
+                            </TouchableOpacity>
+                        )
+                    })
+
+
+                }
+            </View>
+        )
+    }
 
 }
 const styles = StyleSheet.create({
 
    root:{
-       backgroundColor:fontAndColor.COLORA3,
+       backgroundColor:fontAnColor.COLORA3,
        flex:1,
        paddingTop:Pixel.getTitlePixel(64),
-   }
+   },
+    listStyle: {
+        marginTop: Pixel.getPixel(10)
+    },
+    sectionHeader: {
+        backgroundColor: fontAnColor.COLORA3,
+        height: Pixel.getPixel(40),
+        justifyContent: 'center'
+    },
+    sectionText: {
+        marginLeft: Pixel.getPixel(15),
+        color: fontAnColor.COLORA1,
+        fontSize: Pixel.getFontPixel(fontAnColor.LITTLEFONT),
+    },
+    rowCell: {
+
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: fontAnColor.COLORA3,
+        height: Pixel.getPixel(44),
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        paddingLeft:Pixel.getPixel(15),
+
+    },
+    rowCellText: {
+        marginLeft: Pixel.getPixel(5),
+        color: fontAnColor.COLORA0,
+        fontSize: Pixel.getFontPixel(fontAnColor.LITTLEFONT),
+    },
+    indexView:{
+
+        position: 'absolute',
+        bottom:0,
+        top:Pixel.getPixel(64),
+        backgroundColor:'transparent',
+        right:0,
+        width:Pixel.getPixel(45),
+        alignItems:'center',
+        justifyContent:'center',
+
+    },
+    indexItem:{
+
+        marginTop:Pixel.getPixel(6),
+        width:Pixel.getPixel(30),
+        backgroundColor:'transparent',
+
+
+    },
+    indexItemText:{
+
+        color:fontAnColor.COLORA0,
+        fontSize:Pixel.getFontPixel(fontAnColor.CONTENTFONT),
+        textAlign:'center',
+    },
 })
