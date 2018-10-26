@@ -29,7 +29,7 @@ import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import {request} from "../../../../utils/RequestUtil";
 import * as Urls from "../../../../constant/appUrls";
-import WebScene from './WebScene';
+import GFBankWebScene from './GFBankWebScene';
 const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
 
@@ -41,8 +41,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
             renderPlaceholderOnly:'blank',
             topSize:-179
         }
-        console.log('this.props.title',this.props.title);
-        console.log('this.props.btnText',this.props.btnText);
+
         this.sData={
             agent_cert_no:'',
             agent_mobile:'',
@@ -63,6 +62,13 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
     }
 
     initFinish(){
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO,(data)=>{
+            if(data.code == 1){
+                let userData = JSON.parse(data.result);
+                this.userID = userData.base_user_id;
+            }
+        })
+
         this.setState({
             renderPlaceholderOnly:'success'
         })
@@ -72,10 +78,9 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
         return(
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
-                <NavigationView
-                    title='开通企业账户'
-                    backIconClick={this.backPage}
-                />
+                <NavigationView backIconClick={this.backPage} title={this.props.title}
+                                wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
+                <StatusBar barStyle="default"/>
             </View>
             )
 
@@ -312,7 +317,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                 if(data.code == 1 && data.result != null){
                     let datas = JSON.parse(data.result);
                     this.sData.enter_base_id = datas.company_base_id;
-                    this.sData.user_id = datas.user_id;
+                    this.sData.user_id = this.userID;
                     this.sendData(this.sData);
                 }
             })
@@ -326,10 +331,13 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                 this.props.showModal(false);
                 let da = response.mjson;
                 this.toNextPage({
-                    name:'WebScene',
-                    component:WebScene,
-                    params:{callback:()=>{this.props.callback()},uri:da.data.url_wap,pa:da.data.params,sign:da.data.sign}
+                    name:'GFBankWebScene',
+                    component:GFBankWebScene,
+                    params:{callback:()=>{this.props.callback()},uri:da.data.url_wap,pa:da.data.params,sign:da.data.sign,
+                        reback_url:this.sData.reback_url}
                 })
+            },(error)=>{
+                this.props.showToast(error.mjson.msg);
             })
     }
 }

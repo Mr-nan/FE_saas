@@ -36,6 +36,7 @@ import OpenCompanyCountScene from '../../accountManage/OpenCompanyCountScene';
 import IndexAccountmanageScene from '../guangfa_account/count_detail/IndexAccountmanageScene';
 import SelectCountCompany from '../guangfa_account/open_count/SelectCountCompany';
 import SelectCountPersonal from '../guangfa_account/open_count/SelectCountPersonal';
+import WattingTenScendsScene from '../guangfa_account/count_detail/WattingTenScendsScene';
 const Pixel = new PixelUtil();
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
@@ -74,6 +75,25 @@ export default class MyAccountItem extends BaseComponent {
         if(type == 'gfyh'){
             switch (state) {
                 case 0:
+                    if(iscompany){
+                        this.navigatorParams.name = 'WattingTenScendsScene';
+                        this.navigatorParams.component = WattingTenScendsScene;
+                        this.navigatorParams.params = {
+                            callBack:() =>{
+                                this.props.callBack();
+                            }
+                        };
+                    }else{
+                        this.navigatorParams.name = 'SelectCountPersonal';
+                        this.navigatorParams.component = SelectCountPersonal;
+                        this.navigatorParams.params = {
+                            callBack: () => {
+                                this.props.callBack();
+                            }
+                        };
+                    }
+                    break;
+                case 4:
                     if(iscompany){
                         this.navigatorParams.name = 'SelectCountCompany';
                         this.navigatorParams.component = SelectCountCompany;
@@ -366,7 +386,7 @@ export default class MyAccountItem extends BaseComponent {
         } else if (this.state.data.status === 2) {
             accountState = '未激活';
             bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
-        }else {
+        }else if (this.state.data.status === 3){
             if(this.state.data.account_open_type === 1){
                 accountState = '企业账户';
                 bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
@@ -374,6 +394,12 @@ export default class MyAccountItem extends BaseComponent {
                 accountState = '个人账户';
                 bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
             }
+        }else if (this.state.data.status === 4) {
+            accountState = '银行处理中';
+            bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
+        }else if (this.state.data.status === 5) {
+            accountState = '待小额鉴定';
+            bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
         }
         return (
             <View style={{alignItems: 'center',width:Pixel.getPixel(345), height: Pixel.getPixel(204),marginLeft:Pixel.getPixel(15)}}>

@@ -84,7 +84,7 @@ export default class WithdrawScene extends ZSBaseComponent {
                                 <Text
                                     style={{fontSize: Pixel.getFontPixel(15),color:FontAndColor.COLORA0}}>中国工商银行</Text>
                                 <Text
-                                    style={{color: '#666666',fontSize: 15,marginTop:4}}>6212 ***** 3456</Text>
+                                    style={{color: '#666666',fontSize: Pixel.getFontPixel(14),marginTop:4}}>6212 ***** 3456</Text>
                             </View>
                         </View>
                         <View style={{flexDirection:'row'}}>
@@ -94,8 +94,8 @@ export default class WithdrawScene extends ZSBaseComponent {
 
                     </View>
 
-                    <View style={{backgroundColor: 'white', marginTop: 10}}>
-                        <View style={{marginHorizontal: 15,}}>
+                    <View style={{backgroundColor: 'white', marginTop: Pixel.getPixel(10)}}>
+                        <View >
                             <View style={{
                                 borderBottomWidth: StyleSheet.hairlineWidth,
                                 borderBottomColor: FontAndColor.COLORA4

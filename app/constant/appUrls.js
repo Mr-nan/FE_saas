@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
@@ -553,6 +553,13 @@ export const USER_BANK_BIND = BASEURL + 'v1/user.bank/bind';
  * 开通企业账户
  **/
 export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company';
+
+/*
+*
+* from marongting
+*
+* 开通广发个人账户*/
+export const USER_OPEN_GUANGFA_ACCOUNT_PERSONAL = BASEURL + '/v2/account.Open/orgPersonAccount';
 /*
 *
 * from marongting

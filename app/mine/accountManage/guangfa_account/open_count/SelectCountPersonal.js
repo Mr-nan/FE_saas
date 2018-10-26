@@ -42,6 +42,7 @@ export default class SelectCountPersonal extends BaseComponent{
                 {this.loadView()}
                 <NavigationView backIconClick={this.backPage} title='选择账户' wrapStyle={{backgroundColor:'white'}}
                                 titleStyle={{color:fontColor.COLORD2}}/>
+                <StatusBar barStyle="dark-content"/>
             </View>
         )
     }
@@ -59,8 +60,8 @@ export default class SelectCountPersonal extends BaseComponent{
                     this.toNextPage({
                         name:'GfOpenPersonalCountScene',
                         component:GfOpenPersonalCountScene,
-                        params:{callBack:()=>{this.props.callBack();
-                            }}
+                        params:{callBack:()=>{this.props.callBack()
+                            },title:'开通个人账户',btnText:'确认提交'}
                     })
                 }} style={styles.openCountView} >
                     <View style={styles.header}>
