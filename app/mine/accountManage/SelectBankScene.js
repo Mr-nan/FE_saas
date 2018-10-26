@@ -25,7 +25,7 @@ import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import {request} from '../../utils/RequestUtil';
 import * as Url from '../../constant/appUrls';
-import {observer} from  'mobx-react';
+import {observer} from  'mobx-react/native';
 import {observable} from  'mobx';
 
 
@@ -103,11 +103,12 @@ export  default class SelectBankScene extends BaseComponent {
     }
 
     loadSeekData=(text)=>{
-        request(Url.GET_BANK_LIST,'post',{bankName:text,rows:'1000'}).then((response) => {
+        request(Url.GET_BANK_LIST,'post',{bankName:text}).then((response) => {
 
                 console.log(response);
-                this.base_bankData = response.mjson.data.info_list;
-                this.bankDataDispose();
+                this.setState({
+                    seekSource: this.state.seekSource.cloneWithRows(response.mjson.data.info_list),
+                });
 
             },
             (error) => {
@@ -296,8 +297,13 @@ export  default class SelectBankScene extends BaseComponent {
                                    console.log(text);
                                     if(text.length>0){
                                         this.isSeekView = true;
+                                        this.loadSeekData(text);
+
                                     }else {
                                         this.isSeekView = false;
+                                        this.setState({
+                                            seekSource: this.state.seekSource.cloneWithRows([]),
+                                        });
                                     }
                                }}/>
                 </View>
@@ -315,14 +321,22 @@ export  default class SelectBankScene extends BaseComponent {
 
                         />)
                 }
+
+                <ZNListIndexView indexTitleArray={this.state.sectionTitleArray} indexClick={this._indexAndScrollClick}/>
                 {
                     this.isSeekView && (
-                        <View style={{left:0, right:0, top:Pixel.getPixel(50),bottom:0,backgroundColor:'red'}}>
+                        <View style={{left:0, right:0, top:Pixel.getPixel(50)+Pixel.getTitlePixel(64),bottom:0,backgroundColor:'rgba(1,1,1,0.3)',position: 'absolute',
+                        }}>
+                            <ListView
+                                      removeClippedSubviews={false}
+                                      dataSource={this.state.seekSource}
+                                      renderRow={this.renderSeekRow}
+                                      contentContainerStyle={styles.listStyle}
 
+                            />
                         </View>
                     )
                 }
-                <ZNListIndexView indexTitleArray={this.state.sectionTitleArray} indexClick={this._indexAndScrollClick}/>
                 <NavigationView
                     title={'选择银行'}
                     backIconClick={this.backPage}
@@ -340,14 +354,15 @@ export  default class SelectBankScene extends BaseComponent {
 
         }
 
-        let scrollY = index * Pixel.getPixel(40);
-        let  headHeight = 0;
+        let  headHeight = (this.new_bankData.length%4+1) * ((width-Pixel.getPixel(30))/4);
+        let scrollY = (index-2) * Pixel.getPixel(40)+headHeight;
 
-        for (let i = 2; i < index-2; i++) {
-            let rowIndex =this.new_bankData[i-2].data.length;
-            scrollY +=(rowIndex * Pixel.getPixel(44))+ headHeight;
+        console.log((this.new_bankData.length%4+1));
+        for (let i = 0; i < index-2; i++) {
+            let rowIndex =this.new_bankData[i].data.length;
+            scrollY += (rowIndex * Pixel.getPixel(44));
         }
-
+        console.log(scrollY);
         listView.scrollTo({x: 0, y: scrollY, animated: true});
 
     };
@@ -415,6 +430,16 @@ export  default class SelectBankScene extends BaseComponent {
                 <Text allowFontScaling={false}  style={styles.sectionText}>{sectionData}</Text>
             </View>
         );
+    }
+
+    renderSeekRow=(rowData)=>{
+        return (
+            <TouchableOpacity onPress={() => {this.props.getBankData && this.props.getBankData(rowData); this.backPage()}}>
+                <View style={styles.rowCell}>
+                    <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.bankName}</Text>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
     getBankImage=(name)=>{
