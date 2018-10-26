@@ -29,19 +29,26 @@ import BaseComponent from '../component/BaseComponent';
 import MainPage from './MainPage';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
+import {observable} from 'mobx';
+import {observer} from 'mobx-react';
 const IS_ANDROID = Platform.OS === 'android';
 
 
 export  default class AllSelectCompanyScene extends BaseComponent {
 
+
     constructor(props) {
         super(props);
-        // 初始状态
+
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 == r2});
+
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: [],
-            barStyle:'dark-content'
+            source: ds.cloneWithRows([]),
+            barStyle:'dark-content',
+            currentBaseID:this.props.currentBaseID,
         };
+
     }
 
     initFinish = () => {
@@ -57,31 +64,48 @@ export  default class AllSelectCompanyScene extends BaseComponent {
     }
 
     getData = () => {
-        let maps = {
-            api: Urls.LOAN_SUBJECT
-        };
-        request(Urls.FINANCE, 'Post', maps)
-            .then((response) => {
-                    if(response.mjson.data==null||response.mjson.data.length<=0){
-                        this.setState({
-                            renderPlaceholderOnly: 'null',
-                        });
-                    }
-                    else if(response.mjson.data.length==1){
-                        this.setLoanOne(response.mjson.data[0]);
-                    }
-                    else{
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        this.setState({
-                            renderPlaceholderOnly: 'success',
-                            source: ds.cloneWithRows(response.mjson.data)
-                        });
-                    }
 
-                },
-                (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
-                });
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (userData) => {
+            if(userData.code ==1 && userData.result != null){
+
+                this.userData = JSON.parse(userData.result);
+                let maps = {
+                    api: Urls.LOAN_SUBJECT
+                };
+                request(Urls.FINANCE, 'Post', maps)
+                    .then((response) => {
+
+                            this.data  = response.mjson.data;
+                            if(this.data==null||this.data.length<=0){
+                                this.setState({
+                                    renderPlaceholderOnly: 'null',
+                                });
+                            }
+                            else if(this.data.length==1){
+                                this.setLoanOne(this.data[0]);
+                            }
+                            else{
+                                this.setState({
+                                    renderPlaceholderOnly: 'success',
+                                    source: this.state.source.cloneWithRows(this.data)
+                                });
+                            }
+
+                        },
+                        (error) => {
+                            this.setState({renderPlaceholderOnly: 'error'});
+                        });
+
+            }else {
+
+                this.props.showToast('获取用户信息失败');
+                this.setState({renderPlaceholderOnly: 'error'});
+            }
+
+        });
+
+
     }
 
     // 上传推送deviceToken
@@ -118,11 +142,10 @@ export  default class AllSelectCompanyScene extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1,paddingTop:Pixel.getTitlePixel(64)}}>
                 <StatusBar barStyle={this.state.barStyle}/>
                 <ListView
                     removeClippedSubviews={false}
-                    style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -194,6 +217,11 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
     setLoan = (movie) => {
 
+        this.setState({
+            source: this.state.source.cloneWithRows(this.data),
+            currentBaseID:movie.company_base_id
+        });
+
         global.companyBaseID = movie.company_base_id;
         global.ISCOMPANY = movie.iscompany;
 	    global.MERGE_ID = movie.merge_id;
@@ -263,63 +291,12 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
 
-        let names = '';
-        if (movie.companyname == null || movie.companyname == '') {
-            names = movie.name;
-        } else {
-            names = movie.name + '(' + movie.companyname + ')';
-        }
         return (
-            <TouchableOpacity
-                onPress={()=> {
-                    this.setLoan(movie);
-                }}
-                activeOpacity={0.8}
-                style={{
-                    width: width, height: Pixel.getPixel(78),
-                    backgroundColor: '#fff', paddingLeft: Pixel.getPixel(15),
-                    paddingRight: Pixel.getPixel(15), flexDirection: 'row',borderRadius:Pixel.getPixel(6)
-                }}>
-                {/*<View style={{flex: 1, justifyContent: 'center'}}>*/}
-                    {/*<Image style={{width: Pixel.getPixel(38), height: Pixel.getPixel(33)}}*/}
-                           {/*source={require('../../images/financeImages/companyIcon.png')}></Image>*/}
-                {/*</View>*/}
-                <View style={{flex: 4, justifyContent: 'center'}}>
-                    <Text allowFontScaling={false} 
-                        style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), color: fontAndColor.COLORA0}}>
-                        {names}</Text>
-                    {
-                        movie.is_done_credit == '1' ?(
-                                <Image style={{alignItems:'center',marginTop:Pixel.getPixel(9),justifyContent:'center',width:Pixel.getPixel(117),height:Pixel.getPixel(16.5)}} source={require('../../images/login/edu.png')}>
-                                    <Text style={{fontSize:fontAndColor.CONTENTFONT24,color:'white',backgroundColor:'transparent'}}>{'授信额度' + movie.credit_mny / 10000 + '万'}</Text>
-                                </Image>
-                            ):(
-                                <View style={{height:Pixel.getPixel(15),marginTop:Pixel.getPixel(9),
-                                    borderRadius:Pixel.getPixel(6),backgroundColor:fontAndColor.COLORC1,justifyContent:'center',width:Pixel.getPixel(75),
-                                    alignItems:'center'
-                                }}>
-                                    <Text style={{fontSize:fontAndColor.MARKFONT22,color:fontAndColor.COLORC2}}>未完成授信</Text>
-                                </View>
-                            )
-                    }
-                    {/*<Text allowFontScaling={false} */}
-                        {/*style={{*/}
-                            {/*fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),*/}
-                            {/*color: fontAndColor.COLORA1,*/}
-                            {/*marginTop: Pixel.getPixel(10)*/}
-                        {/*}}>{movie.is_done_credit == '1' ? '授信额度' + movie.credit_mny / 10000 + '万' : '未完成授信'}*/}
-                    {/*</Text>*/}
-                </View>
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
-                    <Image style={{width: Pixel.getPixel(12), height: Pixel.getPixel(12)}}
-                           source={require('../../images/mainImage/celljiantou.png')}/>
-                </View>
-            </TouchableOpacity>
+            <CertificateItem movie={movie} click={()=>{ this.setLoan(movie);}} userData ={this.userData} currentBaseID={this.state.currentBaseID}/>
         )
     }
 
     _renderSeparator(sectionId, rowId) {
-
         return (
             <View style={styles.Separator} key={sectionId + rowId}>
             </View>
@@ -339,6 +316,90 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
 
 }
+
+class CertificateItem extends Component{
+
+
+
+    render(){
+
+        let movie = this.props.movie;
+        let image = require('../../images/mine/qiye-da.png');
+        let title = movie.is_done_credit == '1'?movie.companyname:movie.name;
+        if(movie.iscompany==0 && movie.merge_id>0){
+            title = `${this.props.userData.boss_name}(${movie.companyname})`;
+        }
+        if(movie.iscompany>0 && movie.merge_id>0){
+            title = movie.name;
+        }
+
+        let content = '实际控制人：'+ this.props.userData.boss_name;
+        let isPersonage = 0;
+        if(movie.role_type instanceof Array){
+            for(let item of movie.role_type){
+                if(item == 19){
+                    isPersonage = 1;
+                    image = require('../../images/mine/geren-da.png');
+                    title =this.props.userData.real_name;
+                    if(this.props.userData.idcard_number){
+                        content = this.props.userData.idcard_number.substring(0,6)+'********'+this.props.userData.idcard_number.substring(14,this.props.userData.idcard_number.length);
+                    }else {
+                        content='';
+                    }
+                    break;
+                }
+            }
+        }
+
+        return(
+            <TouchableOpacity activeOpacity={0.8} onPress={()=>{
+                this.props.click();
+
+            }} style={{width:width, alignItems:'center'}}>
+                <View style={[styles.itme,{alignItems:'flex-start',flexDirection:'column'}]}>
+                    <View style={{marginLeft:Pixel.getPixel(28), flexDirection:'row',alignItems:'center'}}>
+                        <Image style={{width:Pixel.getPixel(17),height:Pixel.getPixel(17),marginRight:Pixel.getPixel(6)}} source={image}/>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),width:width-Pixel.getPixel(98)}} numberOfLines={1}>{title}</Text>
+                    </View>
+                    <Text style={{color:'#999999', fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(15),marginLeft:Pixel.getPixel(28),width:width-Pixel.getPixel(108)}} numberOfLines={1} >{content}</Text>
+                    {
+                        isPersonage ==0 && (
+                            <View>
+                                {
+                                    movie.is_done_credit == '1' ?(
+                                            <Image style={{alignItems:'center',marginTop:Pixel.getPixel(13),justifyContent:'center',width:Pixel.getPixel(117),height:Pixel.getPixel(16.5),marginLeft:Pixel.getPixel(28)}} source={require('../../images/login/edu.png')}>
+                                                <Text style={{fontSize:fontAndColor.CONTENTFONT24,color:'white',backgroundColor:'transparent'}}>{'授信额度' + movie.credit_mny / 10000 + '万'}</Text>
+                                            </Image>
+                                        ):(
+                                            <View style={{height:Pixel.getPixel(16),marginTop:Pixel.getPixel(11),
+                                                borderRadius:Pixel.getPixel(8),backgroundColor:fontAndColor.COLORC1,justifyContent:'center',width:Pixel.getPixel(75),
+                                                alignItems:'center',marginLeft:Pixel.getPixel(28)
+                                            }}>
+                                                <Text style={{fontSize:fontAndColor.MARKFONT22,color:fontAndColor.COLORC2}}>未完成授信</Text>
+                                            </View>
+                                        )
+                                }
+                            </View>
+                        )
+                    }
+                    <View style={{
+                        height:Pixel.getPixel(30),
+                        alignItems:'center',
+                        justifyContent:'center',
+                        top: Pixel.getPixel(34),
+                        right:Pixel.getPixel(15),
+                        position: 'absolute',
+                        width:Pixel.getPixel(30),
+                    }}>
+                        <Image style={{width: Pixel.getPixel(20), height: Pixel.getPixel(20)}}
+                               source={require('../../images/mainImage/celljiantou.png')}/>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+}
+
 const styles = StyleSheet.create({
 
     image: {
@@ -347,13 +408,26 @@ const styles = StyleSheet.create({
     },
     Separator: {
         backgroundColor: fontAndColor.COLORA3,
-        height: Pixel.getPixel(10),
-
+        height: Pixel.getPixel(1),
     },
     margin: {
         marginRight: Pixel.getPixel(15),
         marginLeft: Pixel.getPixel(15)
 
     },
-    topViewStyle: {flex: 1, height: Pixel.getPixel(44), justifyContent: 'center'}
+    topViewStyle: {flex: 1, height: Pixel.getPixel(44), justifyContent: 'center'},
+    itme:{
+        height:Pixel.getPixel(108),
+        backgroundColor:'white',
+        alignItems:'center',
+        justifyContent:'center',
+        width:width-Pixel.getPixel(30),
+        borderRadius:Pixel.getPixel(5),
+        marginTop:Pixel.getPixel(16),
+        flexDirection:'row',
+        shadowColor:'#e8eaf4',
+        shadowOffset:{width:0,height:Pixel.getPixel(5)},
+        shadowOpacity:0.3,
+        shadowRadius:2,
+    }
 })

@@ -283,9 +283,8 @@ export default class CarNewInfoScene extends BaseComponent {
         const carData = this.state.carData;
 
         return (
-            <View ref="carInfoScene" style={{flex: 1, backgroundColor: 'white'}}>
-
-                <ScrollView style={{marginBottom: Pixel.getPixel(44), backgroundColor: fontAndColor.COLORA3}}
+            <View ref="carInfoScene" style={{flex: 1, backgroundColor:'white'}}>
+                <ScrollView style={{marginBottom:Pixel.getBottomPixel(44), backgroundColor: fontAndColor.COLORA3}}
                             scrollEventThrottle={200}
                             automaticallyAdjustContentInsets={false}
                             onScroll={this.setNavitgationBackgroundColor}
@@ -1440,7 +1439,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         height: Pixel.getPixel(44),
         position: 'absolute',
-        bottom: 0,
+        bottom:Pixel.getBottomPixel(0),
         left: 0,
         right: 0,
         borderTopColor: fontAndColor.COLORA4,

@@ -16,9 +16,9 @@ import BaseComponent from "../component/BaseComponent";
 import PixelUtil from "../utils/PixelUtil";
 import * as FontAndColor from "../constant/fontAndColor";
 import NavigationBar from "../component/NavigationBar";
+import AllNavigationView from "../component/AllNavigationView";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-// import LoginScene from "./LoginScene";
 import LoginScene from "./NewLoginScreen";
 import AllSelectCompanyScene from "../main/AllSelectCompanyScene";
 
@@ -92,62 +92,51 @@ export default class GesturePassword extends BaseComponent {
             </TouchableWithoutFeedback>);
         }
         return (
-            <PwdGesture
+            <View style={{flex:1,paddingBottom:Pixel.getBottomPixel(0),backgroundColor:FontAndColor.COLORA3,paddingTop:Pixel.getTitlePixel(64)}}>
+                <AllNavigationView title="解锁手势密码"/>
+                <View style={{alignItems:'center',height:Pixel.getPixel(200)}} >
+                    {this.state.url ? <Image style={styles.avatarStyle}
+                                             source={{uri: this.state.url}}/> :
+                        <Image style={styles.avatarStyle}
+                               source={require("./../../images/mainImage/zhanghuguanli.png")}/>}
+
+                    <Text allowFontScaling={false} style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
+
+                    <Text allowFontScaling={false}
+                          style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
+                        {this.state.message}
+                    </Text>
+                </View>
+                <PwdGesture
                 ref='pg'
-                NavigationBar={
-                    <View style={styles.topStyle}>
-                        <NavigationBar
-                            leftImageShow={false}
-                            leftTextShow={true}
-                            centerText={"解锁手势密码"}
-                            rightText={""}
-                            leftText={""}
-                            leftImage={require('./../../images/login/left_cancle.png')}
-                            leftImageCallBack={this.backPage}/>
-
-                        {this.state.url ? <Image style={styles.avatarStyle}
-                                                 source={{uri: this.state.url}}/> :
-                            <Image style={styles.avatarStyle}
-                                   source={require("./../../images/mainImage/zhanghuguanli.png")}/>}
-
-                        <Text allowFontScaling={false} style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
-
-                        <Text allowFontScaling={false}
-                              style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
-                            {this.state.message}
-                        </Text>
-                    </View>
-                }
-                Bottom={
-                    <View style={{marginTop: Height / 2 * 0.95, flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={() => {
-                            StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
-                                if (data.code == 1) {
-                                    if (data.result != null) {
-                                        StorageUtil.mRemoveItem(data.result + "");
-                                    }
-                                }
-                            })
-                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
-                            this.loginPage({name: 'LoginScene', component: LoginScene});
-                        }}>
-                            <Text allowFontScaling={false} style={styles.bottomLeftSytle}>忘记手势密码？</Text>
-                        </TouchableOpacity>
-                        <View style={{flex: 1}}/>
-                        <TouchableOpacity onPress={() => {
-                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
-                            this.loginPage({name: 'LoginScene', component: LoginScene});
-                        }}>
-                            <Text allowFontScaling={false} style={styles.bottomRightSytle}>切换登录</Text>
-                        </TouchableOpacity>
-                    </View>
-                }
-                status={this.state.status}
+                us={this.state.status}
                 message={this.state.message}
-                style={styles.gestureStyle}
                 interval={500}
                 onStart={() => this.onStart()}
                 onEnd={(password) => this.onEnd(password)}/>
+                <View style={{flexDirection: 'row',marginTop:Pixel.getPixel(40)}}>
+                    <TouchableOpacity onPress={() => {
+                        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+                            if (data.code == 1) {
+                                if (data.result != null) {
+                                    StorageUtil.mRemoveItem(data.result + "");
+                                }
+                            }
+                        })
+                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+                        this.loginPage({name: 'LoginScene', component: LoginScene});
+                    }}>
+                        <Text allowFontScaling={false} style={styles.bottomLeftSytle}>忘记手势密码？</Text>
+                    </TouchableOpacity>
+                    <View style={{flex: 1}}/>
+                    <TouchableOpacity onPress={() => {
+                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+                        this.loginPage({name: 'LoginScene', component: LoginScene});
+                    }}>
+                        <Text allowFontScaling={false} style={styles.bottomRightSytle}>切换登录</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         );
     }
 
@@ -194,16 +183,12 @@ export default class GesturePassword extends BaseComponent {
 }
 
 const styles = StyleSheet.create({
-    gestureStyle: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: FontAndColor.COLORA3,
-    },
+
     topStyle: {
         alignItems: 'center',
         justifyContent: 'center',
         width: Width,
-        paddingBottom: Pixel.getPixel(60),
+        backgroundColor:FontAndColor.COLORA3,
     },
     topMessageStyle: {
         fontSize: Pixel.getFontPixel(17),

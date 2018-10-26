@@ -22,7 +22,7 @@ var Pixel = new PixelUtil();
 @observer
 export default class ZNTextInputView extends Component{
 
-    @observer textValue;
+    @observable textValue;
 
 
     // 构造

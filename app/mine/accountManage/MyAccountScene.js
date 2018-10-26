@@ -47,6 +47,9 @@ let dataList = [];
 let flag1 = 0;
 let flag2 = 0;
 let flag3 = 0;
+let flag4 = 0;
+
+
 
 export default class MyAccountScene extends BaseComponent {
 
@@ -61,6 +64,7 @@ export default class MyAccountScene extends BaseComponent {
         super(props);
         this.hengFengInfo = {};
         this.zheShangInfo = {};
+        this.is_hengfeng_in_whitelist = false;
         this.is_zheshang_in_whitelist = false;
         this.xintuoInfo = {};
         this.is_xintuo_in_whitelist = false;
@@ -94,6 +98,7 @@ export default class MyAccountScene extends BaseComponent {
         flag1 = 0;
         flag2 = 0;
         flag3 = 0;
+        flag4 = 0;
     }
 
     initFinish = () => {
@@ -101,6 +106,8 @@ export default class MyAccountScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
             if (data.code == 1) {
                 let userData = JSON.parse(data.result);
+                this.userID = userData.base_user_id;
+                this.loadData();
                 StorageUtil.mGetItem(String(userData['base_user_id'] + StorageKeyNames.HF_INDICATIVE_LAYER), (subData) => {
                     if (subData.code == 1) {
                         let obj = JSON.parse(subData.result);
@@ -124,7 +131,6 @@ export default class MyAccountScene extends BaseComponent {
             }
         })
 
-        this.loadData();
     };
 
     // 下拉刷新数据
@@ -145,16 +151,25 @@ export default class MyAccountScene extends BaseComponent {
     };
 
     /**
-     *   页面起调，浙商开关接口
+     *   页面起调，恒丰、浙商开关接口
      **/
     loadData = () => {
 
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
-
                 let datas = JSON.parse(data.result);
-
                 this.getAccountInfo(datas.company_base_id);
+                /*********查询是否在恒丰白名单中*********/
+                request(Urls.HF_IS_IN_WHITE_LIST,'Post',{enter_base_id:datas.company_base_id,user_id:this.userID,bank_id:'315'})
+                .then((response)=>{
+                        this.is_hengfeng_in_whitelist = true;
+                        flag4 = 1;
+                        this.renderUI();
+                },(error)=>{
+                    this.is_hengfeng_in_whitelist = false;
+                    flag4 = 1;
+                    this.renderUI();
+                });
 
                 request(Urls.IS_IN_WHITE_LIST, 'Post', {enter_base_id: datas.company_base_id})
                     .then((response) => {
@@ -247,9 +262,9 @@ export default class MyAccountScene extends BaseComponent {
         request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
             .then((response) => {
                 this.props.showModal(false);
-
                 this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
                 this.xintuoInfo = response.mjson.data['zsyxt'][0] ? response.mjson.data['zsyxt'][0] : {};
+                console.log("this.props.data",response.mjson);
 
                 if (response.mjson.data['315'][0]) {
                     this.hengFengInfo = response.mjson.data['315'][0];
@@ -356,11 +371,14 @@ export default class MyAccountScene extends BaseComponent {
     renderUI = () => {
 
 
-        if (flag1 == 1 && flag2 == 1 && flag3 == 1) {
+        if (flag1 == 1 && flag2 == 1 && flag3 == 1 && flag4 == 1) {
 
             dataList = []
 
-            dataList.push('315');
+            if(this.is_hengfeng_in_whitelist){
+                dataList.push('315');
+            }
+
 
             if (this.is_zheshang_in_whitelist) {
                 dataList.push('316');
@@ -374,12 +392,14 @@ export default class MyAccountScene extends BaseComponent {
                 dataSource: ds.cloneWithRows(dataList),
                 renderPlaceholderOnly: 'success',
                 isRefreshing: false,
-                backColor: fontAndColor.COLORB0
+                //backColor: fontAndColor.COLORB0
+                backColor:'transparent',
             });
 
             flag1 = 0;
             flag2 = 0;
             flag3 = 0;
+            flag4 = 0;
         }
 
     }
@@ -388,21 +408,30 @@ export default class MyAccountScene extends BaseComponent {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             // 加载中....
-            return ( <View style={{
+            return (
+                <View style={{
                 flex: 1,
                 backgroundColor: this.state.backColor
             }}>
                 {this.loadView()}
-                <NavigatorView title='我的账户' backIconClick={this.backPage}
-                               renderRihtFootView={this.renderRihtFootView}/>
+                <NavigatorView
+                    title='我的账户' backIconClick={this.backPage}
+                               renderRihtFootView={this.renderRihtFootView}
+                               />
             </View>);
         } else {
-            return (<View style={{
+            return (<Image style={{width:width,height:height}} source={require('../../../images/mine/guangfa_account/bg.png')}
+                           resizeMode='stretch'>
+                <View style={{
                 flex: 1,
                 backgroundColor: this.state.backColor
             }}>
-                <NavigatorView title='我的账户' backIconClick={this.backPage}
-                               renderRihtFootView={this.renderRihtFootView}/>
+                <NavigatorView title='我的账户'
+                               backIconClick={this.backPage}
+                               renderRihtFootView={this.renderRihtFootView}
+                               wrapStyle={{backgroundColor:'transparent'}}
+                               //ref={(a)=>{ a && a.setNavigationBackgroindColor('transparent','white')}}
+                />
                 <ListView style={{marginTop: Pixel.getTitlePixel(80)}}
                           dataSource={this.state.dataSource}
                           removeClippedSubviews={false}
@@ -578,7 +607,7 @@ export default class MyAccountScene extends BaseComponent {
                             </TouchableWithoutFeedback>
                         </View> : null
                 }
-            </View>);
+                </View></Image>);
         }
     }
 
@@ -717,7 +746,7 @@ export default class MyAccountScene extends BaseComponent {
         return (
             <View
                 key={`${sectionID}-${rowID}`}
-                style={{backgroundColor: fontAndColor.COLORB0, height: Pixel.getPixel(20)}}/>
+                style={{ height: Pixel.getPixel(20)}}/>
         )
     };
 
@@ -740,7 +769,8 @@ export default class MyAccountScene extends BaseComponent {
                 showModal={this.props.showModal}
                 type={rowData}     //账户类型
                 data={info}        //账户数据
-                callBack={this.allRefresh}/>
+                callBack={this.allRefresh}
+                />
         );
     }
 

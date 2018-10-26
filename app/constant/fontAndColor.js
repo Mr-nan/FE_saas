@@ -19,7 +19,7 @@ export const MARKFONT22 = 11;
 export const COLORA0 = "#333333";
 export const COLORA1 = "#9e9e9e";
 export const COLORA2 = "#90a1b5";
-export const COLORA3 = "#f0eff5";
+export const COLORA3 = "#F4F6F8";
 export const COLORA4 = "#d8d8d8";
 export const COLORA5 = "#FF9C00";
 export const COLORB0 = "#05c5c2";
@@ -38,8 +38,8 @@ export const COLORC1 = "#fdf0ea";
 export const COLORC2 = "#FA6C3E";
 export const COLORC3 = "#705AE7";
 export const COLORC4 = "#A3A3A3";
-
-
+export const COLORD1 = "#F4F6F8";
+export const COLORD2 = '#333333';
 
 
 export const FILLETSIZE = 5;

@@ -755,7 +755,7 @@ const  styles = StyleSheet.create({
         left:0,
         right:0,
         position: 'absolute',
-        bottom:0,
+        bottom:Pixel.getBottomPixel(0),
         backgroundColor:fontAndColor.COLORB0,
         justifyContent:'center',
         alignItems:'center',

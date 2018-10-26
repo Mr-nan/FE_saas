@@ -61,6 +61,14 @@ export default class CheckStand extends BaseComponent {
         }
     }
 
+    backPage = () => {
+        this.props.callBack()
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.pop();
+        }
+    }
+
     initFinish = () => {
         // let response = {
         //     "token": "",

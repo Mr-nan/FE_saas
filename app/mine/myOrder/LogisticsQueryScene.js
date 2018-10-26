@@ -306,7 +306,7 @@ export default class LogisticsQueryScene extends BaseComponent {
                                       backgroundColor: this.state.canClick ? fontAndColor.COLORB0 : '#69DCDA',
                                       position: 'absolute',
                                       left: 0,
-                                      bottom: 0,
+                                      bottom: Pixel.getBottomPixel(0),
                                       justifyContent: 'center',
                                       alignItems: 'center'
                                   }}>
