@@ -311,7 +311,7 @@ export default class PersonCertificate extends BaseComponent {
                     }
                     this.timer = setTimeout(
                         () => {
-                            this.backPage();
+                            this.backToTop();
                         },
                         200
                     );

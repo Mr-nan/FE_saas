@@ -418,54 +418,68 @@ export default class MineScene extends BaseComponent {
                 "title": "section3"
             },
         ]
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                BASE_ID = [];
-                BASE_ID.push(datas.company_base_id);
 
-                StorageUtil.mGetItem(StorageKeyNames.BASE_USER_ID, (data2) => {
+        request(Urls.USER_GETINFO, 'Post', {})
+            .then((newUserData) => {
+                StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(newUserData.mjson.data));
+                StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                    if (data.code == 1 && data.result != null) {
+                        let datas = JSON.parse(data.result);
+                        BASE_ID = [];
+                        BASE_ID.push(datas.company_base_id);
 
-                    if (data2.code == 1 && data2.result != null) {
-                        BASE_ID.push(data2.result)
-                        let maps = {
-                            enterprise_id: datas.company_base_id,
-                        };
-                        request(Urls.NEW_AUTH, 'post', maps).then((response) => {
-                            if (response.mycode == "1") {
-                                this.authData = response.mjson.data;
-                                this.renzhengData.enterpriseRenZheng = this.authData.enterprise_list.length>0?2:1;
-                                this.renzhengData.personRenZheng = this.authData.person.person_auth;
-                                this.toCompany();
+                        StorageUtil.mGetItem(StorageKeyNames.BASE_USER_ID, (data2) => {
+
+                            if (data2.code == 1 && data2.result != null) {
+                                BASE_ID.push(data2.result)
+                                let maps = {
+                                    enterprise_id: datas.company_base_id,
+                                };
+                                request(Urls.NEW_AUTH, 'post', maps).then((response) => {
+                                    if (response.mycode == "1") {
+                                        this.authData = response.mjson.data;
+                                        this.renzhengData.enterpriseRenZheng = this.authData.enterprise_list.length>0?2:1;
+                                        this.renzhengData.personRenZheng = this.authData.person.person_auth;
+                                        this.toCompany();
+                                    } else {
+                                        this.setState({
+                                            renderPlaceholderOnly: 'error',
+                                            isRefreshing: false
+                                        });
+                                    }
+                                }, (error) => {
+                                    this.props.showToast(error.mjson.msg);
+                                    this.setState({
+                                        renderPlaceholderOnly: 'error',
+                                        isRefreshing: false
+                                    });
+                                });
                             } else {
+                                this.props.showToast('获取个人信息失败');
                                 this.setState({
                                     renderPlaceholderOnly: 'error',
                                     isRefreshing: false
                                 });
                             }
-                        }, (error) => {
-                            this.props.showToast(error.mjson.msg);
-                            this.setState({
-                                renderPlaceholderOnly: 'error',
-                                isRefreshing: false
-                            });
                         });
                     } else {
-                        this.props.showToast('获取个人信息失败');
+                        this.props.showToast('获取企业信息失败');
                         this.setState({
                             renderPlaceholderOnly: 'error',
                             isRefreshing: false
                         });
                     }
                 });
-            } else {
-                this.props.showToast('获取企业信息失败');
+
+            }, (error) => {
+                this.props.showToast('获取个人信息失败');
                 this.setState({
                     renderPlaceholderOnly: 'error',
                     isRefreshing: false
                 });
-            }
-        });
+            });
+
+
     }
 
     toCompany = () => {

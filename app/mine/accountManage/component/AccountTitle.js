@@ -37,7 +37,7 @@ export  default class AccountTitle extends PureComponent {
 /*        if (this.props.info.account_open_type == 2 && this.props.trustAccountState == 0) {   // 只支持个人户开通信托账户，未来会有变动
             list.push(new listValue('开通白条账户', require('../../../../images/account/trustAccountLog.png'), this.props.openTrustAccount));
         }*/
-        list.push(new listValue('转账', require('../../../../images/mainImage/Transfer.png'), this.props.transfer));
+        // list.push(new listValue('转账', require('../../../../images/mainImage/Transfer.png'), this.props.transfer));
         list.push(new listValue('银行卡', require('../../../../images/mainImage/bankCard.png'), this.props.bankCard));
         list.push(new listValue('账户流水', require('../../../../images/mainImage/flow.png'), this.props.flow));
         list.push(new listValue('修改交易密码', require('../../../../images/mainImage/changePwd.png'), this.props.changePwd));

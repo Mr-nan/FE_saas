@@ -441,7 +441,7 @@ export default class MyAccountScene extends BaseComponent {
                                />
             </View>);
         } else {
-            return (<Image style={{flex:1}} source={require('../../../images/mine/guangfa_account/bg.png')}
+            return (<Image style={{width:width,height:height}} source={require('../../../images/mine/guangfa_account/bg.png')}
                            resizeMode='stretch'>
                 <View style={{
                 flex: 1,
