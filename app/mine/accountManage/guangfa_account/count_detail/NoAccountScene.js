@@ -24,6 +24,11 @@ const {width,height} = Dimensions.get('window');
 import NavigationView from "../../../../component/AllNavigationView";
 import SubmitComponent from '../component/SubmitComponent';
 import SmallAmountofPawerScene from '../count_detail/SmallAmountofPawerScene';
+import StorageUtil from "../../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../../constant/storageKeyNames";
+import IndexAccountmanageScene from "./IndexAccountmanageScene";
+import {request} from "../../../../utils/RequestUtil";
+import * as Urls from "../../../../constant/appUrls";
 
 export default class NoAccountScene extends BaseComponent{
     constructor(props) {
@@ -91,13 +96,43 @@ export default class NoAccountScene extends BaseComponent{
     }
 
     next =()=>{
-        this.toNextPage({
-            name:'SmallAmountofPawerScene',
-            component:SmallAmountofPawerScene,
-            params:{
-                callback:()=>{this.props.callback()},
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                let iscompany = true;
+                if (datas.role_type instanceof Array) {
+                    for (let item of datas.role_type) {
+                        if (item == 19) {
+                            iscompany = false;
+                            break;
+                        }
+                    }
+                }
+                this.to(iscompany);
             }
         })
+
+    }
+
+    to = (iscompany) =>{
+        if(iscompany){
+            this.toNextPage({
+                name:'SmallAmountofPawerScene',
+                component:SmallAmountofPawerScene,
+                params:{
+                    callback:()=>{this.props.callback()},
+                }
+            })
+
+        }else{
+            this.toNextPage({
+                name:'IndexAccountmanageScene',
+                component:IndexAccountmanageScene,
+                params:{
+                    callback:()=>{this.props.callback()},
+                }
+            })
+        }
     }
 
 

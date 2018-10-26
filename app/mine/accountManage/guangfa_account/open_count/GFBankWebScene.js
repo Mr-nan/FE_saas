@@ -103,7 +103,7 @@ export default class GFBankWebScene extends BaseComponent{
             this.toNextPage({
                 name:'WattingTenScendsScene',
                 component:WattingTenScendsScene,
-                params:{callback:()=>{this.props.callback()}}
+                params:{callback:()=>{this.props.callback()},serial_no:this.props.serial_no}
             })
         }
     }
