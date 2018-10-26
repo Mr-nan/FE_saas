@@ -71,7 +71,6 @@ export default class MyAccountItem extends BaseComponent {
         if (type == '315') {
             switch (state) {
                 case 0:
-
                     // iscompany 1、企业，2、个人，3、共借
                     console.log(iscompany);
                     if(iscompany==1){
@@ -90,9 +89,9 @@ export default class MyAccountItem extends BaseComponent {
                                         this.props.callBack();
                                     }
                                 };
-                            }else if(iscompany ==2){
-                                this.navigatorParams.name = 'ZSAccountTypeSelectScene';
-                                this.navigatorParams.component = ZSAccountTypeSelectScene;
+                            }else if(iscompany ==3){
+                                this.navigatorParams.name = 'AccountManageScene';
+                                this.navigatorParams.component = AccountManageScene;
                                 this.navigatorParams.params = {
                                 callBack: () => {
                                         this.props.callBack();
