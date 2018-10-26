@@ -76,8 +76,8 @@ export default class MyAccountItem extends BaseComponent {
             switch (state) {
                 case 0:
                     if(iscompany){
-                        this.navigatorParams.name = 'WattingTenScendsScene';
-                        this.navigatorParams.component = WattingTenScendsScene;
+                        this.navigatorParams.name = 'SelectCountCompany';
+                        this.navigatorParams.component = SelectCountCompany;
                         this.navigatorParams.params = {
                             callBack:() =>{
                                 this.props.callBack();
