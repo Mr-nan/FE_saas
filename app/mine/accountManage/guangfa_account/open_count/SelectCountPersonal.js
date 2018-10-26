@@ -21,7 +21,7 @@ const Pixel = new PixelUtil;
 import * as fontColor from '../../../../constant/fontAndColor';
 import BaseComponent from '../../../../component/BaseComponent';
 import NavigationView from '../../../../component/AllNavigationView';
-import OpenPersonalCountScene from './OpenPersonalCountScene';
+import GfOpenPersonalCountScene from './GfOpenPersonalCountScene';
 
 export default class SelectCountPersonal extends BaseComponent{
     constructor(props){
@@ -42,6 +42,7 @@ export default class SelectCountPersonal extends BaseComponent{
                 {this.loadView()}
                 <NavigationView backIconClick={this.backPage} title='选择账户' wrapStyle={{backgroundColor:'white'}}
                                 titleStyle={{color:fontColor.COLORD2}}/>
+                <StatusBar barStyle="dark-content"/>
             </View>
         )
     }
@@ -57,10 +58,10 @@ export default class SelectCountPersonal extends BaseComponent{
                                 titleStyle={{color:fontColor.COLORD2}} />
                 <TouchableOpacity activeOpacity={0.8} onPress={()=>{
                     this.toNextPage({
-                        name:'OpenPersonalCountScene',
-                        component:OpenPersonalCountScene,
-                        params:{callBack:()=>{this.props.callBack();
-                            }}
+                        name:'GfOpenPersonalCountScene',
+                        component:GfOpenPersonalCountScene,
+                        params:{callBack:()=>{this.props.callBack()
+                            },title:'开通个人账户',btnText:'确认提交'}
                     })
                 }} style={styles.openCountView} >
                     <View style={styles.header}>
