@@ -71,7 +71,10 @@ export default class MyAccountItem extends BaseComponent {
         if (type == '315') {
             switch (state) {
                 case 0:
-                    if(iscompany){
+
+                    // iscompany 1、企业，2、个人，3、共借
+                    console.log(iscompany);
+                    if(iscompany==1){
                                 this.navigatorParams.name = 'OpenCompanyCountScene';
                                 this.navigatorParams.component = OpenCompanyCountScene;
                                 this.navigatorParams.params = {
@@ -79,11 +82,19 @@ export default class MyAccountItem extends BaseComponent {
                                         this.props.callBack();
                                     }
                                 };
-                            }else{
+                            }else if(iscompany ==2){
                                 this.navigatorParams.name = 'OpenPersonalCountScene';
                                 this.navigatorParams.component = OpenPersonalCountScene;
                                 this.navigatorParams.params = {
                                     callBack: () => {
+                                        this.props.callBack();
+                                    }
+                                };
+                            }else if(iscompany ==2){
+                                this.navigatorParams.name = 'ZSAccountTypeSelectScene';
+                                this.navigatorParams.component = ZSAccountTypeSelectScene;
+                                this.navigatorParams.params = {
+                                callBack: () => {
                                         this.props.callBack();
                                     }
                                 };
@@ -118,8 +129,8 @@ export default class MyAccountItem extends BaseComponent {
                     break;
             }
             this.toNextPage(this.navigatorParams);
-        } else if (type == '316') {
 
+        } else if (type == '316') {
             switch (state) {
                 case 0://未开户
                     this.navigatorParams.name = 'ZSAccountTypeSelectScene';
@@ -188,14 +199,18 @@ export default class MyAccountItem extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
-                let iscompany = true;
+                let iscompany = 1;
                 if(datas.role_type instanceof Array){
                     for(let item of datas.role_type){
                         if(item == 19){
-                           iscompany = false;
+                           iscompany = 2;
                             break;
                         }
                     }
+                }
+
+                if(datas.iscompany==0 && datas.merge_id>0){
+                    iscompany = 3;
                 }
 
                 let maps = {
