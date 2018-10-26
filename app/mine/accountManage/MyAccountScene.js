@@ -772,6 +772,8 @@ export default class MyAccountScene extends BaseComponent {
     };
 
     _renderRow = (rowData, selectionID, rowID) => {
+
+        console.log('银行开户=',rowData);
         let info = {};
         if(rowData == 'gfyh'){
             info = this.guangfaInfo;
