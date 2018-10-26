@@ -566,6 +566,14 @@ export const USER_OPEN_GUANGFA_ACCOUNT_PERSONAL = BASEURL + '/v2/account.Open/or
 *
 * 开通广发企业账户*/
 export const USER_OPEN_GUANGFA_ACCOUNT_COMPANY = BASEURL +'v2/account.Open/orgAccount';
+
+/**
+ * from marongting
+ *
+ *
+ * 获取银行卡列表信息*/
+export const GET_BANK_CARD_LIST = BASEURL +'v1/account.Bankinfo/getBankCardList';
+
 /**
  * from @zhaojian
  *
@@ -2032,6 +2040,10 @@ export const SUISHOUJI_ACTIVE = BASEURL + "v2/credit.sui/accountActivate";
  *  随手记授权
  **/
 export const SUISHOUJI_AUTH = BASEURL + "v2/credit.sui/accountAuth";
+
+
+
+
 
 
 

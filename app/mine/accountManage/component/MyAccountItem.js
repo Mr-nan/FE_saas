@@ -93,25 +93,7 @@ export default class MyAccountItem extends BaseComponent {
                         };
                     }
                     break;
-                case 4:
-                    if(iscompany){
-                        this.navigatorParams.name = 'SelectCountCompany';
-                        this.navigatorParams.component = SelectCountCompany;
-                        this.navigatorParams.params = {
-                            callBack:() =>{
-                                this.props.callBack();
-                            }
-                        };
-                    }else{
-                        this.navigatorParams.name = 'SelectCountPersonal';
-                        this.navigatorParams.component = SelectCountPersonal;
-                        this.navigatorParams.params = {
-                            callBack: () => {
-                                this.props.callBack();
-                            }
-                        };
-                    }
-                    break;
+
                 default:
                     this.navigatorParams.name = 'IndexAccountmanageScene';
                     this.navigatorParams.component = IndexAccountmanageScene;

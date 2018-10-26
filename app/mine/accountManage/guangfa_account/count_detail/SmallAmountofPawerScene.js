@@ -23,6 +23,11 @@ const Pixel = new PixelUtil();
 const {width,height} = Dimensions.get('window');
 import NavigationView from "../../../../component/AllNavigationView";
 import SubmitComponent from '../component/SubmitComponent';
+import {request} from "../../../../utils/RequestUtil";
+import * as Urls from "../../../../constant/appUrls";
+import StorageUtil from "../../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../../constant/storageKeyNames";
+import AuthenticatePublicScene from "./AuthenticatePublicScene";
 
 
 export default class SmallAmountofPawerScene extends BaseComponent{
@@ -40,6 +45,7 @@ export default class SmallAmountofPawerScene extends BaseComponent{
     }
 
     render(){
+        this.text = '您已通过审核，\n' + '请进行小额鉴权完成开户'
         if(this.state.renderPlaceholderOnly !== 'success'){
             return this.renderPlaceholderView();
         }
@@ -49,15 +55,37 @@ export default class SmallAmountofPawerScene extends BaseComponent{
                 <NavigationView backIconClick={this.backPage} title='账户管理'
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <Image style={{marginTop: Pixel.getPixel(116)}} source={require('../../../../../images/mine/guangfa_account/tongguo.png')}/>
-                <View style={{marginTop:Pixel.getPixel(8),alignItems:'center',height:Pixel.getPixel(80)}}>
-                    {/*<Text style={{color:'#151515',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(20),marginTop:Pixel.getPixel(37)}}>暂无可开户银行</Text>*/}
-                    {/*<Text style={{color:'#151515',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(20)}}>请联系客户经理开通账户白名单</Text>*/}
-                    <Text style={{color:fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(14),width:Pixel.getPixel(160),height:Pixel.getPixel(50),lineHeight:Pixel.getPixel(20)}}>您已通过审核，
-                        请进行小额鉴权完成开户</Text>
-                </View>
-                <SubmitComponent title='去小额鉴权' warpStyle={{width:Pixel.getPixel(320),height:Pixel.getPixel(44),marginLeft: 0,marginTop:Pixel.getPixel(7)}}/>
+                <Text style={{color:fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(14),height:Pixel.getPixel(50),lineHeight:Pixel.getPixel(20),marginTop:Pixel.getPixel(17),textAlign:'center'}}>{this.text}</Text>
+                <SubmitComponent btn={()=>{this.next()}} title='去小额鉴权' warpStyle={{width:Pixel.getPixel(320),height:Pixel.getPixel(44),marginLeft: 0,marginTop:Pixel.getPixel(39)}}/>
             </View>
         )
+    }
+
+    next = () =>{
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data) => {
+            if(data.code == 1 && data.result != null){
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    bank_id:'gfyh',
+                    enter_base_id:datas.company_base_id
+
+                }
+                request(Urls.GET_BANK_CARD_LIST, 'Post', maps)
+                    .then((response)=> {
+                        this.props.showModal(false);
+                        let da = response.mjson;
+                        this.toNextPage({
+                            name:'AuthenticatePublicScene',
+                            component:AuthenticatePublicScene,
+                            params:{
+                                callback:()=>{this.props.callback()},data:da.data
+                            }
+                        })
+                    })
+            }
+        })
+
     }
 
     renderPlaceholderView = () => {

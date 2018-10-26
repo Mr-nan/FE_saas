@@ -25,6 +25,7 @@ const Pixel = new PixelUtil();
 export default class AuthenticateCardComponent extends BaseComponent{
     constructor(props) {
         super(props);
+        console.log(this.props.data);
 
     }
     render(){

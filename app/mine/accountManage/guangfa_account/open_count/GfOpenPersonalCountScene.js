@@ -31,17 +31,19 @@ import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import {request} from "../../../../utils/RequestUtil";
 import * as Urls from "../../../../constant/appUrls";
 import GFBankWebScene from "./GFBankWebScene";
+import SelectBankScene from "../../SelectBankScene";
 
 export default class GfOpenPersonalCountScene extends BaseComponent{
     constructor(props) {
         super(props);
         this.state = {
-            renderPlaceholderOnly:'blank'
+            renderPlaceholderOnly:'blank',
+            bankName:'请选择银行',
         }
         this.sData = {
             bank_card_no:'',
-            bank_name:'中国银行',
-            bank_no:'105100000017',
+            bank_name:'',
+            bank_no:'',
             cert_no:'',
             cust_name:'',
             customer_type:'B',
@@ -125,13 +127,13 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
                         rightIcon={false}
                         rightButton={false}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}/>
-                    <View style={{flexDirection: 'row',flex:1,alignItems:'center',width:Pixel.getPixel(345)}}>
+                    <TouchableOpacity ref='bank_type' onPress={()=>{this.next()}} style={{flexDirection: 'row',flex:1,alignItems:'center',width:Pixel.getPixel(345)}}>
                         <Text style={{color:fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(14),justifyContent: 'flex-start'}}>银行</Text>
                         <View style={{flexDirection:'row',justifyContent:'flex-end',marginRight: Pixel.getPixel(15),width:Pixel.getPixel(316)}}>
-                            <Text allowFontScaling={false} style={{fontSize:Pixel.getFontPixel(14),color:'#AEAEAE',marginRight:Pixel.getPixel(20)}}>请选择银行</Text>
+                            <Text allowFontScaling={false} style={{fontSize:Pixel.getFontPixel(14),color:'#AEAEAE',marginRight:Pixel.getPixel(20)}}>{this.state.bankName}</Text>
                             <Image source={require('../../../../../images/mine/guangfa_account/xiangqing.png')}/>
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 <View style={{flexDirection:'row',width:width,height:Pixel.getPixel(18),marginLeft:Pixel.getPixel(18),marginTop: Pixel.getPixel(21),alignItems:'flex-end' }}>
                     <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
@@ -143,6 +145,21 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
         );
     }
 
+    next = () =>{
+        this.toNextPage({
+            name:'SelectBankScene',
+            component:SelectBankScene,
+            params:{getBankData:(data)=>{
+                    console.log('bankdata',data);
+                    this.sData.bank_name = data.bankName;
+                    this.sData.bank_no = data.bankNo;
+                    this.setState({
+                        bankName:data.bankName
+                    })
+                }}
+
+        })
+    }
     submit = () => {
         this.sData.cust_name = this.refs.name.getInputTextValue();
         this.sData.cert_no = this.refs.code.getInputTextValue();
@@ -150,12 +167,19 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
         this.sData.bank_card_no  = this.refs.bank_count.getInputTextValue();
         if(this.sData.cust_name == ''){
             this.props.showToast('请输入姓名');
+            return;
         }else if(this.sData.cert_no.length != 18){
-            this.props.showToast('请输入身份证号');
+            this.props.showToast('请输入正确的身份证号');
+            return;
         }else if(this.sData.mobile.length != 11){
             this.props.showToast('请输入正确的手机号码');
+            return;
         }else if( isNaN(Number(this.sData.bank_card_no))){
             this.props.showToast('请输入银行卡号');
+            return;
+        }else if(this.sData.bank_name == '' ){
+            this.props.showToast('请选择银行');
+            return;
         }else{
             this.sData.enter_base_id = this.userID;
             this.sendData(this.sData);
@@ -172,7 +196,7 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
                     name:'GFBankWebScene',
                     component:GFBankWebScene,
                     params:{callback:()=>{this.props.callback()},uri:da.data.url_wap,pa:da.data.params,
-                        sign:da.data.sign,reback_url:this.sData.reback_url}
+                        sign:da.data.sign,reback_url:this.sData.reback_url,serial_no:da.data.serial_no}
                 },(error)=>{
                     this.props.showToast(error.mjson.msg);
                 })

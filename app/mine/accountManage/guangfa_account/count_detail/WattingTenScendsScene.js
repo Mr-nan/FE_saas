@@ -47,8 +47,7 @@ export default class WattingTenScendsScene extends BaseComponent{
                 this.setState({
                     time:this.state.time - 1
                 })
-                console.log(this.state.time);
-                if(this.state.time == 7 || this.state.time == 4 ||this.state.time == 1){
+                if(this.state.time % 3 == 1){
                     StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data)=>{
                         if(data.code == 1){
                             let userData = JSON.parse(data.result);
@@ -67,26 +66,32 @@ export default class WattingTenScendsScene extends BaseComponent{
     stopTime = () =>{
        clearInterval(this.myTime);
     }
+
     toSend = (userData) => {
         let maps = {
             bank_id:'gfyh',
             enter_base_id:userData.company_base_id,
+          //  serial_no:this.props.serial_no
             serial_no:'UA0021201810251638553260000051051'
         }
         request(Urls.ZS_FETCH_STATUS,'Post',maps)
             .then((response)=>{
-                let da = response.mjson;
-                console.log(da);
-                if(da.data.transfer_status == 0 && this.state.time != 1){
-                    this.countTime();
-                }
+                let da = response.mjson.data;
                 this.toNextPage({
                     name:'NoAccountScene',
                     component:NoAccountScene,
-                    params:{callback:()=>{this.props.callback()},status:da.data.transfer_status,title:'账户首页'}
+                    params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
                 })
                 this.stopTime();
 
+            },(error)=>{
+                if(this.state.time == 1){
+                    this.toNextPage({
+                        name:'NoAccountScene',
+                        component:NoAccountScene,
+                        params:{callback:()=>{this.props.callback()},status:0,title:'账户首页'}
+                    })
+                }
             })
 
     }

@@ -30,6 +30,7 @@ import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import {request} from "../../../../utils/RequestUtil";
 import * as Urls from "../../../../constant/appUrls";
 import GFBankWebScene from './GFBankWebScene';
+import SelectBankScene from "../../SelectBankScene";
 const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
 
@@ -39,7 +40,9 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
         super(props);
         this.state = {
             renderPlaceholderOnly:'blank',
-            topSize:-179
+            topSize:-179,
+            bankName:'请选择银行',
+
         }
 
         this.sData={
@@ -47,8 +50,8 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
             agent_mobile:'',
             agent_name:'',
             bank_card_no:'',
-            bank_name:'中国银行',
-            bank_no:'105100000017',
+            bank_name:'',
+            bank_no:'',
             customer_type:'B',
             ent_name:'',
             ent_phone:'',
@@ -202,9 +205,9 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         rightButton={false}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(42),paddingLeft:0}}
                         foucsChange={() => {
-                            if (this.state.topSize == 5) {
+                            if (this.state.topSize == -179) {
                                 this.setState({
-                                    topSize: -179
+                                    topSize: 5
                                 });
                             }
                         }}/>
@@ -256,10 +259,10 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                             }
                         }}
                     />
-                    <TouchableOpacity ref='bank_type' style={{flexDirection: 'row',flex:1,alignItems:'center',width:Pixel.getPixel(345),height:Pixel.getPixel(45)}}>
+                    <TouchableOpacity ref='bank_type' onPress={()=>{this.next()}} style={{flexDirection: 'row',flex:1,alignItems:'center',width:Pixel.getPixel(345),height:Pixel.getPixel(45)}}>
                         <Text style={{color:fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(14),justifyContent: 'flex-start'}}>银行</Text>
                         <View style={{flexDirection:'row',justifyContent:'flex-end',marginRight: Pixel.getPixel(15),width:Pixel.getPixel(316)}}>
-                            <Text allowFontScaling={false} style={{fontSize:Pixel.getFontPixel(14),color:'#AEAEAE',marginRight:Pixel.getPixel(20)}}>请选择银行</Text>
+                            <Text allowFontScaling={false} style={{fontSize:Pixel.getFontPixel(14),color:'#AEAEAE',marginRight:Pixel.getPixel(20)}}>{this.state.bankName}</Text>
                             <Image source={require('../../../../../images/mine/guangfa_account/xiangqing.png')}/>
                         </View>
                     </TouchableOpacity>
@@ -275,6 +278,22 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
         );
     }
 
+    next = () =>{
+        this.toNextPage({
+            name:'SelectBankScene',
+            component:SelectBankScene,
+            params:{getBankData:(data)=>{
+                 console.log('bankdata',data);
+                 this.sData.bank_name = data.bankName;
+                 this.sData.bank_no = data.bankNo;
+                 this.setState({
+                     bankName:data.bankName
+                 })
+                }}
+
+        })
+    }
+
     submit = () => {
         this.sData.ent_name = this.refs.cust_name.getInputTextValue();
         this.sData.ent_phone = this.refs.cust_phone.getInputTextValue();
@@ -285,6 +304,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
         this.sData.agent_cert_no = this.refs.contact_code.getInputTextValue();
         this.sData.agent_mobile = this.refs.contact_phone.getInputTextValue();
         this.sData.bank_card_no = this.refs.bank_account.getInputTextValue();
+
         if(this.sData.ent_name == ''){
             this.props.showToast('请输入企业名称');
             return;
@@ -312,7 +332,11 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
         }else if(isNaN(Number(this.sData.bank_card_no))){
             this.props.showToast('请输入正确的银行账号');
             return;
-        }else{
+        }else if(this.sData.bank_name == '' ){
+            this.props.showToast('请选择银行');
+            return;
+        }
+        else{
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data) => {
                 if(data.code == 1 && data.result != null){
                     let datas = JSON.parse(data.result);
@@ -334,7 +358,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                     name:'GFBankWebScene',
                     component:GFBankWebScene,
                     params:{callback:()=>{this.props.callback()},uri:da.data.url_wap,pa:da.data.params,sign:da.data.sign,
-                        reback_url:this.sData.reback_url}
+                        reback_url:this.sData.reback_url,serial_no:da.data.serial_no}
                 })
             },(error)=>{
                 this.props.showToast(error.mjson.msg);
