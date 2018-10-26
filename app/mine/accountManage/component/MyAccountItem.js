@@ -72,7 +72,6 @@ export default class MyAccountItem extends BaseComponent {
             switch (state) {
                 case 0:
                     // iscompany 1、企业，2、个人，3、共借
-                    console.log(iscompany);
                     if(iscompany==1){
                                 this.navigatorParams.name = 'OpenCompanyCountScene';
                                 this.navigatorParams.component = OpenCompanyCountScene;
