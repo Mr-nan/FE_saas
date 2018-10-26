@@ -79,7 +79,7 @@ export default class WithdrawScene extends ZSBaseComponent {
                         justifyContent:'space-between'
                     }}>
                         <View style={{flexDirection:'row'}}>
-                            <Image source={require('../../../../../images/mine/guangfa_account/工商银行 copy.png')} style={{width:Pixel.getPixel(35),height:Pixel.getPixel(35)}}/>
+                            <Image source={require('../../../../../images/mine/guangfa_account/gs.png')} style={{width:Pixel.getPixel(35),height:Pixel.getPixel(35)}}/>
                             <View style={{marginLeft: Pixel.getPixel(13)}}>
                                 <Text
                                     style={{fontSize: Pixel.getFontPixel(15),color:FontAndColor.COLORA0}}>中国工商银行</Text>
