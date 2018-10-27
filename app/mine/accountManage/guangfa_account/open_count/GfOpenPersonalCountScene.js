@@ -48,7 +48,6 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
             cust_name:'',
             customer_type:'B',
             enter_base_id:'',
-            enterprise_id:'',
             mobile:'',
             reback_url:'123456',
         }
@@ -181,7 +180,7 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
             this.props.showToast('请选择银行');
             return;
         }else{
-            this.sData.enter_base_id = this.userID;
+            this.sData.enter_base_id = global.companyBaseID;
             this.sendData(this.sData);
         }
     }

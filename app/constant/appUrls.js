@@ -556,6 +556,14 @@ export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company
 
 /*
 *
+* from zhengnan
+*
+* 广发银行销户接口*/
+export const GF_CANCEL_ACCOUNT = BASEURL + 'v2/account.Manage/cancelCgbAccount';
+
+
+/*
+*
 * from marongting
 *
 * 开通广发个人账户*/

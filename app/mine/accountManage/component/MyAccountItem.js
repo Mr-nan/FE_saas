@@ -72,10 +72,14 @@ export default class MyAccountItem extends BaseComponent {
      *   state 开户状态
      **/
     pageDispense = (type, state,iscompany) => {
+
+
         if(type == 'gfyh'){
             switch (state) {
+                // iscompany 1、企业，2、个人，3、共借
+
                 case 0:
-                    if(iscompany){
+                    if(iscompany==1 || iscompany==3){
                         this.navigatorParams.name = 'SelectCountCompany';
                         this.navigatorParams.component = SelectCountCompany;
                         this.navigatorParams.params = {
@@ -83,7 +87,7 @@ export default class MyAccountItem extends BaseComponent {
                                 this.props.callBack();
                             }
                         };
-                    }else{
+                    }else  if(iscompany==2){
                         this.navigatorParams.name = 'SelectCountPersonal';
                         this.navigatorParams.component = SelectCountPersonal;
                         this.navigatorParams.params = {
