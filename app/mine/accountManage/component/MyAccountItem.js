@@ -37,6 +37,8 @@ import IndexAccountmanageScene from '../guangfa_account/count_detail/IndexAccoun
 import SelectCountCompany from '../guangfa_account/open_count/SelectCountCompany';
 import SelectCountPersonal from '../guangfa_account/open_count/SelectCountPersonal';
 import WattingTenScendsScene from '../guangfa_account/count_detail/WattingTenScendsScene';
+import NoAccountScene from "../guangfa_account/count_detail/NoAccountScene";
+import AuthenticatePublicScene from "../guangfa_account/count_detail/AuthenticatePublicScene";
 const Pixel = new PixelUtil();
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
@@ -79,7 +81,11 @@ export default class MyAccountItem extends BaseComponent {
                 // iscompany 1、企业，2、个人，3、共借
 
                 case 0:
+<<<<<<< HEAD
                     if(iscompany==1 || iscompany==3){
+=======
+                    if(iscompany){
+>>>>>>> 235ab93248a0b6e5afc11e137717641b3e673c7e
                         this.navigatorParams.name = 'SelectCountCompany';
                         this.navigatorParams.component = SelectCountCompany;
                         this.navigatorParams.params = {
@@ -96,6 +102,35 @@ export default class MyAccountItem extends BaseComponent {
                             }
                         };
                     }
+                    break;
+                case 3:
+                    this.navigatorParams.name = 'IndexAccountmanageScene';
+                    this.navigatorParams.component = IndexAccountmanageScene;
+                    this.navigatorParams.params = {
+                        callBack:() =>{
+                            this.props.callBack();
+                        }
+                    };
+                    break;
+                case 4:
+                    if(iscompany){
+                        this.navigatorParams.name = 'NoAccountScene';
+                        this.navigatorParams.component = NoAccountScene;
+                        this.navigatorParams.params = {
+                            callBack:() =>{
+                                this.props.callBack();
+                            }
+                        };
+                    }
+                    break;
+                case 5:
+                    this.navigatorParams.name = 'AuthenticatePublicScene';
+                    this.navigatorParams.component = AuthenticatePublicScene;
+                    this.navigatorParams.params = {
+                        callBack:() =>{
+                            this.props.callBack();
+                        }
+                    };
                     break;
 
                 default:
