@@ -28,6 +28,7 @@ import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import NoAccountScene from './NoAccountScene';
 import * as Urls from "../../../../constant/appUrls";
+import SmallAmountBankStatusScene from "./SmallAmountBankStatusScene";
 
 export default class WattingTenScendsScene extends BaseComponent{
     constructor(props) {
