@@ -81,11 +81,8 @@ export default class MyAccountItem extends BaseComponent {
                 // iscompany 1、企业，2、个人，3、共借
 
                 case 0:
-<<<<<<< HEAD
                     if(iscompany==1 || iscompany==3){
-=======
-                    if(iscompany){
->>>>>>> 235ab93248a0b6e5afc11e137717641b3e673c7e
+
                         this.navigatorParams.name = 'SelectCountCompany';
                         this.navigatorParams.component = SelectCountCompany;
                         this.navigatorParams.params = {
