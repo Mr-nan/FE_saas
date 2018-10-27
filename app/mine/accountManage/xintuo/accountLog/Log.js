@@ -75,7 +75,7 @@ export default class Log extends BaseComponent {
                 let result = JSON.parse(data.result)
 
                 let params = {
-                    bank_id: "zsyxt",
+                    bank_id: this.props.bankID?this.props.bankID : "zsyxt",
                     enter_base_id: result.company_base_id,
                     transfer_type: type,
                     user_type: this.props.account.account_open_type,

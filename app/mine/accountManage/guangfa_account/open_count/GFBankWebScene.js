@@ -30,40 +30,14 @@ import WattingTenScendsScene from '../count_detail/WattingTenScendsScene';
 export default class GFBankWebScene extends BaseComponent{
     constructor(props) {
         super(props);
-        this.state = {
-            renderPlaceholderOnly:'blank'
-        }
         this.ispush = true;
     }
 
-    initFinish(){
-        this.setState({
-            renderPlaceholderOnly:'success'
-        })
-    }
-
-    renderPlaceholderView = () => {
-
-        return(
-            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
-                {this.loadView()}
-                <NavigationView
-                    title='企业开户'
-                    backIconClick={this.backPage}
-                />
-            </View>
-        )
-
-    }
-
-
 
     render() {
-        if(this.state.renderPlaceholderOnly !== 'success'){
-            return this.renderPlaceholderView();
-        }
         return (
-            <WebView style={{ flex:1}}
+            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3,paddingTop:Pixel.getTitlePixel(64)}}>
+            <WebView style={{flex:1}}
                      scalesPageToFit={true}
                      bounces={false}
                      onNavigationStateChange={(navState) =>{
@@ -93,18 +67,28 @@ export default class GFBankWebScene extends BaseComponent{
     document.getElementById('b').style.display = "none";
 </script>
 </html>`}}/>
+                <NavigationView title={this.props.title?this.props.title:'广发银行'} backIconClick={this.backPage}/>
+            </View>
 
         );
     }
 
     go(nav){
         if(nav.url.indexOf(this.props.reback_url) !=-1 && this.ispush){
+
             this.ispush = false;
-            this.toNextPage({
-                name:'WattingTenScendsScene',
-                component:WattingTenScendsScene,
-                params:{callback:()=>{this.props.callback()},serial_no:this.props.serial_no,flag:this.props.flag}
-            })
+            if(this.props.noPushPage){
+
+                this.backPage();
+
+            }else {
+                this.toNextPage({
+                    name:'WattingTenScendsScene',
+                    component:WattingTenScendsScene,
+                    params:{callback:()=>{this.props.callback()},serial_no:this.props.serial_no,flag:this.props.flag}
+                })
+            }
+
         }
     }
 

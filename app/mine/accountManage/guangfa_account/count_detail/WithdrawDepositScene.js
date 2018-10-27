@@ -34,7 +34,7 @@ let {width, height} = Dimensions.get('window');
 
 let Platform = require('Platform');
 
-export default class WithdrawScene extends ZSBaseComponent {
+export default class WithdrawDepositScene extends ZSBaseComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -52,7 +52,7 @@ export default class WithdrawScene extends ZSBaseComponent {
             return (
                 <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                     <StatusBar barStyle='dark-content'/>
-                    <NavigationView backIconClick={this.backPage} title='提现'
+                    <NavigationView backIconClick={()=>this.backPage} title='提现'
                                     wrapStyle={{backgroundColor:'white'}} titleStyle={{color:FontAndColor.COLORA0}}/>
                 </View>
             )
@@ -62,12 +62,8 @@ export default class WithdrawScene extends ZSBaseComponent {
         return (
             <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                 <StatusBar barStyle='dark-content'/>
-                <NavigationView backIconClick={this.backPage} title='提现'
-                                wrapStyle={{backgroundColor:'white'}} titleStyle={{color:FontAndColor.COLORA0}}/>
-
                 <ScrollView
-                    showsVerticalScrollIndicator={false}
-                >
+                    showsVerticalScrollIndicator={false}>
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -136,6 +132,8 @@ export default class WithdrawScene extends ZSBaseComponent {
                     </View>
 
                 </ScrollView>
+                <NavigationView backIconClick={this.backPage} title='提现'
+                                wrapStyle={{backgroundColor:'white'}} titleStyle={{color:FontAndColor.COLORA0}}/>
             </View>
 
         )

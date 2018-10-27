@@ -561,6 +561,30 @@ export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company
 * 广发银行销户接口*/
 export const GF_CANCEL_ACCOUNT = BASEURL + 'v2/account.Manage/cancelCgbAccount';
 
+/*
+*
+* from zhengnan
+*
+* 广发银行修改密码
+* */
+export const GF_REST_PASSWORD = BASEURL + 'v2/account.Manage/resetAccountPassword';
+
+/*
+*
+* from zhengnan
+*
+* 广发银行添加银行卡
+* */
+export const GF_ADD_BANK = BASEURL + 'v2/account.Manage/bankCardBind';
+
+/*
+*
+* from zhengnan
+*
+* 广发银行解绑银行卡
+* */
+export const GF_RELIEVE_BANK = BASEURL + 'v2/account.Manage/bankCardUnbind';
+
 
 /*
 *
