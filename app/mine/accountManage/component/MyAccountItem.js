@@ -110,15 +110,13 @@ export default class MyAccountItem extends BaseComponent {
                     };
                     break;
                 case 4:
-                    if(iscompany){
-                        this.navigatorParams.name = 'NoAccountScene';
-                        this.navigatorParams.component = NoAccountScene;
-                        this.navigatorParams.params = {
-                            callBack:() =>{
-                                this.props.callBack();
-                            }
-                        };
-                    }
+                    this.navigatorParams.name = 'NoAccountScene';
+                    this.navigatorParams.component = NoAccountScene;
+                    this.navigatorParams.params = {
+                        callBack:() =>{
+                            this.props.callBack();
+                        }
+                    };
                     break;
                 case 5:
                     this.navigatorParams.name = 'AuthenticatePublicScene';

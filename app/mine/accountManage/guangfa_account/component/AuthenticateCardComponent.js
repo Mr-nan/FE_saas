@@ -58,7 +58,7 @@ export default class AuthenticateCardComponent extends BaseComponent{
 
         return(
             <View>
-                {this.props.data.status != 0 && this.props.data.status != 4 ?   <Image style={[{marginTop: Pixel.getPixel(15),height:Pixel.getPixel(123)},wrapStyle]} source={this.tu}>
+                {this.props.data.status != 0 && this.props.data.status != 4 && this.props.data.status != 5?   <Image style={[{marginTop: Pixel.getPixel(15),height:Pixel.getPixel(123)},wrapStyle]} source={this.tu}>
                     <TouchableOpacity onPress={this.props.btn} style={{marginTop: Pixel.getPixel(12),width:Pixel.getPixel(348),height:Pixel.getPixel(91),marginLeft: Pixel.getPixel(15),flexDirection:'row',alignItems:'center',overflow: 'hidden'}}>
                         <View style={{flexDirection: 'column',justifyContent:'center',height:Pixel.getPixel(60),marginLeft:Pixel.getPixel(20)}}>
                             <Text allowFontScaling={false} style={{lineHeight:Pixel.getPixel(20),backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(12),}}>{this.props.data.sub_bank_name}卡号</Text>

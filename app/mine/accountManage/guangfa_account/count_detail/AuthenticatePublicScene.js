@@ -34,19 +34,42 @@ import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 export default class AuthenticatePublicScene extends BaseComponent{
     constructor(props) {
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 == r2});
+
+        this.state = {
+            renderPlaceholderOnly: 'blank',
+            source: ds.cloneWithRows([]),
+        };
+
+
         this.sData ={
             reback_url:'123456'
         }
-        this.state = {
-            renderPlaceholderOnly:'blank',
-            dataSource:ds.cloneWithRows(this.props.data)
-        }
+    }
+    initFinish(){
+        this.getData();
+
     }
 
-    initFinish(){
-        this.setState({
-            renderPlaceholderOnly:'success',
+    getData = ()=>{
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data) => {
+            if(data.code == 1 && data.result != null){
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    bank_id:'gfyh',
+                    enter_base_id:datas.company_base_id
+                }
+                request(Urls.GET_BANK_CARD_LIST, 'Post', maps)
+                    .then((response)=> {
+                        this.data = response.mjson.data;
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            source: this.state.source.cloneWithRows(this.data)
+                        })
+                    },(error) => {
+                        this.setState({renderPlaceholderOnly: 'error'});
+                    })
+            }
         })
     }
 
@@ -59,16 +82,19 @@ export default class AuthenticatePublicScene extends BaseComponent{
                 <StatusBar barStyle='dark-content'/>
                 <NavigationView backIconClick={this.backPage} title='对公账户鉴权'
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
-                <ListView style={{flex:1,marginTop: Pixel.getPixel(64),backgroundColor:'transparent'}} dataSource={this.state.dataSource} renderRow={this.renderRow}/>
+                <ListView style={{flex:1,marginTop: Pixel.getPixel(64),backgroundColor:'transparent'}}
+                          dataSource={this.state.source}
+                          renderRow={this._renderRow}
+                />
             </View>
         )
     }
 
-    renderRow = (rowData,sectionID,rowID) =>{
+    _renderRow = (rowData,sectionID,rowID) =>{
         return(
             <View>
                 {rowID == 0 ? <AuthenticateCardComponent data = {rowData} id ={rowID} btn={()=>{this.next(rowID)}}/>:
-                    <AuthenticateCardComponent btn={()=>{this.next(rowID)}} data = {rowData} id ={rowID} wrapStyle={{marginTop: Pixel.getPixel(10),backgroundColor:'red'}}/>
+                    <AuthenticateCardComponent btn={()=>{this.next(rowID)}} data = {rowData} id ={rowID} wrapStyle={{marginTop: Pixel.getPixel(10)}}/>
                 }
             </View>
 
@@ -78,12 +104,13 @@ export default class AuthenticatePublicScene extends BaseComponent{
 
      next = (rowID) => {
         console.log('rowID',rowID);
+        console.log(this.state.source);
          StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(da) => {
              if(da.code == 1 && da.result != null){
                  let datas = JSON.parse(da.result);
                  let maps ={
                      amount:'5',
-                     bind_bank_card_no_id:this.props.data[rowID].id,
+                     bind_bank_card_no_id:this.data[rowID].id,
                      reback_url:this.sData.reback_url,
                      enter_base_id:datas.company_base_id,
                  }

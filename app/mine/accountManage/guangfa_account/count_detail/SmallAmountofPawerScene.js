@@ -62,27 +62,11 @@ export default class SmallAmountofPawerScene extends BaseComponent{
     }
 
     next = () =>{
-        this.props.showModal(true);
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data) => {
-            if(data.code == 1 && data.result != null){
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    bank_id:'gfyh',
-                    enter_base_id:10108
-
-                }
-                request(Urls.GET_BANK_CARD_LIST, 'Post', maps)
-                    .then((response)=> {
-                        this.props.showModal(false);
-                        let da = response.mjson;
-                        this.toNextPage({
-                            name:'AuthenticatePublicScene',
-                            component:AuthenticatePublicScene,
-                            params:{
-                                callback:()=>{this.props.callback()},data:da.data
-                            }
-                        })
-                    })
+        this.toNextPage({
+            name:'AuthenticatePublicScene',
+            component:AuthenticatePublicScene,
+            params:{
+                callback:()=>{this.props.callback()}
             }
         })
 
