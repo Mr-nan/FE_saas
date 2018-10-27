@@ -373,7 +373,6 @@ export default class EnterpriseCertificate extends BaseComponent {
             company_blame_phone: this.enterpriseData.enterprise_tel,
             idcard_blame_no: this.enterpriseData.enterprise_IDNo,
 
-            company_id: this.props.qiye_id,
             idcard_no: this.enterpriseData.zhuceren_IDNo,
             real_name: this.enterpriseData.zhuceren_name,
 
