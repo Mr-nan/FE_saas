@@ -37,6 +37,8 @@ import IndexAccountmanageScene from '../guangfa_account/count_detail/IndexAccoun
 import SelectCountCompany from '../guangfa_account/open_count/SelectCountCompany';
 import SelectCountPersonal from '../guangfa_account/open_count/SelectCountPersonal';
 import WattingTenScendsScene from '../guangfa_account/count_detail/WattingTenScendsScene';
+import NoAccountScene from "../guangfa_account/count_detail/NoAccountScene";
+import AuthenticatePublicScene from "../guangfa_account/count_detail/AuthenticatePublicScene";
 const Pixel = new PixelUtil();
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
@@ -76,8 +78,8 @@ export default class MyAccountItem extends BaseComponent {
             switch (state) {
                 case 0:
                     if(iscompany){
-                        this.navigatorParams.name = 'WattingTenScendsScene';
-                        this.navigatorParams.component = WattingTenScendsScene;
+                        this.navigatorParams.name = 'SelectCountCompany';
+                        this.navigatorParams.component = SelectCountCompany;
                         this.navigatorParams.params = {
                             callBack:() =>{
                                 this.props.callBack();
@@ -92,6 +94,35 @@ export default class MyAccountItem extends BaseComponent {
                             }
                         };
                     }
+                    break;
+                case 3:
+                    this.navigatorParams.name = 'IndexAccountmanageScene';
+                    this.navigatorParams.component = IndexAccountmanageScene;
+                    this.navigatorParams.params = {
+                        callBack:() =>{
+                            this.props.callBack();
+                        }
+                    };
+                    break;
+                case 4:
+                    if(iscompany){
+                        this.navigatorParams.name = 'NoAccountScene';
+                        this.navigatorParams.component = NoAccountScene;
+                        this.navigatorParams.params = {
+                            callBack:() =>{
+                                this.props.callBack();
+                            }
+                        };
+                    }
+                    break;
+                case 5:
+                    this.navigatorParams.name = 'AuthenticatePublicScene';
+                    this.navigatorParams.component = AuthenticatePublicScene;
+                    this.navigatorParams.params = {
+                        callBack:() =>{
+                            this.props.callBack();
+                        }
+                    };
                     break;
 
                 default:

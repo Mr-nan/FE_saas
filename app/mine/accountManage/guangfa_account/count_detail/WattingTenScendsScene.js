@@ -71,26 +71,43 @@ export default class WattingTenScendsScene extends BaseComponent{
         let maps = {
             bank_id:'gfyh',
             enter_base_id:userData.company_base_id,
-          //  serial_no:this.props.serial_no
-            serial_no:'UA0021201810251638553260000051051'
+            serial_no:this.props.serial_no
+            //serial_no:'UA0021201810251638553260000051051'
         }
         request(Urls.ZS_FETCH_STATUS,'Post',maps)
             .then((response)=>{
                 let da = response.mjson.data;
-                this.toNextPage({
-                    name:'NoAccountScene',
-                    component:NoAccountScene,
-                    params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
-                })
+                if(this.props.flag == '0'){
+                    this.toNextPage({
+                        name:'NoAccountScene',
+                        component:NoAccountScene,
+                        params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
+                    })
+                }else if(this.props.flag == '1'){
+                    this.toNextPage({
+                        name:'SmallAmountBankStatusScene',
+                        component:SmallAmountBankStatusScene,
+                        params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
+                    })
+                }
+
                 this.stopTime();
 
             },(error)=>{
                 if(this.state.time == 1){
-                    this.toNextPage({
-                        name:'NoAccountScene',
-                        component:NoAccountScene,
-                        params:{callback:()=>{this.props.callback()},status:0,title:'账户首页'}
-                    })
+                    if(this.props.flag == '0'){
+                        this.toNextPage({
+                            name:'NoAccountScene',
+                            component:NoAccountScene,
+                            params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
+                        })
+                    }else if(this.props.flag == '1'){
+                        this.toNextPage({
+                            name:'SmallAmountBankStatusScene',
+                            component:SmallAmountBankStatusScene,
+                            params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
+                        })
+                    }
                 }
             })
 

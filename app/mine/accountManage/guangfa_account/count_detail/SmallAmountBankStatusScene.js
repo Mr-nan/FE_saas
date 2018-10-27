@@ -30,7 +30,7 @@ import IndexAccountmanageScene from "./IndexAccountmanageScene";
 import {request} from "../../../../utils/RequestUtil";
 import * as Urls from "../../../../constant/appUrls";
 
-export default class NoAccountScene extends BaseComponent{
+export default class SmallAmountBankStatusScene extends BaseComponent{
     constructor(props) {
         super(props);
         this.state = {
@@ -73,7 +73,7 @@ export default class NoAccountScene extends BaseComponent{
         return(
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
                 <StatusBar barStyle='dark-content'/>
-                <NavigationView backIconClick={this.backToTop} title={this.props.title}
+                <NavigationView backIconClick={this.backPage} title={this.props.title}
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <Image style={{marginTop: Pixel.getPixel(116)}} source={this.tu}/>
                 <View style={{marginTop:Pixel.getPixel(8),alignItems:'center',height:Pixel.getPixel(80)}}>
@@ -96,44 +96,16 @@ export default class NoAccountScene extends BaseComponent{
     }
 
     next =()=>{
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1) {
-                let datas = JSON.parse(data.result);
-                let iscompany = true;
-                if (datas.role_type instanceof Array) {
-                    for (let item of datas.role_type) {
-                        if (item == 19) {
-                            iscompany = false;
-                            break;
-                        }
-                    }
-                }
-                this.to(iscompany);
+        this.toNextPage({
+            name:'IndexAccountmanageScene',
+            component:IndexAccountmanageScene,
+            params:{
+                callback:()=>{this.props.callback()},
             }
         })
 
     }
 
-    to = (iscompany) =>{
-        if(iscompany){
-            this.toNextPage({
-                name:'SmallAmountofPawerScene',
-                component:SmallAmountofPawerScene,
-                params:{
-                    callback:()=>{this.props.callback()},
-                }
-            })
-
-        }else{
-            this.toNextPage({
-                name:'IndexAccountmanageScene',
-                component:IndexAccountmanageScene,
-                params:{
-                    callback:()=>{this.props.callback()},
-                }
-            })
-        }
-    }
 
 
 }

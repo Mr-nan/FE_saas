@@ -25,27 +25,34 @@ const {width,height} = Dimensions.get('window');
 import NavigationView from "../../../../component/AllNavigationView";
 import SubmitComponent from "../component/SubmitComponent";
 import AuthenticateCardComponent from '../component/AuthenticateCardComponent';
+import {request} from "../../../../utils/RequestUtil";
+import * as Urls from "../../../../constant/appUrls";
+import GFBankWebScene from "../open_count/GFBankWebScene";
+import StorageUtil from "../../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 
 export default class AuthenticatePublicScene extends BaseComponent{
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.sData ={
+            reback_url:'123456'
+        }
         this.state = {
             renderPlaceholderOnly:'blank',
-            dataSource:ds.cloneWithRows(['row 1', 'row 2'])
+            dataSource:ds.cloneWithRows(this.props.data)
         }
     }
 
     initFinish(){
         this.setState({
             renderPlaceholderOnly:'success',
-            dataSource:this.props.data,
         })
     }
 
     render(){
         if(this.state.renderPlaceholderOnly !== 'success'){
-           return this.renderPlaceholderView;
+           return this.renderPlaceholderView();
         }
         return (
             <View style={{height:height,width:width,backgroundColor:fontAndColor.COLORA3}}>
@@ -57,11 +64,45 @@ export default class AuthenticatePublicScene extends BaseComponent{
         )
     }
 
-    renderRow = (rowData,rowID) =>{
+    renderRow = (rowData,sectionID,rowID) =>{
         return(
-            <AuthenticateCardComponent data = {rowData}/>
+            <View>
+                {rowID == 0 ? <AuthenticateCardComponent data = {rowData} id ={rowID} btn={()=>{this.next(rowID)}}/>:
+                    <AuthenticateCardComponent btn={()=>{this.next(rowID)}} data = {rowData} id ={rowID} wrapStyle={{marginTop: Pixel.getPixel(10),backgroundColor:'red'}}/>
+                }
+            </View>
+
             )
 
+     }
+
+     next = (rowID) => {
+        console.log('rowID',rowID);
+         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(da) => {
+             if(da.code == 1 && da.result != null){
+                 let datas = JSON.parse(da.result);
+                 let maps ={
+                     amount:'5',
+                     bind_bank_card_no_id:this.props.data[rowID].id,
+                     reback_url:this.sData.reback_url,
+                     enter_base_id:datas.company_base_id,
+                 }
+                 request(Urls.ACTIVE_BANK_CARD_HTML, 'Post', maps)
+                     .then((response)=> {
+                         let da = response.mjson;
+                         this.toNextPage({
+                             name:'GFBankWebScene',
+                             component:GFBankWebScene,
+                             params:{
+                             callback:()=>{this.props.callback()},uri:da.data.url_wap,pa:da.data.params,sign:da.data.sign,
+                             reback_url:this.sData.reback_url,serial_no:da.data.serial_no,flag:'1'
+                             }
+                         })
+                     },(error)=>{
+                         this.props.showToast(error.mjson.msg);
+                     })
+             }
+         })
      }
 
     renderPlaceholderView = () => {
@@ -75,5 +116,4 @@ export default class AuthenticatePublicScene extends BaseComponent{
         )
 
     }
-
 }

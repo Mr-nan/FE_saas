@@ -68,7 +68,7 @@ export default class SmallAmountofPawerScene extends BaseComponent{
                 let datas = JSON.parse(data.result);
                 let maps = {
                     bank_id:'gfyh',
-                    enter_base_id:datas.company_base_id
+                    enter_base_id:10108
 
                 }
                 request(Urls.GET_BANK_CARD_LIST, 'Post', maps)

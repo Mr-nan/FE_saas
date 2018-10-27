@@ -575,6 +575,14 @@ export const USER_OPEN_GUANGFA_ACCOUNT_COMPANY = BASEURL +'v2/account.Open/orgAc
 export const GET_BANK_CARD_LIST = BASEURL +'v1/account.Bankinfo/getBankCardList';
 
 /**
+ * from marongting
+ *
+ * 申请小额鉴权
+ *
+ * */
+export const ACTIVE_BANK_CARD_HTML = BASEURL+'v2/account.Manage/activeBankCardHtml';
+
+/**
  * from @zhaojian
  *
  * 修改企业账户
