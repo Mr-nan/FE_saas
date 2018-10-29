@@ -200,7 +200,7 @@ export default class IndexAccountmanageScene extends BaseComponent{
             name:'AccountSettingScene',
             component:AccountSettingScene,
             params:{
-
+                 account:this.state.accountData
             }});
     }
     // 银行卡列表
@@ -209,7 +209,6 @@ export default class IndexAccountmanageScene extends BaseComponent{
             name:'BankcardScene',
             component:BankcardScene,
             params:{
-                account:this.state.accountData,
             }});
     }
 
