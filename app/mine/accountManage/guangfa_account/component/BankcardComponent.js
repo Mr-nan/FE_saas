@@ -33,6 +33,7 @@ export default class BankcardComponent extends BaseComponent{
     render(){
         let  {data} = this.props;
         return(
+
             <Image source={require('../../../../../images/mine/guangfa_account/ka-hong.png')} style={{marginTop:Pixel.getPixel(10)}}>
                 <View style={{flexDirection:'row'}}>
                     <Image source={require('../../../../../images/mine/guangfa_account/gs.png')} style={{marginLeft: Pixel.getPixel(19),marginTop:Pixel.getPixel(26),width:Pixel.getPixel(28),height:Pixel.getPixel(28)}}/>
@@ -61,7 +62,6 @@ export default class BankcardComponent extends BaseComponent{
 
                         </View>
                     </View>
-
                 </View>
             </Image>
         )

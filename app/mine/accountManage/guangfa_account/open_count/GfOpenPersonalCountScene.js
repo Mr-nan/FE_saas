@@ -32,6 +32,7 @@ import {request} from "../../../../utils/RequestUtil";
 import * as Urls from "../../../../constant/appUrls";
 import GFBankWebScene from "./GFBankWebScene";
 import SelectBankScene from "../../SelectBankScene";
+import IndexAccountmanageScene from "../count_detail/IndexAccountmanageScene";
 
 export default class GfOpenPersonalCountScene extends BaseComponent{
     constructor(props) {
@@ -194,8 +195,17 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
                 this.toNextPage({
                     name:'GFBankWebScene',
                     component:GFBankWebScene,
-                    params:{callback:()=>{this.props.callback()},uri:da.data.url_wap,pa:da.data.params,
-                        sign:da.data.sign,reback_url:this.sData.reback_url,serial_no:da.data.serial_no}
+                    params:{
+                        callback:()=>{this.props.callback()},
+                        uri:da.data.url_wap,pa:da.data.params,
+                        sign:da.data.sign,
+                        reback_url:this.sData.reback_url,
+                        serial_no:da.data.serial_no,
+                        toNextPageData:{
+                            name:'IndexAccountmanageScene',
+                            component:IndexAccountmanageScene,
+                            params:{}}
+                    }
                 },(error)=>{
                     this.props.showToast(error.mjson.msg);
                 })

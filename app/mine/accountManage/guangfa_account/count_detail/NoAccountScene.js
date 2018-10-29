@@ -33,16 +33,12 @@ import * as Urls from "../../../../constant/appUrls";
 export default class NoAccountScene extends BaseComponent{
     constructor(props) {
         super(props);
-        this.state = {
-            renderPlaceholderOnly:'blank'
-        }
+
     }
 
     initFinish(){
         this.data(this.props.status);
-        this.setState({
-            renderPlaceholderOnly:'success'
-        })
+
     }
 
     data = (state) =>{
@@ -67,13 +63,11 @@ export default class NoAccountScene extends BaseComponent{
 
 
     render(){
-        if(this.state.renderPlaceholderOnly !== 'success'){
-            return this.renderPlaceholderView();
-        }
+
         return(
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
                 <StatusBar barStyle='dark-content'/>
-                <NavigationView backIconClick={this.backToTop} title={this.props.title}
+                <NavigationView backIconClick={()=>{this.next()}} title={this.props.title}
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <Image style={{marginTop: Pixel.getPixel(116)}} source={this.tu}/>
                 <View style={{marginTop:Pixel.getPixel(8),alignItems:'center',height:Pixel.getPixel(80)}}>
@@ -83,57 +77,22 @@ export default class NoAccountScene extends BaseComponent{
                     <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(14),marginTop:Pixel.getPixel(25),height:Pixel.getPixel(100),lineHeight:Pixel.getPixel(20),textAlign:'center'}}>{this.text}</Text>
                 </View>
                 {this.props.status != 0 ?  <SubmitComponent btn = {()=>{this.next()}} title='确定' warpStyle={{width:Pixel.getPixel(320),height:Pixel.getPixel(44),marginLeft: 0,marginTop:Pixel.getPixel(7)}}/> :null }
-
             </View>
         )
     }
 
-    renderPlaceholderView = () => {
-        return(
-            this.loadView()
-        )
 
-    }
 
     next =()=>{
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1) {
-                let datas = JSON.parse(data.result);
-                let iscompany = true;
-                if (datas.role_type instanceof Array) {
-                    for (let item of datas.role_type) {
-                        if (item == 19) {
-                            iscompany = false;
-                            break;
-                        }
-                    }
-                }
-                this.to(iscompany);
-            }
-        })
 
-    }
-
-    to = (iscompany) =>{
-        if(iscompany){
-            this.toNextPage({
-                name:'SmallAmountofPawerScene',
-                component:SmallAmountofPawerScene,
-                params:{
-                    callback:()=>{this.props.callback()},
-                }
-            })
-
-        }else{
-            this.toNextPage({
-                name:'IndexAccountmanageScene',
-                component:IndexAccountmanageScene,
-                params:{
-                    callback:()=>{this.props.callback()},
-                }
-            })
+        if(this.props.toNextPageData){
+            this.toNextPage(this.props.toNextPageData);
+        }else {
+             this.backToTop();
         }
+
     }
+
 
 
 }

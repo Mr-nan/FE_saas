@@ -21,10 +21,8 @@ const {width,height} = Dimensions.get('window');
 import *as fontAndColor from '../../../../constant/fontAndColor';
 import PixelUtil from '../../../../utils/PixelUtil';
 const Pixel = new PixelUtil;
-import * as fontColor from '../../../../constant/fontAndColor';
 import BaseComponent from '../../../../component/BaseComponent';
 import NavigationView from '../../../../component/AllNavigationView';
-import GfOpenPersonalCountScene from './GfOpenPersonalCountScene';
 import WattingTenScendsScene from '../count_detail/WattingTenScendsScene';
 
 export default class GFBankWebScene extends BaseComponent{
@@ -85,7 +83,11 @@ export default class GFBankWebScene extends BaseComponent{
                 this.toNextPage({
                     name:'WattingTenScendsScene',
                     component:WattingTenScendsScene,
-                    params:{callback:()=>{this.props.callback()},serial_no:this.props.serial_no,flag:this.props.flag}
+                    params:{
+                        callback:()=>{this.props.callback()},
+                        serial_no:this.props.serial_no,
+                        toNextPageData:this.props.toNextPageData,
+                    }
                 })
             }
 

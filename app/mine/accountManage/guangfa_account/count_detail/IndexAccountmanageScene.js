@@ -141,7 +141,7 @@ export default class IndexAccountmanageScene extends BaseComponent{
                                              refreshControl={
                                                  <RefreshControl
                                                      refreshing={this.state.isRefreshing}
-                                                     onRefresh={()=>{ this.state.isRefreshing && this.refreshData()}}
+                                                     onRefresh={()=>{ this.refreshData()}}
                                                      tintColor={[fontAndColor.COLORB0]}
                                                      colors={[fontAndColor.COLORB0]}
                                                  />
@@ -151,7 +151,15 @@ export default class IndexAccountmanageScene extends BaseComponent{
                                     </View>
                                     <View style={{backgroundColor:'#ffffff',width:width}}>
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/yinghangka.png')} title="银行卡" isShowBottomLin={true} click={()=>{this.bankList()}}/>
+<<<<<<< HEAD
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/jianquan.png')} title="小额鉴权" isShowBottomLin={true} click={()=>{this.small()}}/>
+=======
+                                        {
+                                            this.state.accountData.account_open_type==2&&(
+                                                    <CellItem imageData={require('../../../../../images/mine/guangfa_account/jianquan.png')} title="小额鉴权" isShowBottomLin={true} click={()=>{this.clickSender()}}/>
+                                            )
+                                        }
+>>>>>>> b5752d20794e50b5d68c50fc0e4ccaf950e65c38
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/jiaoyimingxi.png')} title="交易明细查询" isShowBottomLin={false} click={()=>{this.priceDetailAction()}}/>
                                     </View>
                                     <View style={{backgroundColor:'#ffffff',width:width,marginTop:Pixel.getPixel(10)}}>
@@ -242,7 +250,7 @@ export default class IndexAccountmanageScene extends BaseComponent{
             name:'WithdrawDepositScene',
             component:WithdrawDepositScene,
             params:{
-
+                account:this.state.accountData,
             }});
     }
     //修改密码
@@ -267,7 +275,6 @@ export default class IndexAccountmanageScene extends BaseComponent{
                             pa:da.data.params,
                             sign:da.data.sign,
                             reback_url:'restPassword',
-                            noPushPage:true,
                         }});
                 }else {
                     this.props.showToast(response.mjson.msg);
@@ -314,7 +321,6 @@ export default class IndexAccountmanageScene extends BaseComponent{
                             pa:da.data.params,
                             sign:da.data.sign,
                             reback_url:'cancelAccount',
-                            noPushPage:true,
                         }});
                 }else {
                     this.props.showToast(response.mjson.msg);
