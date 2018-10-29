@@ -129,11 +129,18 @@ export default class BaseComponent extends Component {
         }
         const navi = this.props.navigator;
         let route = navi.getCurrentRoutes();
+        let  isRoot = true;
         for(let i = 0; i<route.length; i++){
+            console.log('route',route[i].name);
             if (route[i].name === routeName){
+                isRoot = false;
                 navi.popToRoute(route[i])
                 break;
             }
+        }
+
+        if(isRoot){
+            this.backToTop();
         }
     }
 

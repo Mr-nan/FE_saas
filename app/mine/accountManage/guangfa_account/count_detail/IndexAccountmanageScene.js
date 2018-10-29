@@ -148,7 +148,7 @@ export default class IndexAccountmanageScene extends BaseComponent{
                                     <View style={{backgroundColor:'#ffffff',width:width}}>
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/yinghangka.png')} title="银行卡" isShowBottomLin={true} click={()=>{this.bankList()}}/>
                                         {
-                                            this.state.accountData.account_open_type==2&&(
+                                            this.state.accountData.account_open_type==1&&(
                                                     <CellItem imageData={require('../../../../../images/mine/guangfa_account/jianquan.png')} title="小额鉴权" isShowBottomLin={true} click={()=>{this.clickSender()}}/>
                                             )
                                         }
@@ -229,16 +229,16 @@ export default class IndexAccountmanageScene extends BaseComponent{
             .then((response)=> {
                 this.props.showModal(false);
                 let da = response.mjson;
-
                 if(response.mjson.code==1){
                     this.toNextPage({
                         name:'GFBankWebScene',
                         component:GFBankWebScene,
                         params:{
                             callback:()=>{this.props.callback()},
-                            uri:da.data.url,
+                            uri:da.data.url_wap,
                             pa:da.data.params,
                             sign:da.data.sign,
+                            serial_no:da.data.serial_no,
                             reback_url:'restPassword',
                         }});
                 }else {
@@ -285,6 +285,7 @@ export default class IndexAccountmanageScene extends BaseComponent{
                             uri:da.data.url_wap,
                             pa:da.data.params,
                             sign:da.data.sign,
+                            serial_no:da.data.serial_no,
                             reback_url:'cancelAccount',
                         }});
                 }else {
@@ -298,6 +299,9 @@ export default class IndexAccountmanageScene extends BaseComponent{
 
     }
 
+    backPage=()=>{
+        this.backToRoute('MyAccountScene');
+    }
 
 }
 
