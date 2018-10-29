@@ -90,7 +90,7 @@ export default class WattingTenScendsScene extends BaseComponent{
                         this.toNextPage({
                             name:'NoAccountScene',
                             component:NoAccountScene,
-                            params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
+                            params:{callback:()=>{this.props.callback()},status:0,title:'账户首页'}
                         })
 
                 }
@@ -106,7 +106,7 @@ export default class WattingTenScendsScene extends BaseComponent{
 
     render(){
             return(
-            <Image source={require('../../../../../images/mine/guangfa_account/dengdai-bg.png')} style={{flex:1,alignItems:'center'}}>
+            <Image source={require('../../../../../images/mine/guangfa_account/dengdai-bg.png')} style={{alignItems:'center',width:width,height:height}}>
                 <StatusBar barStyle='light-content'/>
                 <NavigationView title='账户首页'
                                 wrapStyle={{backgroundColor:'transparent'}} titleStyle={{color:'#ffffff'}}/>

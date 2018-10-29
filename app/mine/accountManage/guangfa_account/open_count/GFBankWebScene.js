@@ -24,6 +24,8 @@ const Pixel = new PixelUtil;
 import BaseComponent from '../../../../component/BaseComponent';
 import NavigationView from '../../../../component/AllNavigationView';
 import WattingTenScendsScene from '../count_detail/WattingTenScendsScene';
+import WebViewTitle from '../../../../mine/accountManage/component/WebViewTitle';
+
 
 export default class GFBankWebScene extends BaseComponent{
     constructor(props) {
@@ -34,16 +36,19 @@ export default class GFBankWebScene extends BaseComponent{
 
     render() {
         return (
-            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3,paddingTop:Pixel.getTitlePixel(64)}}>
-            <WebView style={{flex:1}}
-                     scalesPageToFit={true}
-                     bounces={false}
-                     onNavigationStateChange={(navState) =>{
+            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3}}>
+                <WebViewTitle ref="webviewtitle"/>
+                <WebView style={{flex:1}}
+                         scalesPageToFit={true}
+                         bounces={false}
+                         onLoadStart={() => {this.refs.webviewtitle.firstProgress();}}
+                         onLoadEnd={() => {this.refs.webviewtitle.lastProgress();}}
+                         onNavigationStateChange={(navState) =>{
                          console.log('navState',navState);
                          console.log('navState.url',navState.url);
                          this.go(navState);
                      }}
-                     source={{html:`<!DOCTYPE html>
+                         source={{html:`<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

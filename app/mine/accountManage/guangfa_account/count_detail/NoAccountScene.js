@@ -23,12 +23,7 @@ const Pixel = new PixelUtil();
 const {width,height} = Dimensions.get('window');
 import NavigationView from "../../../../component/AllNavigationView";
 import SubmitComponent from '../component/SubmitComponent';
-import SmallAmountofPawerScene from '../count_detail/SmallAmountofPawerScene';
-import StorageUtil from "../../../../utils/StorageUtil";
-import * as StorageKeyNames from "../../../../constant/storageKeyNames";
-import IndexAccountmanageScene from "./IndexAccountmanageScene";
-import {request} from "../../../../utils/RequestUtil";
-import * as Urls from "../../../../constant/appUrls";
+
 
 export default class NoAccountScene extends BaseComponent{
     constructor(props) {
@@ -67,7 +62,7 @@ export default class NoAccountScene extends BaseComponent{
         return(
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
                 <StatusBar barStyle='dark-content'/>
-                <NavigationView backIconClick={()=>{this.next()}} title={this.props.title}
+                <NavigationView backIconClick={()=>{this.backToTop()}} title={this.props.title}
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <Image style={{marginTop: Pixel.getPixel(116)}} source={this.tu}/>
                 <View style={{marginTop:Pixel.getPixel(8),alignItems:'center',height:Pixel.getPixel(80)}}>
@@ -91,6 +86,10 @@ export default class NoAccountScene extends BaseComponent{
              this.backToTop();
         }
 
+    }
+
+    handleBack=()=>{
+        this.backToTop();
     }
 
 
