@@ -44,9 +44,9 @@ export default class BankcardComponent extends BaseComponent{
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(18),lineHeight:Pixel.getPixel(23),marginTop:Pixel.getPixel(5)}}>{data.bank_card_no}</Text>
                         </View>
                         <View style={{flexDirection:'column',alignItems:'flex-end'}}>
-                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>{this.statusType(data.statusat)}</Text>
+                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>{this.statusType(data.status)}</Text>
                             {
-                                data.statusat!=4 && (
+                                (data.status!=4  && data.status == 3)&& (
                                     <TouchableOpacity style={{
                                         width:Pixel.getPixel(43),height:Pixel.getPixel(21),
                                         borderRadius:Pixel.getPixel(25),
@@ -125,9 +125,8 @@ export default class BankcardComponent extends BaseComponent{
                 return '银行处理中'
                 break;
             case 2:
-                return '银行处理中'
+                return '待小额鉴权'
                 break;
-
             default:
                 return ''
                 break;
