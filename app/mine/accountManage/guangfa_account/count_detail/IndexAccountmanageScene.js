@@ -30,6 +30,10 @@ import GFBankWebScene from "../open_count/GFBankWebScene";
 import Log from "../../xintuo/accountLog/Log";
 import WithdrawDepositScene from "./WithdrawDepositScene";
 import BankcardScene from "./BankcardScene";
+import AuthenticatePublicScene from "./AuthenticatePublicScene";
+import AlertPhoneNumberScene from "./AlertPhoneNumberScene";
+import GFRechargeScene from "./GFRechargeScene";
+import AccountSettingScene from "./AccountSettingScene";
 
 export default class IndexAccountmanageScene extends BaseComponent{
     constructor(props) {
@@ -147,15 +151,15 @@ export default class IndexAccountmanageScene extends BaseComponent{
                                     </View>
                                     <View style={{backgroundColor:'#ffffff',width:width}}>
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/yinghangka.png')} title="银行卡" isShowBottomLin={true} click={()=>{this.bankList()}}/>
-                                        <CellItem imageData={require('../../../../../images/mine/guangfa_account/jianquan.png')} title="小额鉴权" isShowBottomLin={true} click={()=>{this.clickSender()}}/>
+                                        <CellItem imageData={require('../../../../../images/mine/guangfa_account/jianquan.png')} title="小额鉴权" isShowBottomLin={true} click={()=>{this.small()}}/>
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/jiaoyimingxi.png')} title="交易明细查询" isShowBottomLin={false} click={()=>{this.priceDetailAction()}}/>
                                     </View>
                                     <View style={{backgroundColor:'#ffffff',width:width,marginTop:Pixel.getPixel(10)}}>
-                                        <CellItem imageData={require('../../../../../images/mine/guangfa_account/shoujihao.png')} title="修改预留手机号" isShowBottomLin={true} click={()=>{this.clickSender()}}/>
+                                        <CellItem imageData={require('../../../../../images/mine/guangfa_account/shoujihao.png')} title="修改预留手机号" isShowBottomLin={true} click={()=>{this.editerPhone()}}/>
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/chongzhimima.png')} title="重置密码" isShowBottomLin={true} click={()=>{this.setPasswordAction()}}/>
                                     </View>
                                     <View style={{backgroundColor:'#ffffff',width:width,marginTop:Pixel.getPixel(10)}}>
-                                        <CellItem imageData={require('../../../../../images/mine/guangfa_account/shehzi.png')} title="账户设置" isShowBottomLin={true} click={()=>{this.clickSender()}}/>
+                                        <CellItem imageData={require('../../../../../images/mine/guangfa_account/shehzi.png')} title="账户设置" isShowBottomLin={true} click={()=>{this.accountSetting()}}/>
                                     </View>
                                 </ScrollView>
                                 <View style={{left:0,right:0,height:Pixel.getPixel(44),flexDirection:'row',bottom:Pixel.getBottomPixel(0),position: 'absolute'}}>
@@ -182,13 +186,16 @@ export default class IndexAccountmanageScene extends BaseComponent{
         );
     }
 
-    clickSender=(title)=>{
+    //账户设置
+    accountSetting = ()=>{
+        this.toNextPage({
+            name:'AccountSettingScene',
+            component:AccountSettingScene,
+            params:{
 
-        console.log(title);
-
+            }});
     }
-
-   // 银行卡列表
+    // 银行卡列表
     bankList=()=>{
         this.toNextPage({
             name:'BankcardScene',
@@ -198,9 +205,35 @@ export default class IndexAccountmanageScene extends BaseComponent{
             }});
     }
 
+    //小额鉴权
+    small = () =>{
+        this.toNextPage({
+            name:'AuthenticatePublicScene',
+            component:AuthenticatePublicScene,
+            params:{
+
+            }});
+    }
+    //修改预留手机号
+    editerPhone = ()=>{
+        this.toNextPage({
+            name:'AlertPhoneNumberScene',
+            component:AlertPhoneNumberScene,
+            params:{
+
+            }});
+    }
+
+
+
     // 充值
     payAction=()=>{
+        this.toNextPage({
+            name:'GFRechargeScene',
+            component:GFRechargeScene,
+            params:{
 
+            }});
     }
 
     // 提现
@@ -212,8 +245,6 @@ export default class IndexAccountmanageScene extends BaseComponent{
 
             }});
     }
-
-
     //修改密码
     setPasswordAction=()=>{
         this.props.showModal(true);

@@ -23,7 +23,7 @@ const Pixel = new PixelUtil();
 const {width,height} = Dimensions.get('window');
 import NavigationView from "../../../../component/AllNavigationView";
 
-export default class RechargeScene extends BaseComponent{
+export default class GFRechargeScene extends BaseComponent{
     constructor(props) {
         super(props);
         this.state = {
@@ -38,6 +38,9 @@ export default class RechargeScene extends BaseComponent{
     }
 
     render(){
+        if(this.state.renderPlaceholderOnly !== 'success'){
+            return this.renderPlaceholderView();
+        }
         return(
             <View style={{backgroundColor:fontAndColor.COLORA3,flex:1,alignItems:'center'}}>
                 <StatusBar barStyle='dark-content'/>
@@ -79,9 +82,17 @@ export default class RechargeScene extends BaseComponent{
             </View>
 
         )
+
+    }
+    renderPlaceholderView = () => {
+        return(
+            <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
+                <StatusBar barStyle='dark-content'/>
+                <NavigationView backIconClick={this.backPage} title='充值'
+                                wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
+                {this.loadView()}
+            </View>
+        )
     }
 
-    backPage = () => {
-        this.loadView();
-    }
 }

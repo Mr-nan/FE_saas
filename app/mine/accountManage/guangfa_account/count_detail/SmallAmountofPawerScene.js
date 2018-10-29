@@ -74,8 +74,12 @@ export default class SmallAmountofPawerScene extends BaseComponent{
 
     renderPlaceholderView = () => {
         return(
-            this.loadView()
-        )
-
+            <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
+                <StatusBar barStyle='dark-content'/>
+                <NavigationView backIconClick={this.backPage} title='账户管理'
+                                wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
+                {this.loadView()}
+            </View>
+                )
     }
 }
