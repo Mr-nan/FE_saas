@@ -26,6 +26,9 @@ import NavigationView from "../../../../component/AllNavigationView";
 import BankcardComponent from "../component/BankcardComponent";
 import {request} from "../../../../utils/RequestUtil";
 import * as Urls from '../../../../constant/appUrls';
+import StorageUtil from "../../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../../constant/storageKeyNames";
+import BindBankCardScene from "./BindBankCardScene";
 
 export default class BankCardScene extends BaseComponent{
     constructor(props) {
@@ -135,39 +138,61 @@ export default class BankCardScene extends BaseComponent{
     }
 
     addBankClick=()=>{
-        this.props.showModal(true);
-        request(Urls.GF_ADD_BANK, 'Post', {
-            enter_base_id:global.companyBaseID,
-            reback_url:'cancelAccount'
-
-        })
-            .then((response)=> {
-                this.props.showModal(false);
-                let da = response.mjson;
-
-                if(response.mjson.code==1){
-                    this.toNextPage({
-                        name:'GFBankWebScene',
-                        component:GFBankWebScene,
-                        params:{
-                            callback:()=>{this.props.callback()},
-                            uri:da.data.url_wap,
-                            pa:da.data.params,
-                            sign:da.data.sign,
-                            reback_url:'cancelAccount',
-                            noPushPage:true,
-                        }});
-                }else {
-                    this.props.showToast(response.mjson.msg);
+        // this.props.showModal(true);
+        // request(Urls.GF_ADD_BANK, 'Post', {
+        //     enter_base_id:global.companyBaseID,
+        //     reback_url:'cancelAccount'
+        //
+        // })
+        //     .then((response)=> {
+        //         this.props.showModal(false);
+        //         let da = response.mjson;
+        //
+        //         if(response.mjson.code==1){
+        //             this.toNextPage({
+        //                 name:'GFBankWebScene',
+        //                 component:GFBankWebScene,
+        //                 params:{
+        //                     callback:()=>{this.props.callback()},
+        //                     uri:da.data.url_wap,
+        //                     pa:da.data.params,
+        //                     sign:da.data.sign,
+        //                     reback_url:'cancelAccount',
+        //                     noPushPage:true,
+        //                 }});
+        //         }else {
+        //             this.props.showToast(response.mjson.msg);
+        //         }
+        //
+        //     },(error)=>{
+        //         this.props.showModal(false);
+        //         this.props.showToast(error.mjson.msg);
+        //     });
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                this.iscompany = 1;
+                if (datas.role_type instanceof Array) {
+                    for (let item of datas.role_type) {
+                        if (item == 19) {
+                            this.iscompany = 2;
+                            break;
+                        }
+                    }
                 }
-
-            },(error)=>{
-                this.props.showModal(false);
-                this.props.showToast(error.mjson.msg);
-            });
+                this.toNextPage({
+                    name:'BindBankCardScene',
+                    component:BindBankCardScene,
+                    params:{
+                        callback:()=>{this.props.callback()},
+                        iscompany:this.iscompany,
+                        title:'添加银行卡',
+                        btnText:'确认提交'
+                    }
+                })
+            }
+        })
     }
-
-
 
 }
 

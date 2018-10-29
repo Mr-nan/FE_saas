@@ -73,7 +73,7 @@ export default class SmallAmountBankStatusScene extends BaseComponent{
         return(
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
                 <StatusBar barStyle='dark-content'/>
-                <NavigationView backIconClick={this.backPage} title={this.props.title}
+                <NavigationView backIconClick={this.backToTop} title={this.props.title}
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <Image style={{marginTop: Pixel.getPixel(116)}} source={this.tu}/>
                 <View style={{marginTop:Pixel.getPixel(8),alignItems:'center',height:Pixel.getPixel(80)}}>

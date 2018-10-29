@@ -41,8 +41,8 @@ export default class AccountSettingScene extends BaseComponent{
     }
 
     render(){
-        if(this.state.renderPlaceholderOnly != 'success'){
-            this.renderPlaceholderView;
+        if(this.state.renderPlaceholderOnly !== 'success'){
+            return this.renderPlaceholderView();
         }
         return(
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
@@ -73,9 +73,13 @@ export default class AccountSettingScene extends BaseComponent{
         )
     }
     renderPlaceholderView = () => {
-        this.loadView();
-    }
-    backPage = () => {
-        this.loadView();
+        return(
+            <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
+                <StatusBar barStyle='dark-content'/>
+                <NavigationView backIconClick={this.backPage} title='账户管理'
+                                wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
+                {this.loadView()}
+            </View>
+            )
     }
 }

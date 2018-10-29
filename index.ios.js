@@ -14,7 +14,7 @@ import GfOpenCompanyCountScene from './app/mine/accountManage/guangfa_account/op
 import ACCountManageScene from './app/mine/accountManage/guangfa_account/count_detail/ACCountManageScene';
 import AuthenticatePublicScene from './app/mine/accountManage/guangfa_account/count_detail/AuthenticatePublicScene';
 import IndexAccountmanageScene from './app/mine/accountManage/guangfa_account/count_detail/IndexAccountmanageScene';
-import RechargeScene from './app/mine/accountManage/guangfa_account/count_detail/RechargeScene';
+import GFRechargeScene from './app/mine/accountManage/guangfa_account/count_detail/GFRechargeScene';
 import WithDrawDepositTipComponent from './app/mine/accountManage/guangfa_account/component/WithDrawDepositTipComponent'
 import BankCardScene from './app/mine/accountManage/guangfa_account/count_detail/BankcardScene';
 import AddBankcardMessageComponent from './app/mine/accountManage/guangfa_account/component/AddBankcardMessageComponent';

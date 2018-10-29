@@ -109,7 +109,6 @@ export default class AuthenticatePublicScene extends BaseComponent{
              if(da.code == 1 && da.result != null){
                  let datas = JSON.parse(da.result);
                  let maps ={
-                     amount:'5',
                      bind_bank_card_no_id:this.data[rowID].id,
                      reback_url:this.sData.reback_url,
                      enter_base_id:datas.company_base_id,
