@@ -14,20 +14,19 @@ import {
     ScrollView,
     Button, StatusBar
 } from "react-native";
-import BaseComponent from "../../../../component/BaseComponent";
 import * as FontAndColor from "../../../../constant/fontAndColor";
 import PixelUtil from "../../../../utils/PixelUtil";
 const Pixel = new PixelUtil();
 import MyButton from "../../../../component/MyButton";
 import {request} from "../../../../utils/RequestUtil";
-import * as AppUrls from "../../../../constant/appUrls";
-import StorageUtil from "../../../../utils/StorageUtil";
-import * as StorageKeyNames from "../../../../constant/storageKeyNames";
+import * as Urls from '../../../../constant/appUrls';
+
 import SText from '../../zheshangAccount/component/SaasText'
-import SmsFillScene from '../../zheshangAccount/depositAndWithdraw/SmsFillScene'
-import ResultIndicativeScene from '../../zheshangAccount/ResultIndicativeScene'
+
 import ZSBaseComponent from '../../zheshangAccount/component/ZSBaseComponent';
 import NavigationView from "../../../../component/AllNavigationView";
+import BankcardScene from "./BankcardScene";
+import GFBankWebScene from "../open_count/GFBankWebScene";
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -36,22 +35,61 @@ let Platform = require('Platform');
 
 export default class WithdrawDepositScene extends ZSBaseComponent {
     constructor(props) {
-        super(props)
+        super(props);
+
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly:'blank',
+            bankData:{}
         }
     }
 
-    initFinish() {
+    initFinish(){
         this.setState({
-            renderPlaceholderOnly: false,
-        })
+            renderPlaceholderOnly:'loading'
+        });
+        this.loadData();
     }
+    // enter_base_id:10108
+
+    loadData=()=>{
+        let maps = {
+            bank_id:'gfyh',
+            enter_base_id:global.companyBaseID,
+
+        }
+        request(Urls.GET_BANK_CARD_LIST, 'Post', maps)
+            .then((response)=> {
+
+                if(response.mjson.data.length>0){
+                    this.setState({
+                        renderPlaceholderOnly:'success',
+                        bankData:response.mjson.data[0],
+
+                    })
+                }else {
+                    this.setState({
+                        renderPlaceholderOnly:'error'
+                    })
+                    this.props.showToast('获取银行卡数据失败');
+                }
+
+
+            },(error)=>{
+                this.setState({
+                    renderPlaceholderOnly:'error'
+                })
+                this.props.showToast(error.mjson.msg);
+            });
+    }
+
     render() {
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly!='success') {
             return (
                 <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                     <StatusBar barStyle='dark-content'/>
+                    {
+                        this.loadView()
+                    }
                     <NavigationView backIconClick={()=>this.backPage} title='提现'
                                     wrapStyle={{backgroundColor:'white'}} titleStyle={{color:FontAndColor.COLORA0}}/>
                 </View>
@@ -74,20 +112,19 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                         paddingRight: Pixel.getPixel(15),
                         justifyContent:'space-between'
                     }}>
-                        <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity style={{flexDirection:'row'}} onPress={this.selectBank}>
                             <Image source={require('../../../../../images/mine/guangfa_account/gs.png')} style={{width:Pixel.getPixel(35),height:Pixel.getPixel(35)}}/>
                             <View style={{marginLeft: Pixel.getPixel(13)}}>
                                 <Text
-                                    style={{fontSize: Pixel.getFontPixel(15),color:FontAndColor.COLORA0}}>中国工商银行</Text>
+                                    style={{fontSize: Pixel.getFontPixel(15),color:FontAndColor.COLORA0}}>{this.state.bankData.sub_bank_name}</Text>
                                 <Text
-                                    style={{color: '#666666',fontSize: Pixel.getFontPixel(14),marginTop:4}}>6212 ***** 3456</Text>
+                                    style={{color: '#666666',fontSize: Pixel.getFontPixel(14),marginTop:4}}>{this.state.bankData.bank_card_no}</Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                         <View style={{flexDirection:'row'}}>
                             <Text style={{color:FontAndColor.COLORA1}}>更换银行</Text>
                             <Image style={{marginLeft:Pixel.getPixel(9)}} source={require('../../../../../images/mine/guangfa_account/xiangqing.png')}/>
                         </View>
-
                     </View>
 
                     <View style={{backgroundColor: 'white', marginTop: Pixel.getPixel(10)}}>
@@ -109,6 +146,7 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                                         }}
                                         keyboardType={'numeric'}
                                         underlineColorAndroid={"#00000000"}
+                                        onChangeText={(text)=>{this.money = text}}
                                     />
                                 </View>
                             </View>
@@ -121,6 +159,7 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                         content={'确认提现'}
                         parentStyle={styles.next_button_parent}
                         childStyle={{fontSize: 18, color: 'white'}}
+                        mOnPress={()=>{this.confirm()}}
                     />
 
                     <View style={{marginHorizontal: 30, marginVertical: 40}}>
@@ -128,7 +167,6 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                             color: FontAndColor.COLORA1,
                             lineHeight: 20
                         }}>银行受理及到账时间</SText>
-
                     </View>
 
                 </ScrollView>
@@ -137,6 +175,61 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
             </View>
 
         )
+    }
+
+
+    selectBank=()=>{
+        this.toNextPage({
+            name:'BankcardScene',
+            component:BankcardScene,
+            params:{
+                account:this.props.accountData,
+                selectBank:this.getBankData,
+            }});
+    }
+
+    getBankData =(bankData)=>{
+
+        console.log(bankData);
+        this.setState({
+            bankData:bankData,
+        })
+    }
+
+    confirm=()=>{
+        this.props.showModal(true);
+        let maps = {
+            bind_bank_card_no_id:this.state.bankData.id,
+            amount:this.money,
+            enter_base_id:global.companyBaseID,
+            reback_url:'withdraw'
+        }
+        request(Urls.GF_WITHDRAWA, 'Post', maps)
+            .then((response)=> {
+                this.props.showModal(false);
+
+                let  data = response.mjson.data;
+                if(response.mjson.code==1){
+                    this.toNextPage({
+                        name:'GFBankWebScene',
+                        component:GFBankWebScene,
+                        params:{
+                            callback:()=>{this.props.callback()},
+                            uri:data.url_wap,
+                            pa:data.params,
+                            sign:data.sign,
+                            reback_url:'withdraw',
+                            noPushPage:true,
+                        }});
+                }else {
+                    this.props.showToast(response.mjson.msg);
+
+                }
+
+            },(error)=>{
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.msg);
+            });
     }
 
 }

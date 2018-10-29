@@ -113,7 +113,7 @@ export default class BankCardScene extends BaseComponent{
 
 
     relieveClick=(bankData)=>{
-        
+
 
         this.props.showModal(true);
         request(Urls.GF_RELIEVE_BANK, 'Post', {

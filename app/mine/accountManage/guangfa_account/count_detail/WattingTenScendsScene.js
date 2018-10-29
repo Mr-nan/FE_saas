@@ -49,13 +49,9 @@ export default class WattingTenScendsScene extends BaseComponent{
                     time:this.state.time - 1
                 })
                 if(this.state.time % 3 == 1){
-                    StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data)=>{
-                        if(data.code == 1){
-                            let userData = JSON.parse(data.result);
-                            this.toSend(userData);
 
-                        }
-                    })
+                    this.toSend();
+
                 }
             }else{
                 this.stopTime();
@@ -68,10 +64,10 @@ export default class WattingTenScendsScene extends BaseComponent{
        clearInterval(this.myTime);
     }
 
-    toSend = (userData) => {
+    toSend = () => {
         let maps = {
             bank_id:'gfyh',
-            enter_base_id:userData.company_base_id,
+            enter_base_id:global.companyBaseID,
             serial_no:this.props.serial_no
             //serial_no:'UA0021201810251638553260000051051'
         }
@@ -123,7 +119,7 @@ export default class WattingTenScendsScene extends BaseComponent{
         return(
             <View style={{width:width,height:height,backgroundColor:fontAndColor.COLORA3}}>
                 <StatusBar barStyle='light-content'/>
-                <NavigationView backIconClick={this.backPage} title='账户首页'
+                <NavigationView  title='账户首页'
                                 wrapStyle={{backgroundColor:'transparent'}} titleStyle={{color:'#ffffff'}}/>
                 {this.loadView()}
             </View>
@@ -138,7 +134,7 @@ export default class WattingTenScendsScene extends BaseComponent{
             return(
             <Image source={require('../../../../../images/mine/guangfa_account/dengdai-bg.png')} style={{flex:1,alignItems:'center'}}>
                 <StatusBar barStyle='light-content'/>
-                <NavigationView backIconClick={this.backPage} title='账户首页'
+                <NavigationView title='账户首页'
                                 wrapStyle={{backgroundColor:'transparent'}} titleStyle={{color:'#ffffff'}}/>
                     <View style={{width:Pixel.getPixel(221),height:Pixel.getPixel(242),marginTop:Pixel.getPixel(113),alignItems:'center',justifyContent:'center'}}>
                         <Image source={require('../../../../../images/mine/guangfa_account/dongxiao1.png')} style={{alignItems:'center',justifyContent:'center'}}>

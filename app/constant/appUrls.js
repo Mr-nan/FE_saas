@@ -562,6 +562,13 @@ export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company
 export const GF_CANCEL_ACCOUNT = BASEURL + 'v2/account.Manage/cancelCgbAccount';
 
 /*
+ *
+ * from zhengnan
+ *
+ * 广发银行提现*/
+export const GF_WITHDRAWA = BASEURL + 'v2/account.Manage/appWithdrawalHtml';
+
+/*
 *
 * from zhengnan
 *
