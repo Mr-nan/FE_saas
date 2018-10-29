@@ -219,7 +219,6 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                             pa:data.params,
                             sign:data.sign,
                             reback_url:'withdraw',
-                            noPushPage:true,
                         }});
                 }else {
                     this.props.showToast(response.mjson.msg);

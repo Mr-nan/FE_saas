@@ -19,11 +19,10 @@ import {
 
 import *as fontAndColor from '../../../../constant/fontAndColor';
 import PixelUtil from '../../../../utils/PixelUtil';
-import BaseComponent from "../../../../component/BaseComponent";
 const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
 
-export default class SubmitComponent extends BaseComponent{
+export default class SubmitComponent extends Component{
     constructor(props) {
         super(props);
 

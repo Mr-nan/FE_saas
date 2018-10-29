@@ -69,42 +69,30 @@ export default class WattingTenScendsScene extends BaseComponent{
             bank_id:'gfyh',
             enter_base_id:global.companyBaseID,
             serial_no:this.props.serial_no
-            //serial_no:'UA0021201810251638553260000051051'
         }
         request(Urls.ZS_FETCH_STATUS,'Post',maps)
             .then((response)=>{
                 let da = response.mjson.data;
-                if(this.props.flag == '0'){
                     this.toNextPage({
                         name:'NoAccountScene',
                         component:NoAccountScene,
-                        params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
+                        params:{
+                            callback:()=>{this.props.callback()},
+                            status:da.transfer_status,
+                            title:'账户首页',
+                            toNextPageData:this.props.toNextPageData,
+                        }
                     })
-                }else if(this.props.flag == '1'){
-                    this.toNextPage({
-                        name:'SmallAmountBankStatusScene',
-                        component:SmallAmountBankStatusScene,
-                        params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
-                    })
-                }
-
                 this.stopTime();
 
             },(error)=>{
                 if(this.state.time == 1){
-                    if(this.props.flag == '0'){
                         this.toNextPage({
                             name:'NoAccountScene',
                             component:NoAccountScene,
                             params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
                         })
-                    }else if(this.props.flag == '1'){
-                        this.toNextPage({
-                            name:'SmallAmountBankStatusScene',
-                            component:SmallAmountBankStatusScene,
-                            params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
-                        })
-                    }
+
                 }
             })
 
@@ -115,22 +103,8 @@ export default class WattingTenScendsScene extends BaseComponent{
         })
     }
 
-    _renderPlaceholderView = () => {
-        return(
-            <View style={{width:width,height:height,backgroundColor:fontAndColor.COLORA3}}>
-                <StatusBar barStyle='light-content'/>
-                <NavigationView  title='账户首页'
-                                wrapStyle={{backgroundColor:'transparent'}} titleStyle={{color:'#ffffff'}}/>
-                {this.loadView()}
-            </View>
-            )
-
-    }
 
     render(){
-        if(this.state.renderPlaceholderOnly !== 'success') {
-            return this._renderPlaceholderView();
-        }
             return(
             <Image source={require('../../../../../images/mine/guangfa_account/dengdai-bg.png')} style={{flex:1,alignItems:'center'}}>
                 <StatusBar barStyle='light-content'/>

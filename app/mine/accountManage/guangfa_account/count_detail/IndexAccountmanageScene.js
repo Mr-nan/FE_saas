@@ -240,7 +240,6 @@ export default class IndexAccountmanageScene extends BaseComponent{
                             pa:da.data.params,
                             sign:da.data.sign,
                             reback_url:'restPassword',
-                            noPushPage:true,
                         }});
                 }else {
                     this.props.showToast(response.mjson.msg);
@@ -287,7 +286,6 @@ export default class IndexAccountmanageScene extends BaseComponent{
                             pa:da.data.params,
                             sign:da.data.sign,
                             reback_url:'cancelAccount',
-                            noPushPage:true,
                         }});
                 }else {
                     this.props.showToast(response.mjson.msg);

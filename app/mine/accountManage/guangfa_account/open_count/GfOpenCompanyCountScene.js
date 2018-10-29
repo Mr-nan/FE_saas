@@ -31,6 +31,7 @@ import {request} from "../../../../utils/RequestUtil";
 import * as Urls from "../../../../constant/appUrls";
 import GFBankWebScene from './GFBankWebScene';
 import SelectBankScene from "../../SelectBankScene";
+import SmallAmountofPawerScene from "../count_detail/SmallAmountofPawerScene";
 const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
 
@@ -357,8 +358,18 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                 this.toNextPage({
                     name:'GFBankWebScene',
                     component:GFBankWebScene,
-                    params:{callback:()=>{this.props.callback()},uri:da.data.url_wap,pa:da.data.params,sign:da.data.sign,
-                        reback_url:this.sData.reback_url,serial_no:da.data.serial_no,flag:'0'}
+                    params:{
+                        callback:()=>{this.props.callback()},
+                            uri:da.data.url_wap,
+                            pa:da.data.params,
+                            sign:da.data.sign,
+                            reback_url:this.sData.reback_url,
+                            serial_no:da.data.serial_no,
+                            toNextPageData:{
+                                name:'SmallAmountofPawerScene',
+                                component:SmallAmountofPawerScene,
+                                params:{}}
+                            }
                 })
             },(error)=>{
                 this.props.showToast(error.mjson.msg);
