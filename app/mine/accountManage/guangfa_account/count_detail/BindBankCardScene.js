@@ -215,7 +215,7 @@ export default class BindBankCardScene extends BaseComponent{
         if(this.sData.user_type == '2'){
             this.sData.mobile = this.refs.phone.getInputTextValue();
         }else{
-            this.sData.mobile = 'undefinend';
+            this.sData.mobile = '';
         }
         this.sData.bank_card_no  = this.refs.bank_count.getInputTextValue();
         if(this.sData.cust_name == ''){

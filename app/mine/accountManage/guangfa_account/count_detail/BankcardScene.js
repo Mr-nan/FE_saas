@@ -111,7 +111,17 @@ export default class BankCardScene extends BaseComponent{
 
     _renderRow=(rowData)=>{
         return(
-            <BankcardComponent data={rowData} relieveClick={(bankData)=>{this.relieveClick(bankData)}}/>
+            <BankcardComponent data={rowData} relieveClick={(bankData)=>{this.relieveClick(bankData)}} bankClick={(bankData)=>{
+               if(this.props.getBankData){
+                   if(bankData.status!=3){
+                       this.props.showToast('当前银行不可用!');
+                       return;
+                   }
+                   this.props.getBankData(bankData);
+                   this.backPage();
+               }
+
+            }}/>
         )
     }
 

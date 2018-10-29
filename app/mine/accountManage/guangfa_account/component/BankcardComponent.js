@@ -34,9 +34,8 @@ export default class BankcardComponent extends BaseComponent{
     render(){
         let  {data} = this.props;
         return(
-
             <Image source={this.bg} style={{marginTop:Pixel.getPixel(10)}}>
-                <View style={{flexDirection:'row'}}>
+                <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>{this.props.bankClick && this.props.bankClick(data)}} activeOpacity={1}>
                     <Image source={this.icon} style={{marginLeft: Pixel.getPixel(19),marginTop:Pixel.getPixel(26),width:Pixel.getPixel(28),height:Pixel.getPixel(28)}}/>
                     <View style={{flexDirection:'row',width:Pixel.getPixel(298),paddingLeft: Pixel.getPixel(16),paddingRight: Pixel.getPixel(10),justifyContent:'space-between',marginTop:Pixel.getPixel(17)}}>
                         <View style={{flexDirection:'column',justifyContent: 'center'}}>
@@ -63,13 +62,12 @@ export default class BankcardComponent extends BaseComponent{
 
                         </View>
                     </View>
-                </View>
+                </TouchableOpacity>
             </Image>
         )
     }
 
     getBankImage=(name)=>{
-
         if(name.indexOf('工商银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/gs.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-hong.png');
