@@ -225,7 +225,9 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                             uri:data.url_wap,
                             pa:data.params,
                             sign:data.sign,
+                            serial_no:data.serial_no,
                             reback_url:'withdraw',
+
                         }});
                 }else {
                     this.props.showToast(response.mjson.msg);
