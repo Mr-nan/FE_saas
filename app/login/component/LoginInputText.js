@@ -25,7 +25,7 @@ export default class LoginInputText extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            values: "",//输入框输入内容
+            values: this.props.exitValue,//输入框输入内容
             rightIconLodding: false,
         }
     }

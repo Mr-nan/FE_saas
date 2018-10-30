@@ -610,6 +610,24 @@ export const USER_OPEN_GUANGFA_ACCOUNT_COMPANY = BASEURL +'v2/account.Open/orgAc
  * from marongting
  *
  *
+ * 企业账户资料变更
+ *
+ * */
+
+export const GF_CHANGE_COMPANY = BASEURL+'v2/account.Manage/orgAccountInfoModify';
+
+/**
+ * from marongting
+ *
+ * 个人手机号变更
+ *
+ * */
+export const PERSONAL_CHANGE_PHONE = BASEURL + 'v2/account.Manage/changePersonMobile';
+
+/**
+ * from marongting
+ *
+ *
  * 获取银行卡列表信息*/
 export const GET_BANK_CARD_LIST = BASEURL +'v1/account.Bankinfo/getBankCardList';
 

@@ -24,6 +24,7 @@ import NoAccountScene from './app/mine/accountManage/guangfa_account/count_detai
 import WattingTenScendsScene from './app/mine/accountManage/guangfa_account/count_detail/WattingTenScendsScene'
 import WithdrawDepositScene from './app/mine/accountManage/guangfa_account/count_detail/WithdrawDepositScene';
 import SmallAmountofPawerScene from './app/mine/accountManage/guangfa_account/count_detail/SmallAmountofPawerScene';
+import AlertPhoneDeteilScene from "./app/mine/accountManage/guangfa_account/count_detail/AlertPhoneDeteilScene";
 AppRegistry.registerComponent('FE_Sass', () => Root);
 
 
