@@ -63,12 +63,12 @@ export default class AccountSettingScene extends BaseComponent{
             bank_id:'gfyh',
             child_type:'1'
         };
-        request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+        request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
             .then((response) => {
                 console.log('response',response);
                 this.setState({
                     renderPlaceholderOnly: 'success',
-                    accountData:response.mjson.data,
+                    accountData:response.mjson.data.gfyh[0],
                 });
             }, (error) => {
                 this.setState({
@@ -87,6 +87,7 @@ export default class AccountSettingScene extends BaseComponent{
                </View>
            )
         }
+        this.carID = this.state.accountData.bank_card_no && this.state.accountData.bank_card_no!= 0 ? this.state.accountData.bank_card_no.replace(/^(....).*(....)$/, "$1****$2"):'**** **** ****';
         return(
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
                 <StatusBar barStyle='light-content'/>
@@ -96,13 +97,13 @@ export default class AccountSettingScene extends BaseComponent{
                     <View style={{width:Pixel.getPixel(92),height:Pixel.getPixel(20),backgroundColor:'rgba(0,0,0,0.1)',borderRadius:Pixel.getPixel(13),alignItems:'center',justifyContent: 'center',marginTop: Pixel.getPixel(74)}}>
                         <Text style={{color:'#ffffff',fontSize:Pixel.getFontPixel(14),backgroundColor:'transparent'}}>资金账户ID号</Text>
                     </View>
-                    <Text style={{color:'#ffffff',fontSize:Pixel.getFontPixel(26),backgroundColor:'transparent',marginTop:Pixel.getPixel(8),fontWeight: 'bold'}}>{this.state.accountData.account.bank_card_no}</Text>
+                    <Text style={{color:'#ffffff',fontSize:Pixel.getFontPixel(26),backgroundColor:'transparent',marginTop:Pixel.getPixel(8),fontWeight: 'bold'}}>{this.carID}</Text>
                 </Image>
                 {this.props.account.account_open_type == '2' ?
                     (<View style={{width:Pixel.getPixel(345),height:Pixel.getPixel(191),backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
                         shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(26),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
                         <LoginInputText
-                            textPlaceholder={this.state.accountData.account.person_name}
+                            textPlaceholder={this.state.accountData.bank_card_name}
                             leftText = '姓名'
                             leftIcon={false}
                             import={false}
@@ -116,7 +117,7 @@ export default class AccountSettingScene extends BaseComponent{
                         shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(26),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
                         <LoginInputText
                             ref = 'companyName'
-                            textPlaceholder={this.state.accountData.account.bank_card_name}
+                            textPlaceholder={this.state.accountData.bank_card_name}
                             leftText = '企业名称'
                             leftIcon={false}
                             import={false}
@@ -126,7 +127,7 @@ export default class AccountSettingScene extends BaseComponent{
                             inputTextStyle = {{marginLeft:Pixel.getPixel(89),paddingLeft:0}}/>
                         <LoginInputText
                             ref = 'companyPhone'
-                            textPlaceholder={this.state.accountData.account.operate_mobile}
+                            textPlaceholder={this.state.accountData.enterprise_phone}
                             leftText = '企业固定电话'
                             leftIcon={false}
                             import={false}
@@ -136,7 +137,7 @@ export default class AccountSettingScene extends BaseComponent{
                             inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}/>
                         <LoginInputText
                             ref = 'corporation_name'
-                            textPlaceholder={this.state.accountData.account.legal_real_name}
+                            textPlaceholder={this.state.accountData.legal_real_name}
                             leftText = '法人代表姓名'
                             leftIcon={false}
                             import={false}
@@ -146,7 +147,7 @@ export default class AccountSettingScene extends BaseComponent{
                             inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}/>
                         <LoginInputText
                             ref='corporation_code'
-                            textPlaceholder={this.state.accountData.account.legal_cert_no}
+                            textPlaceholder={this.state.accountData.legal_cert_no}
                             leftText = '法人代表身份证号'
                             leftIcon={false}
                             import={false}
@@ -156,7 +157,7 @@ export default class AccountSettingScene extends BaseComponent{
                             inputTextStyle = {{marginLeft:Pixel.getPixel(33),paddingLeft:0}}/>
                         <LoginInputText
                             ref='contact_name'
-                            textPlaceholder={this.state.accountData.account.person_name}
+                            textPlaceholder={this.state.accountData.agent_name}
                             leftText = '联系人姓名'
                             leftIcon={false}
                             import={false}
@@ -166,7 +167,7 @@ export default class AccountSettingScene extends BaseComponent{
                             inputTextStyle = {{marginLeft:Pixel.getPixel(75),paddingLeft:0}}/>
                         <LoginInputText
                             ref='contact_code'
-                            textPlaceholder={'123'}
+                            textPlaceholder={this.state.accountData.agent_cert_no}
                             leftText = '联系人身份证号'
                             leftIcon={false}
                             import={false}
@@ -183,28 +184,31 @@ export default class AccountSettingScene extends BaseComponent{
     }
 
     nextCompany = ()=>{
-      //  this.SData.agent_cert_no = this.refs.contact_code.getInputTextValue();
-        this.SData.agent_cert_no = '1111'
-       this.SData.agent_mobile = this.state.accountData.person_mobile;
+        this.SData.agent_cert_no = this.refs.contact_code.getInputTextValue();
+       this.SData.agent_mobile = this.state.accountData.operate_mobile;
         this.SData.agent_name = this.refs.contact_name.getInputTextValue();
         this.SData.ent_name = this.refs.companyName.getInputTextValue();
         this.SData.ent_phone = this.refs.companyPhone.getInputTextValue();
         this.SData.legal_cert_no = this.refs.corporation_code.getInputTextValue();
         this.SData.legal_real_name = this.refs.corporation_name.getInputTextValue();
+
+        if(this.SData.agent_cert_no == ''){
+            this.SData.agent_cert_no = this.state.accountData.agent_cert_no;
+        }
         if(this.SData.agent_name == '') {
-            this.SData.agent_name = this.state.accountData.account.person_name;
+            this.SData.agent_name = this.state.accountData.agent_name;
         }
         if(this.SData.ent_name == '') {
-            this.SData.ent_name = this.state.accountData.account.bank_card_name;
+            this.SData.ent_name = this.state.accountData.bank_card_name;
         }
         if(this.SData.ent_phone == ''){
-            this.SData.ent_phone = this.state.accountData.account.operate_mobile;
+            this.SData.ent_phone = this.state.accountData.enterprise_phone;
         }
         if(this.SData.legal_cert_no == ''){
-            this.SData.legal_cert_no = this.state.accountData.account.legal_cert_no;
+            this.SData.legal_cert_no = this.state.accountData.legal_cert_no;
         }
         if(this.SData.legal_real_name == ''){
-            this.SData.legal_real_name = this.state.accountData.account.legal_real_name;
+            this.SData.legal_real_name = this.state.accountData.legal_real_name;
         }
         this.props.showModal(true);
         request(Urls.GF_CHANGE_COMPANY, 'Post', this.SData)

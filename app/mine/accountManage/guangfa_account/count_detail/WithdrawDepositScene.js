@@ -12,7 +12,9 @@ import {
     InteractionManager,
     TouchableWithoutFeedback,
     ScrollView,
-    Button, StatusBar
+    Button,
+    StatusBar,
+    Modal
 } from "react-native";
 import * as FontAndColor from "../../../../constant/fontAndColor";
 import PixelUtil from "../../../../utils/PixelUtil";
@@ -27,6 +29,7 @@ import ZSBaseComponent from '../../zheshangAccount/component/ZSBaseComponent';
 import NavigationView from "../../../../component/AllNavigationView";
 import BankcardScene from "./BankcardScene";
 import GFBankWebScene from "../open_count/GFBankWebScene";
+import SubmitComponent from "../component/SubmitComponent";
 
 let Dimensions = require('Dimensions');
 let {width, height} = Dimensions.get('window');
@@ -39,7 +42,11 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
 
         this.state = {
             renderPlaceholderOnly:'blank',
-            bankData:{}
+            bankData:{},
+            animationType:'none',
+            modalVisible:false,
+            transparent:true
+
         }
     }
 
@@ -47,11 +54,12 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
         this.setState({
             renderPlaceholderOnly:'loading'
         });
-        this.loadData();
+       this.loadData();
     }
     // enter_base_id:10108
 
     loadData=()=>{
+        console.log('11111');
         let maps = {
             bank_id:'gfyh',
             enter_base_id:global.companyBaseID,
@@ -90,6 +98,8 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
     }
 
     render() {
+
+        this.cardNO = this.state.bankData.bank_card_no && this.state.bankData.bank_card_no !=0 ? this.state.bankData.bank_card_no.replace(/^(....).*(....)$/, "$1****$2"):'**** **** ****';
         if (this.state.renderPlaceholderOnly!='success') {
             return (
                 <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
@@ -97,59 +107,64 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                     {
                         this.loadView()
                     }
-                    <NavigationView backIconClick={()=>this.backPage} title='提现'
+                    <NavigationView backIconClick={this.backPage} title='提现'
                                     wrapStyle={{backgroundColor:'white'}} titleStyle={{color:FontAndColor.COLORA0}}/>
                 </View>
             )
         }
 
-
         return (
             <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
-                <StatusBar barStyle='dark-content'/>
-                <ScrollView
-                    showsVerticalScrollIndicator={false}>
+                <StatusBar barStyle='dark-content' />
                     <View style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        backgroundColor: 'white',
-                        marginTop: Pixel.getPixel(79),
-                        height:Pixel.getPixel(77),
-                        paddingLeft: Pixel.getPixel(15),
-                        paddingRight: Pixel.getPixel(15),
-                        justifyContent:'space-between'
+                       flex:1,
+                        backgroundColor:FontAndColor.COLORA3,
+                        alignItems:'center'
                     }}>
-                        <TouchableOpacity style={{flexDirection:'row'}} onPress={this.selectBank}>
-                            <Image source={this.getBankImage(this.state.bankData.sub_bank_name)} style={{width:Pixel.getPixel(35),height:Pixel.getPixel(35)}}/>
-                            <View style={{marginLeft: Pixel.getPixel(13)}}>
-                                <Text
-                                    style={{fontSize: Pixel.getFontPixel(15),color:FontAndColor.COLORA0}}>{this.state.bankData.sub_bank_name}</Text>
-                                <Text
-                                    style={{color: '#666666',fontSize: Pixel.getFontPixel(14),marginTop:4}}>{this.state.bankData.bank_card_no}</Text>
+                        <TouchableOpacity style={{ flexDirection: 'row',
+                            alignItems: 'center',
+                            backgroundColor: 'white',
+                            width:width,
+                            marginTop: Pixel.getPixel(79),
+                            height:Pixel.getPixel(77),
+                            justifyContent:'space-between',
+                            paddingLeft: Pixel.getPixel(15),
+                            paddingRight: Pixel.getPixel(15)
+                        }} onPress={this.selectBank}>
+                            <View style={{flexDirection:'row'}}>
+                                <Image source={this.getBankImage(this.state.bankData.sub_bank_name)} style={{width:Pixel.getPixel(35),height:Pixel.getPixel(35)}}/>
+                                <View style={{marginLeft: Pixel.getPixel(13),justifyContent:'center',flexDirection:'column'}}>
+                                    <Text
+                                        style={{fontSize: Pixel.getFontPixel(15),color:FontAndColor.COLORA0}}>{this.state.bankData.sub_bank_name}</Text>
+                                    <Text
+                                        style={{color:'#666666',fontSize: Pixel.getFontPixel(14),marginTop:4}}>{this.cardNO}</Text>
+                                </View>
+                            </View>
+                            <View style={{flexDirection:'row'}}>
+                                <Text style={{color:FontAndColor.COLORA1,fontSize:Pixel.getFontPixel(14)}}>更换银行</Text>
+                                <Image style={{marginLeft:Pixel.getPixel(9)}} source={require('../../../../../images/mine/guangfa_account/xiangqing.png')}/>
                             </View>
                         </TouchableOpacity>
-                        <View style={{flexDirection:'row'}}>
-                            <Text style={{color:FontAndColor.COLORA1}}>更换银行</Text>
-                            <Image style={{marginLeft:Pixel.getPixel(9)}} source={require('../../../../../images/mine/guangfa_account/xiangqing.png')}/>
-                        </View>
-                    </View>
 
-                    <View style={{backgroundColor: 'white', marginTop: Pixel.getPixel(10)}}>
-                        <View >
+                       <View style={{backgroundColor: 'white', marginTop: Pixel.getPixel(10)}}>
                             <View style={{
                                 borderBottomWidth: StyleSheet.hairlineWidth,
-                                borderBottomColor: FontAndColor.COLORA4
+                                borderBottomColor: FontAndColor.COLORA4,
+                                marginLeft:Pixel.getPixel(15),
+                                marginRight:Pixel.getPixel(15)
                             }}>
-                                <SText style={{marginVertical: 15, fontSize: 15}}>提现金额（元）</SText>
-                                <View style={{flexDirection: 'row',}}>
-                                    <SText style={{marginRight: 5, marginTop: 5, fontSize: 14}}>￥</SText>
+                                <Text style={{fontSize:Pixel.getFontPixel(14),color:FontAndColor.COLORD2,marginTop:Pixel.getPixel(14)}}>提现金额（元）</Text>
+                                <View style={{flexDirection: 'row',marginTop:Pixel.getPixel(14)}}>
+                                    <Text style={{fontSize:Pixel.getFontPixel(17),color:FontAndColor.COLORD2}}>￥</Text>
                                     <TextInput
                                         style={{
                                             height: 40,
                                             fontSize: Pixel.getPixel(35),
                                             flex: 1,
                                             marginBottom: 15,
-                                            padding: 0
+                                            padding: 0,
+                                            marginLeft:Pixel.getPixel(5),
+                                            color:'#05C5C2'
                                         }}
                                         keyboardType={'numeric'}
                                         underlineColorAndroid={"#00000000"}
@@ -157,26 +172,45 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                                     />
                                 </View>
                             </View>
+                        <View style={{flexDirection:'row',width:width,height:Pixel.getPixel(47),alignItems:'center'}}>
+                            <Text style={{fontSize:Pixel.getFontPixel(12),color:FontAndColor.COLORA1,marginLeft:Pixel.getPixel(15)}}>可用余额:</Text>
+                            <Text style={{fontSize:Pixel.getFontPixel(12),color:'#000000'}}>{this.props.account.balance}</Text>
                         </View>
 
                     </View>
+                <SubmitComponent btn={()=>{this.confirm()}} title='提现' warpStyle={{marginTop:Pixel.getPixel(30),marginLeft:Pixel.getPixel(0)}}/>
 
-                    <MyButton
-                        buttonType={MyButton.TEXTBUTTON}
-                        content={'确认提现'}
-                        parentStyle={styles.next_button_parent}
-                        childStyle={{fontSize: 18, color: 'white'}}
-                        mOnPress={()=>{this.confirm()}}
-                    />
-
-                    <View style={{marginHorizontal: 30, marginVertical: 40}}>
-                        <SText style={{
-                            color: FontAndColor.COLORA1,
-                            lineHeight: 20
-                        }}>银行受理及到账时间</SText>
+                    <View style={{marginTop:Pixel.getPixel(19)}}>
+                        <Text style={{
+                            color: '#AEAEAE',
+                            fontSize:Pixel.getPixel(14)
+                        }}>银行受理及到账时间</Text>
+                    </View>
                     </View>
 
-                </ScrollView>
+                <Modal animationType={this.state.animationType}
+                       transparent={this.state.transparent}
+                       visible={this.state.modalVisible}>
+                    <View style={{flex:1,alignItems:'center',backgroundColor:'rgba(0,0,0,0.5)'}}>
+                        <Image source={require('../../../../../images/mine/guangfa_account/tanchuang.png')} style={{marginTop: Pixel.getPixel(149)}}>
+                            <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(317),alignItems:'center'}}>
+                                <Text allowFontScaling={true} style={{color:'#ffffff',fontWeight: 'bold',fontSize:Pixel.getFontPixel(24),marginTop:Pixel.getPixel(30),letterSpacing: Pixel.getFontPixel(4.9)}}>提示</Text>
+                                <Text style={{marginTop:Pixel.getPixel(49),color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>确认提现后您的资金将会被冻结，</Text>
+                                <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>并跳转到交易密码页面进行验证。</Text>
+                                <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}> 若验证未完成，</Text>
+                                <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>冻结资金将会在10分钟后</Text>
+                                <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}> 解冻并退回到您的账户中。</Text>
+                                <View style={{flexDirection: 'row',marginTop:Pixel.getPixel(33),width:Pixel.getPixel(260),paddingRight: Pixel.getPixel(17),paddingLeft: Pixel.getPixel(23),justifyContent: 'space-between'}}>
+                                    <TouchableOpacity onPress={()=>{this.cancel()}} style={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),backgroundColor:'#ffffff',justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(2),borderWidth: Pixel.getPixel(1),borderColor:'#0DC1C8'}}>
+                                        <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}} >取消</Text>
+                                    </TouchableOpacity>
+                                    <SubmitComponent btn={()=>{this.submit()}} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginLeft: Pixel.getPixel(20),marginTop:0}}/>
+                                </View>
+
+                            </View>
+                        </Image>
+                    </View>
+                </Modal>
                 <NavigationView backIconClick={this.backPage} title='提现'
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:FontAndColor.COLORA0}}/>
             </View>
@@ -203,7 +237,18 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
         })
     }
 
-    confirm=()=>{
+    //modal取消
+    cancel = () =>{
+        this.setState({
+            modalVisible:false
+        })
+    }
+
+    //modal确认
+    submit = () =>{
+        this.setState({
+            modalVisible:false
+        })
         this.props.showModal(true);
         let maps = {
             bind_bank_card_no_id:this.state.bankData.id,
@@ -238,6 +283,12 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
             });
+    }
+    //提现
+    confirm=()=>{
+        this.setState({
+            modalVisible:true
+        })
     }
 
     getBankImage=(name)=>{

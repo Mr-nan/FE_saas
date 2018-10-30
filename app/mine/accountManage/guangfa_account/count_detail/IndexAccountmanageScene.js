@@ -160,7 +160,9 @@ export default class IndexAccountmanageScene extends BaseComponent{
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/jiaoyimingxi.png')} title="交易明细查询" isShowBottomLin={false} click={()=>{this.priceDetailAction()}}/>
                                     </View>
                                     <View style={{backgroundColor:'#ffffff',width:width,marginTop:Pixel.getPixel(10)}}>
-                                        <CellItem imageData={require('../../../../../images/mine/guangfa_account/shoujihao.png')} title="修改预留手机号" isShowBottomLin={true} click={()=>{this.editerPhone()}}/>
+                                        {
+                                            this.state.accountData.account_open_type==2 &&  <CellItem imageData={require('../../../../../images/mine/guangfa_account/shoujihao.png')} title="修改预留手机号" isShowBottomLin={true} click={()=>{this.editerPhone()}}/>
+                                        }
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/chongzhimima.png')} title="重置密码" isShowBottomLin={true} click={()=>{this.setPasswordAction()}}/>
                                     </View>
                                     {

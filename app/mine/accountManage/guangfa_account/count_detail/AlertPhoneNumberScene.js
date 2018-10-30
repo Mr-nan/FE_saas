@@ -53,8 +53,8 @@ export default class AlertPhoneNumberScene extends BaseComponent{
 
     loadData = () => {
         let maps = {
-          //  enter_base_id: global.companyBaseID,
-            enter_base_id:'70260',
+            enter_base_id: global.companyBaseID,
+           // enter_base_id:'70260',
             bank_id:'gfyh',
         };
         request(Urls.GET_BANK_CARD_LIST, 'Post', maps)
@@ -102,7 +102,8 @@ export default class AlertPhoneNumberScene extends BaseComponent{
             name:'AlertPhoneDeteilScene',
             component:AlertPhoneDeteilScene,
             params:{
-                 bankCardId:row.bank_card_no,
+                bankCardNo:row.bank_card_no,
+                 bankCardId:row.id,
                  mobile:row.mobile
             }
         })
@@ -112,36 +113,42 @@ export default class AlertPhoneNumberScene extends BaseComponent{
         this.cardNO = rowData.bank_card_no && rowData.bank_card_no != 0 ? rowData.bank_card_no.replace(/^(....).*(....)$/, "$1****$2"):'***** ***** *****';
         return(
             <View>
-                {rowID == '0' ?  <TouchableOpacity style={styles.openCountView} onPress={()=>{this.next(rowData)}}>
-                    <View>
-                        <View style={styles.header}>
-                            <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/ka.png')}/>
-                            <Text allowFontScaling={false} style={styles.text}>{this.cardNO}</Text>
-                        </View>
-                        <View style={[styles.header,{alignItems:'flex-end',height:Pixel.getPixel(30)}]}>
-                            <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/shouji.png')}/>
-                            <Text allowFontScaling={false} style={[styles.text,{color:'#666666'}]}>{rowData.mobile}</Text>
-                        </View>
+                {
+                    rowData.status == '3'&& <View>
+                        {rowID == '0' ?  <TouchableOpacity style={styles.openCountView} onPress={()=>{this.next(rowData)}}>
+                            <View>
+                                <View style={styles.header}>
+                                    <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/ka.png')}/>
+                                    <Text allowFontScaling={false} style={styles.text}>{this.cardNO}</Text>
+                                </View>
+                                <View style={[styles.header,{alignItems:'flex-end',height:Pixel.getPixel(30)}]}>
+                                    <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/shouji.png')}/>
+                                    <Text allowFontScaling={false} style={[styles.text,{color:'#666666'}]}>{rowData.mobile}</Text>
+                                </View>
+                            </View>
+                            <View style={{width:Pixel.getPixel(43),height:Pixel.getPixel(25),borderRadius: Pixel.getPixel(25),marginTop:Pixel.getPixel(48),backgroundColor:'rgba(8,195,197,0.1)',alignItems:'center',justifyContent: 'center'}}>
+                                <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}}>修改</Text>
+                            </View>
+                        </TouchableOpacity> : <TouchableOpacity onPress={()=>{this.next(rowData)}}  style={[styles.openCountView,{marginTop:Pixel.getPixel(15)}]}>
+                            <View>
+                                <View style={styles.header}>
+                                    <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/ka.png')}/>
+                                    <Text allowFontScaling={false} style={styles.text}>{this.cardNO}</Text>
+                                </View>
+                                <View style={[styles.header,{alignItems:'flex-end',height:Pixel.getPixel(30)}]}>
+                                    <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/shouji.png')}/>
+                                    <Text allowFontScaling={false} style={[styles.text,{color:'#666666'}]}>{rowData.mobile}</Text>
+                                </View>
+                            </View>
+                            <View style={{width:Pixel.getPixel(43),height:Pixel.getPixel(25),borderRadius: Pixel.getPixel(25),marginTop:Pixel.getPixel(48),backgroundColor:'rgba(8,195,197,0.1)',alignItems:'center',justifyContent: 'center'}}>
+                                <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}}>修改</Text>
+                            </View>
+                        </TouchableOpacity>}
                     </View>
-                    <View style={{width:Pixel.getPixel(43),height:Pixel.getPixel(25),borderRadius: Pixel.getPixel(25),marginTop:Pixel.getPixel(48),backgroundColor:'rgba(8,195,197,0.1)',alignItems:'center',justifyContent: 'center'}}>
-                        <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}}>修改</Text>
-                    </View>
-                </TouchableOpacity> : <TouchableOpacity onPress={()=>{this.next(rowData)}}  style={[styles.openCountView,{marginTop:Pixel.getPixel(15)}]}>
-                    <View>
-                        <View style={styles.header}>
-                            <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/ka.png')}/>
-                            <Text allowFontScaling={false} style={styles.text}>{this.cardNO}</Text>
-                        </View>
-                        <View style={[styles.header,{alignItems:'flex-end',height:Pixel.getPixel(30)}]}>
-                            <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/shouji.png')}/>
-                            <Text allowFontScaling={false} style={[styles.text,{color:'#666666'}]}>{rowData.mobile}</Text>
-                        </View>
-                    </View>
-                    <View style={{width:Pixel.getPixel(43),height:Pixel.getPixel(25),borderRadius: Pixel.getPixel(25),marginTop:Pixel.getPixel(48),backgroundColor:'rgba(8,195,197,0.1)',alignItems:'center',justifyContent: 'center'}}>
-                        <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}}>修改</Text>
-                    </View>
-                </TouchableOpacity>}
+                }
+
             </View>
+
 
         )
     }

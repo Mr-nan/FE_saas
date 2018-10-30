@@ -33,6 +33,7 @@ export default class BankcardComponent extends BaseComponent{
     }
     render(){
         let  {data} = this.props;
+        this.cardNO = data.bank_card_no && data.bank_card_no != 0 ? data.bank_card_no.replace(/^(....).*(....)$/,'$1****$2'):'**** **** ****';
         return(
             <Image source={this.bg} style={{marginTop:Pixel.getPixel(10)}}>
                 <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>{this.props.bankClick && this.props.bankClick(data)}} activeOpacity={1}>
@@ -40,7 +41,7 @@ export default class BankcardComponent extends BaseComponent{
                     <View style={{flexDirection:'row',width:Pixel.getPixel(298),paddingLeft: Pixel.getPixel(16),paddingRight: Pixel.getPixel(10),justifyContent:'space-between',marginTop:Pixel.getPixel(17)}}>
                         <View style={{flexDirection:'column',justifyContent: 'center'}}>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(15),lineHeight:Pixel.getPixel(21)}}>{data.sub_bank_name}</Text>
-                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(18),lineHeight:Pixel.getPixel(23),marginTop:Pixel.getPixel(5)}}>{data.bank_card_no}</Text>
+                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(18),lineHeight:Pixel.getPixel(23),marginTop:Pixel.getPixel(5)}}>{this.cardNO}</Text>
                         </View>
                         <View style={{flexDirection:'column',alignItems:'flex-end'}}>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>{this.statusType(data.status)}</Text>
