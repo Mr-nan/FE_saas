@@ -192,7 +192,6 @@ export default class CarTrimScene extends BaseComponent {
 
     componentWillMount() {
         this.subscription = DeviceEventEmitter.addListener('carTrimUpdate',()=>{
-            console.log('=======开始更新了');
             this.loadData(this.roleValue,this.state.taskType);
         });
     }

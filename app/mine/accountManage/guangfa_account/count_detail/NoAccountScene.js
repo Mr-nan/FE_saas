@@ -12,7 +12,8 @@ import {
     Image,
     TouchableOpacity,
     StatusBar,
-    Dimensions
+    Dimensions,
+    DeviceEventEmitter,
 
 }from 'react-native';
 
@@ -62,7 +63,10 @@ export default class NoAccountScene extends BaseComponent{
         return(
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
                 <StatusBar barStyle='dark-content'/>
-                <NavigationView backIconClick={()=>{this.backToTop()}} title={this.props.title}
+                <NavigationView backIconClick={()=>{
+                                    DeviceEventEmitter.emit('myAccountSceneLoadData');
+                                    this.backToTop();}}
+                                title={this.props.title}
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <Image style={{marginTop: Pixel.getPixel(116)}} source={this.tu}/>
                 <View style={{marginTop:Pixel.getPixel(8),alignItems:'center',height:Pixel.getPixel(80)}}>
@@ -79,16 +83,17 @@ export default class NoAccountScene extends BaseComponent{
 
 
     next =()=>{
-
+        DeviceEventEmitter.emit('myAccountSceneLoadData');
         if(this.props.toNextPageData){
             this.toNextPage(this.props.toNextPageData);
         }else {
-             this.backToTop();
+            this.backToTop();
         }
 
     }
 
     handleBack=()=>{
+        DeviceEventEmitter.emit('myAccountSceneLoadData');
         this.backToTop();
     }
 

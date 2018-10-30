@@ -12,7 +12,8 @@ import {
     Image,
     TouchableOpacity,
     StatusBar,
-    Dimensions
+    Dimensions,
+    Animated
 
 }from 'react-native';
 
@@ -22,13 +23,9 @@ import BaseComponent from "../../../../component/BaseComponent";
 const Pixel = new PixelUtil();
 const {width,height} = Dimensions.get('window');
 import NavigationView from "../../../../component/AllNavigationView";
-import SubmitComponent from '../component/SubmitComponent';
 import {request} from "../../../../utils/RequestUtil";
-import StorageUtil from "../../../../utils/StorageUtil";
-import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import NoAccountScene from './NoAccountScene';
 import * as Urls from "../../../../constant/appUrls";
-import SmallAmountBankStatusScene from "./SmallAmountBankStatusScene";
 
 export default class WattingTenScendsScene extends BaseComponent{
     constructor(props) {
@@ -59,7 +56,6 @@ export default class WattingTenScendsScene extends BaseComponent{
                     name:'NoAccountScene',
                     component:NoAccountScene,
                     params:{
-                        callback:()=>{this.props.callback()},
                         status:0,
                         title:'账户首页',
                         toNextPageData:this.props.toNextPageData,
@@ -89,7 +85,6 @@ export default class WattingTenScendsScene extends BaseComponent{
                          name:'NoAccountScene',
                          component:NoAccountScene,
                          params:{
-                             callback:()=>{this.props.callback()},
                              status:da.transfer_status,
                              title:'账户首页',
                              toNextPageData:this.props.toNextPageData,
@@ -114,6 +109,28 @@ export default class WattingTenScendsScene extends BaseComponent{
         this.setState({
             renderPlaceholderOnly:'success'
         })
+    }
+
+    handleBack=()=>{
+
+    }
+
+    rotateAnimation(){
+        this.state.bounceValue.setValue(1);
+        this.state.rotateValue.setValue(0);
+        Animated.parallel(
+            [
+                Animated.spring(this.state.bounceValue,{
+                    toValue:1,
+                    friction:30,
+                }),
+                Animated.timing(this.state.rotateValue, {
+                    toValue: 1,  //角度从0变1
+                    duration: 1000,  //从0到1的时间
+                    easing: Easing.out(Easing.linear),//线性变化，匀速旋转
+                }),
+            ]
+        ).start(()=>{this.isStart && this.rotateAnimation()});
     }
 
 
