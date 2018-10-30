@@ -183,7 +183,6 @@ export default class AccountSettingScene extends BaseComponent{
     }
 
     nextCompany = ()=>{
-      //  this.SData.agent_cert_no = this.refs.contact_code.getInputTextValue();
         this.SData.agent_cert_no = this.refs.contact_code.getInputTextValue();
        this.SData.agent_mobile = this.state.accountData.operate_mobile;
         this.SData.agent_name = this.refs.contact_name.getInputTextValue();
@@ -191,6 +190,10 @@ export default class AccountSettingScene extends BaseComponent{
         this.SData.ent_phone = this.refs.companyPhone.getInputTextValue();
         this.SData.legal_cert_no = this.refs.corporation_code.getInputTextValue();
         this.SData.legal_real_name = this.refs.corporation_name.getInputTextValue();
+
+        if(this.SData.agent_cert_no == ''){
+            this.SData.agent_cert_no = this.state.accountData.agent_cert_no;
+        }
         if(this.SData.agent_name == '') {
             this.SData.agent_name = this.state.accountData.agent_name;
         }
