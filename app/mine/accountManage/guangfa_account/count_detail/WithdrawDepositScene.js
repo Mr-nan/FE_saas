@@ -61,11 +61,18 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
             .then((response)=> {
 
                 if(response.mjson.data.length>0){
-                    this.setState({
-                        renderPlaceholderOnly:'success',
-                        bankData:response.mjson.data[0],
 
-                    })
+                    for (let bankItem of response.mjson.data){
+                        if(bankItem.status == 3){
+                            this.setState({
+                                renderPlaceholderOnly:'success',
+                                bankData:bankItem,
+                            })
+                            break;
+                        }
+                    }
+
+
                 }else {
                     this.setState({
                         renderPlaceholderOnly:'error'
@@ -113,7 +120,7 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                         justifyContent:'space-between'
                     }}>
                         <TouchableOpacity style={{flexDirection:'row'}} onPress={this.selectBank}>
-                            <Image source={require('../../../../../images/mine/guangfa_account/gs.png')} style={{width:Pixel.getPixel(35),height:Pixel.getPixel(35)}}/>
+                            <Image source={this.getBankImage(this.state.bankData.sub_bank_name)} style={{width:Pixel.getPixel(35),height:Pixel.getPixel(35)}}/>
                             <View style={{marginLeft: Pixel.getPixel(13)}}>
                                 <Text
                                     style={{fontSize: Pixel.getFontPixel(15),color:FontAndColor.COLORA0}}>{this.state.bankData.sub_bank_name}</Text>
@@ -184,7 +191,7 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
             component:BankcardScene,
             params:{
                 account:this.props.accountData,
-                selectBank:this.getBankData,
+                getBankData:(bankData)=>{this.getBankData(bankData)},
             }});
     }
 
@@ -229,6 +236,40 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
             });
+    }
+
+    getBankImage=(name)=>{
+        if(name.indexOf('工商银行')>-1){
+             return require('../../../../../images/mine/guangfa_account/gs.png');
+        }else if(name.indexOf('中国银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/zh.png');
+        }else if(name.indexOf('建设银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/js.png');
+        }else if(name.indexOf('农业银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/ny.png');
+        }else if(name.indexOf('交通银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/jt.png');
+        }else if(name.indexOf('邮政银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/yz.png');
+        }else if(name.indexOf('招商银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/zs.png');
+        }else if(name.indexOf('平安银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/pa.png');
+        }else if(name.indexOf('民生银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/ms.png');
+        }else if(name.indexOf('光大银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/gd.png');
+        }else if(name.indexOf('华夏银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/hx.png');
+        }else if(name.indexOf('中信银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/zx.png');
+        }else if(name.indexOf('浦发银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/pf.png');
+        }else if(name.indexOf('广发银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/gf.png');
+        }else if(name.indexOf('兴业银行')>-1){
+            return require('../../../../../images/mine/guangfa_account/zx.png');
+        }
     }
 
 }

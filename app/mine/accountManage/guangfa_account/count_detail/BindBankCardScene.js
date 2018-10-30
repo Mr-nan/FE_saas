@@ -34,6 +34,7 @@ import * as Urls from "../../../../constant/appUrls";
 import SelectBankScene from "../../SelectBankScene";
 import NoAccountScene from "./NoAccountScene";
 import SmallAmountBankStatusScene from "./SmallAmountBankStatusScene";
+import WattingTenScendsScene from "./WattingTenScendsScene";
 
 export default class BindBankCardScene extends BaseComponent{
     constructor(props) {
@@ -77,7 +78,6 @@ export default class BindBankCardScene extends BaseComponent{
             <View style={{width:width,height:height,backgroundColor:fontAndColor.COLORA3}}>
                 <NavigationView backIconClick={this.backPage} title={this.props.title}
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
-                <StatusBar barStyle="default"/>
                 {this.loadView()}
             </View>
         )
@@ -111,7 +111,7 @@ export default class BindBankCardScene extends BaseComponent{
                             rightIcon={false}
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(30),paddingLeft:0}}/>}
-                    {this.props.iscompany == '2' ?  <LoginInputText
+                    {this.props.iscompany == '2' ?  (<LoginInputText
                         ref='code'
                         textPlaceholder={'请输入资金账号'}
                         leftText = '资金账号'
@@ -120,7 +120,8 @@ export default class BindBankCardScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
-                        inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}/>: <LoginInputText
+                        inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}/>):
+                        (<LoginInputText
                         ref='code'
                         textPlaceholder={'请输入资金账号'}
                         leftText = '资金账号'
@@ -129,10 +130,10 @@ export default class BindBankCardScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
-                        inputTextStyle = {{marginLeft:Pixel.getPixel(58),paddingLeft:0}}/>}
+                        inputTextStyle = {{marginLeft:Pixel.getPixel(58),paddingLeft:0}}/>)}
 
 
-                    {this.props.iscompany == '2' ? <LoginInputText
+                    {this.props.iscompany == '2' && (<LoginInputText
                         ref = 'phone'
                         textPlaceholder={'请输入手机号码'}
                         leftText = '手机号'
@@ -141,8 +142,9 @@ export default class BindBankCardScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
-                        inputTextStyle = {{marginLeft:Pixel.getPixel(42),paddingLeft:0}}/>
-                    : null}
+                        inputTextStyle = {{marginLeft:Pixel.getPixel(42),paddingLeft:0}}/>)
+                    }
+
                     {this.props.iscompany == '2'?    <LoginInputText
                         ref='bank_count'
                         textPlaceholder={'请输入银行卡号'}
@@ -175,8 +177,8 @@ export default class BindBankCardScene extends BaseComponent{
                     <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
                     <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>请确认信息的准确性，开户时间为7*24小时 </Text>
                 </View>
-                <SubmitComponent btn = {()=>{this.submit()}} title={this.props.btnText} warpStyle={{marginTop:Pixel.getPixel(30)}}/>
-                <NavigationView backIconClick={this.backPage} title={this.props.title}
+                <SubmitComponent   btn={()=>{this.submit()}} title={'确认提交'} warpStyle={{marginTop:Pixel.getPixel(30)}}/>
+                <NavigationView backIconClick={this.backPage} title={'添加银行卡'}
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <Modal  animationType={this.state.animationType}
                         transparent={this.state.transparent}
@@ -185,17 +187,16 @@ export default class BindBankCardScene extends BaseComponent{
                         <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(204),backgroundColor:'#ffffff',marginTop: Pixel.getPixel(149),borderRadius:Pixel.getPixel(4),alignItems:'center'}}>
                             <Image source={this.state.image} style={{marginTop:Pixel.getPixel(30)}}/>
                             <Text style={{color:fontAndColor.COLORA0,backgroundColor:'transparent',lineHeight:Pixel.getPixel(20),marginTop:Pixel.getPixel(15)}} allowFontScaling={false}>{this.state.text}</Text>
-                            <SubmitComponent btn={this.go()} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(25),marginLeft: 0}}/>
+                            <SubmitComponent btn={this.go} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(25),marginLeft: 0}}/>
                         </View>
                     </View>
                 </Modal>
-
             </View>
 
         );
     }
 
-    next = () =>{
+    next =() =>{
         this.toNextPage({
             name:'SelectBankScene',
             component:SelectBankScene,
@@ -214,7 +215,7 @@ export default class BindBankCardScene extends BaseComponent{
         if(this.sData.user_type == '2'){
             this.sData.mobile = this.refs.phone.getInputTextValue();
         }else{
-            this.sData.mobile = 'undefinend';
+            this.sData.mobile = '';
         }
         this.sData.bank_card_no  = this.refs.bank_count.getInputTextValue();
         if(this.sData.cust_name == ''){
@@ -244,7 +245,7 @@ export default class BindBankCardScene extends BaseComponent{
             .then((response)=> {
                 this.props.showModal(false);
                 this.datas = response.mjson.data;
-                this.serial_no = datas.serial_no;
+                this.serial_no = this.datas.serial_no;
                 this.setState({
                     modalVisible:true
                 })
@@ -264,28 +265,15 @@ export default class BindBankCardScene extends BaseComponent{
             modalVisible:false
         })
         if(this.datas != ''){
-            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data)=>{
-                if(data.code == 1){
-                    let userData = JSON.parse(data.result);
-                    let maps = {
-                        bank_id:'gfyh',
-                        enter_base_id:userData.company_base_id,
-                        serial_no:this.serial_no
-                        //serial_no:'UA0021201810251638553260000051051'
-                    }
-                    request(Urls.ZS_FETCH_STATUS,'Post',maps)
-                        .then((response)=>{
-                            let da = response.mjson.data;
-                            this.toNextPage({
-                                name:'NoAccountScene',
-                                component:NoAccountScene,
-                                params:{callback:()=>{this.props.callback()},status:da.transfer_status,title:'账户首页'}
-                            })
-                        },(error)=>{
-                            this.props.showToast(error.mjson.msg)
-                        })
+
+            this.toNextPage({
+                name:'WattingTenScendsScene',
+                component:WattingTenScendsScene,
+                params:{
+                    serial_no:this.serial_no,
                 }
             })
+
         }else{
             this.backPage();
         }

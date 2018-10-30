@@ -14,6 +14,7 @@ import {
     StatusBar,
     Dimensions,
     ScrollView,
+    ListView,
 
 }from 'react-native';
 
@@ -29,14 +30,18 @@ import * as Urls from '../../../../constant/appUrls';
 import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import BindBankCardScene from "./BindBankCardScene";
+import WattingTenScendsScene from "./WattingTenScendsScene";
 
 export default class BankCardScene extends BaseComponent{
     constructor(props) {
         super(props);
 
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 == r2});
         this.state = {
             renderPlaceholderOnly:'blank',
-            bankArray:[]
+            bankArray:[],
+            source: ds.cloneWithRows([]),
+
         }
     }
 
@@ -59,6 +64,8 @@ export default class BankCardScene extends BaseComponent{
                 this.setState({
                     renderPlaceholderOnly:'success',
                     bankArray:response.mjson.data,
+                    source:this.state.source.cloneWithRows(response.mjson.data),
+
                 })
             },(error)=>{
                 this.setState({
@@ -81,32 +88,13 @@ export default class BankCardScene extends BaseComponent{
         return(
             <View style={{flex:1,backgroundColor:'rgba(76,76,89,1)',alignItems:'center',paddingTop:Pixel.getTitlePixel(64)}}>
                 <StatusBar barStyle='light-content'/>
-                <ScrollView>
-                    {
-                        this.state.bankArray.map((data,index)=>{
+                <ListView dataSource={this.state.source}
+                              removeClippedSubviews={false}
+                              renderRow={this._renderRow}
+                              renderSeparator={this._renderSeparator}
+                              renderFooter={this._renderFootView}
+                              showsVerticalScrollIndicator={false}/>
 
-                            return(
-                                <BankcardComponent data={data} key={index} relieveClick={(bankData)=>{this.relieveClick(bankData)}}/>
-                            )
-                        })
-
-                    }
-                    {
-                        this.state.bankArray.length<5 && (
-                            <TouchableOpacity style={{
-                                width:Pixel.getPixel(345),
-                                height:Pixel.getPixel(55),
-                                borderRadius:Pixel.getPixel(5),
-                                borderWidth: Pixel.getPixel(1),borderColor:'#979797',
-                                flexDirection: 'row',justifyContent: 'center',alignItems:'center',marginTop: Pixel.getPixel(25)}}
-                                              onPress={()=>{this.addBankClick()}}>
-                                <Image source={require('../../../../../images/mine/guangfa_account/tianjia.png')}/>
-                                <Text style={{backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getFontPixel(15),marginLeft: Pixel.getPixel(10)}}>添加银行卡</Text>
-                            </TouchableOpacity>
-                        )
-                    }
-
-                </ScrollView>
 
                 <NavigationView backIconClick={this.backPage} title='银行卡'
                                 wrapStyle={{backgroundColor:'transparent'}} titleStyle={{color:'#ffffff'}}/>
@@ -114,9 +102,49 @@ export default class BankCardScene extends BaseComponent{
         )
     }
 
+    _renderSeparator(sectionId, rowId) {
+        return (
+            <View style={{height:Pixel.getPixel(10)}} key={sectionId + rowId}>
+            </View>
+        )
+    }
+
+    _renderRow=(rowData)=>{
+        return(
+            <BankcardComponent data={rowData} relieveClick={(bankData)=>{this.relieveClick(bankData)}} bankClick={(bankData)=>{
+               if(this.props.getBankData){
+                   if(bankData.status!=3){
+                       this.props.showToast('当前银行不可用!');
+                       return;
+                   }
+                   this.props.getBankData(bankData);
+                   this.backPage();
+               }
+
+            }}/>
+        )
+    }
+
+    _renderFootView=()=>{
+        if(this.state.bankArray.length<5){
+            return(
+                <TouchableOpacity style={{
+                    width:Pixel.getPixel(345),
+                    height:Pixel.getPixel(55),
+                    borderRadius:Pixel.getPixel(5),
+                    borderWidth: Pixel.getPixel(1),borderColor:'#979797',
+                    flexDirection: 'row',justifyContent: 'center',alignItems:'center',marginTop: Pixel.getPixel(25)}}
+                                  onPress={()=>{this.addBankClick()}}>
+                    <Image source={require('../../../../../images/mine/guangfa_account/tianjia.png')}/>
+                    <Text style={{backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getFontPixel(15),marginLeft: Pixel.getPixel(10)}}>添加银行卡</Text>
+                </TouchableOpacity>
+            )
+        }
+
+    }
+
 
     relieveClick=(bankData)=>{
-
 
         this.props.showModal(true);
         request(Urls.GF_RELIEVE_BANK, 'Post', {
@@ -128,6 +156,13 @@ export default class BankCardScene extends BaseComponent{
             .then((response)=> {
 
                 this.props.showModal(false);
+                this.toNextPage({
+                    name:'WattingTenScendsScene',
+                    component:WattingTenScendsScene,
+                    params:{
+                        serial_no:response.mjson.data.serial_no,
+                    }
+                })
 
 
             },(error)=>{
@@ -138,60 +173,14 @@ export default class BankCardScene extends BaseComponent{
     }
 
     addBankClick=()=>{
-        // this.props.showModal(true);
-        // request(Urls.GF_ADD_BANK, 'Post', {
-        //     enter_base_id:global.companyBaseID,
-        //     reback_url:'cancelAccount'
-        //
-        // })
-        //     .then((response)=> {
-        //         this.props.showModal(false);
-        //         let da = response.mjson;
-        //
-        //         if(response.mjson.code==1){
-        //             this.toNextPage({
-        //                 name:'GFBankWebScene',
-        //                 component:GFBankWebScene,
-        //                 params:{
-        //                     callback:()=>{this.props.callback()},
-        //                     uri:da.data.url_wap,
-        //                     pa:da.data.params,
-        //                     sign:da.data.sign,
-        //                     reback_url:'cancelAccount',
-        //                     noPushPage:true,
-        //                 }});
-        //         }else {
-        //             this.props.showToast(response.mjson.msg);
-        //         }
-        //
-        //     },(error)=>{
-        //         this.props.showModal(false);
-        //         this.props.showToast(error.mjson.msg);
-        //     });
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1) {
-                let datas = JSON.parse(data.result);
-                this.iscompany = 1;
-                if (datas.role_type instanceof Array) {
-                    for (let item of datas.role_type) {
-                        if (item == 19) {
-                            this.iscompany = 2;
-                            break;
-                        }
-                    }
-                }
-                this.toNextPage({
-                    name:'BindBankCardScene',
-                    component:BindBankCardScene,
-                    params:{
-                        callback:()=>{this.props.callback()},
-                        iscompany:this.iscompany,
-                        title:'添加银行卡',
-                        btnText:'确认提交'
-                    }
-                })
+        this.toNextPage({
+            name:'BindBankCardScene',
+            component:BindBankCardScene,
+            params:{
+                iscompany:this.props.account.account_open_type,
             }
-        })
+        });
+
     }
 
 }

@@ -34,9 +34,8 @@ export default class BankcardComponent extends BaseComponent{
     render(){
         let  {data} = this.props;
         return(
-
             <Image source={this.bg} style={{marginTop:Pixel.getPixel(10)}}>
-                <View style={{flexDirection:'row'}}>
+                <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>{this.props.bankClick && this.props.bankClick(data)}} activeOpacity={1}>
                     <Image source={this.icon} style={{marginLeft: Pixel.getPixel(19),marginTop:Pixel.getPixel(26),width:Pixel.getPixel(28),height:Pixel.getPixel(28)}}/>
                     <View style={{flexDirection:'row',width:Pixel.getPixel(298),paddingLeft: Pixel.getPixel(16),paddingRight: Pixel.getPixel(10),justifyContent:'space-between',marginTop:Pixel.getPixel(17)}}>
                         <View style={{flexDirection:'column',justifyContent: 'center'}}>
@@ -44,9 +43,9 @@ export default class BankcardComponent extends BaseComponent{
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(18),lineHeight:Pixel.getPixel(23),marginTop:Pixel.getPixel(5)}}>{data.bank_card_no}</Text>
                         </View>
                         <View style={{flexDirection:'column',alignItems:'flex-end'}}>
-                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>{this.statusType(data.statusat)}</Text>
+                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>{this.statusType(data.status)}</Text>
                             {
-                                data.statusat!=4 && (
+                                (data.status!=4  && data.status == 3)&& (
                                     <TouchableOpacity style={{
                                         width:Pixel.getPixel(43),height:Pixel.getPixel(21),
                                         borderRadius:Pixel.getPixel(25),
@@ -63,13 +62,12 @@ export default class BankcardComponent extends BaseComponent{
 
                         </View>
                     </View>
-                </View>
+                </TouchableOpacity>
             </Image>
         )
     }
 
     getBankImage=(name)=>{
-
         if(name.indexOf('工商银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/gs.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-hong.png');
@@ -125,9 +123,8 @@ export default class BankcardComponent extends BaseComponent{
                 return '银行处理中'
                 break;
             case 2:
-                return '银行处理中'
+                return '待小额鉴权'
                 break;
-
             default:
                 return ''
                 break;
