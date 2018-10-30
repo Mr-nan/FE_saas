@@ -15,6 +15,7 @@ import {
     Dimensions,
     ScrollView,
     ListView,
+    Modal
 
 }from 'react-native';
 
@@ -31,6 +32,7 @@ import StorageUtil from "../../../../utils/StorageUtil";
 import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import BindBankCardScene from "./BindBankCardScene";
 import WattingTenScendsScene from "./WattingTenScendsScene";
+import SubmitComponent from "../component/SubmitComponent";
 
 export default class BankCardScene extends BaseComponent{
     constructor(props) {
@@ -41,6 +43,13 @@ export default class BankCardScene extends BaseComponent{
             renderPlaceholderOnly:'blank',
             bankArray:[],
             source: ds.cloneWithRows([]),
+            animationType: 'none',//none slide fade
+            modalVisible: false,//模态场景是否可见
+            transparent: true,//是否透明显示
+            modalVisibleRemoveSuccess:false, //成功
+            image:require('../../../../../images/mine/guangfa_account/tongguo.png'),
+            text:'解绑银行卡成功\n' +
+                '等待银行审核'
 
         }
     }
@@ -85,6 +94,7 @@ export default class BankCardScene extends BaseComponent{
                 </View>
             )
         }
+        this.tips = '您要解绑卡号为\n' + '6226****8867银行卡\n' + '解绑完成后将无法通过此\n' + '卡进行入金'
         return(
             <View style={{flex:1,backgroundColor:'rgba(76,76,89,1)',alignItems:'center',paddingTop:Pixel.getTitlePixel(64)}}>
                 <StatusBar barStyle='light-content'/>
@@ -98,6 +108,29 @@ export default class BankCardScene extends BaseComponent{
 
                 <NavigationView backIconClick={this.backPage} title='银行卡'
                                 wrapStyle={{backgroundColor:'transparent'}} titleStyle={{color:'#ffffff'}}/>
+
+                    <Modal  animationType={this.state.animationType}
+                            transparent={this.state.transparent}
+                            visible={this.state.modalVisible}>
+                        <View style={{flex:1,alignItems:'center',backgroundColor:'rgba(0,0,0,0.5)'}}>
+                            <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(204),backgroundColor:'#ffffff',marginTop: Pixel.getPixel(149),borderRadius:Pixel.getPixel(4),alignItems:'center'}}>
+                                <Text style={{textAlign:'center',width:Pixel.getPixel(260),color:fontAndColor.COLORA0,backgroundColor:'transparent',lineHeight:Pixel.getPixel(20),marginTop:Pixel.getPixel(29)}} allowFontScaling={false}>{this.tips}</Text>
+                                <SubmitComponent  title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(25),marginLeft: 0}}/>
+                            </View>
+                        </View>
+                    </Modal>
+
+                <Modal  animationType={this.state.animationType}
+                        transparent={this.state.transparent}
+                        visible={this.state.modalVisibleRemoveSuccess}>
+                    <View style={{flex:1,alignItems:'center',backgroundColor:'rgba(0,0,0,0.5)'}}>
+                        <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(204),backgroundColor:'#ffffff',marginTop: Pixel.getPixel(149),borderRadius:Pixel.getPixel(4),alignItems:'center'}}>
+                            <Image source={this.state.image} style={{marginTop:Pixel.getPixel(30)}}/>
+                            <Text style={{color:fontAndColor.COLORA0,backgroundColor:'transparent',lineHeight:Pixel.getPixel(20),marginTop:Pixel.getPixel(15)}} allowFontScaling={false}>{this.state.text}</Text>
+                            <SubmitComponent btn={this.goWatting} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(25),marginLeft: 0}}/>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         )
     }
@@ -145,7 +178,16 @@ export default class BankCardScene extends BaseComponent{
 
 
     relieveClick=(bankData)=>{
+        this.setState({
+            modalVisible:true
+        })
+        this.go(bankData);
+    }
 
+    go = (bankData) =>{
+        this.setState({
+            modalVisible:false
+        })
         this.props.showModal(true);
         request(Urls.GF_RELIEVE_BANK, 'Post', {
             bank_card_no:bankData.bank_card_no,
@@ -154,22 +196,38 @@ export default class BankCardScene extends BaseComponent{
             user_type:this.props.account.account_open_type
         })
             .then((response)=> {
-
                 this.props.showModal(false);
-                this.toNextPage({
-                    name:'WattingTenScendsScene',
-                    component:WattingTenScendsScene,
-                    params:{
-                        serial_no:response.mjson.data.serial_no,
-                    }
+                this.datas = response.mjson.data;
+                this.serial_no = this.datas.serial_no;
+                this.setState({
+                    modalVisibleRemoveSuccess:true
                 })
 
-
             },(error)=>{
-                this.props.showModal(false);
-                this.props.showToast(error.mjson.msg);
+               this.setState({
+                   image:require('../../../../../images/mine/guangfa_account/shi.png'),
+                   text:'无法解绑\n' + '请至少保留一张银行卡',
+                   modalVisibleRemoveSuccess:true,
+               })
             });
 
+    }
+
+    goWatting = ()=>{
+        this.setState({
+            modalVisibleRemoveSuccess:false
+        })
+        if(this.datas != ''){
+            this.toNextPage({
+                name:'WattingTenScendsScene',
+                component:WattingTenScendsScene,
+                params:{
+                    serial_no:this.serial_no,
+                }
+            })
+        }else{
+            this.backPage()
+        }
     }
 
     addBankClick=()=>{

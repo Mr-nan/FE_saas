@@ -64,8 +64,10 @@ export default class TransationFollowScene extends BaseComponent {
                 <NavigationView backIconClick={this.backPage} title='银行流水'
                                 wrapStyle={{backgroundColor: 'white'}} titleStyle={{color: fontAndColor.COLORA0}}/>
                 <View style={{width:width,paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(13),flexDirection:'row',justifyContent:'space-between'}}>
-                    <Text style={{backgroundColor:'transparent',fontSize:Pixel.getFontPixel(14),color:fontAndColor.COLORD2,marginTop:Pixel.getPixel(76)}}>2018年9月</Text>
-                    <DateTimePicker onConfirm={()=>{this.onConfirm()}} onCancel = {()=>{this.onCancel()}}/>
+                    <Text style={{backgroundColor:'transparent',fontSize:Pixel.getFontPixel(14),color:fontAndColor.COLORD2,marginTop:Pixel.getPixel(76),}}>2018年9月</Text>
+                    <TouchableOpacity>
+                        <Image style={{marginTop:Pixel.getPixel(76)}} source={require('../../../../../images/mine/guangfa_account/rili.png')}/>
+                    </TouchableOpacity>
                 </View>
                 <View style={{width:width,marginTop:Pixel.getPixel(12),backgroundColor:'white'}}>
                     <View style={{width:width,height:Pixel.getPixel(80),paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15),

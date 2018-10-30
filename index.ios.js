@@ -26,6 +26,7 @@ import WithdrawDepositScene from './app/mine/accountManage/guangfa_account/count
 import SmallAmountofPawerScene from './app/mine/accountManage/guangfa_account/count_detail/SmallAmountofPawerScene';
 import AlertPhoneDeteilScene from "./app/mine/accountManage/guangfa_account/count_detail/AlertPhoneDeteilScene";
 import TransationFollowScene from "./app/mine/accountManage/guangfa_account/count_detail/TransationFollowScene";
+import NoOpenBankScene from "./app/mine/accountManage/guangfa_account/count_detail/NoOpenBankScene";
 AppRegistry.registerComponent('FE_Sass', () =>Root);
 
 
