@@ -26,6 +26,7 @@ import LoginInputText from "../../../../login/component/LoginInputText";
 import SubmitComponent from "../component/SubmitComponent";
 import {request} from "../../../../utils/RequestUtil";
 import * as Urls from "../../../../constant/appUrls";
+import IndexAccountmanageScene from "./IndexAccountmanageScene";
 
 
 export default class AccountSettingScene extends BaseComponent{
@@ -34,7 +35,18 @@ export default class AccountSettingScene extends BaseComponent{
         console.log('this.props.account.account_open_type',this.props.account.account_open_type);
         this.state = {
             renderPlaceholderOnly:'blank',
-            accountData:{},
+
+        }
+       this.SData = {
+            agent_cert_no:'',
+            agent_mobile:'',
+            agent_name:'',
+            customer_type:'B',
+            ent_name:'',
+            ent_phone:'',
+            enter_base_id:global.companyBaseID,
+            legal_cert_no:'',
+            legal_real_name:'',
         }
     }
 
@@ -49,6 +61,7 @@ export default class AccountSettingScene extends BaseComponent{
         let maps = {
             enter_base_ids: global.companyBaseID,
             bank_id:'gfyh',
+            child_type:'1'
         };
         request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
             .then((response) => {
@@ -64,7 +77,6 @@ export default class AccountSettingScene extends BaseComponent{
                 this.props.showToast(error.mjson.msg);
             });
     }
-
     render(){
         if(this.state.renderPlaceholderOnly !== 'success'){
            return(
@@ -98,11 +110,12 @@ export default class AccountSettingScene extends BaseComponent{
                             rightIcon={false}
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(45),paddingLeft:0}}/>
-                        <SubmitComponent title='确认修改' btn={this.backToTop()} warpStyle={{marginTop:Pixel.getPixel(21),marginLeft:0,width:Pixel.getPixel(309)}}/>
+                        <SubmitComponent title='确认修改' warpStyle={{marginTop:Pixel.getPixel(21),marginLeft:0,width:Pixel.getPixel(309)}}/>
                     </View> ) :
                     (<View style={{width:Pixel.getPixel(345),height:Pixel.getPixel(417),backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
                         shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(26),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
                         <LoginInputText
+                            ref = 'companyName'
                             textPlaceholder={this.state.accountData.account.bank_card_name}
                             leftText = '企业名称'
                             leftIcon={false}
@@ -112,6 +125,7 @@ export default class AccountSettingScene extends BaseComponent{
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(89),paddingLeft:0}}/>
                         <LoginInputText
+                            ref = 'companyPhone'
                             textPlaceholder={this.state.accountData.account.operate_mobile}
                             leftText = '企业固定电话'
                             leftIcon={false}
@@ -121,6 +135,7 @@ export default class AccountSettingScene extends BaseComponent{
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}/>
                         <LoginInputText
+                            ref = 'corporation_name'
                             textPlaceholder={this.state.accountData.account.legal_real_name}
                             leftText = '法人代表姓名'
                             leftIcon={false}
@@ -130,6 +145,7 @@ export default class AccountSettingScene extends BaseComponent{
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}/>
                         <LoginInputText
+                            ref='corporation_code'
                             textPlaceholder={this.state.accountData.account.legal_cert_no}
                             leftText = '法人代表身份证号'
                             leftIcon={false}
@@ -139,6 +155,7 @@ export default class AccountSettingScene extends BaseComponent{
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(33),paddingLeft:0}}/>
                         <LoginInputText
+                            ref='contact_name'
                             textPlaceholder={this.state.accountData.account.person_name}
                             leftText = '联系人姓名'
                             leftIcon={false}
@@ -148,6 +165,7 @@ export default class AccountSettingScene extends BaseComponent{
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(75),paddingLeft:0}}/>
                         <LoginInputText
+                            ref='contact_code'
                             textPlaceholder={'123'}
                             leftText = '联系人身份证号'
                             leftIcon={false}
@@ -156,11 +174,54 @@ export default class AccountSettingScene extends BaseComponent{
                             rightIcon={false}
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(47),paddingLeft:0}}/>
-                        <SubmitComponent title='确认修改' btn={this.backToTop} warpStyle={{marginTop:Pixel.getPixel(21),marginLeft:0,width:Pixel.getPixel(309)}}/>
+                        <SubmitComponent title='确认修改' btn={()=>{this.nextCompany()}} warpStyle={{marginTop:Pixel.getPixel(21),marginLeft:0,width:Pixel.getPixel(309)}}/>
                     </View>)
                 }
                 <Text style={{color:'#AEAEAE',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),marginTop:Pixel.getPixel(18)}}>仅用于后台查询使用不可用于转账</Text>
             </View>
         )
     }
+
+    nextCompany = ()=>{
+      //  this.SData.agent_cert_no = this.refs.contact_code.getInputTextValue();
+        this.SData.agent_cert_no = '1111'
+       this.SData.agent_mobile = this.state.accountData.person_mobile;
+        this.SData.agent_name = this.refs.contact_name.getInputTextValue();
+        this.SData.ent_name = this.refs.companyName.getInputTextValue();
+        this.SData.ent_phone = this.refs.companyPhone.getInputTextValue();
+        this.SData.legal_cert_no = this.refs.corporation_code.getInputTextValue();
+        this.SData.legal_real_name = this.refs.corporation_name.getInputTextValue();
+        if(this.SData.agent_name == '') {
+            this.SData.agent_name = this.state.accountData.account.person_name;
+        }
+        if(this.SData.ent_name == '') {
+            this.SData.ent_name = this.state.accountData.account.bank_card_name;
+        }
+        if(this.SData.ent_phone == ''){
+            this.SData.ent_phone = this.state.accountData.account.operate_mobile;
+        }
+        if(this.SData.legal_cert_no == ''){
+            this.SData.legal_cert_no = this.state.accountData.account.legal_cert_no;
+        }
+        if(this.SData.legal_real_name == ''){
+            this.SData.legal_real_name = this.state.accountData.account.legal_real_name;
+        }
+        this.props.showModal(true);
+        request(Urls.GF_CHANGE_COMPANY, 'Post', this.SData)
+            .then((response)=> {
+                this.props.showModal(false);
+                let da = response.mjson;
+                console.log('da',da);
+                this.toNextPage({
+                    name:'IndexAccountmanageScene',
+                    component:IndexAccountmanageScene,
+                    params:{
+                    }
+                })
+            },(error)=>{
+                this.props.showToast(error.mjson.msg);
+            })
+
+    }
+
 }

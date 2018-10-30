@@ -166,9 +166,14 @@ export default class IndexAccountmanageScene extends BaseComponent{
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/shoujihao.png')} title="修改预留手机号" isShowBottomLin={true} click={()=>{this.editerPhone()}}/>
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/chongzhimima.png')} title="重置密码" isShowBottomLin={true} click={()=>{this.setPasswordAction()}}/>
                                     </View>
-                                    <View style={{backgroundColor:'#ffffff',width:width,marginTop:Pixel.getPixel(10)}}>
-                                        <CellItem imageData={require('../../../../../images/mine/guangfa_account/shehzi.png')} title="账户设置" isShowBottomLin={true} click={()=>{this.accountSetting()}}/>
-                                    </View>
+                                    {
+                                        this.state.accountData.account_open_type==1 && (
+                                            <View style={{backgroundColor:'#ffffff',width:width,marginTop:Pixel.getPixel(10)}}>
+                                                <CellItem imageData={require('../../../../../images/mine/guangfa_account/shehzi.png')} title="账户设置" isShowBottomLin={true} click={()=>{this.accountSetting()}}/>
+                                            </View>
+                                        )
+                                    }
+
                                 </ScrollView>
                                 <View style={{left:0,right:0,height:Pixel.getPixel(44),flexDirection:'row',bottom:Pixel.getBottomPixel(0),position: 'absolute'}}>
                                     <TouchableOpacity style={{flex:1,backgroundColor:'#ffffff',alignItems:'center',justifyContent:'center'}}

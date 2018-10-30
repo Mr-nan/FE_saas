@@ -56,20 +56,20 @@ export default class SelectCountCompany extends BaseComponent{
                 <StatusBar barStyle="dark-content"/>
                 <NavigationView backIconClick={this.backPage} title='选择账户' wrapStyle={{backgroundColor:'white'}}
                                 titleStyle={{color:fontColor.COLORD2}}/>
+                {/*<TouchableOpacity style={styles.openCountView}  onPress={()=>{*/}
+                    {/*this.toNextPage({*/}
+                        {/*name:GfOpenCompanyCountScene,*/}
+                        {/*component:GfOpenCompanyCountScene,*/}
+                        {/*params:{callBack:()=>{this.props.callBack()},title:'开通企业账户',btnText:'确认提交'}*/}
+                    {/*})*/}
+                {/*}}>*/}
+                    {/*<View style={styles.header}>*/}
+                        {/*<Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/kuai.png')}/>*/}
+                        {/*<Text allowFontScaling={false} style={styles.text}>企业快速开户</Text>*/}
+                    {/*</View>*/}
+                    {/*<Text allowFontScaling={false} style={styles.tip}>每个企业用户仅限开通1个企业账户，并将绑定企业信息</Text>*/}
+                {/*</TouchableOpacity>*/}
                 <TouchableOpacity style={styles.openCountView}  onPress={()=>{
-                    this.toNextPage({
-                        name:GfOpenCompanyCountScene,
-                        component:GfOpenCompanyCountScene,
-                        params:{callBack:()=>{this.props.callBack()},title:'开通企业账户',btnText:'确认提交'}
-                    })
-                }}>
-                    <View style={styles.header}>
-                        <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/kuai.png')}/>
-                        <Text allowFontScaling={false} style={styles.text}>企业快速开户</Text>
-                    </View>
-                    <Text allowFontScaling={false} style={styles.tip}>每个企业用户仅限开通1个企业账户，并将绑定企业信息</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.openCountView,{marginTop:Pixel.getPixel(15)}]}  onPress={()=>{
                     this.toNextPage({
                         name:GfOpenCompanyCountScene,
                         component:GfOpenCompanyCountScene,

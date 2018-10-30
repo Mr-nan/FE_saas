@@ -11,7 +11,8 @@ import {
     View,
     Image,
     TouchableOpacity,
-    Dimensions, StatusBar
+    ListView,
+    Dimensions, StatusBar,
 
 } from 'react-native';
 
@@ -21,13 +22,18 @@ const Pixel = new PixelUtil;
 import * as fontColor from '../../../../constant/fontAndColor';
 import BaseComponent from '../../../../component/BaseComponent';
 import NavigationView from '../../../../component/AllNavigationView';
+import {request} from "../../../../utils/RequestUtil";
+import * as Urls from "../../../../constant/appUrls";
+import AlertPhoneDeteilScene from "./AlertPhoneDeteilScene";
 
 
 export default class AlertPhoneNumberScene extends BaseComponent{
     constructor(props){
         super(props);
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 == r2});
         this.state = {
-            renderPlaceholderOnly:'blank'
+            renderPlaceholderOnly:'blank',
+            source:ds.cloneWithRows([])
         }
     }
 
@@ -42,61 +48,105 @@ export default class AlertPhoneNumberScene extends BaseComponent{
     }
 
     initFinish(){
-        this.setState({
-            renderPlaceholderOnly:'success'
-        });
+        this.loadData();
+    }
+
+    loadData = () => {
+        let maps = {
+          //  enter_base_id: global.companyBaseID,
+            enter_base_id:'70260',
+            bank_id:'gfyh',
+        };
+        request(Urls.GET_BANK_CARD_LIST, 'Post', maps)
+            .then((response) => {
+                console.log('response',response);
+                this.data = response.mjson.data;
+                this.setState({
+                    renderPlaceholderOnly: 'success',
+                    source: this.state.source.cloneWithRows(this.data)
+                });
+            }, (error) => {
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                });
+                this.props.showToast(error.mjson.msg);
+            });
     }
 
     render() {
         if(this.state.renderPlaceholderOnly !== 'success'){
             return this._renderPlaceholderView();
         }
-        this.text = '如您在银行柜台修改了绑定卡的手机号，需要在此功能中修改绑定\n'+'银行手机号，否则将无法收到银行发送的验证码'
+
         return (
             <View style={{backgroundColor:fontColor.COLORD1,flex:1}}>
                 <StatusBar barStyle="dark-content"/>
-                <TouchableOpacity style={styles.openCountView}>
-                    <View>
-                    <View style={styles.header}>
-                        <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/ka.png')}/>
-                        <Text allowFontScaling={false} style={styles.text}>6212 ***** 3456</Text>
-                    </View>
-                    <View style={[styles.header,{alignItems:'flex-end',height:Pixel.getPixel(30)}]}>
-                        <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/shouji.png')}/>
-                        <Text allowFontScaling={false} style={[styles.text,{color:'#666666'}]}>18625689023</Text>
-                    </View>
-                    </View>
-                    <View style={{width:Pixel.getPixel(43),height:Pixel.getPixel(25),borderRadius: Pixel.getPixel(25),marginTop:Pixel.getPixel(48),backgroundColor:'rgba(8,195,197,0.1)',alignItems:'center',justifyContent: 'center'}}>
-                        <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}}>修改</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.openCountView,{marginTop:Pixel.getPixel(15)}]}>
-                    <View>
-                        <View style={styles.header}>
-                            <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/ka.png')}/>
-                            <Text allowFontScaling={false} style={styles.text}>6212 ***** 3456</Text>
-                        </View>
-                        <View style={[styles.header,{alignItems:'flex-end',height:Pixel.getPixel(30)}]}>
-                            <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/shouji.png')}/>
-                            <Text allowFontScaling={false} style={[styles.text,{color:'#666666'}]}>18625689023</Text>
-                        </View>
-                    </View>
-                    <View style={{width:Pixel.getPixel(43),height:Pixel.getPixel(25),borderRadius: Pixel.getPixel(25),marginTop:Pixel.getPixel(48),backgroundColor:'rgba(8,195,197,0.1)',alignItems:'center',justifyContent: 'center'}}>
-                        <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}}>修改</Text>
-                    </View>
-                </TouchableOpacity>
+                <ListView dataSource={this.state.source} renderRow={this.renderRow} renderFooter={this.footer}/>
 
-                <View style={{width:width,marginLeft:Pixel.getPixel(13),flexDirection: 'row',marginTop:Pixel.getPixel(25),alignItems: 'flex-start'}}>
-                    <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
-                    <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(6),color:'#cccccc',fontSize:Pixel.getPixel(11),lineHeight:Pixel.getPixel(16)}}>{this.text}</Text>
-                </View>
                 <NavigationView backIconClick={this.backPage} title='修改预留手机号' wrapStyle={{backgroundColor:'white'}}
                                 titleStyle={{color:fontColor.COLORD2}}/>
-
             </View>
         );
     }
+    footer = ()=>{
+        this.text = '如您在银行柜台修改了绑定卡的手机号，需要在此功能中修改绑定\n'+'银行手机号，否则将无法收到银行发送的验证码';
+        return(
+            <View style={{width:width,marginLeft:Pixel.getPixel(13),flexDirection: 'row',marginTop:Pixel.getPixel(25),alignItems: 'flex-start'}}>
+                <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
+                <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(6),color:'#cccccc',fontSize:Pixel.getPixel(11),lineHeight:Pixel.getPixel(16)}}>{this.text}</Text>
+            </View>
+        )
+    }
+    next = (row) => {
+        this.toNextPage({
+            name:'AlertPhoneDeteilScene',
+            component:AlertPhoneDeteilScene,
+            params:{
+                 bankCardId:row.bank_card_no,
+                 mobile:row.mobile
+            }
+        })
+    }
+
+    renderRow = (rowData,sectionID,rowID) =>{
+        this.cardNO = rowData.bank_card_no && rowData.bank_card_no != 0 ? rowData.bank_card_no.replace(/^(....).*(....)$/, "$1****$2"):'***** ***** *****';
+        return(
+            <View>
+                {rowID == '0' ?  <TouchableOpacity style={styles.openCountView} onPress={()=>{this.next(rowData)}}>
+                    <View>
+                        <View style={styles.header}>
+                            <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/ka.png')}/>
+                            <Text allowFontScaling={false} style={styles.text}>{this.cardNO}</Text>
+                        </View>
+                        <View style={[styles.header,{alignItems:'flex-end',height:Pixel.getPixel(30)}]}>
+                            <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/shouji.png')}/>
+                            <Text allowFontScaling={false} style={[styles.text,{color:'#666666'}]}>{rowData.mobile}</Text>
+                        </View>
+                    </View>
+                    <View style={{width:Pixel.getPixel(43),height:Pixel.getPixel(25),borderRadius: Pixel.getPixel(25),marginTop:Pixel.getPixel(48),backgroundColor:'rgba(8,195,197,0.1)',alignItems:'center',justifyContent: 'center'}}>
+                        <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}}>修改</Text>
+                    </View>
+                </TouchableOpacity> : <TouchableOpacity onPress={()=>{this.next(rowData)}}  style={[styles.openCountView,{marginTop:Pixel.getPixel(15)}]}>
+                    <View>
+                        <View style={styles.header}>
+                            <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/ka.png')}/>
+                            <Text allowFontScaling={false} style={styles.text}>{this.cardNO}</Text>
+                        </View>
+                        <View style={[styles.header,{alignItems:'flex-end',height:Pixel.getPixel(30)}]}>
+                            <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/shouji.png')}/>
+                            <Text allowFontScaling={false} style={[styles.text,{color:'#666666'}]}>{rowData.mobile}</Text>
+                        </View>
+                    </View>
+                    <View style={{width:Pixel.getPixel(43),height:Pixel.getPixel(25),borderRadius: Pixel.getPixel(25),marginTop:Pixel.getPixel(48),backgroundColor:'rgba(8,195,197,0.1)',alignItems:'center',justifyContent: 'center'}}>
+                        <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}}>修改</Text>
+                    </View>
+                </TouchableOpacity>}
+            </View>
+
+        )
+    }
 }
+
 
 const styles = StyleSheet.create({
     openCountView:{
