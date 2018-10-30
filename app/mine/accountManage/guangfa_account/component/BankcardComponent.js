@@ -84,7 +84,7 @@ export default class BankcardComponent extends BaseComponent{
         }else if(name.indexOf('交通银行')>-1){
             this.icon= require('../../../../../images/mine/guangfa_account/jt.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-lan.png');
-        }else if(name.indexOf('邮政银行')>-1){
+        }else if(name.indexOf('邮储银行')>-1){
             this.icon =require('../../../../../images/mine/guangfa_account/yz.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-lv.png');
         }else if(name.indexOf('招商银行')>-1){
@@ -97,7 +97,7 @@ export default class BankcardComponent extends BaseComponent{
             this.icon = require('../../../../../images/mine/guangfa_account/ms.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-lv.png');
         }else if(name.indexOf('光大银行')>-1){
-            this.icon = require('../../../../../images/mine/guangfa_account/gd.png');
+            this.icon = require('../../../../../images/mine/guangfa_account/gd_new.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-zi.png');
         }else if(name.indexOf('华夏银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/hx.png');
@@ -114,6 +114,9 @@ export default class BankcardComponent extends BaseComponent{
         }else if(name.indexOf('兴业银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/zx.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-lan.png');
+        }else {
+            this.icon = require('../../../../../images/mine/guangfa_account/moren-bank.png');
+            this.bg = require('../../../../../images/mine/guangfa_account/ka-hong.png');
         }
     }
 

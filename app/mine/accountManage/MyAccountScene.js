@@ -20,7 +20,8 @@ import {
     RefreshControl,
     Dimensions,
     TouchableWithoutFeedback,
-    Modal
+    Modal,
+    DeviceEventEmitter
 } from 'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -103,10 +104,14 @@ export default class MyAccountScene extends BaseComponent {
         flag3 = 0;
         flag4 = 0;
         flag5 = 0;
+        this.myEmitter.remove();
     }
 
     initFinish = () => {
 
+        this.myEmitter =DeviceEventEmitter.addListener('myAccountSceneLoadData',()=>{
+            this.loadData();
+        });
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
             if (data.code == 1) {
                 let userData = JSON.parse(data.result);

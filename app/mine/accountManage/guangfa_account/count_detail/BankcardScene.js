@@ -66,6 +66,7 @@ export default class BankCardScene extends BaseComponent{
         let maps = {
             bank_id:'gfyh',
             enter_base_id:global.companyBaseID,
+            status:this.props.getBankData?'3':'1,2,3'
 
         }
         request(Urls.GET_BANK_CARD_LIST, 'Post', maps)
@@ -159,7 +160,7 @@ export default class BankCardScene extends BaseComponent{
     }
 
     _renderFootView=()=>{
-        if(this.state.bankArray.length<9){
+        if(this.state.bankArray.length<5){
             return(
                 <TouchableOpacity style={{
                     width:Pixel.getPixel(345),
