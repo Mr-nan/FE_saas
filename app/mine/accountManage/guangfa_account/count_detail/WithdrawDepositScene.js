@@ -63,6 +63,7 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
         let maps = {
             bank_id:'gfyh',
             enter_base_id:global.companyBaseID,
+            status:'3',
 
         }
         request(Urls.GET_BANK_CARD_LIST, 'Post', maps)
@@ -302,7 +303,7 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
             return require('../../../../../images/mine/guangfa_account/ny.png');
         }else if(name.indexOf('交通银行')>-1){
             return require('../../../../../images/mine/guangfa_account/jt.png');
-        }else if(name.indexOf('邮政银行')>-1){
+        }else if(name.indexOf('邮储银行')>-1){
             return require('../../../../../images/mine/guangfa_account/yz.png');
         }else if(name.indexOf('招商银行')>-1){
             return require('../../../../../images/mine/guangfa_account/zs.png');
@@ -311,7 +312,7 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
         }else if(name.indexOf('民生银行')>-1){
             return require('../../../../../images/mine/guangfa_account/ms.png');
         }else if(name.indexOf('光大银行')>-1){
-            return require('../../../../../images/mine/guangfa_account/gd.png');
+            return require('../../../../../images/mine/guangfa_account/gd_new.png');
         }else if(name.indexOf('华夏银行')>-1){
             return require('../../../../../images/mine/guangfa_account/hx.png');
         }else if(name.indexOf('中信银行')>-1){
@@ -323,6 +324,7 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
         }else if(name.indexOf('兴业银行')>-1){
             return require('../../../../../images/mine/guangfa_account/zx.png');
         }
+        return require('../../../../../images/mine/guangfa_account/moren-bank.png');
     }
 
 }

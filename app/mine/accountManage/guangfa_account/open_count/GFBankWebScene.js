@@ -70,7 +70,7 @@ export default class GFBankWebScene extends BaseComponent{
     document.getElementById('b').style.display = "none";
 </script>
 </html>`}}/>
-                <NavigationView title={this.props.title?this.props.title:'广发银行'} backIconClick={this.backPage}/>
+                <NavigationView title={this.props.title?this.props.title:'广发银行'} backIconClick={this.backPage} wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
             </View>
 
         );
