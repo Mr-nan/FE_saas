@@ -55,6 +55,16 @@ export default class WattingTenScendsScene extends BaseComponent{
                 }
             }else{
                 this.stopTime();
+                this.toNextPage({
+                    name:'NoAccountScene',
+                    component:NoAccountScene,
+                    params:{
+                        callback:()=>{this.props.callback()},
+                        status:0,
+                        title:'账户首页',
+                        toNextPageData:this.props.toNextPageData,
+                    }
+                })
             }
         },1000);
 
@@ -73,17 +83,20 @@ export default class WattingTenScendsScene extends BaseComponent{
         request(Urls.ZS_FETCH_STATUS,'Post',maps)
             .then((response)=>{
                 let da = response.mjson.data;
-                    this.toNextPage({
-                        name:'NoAccountScene',
-                        component:NoAccountScene,
-                        params:{
-                            callback:()=>{this.props.callback()},
-                            status:da.transfer_status,
-                            title:'账户首页',
-                            toNextPageData:this.props.toNextPageData,
-                        }
-                    })
-                this.stopTime();
+
+                 if(da.transfer_status==1){
+                     this.toNextPage({
+                         name:'NoAccountScene',
+                         component:NoAccountScene,
+                         params:{
+                             callback:()=>{this.props.callback()},
+                             status:da.transfer_status,
+                             title:'账户首页',
+                             toNextPageData:this.props.toNextPageData,
+                         }
+                     })
+                     this.stopTime();
+                 }
 
             },(error)=>{
                 if(this.state.time == 1){

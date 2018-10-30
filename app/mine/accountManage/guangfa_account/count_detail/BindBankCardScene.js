@@ -76,7 +76,7 @@ export default class BindBankCardScene extends BaseComponent{
     _renderPlaceholderView = () => {
         return(
             <View style={{width:width,height:height,backgroundColor:fontAndColor.COLORA3}}>
-                <NavigationView backIconClick={this.backPage} title={this.props.title}
+                <NavigationView backIconClick={this.backPage} title={'添加银行卡'}
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 {this.loadView()}
             </View>

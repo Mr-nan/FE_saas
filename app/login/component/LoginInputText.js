@@ -24,18 +24,10 @@ export default class LoginInputText extends Component {
 
     constructor(props) {
         super(props);
-        if(this.props.exitValue){
-            this.state = {
-                values: this.props.exitValue,//输入框输入内容
-                rightIconLodding: false,
-            }
-        }else{
-            this.state = {
-                values:'',//输入框输入内容
-                rightIconLodding: false,
-            }
+        this.state = {
+            values: this.props.exitValue?this.props.exitValue:'',//输入框输入内容
+            rightIconLodding: false,
         }
-
     }
 
     static defaultProps = {
