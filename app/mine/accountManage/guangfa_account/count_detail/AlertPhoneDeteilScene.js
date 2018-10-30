@@ -36,6 +36,7 @@ import NoAccountScene from "./NoAccountScene";
 import SmallAmountBankStatusScene from "./SmallAmountBankStatusScene";
 import IndexAccountmanageScene from "./IndexAccountmanageScene";
 import GFBankWebScene from "../open_count/GFBankWebScene";
+import WattingTenScendsScene from "./WattingTenScendsScene";
 
 export default class AlertPhoneDeteilScene extends BaseComponent{
     constructor(props) {
@@ -70,7 +71,7 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
         if(this.state.renderPlaceholderOnly != 'success'){
             return this._renderPlaceholderView()
         }
-        this.cardNO = this.props.bankCardId && this.props.bankCardId != 0 ? this.props.bankCardId.replace(/^(....).*(....)$/, "$1****$2"):'***** ***** *****';
+        this.cardNO = this.props.bankCardNo && this.props.bankCardNo != 0 ? this.props.bankCardNo.replace(/^(....).*(....)$/, "$1****$2"):'***** ***** *****';
 
         return (
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3}}>
@@ -121,28 +122,35 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
     }
     submit = () => {
         this.SData.new_mobile = this.refs.code.getInputTextValue();
-        if(this.SData.bind_bank_card_no_id == ''){
+        if(this.SData.new_mobile == ''){
             this.props.showToast('请输入新密码');
         }
         request(Urls.PERSONAL_CHANGE_PHONE, 'Post', this.SData)
             .then((response)=> {
                 this.props.showModal(false);
-                let da = response.mjson;
-                console.log('da',da);
-                this.toNextPage({
-                    name:'GFBankWebScene',
-                    component:GFBankWebScene,
-                    params:{
-                        callback:()=>{this.props.callback()},
-                        uri:da.data.url_wap,
-                        pa:da.data.params,
-                        sign:da.data.sign,
-                        serial_no:da.data.serial_no,
-                        reback_url:'restPassword',
-                    }
-                })
+                if(response.mjson.code == '8010017') {
+                    console.log('2222');
+                    this.toNextPage({
+                        name: 'WattingTenScendsScene',
+                        component: WattingTenScendsScene,
+                        params: {
+                            serial_no: da.data.serial_no
+                        }
+                    })
+                }
             },(error)=>{
-                this.props.showToast(error.mjson.msg);
+                if(error.mjson.code == '8010017') {
+                    console.log('2222');
+                    this.toNextPage({
+                        name: 'WattingTenScendsScene',
+                        component: WattingTenScendsScene,
+                        params: {
+                            serial_no: error.mjson.data.serial_no
+                        }
+                    })
+                }else{
+                    this.props.showToast(error.mjson.msg)
+                }
             })
     }
 
