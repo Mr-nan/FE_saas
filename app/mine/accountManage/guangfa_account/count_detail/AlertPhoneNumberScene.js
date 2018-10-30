@@ -53,8 +53,8 @@ export default class AlertPhoneNumberScene extends BaseComponent{
 
     loadData = () => {
         let maps = {
-          //  enter_base_id: global.companyBaseID,
-            enter_base_id:'70260',
+            enter_base_id: global.companyBaseID,
+           // enter_base_id:'70260',
             bank_id:'gfyh',
         };
         request(Urls.GET_BANK_CARD_LIST, 'Post', maps)
