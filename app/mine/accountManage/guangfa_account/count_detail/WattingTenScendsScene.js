@@ -13,7 +13,8 @@ import {
     TouchableOpacity,
     StatusBar,
     Dimensions,
-    Animated
+    Animated,
+    Easing
 
 }from 'react-native';
 
@@ -33,13 +34,17 @@ export default class WattingTenScendsScene extends BaseComponent{
         this.state = {
             renderPlaceholderOnly:'blank',
             time:10,
+            bounceValue:new Animated.Value(1),
+            rotateValue:new Animated.Value(0),
         }
+        this.isStart= true;
     }
     componentWillMount(){
         this.countTime();
 
     }
     countTime = () => {
+        this.rotateAnimation();
        this.myTime = setInterval(()=>{
             if(this.state.time > 1){
                 this.setState({
@@ -67,6 +72,7 @@ export default class WattingTenScendsScene extends BaseComponent{
     }
 
     stopTime = () =>{
+        this.isStart = false;
        clearInterval(this.myTime);
     }
 
@@ -141,12 +147,16 @@ export default class WattingTenScendsScene extends BaseComponent{
                 <NavigationView title='账户首页'
                                 wrapStyle={{backgroundColor:'transparent'}} titleStyle={{color:'#ffffff'}}/>
                     <View style={{width:Pixel.getPixel(221),height:Pixel.getPixel(242),marginTop:Pixel.getPixel(113),alignItems:'center',justifyContent:'center'}}>
-                        <Image source={require('../../../../../images/mine/guangfa_account/dongxiao1.png')} style={{alignItems:'center',justifyContent:'center'}}>
-                        <View style={{flexDirection: 'row',alignItems:'center',justifyContent: 'center'}}>
+                        <Animated.Image source={require('../../../../../images/mine/guangfa_account/dongxiao1.png')} style={{alignItems:'center',justifyContent:'center', transform:[
+                            {scale:this.state.bounceValue},
+                            {rotateZ:this.state.rotateValue.interpolate({inputRange:[0,1],outputRange:['360deg','0deg']})}]}}>
+                        </Animated.Image>
+                        <View style={{flexDirection: 'row',alignItems:'center',justifyContent: 'center',top:0,left:0,
+                            right:0,bottom:0,position:'absolute',
+                        }}>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getPixel(72),fontWeight: 'bold'}}>{this.state.time}</Text>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getPixel(36),marginTop:Pixel.getPixel(25)}}>S</Text>
                         </View>
-                        </Image>
                     </View>
                 <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getPixel(20),fontWeight: 'bold',marginTop: Pixel.getPixel(14)}}>等待银行确认</Text>
             </Image>

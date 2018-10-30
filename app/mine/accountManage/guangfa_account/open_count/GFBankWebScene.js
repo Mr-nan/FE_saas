@@ -37,6 +37,7 @@ export default class GFBankWebScene extends BaseComponent{
     render() {
         return (
             <View style={{flex:1,backgroundColor:fontAndColor.COLORA3}}>
+                <StatusBar barStyle='dark-content'/>
                 <WebViewTitle ref="webviewtitle"/>
                 <WebView style={{flex:1}}
                          scalesPageToFit={true}
