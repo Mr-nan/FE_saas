@@ -185,7 +185,7 @@ export default class AccountSettingScene extends BaseComponent{
     nextCompany = ()=>{
       //  this.SData.agent_cert_no = this.refs.contact_code.getInputTextValue();
         this.SData.agent_cert_no = this.refs.contact_code.getInputTextValue();
-       this.SData.agent_mobile = this.state.accountData.person_mobile;
+       this.SData.agent_mobile = this.state.accountData.operate_mobile;
         this.SData.agent_name = this.refs.contact_name.getInputTextValue();
         this.SData.ent_name = this.refs.companyName.getInputTextValue();
         this.SData.ent_phone = this.refs.companyPhone.getInputTextValue();
