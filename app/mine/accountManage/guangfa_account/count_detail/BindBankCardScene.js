@@ -245,11 +245,13 @@ export default class BindBankCardScene extends BaseComponent{
             .then((response)=> {
                 this.props.showModal(false);
                 this.datas = response.mjson.data;
+                this.datacode = response.mjson.code;
                 this.serial_no = this.datas.serial_no;
                 this.setState({
                     modalVisible:true
                 })
             },(error)=>{
+                this.props.showModal(false)
                 this.setState({
                     image:require('../../../../../images/mine/guangfa_account/shi.png'),
                     text:'添加银行卡失败\n' + '请重新尝试添加'
@@ -260,12 +262,11 @@ export default class BindBankCardScene extends BaseComponent{
             })
     }
 
-    go = ()=>{
+    go =()=>{
         this.setState({
             modalVisible:false
         })
-        if(this.datas != ''){
-
+        if(this.datacode==1){
             this.toNextPage({
                 name:'WattingTenScendsScene',
                 component:WattingTenScendsScene,
@@ -274,8 +275,6 @@ export default class BindBankCardScene extends BaseComponent{
                 }
             })
 
-        }else{
-            this.backPage();
         }
     }
 

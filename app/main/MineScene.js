@@ -654,21 +654,6 @@ export default class MineScene extends BaseComponent {
     _navigatorPage = (rowData) => {
         switch (rowData.id) {
             case 47:
-                // request(Urls.GET_USER_ACCOUNT_DETAIL,'Post',{enter_base_id:global.companyBaseID})
-                //     .then((response)=>{
-                //         this.da = response.mjson.data;
-                //         if(this.da == ''){
-                //             this.toNextPage({
-                //                 name:'NoOpenBankScene',
-                //                 component:NoOpenBankScene,
-                //                 params:{}
-                //             })
-                //         }else{
-                //             this.toPage();
-                //         }
-                //     },(error)=>{
-                //        this.props.showToast('未查询到信息');
-                //     });
                 this.toPage();
                 return;
                 break;

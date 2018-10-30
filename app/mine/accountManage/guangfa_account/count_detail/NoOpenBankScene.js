@@ -50,16 +50,6 @@ export default class NoOpenBankScene extends BaseComponent{
 
 
 
-    next =()=>{
-
-        if(this.props.toNextPageData){
-            this.toNextPage(this.props.toNextPageData);
-        }else {
-            this.backToTop();
-        }
-
-    }
-
     handleBack=()=>{
         this.backToTop();
     }

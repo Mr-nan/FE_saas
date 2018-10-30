@@ -165,7 +165,6 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                                             marginBottom: 15,
                                             padding: 0,
                                             marginLeft:Pixel.getPixel(5),
-                                            color:'#05C5C2'
                                         }}
                                         keyboardType={'numeric'}
                                         underlineColorAndroid={"#00000000"}
@@ -225,7 +224,7 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
             name:'BankcardScene',
             component:BankcardScene,
             params:{
-                account:this.props.accountData,
+                account:this.props.account,
                 getBankData:(bankData)=>{this.getBankData(bankData)},
             }});
     }
