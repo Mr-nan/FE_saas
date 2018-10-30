@@ -14,7 +14,8 @@ import {
     ListView,
     InteractionManager,
     NativeModules,
-    TextInput
+    TextInput,
+    StatusBar,
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -120,7 +121,7 @@ export  default class SelectBankScene extends BaseComponent {
 
         for(bankItem of this.base_bankData){
 
-            if(this.hotBankData.length<10){
+            if(bankItem.isHot ==1 ){
                 this.hotBankData.push(bankItem);
             }
             let  bankName = bankItem.bankName;
@@ -135,7 +136,7 @@ export  default class SelectBankScene extends BaseComponent {
             if(zimu.length>1){
                 zimu = zimu.substring(0,1);
             }
-            console.log('bankName',bankName,'zimu',zimu);
+            // console.log('bankName',bankName,'zimu',zimu);
 
             let index =  this.zimuIndex(zimu);
             this.new_bankData[index].data.push(bankItem);
@@ -287,14 +288,20 @@ export  default class SelectBankScene extends BaseComponent {
         }
         return (
             <View style={styles.root}>
+                <StatusBar barStyle={'dark-content'}/>
                 <View style={{backgroundColor :fontAnColor.COLORA3,height:Pixel.getPixel(50),paddingHorizontal:Pixel.getPixel(15),justifyContent:'center',
                     flexDirection:'row', alignItems:'center'
                 }}>
-                    <TextInput style={styles.textInput}
-                               placeholder = {'    搜索银行'}
+                    <View style={{height:Pixel.getPixel(30), width:width - Pixel.getPixel(30), backgroundColor:'white',justifyContent:this.isSeekView?'flex-start':'center',
+                        flexDirection:'row',
+                        alignItems:'center'
+                    }}>
+                        <Image style={{width:Pixel.getPixel(20),height:Pixel.getPixel(20),marginHorizontal:Pixel.getPixel(10)}} source={require('../../../images/findIcon.png')}/>
+                    <TextInput style={[styles.textInput,this.isSeekView && {width:width - Pixel.getPixel(75)}]}
+                               placeholder = {'搜索银行名称'}
                                underlineColorAndroid='transparent'
+                               placeholderTextColor={fontAnColor.COLORA1}
                                onChangeText={(text)=>{
-                                   console.log(text);
                                     if(text.length>0){
                                         this.isSeekView = true;
                                         this.loadSeekData(text);
@@ -306,17 +313,17 @@ export  default class SelectBankScene extends BaseComponent {
                                         });
                                     }
                                }}/>
+                    </View>
                 </View>
                 {
                     this.state.dataSource && (
                         <ListView ref="listView"
-                                  style={{flex:1,marginTop:Pixel.getPixel(50)}}
+                                  style={{flex:1}}
                                   removeClippedSubviews={false}
                                   dataSource={this.state.dataSource}
                                   renderRow={this.renderRow}
                                   renderSectionHeader={this.renderSectionHeader}
                                   renderHeader={this.renderHeader}
-                                  contentContainerStyle={styles.listStyle}
                                   pageSize={300}
 
                         />)
@@ -328,10 +335,9 @@ export  default class SelectBankScene extends BaseComponent {
                         <View style={{left:0, right:0, top:Pixel.getPixel(50)+Pixel.getTitlePixel(64),bottom:0,backgroundColor:'rgba(1,1,1,0.3)',position: 'absolute',
                         }}>
                             <ListView
-                                      removeClippedSubviews={false}
+                                      removeClippedSubviews={true}
                                       dataSource={this.state.seekSource}
                                       renderRow={this.renderSeekRow}
-                                      contentContainerStyle={styles.listStyle}
 
                             />
                         </View>
@@ -340,6 +346,9 @@ export  default class SelectBankScene extends BaseComponent {
                 <NavigationView
                     title={'选择银行'}
                     backIconClick={this.backPage}
+                    wrapStyle={{backgroundColor:'white'}}
+                    titleStyle={{color:fontAnColor.COLORA0}}
+
                 />
             </View>
         );
@@ -356,13 +365,10 @@ export  default class SelectBankScene extends BaseComponent {
 
         let  headHeight = (this.new_bankData.length%4+1) * ((width-Pixel.getPixel(30))/4);
         let scrollY = (index-2) * Pixel.getPixel(40)+headHeight;
-
-        console.log((this.new_bankData.length%4+1));
         for (let i = 0; i < index-2; i++) {
             let rowIndex =this.new_bankData[i].data.length;
             scrollY += (rowIndex * Pixel.getPixel(44));
         }
-        console.log(scrollY);
         listView.scrollTo({x: 0, y: scrollY, animated: true});
 
     };
@@ -475,6 +481,7 @@ export  default class SelectBankScene extends BaseComponent {
         }else if(name.indexOf('兴业银行')>-1){
             return require('../../../images/mine/guangfa_account/zx.png');
         }
+
     }
 
 
@@ -514,14 +521,13 @@ const styles = StyleSheet.create({
    },
     textInput:{
         height:Pixel.getPixel(30),
-        width:width - 30,
+        width:Pixel.getPixel(100),
         backgroundColor:'white',
         fontSize:Pixel.getFontPixel(fontAnColor.LITTLEFONT),
         paddingTop:0,
         paddingBottom:0,
         paddingLeft:0,
         paddingRight:0,
-        marginTop:Pixel.getPixel(10)
 
     },
     listStyle: {

@@ -126,7 +126,7 @@ export default class BankCardScene extends BaseComponent{
     }
 
     _renderFootView=()=>{
-        if(this.state.bankArray.length<5){
+        if(this.state.bankArray.length<9){
             return(
                 <TouchableOpacity style={{
                     width:Pixel.getPixel(345),
