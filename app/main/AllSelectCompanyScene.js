@@ -26,8 +26,8 @@ const childItems = [];
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import BaseComponent from '../component/BaseComponent';
-import MainPage from './MainPage';
-// import MainPage from '../mine/accountManage/MyAccountScene';
+// import MainPage from './MainPage';
+import MainPage from '../mine/accountManage/MyAccountScene';
 
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
