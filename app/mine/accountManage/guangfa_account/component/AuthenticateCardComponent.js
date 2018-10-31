@@ -55,35 +55,38 @@ export default class AuthenticateCardComponent extends BaseComponent{
         }
     }
     render(){
-        const {wrapStyle}  = this.props;
         return(
-            <Image style={[{marginTop:Pixel.getPixel(15),overflow:'hidden',height:Pixel.getPixel(123), width:width-Pixel.getPixel(30),marginLeft:Pixel.getPixel(15),
-            },wrapStyle]} source={this.tu}>
+            <Image style={{
+                marginTop:Pixel.getPixel(15),
+                width:width,
+                height:width*0.3,
+                justifyContent:'center',
+            }} source={this.tu} resizeMode="stretch">
                 <TouchableOpacity onPress={this.props.btn} style={{
-                    marginTop: Pixel.getPixel(12),
-                    width:width-Pixel.getPixel(30),
-                    height:Pixel.getPixel(81),
+                    width:width-Pixel.getPixel(49),
+                    height:Pixel.getPixel(60),
                     overflow:'hidden',
-                    marginLeft:Pixel.getPixel(15),
+                    marginLeft:Pixel.getPixel(35),
                     flexDirection:'row',
-                    borderRadius:Pixel.getPixel(30),
                     alignItems:'center',
-                    backgroundColor:'red',
-                    paddingLeft: Pixel.getPixel(10)}}>
+                    marginBottom:Pixel.getPixel(10)
+                   }}>
                     <View style={{flexDirection:'column',height:Pixel.getPixel(60),justifyContent:'flex-start'}}>
                         <Text allowFontScaling={false} style={{lineHeight:Pixel.getPixel(20),backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(12),}}>{this.props.data.sub_bank_name}卡号</Text>
                         <Text allowFontScaling={false} style={{lineHeight:Pixel.getPixel(30),backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(24),fontWeight:'bold'}}>{this.bankNo}</Text>
                     </View>
                     <View  style={{
                         position:'absolute',
-                        top:Pixel.getPixel(30),
-                        right:Pixel.getPixel(-10),
+                        top:(Pixel.getPixel(65)-Pixel.getPixel(30))/2,
+                        right:Pixel.getPixel(-15),
                         backgroundColor:'rgba(0,0,0,0.2)',
                         borderRadius: Pixel.getPixel(15),
                         height:Pixel.getPixel(30),
                         justifyContent:'center',
-                        width:Pixel.getPixel(89)}}>
-                        <Text allowFontScaling={false}  style={{marginLeft:Pixel.getPixel(10) ,color:'#ffffff',fontSize:Pixel.getPixel(15),lineHeight:Pixel.getPixel(21)}}>{this.text}</Text>
+                        paddingRight:Pixel.getPixel(25),
+                        paddingLeft:Pixel.getPixel(10)
+                        }}>
+                        <Text allowFontScaling={false}  style={{color:'#ffffff',fontSize:Pixel.getPixel(15)}}>{this.text}</Text>
                     </View>
                 </TouchableOpacity>
 
