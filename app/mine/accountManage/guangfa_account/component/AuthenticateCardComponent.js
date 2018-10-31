@@ -25,6 +25,7 @@ import * as StorageKeyNames from "../../../../constant/storageKeyNames";
 import {request} from "../../../../utils/RequestUtil";
 import * as Urls from "../../../../constant/appUrls";
 const Pixel = new PixelUtil();
+const {width,height} = Dimensions.get('window');
 
 export default class AuthenticateCardComponent extends BaseComponent{
     constructor(props) {
@@ -55,23 +56,38 @@ export default class AuthenticateCardComponent extends BaseComponent{
     }
     render(){
         const {wrapStyle}  = this.props;
-
         return(
-            <View>
-                {this.props.data.status != 0 && this.props.data.status != 4 && this.props.data.status != 5?   <Image style={[{marginTop: Pixel.getPixel(15),height:Pixel.getPixel(123)},wrapStyle]} source={this.tu}>
-                    <TouchableOpacity onPress={this.props.btn} style={{marginTop: Pixel.getPixel(12),width:Pixel.getPixel(348),height:Pixel.getPixel(91),marginLeft: Pixel.getPixel(15),flexDirection:'row',alignItems:'center',overflow: 'hidden'}}>
-                        <View style={{flexDirection: 'column',justifyContent:'center',height:Pixel.getPixel(60),marginLeft:Pixel.getPixel(20)}}>
-                            <Text allowFontScaling={false} style={{lineHeight:Pixel.getPixel(20),backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(12),}}>{this.props.data.sub_bank_name}卡号</Text>
-                            <Text allowFontScaling={false} style={{lineHeight:Pixel.getPixel(30),backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(24),fontWeight:'bold'}}>{this.bankNo}</Text>
-                        </View>
-                        <View style={{backgroundColor:'rgba(0,0,0,0.2)',borderRadius: Pixel.getPixel(25),justifyContent:'center',height:Pixel.getPixel(29),width:Pixel.getPixel(89),marginLeft:Pixel.getPixel(88.6)}}>
-                            <Text allowFontScaling={false}  style={{color:'#ffffff',fontSize:Pixel.getPixel(15),lineHeight:Pixel.getPixel(21),marginLeft:Pixel.getPixel(16)}}>{this.text}</Text>
-                        </View>
-                    </TouchableOpacity>
-                </Image> : null}
-            </View>
+            <Image style={[{marginTop:Pixel.getPixel(15),overflow:'hidden',height:Pixel.getPixel(123), width:width-Pixel.getPixel(30),marginLeft:Pixel.getPixel(15),
+            },wrapStyle]} source={this.tu}>
+                <TouchableOpacity onPress={this.props.btn} style={{
+                    marginTop: Pixel.getPixel(12),
+                    width:width-Pixel.getPixel(30),
+                    height:Pixel.getPixel(81),
+                    overflow:'hidden',
+                    marginLeft:Pixel.getPixel(15),
+                    flexDirection:'row',
+                    borderRadius:Pixel.getPixel(30),
+                    alignItems:'center',
+                    backgroundColor:'red',
+                    paddingLeft: Pixel.getPixel(10)}}>
+                    <View style={{flexDirection:'column',height:Pixel.getPixel(60),justifyContent:'flex-start'}}>
+                        <Text allowFontScaling={false} style={{lineHeight:Pixel.getPixel(20),backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(12),}}>{this.props.data.sub_bank_name}卡号</Text>
+                        <Text allowFontScaling={false} style={{lineHeight:Pixel.getPixel(30),backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(24),fontWeight:'bold'}}>{this.bankNo}</Text>
+                    </View>
+                    <View  style={{
+                        position:'absolute',
+                        top:Pixel.getPixel(30),
+                        right:Pixel.getPixel(-10),
+                        backgroundColor:'rgba(0,0,0,0.2)',
+                        borderRadius: Pixel.getPixel(15),
+                        height:Pixel.getPixel(30),
+                        justifyContent:'center',
+                        width:Pixel.getPixel(89)}}>
+                        <Text allowFontScaling={false}  style={{marginLeft:Pixel.getPixel(10) ,color:'#ffffff',fontSize:Pixel.getPixel(15),lineHeight:Pixel.getPixel(21)}}>{this.text}</Text>
+                    </View>
+                </TouchableOpacity>
 
-
+            </Image>
         )
     }
 }
