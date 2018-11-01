@@ -110,10 +110,11 @@ export default class MyAccountScene extends BaseComponent {
 
     initFinish = () => {
 
-
         this.myEmitter =DeviceEventEmitter.addListener('myAccountSceneLoadData',()=>{
+            this.setState({renderPlaceholderOnly: 'loading'});
             this.loadData();
         });
+
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
             if (data.code == 1) {
                 let userData = JSON.parse(data.result);
