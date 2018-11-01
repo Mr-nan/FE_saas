@@ -27,8 +27,11 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import BaseComponent from '../component/BaseComponent';
 import MainPage from './MainPage';
+<<<<<<< HEAD
 //import MainPage from '../mine/accountManage/MyAccountScene';
 
+=======
+>>>>>>> c8ac6e62130659de68939e5b9a060a63021eec2e
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 const IS_ANDROID = Platform.OS === 'android';
