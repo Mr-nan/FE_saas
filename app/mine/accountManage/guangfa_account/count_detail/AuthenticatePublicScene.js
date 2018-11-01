@@ -93,13 +93,9 @@ export default class AuthenticatePublicScene extends BaseComponent{
 
     _renderRow = (rowData,sectionID,rowID) =>{
         return(
-            <View>
-                {rowID == 0 ? <AuthenticateCardComponent data = {rowData} id ={rowID} btn={()=>{this.next(rowID)}}/>:
-                    <AuthenticateCardComponent btn={()=>{this.next(rowID)}} data = {rowData} id ={rowID} wrapStyle={{marginTop: Pixel.getPixel(10)}}/>
-                }
-            </View>
-
+            <AuthenticateCardComponent data ={rowData} id ={rowID} btn={()=>{this.next(rowID)}}/>
             )
+
 
      }
 
@@ -109,6 +105,7 @@ export default class AuthenticatePublicScene extends BaseComponent{
         this.props.showModal(true);
          StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(da) => {
              if(da.code == 1 && da.result != null){
+
                  let datas = JSON.parse(da.result);
                  let maps ={
                      bind_bank_card_no_id:this.data[rowID].id,
@@ -116,8 +113,8 @@ export default class AuthenticatePublicScene extends BaseComponent{
                      enter_base_id:datas.company_base_id,
                  }
                  request(Urls.ACTIVE_BANK_CARD_HTML, 'Post', maps)
-                     this.props.showModal(false)
                      .then((response)=> {
+                         this.props.showModal(false);
                          let da = response.mjson;
                          this.toNextPage({
                              name:'GFBankWebScene',

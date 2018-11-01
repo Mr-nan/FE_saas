@@ -132,6 +132,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
+                        maxLength={15}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(56),paddingLeft:0}}
                         foucsChange={() => {
                             if (this.state.topSize == 5) {
@@ -149,6 +150,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
+                        maxLength={18}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}
                         foucsChange={() => {
                             if (this.state.topSize == 5) {
@@ -185,6 +187,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
+                        maxLength={18}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}
                         foucsChange={() => {
                             if (this.state.topSize == 5) {
@@ -221,6 +224,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
+                        maxLength={18}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(43),paddingLeft:0}}/>
                     <LoginInputText
                         ref='contact_phone'
@@ -231,6 +235,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
+                        maxLength={11}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(56),paddingLeft:0}}
                         foucsChange={() => {
                             if (this.state.topSize == -179) {
@@ -250,6 +255,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
+                        maxLength={19}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(84),paddingLeft:0
                         }}
                         foucsChange={() => {
@@ -309,28 +315,28 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
         if(this.sData.ent_name == ''){
             this.props.showToast('请输入企业名称');
             return;
-        }else if(this.sData.ent_phone == ''){
+        }else if(this.sData.ent_phone == '' && this.sData.ent_phone.length <= 15){
             this.props.showToast('请输入企业固定电话');
             return;
-        }else if(this.sData.unified_credit_code == ''){
+        }else if(this.sData.unified_credit_code.length!=18){
             this.props.showToast('请输入正确的社会信用代码');
             return;
         }else if(this.sData.legal_real_name == ''){
             this.props.showToast('请输入法人姓名');
             return;
-        }else if(this.sData.legal_cert_no == ''){
+        }else if(this.sData.legal_cert_no.length!=18){
             this.props.showToast('请输入法人身份证号');
             return;
         }else if(this.sData.agent_name == ''){
             this.props.showToast('请输入联系人姓名');
             return;
-        }else if(this.sData.agent_cert_no == ''){
+        }else if(this.sData.agent_cert_no.length!=18){
             this.props.showToast('请输入联系人身份证');
             return;
         }else if(this.sData.agent_mobile.length != 11){
             this.props.showToast('请输入正确的联系人手机号');
             return;
-        }else if(isNaN(Number(this.sData.bank_card_no))){
+        }else if(isNaN(Number(this.sData.bank_card_no)) && this.sData.bank_card_no <= 19){
             this.props.showToast('请输入正确的银行账号');
             return;
         }else if(this.sData.bank_name == '' ){

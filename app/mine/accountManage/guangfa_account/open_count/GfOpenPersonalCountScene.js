@@ -106,6 +106,7 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
+                        maxLength={18}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}/>
                     <LoginInputText
                         ref = 'phone'
@@ -116,11 +117,13 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
+                        maxLength={11}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(42),paddingLeft:0}}/>
                     <LoginInputText
                         ref='bank_count'
                         textPlaceholder={'请输入银行卡号'}
                         leftText = '银行卡号'
+                        maxLength={19}
                         leftIcon={false}
                         import={false}
                         clearValue={true}
@@ -174,7 +177,7 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
         }else if(this.sData.mobile.length != 11){
             this.props.showToast('请输入正确的手机号码');
             return;
-        }else if( isNaN(Number(this.sData.bank_card_no))){
+        }else if(isNaN(Number(this.sData.bank_card_no)) && this.sData.bank_card_no.length <= 19){
             this.props.showToast('请输入银行卡号');
             return;
         }else if(this.sData.bank_name == '' ){

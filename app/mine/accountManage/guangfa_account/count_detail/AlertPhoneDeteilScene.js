@@ -107,6 +107,7 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
+                        maxLength={11}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(33),paddingLeft:0}}/>
                 </View>
                 <View style={{flexDirection:'row',width:width,height:Pixel.getPixel(18),marginLeft:Pixel.getPixel(18),marginTop: Pixel.getPixel(21),alignItems:'flex-end' }}>
@@ -122,8 +123,8 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
     }
     submit = () => {
         this.SData.new_mobile = this.refs.code.getInputTextValue();
-        if(this.SData.new_mobile == ''){
-            this.props.showToast('请输入新密码');
+        if(this.SData.new_mobile != 11){
+            this.props.showToast('请输入正确的新手机号');
         }
         request(Urls.PERSONAL_CHANGE_PHONE, 'Post', this.SData)
             .then((response)=> {

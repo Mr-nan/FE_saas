@@ -62,6 +62,7 @@ export default class BindBankCardScene extends BaseComponent{
     }
 
     initFinish(){
+        this.loadData();
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO,(data)=>{
             if(data.code == 1){
                 let userData = JSON.parse(data.result);
@@ -72,6 +73,26 @@ export default class BindBankCardScene extends BaseComponent{
         this.setState({
             renderPlaceholderOnly:'success'
         })
+    }
+    loadData = () =>{
+        let maps = {
+            enter_base_ids: global.companyBaseID,
+            bank_id:'gfyh',
+            child_type:'1'
+        };
+        request(Urls.GET_USER_ACCOUNT_DETAIL, 'Post', maps)
+            .then((response) => {
+                console.log('response',response);
+                this.accountData=response.mjson.data.gfyh[0];
+                this.setState({
+                    renderPlaceholderOnly: 'success',
+                });
+            }, (error) => {
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                });
+                this.props.showToast(error.mjson.msg);
+            });
     }
     _renderPlaceholderView = () => {
         return(
@@ -111,26 +132,26 @@ export default class BindBankCardScene extends BaseComponent{
                             rightIcon={false}
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(30),paddingLeft:0}}/>}
-                    {this.props.iscompany == '2' ?  (<LoginInputText
-                        ref='code'
-                        textPlaceholder={'请输入资金账号'}
-                        leftText = '资金账号'
-                        leftIcon={false}
-                        import={false}
-                        clearValue={true}
-                        rightIcon={false}
-                        rightButton={false}
-                        inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}/>):
-                        (<LoginInputText
-                        ref='code'
-                        textPlaceholder={'请输入资金账号'}
-                        leftText = '资金账号'
-                        leftIcon={false}
-                        import={false}
-                        clearValue={true}
-                        rightIcon={false}
-                        rightButton={false}
-                        inputTextStyle = {{marginLeft:Pixel.getPixel(58),paddingLeft:0}}/>)}
+                    {/*{this.props.iscompany == '2' ?  (<LoginInputText*/}
+                        {/*ref='code'*/}
+                        {/*textPlaceholder={'请输入资金账号'}*/}
+                        {/*leftText = '资金账号'*/}
+                        {/*leftIcon={false}*/}
+                        {/*import={false}*/}
+                        {/*clearValue={true}*/}
+                        {/*rightIcon={false}*/}
+                        {/*rightButton={false}*/}
+                        {/*inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}/>):*/}
+                        {/*(<LoginInputText*/}
+                        {/*ref='code'*/}
+                        {/*textPlaceholder={'请输入资金账号'}*/}
+                        {/*leftText = '资金账号'*/}
+                        {/*leftIcon={false}*/}
+                        {/*import={false}*/}
+                        {/*clearValue={true}*/}
+                        {/*rightIcon={false}*/}
+                        {/*rightButton={false}*/}
+                        {/*inputTextStyle = {{marginLeft:Pixel.getPixel(58),paddingLeft:0}}/>)}*/}
 
 
                     {this.props.iscompany == '2' && (<LoginInputText
@@ -142,6 +163,7 @@ export default class BindBankCardScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
+                        maxLength={11}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(42),paddingLeft:0}}/>)
                     }
 
@@ -154,6 +176,7 @@ export default class BindBankCardScene extends BaseComponent{
                         clearValue={true}
                         rightIcon={false}
                         rightButton={false}
+                        maxLength={19}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}/>:
                         <LoginInputText
                             ref='bank_count'
@@ -164,6 +187,7 @@ export default class BindBankCardScene extends BaseComponent{
                             clearValue={true}
                             rightIcon={false}
                             rightButton={false}
+                            maxLength={19}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(58),paddingLeft:0}}/>}
                     <TouchableOpacity ref='bank_type' onPress={()=>{this.next()}} style={{flexDirection: 'row',alignItems:'center',width:Pixel.getPixel(345),height:Pixel.getPixel(44)}}>
                         <Text style={{color:fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(14),justifyContent: 'flex-start'}}>银行</Text>
@@ -217,17 +241,20 @@ export default class BindBankCardScene extends BaseComponent{
         }else{
             this.sData.mobile = '';
         }
-        this.sData.bank_card_no  = this.refs.bank_count.getInputTextValue();
+        // this.sData.bank_card_no  = this.refs.bank_count.getInputTextValue();
+        this.sData.bank_card_no = this.accountData.bank_card_no;
         if(this.sData.cust_name == ''){
             this.props.showToast('请输入姓名');
             return;
-        }else if(this.sData.cert_no == ''){
-            this.props.showToast('请输入正确的资金账号');
-            return;
-        }else if (this.sData.user_type == '2' && this.sData.mobile.length != 11){
+        }
+        // else if(this.sData.cert_no == ''){
+        //     this.props.showToast('请输入正确的资金账号');
+        //     return;
+        // }
+        else if (this.sData.user_type == '2' && this.sData.mobile.length != 11){
             this.props.showToast('请输入正确的手机号码');
             return;
-        }else if( isNaN(Number(this.sData.bank_card_no))){
+        }else if( isNaN(Number(this.sData.bank_card_no)) && this.sData.bank_card_no <= 19){
             this.props.showToast('请输入银行卡号');
             return;
         }else if(this.sData.bank_name == '' ){

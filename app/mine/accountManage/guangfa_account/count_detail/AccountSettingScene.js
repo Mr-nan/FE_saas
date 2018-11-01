@@ -12,7 +12,9 @@ import {
     Image,
     TouchableOpacity,
     StatusBar,
-    Dimensions
+    Dimensions,
+    KeyboardAvoidingView,
+    ScrollView
 
 }from 'react-native';
 
@@ -36,6 +38,7 @@ export default class AccountSettingScene extends BaseComponent{
         console.log('this.props.account.account_open_type',this.props.account.account_open_type);
         this.state = {
             renderPlaceholderOnly:'blank',
+            topSize:-179,
 
         }
        this.SData = {
@@ -90,6 +93,7 @@ export default class AccountSettingScene extends BaseComponent{
         }
         this.carID = this.state.accountData.bank_card_no && this.state.accountData.bank_card_no!= 0 ? this.state.accountData.bank_card_no.replace(/^(....).*(....)$/, "$1****$2"):'**** **** ****';
         return(
+            <ScrollView style={{flex:1}}>
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
                 <StatusBar barStyle='light-content'/>
                 <Image source={require('../../../../../images/mine/guangfa_account/tou-bg.png')} style={{alignItems:'center'}}>
@@ -111,10 +115,12 @@ export default class AccountSettingScene extends BaseComponent{
                             clearValue={true}
                             rightIcon={false}
                             rightButton={false}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(45),paddingLeft:0}}/>
+                            inputTextStyle = {{marginLeft:Pixel.getPixel(45),paddingLeft:0}}
+                            />
                         <SubmitComponent title='确认修改' warpStyle={{marginTop:Pixel.getPixel(21),marginLeft:0,width:Pixel.getPixel(309)}}/>
                     </View> ) :
-                    (<View style={{width:Pixel.getPixel(345),height:Pixel.getPixel(417),backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
+                    ( <KeyboardAvoidingView behavior={'position'}  keyboardVerticalOffset={this.state.topSize}>
+                        <View style={{width:Pixel.getPixel(345),height:Pixel.getPixel(417),backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
                         shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(26),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
                         <LoginInputText
                             ref = 'companyName'
@@ -125,7 +131,15 @@ export default class AccountSettingScene extends BaseComponent{
                             clearValue={true}
                             rightIcon={false}
                             rightButton={false}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(89),paddingLeft:0}}/>
+                            inputTextStyle = {{marginLeft:Pixel.getPixel(89),paddingLeft:0}}
+                            foucsChange = {()=>{
+                                if(this.state.topSize == 5){
+                                    this.setState({
+                                        topSize:-179
+                                    })
+                                }
+                            }}
+                            />
                         <LoginInputText
                             ref = 'companyPhone'
                             textPlaceholder={this.state.accountData.enterprise_phone}
@@ -135,7 +149,16 @@ export default class AccountSettingScene extends BaseComponent{
                             clearValue={true}
                             rightIcon={false}
                             rightButton={false}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}/>
+                            maxLength={15}
+                            inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}
+                            foucsChange = {()=>{
+                                if(this.state.topSize == 5){
+                                    this.setState({
+                                        topSize:-179
+                                    })
+                                }
+                            }}
+                            />
                         <LoginInputText
                             ref = 'corporation_name'
                             textPlaceholder={this.state.accountData.legal_real_name}
@@ -145,7 +168,15 @@ export default class AccountSettingScene extends BaseComponent{
                             clearValue={true}
                             rightIcon={false}
                             rightButton={false}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}/>
+                            inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}
+                            foucsChange = {()=>{
+                                if(this.state.topSize == 5){
+                                    this.setState({
+                                        topSize:-179
+                                    })
+                                }
+                            }}
+                            />
                         <LoginInputText
                             ref='corporation_code'
                             textPlaceholder={this.state.accountData.legal_cert_no}
@@ -155,7 +186,15 @@ export default class AccountSettingScene extends BaseComponent{
                             clearValue={true}
                             rightIcon={false}
                             rightButton={false}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(33),paddingLeft:0}}/>
+                            maxLength={18}
+                            inputTextStyle = {{marginLeft:Pixel.getPixel(33),paddingLeft:0}}
+                            foucsChange = {()=>{
+                                if(this.state.topSize == -179){
+                                    this.setState({
+                                        topSize:-5
+                                    })
+                                }
+                            }}/>
                         <LoginInputText
                             ref='contact_name'
                             textPlaceholder={this.state.accountData.agent_name}
@@ -165,7 +204,14 @@ export default class AccountSettingScene extends BaseComponent{
                             clearValue={true}
                             rightIcon={false}
                             rightButton={false}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(75),paddingLeft:0}}/>
+                            inputTextStyle = {{marginLeft:Pixel.getPixel(75),paddingLeft:0}}
+                            foucsChange = {()=>{
+                                if(this.state.topSize == -179){
+                                    this.setState({
+                                        topSize:5
+                                    })
+                                }
+                            }}/>
                         <LoginInputText
                             ref='contact_code'
                             textPlaceholder={this.state.accountData.agent_cert_no}
@@ -175,12 +221,21 @@ export default class AccountSettingScene extends BaseComponent{
                             clearValue={true}
                             rightIcon={false}
                             rightButton={false}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(47),paddingLeft:0}}/>
+                            maxLength={18}
+                            inputTextStyle = {{marginLeft:Pixel.getPixel(47),paddingLeft:0}}
+                            foucsChange = {()=>{
+                                if(this.state.topSize == -179){
+                                    this.setState({
+                                        topSize:5
+                                    })
+                                }
+                            }}/>
                         <SubmitComponent title='确认修改' btn={()=>{this.nextCompany()}} warpStyle={{marginTop:Pixel.getPixel(21),marginLeft:0,width:Pixel.getPixel(309)}}/>
-                    </View>)
+                    </View>
+                    </KeyboardAvoidingView>)
                 }
-                <Text style={{color:'#AEAEAE',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),marginTop:Pixel.getPixel(18)}}>仅用于后台查询使用不可用于转账</Text>
             </View>
+            </ScrollView>
         )
     }
 
