@@ -61,11 +61,7 @@ export default class NoAccountScene extends BaseComponent{
         return(
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
                 <StatusBar barStyle='dark-content'/>
-                <NavigationView backIconClick={()=>{
-                                    DeviceEventEmitter.emit('myAccountSceneLoadData');
-                                    this.backToTop();}}
-                                title={this.props.title}
-                                wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
+
                 <Image style={{marginTop: Pixel.getPixel(116)}} source={this.tu}/>
                 <View style={{marginTop:Pixel.getPixel(8),alignItems:'center',height:Pixel.getPixel(80)}}>
                     <Text style={{color:fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(20)}}>{this.content}</Text>
@@ -75,6 +71,9 @@ export default class NoAccountScene extends BaseComponent{
 
                 </View>
                 {this.props.status != 0 ?  <SubmitComponent btn = {()=>{this.next()}} title='确定' warpStyle={{width:Pixel.getPixel(320),height:Pixel.getPixel(44),marginLeft: 0,marginTop:Pixel.getPixel(7)}}/> :null }
+                <NavigationView backIconClick={()=>{this.handleBack()}}
+                                title={this.props.title}
+                                wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
             </View>
         )
     }
@@ -82,21 +81,38 @@ export default class NoAccountScene extends BaseComponent{
 
 
     next =()=>{
-        this.props.showModal(true);
-        DeviceEventEmitter.emit('myAccountSceneLoadData');
         if(this.props.toNextPageData){
-            this.props.showModal(false);
             this.toNextPage(this.props.toNextPageData);
         }else {
-            this.props.showModal(false);
             this.backToTop();
+            DeviceEventEmitter.emit('myAccountSceneLoadData');
+            this.backToRoute('MyAccountScene');
         }
 
     }
 
     handleBack=()=>{
         DeviceEventEmitter.emit('myAccountSceneLoadData');
-        this.backToTop();
+        this.backToRoute('MyAccountScene');
+    }
+
+    backToRoute =(routeName)=>{
+
+        const navi = this.props.navigator;
+        let route = navi.getCurrentRoutes();
+        let  isRoot = true;
+        for(let i = 0; i<route.length; i++){
+            console.log('route',route[i].name);
+            if (route[i].name === routeName){
+                isRoot = false;
+                navi.popToRoute(route[i])
+                break;
+            }
+        }
+
+        if(isRoot){
+            this.backToTop();
+        }
     }
 
 

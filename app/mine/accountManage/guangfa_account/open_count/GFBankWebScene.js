@@ -25,7 +25,8 @@ import BaseComponent from '../../../../component/BaseComponent';
 import NavigationView from '../../../../component/AllNavigationView';
 import WattingTenScendsScene from '../count_detail/WattingTenScendsScene';
 import WebViewTitle from '../../../../mine/accountManage/component/WebViewTitle';
-
+import {request} from "../../../../utils/RequestUtil";
+import * as Urls from "../../../../constant/appUrls";
 
 export default class GFBankWebScene extends BaseComponent{
     constructor(props) {
@@ -71,7 +72,7 @@ export default class GFBankWebScene extends BaseComponent{
     document.getElementById('b').style.display = "none";
 </script>
 </html>`}}/>
-                <NavigationView title={this.props.title?this.props.title:'广发银行'} backIconClick={this.backPage} wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
+                <NavigationView title={this.props.title?this.props.title:'广发银行'} backIconClick={this.goBackPage} wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
             </View>
 
         );
@@ -82,9 +83,7 @@ export default class GFBankWebScene extends BaseComponent{
 
             this.ispush = false;
             if(this.props.noPushPage){
-
                 this.backPage();
-
             }else {
                 this.toNextPage({
                     name:'WattingTenScendsScene',
@@ -98,6 +97,26 @@ export default class GFBankWebScene extends BaseComponent{
             }
 
         }
+    }
+
+    goBackPage=()=>{
+        let maps = {
+            bank_id:'gfyh',
+            enter_base_id:global.companyBaseID,
+            serial_no:this.props.serial_no
+        }
+        request(Urls.ZS_FETCH_STATUS,'Post',maps)
+            .then((response)=>{
+
+            },(error)=>{
+
+            });
+        this.backPage();
+
+    }
+
+    handleBack=()=>{
+        this.goBackPage();
     }
 
 }

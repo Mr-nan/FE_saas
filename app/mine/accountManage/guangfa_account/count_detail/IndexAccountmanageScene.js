@@ -15,6 +15,7 @@ import {
     Dimensions,
     ScrollView,
     RefreshControl,
+    DeviceEventEmitter,
 
 }from 'react-native';
 
@@ -339,6 +340,7 @@ export default class IndexAccountmanageScene extends BaseComponent{
     }
 
     backPage=()=>{
+        // DeviceEventEmitter.emit('myAccountSceneLoadData');
         this.backToRoute('MyAccountScene');
     }
 

@@ -623,8 +623,8 @@ export default class MineScene extends BaseComponent {
     };
 
     _navigator(rowData) {
-        this._navigatorPage(rowData);
-        return;
+        // this._navigatorPage(rowData);
+        // return;
 
         this.props.showModal(true);
         //先判断认证状态
