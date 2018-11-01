@@ -202,13 +202,12 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                                 <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}> 若验证未完成，</Text>
                                 <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>冻结资金将会在10分钟后</Text>
                                 <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}> 解冻并退回到您的账户中。</Text>
-                                <View style={{flexDirection: 'row',marginTop:Pixel.getPixel(33),width:Pixel.getPixel(260),paddingRight: Pixel.getPixel(17),paddingLeft: Pixel.getPixel(23),justifyContent: 'space-between'}}>
+                                <View style={{flexDirection: 'row',marginTop:Pixel.getPixel(33),width:Pixel.getPixel(260),paddingRight: Pixel.getPixel(17),paddingLeft: Pixel.getPixel(23),justifyContent: 'space-between',alignItems:'center'}}>
                                     <TouchableOpacity onPress={()=>{this.cancel()}} style={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),backgroundColor:'#ffffff',justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(2),borderWidth: Pixel.getPixel(1),borderColor:'#0DC1C8'}}>
                                         <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}} >取消</Text>
                                     </TouchableOpacity>
-                                    <SubmitComponent btn={()=>{this.submit()}} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginLeft: Pixel.getPixel(20),marginTop:Pixel.getPixel(25)}}/>
+                                    <SubmitComponent btn={()=>{this.submit()}} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginLeft: Pixel.getPixel(20),marginTop:0}}/>
                                 </View>
-
                             </View>
                         </Image>
                     </View>
@@ -335,13 +334,19 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                 modalVisibleRemovefailed:true
             })
         }
-
     }
     //提现
     confirm=()=>{
-        this.setState({
-            modalVisible:true
-        })
+        console.log('this.money',this.money);
+        if(!this.money){
+            console.log(111)
+            this.props.showToast('请输入提现金额')
+        }else{
+            console.log(222)
+            this.setState({
+                modalVisible:true
+            })
+        }
     }
 
     getBankImage=(name)=>{

@@ -42,7 +42,7 @@ export default class AuthenticateCardComponent extends Component{
             case 2:
                 this.yinying = require('../../../../../images/mine/guangfa_account/hong.png');
                 this.tu = require('../../../../../images/mine/guangfa_account/hong-wy.png');
-                this.text='待确定';
+                this.text='待确认';
                  this.bankNo = this.props.data.bank_card_no && this.props.data.bank_card_no != 0 ? this.props.data.bank_card_no.replace(/^(....).*(....)$/, "$1****$2") :
                     '***** ***** *****';
                 break;
@@ -62,7 +62,7 @@ export default class AuthenticateCardComponent extends Component{
                 marginTop:Pixel.getPixel(15),
                 marginBottom:Pixel.getPixel(-10)
 
-            }}  onPress={()=>{this.props.btn()}}>
+            }}  onPress={()=>{this.props.btn()}} activeOpacity={1}>
                 <Image style={{
                     justifyContent:'center',
                     width:width,

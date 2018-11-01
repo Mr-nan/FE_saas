@@ -48,7 +48,7 @@ export default class BankCardScene extends BaseComponent{
             transparent: true,//是否透明显示
             modalVisibleRemoveSuccess:false, //成功
             image:require('../../../../../images/mine/guangfa_account/tongguo.png'),
-            text:'解绑银行卡成功\n' +
+            text:'解绑银行卡申请成功\n' +
                 '等待银行审核'
 
         }
@@ -70,7 +70,7 @@ export default class BankCardScene extends BaseComponent{
         let maps = {
             bank_id:'gfyh',
             enter_base_id:global.companyBaseID,
-            status:this.props.getBankData?'3':'1,2,3'
+            status:this.props.getBankData?'3':'1,2,3,4'
 
         }
         request(Urls.GET_BANK_CARD_LIST, 'Post', maps)

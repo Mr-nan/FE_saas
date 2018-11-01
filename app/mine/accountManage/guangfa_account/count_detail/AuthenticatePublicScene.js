@@ -102,37 +102,40 @@ export default class AuthenticatePublicScene extends BaseComponent{
      next = (rowID) => {
         console.log('rowID',rowID);
         console.log(this.state.source);
-        this.props.showModal(true);
-         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(da) => {
-             if(da.code == 1 && da.result != null){
+        if(this.state.source == 2){
+            this.props.showModal(true);
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(da) => {
+                if(da.code == 1 && da.result != null){
 
-                 let datas = JSON.parse(da.result);
-                 let maps ={
-                     bind_bank_card_no_id:this.data[rowID].id,
-                     reback_url:this.sData.reback_url,
-                     enter_base_id:datas.company_base_id,
-                 }
-                 request(Urls.ACTIVE_BANK_CARD_HTML, 'Post', maps)
-                     .then((response)=> {
-                         this.props.showModal(false);
-                         let da = response.mjson;
-                         this.toNextPage({
-                             name:'GFBankWebScene',
-                             component:GFBankWebScene,
-                             params:{
-                                 callback:()=>{this.props.callback()},
-                                 uri:da.data.url_wap,
-                                 pa:da.data.params,
-                                 sign:da.data.sign,
-                                 reback_url:this.sData.reback_url,
-                                 serial_no:da.data.serial_no,
-                             }
-                         })
-                     },(error)=>{
-                         this.props.showToast(error.mjson.msg);
-                     })
-             }
-         })
+                    let datas = JSON.parse(da.result);
+                    let maps ={
+                        bind_bank_card_no_id:this.data[rowID].id,
+                        reback_url:this.sData.reback_url,
+                        enter_base_id:datas.company_base_id,
+                    }
+                    request(Urls.ACTIVE_BANK_CARD_HTML, 'Post', maps)
+                        .then((response)=> {
+                            this.props.showModal(false);
+                            let da = response.mjson;
+                            this.toNextPage({
+                                name:'GFBankWebScene',
+                                component:GFBankWebScene,
+                                params:{
+                                    callback:()=>{this.props.callback()},
+                                    uri:da.data.url_wap,
+                                    pa:da.data.params,
+                                    sign:da.data.sign,
+                                    reback_url:this.sData.reback_url,
+                                    serial_no:da.data.serial_no,
+                                }
+                            })
+                        },(error)=>{
+                            this.props.showToast(error.mjson.msg);
+                        })
+                }
+            })
+        }
+
      }
 
     renderPlaceholderView = () => {

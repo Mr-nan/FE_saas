@@ -124,10 +124,13 @@ export default class BankcardComponent extends BaseComponent{
 
         switch (status){
             case 1:
-                return '银行处理中'
+                return '绑卡处理中'
                 break;
             case 2:
                 return '待小额鉴权'
+                break;
+                case 4:
+                return '解绑处理中'
                 break;
             default:
                 return ''

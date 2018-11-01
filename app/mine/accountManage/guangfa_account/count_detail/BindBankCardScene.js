@@ -46,7 +46,7 @@ export default class BindBankCardScene extends BaseComponent{
             modalVisible: false,//模态场景是否可见
             transparent: true,//是否透明显示
             image:require('../../../../../images/mine/guangfa_account/tongguo.png'),
-            text:'添加银行卡成功\n' + '等待银行审核',
+            text:'添加银行卡申请成功\n' + '等待银行审核',
         }
         console.log('this.props.iscompany',this.props.iscompany)
         this.sData = {
@@ -281,7 +281,7 @@ export default class BindBankCardScene extends BaseComponent{
                 this.props.showModal(false)
                 this.setState({
                     image:require('../../../../../images/mine/guangfa_account/shi.png'),
-                    text:'添加银行卡失败\n' + '请重新尝试添加'
+                    text:'添加银行卡申请失败\n' + '请重新尝试添加'
                 })
                 this.setState({
                     modalVisible:true
