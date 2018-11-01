@@ -121,8 +121,7 @@ export default class AuthenticatePublicScene extends BaseComponent{
                              name:'GFBankWebScene',
                              component:GFBankWebScene,
                              params:{
-                             callback:()=>{
-                                 this.props.callback()},
+                                 callback:()=>{this.props.callback()},
                                  uri:da.data.url_wap,
                                  pa:da.data.params,
                                  sign:da.data.sign,

@@ -25,8 +25,8 @@ const Pixel = new PixelUtil();
 const {width,height} = Dimensions.get('window');
 import NavigationView from "../../../../component/AllNavigationView";
 import {request} from "../../../../utils/RequestUtil";
-import NoAccountScene from './NoAccountScene';
 import * as Urls from "../../../../constant/appUrls";
+import NoAccountScene from './NoAccountScene';
 
 export default class WattingTenScendsScene extends BaseComponent{
     constructor(props) {
