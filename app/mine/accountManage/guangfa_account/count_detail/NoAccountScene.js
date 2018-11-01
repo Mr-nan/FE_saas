@@ -72,7 +72,7 @@ export default class NoAccountScene extends BaseComponent{
                     <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(14),marginTop:Pixel.getPixel(25),height:Pixel.getPixel(100),lineHeight:Pixel.getPixel(20),textAlign:'center'}}>{this.text}</Text>
                 </View>
                 {this.props.status != 0 ?  <SubmitComponent btn = {()=>{this.next()}} title='确定' warpStyle={{width:Pixel.getPixel(320),height:Pixel.getPixel(44),marginLeft: 0,marginTop:Pixel.getPixel(7)}}/> :null }
-                <NavigationView backIconClick={()=>{this.handleBack}}
+                <NavigationView backIconClick={()=>{this.handleBack()}}
                                 title={this.props.title}
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
             </View>
@@ -86,14 +86,14 @@ export default class NoAccountScene extends BaseComponent{
             this.toNextPage(this.props.toNextPageData);
         }else {
             DeviceEventEmitter.emit('myAccountSceneLoadData');
-            this.backToRoute('MyAccountItem');
+            this.backToRoute('MyAccountScene');
         }
 
     }
 
     handleBack=()=>{
         DeviceEventEmitter.emit('myAccountSceneLoadData');
-        this.backToRoute('MyAccountItem');
+        this.backToRoute('MyAccountScene');
     }
 
     backToRoute =(routeName)=>{

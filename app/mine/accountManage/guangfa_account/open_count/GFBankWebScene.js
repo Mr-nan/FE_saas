@@ -82,9 +82,7 @@ export default class GFBankWebScene extends BaseComponent{
 
             this.ispush = false;
             if(this.props.noPushPage){
-
                 this.backPage();
-
             }else {
                 this.toNextPage({
                     name:'WattingTenScendsScene',
