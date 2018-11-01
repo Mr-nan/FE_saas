@@ -27,6 +27,7 @@ import SubmitComponent from "../component/SubmitComponent";
 import {request} from "../../../../utils/RequestUtil";
 import * as Urls from "../../../../constant/appUrls";
 import IndexAccountmanageScene from "./IndexAccountmanageScene";
+import WattingTenScendsScene from "./WattingTenScendsScene";
 
 
 export default class AccountSettingScene extends BaseComponent{
@@ -214,12 +215,13 @@ export default class AccountSettingScene extends BaseComponent{
         request(Urls.GF_CHANGE_COMPANY, 'Post', this.SData)
             .then((response)=> {
                 this.props.showModal(false);
-                let da = response.mjson;
+                let da = response.mjson.data;
                 console.log('da',da);
                 this.toNextPage({
-                    name:'IndexAccountmanageScene',
-                    component:IndexAccountmanageScene,
+                    name:'WattingTenScendsScene',
+                    component:WattingTenScendsScene,
                     params:{
+                        serial_no:da.serial_no,
                     }
                 })
             },(error)=>{

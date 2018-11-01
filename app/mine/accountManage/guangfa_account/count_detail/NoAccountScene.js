@@ -47,12 +47,10 @@ export default class NoAccountScene extends BaseComponent{
             case 1:
                 this.tu = require('../../../../../images/mine/guangfa_account/tongg.png');
                 this.content = '审核成功';
-                this.text = '您申请的授信占位啦业务操作成功';
                 break;
             default:
                 this.tu = require('../../../../../images/mine/guangfa_account/shibai.png');
                 this.content = '操作失败';
-                this.text = '您申请的授信占位啦业务操作失败';
                 break;
         }
     }
@@ -70,10 +68,11 @@ export default class NoAccountScene extends BaseComponent{
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <Image style={{marginTop: Pixel.getPixel(116)}} source={this.tu}/>
                 <View style={{marginTop:Pixel.getPixel(8),alignItems:'center',height:Pixel.getPixel(80)}}>
-                    {/*<Text style={{color:'#151515',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(20),marginTop:Pixel.getPixel(37)}}>暂无可开户银行</Text>*/}
-                    {/*<Text style={{color:'#151515',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(20)}}>请联系客户经理开通账户白名单</Text>*/}
                     <Text style={{color:fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(20)}}>{this.content}</Text>
-                    <Text style={{color:'#999999',fontSize:Pixel.getFontPixel(14),marginTop:Pixel.getPixel(25),height:Pixel.getPixel(100),lineHeight:Pixel.getPixel(20),textAlign:'center'}}>{this.text}</Text>
+                    {
+                        this.props.status == 0 &&<Text style={{color:'#999999',fontSize:Pixel.getFontPixel(14),marginTop:Pixel.getPixel(25),height:Pixel.getPixel(100),lineHeight:Pixel.getPixel(20),textAlign:'center'}}>{this.text}</Text>
+                    }
+
                 </View>
                 {this.props.status != 0 ?  <SubmitComponent btn = {()=>{this.next()}} title='确定' warpStyle={{width:Pixel.getPixel(320),height:Pixel.getPixel(44),marginLeft: 0,marginTop:Pixel.getPixel(7)}}/> :null }
             </View>
@@ -83,10 +82,13 @@ export default class NoAccountScene extends BaseComponent{
 
 
     next =()=>{
+        this.props.showModal(true);
         DeviceEventEmitter.emit('myAccountSceneLoadData');
         if(this.props.toNextPageData){
+            this.props.showModal(false);
             this.toNextPage(this.props.toNextPageData);
         }else {
+            this.props.showModal(false);
             this.backToTop();
         }
 

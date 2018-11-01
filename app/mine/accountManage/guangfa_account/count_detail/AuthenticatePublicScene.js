@@ -106,6 +106,7 @@ export default class AuthenticatePublicScene extends BaseComponent{
      next = (rowID) => {
         console.log('rowID',rowID);
         console.log(this.state.source);
+        this.props.showModal(true);
          StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(da) => {
              if(da.code == 1 && da.result != null){
                  let datas = JSON.parse(da.result);
@@ -115,6 +116,7 @@ export default class AuthenticatePublicScene extends BaseComponent{
                      enter_base_id:datas.company_base_id,
                  }
                  request(Urls.ACTIVE_BANK_CARD_HTML, 'Post', maps)
+                     this.props.showModal(false)
                      .then((response)=> {
                          let da = response.mjson;
                          this.toNextPage({

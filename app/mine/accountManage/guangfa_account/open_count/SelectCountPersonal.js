@@ -68,7 +68,7 @@ export default class SelectCountPersonal extends BaseComponent{
                         <Image style={styles.icon} source={require('../../../../../images/mine/guangfa_account/xin-hong.png')}/>
                         <Text allowFontScaling={false} style={styles.text}>个人新开户</Text>
                     </View>
-                    <Text allowFontScaling={false} style={styles.tip}>每个个人用户仅限开通1个个人账户,并将绑定个人银行卡</Text>
+                    <Text allowFontScaling={false} style={styles.tip}>每个个人用户仅限开通1个个人账户，并将绑定个人银行卡</Text>
                 </TouchableOpacity>
 
             </View>

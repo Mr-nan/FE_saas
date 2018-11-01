@@ -63,13 +63,14 @@ export default class AuthenticateCardComponent extends BaseComponent{
                 justifyContent:'center',
             }} source={this.tu} resizeMode="stretch">
                 <TouchableOpacity onPress={this.props.btn} style={{
-                    width:width-Pixel.getPixel(49),
+                    width:width-Pixel.getPixel(30),
                     height:Pixel.getPixel(60),
                     overflow:'hidden',
-                    marginLeft:Pixel.getPixel(35),
+                    marginLeft:Pixel.getPixel(20),
+                    paddingLeft:Pixel.getPixel(20),
                     flexDirection:'row',
                     alignItems:'center',
-                    marginBottom:Pixel.getPixel(10)
+                    marginBottom:Pixel.getPixel(10),
                    }}>
                     <View style={{flexDirection:'column',height:Pixel.getPixel(60),justifyContent:'flex-start'}}>
                         <Text allowFontScaling={false} style={{lineHeight:Pixel.getPixel(20),backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(12),}}>{this.props.data.sub_bank_name}卡号</Text>

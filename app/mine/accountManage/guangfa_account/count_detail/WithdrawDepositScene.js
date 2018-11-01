@@ -45,7 +45,9 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
             bankData:{},
             animationType:'none',
             modalVisible:false,
-            transparent:true
+            transparent:true,
+            modalVisibleTip:false,
+            modalVisibleRemovefailed:false
 
         }
     }
@@ -180,12 +182,12 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                     </View>
                 <SubmitComponent btn={()=>{this.confirm()}} title='提现' warpStyle={{marginTop:Pixel.getPixel(30),marginLeft:Pixel.getPixel(0)}}/>
 
-                    <View style={{marginTop:Pixel.getPixel(19)}}>
+                    <TouchableOpacity onPress={this.tip} style={{marginTop:Pixel.getPixel(19)}}>
                         <Text style={{
                             color: '#AEAEAE',
                             fontSize:Pixel.getPixel(14)
                         }}>银行受理及到账时间</Text>
-                    </View>
+                    </TouchableOpacity>
                     </View>
 
                 <Modal animationType={this.state.animationType}
@@ -204,11 +206,38 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                                     <TouchableOpacity onPress={()=>{this.cancel()}} style={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),backgroundColor:'#ffffff',justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(2),borderWidth: Pixel.getPixel(1),borderColor:'#0DC1C8'}}>
                                         <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}} >取消</Text>
                                     </TouchableOpacity>
-                                    <SubmitComponent btn={()=>{this.submit()}} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginLeft: Pixel.getPixel(20),marginTop:0}}/>
+                                    <SubmitComponent btn={()=>{this.submit()}} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginLeft: Pixel.getPixel(20),marginTop:Pixel.getPixel(25)}}/>
                                 </View>
 
                             </View>
                         </Image>
+                    </View>
+                </Modal>
+
+                <Modal animationType={this.state.animationType}
+                       transparent={this.state.transparent}
+                       visible={this.state.modalVisibleTip}>
+                    <View style={{flex:1,alignItems:'center',backgroundColor:'rgba(0,0,0,0.5)'}}>
+                        <Image source={require('../../../../../images/mine/guangfa_account/tanchuang.png')} style={{marginTop: Pixel.getPixel(149)}}>
+                            <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(317),alignItems:'center',paddingLeft:Pixel.getPixel(20),paddingRight:Pixel.getPixel(20)}}>
+                                <Text allowFontScaling={true} style={{color:'#ffffff',fontWeight: 'bold',fontSize:Pixel.getFontPixel(24),marginTop:Pixel.getPixel(30),letterSpacing: Pixel.getFontPixel(4.9)}}>提示</Text>
+                                <Text style={{marginTop:Pixel.getPixel(49),color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>1.单笔提现五万元以内(包含五万)，不限节假日24小时内到账;</Text>
+                                <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}> 2.单笔提现五万以上，只限于工作日16:00前申请，申请成功后，24小时内到账。</Text>
+                                    <SubmitComponent btn={()=>{this.know()}} title="我知道了" warpStyle={{width:Pixel.getPixel(200),height:Pixel.getPixel(32),marginLeft: Pixel.getPixel(20),marginTop:0}}/>
+                            </View>
+                        </Image>
+                    </View>
+                </Modal>
+
+                <Modal animationType={this.state.animationType}
+                       transparent={this.state.transparent}
+                       visible={this.state.modalVisibleRemovefailed}>
+                    <View style={{flex:1,alignItems:'center',backgroundColor:'rgba(0,0,0,0.5)'}}>
+                        <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(204),backgroundColor:'#ffffff',marginTop: Pixel.getPixel(149),borderRadius:Pixel.getPixel(4),alignItems:'center'}}>
+                            <Image source={require('../../../../../images/mine/guangfa_account/shi.png')} style={{marginTop:Pixel.getPixel(30)}}/>
+                            <Text style={{textAlign:'center',width:Pixel.getPixel(260),color:FontAndColor.COLORA0,backgroundColor:'transparent',lineHeight:Pixel.getPixel(20),marginTop:Pixel.getPixel(15)}} allowFontScaling={false}>提现金额必须小于等于可用余额</Text>
+                            <SubmitComponent btn={this.falied} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(25),marginLeft: 0}}/>
+                        </View>
                     </View>
                 </Modal>
                 <NavigationView backIconClick={this.backPage} title='提现'
@@ -218,6 +247,23 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
         )
     }
 
+    tip = () =>{
+        this.setState({
+            modalVisibleTip:true
+        })
+    }
+
+    know = () =>{
+        this.setState({
+            modalVisibleTip:false
+        })
+    }
+
+    falied = () =>{
+        this.setState({
+            modalVisibleRemovefailed:false
+        })
+    }
 
     selectBank=()=>{
         this.toNextPage({
@@ -249,40 +295,47 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
         this.setState({
             modalVisible:false
         })
-        this.props.showModal(true);
-        let maps = {
-            bind_bank_card_no_id:this.state.bankData.id,
-            amount:this.money,
-            enter_base_id:global.companyBaseID,
-            reback_url:'withdraw'
+        if(this.money <= this.props.account.balance){
+            this.props.showModal(true);
+            let maps = {
+                bind_bank_card_no_id:this.state.bankData.id,
+                amount:this.money,
+                enter_base_id:global.companyBaseID,
+                reback_url:'withdraw'
+            }
+            request(Urls.GF_WITHDRAWA, 'Post', maps)
+                .then((response)=> {
+                    this.props.showModal(false);
+
+                    let  data = response.mjson.data;
+                    if(response.mjson.code==1){
+                        this.toNextPage({
+                            name:'GFBankWebScene',
+                            component:GFBankWebScene,
+                            params:{
+                                callback:()=>{this.props.callback()},
+                                uri:data.url_wap,
+                                pa:data.params,
+                                sign:data.sign,
+                                serial_no:data.serial_no,
+                                reback_url:'withdraw',
+
+                            }});
+                    }else {
+                        this.props.showToast(response.mjson.msg);
+
+                    }
+
+                },(error)=>{
+                    this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+        }else{
+            this.setState({
+                modalVisibleRemovefailed:true
+            })
         }
-        request(Urls.GF_WITHDRAWA, 'Post', maps)
-            .then((response)=> {
-                this.props.showModal(false);
 
-                let  data = response.mjson.data;
-                if(response.mjson.code==1){
-                    this.toNextPage({
-                        name:'GFBankWebScene',
-                        component:GFBankWebScene,
-                        params:{
-                            callback:()=>{this.props.callback()},
-                            uri:data.url_wap,
-                            pa:data.params,
-                            sign:data.sign,
-                            serial_no:data.serial_no,
-                            reback_url:'withdraw',
-
-                        }});
-                }else {
-                    this.props.showToast(response.mjson.msg);
-
-                }
-
-            },(error)=>{
-                this.props.showModal(false);
-                this.props.showToast(error.mjson.msg);
-            });
     }
     //提现
     confirm=()=>{

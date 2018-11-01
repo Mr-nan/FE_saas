@@ -263,10 +263,12 @@ export default class BindBankCardScene extends BaseComponent{
     }
 
     go =()=>{
+        this.props.showModal(true);
         this.setState({
             modalVisible:false
         })
         if(this.datacode==1){
+            this.props.showModal(false);
             this.toNextPage({
                 name:'WattingTenScendsScene',
                 component:WattingTenScendsScene,
