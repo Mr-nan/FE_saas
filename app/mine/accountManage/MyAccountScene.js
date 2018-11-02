@@ -203,6 +203,7 @@ export default class MyAccountScene extends BaseComponent {
                             flag2 = 1;
                             this.renderUI();
                         } else {   //1 在白名单中，
+                            this.is_zheshang_in_whitelist = true;
                             this.isZSshow()
                         }
 
@@ -230,7 +231,6 @@ export default class MyAccountScene extends BaseComponent {
                     this.renderUI()
                     console.log(error)
                 })
-
 
             } else {
                 this.props.showModal(false);
@@ -288,16 +288,7 @@ export default class MyAccountScene extends BaseComponent {
                 this.guangfaInfo = response.mjson.data['gfyh'][0] ? response.mjson.data['gfyh'][0] : {};
                 this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
                 this.xintuoInfo = response.mjson.data['zsyxt'][0] ? response.mjson.data['zsyxt'][0] : {};
-                if(this.is_guangfa_in_whitelist == false && this.is_hengfeng_in_whitelist == false
-                    && this.is_zheshang_in_whitelist == false && this.is_xintuo_in_whitelist == false){
 
-                    this.toNextPage({
-                        name:'NoOpenBankScene',
-                        component:NoOpenBankScene,
-                        params:{}
-                    })
-                    return;
-                }
 
               //  console.log("this.props.data",response.mjson);
 
@@ -407,6 +398,17 @@ export default class MyAccountScene extends BaseComponent {
 
 
         if (flag1 == 1 && flag2 == 1 && flag3 == 1 && flag4 == 1 && flag5 == 1) {
+
+            if(this.is_guangfa_in_whitelist == false && this.is_hengfeng_in_whitelist == false
+                && this.is_zheshang_in_whitelist == false && this.is_xintuo_in_whitelist == false){
+
+                this.toNextPage({
+                    name:'NoOpenBankScene',
+                    component:NoOpenBankScene,
+                    params:{}
+                })
+                return;
+            }
 
             dataList = []
 

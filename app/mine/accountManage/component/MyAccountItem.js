@@ -39,6 +39,7 @@ import SelectCountPersonal from '../guangfa_account/open_count/SelectCountPerson
 import WattingTenScendsScene from '../guangfa_account/count_detail/WattingTenScendsScene';
 import NoAccountScene from "../guangfa_account/count_detail/NoAccountScene";
 import AuthenticatePublicScene from "../guangfa_account/count_detail/AuthenticatePublicScene";
+import BankWatting from "../guangfa_account/count_detail/BankWatting";
 const Pixel = new PixelUtil();
 
 const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
@@ -110,8 +111,8 @@ export default class MyAccountItem extends BaseComponent {
                     };
                     break;
                 case 4:
-                    this.navigatorParams.name = 'NoAccountScene';
-                    this.navigatorParams.component = NoAccountScene;
+                    this.navigatorParams.name = 'BankWatting';
+                    this.navigatorParams.component = BankWatting;
                     this.navigatorParams.params = {
                         callBack:() =>{
                             this.props.callBack();

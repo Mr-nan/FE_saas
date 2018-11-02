@@ -93,16 +93,16 @@ export default class AuthenticatePublicScene extends BaseComponent{
 
     _renderRow = (rowData,sectionID,rowID) =>{
         return(
-            <AuthenticateCardComponent data ={rowData} id ={rowID} btn={()=>{this.next(rowID)}}/>
+            <AuthenticateCardComponent data ={rowData} id ={rowID} btn={()=>{this.next(rowData,rowID)}}/>
             )
 
 
      }
 
-     next = (rowID) => {
+     next = (rowData,rowID) => {
         console.log('rowID',rowID);
-        console.log(this.state.source);
-        if(this.state.source == 2){
+        console.log('rowData.status',rowData.status);
+        if(rowData.status == 2){
             this.props.showModal(true);
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(da) => {
                 if(da.code == 1 && da.result != null){

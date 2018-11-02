@@ -108,7 +108,8 @@ export default class BankCardScene extends BaseComponent{
                               renderRow={this._renderRow}
                               renderSeparator={this._renderSeparator}
                               renderFooter={this._renderFootView}
-                              showsVerticalScrollIndicator={false}/>
+                              showsVerticalScrollIndicator={false}
+                          contentContainerStyle={{width:width}} />
 
 
                 <NavigationView backIconClick={this.backPage} title='银行卡'
@@ -158,7 +159,7 @@ export default class BankCardScene extends BaseComponent{
                    this.props.getBankData(bankData);
                    this.backPage();
                }
-
+1
             }}/>
         )
     }
@@ -167,9 +168,10 @@ export default class BankCardScene extends BaseComponent{
         if(this.state.bankArray.length<5){
             return(
                 <TouchableOpacity style={{
-                    width:Pixel.getPixel(345),
-                    height:Pixel.getPixel(55),
+                    width:width-Pixel.getPixel(30),
+                    height:(width-Pixel.getPixel(30))*0.16,
                     borderRadius:Pixel.getPixel(5),
+                    marginLeft:Pixel.getPixel(15),
                     borderWidth: Pixel.getPixel(1),borderColor:'#979797',
                     flexDirection: 'row',justifyContent: 'center',alignItems:'center',marginTop: Pixel.getPixel(25)}}
                                   onPress={()=>{this.addBankClick()}}>

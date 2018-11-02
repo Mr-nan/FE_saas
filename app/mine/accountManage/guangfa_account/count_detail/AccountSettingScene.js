@@ -96,7 +96,7 @@ export default class AccountSettingScene extends BaseComponent{
             <ScrollView style={{flex:1}}>
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
                 <StatusBar barStyle='light-content'/>
-                <Image source={require('../../../../../images/mine/guangfa_account/tou-bg.png')} style={{alignItems:'center'}}>
+                <Image source={require('../../../../../images/mine/guangfa_account/tou-bg.png')} style={{alignItems:'center',width:width,height:width*0.5}}>
                     <NavigationView backIconClick={this.backPage} title='账户设置'
                                     wrapStyle={{backgroundColor:'transparent'}} titleStyle={{color:'#ffffff'}}/>
                     <View style={{width:Pixel.getPixel(92),height:Pixel.getPixel(20),backgroundColor:'rgba(0,0,0,0.1)',borderRadius:Pixel.getPixel(13),alignItems:'center',justifyContent: 'center',marginTop: Pixel.getPixel(74)}}>

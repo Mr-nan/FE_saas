@@ -35,10 +35,16 @@ export default class BankcardComponent extends BaseComponent{
         let  {data} = this.props;
         this.cardNO = data.bank_card_no && data.bank_card_no != 0 ? data.bank_card_no.replace(/^(....).*(....)$/,'$1****$2'):'**** **** ****';
         return(
-            <Image source={this.bg} style={{marginTop:Pixel.getPixel(10)}}>
-                <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>{this.props.bankClick && this.props.bankClick(data)}} activeOpacity={1}>
+            <TouchableOpacity style={{marginTop:Pixel.getPixel(15)}} onPress={()=>{this.props.bankClick && this.props.bankClick(data)}} activeOpacity={1}>
+            <Image source={this.bg} style={{
+                width:width-Pixel.getPixel(30),
+                height:(width-Pixel.getPixel(30)) * 0.24,
+                marginLeft:Pixel.getPixel(15)
+
+            }}>
+                <View style={{flexDirection:'row',width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30)) * 0.24}}>
                     <Image source={this.icon} style={{marginLeft: Pixel.getPixel(19),marginTop:Pixel.getPixel(26),width:Pixel.getPixel(28),height:Pixel.getPixel(28)}}/>
-                    <View style={{flexDirection:'row',width:Pixel.getPixel(298),paddingLeft: Pixel.getPixel(16),paddingRight: Pixel.getPixel(10),justifyContent:'space-between',marginTop:Pixel.getPixel(17)}}>
+                    <View style={{flexDirection:'row',marginLeft:Pixel.getPixel(12),width:width-Pixel.getPixel(95),justifyContent:'space-between',marginTop:Pixel.getPixel(5)}}>
                         <View style={{flexDirection:'column',justifyContent: 'center'}}>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(15),lineHeight:Pixel.getPixel(21)}}>{data.sub_bank_name}</Text>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(18),lineHeight:Pixel.getPixel(23),marginTop:Pixel.getPixel(5)}}>{this.cardNO}</Text>
@@ -63,8 +69,9 @@ export default class BankcardComponent extends BaseComponent{
 
                         </View>
                     </View>
-                </TouchableOpacity>
+                </View>
             </Image>
+            </TouchableOpacity>
         )
     }
 

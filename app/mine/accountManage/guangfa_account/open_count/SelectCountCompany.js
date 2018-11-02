@@ -83,10 +83,10 @@ export default class SelectCountCompany extends BaseComponent{
                     <Text allowFontScaling={false} style={styles.tip}>每个企业用户仅限开通1个企业账户，并将绑定企业信息</Text>
                 </TouchableOpacity>
 
-                <View style={{width:width,height:Pixel.getPixel(18),marginLeft:Pixel.getPixel(38),flexDirection: 'row',marginTop:Pixel.getPixel(25),alignItems: 'flex-end'}}>
-                    <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
-                    <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(6),color:'#cccccc',fontSize:Pixel.getPixel(11)}}>请根据您的实际情况选择开户类型，开通后不允许修改</Text>
-                </View>
+                {/*<View style={{width:width,height:Pixel.getPixel(18),marginLeft:Pixel.getPixel(38),flexDirection: 'row',marginTop:Pixel.getPixel(25),alignItems: 'flex-end'}}>*/}
+                    {/*<Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>*/}
+                    {/*<Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(6),color:'#cccccc',fontSize:Pixel.getPixel(11)}}>请根据您的实际情况选择开户类型，开通后不允许修改</Text>*/}
+                {/*</View>*/}
 
             </View>
         );
