@@ -52,7 +52,7 @@ export default class SelectCountCompany extends BaseComponent{
            return this._renderPlaceholderView();
         }
         return (
-            <View style={{backgroundColor:fontColor.COLORD1,flex:1}}>
+            <View style={{backgroundColor:fontColor.COLORD1,flex:1,paddingTop:Pixel.getTitlePixel(64)}}>
                 <StatusBar barStyle="dark-content"/>
                 <NavigationView backIconClick={this.backPage} title='选择账户' wrapStyle={{backgroundColor:'white'}}
                                 titleStyle={{color:fontColor.COLORD2}}/>
