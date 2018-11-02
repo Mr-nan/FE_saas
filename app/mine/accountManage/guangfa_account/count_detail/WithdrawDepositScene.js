@@ -221,8 +221,8 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                             <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(317),alignItems:'center',paddingLeft:Pixel.getPixel(20),paddingRight:Pixel.getPixel(20)}}>
                                 <Text allowFontScaling={true} style={{color:'#ffffff',fontWeight: 'bold',fontSize:Pixel.getFontPixel(24),marginTop:Pixel.getPixel(30),letterSpacing: Pixel.getFontPixel(4.9)}}>提示</Text>
                                 <Text style={{marginTop:Pixel.getPixel(49),color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>1.单笔提现五万元以内(包含五万)，不限节假日24小时内到账;</Text>
-                                <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}> 2.单笔提现五万以上，只限于工作日16:00前申请，申请成功后，24小时内到账。</Text>
-                                    <SubmitComponent btn={()=>{this.know()}} title="我知道了" warpStyle={{width:Pixel.getPixel(200),height:Pixel.getPixel(32),marginLeft: Pixel.getPixel(20),marginTop:0}}/>
+                                <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),marginTop:Pixel.getPixel(10),lineHeight:Pixel.getPixel(22)}}>2.单笔提现五万以上，只限于工作日16:00前申请，申请成功后，24小时内到账。</Text>
+                                    <SubmitComponent btn={()=>{this.know()}} title="我知道了" warpStyle={{width:Pixel.getPixel(200),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15)}}/>
                             </View>
                         </Image>
                     </View>
@@ -294,7 +294,7 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
         this.setState({
             modalVisible:false
         })
-        if(this.money <= this.props.account.balance){
+        if(Number(this.money) <= Number(this.props.account.balance)){
             this.props.showModal(true);
             let maps = {
                 bind_bank_card_no_id:this.state.bankData.id,
@@ -339,10 +339,8 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
     confirm=()=>{
         console.log('this.money',this.money);
         if(!this.money){
-            console.log(111)
             this.props.showToast('请输入提现金额')
-        }else{
-            console.log(222)
+        } else{
             this.setState({
                 modalVisible:true
             })
