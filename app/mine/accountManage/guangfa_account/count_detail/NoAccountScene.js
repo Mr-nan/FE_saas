@@ -84,7 +84,6 @@ export default class NoAccountScene extends BaseComponent{
         if(this.props.toNextPageData){
             this.toNextPage(this.props.toNextPageData);
         }else {
-            this.backToTop();
             DeviceEventEmitter.emit('myAccountSceneLoadData');
             this.backToRoute('MyAccountScene');
         }
