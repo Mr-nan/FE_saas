@@ -288,7 +288,8 @@ export default class MyAccountScene extends BaseComponent {
                 this.guangfaInfo = response.mjson.data['gfyh'][0] ? response.mjson.data['gfyh'][0] : {};
                 this.zheShangInfo = response.mjson.data['316'][0] ? response.mjson.data['316'][0] : {};
                 this.xintuoInfo = response.mjson.data['zsyxt'][0] ? response.mjson.data['zsyxt'][0] : {};
-                if(!response.mjson.data['gfyh'].length && !response.mjson.data['316'].length && !response.mjson.data['zsyxt'].length && !response.mjson.data['315'].length){
+                if(this.is_guangfa_in_whitelist == false && this.is_hengfeng_in_whitelist == false
+                    && this.is_zheshang_in_whitelist == false && this.is_xintuo_in_whitelist == false){
 
                     this.toNextPage({
                         name:'NoOpenBankScene',
