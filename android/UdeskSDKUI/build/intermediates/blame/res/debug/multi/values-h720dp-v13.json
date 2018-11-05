@@ -11,13 +11,13 @@
                     "endOffset": 117
                 },
                 "from": {
-                    "file": "/Users/zhengnan/.android/build-cache/79a3472b361b1d083714d8caf61f9eb8bc032449/output/res/values-h720dp/values-h720dp.xml",
+                    "file": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/values-h720dp-v13/values-h720dp-v13.xml",
                     "position": {
-                        "startLine": 4,
+                        "startLine": 2,
                         "startColumn": 4,
-                        "startOffset": 283,
+                        "startOffset": 55,
                         "endColumn": 66,
-                        "endOffset": 345
+                        "endOffset": 117
                     }
                 }
             }

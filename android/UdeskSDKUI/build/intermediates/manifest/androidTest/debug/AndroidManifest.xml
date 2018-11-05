@@ -3,8 +3,8 @@
     package="cn.udesk.test" >
 
     <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="22" />
+        android:minSdkVersion="19"
+        android:targetSdkVersion="24" />
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
@@ -14,7 +14,6 @@
         android:targetPackage="cn.udesk.test" />
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -23,97 +22,55 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FLAG_GRANT_READ_URI_PERMISSION" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application>
         <uses-library android:name="android.test.runner" />
 
         <activity
             android:name="cn.udesk.activity.UdeskHelperActivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Udesk_Theme" />
+            android:configChanges="screenSize|orientation|navigation|uiMode|keyboardHidden"
+            android:theme="@style/Udesk_Theme" >
+        </activity>
         <activity
             android:name="cn.udesk.activity.UdeskHelperArticleActivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|navigation|uiMode|keyboardHidden"
             android:theme="@style/Udesk_Theme" />
         <activity
             android:name="cn.udesk.activity.UdeskRobotActivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/Udesk_Theme"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name="cn.udesk.activity.UdeskFormActivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:configChanges="screenSize|orientation|navigation|uiMode|keyboardHidden"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
             android:theme="@style/Udesk_Theme" />
         <activity
             android:name="cn.udesk.activity.UdeskChatActivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:configChanges="screenSize|orientation|navigation|uiMode|keyboardHidden"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Udesk_Theme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name="cn.udesk.activity.UdeskZoomImageActivty"
-            android:configChanges="screenSize|orientation|keyboardHidden"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
             android:theme="@style/Udesk_Theme" />
         <activity
+            android:name="cn.udesk.activity.UdeskZoomImageActivty"
+            android:configChanges="screenSize|orientation|navigation|uiMode|keyboardHidden"
+            android:theme="@style/Udesk_Theme" />
+        <activity
+            android:name="cn.udesk.activity.UdeskSurvyDialogActivity"
+            android:configChanges="screenSize|orientation|navigation|uiMode|keyboardHidden"
+            android:theme="@style/transcutestyle" />
+        <activity
             android:name="cn.udesk.activity.UdeskOptionsAgentGroupActivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|navigation|uiMode|keyboardHidden"
             android:theme="@style/Udesk_Theme" />
         <activity
             android:name="cn.udesk.activity.UdeskWebViewUrlAcivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|navigation|uiMode|keyboardHidden"
             android:theme="@style/Udesk_Theme" />
         <activity
-            android:name="cn.udesk.photoselect.PhotoSelectorActivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:name="com.tbruyelle.rxpermissions.ShadowActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Udesk_Theme" />
-        <activity
-            android:name="cn.udesk.photoselect.PreviewActivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Udesk_Theme" />
-        <activity
-            android:name="cn.udesk.photoselect.PictureVideoPlayActivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Udesk_Theme" />
-        <activity
-            android:name="cn.udesk.camera.UdeskCameraActivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
-            android:screenOrientation="portrait" />
-
-        <provider
-            android:name="cn.udesk.provider.UdeskFileProvider"
-            android:authorities="cn.udesk.test.udeskfileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true" >
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/udesk_provider_paths" />
-        </provider>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
 </manifest>

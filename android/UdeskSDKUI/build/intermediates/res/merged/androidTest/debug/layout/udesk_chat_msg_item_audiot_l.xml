@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layoutDirection="ltr"
     android:paddingLeft="@dimen/udesk_chat_head_margin_left_or_right"
     android:paddingTop="@dimen/udesk_5" >
 
@@ -17,17 +15,14 @@
         android:layout_marginTop="@dimen/udesk_5"
         android:gravity="center"
         android:textColor="@color/udesk_color_im_time_text1"
-        android:textSize="@dimen/udesk_sp14" />
+        android:textSize="@dimen/udesk_sp12" />
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/udesk_iv_head"
         android:layout_width="@dimen/udesk_chat_head"
         android:layout_height="@dimen/udesk_chat_head"
         android:layout_below="@id/udesk_tv_time"
         android:layout_marginTop="@dimen/udesk_chat_head_margin"
-        fresco:actualImageScaleType="centerCrop"
-        fresco:roundAsCircle="true"
-        fresco:placeholderImage="@drawable/udesk_im_default_agent_avatar"
         />
 
     <TextView

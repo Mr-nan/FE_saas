@@ -109,7 +109,13 @@ android {
         ndk {
             abiFilters "armeabi","armeabi-v8a"
         }
+        multiDexEnabled true
     }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
     signingConfigs {
         release {
             storeFile file(MYAPP_RELEASE_STORE_FILE)
@@ -183,6 +189,8 @@ dependencies {
         compile 'com.umeng.analytics:analytics:latest.integration'
         compile 'com.growingio.reactnative:vds-android-agent:0.0.9@aar'
         compile 'com.growingio.reactnative:rn-vds-agent:0.0.9@aar'
+        compile project(':UdeskSDKUI')
+        compile 'com.android.support:multidex:1.0.0'
 
 }
 

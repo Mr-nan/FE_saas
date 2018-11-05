@@ -1,50 +1,66 @@
 [
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/abc_slide_in_bottom.xml",
-        "source": "/Users/zhengnan/.android/build-cache/79a3472b361b1d083714d8caf61f9eb8bc032449/output/res/anim/abc_slide_in_bottom.xml"
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/anim/abc_slide_in_bottom.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/abc_fade_in.xml",
-        "source": "/Users/zhengnan/.android/build-cache/79a3472b361b1d083714d8caf61f9eb8bc032449/output/res/anim/abc_fade_in.xml"
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/anim/abc_fade_in.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/abc_slide_out_top.xml",
-        "source": "/Users/zhengnan/.android/build-cache/79a3472b361b1d083714d8caf61f9eb8bc032449/output/res/anim/abc_slide_out_top.xml"
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/anim/abc_slide_out_top.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/abc_fade_out.xml",
-        "source": "/Users/zhengnan/.android/build-cache/79a3472b361b1d083714d8caf61f9eb8bc032449/output/res/anim/abc_fade_out.xml"
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/anim/abc_fade_out.xml"
     },
     {
-        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/udesk_pop_enter_anim.xml",
-        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/bundles/debug/res/anim/udesk_pop_enter_anim.xml"
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/catalyst_push_up_in.xml",
+        "source": "/Users/zhengnan/.android/build-cache/f88eade402fd23eb04dc886479168c1b1fd6b4e7/output/res/anim/catalyst_push_up_in.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/fade_out.xml",
+        "source": "/Users/zhengnan/.android/build-cache/f88eade402fd23eb04dc886479168c1b1fd6b4e7/output/res/anim/fade_out.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/abc_slide_out_bottom.xml",
-        "source": "/Users/zhengnan/.android/build-cache/79a3472b361b1d083714d8caf61f9eb8bc032449/output/res/anim/abc_slide_out_bottom.xml"
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/anim/abc_slide_out_bottom.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/abc_grow_fade_in_from_bottom.xml",
-        "source": "/Users/zhengnan/.android/build-cache/79a3472b361b1d083714d8caf61f9eb8bc032449/output/res/anim/abc_grow_fade_in_from_bottom.xml"
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/anim/abc_grow_fade_in_from_bottom.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/abc_slide_in_top.xml",
-        "source": "/Users/zhengnan/.android/build-cache/79a3472b361b1d083714d8caf61f9eb8bc032449/output/res/anim/abc_slide_in_top.xml"
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/anim/abc_slide_in_top.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/abc_popup_enter.xml",
-        "source": "/Users/zhengnan/.android/build-cache/79a3472b361b1d083714d8caf61f9eb8bc032449/output/res/anim/abc_popup_enter.xml"
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/anim/abc_popup_enter.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/abc_popup_exit.xml",
-        "source": "/Users/zhengnan/.android/build-cache/79a3472b361b1d083714d8caf61f9eb8bc032449/output/res/anim/abc_popup_exit.xml"
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/anim/abc_popup_exit.xml"
     },
     {
-        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/udesk_pop_exit_anim.xml",
-        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/bundles/debug/res/anim/udesk_pop_exit_anim.xml"
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/slide_up.xml",
+        "source": "/Users/zhengnan/.android/build-cache/f88eade402fd23eb04dc886479168c1b1fd6b4e7/output/res/anim/slide_up.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/catalyst_push_up_out.xml",
+        "source": "/Users/zhengnan/.android/build-cache/f88eade402fd23eb04dc886479168c1b1fd6b4e7/output/res/anim/catalyst_push_up_out.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/fade_in.xml",
+        "source": "/Users/zhengnan/.android/build-cache/f88eade402fd23eb04dc886479168c1b1fd6b4e7/output/res/anim/fade_in.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/slide_down.xml",
+        "source": "/Users/zhengnan/.android/build-cache/f88eade402fd23eb04dc886479168c1b1fd6b4e7/output/res/anim/slide_down.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/anim/abc_shrink_fade_out_from_bottom.xml",
-        "source": "/Users/zhengnan/.android/build-cache/79a3472b361b1d083714d8caf61f9eb8bc032449/output/res/anim/abc_shrink_fade_out_from_bottom.xml"
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/anim/abc_shrink_fade_out_from_bottom.xml"
     }
 ]

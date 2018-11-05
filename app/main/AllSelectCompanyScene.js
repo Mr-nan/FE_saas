@@ -13,7 +13,10 @@ import {
     ListView,
     InteractionManager,
     Platform,
-    StatusBar
+    StatusBar,
+    NativeModules
+
+
 
 } from 'react-native';
 //图片加文字
@@ -217,6 +220,8 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
     setLoan = (movie) => {
 
+        NativeModules.Udesk.openChat({});
+        return;
         this.setState({
             source: this.state.source.cloneWithRows(this.data),
             currentBaseID:movie.company_base_id
