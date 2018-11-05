@@ -424,7 +424,7 @@ export default class MyAccountItem extends BaseComponent {
             accountState = '银行处理中';
             bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
         }else if (this.state.data.status === 5) {
-            accountState = '待小额鉴定';
+            accountState = '待小额验证';
             bindBankName = this.state.data.bind_bank_name ? this.state.data.bind_bank_name : '**********';
         }
         return (
