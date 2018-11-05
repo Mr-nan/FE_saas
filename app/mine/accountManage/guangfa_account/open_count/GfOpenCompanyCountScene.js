@@ -329,7 +329,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
         if(this.sData.ent_name == ''){
             this.props.showToast('请输入企业名称');
             return;
-        }else if(this.sData.ent_phone == '' && this.sData.ent_phone.length <= 15){
+        }else if(this.sData.ent_phone == ''){
             this.props.showToast('请输入企业固定电话');
             return;
         }else if(this.sData.unified_credit_code.length!=18){
@@ -345,12 +345,12 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
             this.props.showToast('请输入联系人姓名');
             return;
         }else if(this.sData.agent_cert_no.length!=18){
-            this.props.showToast('请输入联系人身份证');
+            this.props.showToast('请输入正确的联系人身份证号');
             return;
         }else if(this.sData.agent_mobile.length != 11){
             this.props.showToast('请输入正确的联系人手机号');
             return;
-        }else if(isNaN(Number(this.sData.bank_card_no)) || this.sData.bank_card_no < 16 || this.sData.bank_card_no == ''){
+        }else if(isNaN(Number(this.sData.bank_card_no)) || this.sData.bank_card_no.length < 17 || this.sData.bank_card_no == ''){
             this.props.showToast('请输入正确的银行账号');
             return;
         }else if(this.sData.bank_name == '' ){
