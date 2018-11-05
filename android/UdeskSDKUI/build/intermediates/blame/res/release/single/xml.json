@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/release/xml/preferences.xml",
+        "source": "/Users/zhengnan/.android/build-cache/f88eade402fd23eb04dc886479168c1b1fd6b4e7/output/res/xml/preferences.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/release/xml/udesk_provider_paths.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/src/main/res/xml/udesk_provider_paths.xml"
+    }
+]
