@@ -83,7 +83,7 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
                             leftText = '账号'
                             leftIcon={false}
                             import={false}
-                            clearValue={true}
+                            clearValue={false}
                             rightIcon={false}
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(135),paddingLeft:0}}/>
@@ -93,7 +93,7 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
                             leftText = '绑定银行卡手机号'
                             leftIcon={false}
                             import={false}
-                            clearValue={true}
+                            clearValue={false}
                             rightIcon={false}
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(47),paddingLeft:0}}/>
@@ -123,14 +123,14 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
     }
     submit = () => {
         this.SData.new_mobile = this.refs.code.getInputTextValue();
-        if(this.SData.new_mobile != 11){
+        if(this.SData.new_mobile.length != 11){
             this.props.showToast('请输入正确的新手机号');
+            return;
         }
         request(Urls.PERSONAL_CHANGE_PHONE, 'Post', this.SData)
             .then((response)=> {
                 this.props.showModal(false);
                 if(response.mjson.code == '8010017') {
-                    console.log('2222');
                     this.toNextPage({
                         name: 'WattingTenScendsScene',
                         component: WattingTenScendsScene,
@@ -141,7 +141,6 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
                 }
             },(error)=>{
                 if(error.mjson.code == '8010017') {
-                    console.log('2222');
                     this.toNextPage({
                         name: 'WattingTenScendsScene',
                         component: WattingTenScendsScene,

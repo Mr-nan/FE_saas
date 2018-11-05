@@ -125,16 +125,16 @@ export default class IndexAccountmanageScene extends BaseComponent{
 
                         ):(
                             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3}}>
-                                <Image source={require('../../../../../images/mine/guangfa_account/tou-bg.png')} style={{width:width,height:width*0.5}}>
+                                <Image source={require('../../../../../images/mine/guangfa_account/tou-bg.png')} style={{width:width,height:width*0.47}}>
                                     <View style={{flexDirection: 'row',marginTop: Pixel.getPixel(88),alignItems:'center',justifyContent:'space-between',marginLeft:Pixel.getPixel(34),marginRight: Pixel.getPixel(30,5)}}>
                                         <View style={{flexDirection:'column',alignItems:'center',width:Pixel.getPixel(130)}}>
                                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>可用余额(元)</Text>
-                                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(22),lineHeight:Pixel.getPixel(26),fontWeight: 'bold'}}>{this.state.accountData.balance}</Text>
+                                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(22),lineHeight:Pixel.getPixel(26),fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>{this.state.accountData.balance}</Text>
                                         </View>
                                         <View style={{width:Pixel.getPixel(1),height:Pixel.getPixel(20),backgroundColor:'#ffffff'}}/>
                                         <View style={{flexDirection:'column',alignItems:'center',width:Pixel.getPixel(130)}}>
                                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>冻结余额(元)</Text>
-                                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(22),lineHeight:Pixel.getPixel(26),fontWeight: 'bold'}}>{this.state.accountData.frozen_balance}</Text>
+                                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(22),lineHeight:Pixel.getPixel(26),fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>{this.state.accountData.frozen_balance}</Text>
                                         </View>
                                     </View>
                                 </Image>
