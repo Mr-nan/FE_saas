@@ -29,29 +29,36 @@ export default class SubmitComponent extends Component{
     }
 
     render(){
-        const {warpStyle} = this.props;
+        if(this.props.btnType == 1){
+            this.tu = require('../../../../../images/mine/guangfa_account/anniu-1.png');
+        }else if(this.props.btnType == 2){
+            this.tu = require('../../../../../images/mine/guangfa_account/anniu-2.png');
+        }else{
+            this.tu = require('../../../../../images/mine/guangfa_account/anniu-3.png');
+        }
+        const {warpStyle,iconWrap} = this.props;
         return(
-            <TouchableOpacity style={[styles.btn,warpStyle]} onPress={this.props.btn} >
-                <Text style={{color:"#ffffff",fontSize:Pixel.getPixel(15)}}>{this.props.title}</Text>
-            </TouchableOpacity>
+            <Image source={this.tu} style={[styles.btnStyle,iconWrap]}>
+                <TouchableOpacity style={[styles.btn,warpStyle]} onPress={this.props.btn} >
+                    <Text style={{color:"#ffffff",backgroundColor:'transparent',fontSize:Pixel.getPixel(15)}}>{this.props.title}</Text>
+                </TouchableOpacity>
+            </Image>
+
         )
     }
 }
 
 const styles = StyleSheet.create({
     btn:{
-        marginTop:Pixel.getPixel(17),
-        marginLeft:Pixel.getPixel(15),
         width:Pixel.getPixel(345),
         height:Pixel.getPixel(44),
-        backgroundColor:'#16BCCF',
         alignItems:'center',
         justifyContent:'center',
-        borderRadius:Pixel.getPixel(2),
-        shadowOpacity: 1.0,
-        shadowColor:'#D0E7E6',
-        shadowOffset: {width:0,height:Pixel.getPixel(7),
-
-        }
+    },
+    btnStyle:{
+        width:width-Pixel.getPixel(20),
+        height:(width-Pixel.getPixel(20))*0.17,
+        marginTop:Pixel.getPixel(17),
+        marginLeft:Pixel.getPixel(10),
     }
 })

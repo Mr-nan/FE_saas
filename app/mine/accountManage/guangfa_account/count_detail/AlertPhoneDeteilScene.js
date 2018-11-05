@@ -86,7 +86,8 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
                             clearValue={false}
                             rightIcon={false}
                             rightButton={false}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(135),paddingLeft:0}}/>
+                            inputTextStyle = {{marginLeft:Pixel.getPixel(130),paddingLeft:0}}
+                            editable = {false}/>
                     <LoginInputText
                             ref = 'bankCode'
                             exitValue={this.props.mobile}
@@ -96,6 +97,7 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
                             clearValue={false}
                             rightIcon={false}
                             rightButton={false}
+                            editable={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(47),paddingLeft:0}}/>
                     <LoginInputText
                         ref='code'
@@ -114,7 +116,7 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
                     <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
                     <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>修改的手机号需要和银行预留手机号保持一致</Text>
                 </View>
-                <SubmitComponent btn = {()=>{this.submit()}} title='提交' warpStyle={{marginTop:Pixel.getPixel(30)}}/>
+                <SubmitComponent btn = {()=>{this.submit()}} title='提交' btnType={3} iconWrap={{marginTop:Pixel.getPixel(30)}}/>
                 <NavigationView backIconClick={this.backPage} title='修改手机号'
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
             </View>
@@ -123,8 +125,12 @@ export default class AlertPhoneDeteilScene extends BaseComponent{
     }
     submit = () => {
         this.SData.new_mobile = this.refs.code.getInputTextValue();
-        if(this.SData.new_mobile.length != 11){
+        if(isNaN(Number(this.SData.new_mobile)) && this.SData.new_mobile.length != 11){
             this.props.showToast('请输入正确的新手机号');
+            return;
+        }
+        if(Number(this.SData.new_mobile) == Number(this.props.mobile)){
+            this.props.showToast('新输入的手机号应与原预留手机号不一致');
             return;
         }
         request(Urls.PERSONAL_CHANGE_PHONE, 'Post', this.SData)

@@ -108,7 +108,7 @@ export default class AccountSettingScene extends BaseComponent{
                     (<View style={{width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*1.2,backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
                         shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(15),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
                         <LoginInputText
-                            textPlaceholder={this.state.accountData.bank_card_name}
+                            exitValue={this.state.accountData.bank_card_name}
                             leftText = '姓名'
                             leftIcon={false}
                             import={false}
@@ -124,14 +124,15 @@ export default class AccountSettingScene extends BaseComponent{
                         shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(15),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
                         <LoginInputText
                             ref = 'companyName'
-                            textPlaceholder={this.state.accountData.bank_card_name}
+                            exitValue={this.state.accountData.bank_card_name}
                             leftText = '企业名称'
                             leftIcon={false}
                             import={false}
-                            clearValue={true}
+                            clearValue={false}
                             rightIcon={false}
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(89),paddingLeft:0}}
+                            editable = {true}
                             foucsChange = {()=>{
                                 if(this.state.topSize == 5){
                                     this.setState({
@@ -142,11 +143,11 @@ export default class AccountSettingScene extends BaseComponent{
                             />
                         <LoginInputText
                             ref = 'companyPhone'
-                            textPlaceholder={this.state.accountData.enterprise_phone}
+                            exitValue={this.state.accountData.enterprise_phone}
                             leftText = '企业固定电话'
                             leftIcon={false}
                             import={false}
-                            clearValue={true}
+                            clearValue={false}
                             rightIcon={false}
                             rightButton={false}
                             maxLength={15}
@@ -161,11 +162,11 @@ export default class AccountSettingScene extends BaseComponent{
                             />
                         <LoginInputText
                             ref = 'corporation_name'
-                            textPlaceholder={this.state.accountData.legal_real_name}
+                            exitValue={this.state.accountData.legal_real_name}
                             leftText = '法人代表姓名'
                             leftIcon={false}
                             import={false}
-                            clearValue={true}
+                            clearValue={false}
                             rightIcon={false}
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}
@@ -179,11 +180,11 @@ export default class AccountSettingScene extends BaseComponent{
                             />
                         <LoginInputText
                             ref='corporation_code'
-                            textPlaceholder={this.state.accountData.legal_cert_no}
+                            exitValue={this.state.accountData.legal_cert_no}
                             leftText = '法人代表身份证号'
                             leftIcon={false}
                             import={false}
-                            clearValue={true}
+                            clearValue={false}
                             rightIcon={false}
                             rightButton={false}
                             maxLength={18}
@@ -197,11 +198,11 @@ export default class AccountSettingScene extends BaseComponent{
                             }}/>
                         <LoginInputText
                             ref='contact_name'
-                            textPlaceholder={this.state.accountData.agent_name}
+                            exitValue={this.state.accountData.agent_name}
                             leftText = '联系人姓名'
                             leftIcon={false}
                             import={false}
-                            clearValue={true}
+                            clearValue={false}
                             rightIcon={false}
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(75),paddingLeft:0}}
@@ -214,11 +215,11 @@ export default class AccountSettingScene extends BaseComponent{
                             }}/>
                         <LoginInputText
                             ref='contact_code'
-                            textPlaceholder={this.state.accountData.agent_cert_no}
+                            exitValue={this.state.accountData.agent_cert_no}
                             leftText = '联系人身份证号'
                             leftIcon={false}
                             import={false}
-                            clearValue={true}
+                            clearValue={false}
                             rightIcon={false}
                             rightButton={false}
                             maxLength={18}
@@ -230,7 +231,8 @@ export default class AccountSettingScene extends BaseComponent{
                                     })
                                 }
                             }}/>
-                        <SubmitComponent title='确认修改' btn={()=>{this.nextCompany()}} warpStyle={{marginTop:Pixel.getPixel(30),marginLeft:0,width:Pixel.getPixel(309)}}/>
+                        <SubmitComponent title='确认修改' btn={()=>{this.nextCompany()}}  btnType={2} iconWrap ={{marginTop:Pixel.getPixel(30),marginLeft:0,width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*0.17}}
+                                         warpStyle={{width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*0.17}}/>
                     </View>
                     </KeyboardAvoidingView>)
                 }
@@ -248,23 +250,24 @@ export default class AccountSettingScene extends BaseComponent{
         this.SData.legal_cert_no = this.refs.corporation_code.getInputTextValue();
         this.SData.legal_real_name = this.refs.corporation_name.getInputTextValue();
 
-        if(this.SData.agent_cert_no == ''){
-            this.SData.agent_cert_no = this.state.accountData.agent_cert_no;
-        }
-        if(this.SData.agent_name == '') {
-            this.SData.agent_name = this.state.accountData.agent_name;
-        }
-        if(this.SData.ent_name == '') {
-            this.SData.ent_name = this.state.accountData.bank_card_name;
-        }
-        if(this.SData.ent_phone == ''){
-            this.SData.ent_phone = this.state.accountData.enterprise_phone;
-        }
-        if(this.SData.legal_cert_no == ''){
-            this.SData.legal_cert_no = this.state.accountData.legal_cert_no;
-        }
-        if(this.SData.legal_real_name == ''){
-            this.SData.legal_real_name = this.state.accountData.legal_real_name;
+        if(this.SData.agent_cert_no.length != 18){
+            this.props.showToast('请输入正确的联系人身份证号');
+            return;
+        } else if(this.SData.agent_name == '') {
+            this.props.showToast('请输入联系人姓名');
+            return;
+        } else if(this.SData.ent_name == '') {
+            this.props.showToast('请输入联企业名称');
+            return;
+        } else if(isNaN(Number(this.SData.ent_phone)) || this.SData.ent_phone == ''){
+            this.props.showToast('请输入正确的企业固定电话');
+            return;
+        } else if(this.SData.legal_cert_no.length != 18){
+            this.props.showToast('请输入正确的法人代表身份证号');
+            return;
+        } else if(this.SData.legal_real_name == ''){
+            this.props.showToast('请输入法人代表姓名');
+            return;
         }
         this.props.showModal(true);
         request(Urls.GF_CHANGE_COMPANY, 'Post', this.SData)

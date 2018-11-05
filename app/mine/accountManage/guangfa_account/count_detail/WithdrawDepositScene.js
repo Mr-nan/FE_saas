@@ -180,7 +180,8 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                         </View>
 
                     </View>
-                <SubmitComponent btn={()=>{this.confirm()}} title='提现' warpStyle={{marginTop:Pixel.getPixel(30),marginLeft:Pixel.getPixel(0)}}/>
+                <SubmitComponent btn={()=>{this.confirm()}} title='提现' btnType={3}
+                iconWrap = {{marginTop:Pixel.getPixel(30),marginLeft:Pixel.getPixel(0)}}/>
 
                     <TouchableOpacity onPress={this.tip} style={{marginTop:Pixel.getPixel(19)}}>
                         <Text style={{
@@ -206,7 +207,10 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                                     <TouchableOpacity onPress={()=>{this.cancel()}} style={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),backgroundColor:'#ffffff',justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(2),borderWidth: Pixel.getPixel(1),borderColor:'#0DC1C8'}}>
                                         <Text style={{color:'#05C5C2',fontSize:Pixel.getFontPixel(15)}} >取消</Text>
                                     </TouchableOpacity>
-                                    <SubmitComponent btn={()=>{this.submit()}} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginLeft: Pixel.getPixel(20),marginTop:0}}/>
+                                    <SubmitComponent btn={()=>{this.submit()}} title="确认" btnStyle={1}
+                                                     warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32)}}
+                                                     iconWrap={{marginLeft: Pixel.getPixel(20),marginTop:Pixel.getPixel(10),width:Pixel.getPixel(100),height:Pixel.getPixel(46)}}
+                                    />
                                 </View>
                             </View>
                         </Image>
@@ -222,7 +226,9 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                                 <Text allowFontScaling={true} style={{color:'#ffffff',fontWeight: 'bold',fontSize:Pixel.getFontPixel(24),marginTop:Pixel.getPixel(30),letterSpacing: Pixel.getFontPixel(4.9)}}>提示</Text>
                                 <Text style={{marginTop:Pixel.getPixel(49),color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>1.单笔提现五万元以内(包含五万)，不限节假日24小时内到账;</Text>
                                 <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),marginTop:Pixel.getPixel(10),lineHeight:Pixel.getPixel(22)}}>2.单笔提现五万以上，只限于工作日16:00前申请，申请成功后，24小时内到账。</Text>
-                                    <SubmitComponent btn={()=>{this.know()}} title="我知道了" warpStyle={{width:Pixel.getPixel(200),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(10)}}/>
+                                    <SubmitComponent btn={()=>{this.know()}} title="我知道了" btnType={2}
+                                                     warpStyle={{width:Pixel.getPixel(200),height:Pixel.getPixel(32)}}
+                                                     iconWrap={{marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(10),width:Pixel.getPixel(200),height:Pixel.getPixel(46)}}/>
                             </View>
                         </Image>
                     </View>
@@ -235,7 +241,9 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                         <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(204),backgroundColor:'#ffffff',marginTop: Pixel.getPixel(149),borderRadius:Pixel.getPixel(4),alignItems:'center'}}>
                             <Image source={require('../../../../../images/mine/guangfa_account/shi.png')} style={{marginTop:Pixel.getPixel(30)}}/>
                             <Text style={{textAlign:'center',width:Pixel.getPixel(260),color:FontAndColor.COLORA0,backgroundColor:'transparent',lineHeight:Pixel.getPixel(20),marginTop:Pixel.getPixel(15)}} allowFontScaling={false}>提现金额必须小于等于可用余额</Text>
-                            <SubmitComponent btn={this.falied} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(25),marginLeft: 0}}/>
+                            <SubmitComponent btn={this.falied} title="确认" btnType={1}
+                                             iconWrap = {{marginTop:Pixel.getPixel(25),marginLeft: 0,width:Pixel.getPixel(100),height:Pixel.getPixel(42)}}
+                                             warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32)}}/>
                         </View>
                     </View>
                 </Modal>
