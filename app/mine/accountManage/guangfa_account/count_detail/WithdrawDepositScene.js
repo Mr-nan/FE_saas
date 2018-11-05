@@ -194,7 +194,7 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                        transparent={this.state.transparent}
                        visible={this.state.modalVisible}>
                     <View style={{flex:1,alignItems:'center',backgroundColor:'rgba(0,0,0,0.5)'}}>
-                        <Image source={require('../../../../../images/mine/guangfa_account/tanchuang.png')} style={{marginTop: Pixel.getPixel(149)}}>
+                        <Image source={require('../../../../../images/mine/guangfa_account/tanchuang.png')} style={{marginTop: Pixel.getPixel(149),width:width-Pixel.getPixel(116),height:(width-Pixel.getPixel(116))*1.22}}>
                             <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(317),alignItems:'center'}}>
                                 <Text allowFontScaling={true} style={{color:'#ffffff',fontWeight: 'bold',fontSize:Pixel.getFontPixel(24),marginTop:Pixel.getPixel(30),letterSpacing: Pixel.getFontPixel(4.9)}}>提示</Text>
                                 <Text style={{marginTop:Pixel.getPixel(49),color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>确认提现后您的资金将会被冻结，</Text>
@@ -217,12 +217,12 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                        transparent={this.state.transparent}
                        visible={this.state.modalVisibleTip}>
                     <View style={{flex:1,alignItems:'center',backgroundColor:'rgba(0,0,0,0.5)'}}>
-                        <Image source={require('../../../../../images/mine/guangfa_account/tanchuang.png')} style={{marginTop: Pixel.getPixel(149)}}>
+                        <Image source={require('../../../../../images/mine/guangfa_account/tanchuang.png')} style={{marginTop: Pixel.getPixel(149),width:width-Pixel.getPixel(116),height:(width-Pixel.getPixel(116))*1.22}}>
                             <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(317),alignItems:'center',paddingLeft:Pixel.getPixel(20),paddingRight:Pixel.getPixel(20)}}>
                                 <Text allowFontScaling={true} style={{color:'#ffffff',fontWeight: 'bold',fontSize:Pixel.getFontPixel(24),marginTop:Pixel.getPixel(30),letterSpacing: Pixel.getFontPixel(4.9)}}>提示</Text>
                                 <Text style={{marginTop:Pixel.getPixel(49),color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>1.单笔提现五万元以内(包含五万)，不限节假日24小时内到账;</Text>
                                 <Text style={{color:FontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getPixel(14),marginTop:Pixel.getPixel(10),lineHeight:Pixel.getPixel(22)}}>2.单笔提现五万以上，只限于工作日16:00前申请，申请成功后，24小时内到账。</Text>
-                                    <SubmitComponent btn={()=>{this.know()}} title="我知道了" warpStyle={{width:Pixel.getPixel(200),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15)}}/>
+                                    <SubmitComponent btn={()=>{this.know()}} title="我知道了" warpStyle={{width:Pixel.getPixel(200),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(10)}}/>
                             </View>
                         </Image>
                     </View>

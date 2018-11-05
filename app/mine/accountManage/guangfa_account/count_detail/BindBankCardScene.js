@@ -253,8 +253,8 @@ export default class BindBankCardScene extends BaseComponent{
         else if (this.sData.user_type == '2' && this.sData.mobile.length != 11){
             this.props.showToast('请输入正确的手机号码');
             return;
-        }else if( isNaN(Number(this.sData.bank_card_no)) || this.sData.bank_card_no < 16 || this.sData.bank_card_no == ''){
-            this.props.showToast('请输入银行卡号');
+        }else if( isNaN(Number(this.sData.bank_card_no)) || this.sData.bank_card_no.length < 17 || this.sData.bank_card_no == ''){
+            this.props.showToast('请输入正确的银行卡号');
             return;
         }else if(this.sData.bank_name == '' ){
             this.props.showToast('请选择银行');

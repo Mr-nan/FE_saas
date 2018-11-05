@@ -67,16 +67,17 @@ export default class AuthenticateCardComponent extends Component{
                     justifyContent:'center',
                     width:width,
                     height:width*0.3,
-                    alignItems: 'center'
+                    alignItems: 'center',
                 }} source={this.yinying} resizeMode="stretch">
                     <Image style={{
-                        width:width-Pixel.getPixel(30),
+                        width:width-Pixel.getPixel(26),
                         height:(width-Pixel.getPixel(30))*0.26,
                         justifyContent:'center',
-                        paddingLeft:Pixel.getPixel(20)
+                        paddingLeft:Pixel.getPixel(20),
+                        marginTop:Pixel.getPixel(-4)
                     }} source={this.tu} resizeMode="stretch">
                                 <Text allowFontScaling={false} style={{backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(12),}}>{this.props.data.sub_bank_name}卡号</Text>
-                                <Text allowFontScaling={false} style={{backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(24),fontWeight:'bold'}}>{this.bankNo}</Text>
+                                <Text allowFontScaling={false} style={{backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(24),fontWeight:'bold',marginTop:Pixel.getPixel(5)}}>{this.bankNo}</Text>
                             <View  style={{
                                 position:'absolute',
                                 top:(((width-Pixel.getPixel(30))*0.26)-Pixel.getPixel(30))/2,

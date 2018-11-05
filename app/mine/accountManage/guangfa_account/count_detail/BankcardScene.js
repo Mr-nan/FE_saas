@@ -173,7 +173,7 @@ export default class BankCardScene extends BaseComponent{
                     borderRadius:Pixel.getPixel(5),
                     marginLeft:Pixel.getPixel(15),
                     borderWidth: Pixel.getPixel(1),borderColor:'#979797',
-                    flexDirection: 'row',justifyContent: 'center',alignItems:'center',marginTop: Pixel.getPixel(25)}}
+                    flexDirection: 'row',justifyContent: 'center',alignItems:'center',marginTop: Pixel.getPixel(10)}}
                                   onPress={()=>{this.addBankClick()}}>
                     <Image source={require('../../../../../images/mine/guangfa_account/tianjia.png')}/>
                     <Text style={{backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getFontPixel(15),marginLeft: Pixel.getPixel(10)}}>添加银行卡</Text>
