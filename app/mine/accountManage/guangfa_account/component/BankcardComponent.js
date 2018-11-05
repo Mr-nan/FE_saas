@@ -35,31 +35,31 @@ export default class BankcardComponent extends BaseComponent{
         let  {data} = this.props;
         this.cardNO = data.bank_card_no && data.bank_card_no != 0 ? data.bank_card_no.replace(/^(....).*(....)$/,'$1****$2'):'**** **** ****';
         return(
-            <TouchableOpacity style={{marginTop:Pixel.getPixel(15)}} onPress={()=>{this.props.bankClick && this.props.bankClick(data)}} activeOpacity={1}>
+            <TouchableOpacity style={{marginTop:Pixel.getPixel(10)}} onPress={()=>{this.props.bankClick && this.props.bankClick(data)}} activeOpacity={1}>
             <Image source={this.bg} style={{
                 width:width-Pixel.getPixel(30),
                 height:(width-Pixel.getPixel(30)) * 0.24,
                 marginLeft:Pixel.getPixel(15)
-
             }}>
                 <View style={{flexDirection:'row',width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30)) * 0.24}}>
                     <Image source={this.icon} style={{marginLeft: Pixel.getPixel(19),marginTop:Pixel.getPixel(26),width:Pixel.getPixel(28),height:Pixel.getPixel(28)}}/>
-                    <View style={{flexDirection:'row',marginLeft:Pixel.getPixel(12),width:width-Pixel.getPixel(95),justifyContent:'space-between',marginTop:Pixel.getPixel(5)}}>
+                    <View style={{flexDirection:'row',marginLeft:Pixel.getPixel(18),width:width-Pixel.getPixel(95),justifyContent:'space-between',paddingRight: Pixel.getPixel(12),alignItems:'center'}}>
                         <View style={{flexDirection:'column',justifyContent: 'center'}}>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(15),lineHeight:Pixel.getPixel(21)}}>{data.sub_bank_name}</Text>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(18),lineHeight:Pixel.getPixel(23),marginTop:Pixel.getPixel(5)}}>{this.cardNO}</Text>
                         </View>
-                        <View style={{flexDirection:'column',alignItems:'flex-end'}}>
-                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>{this.statusType(data.status)}</Text>
+                        <View style={{justifyContent:'center'}}>
                             {
-                                (data.status!=4  && data.status == 3)&& (
+                                data.status != 3 && <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>{this.statusType(data.status)}</Text>
+                            }
+                            {
+                                data.status == 3 && (
                                     <TouchableOpacity style={{
                                         width:Pixel.getPixel(43),height:Pixel.getPixel(21),
                                         borderRadius:Pixel.getPixel(25),
                                         backgroundColor:'rgba(0,0,0,0.1)',
                                         alignItems:'center',
-                                        justifyContent:'center',
-                                        marginTop:Pixel.getPixel(14)}} onPress={()=>{
+                                        justifyContent:'center'}} onPress={()=>{
                                             this.props.relieveClick && this.props.relieveClick(data)
                                     }}>
                                         <Text style={{fontSize:Pixel.getFontPixel(12),color:'#ffffff',backgroundColor:'transparent'}}>解绑</Text>

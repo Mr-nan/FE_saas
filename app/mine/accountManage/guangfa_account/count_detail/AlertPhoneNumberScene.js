@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         height:Pixel.getPixel(91),
         backgroundColor:'white',
         marginLeft: Pixel.getPixel(15),
-        marginTop: Pixel.getPixel(82),
+        marginTop: Pixel.getPixel(15),
         borderRadius:Pixel.getPixel(5),
         borderWidth:Pixel.getPixel(1),
         borderColor:'white',
