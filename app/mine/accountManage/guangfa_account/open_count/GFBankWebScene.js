@@ -13,7 +13,8 @@ import {
     TouchableOpacity,
     Dimensions,
     StatusBar,
-    WebView
+    WebView,
+    DeviceEventEmitter
 
 } from 'react-native';
 
@@ -125,7 +126,13 @@ export default class GFBankWebScene extends BaseComponent{
             },(error)=>{
 
             });
-        this.backPage();
+
+        if(this.props.isShowWarn){
+            DeviceEventEmitter.emit('myAccountSceneLoadData');
+            this.backToRoute('MyAccountScene');
+        }else {
+            this.backPage();
+        }
 
     }
 
@@ -135,6 +142,7 @@ export default class GFBankWebScene extends BaseComponent{
 
         }else {
             this.goBackPage();
-        }    }
+        }
+    }
 
 }
