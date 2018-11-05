@@ -27,6 +27,8 @@ import WattingTenScendsScene from '../count_detail/WattingTenScendsScene';
 import WebViewTitle from '../../../../mine/accountManage/component/WebViewTitle';
 import {request} from "../../../../utils/RequestUtil";
 import * as Urls from "../../../../constant/appUrls";
+import  AllLoading from '../../../../component/AllLoading';
+
 
 export default class GFBankWebScene extends BaseComponent{
     constructor(props) {
@@ -72,7 +74,19 @@ export default class GFBankWebScene extends BaseComponent{
     document.getElementById('b').style.display = "none";
 </script>
 </html>`}}/>
-                <NavigationView title={this.props.title?this.props.title:'广发银行'} backIconClick={this.goBackPage} wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
+                <NavigationView title={this.props.title?this.props.title:'广发银行'}
+                                backIconClick={()=>{
+                                         if(this.props.isShowWarn){
+                                             this.refs.allloading.changeShowType(true,'您还未完成开户\n确认返回则需等待20分钟方可重新完成开户操作');
+
+                                         }else {
+                                             this.goBackPage();
+                                         }
+                                            }
+                                } wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
+                <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
+                    this.goBackPage();
+                }}/>
             </View>
 
         );
@@ -116,7 +130,11 @@ export default class GFBankWebScene extends BaseComponent{
     }
 
     handleBack=()=>{
-        this.goBackPage();
-    }
+        if(this.props.isShowWarn){
+            this.refs.allloading.changeShowType(true,'您还未完成开户，确认返回则需等待20分钟方可重新完成开户操作');
+
+        }else {
+            this.goBackPage();
+        }    }
 
 }
