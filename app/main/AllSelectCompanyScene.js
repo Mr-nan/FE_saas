@@ -381,15 +381,15 @@ class CertificateItem extends Component{
                         )
                     }
                     <View style={{
-                        height:Pixel.getPixel(30),
+                        height:Pixel.getPixel(15),
                         alignItems:'center',
                         justifyContent:'center',
-                        top: Pixel.getPixel(34),
+                        top: Pixel.getPixel(44),
                         right:Pixel.getPixel(15),
                         position: 'absolute',
-                        width:Pixel.getPixel(30),
+                        width:Pixel.getPixel(15),
                     }}>
-                        <Image style={{width: Pixel.getPixel(20), height: Pixel.getPixel(20)}}
+                        <Image style={{width: Pixel.getPixel(15), height: Pixel.getPixel(15)}}
                                source={require('../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </View>
