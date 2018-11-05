@@ -223,6 +223,10 @@ export  default class AllSelectCompanyScene extends BaseComponent {
         if(IS_ANDROID){
             NativeModules.Udesk.openChat(this.userData);
             return;
+        }else {
+            NativeModules.ZNShareClass.openUdsk(this.userData);
+            return;
+
         }
 
         this.setState({
