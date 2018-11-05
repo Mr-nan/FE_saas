@@ -27,7 +27,7 @@ import NavigationView from "../../../../component/AllNavigationView";
 export default class GFRechargeScene extends BaseComponent{
     constructor(props) {
         super(props);
-        this.person = '上海锋之行汽车金融\n'+'信息服务有限公司转\n'+'账交易资金托管账户';
+        this.person = '上海锋之行汽车金融信息\n'+'服务有限公司转账交易资\n'+'金托管账户';
         this.state = {
             renderPlaceholderOnly:'blank'
         }
@@ -52,8 +52,8 @@ export default class GFRechargeScene extends BaseComponent{
                 <StatusBar barStyle='dark-content'/>
                 <NavigationView backIconClick={this.backPage} title='充值'
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
-                <Image source={require('../../../../../images/mine/guangfa_account/chongzhi.png')} style={{marginTop: Pixel.getPixel(69)}}>
-                    <View style={{width:Pixel.getPixel(345),marginTop:Pixel.getPixel(9),height:Pixel.getPixel(365),alignItems:'center',marginLeft: Pixel.getPixel(18)}}>
+                <Image source={require('../../../../../images/mine/guangfa_account/chongzhi.png')} style={{marginTop: Pixel.getPixel(69),width:width,height:width*1.2}}>
+                    <View style={{width:width-Pixel.getPixel(30),marginTop:Pixel.getPixel(9),height:(width-Pixel.getPixel(30))*1.2,alignItems:'center',marginLeft:Pixel.getPixel(15)}}>
                         <Image style={{width:Pixel.getPixel(31),height:Pixel.getPixel(31),marginTop:Pixel.getPixel(19)}} source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
                         <Text style={{color:'#999999',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(14),lineHeight:Pixel.getPixel(22),marginTop:Pixel.getPixel(13)}} allowFontScaling={false}> 您可以使用您绑定过的银行卡，</Text>
                         <Text style={{color:'#999999',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(14),lineHeight:Pixel.getPixel(22)}} allowFontScaling={false}> 通过线下转账（柜台、网银、手机银行）的方式</Text>

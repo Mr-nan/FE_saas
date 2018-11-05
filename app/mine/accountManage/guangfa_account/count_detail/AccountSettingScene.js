@@ -96,7 +96,7 @@ export default class AccountSettingScene extends BaseComponent{
             <ScrollView style={{flex:1}}>
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,alignItems:'center'}}>
                 <StatusBar barStyle='light-content'/>
-                <Image source={require('../../../../../images/mine/guangfa_account/tou-bg.png')} style={{alignItems:'center',width:width,height:width*0.5}}>
+                <Image source={require('../../../../../images/mine/guangfa_account/tou-bg.png')} style={{alignItems:'center',width:width,height:width*0.47}}>
                     <NavigationView backIconClick={this.backPage} title='账户设置'
                                     wrapStyle={{backgroundColor:'transparent'}} titleStyle={{color:'#ffffff'}}/>
                     <View style={{width:Pixel.getPixel(92),height:Pixel.getPixel(20),backgroundColor:'rgba(0,0,0,0.1)',borderRadius:Pixel.getPixel(13),alignItems:'center',justifyContent: 'center',marginTop: Pixel.getPixel(74)}}>
@@ -105,8 +105,8 @@ export default class AccountSettingScene extends BaseComponent{
                     <Text style={{color:'#ffffff',fontSize:Pixel.getFontPixel(26),backgroundColor:'transparent',marginTop:Pixel.getPixel(8),fontWeight: 'bold'}}>{this.carID}</Text>
                 </Image>
                 {this.props.account.account_open_type == '2' ?
-                    (<View style={{width:Pixel.getPixel(345),height:Pixel.getPixel(191),backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
-                        shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(26),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
+                    (<View style={{width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*1.2,backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
+                        shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(15),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
                         <LoginInputText
                             textPlaceholder={this.state.accountData.bank_card_name}
                             leftText = '姓名'
@@ -120,8 +120,8 @@ export default class AccountSettingScene extends BaseComponent{
                         <SubmitComponent title='确认修改' warpStyle={{marginTop:Pixel.getPixel(21),marginLeft:0,width:Pixel.getPixel(309)}}/>
                     </View> ) :
                     ( <KeyboardAvoidingView behavior={'position'}  keyboardVerticalOffset={this.state.topSize}>
-                        <View style={{width:Pixel.getPixel(345),height:Pixel.getPixel(417),backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
-                        shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(26),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
+                        <View style={{width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*1.2,backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
+                        shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(15),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
                         <LoginInputText
                             ref = 'companyName'
                             textPlaceholder={this.state.accountData.bank_card_name}
@@ -230,7 +230,7 @@ export default class AccountSettingScene extends BaseComponent{
                                     })
                                 }
                             }}/>
-                        <SubmitComponent title='确认修改' btn={()=>{this.nextCompany()}} warpStyle={{marginTop:Pixel.getPixel(21),marginLeft:0,width:Pixel.getPixel(309)}}/>
+                        <SubmitComponent title='确认修改' btn={()=>{this.nextCompany()}} warpStyle={{marginTop:Pixel.getPixel(30),marginLeft:0,width:Pixel.getPixel(309)}}/>
                     </View>
                     </KeyboardAvoidingView>)
                 }

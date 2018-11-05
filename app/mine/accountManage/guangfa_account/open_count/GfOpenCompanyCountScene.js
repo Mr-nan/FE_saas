@@ -350,7 +350,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
         }else if(this.sData.agent_mobile.length != 11){
             this.props.showToast('请输入正确的联系人手机号');
             return;
-        }else if(isNaN(Number(this.sData.bank_card_no)) && this.sData.bank_card_no <= 19){
+        }else if(isNaN(Number(this.sData.bank_card_no)) || this.sData.bank_card_no < 16 || this.sData.bank_card_no == ''){
             this.props.showToast('请输入正确的银行账号');
             return;
         }else if(this.sData.bank_name == '' ){

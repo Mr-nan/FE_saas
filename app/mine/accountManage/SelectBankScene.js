@@ -536,7 +536,7 @@ const styles = StyleSheet.create({
     },
     sectionHeader: {
         backgroundColor: fontAnColor.COLORA3,
-        height: Pixel.getPixel(40),
+        height: Pixel.getPixel(25),
         justifyContent: 'center'
     },
     sectionText: {
