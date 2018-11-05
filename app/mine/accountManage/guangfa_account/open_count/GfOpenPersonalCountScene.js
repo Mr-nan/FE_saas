@@ -33,6 +33,8 @@ import * as Urls from "../../../../constant/appUrls";
 import GFBankWebScene from "./GFBankWebScene";
 import SelectBankScene from "../../SelectBankScene";
 import IndexAccountmanageScene from "../count_detail/IndexAccountmanageScene";
+import  AllLoading from '../../../../component/AllLoading';
+
 
 export default class GfOpenPersonalCountScene extends BaseComponent{
     constructor(props) {
@@ -142,7 +144,13 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
                     <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
                     <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>请确认信息的准确性，开户时间为7*24小时 </Text>
                 </View>
-                <SubmitComponent btn = {()=>{this.submit()}} title={this.props.btnText} warpStyle={{marginTop:Pixel.getPixel(30)}}/>
+                <SubmitComponent btn ={()=>{this.submit();}}
+                                 title={this.props.btnText}
+                                 warpStyle={{marginTop:Pixel.getPixel(30)}}/>
+                <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
+                    this.sData.enter_base_id = global.companyBaseID;
+                    this.sendData(this.sData);
+                }}/>
             </View>
 
         );
@@ -153,7 +161,6 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
             name:'SelectBankScene',
             component:SelectBankScene,
             params:{getBankData:(data)=>{
-                    console.log('bankdata',data);
                     this.sData.bank_name = data.bankName;
                     this.sData.bank_no = data.bankNo;
                     this.setState({
@@ -183,10 +190,11 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
         }else if(this.sData.bank_name == '' ){
             this.props.showToast('请选择银行');
             return;
-        }else{
-            this.sData.enter_base_id = global.companyBaseID;
-            this.sendData(this.sData);
         }
+        this.refs.allloading.changeShowType(true,'请确认开户信息\n提交后暂不支持修改');
+
+
+
     }
 
     sendData = (data) =>{
@@ -195,24 +203,30 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
             .then((response)=> {
                 this.props.showModal(false);
                 let da = response.mjson;
-                this.toNextPage({
-                    name:'GFBankWebScene',
-                    component:GFBankWebScene,
-                    params:{
-                        callback:()=>{this.props.callback()},
-                        uri:da.data.url_wap,pa:da.data.params,
-                        sign:da.data.sign,
-                        reback_url:this.sData.reback_url,
-                        serial_no:da.data.serial_no,
-                        toNextPageData:{
-                            name:'IndexAccountmanageScene',
-                            component:IndexAccountmanageScene,
-                            params:{}}
-                    }
+                if(response.mjson.code==1){
+                    this.toNextPage({
+                        name:'GFBankWebScene',
+                        component:GFBankWebScene,
+                        params:{
+                            callback:()=>{this.props.callback()},
+                            uri:da.data.url_wap,
+                            pa:da.data.params,
+                            sign:da.data.sign,
+                            isShowWarn:true,
+                            reback_url:this.sData.reback_url,
+                            serial_no:da.data.serial_no,
+                            toNextPageData:{
+                                name:'IndexAccountmanageScene',
+                                component:IndexAccountmanageScene,
+                                params:{}}
+                        }});
+                }else {
+                    this.props.showToast(response.mjson.msg);
+                }
+
                 },(error)=>{
                     this.props.showToast(error.mjson.msg);
-                })
-            })
+                });
     }
 
 }

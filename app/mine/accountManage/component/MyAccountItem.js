@@ -78,9 +78,13 @@ export default class MyAccountItem extends BaseComponent {
 
 
         if(type == 'gfyh'){
+            if(state==4){
+                // 审核中
+                this.props.showToast('您的开户信息已提交，请等待银行审核');
+                return;
+            }
             switch (state) {
                 // iscompany 1、企业，2、个人，3、共借
-
                 case 0:
                     if(iscompany==1 || iscompany==3){
 
@@ -110,16 +114,8 @@ export default class MyAccountItem extends BaseComponent {
                         }
                     };
                     break;
-                case 4:
-                    this.navigatorParams.name = 'BankWatting';
-                    this.navigatorParams.component = BankWatting;
-                    this.navigatorParams.params = {
-                        callBack:() =>{
-                            this.props.callBack();
-                        }
-                    };
-                    break;
                 case 5:
+                    // 小额鉴权
                     this.navigatorParams.name = 'AuthenticatePublicScene';
                     this.navigatorParams.component = AuthenticatePublicScene;
                     this.navigatorParams.params = {

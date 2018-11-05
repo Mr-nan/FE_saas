@@ -32,6 +32,8 @@ import * as Urls from "../../../../constant/appUrls";
 import GFBankWebScene from './GFBankWebScene';
 import SelectBankScene from "../../SelectBankScene";
 import SmallAmountofPawerScene from "../count_detail/SmallAmountofPawerScene";
+import  AllLoading from '../../../../component/AllLoading';
+
 const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
 
@@ -278,8 +280,20 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
                         <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>请确认信息的准确性，开户时间为7*24小时 </Text>
                     </View>
-                    <SubmitComponent title={this.props.btnText} btn = {()=>{this.submit()}}/>
+                    <SubmitComponent title={this.props.btnText} btn = {()=>{this.submit();}}/>
                     </KeyboardAvoidingView>
+                    <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
+
+                        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data) => {
+                            if(data.code == 1 && data.result != null){
+                                let datas = JSON.parse(data.result);
+                                this.sData.enter_base_id = datas.company_base_id;
+                                this.sData.user_id = this.userID;
+                                this.sendData(this.sData);
+                            }
+                        })
+
+                    }}/>
                 </ScrollView>
             </View>
         );
@@ -343,16 +357,9 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
             this.props.showToast('请选择银行');
             return;
         }
-        else{
-            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data) => {
-                if(data.code == 1 && data.result != null){
-                    let datas = JSON.parse(data.result);
-                    this.sData.enter_base_id = datas.company_base_id;
-                    this.sData.user_id = this.userID;
-                    this.sendData(this.sData);
-                }
-            })
-        }
+        this.refs.allloading.changeShowType(true,'请确认开户信息\n提交后暂不支持修改');
+
+
     }
 
     sendData = (data) => {
@@ -369,6 +376,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                             uri:da.data.url_wap,
                             pa:da.data.params,
                             sign:da.data.sign,
+                            isShowWarn:true,
                             reback_url:this.sData.reback_url,
                             serial_no:da.data.serial_no,
                             toNextPageData:{
