@@ -53,20 +53,20 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-          new SQLitePluginPackage(),
-          new UmengPushPackage(),
-          new ImagePickerPackage(),
-          new PickerViewPackage(),
-          new ReactNativeWheelPickerPackage(),
-          new WeChatPackage(),
-          new VinScanPackage(),
-          new QrScanPackage(),
-          new CustomCameraPackage(),
-          new RNSpinkitPackage(),
-          new CodePush("xmOhd_I_phLbpA3a4AKSbAMFaN5DVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG),
-          new GrowingIOPackage(),
-          new ShareWechatPackage(),
+              new MainReactPackage(),
+              new SQLitePluginPackage(),
+              new UmengPushPackage(),
+              new ImagePickerPackage(),
+              new PickerViewPackage(),
+              new ReactNativeWheelPickerPackage(),
+              new WeChatPackage(),
+              new VinScanPackage(),
+              new QrScanPackage(),
+              new CustomCameraPackage(),
+              new RNSpinkitPackage(),
+              new CodePush("xmOhd_I_phLbpA3a4AKSbAMFaN5DVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG),
+              new GrowingIOPackage(),
+              new ShareWechatPackage(),
               new UdeskPackage()
 
       );
