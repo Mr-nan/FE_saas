@@ -4,7 +4,6 @@
 
 import React, {Component, PropTypes} from 'react'
 import {
-
     View,
     Text,
     ListView,
@@ -16,7 +15,8 @@ import {
     RefreshControl,
     BackAndroid,
     Linking,
-    NativeModules
+    NativeModules,
+    Platform
 } from 'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
@@ -40,7 +40,7 @@ import * as storageKeyNames from '../constant/storageKeyNames';
 import WebScene from './WebScene';
 import CarMySourceScene from '../carSource/CarMySourceScene';
 import HomeJobItem from './component/HomeJobItem';
-import HomeRowButton from './component/HomeRowButton';
+import HomeShoppingIcon from './component/HomeShoppingIcon';
 import HomeAdvertisementButton from './component/HomeAdvertisementButton';
 import MessageListScene from "../message/MessageListScene";
 import StringTransformUtil from '../utils/StringTransformUtil';
@@ -49,13 +49,13 @@ let stringTransform = new StringTransformUtil();
 import * as Urls from '../constant/appUrls';
 import AuthenticationModal from '../component/AuthenticationModal';
 
-let Platform = require('Platform');
 import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
 import PersonCertificate from "../mine/certificateManage/PersonCertificate";
 
 import SuishoujiIndicativeScene from './SuishoujiIndicativeScene';
 import ActivityView from './component/ActivityView';
 
+const IS_ANDROID = Platform.OS === 'android';
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
@@ -650,20 +650,43 @@ export default class HomeScene extends BaseComponet {
                         />
                     }
                 />
+                <HomeShoppingIcon click={()=> {
+                    StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                            if (res.result && res.result == 'true') {
+                                StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
+                                    if(userData.code ==1 && userData.result != null){
+                                        let myUser = JSON.parse(userData.result);
+
+                                        if(IS_ANDROID){
+                                          NativeModules.Udesk.openChat(myUser);
+                                       }else {
+                                           NativeModules.ZNUdeskClass.openUdsk(myUser);
+                                        }
+                                    }else {
+                                        this.props.showToast('获取用户信息失败');
+                                    }});
+
+                            }else {
+                                this.isHomeJobItemLose = false;
+                                this.props.showLoginModal();
+                            }
+                        }
+                    );
+                }}/>
                 <AuthenticationModal ref="authenmodal"/>
                 {/*<ActivityView ref={(ref)=>{this.ActivityView = ref}} click={this.activityViewClick}/>*/}
             </View>
         )
     }
 
-    refreshingData = () => {
+    refreshingData =()=> {
         allList = [];
         this.setState({isRefreshing: true});
         page = 1;
         this.loadData();
     };
 
-    homeOnPress = (title) => {
+    homeOnPress =(title)=> {
         if (title == '收车') {
             this.props.jumpScene('carpage', 'checkRecommend');
         } else if (title == '卖车') {

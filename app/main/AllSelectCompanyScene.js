@@ -220,14 +220,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
 
     setLoan = (movie) => {
 
-        if(IS_ANDROID){
-            NativeModules.Udesk.openChat(this.userData);
-            return;
-        }else {
-            NativeModules.ZNUdeskClass.openUdsk(this.userData);
-            return;
 
-        }
 
         this.setState({
             source: this.state.source.cloneWithRows(this.data),
