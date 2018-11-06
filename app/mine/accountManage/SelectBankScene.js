@@ -270,7 +270,7 @@ export  default class SelectBankScene extends BaseComponent {
         }
         return (
             <View style={styles.root}>
-                <StatusBar barStyle={'dark-content'}/>
+                <StatusBar barStyle={'default'}/>
                 <View style={{backgroundColor :fontAnColor.COLORA3,height:Pixel.getPixel(50),paddingHorizontal:Pixel.getPixel(15),justifyContent:'center',
                     flexDirection:'row', alignItems:'center'
                 }}>

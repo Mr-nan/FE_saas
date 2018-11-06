@@ -22,7 +22,6 @@ import {
 } from 'react-native';
 
 import BaseComponent from "../component/BaseComponent";
-import LoginGesture from "./LoginGesture";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
 import NewSetPasswordScreen from  './NewSetPasswordScreen';
 
