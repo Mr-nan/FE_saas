@@ -224,7 +224,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
             NativeModules.Udesk.openChat(this.userData);
             return;
         }else {
-            NativeModules.ZNShareClass.openUdsk(this.userData);
+            NativeModules.ZNUdeskClass.openUdsk(this.userData);
             return;
 
         }

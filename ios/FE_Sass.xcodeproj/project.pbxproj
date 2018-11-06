@@ -230,6 +230,7 @@
 		7D2FD646218FDBE40070D332 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D2FD645218FDBE40070D332 /* MediaPlayer.framework */; };
 		7D2FD648218FDBF00070D332 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D2FD647218FDBEF0070D332 /* Photos.framework */; };
 		7D2FD64A218FDBFE0070D332 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D2FD649218FDBFE0070D332 /* CoreText.framework */; };
+		7D2FD675219131A10070D332 /* ZNUdeskClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2FD674219131A10070D332 /* ZNUdeskClass.m */; };
 		7D4BDE2A1ECAD84A002DD5E1 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */; };
 		7D5D8B681EE5565900892F2E /* (null) in Resources */ = {isa = PBXBuildFile; };
 		7D769E2E1E602A800039526C /* libc++abi.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2D1E602A800039526C /* libc++abi.tbd */; };
@@ -948,6 +949,8 @@
 		7D2FD645218FDBE40070D332 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		7D2FD647218FDBEF0070D332 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		7D2FD649218FDBFE0070D332 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		7D2FD673219131A10070D332 /* ZNUdeskClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZNUdeskClass.h; sourceTree = "<group>"; };
+		7D2FD674219131A10070D332 /* ZNUdeskClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZNUdeskClass.m; sourceTree = "<group>"; };
 		7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7D769E2B1E602A630039526C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		7D769E2D1E602A800039526C /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = "usr/lib/libc++abi.tbd"; sourceTree = SDKROOT; };
@@ -2405,6 +2408,8 @@
 				7D9B6C281F8DB56B0063B7C1 /* MBProgressHUD.m */,
 				7D9B6C2A1F8DB56B0063B7C1 /* ZNShareClass.h */,
 				7D9B6C251F8DB56B0063B7C1 /* ZNShareClass.m */,
+				7D2FD673219131A10070D332 /* ZNUdeskClass.h */,
+				7D2FD674219131A10070D332 /* ZNUdeskClass.m */,
 				7D9B6C271F8DB56B0063B7C1 /* ZNShareViewController.h */,
 				7D9B6C291F8DB56B0063B7C1 /* ZNShareViewController.m */,
 				13B07FAE1A68108700A75B9A /* FE_Sass */,
@@ -3209,6 +3214,7 @@
 				7D2FD5CB218FDB4A0070D332 /* UdeskBundleUtils.m in Sources */,
 				7D2FD5A4218FDB4A0070D332 /* UdeskPhotoManeger.m in Sources */,
 				7D2FD5D3218FDB4A0070D332 /* UdeskLanguageConfig.m in Sources */,
+				7D2FD675219131A10070D332 /* ZNUdeskClass.m in Sources */,
 				7D2FD62B218FDB4A0070D332 /* UdeskSurveyModel.m in Sources */,
 				7D2FD5D9218FDB4A0070D332 /* UdeskTransitioningAnimation.m in Sources */,
 				7D2FD5DF218FDB4A0070D332 /* UdeskAlertController.m in Sources */,
