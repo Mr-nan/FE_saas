@@ -40,12 +40,12 @@ public class UdeskModule extends ReactContextBaseJavaModule {
 
         try{
             UdeskSDKManager.getInstance().initApiKey(currentActivity,"dycd.udesk.cn","8a47dfb721e3d97782866278d46f91a4","6b4112b63158cfce");
-            String sdktoken = "android-sdkToken-userID" + data.getInt("base_user_id");
+            String sdktoken = "android-" + data.getString("id");
             Map<String, String> info = new HashMap<String, String>();
             info.put(UdeskConst.UdeskUserInfo.USER_SDK_TOKEN, sdktoken);
             //以下信息是可选
-            info.put(UdeskConst.UdeskUserInfo.NICK_NAME,"姓名:"+data.getString("boss_name"));
-            info.put(UdeskConst.UdeskUserInfo.CELLPHONE,"手机:" +data.getString("boss_tel"));
+            info.put(UdeskConst.UdeskUserInfo.NICK_NAME,data.getString("name"));
+            info.put(UdeskConst.UdeskUserInfo.CELLPHONE,data.getString("phone"));
             UdeskSDKManager.getInstance().setUserInfo(currentActivity, sdktoken, info);
             UdeskSDKManager.getInstance().entryChat(currentActivity);
 

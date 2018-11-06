@@ -14,14 +14,12 @@
 RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(openUdsk:(NSDictionary *)userData){
   
-
-  RCTLogInfo(@"%@===============",userData);
   UdeskOrganization *organization = [[UdeskOrganization alloc] initWithDomain:@"dycd.udesk.cn" appKey:@"8a47dfb721e3d97782866278d46f91a4" appId:@"6b4112b63158cfce"];
   UdeskCustomer *customer = [UdeskCustomer new];
   //必填（请不要使用特殊字符）
-  customer.sdkToken = [NSString stringWithFormat:@"ios-sdkToken--userID:%@",userData[@"base_user_id"]] ;
-  customer.nickName = [NSString stringWithFormat:@"%@",userData[@"boss_name"]];
-  customer.cellphone = [NSString stringWithFormat:@"手机号:%@",userData[@"boss_tel"]] ;
+  customer.sdkToken = [NSString stringWithFormat:@"ios-%@",userData[@"id"]] ;
+  customer.nickName = [NSString stringWithFormat:@"%@",userData[@"name"]];
+  customer.cellphone = [NSString stringWithFormat:@"%@",userData[@"phone"]] ;
   
   //初始化sdk
   [UdeskManager initWithOrganization:organization customer:customer];

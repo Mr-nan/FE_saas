@@ -655,12 +655,19 @@ export default class HomeScene extends BaseComponet {
                             if (res.result && res.result == 'true') {
                                 StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
                                     if(userData.code ==1 && userData.result != null){
+                                        console.log(userData.result);
                                         let myUser = JSON.parse(userData.result);
+                                        let myData={
+                                            id:+'userID'+myUser.base_user_id,
+                                            name:'姓名：'+myUser.boss_name,
+                                            phone:'电话：'+myUser.boss_tel
+
+                                        }
 
                                         if(IS_ANDROID){
-                                          NativeModules.Udesk.openChat(myUser);
+                                          NativeModules.Udesk.openChat(myData);
                                        }else {
-                                           NativeModules.ZNUdeskClass.openUdsk(myUser);
+                                           NativeModules.ZNUdeskClass.openUdsk(myData);
                                         }
                                     }else {
                                         this.props.showToast('获取用户信息失败');
