@@ -201,7 +201,7 @@ export default class BindBankCardScene extends BaseComponent{
                     <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
                     <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>请确认信息的准确性，开户时间为7*24小时 </Text>
                 </View>
-                <SubmitComponent   btn={()=>{this.submit()}} title={'确认提交'} warpStyle={{marginTop:Pixel.getPixel(30)}}/>
+                <SubmitComponent   btn={()=>{this.submit()}}  btnType={3} title={'确认提交'} iconWrap ={{marginTop:Pixel.getPixel(30)}}/>
                 <NavigationView backIconClick={this.backPage} title={'添加银行卡'}
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <Modal  animationType={this.state.animationType}
@@ -211,7 +211,9 @@ export default class BindBankCardScene extends BaseComponent{
                         <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(204),backgroundColor:'#ffffff',marginTop: Pixel.getPixel(149),borderRadius:Pixel.getPixel(4),alignItems:'center'}}>
                             <Image source={this.state.image} style={{marginTop:Pixel.getPixel(30)}}/>
                             <Text style={{textAlign:'center',color:fontAndColor.COLORA0,backgroundColor:'transparent',lineHeight:Pixel.getPixel(20),marginTop:Pixel.getPixel(15)}} allowFontScaling={false}>{this.state.text}</Text>
-                            <SubmitComponent btn={this.go} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(25),marginLeft: 0}}/>
+                            <SubmitComponent btn={this.go} title="确认" btnType={1} iconWrap={{marginTop:Pixel.getPixel(25),marginLeft: 0,width:Pixel.getPixel(100),height:Pixel.getPixel(42)}}
+                                             warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32)}}/>
+
                         </View>
                     </View>
                 </Modal>
@@ -250,10 +252,10 @@ export default class BindBankCardScene extends BaseComponent{
         //     this.props.showToast('请输入正确的资金账号');
         //     return;
         // }
-        else if (this.sData.user_type == '2' && this.sData.mobile.length != 11){
+        else if (this.sData.user_type == '2' && isNaN(Number(this.sData.mobile)) && this.sData.mobile.length != 11){
             this.props.showToast('请输入正确的手机号码');
             return;
-        }else if( isNaN(Number(this.sData.bank_card_no)) || this.sData.bank_card_no.length < 17 || this.sData.bank_card_no == ''){
+        }else if( isNaN(Number(this.sData.bank_card_no)) || this.sData.bank_card_no == ''){
             this.props.showToast('请输入正确的银行卡号');
             return;
         }else if(this.sData.bank_name == '' ){

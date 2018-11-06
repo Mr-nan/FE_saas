@@ -280,7 +280,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
                         <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>请确认信息的准确性，开户时间为7*24小时 </Text>
                     </View>
-                    <SubmitComponent title={this.props.btnText} btn = {()=>{this.submit();}}/>
+                    <SubmitComponent btnType={3} title={this.props.btnText} btn = {()=>{this.submit();}}/>
                     </KeyboardAvoidingView>
                     <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
 
@@ -329,7 +329,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
         if(this.sData.ent_name == ''){
             this.props.showToast('请输入企业名称');
             return;
-        }else if(this.sData.ent_phone == ''){
+        }else if(isNaN(Number(this.sData.ent_phone)) || this.sData.ent_phone == ''){
             this.props.showToast('请输入企业固定电话');
             return;
         }else if(this.sData.unified_credit_code.length!=18){
@@ -347,10 +347,10 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
         }else if(this.sData.agent_cert_no.length!=18){
             this.props.showToast('请输入正确的联系人身份证号');
             return;
-        }else if(this.sData.agent_mobile.length != 11){
+        }else if(isNaN(Number(this.sData.agent_mobile)) && this.sData.agent_mobile.length != 11){
             this.props.showToast('请输入正确的联系人手机号');
             return;
-        }else if(isNaN(Number(this.sData.bank_card_no)) || this.sData.bank_card_no.length < 17 || this.sData.bank_card_no == ''){
+        }else if(isNaN(Number(this.sData.bank_card_no))|| this.sData.bank_card_no == ''){
             this.props.showToast('请输入正确的银行账号');
             return;
         }else if(this.sData.bank_name == '' ){

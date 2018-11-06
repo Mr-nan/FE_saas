@@ -42,8 +42,10 @@ export default class BankcardComponent extends BaseComponent{
                 marginLeft:Pixel.getPixel(15)
             }}>
                 <View style={{flexDirection:'row',width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30)) * 0.24}}>
-                    <Image source={this.icon} style={{marginLeft: Pixel.getPixel(19),marginTop:Pixel.getPixel(26),width:Pixel.getPixel(28),height:Pixel.getPixel(28)}}/>
-                    <View style={{flexDirection:'row',marginLeft:Pixel.getPixel(18),width:width-Pixel.getPixel(95),justifyContent:'space-between',paddingRight: Pixel.getPixel(12),alignItems:'center'}}>
+                    <Image source={this.iconbg} style={{marginLeft:Pixel.getPixel(5),marginTop:Pixel.getPixel(15),alignItems:'center',justifyContent:'center'}}>
+                        <Image source={this.icon} style={{marginTop:Pixel.getPixel(-8)}}/>
+                    </Image>
+                    <View style={{flexDirection:'row',marginLeft:Pixel.getPixel(5),width:width-Pixel.getPixel(95),justifyContent:'space-between',paddingRight: Pixel.getPixel(12),alignItems:'center'}}>
                         <View style={{flexDirection:'column',justifyContent: 'center'}}>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(15),lineHeight:Pixel.getPixel(21)}}>{data.sub_bank_name}</Text>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(18),lineHeight:Pixel.getPixel(23),marginTop:Pixel.getPixel(5)}}>{this.cardNO}</Text>
@@ -79,51 +81,67 @@ export default class BankcardComponent extends BaseComponent{
         if(name.indexOf('工商银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/gs.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-hong.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/hong-y.png');
         }else if(name.indexOf('中国银行')>-1){
             this.icon =require('../../../../../images/mine/guangfa_account/zh.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-hong.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/hong-y.png');
         }else if(name.indexOf('建设银行')>-1){
             this.icon =require('../../../../../images/mine/guangfa_account/js.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-lan.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/lan-y.png');
         }else if(name.indexOf('农业银行')>-1){
             this.icon =require('../../../../../images/mine/guangfa_account/ny.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-lv.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/lv-y.png');
         }else if(name.indexOf('交通银行')>-1){
             this.icon= require('../../../../../images/mine/guangfa_account/jt.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-lan.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/lan-y.png');
         }else if(name.indexOf('邮储银行')>-1){
             this.icon =require('../../../../../images/mine/guangfa_account/yz.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-lv.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/lv-y.png');
         }else if(name.indexOf('招商银行')>-1){
             this.icon =require('../../../../../images/mine/guangfa_account/zs.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-hong.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/hong-y.png');
         }else if(name.indexOf('平安银行')>-1){
             this.icon =require('../../../../../images/mine/guangfa_account/pa.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-jing.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/jing-y.png');
         }else if(name.indexOf('民生银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/ms.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-lv.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/lv-y.png');
         }else if(name.indexOf('光大银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/gd_new.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-zi.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/zi-y.png');
         }else if(name.indexOf('华夏银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/hx.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-hong.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/hong-y.png');
         }else if(name.indexOf('中信银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/zx.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-hong.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/hong-y.png');
         }else if(name.indexOf('浦发银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/pf.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-lan.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/lan-y.png');
         }else if(name.indexOf('广发银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/gf.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-hong.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/hong-y.png');
         }else if(name.indexOf('兴业银行')>-1){
             this.icon = require('../../../../../images/mine/guangfa_account/zx.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-lan.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/lan-y.png');
         }else {
             this.icon = require('../../../../../images/mine/guangfa_account/moren-bank.png');
             this.bg = require('../../../../../images/mine/guangfa_account/ka-hong.png');
+            this.iconbg = require('../../../../../images/mine/guangfa_account/hong-y.png');
         }
     }
 

@@ -121,7 +121,9 @@ export default class BankCardScene extends BaseComponent{
                         <View style={{flex:1,alignItems:'center',backgroundColor:'rgba(0,0,0,0.5)'}}>
                             <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(204),backgroundColor:'#ffffff',marginTop: Pixel.getPixel(149),borderRadius:Pixel.getPixel(4),alignItems:'center'}}>
                                 <Text style={{textAlign:'center',width:Pixel.getPixel(260),color:fontAndColor.COLORA0,backgroundColor:'transparent',lineHeight:Pixel.getPixel(20),marginTop:Pixel.getPixel(29)}} allowFontScaling={false}>{this.tips}</Text>
-                                <SubmitComponent btn={()=>{this.go()}}  title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(25),marginLeft: 0}}/>
+                                <SubmitComponent btn={()=>{this.go()}}  title="确认" btnStyle={1}
+                                                 warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32)}}
+                                                 iconWrap={{marginTop:Pixel.getPixel(25),marginLeft: 0,width:Pixel.getPixel(100),height:Pixel.getPixel(42)}}/>
                             </View>
                         </View>
                     </Modal>
@@ -133,7 +135,10 @@ export default class BankCardScene extends BaseComponent{
                         <View style={{width:Pixel.getPixel(260),height:Pixel.getPixel(204),backgroundColor:'#ffffff',marginTop: Pixel.getPixel(149),borderRadius:Pixel.getPixel(4),alignItems:'center'}}>
                             <Image source={this.state.image} style={{marginTop:Pixel.getPixel(30)}}/>
                             <Text style={{textAlign:'center',width:Pixel.getPixel(260),color:fontAndColor.COLORA0,backgroundColor:'transparent',lineHeight:Pixel.getPixel(20),marginTop:Pixel.getPixel(15)}} allowFontScaling={false}>{this.state.text}</Text>
-                            <SubmitComponent btn={this.goWatting} title="确认" warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),marginTop:Pixel.getPixel(25),marginLeft: 0}}/>
+                            <SubmitComponent btn={this.goWatting} title="确认" btnStyle={1}
+                                             warpStyle={{width:Pixel.getPixel(100),height:Pixel.getPixel(32)}}
+                                             iconWrap={{marginTop:Pixel.getPixel(25),marginLeft: 0,width:Pixel.getPixel(100),height:Pixel.getPixel(42)}}
+                            />
                         </View>
                     </View>
                 </Modal>

@@ -51,7 +51,7 @@ export default class ACCountManageScene extends BaseComponent{
                     <Text allowFontScaling={false}  style={{fontSize:Pixel.getFontPixel(14),color:fontAndColor.COLORD2,marginTop:Pixel.getPixel(17),lineHeight:Pixel.getPixel(20)}}>您已通过审核，</Text>
                     <Text allowFontScaling={false} style={{fontSize:Pixel.getFontPixel(14),color:fontAndColor.COLORD2,lineHeight:Pixel.getPixel(20)}}>请进行小额鉴权完成开户</Text>
                 </View>
-                <SubmitComponent title="去小额鉴权" warpStyle={{marginTop:Pixel.getPixel(39)}}/>
+                <SubmitComponent title="去小额鉴权" btnType={3} iconWrap = {{marginTop:Pixel.getPixel(39)}}/>
             </View>
         )
     }

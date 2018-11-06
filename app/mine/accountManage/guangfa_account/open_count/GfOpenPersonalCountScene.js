@@ -146,7 +146,9 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
                 </View>
                 <SubmitComponent btn ={()=>{this.submit();}}
                                  title={this.props.btnText}
-                                 warpStyle={{marginTop:Pixel.getPixel(30)}}/>
+                                 btnType={3}
+                                 iconWrap = {{marginTop:Pixel.getPixel(30)}}
+                />
                 <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
                     this.sData.enter_base_id = global.companyBaseID;
                     this.sendData(this.sData);
@@ -181,10 +183,10 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
         }else if(this.sData.cert_no.length != 18){
             this.props.showToast('请输入正确的身份证号');
             return;
-        }else if(this.sData.mobile.length != 11){
+        }else if(isNaN(Number(this.sData.agent_mobile)) || this.sData.mobile.length != 11){
             this.props.showToast('请输入正确的手机号码');
             return;
-        }else if(isNaN(Number(this.sData.bank_card_no))|| this.sData.bank_card_no.length < 17 || this.sData.bank_card_no == ''){
+        }else if(isNaN(Number(this.sData.bank_card_no)) || this.sData.bank_card_no == ''){
             this.props.showToast('请输入正确的银行卡号');
             return;
         }else if(this.sData.bank_name == '' ){
