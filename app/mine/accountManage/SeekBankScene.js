@@ -138,6 +138,7 @@ class SeekView extends Component{
                                    ref={(ref)=>{this.input=ref}}
                                    underlineColorAndroid='transparent'
                                    placeholderTextColor={fontAnColor.COLORA1}
+                                   autoFocus={true}
                                    onChangeText={(text)=>{
                                        if(text.length>0){
                                            this.isShowCancel = true;
