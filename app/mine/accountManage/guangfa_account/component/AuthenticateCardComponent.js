@@ -74,7 +74,9 @@ export default class AuthenticateCardComponent extends Component{
                         height:(width-Pixel.getPixel(30))*0.26,
                         justifyContent:'center',
                         paddingLeft:Pixel.getPixel(20),
-                        marginTop:Pixel.getPixel(-4)
+                        marginTop:Pixel.getPixel(-4),
+                        overflow:'hidden',
+                        backgroundColor:'transparent'
                     }} source={this.tu} resizeMode="stretch">
                                 <Text allowFontScaling={false} style={{backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(12),}}>{this.props.data.sub_bank_name}卡号</Text>
                                 <Text allowFontScaling={false} style={{backgroundColor:'transparent',color:'#ffffff',fontSize:Pixel.getPixel(24),fontWeight:'bold',marginTop:Pixel.getPixel(5)}}>{this.bankNo}</Text>
@@ -87,7 +89,7 @@ export default class AuthenticateCardComponent extends Component{
                                 height:Pixel.getPixel(30),
                                 justifyContent:'center',
                                 paddingRight:Pixel.getPixel(25),
-                                paddingLeft:Pixel.getPixel(10)
+                                paddingLeft:Pixel.getPixel(10),
                             }}>
                                 <Text allowFontScaling={false}  style={{color:'#ffffff',fontSize:Pixel.getPixel(15)}}>{this.text}</Text>
                             </View>
