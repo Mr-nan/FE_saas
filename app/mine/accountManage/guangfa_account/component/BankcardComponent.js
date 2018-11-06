@@ -45,7 +45,7 @@ export default class BankcardComponent extends BaseComponent{
                     <Image source={this.iconbg} style={{marginLeft:Pixel.getPixel(5),marginTop:Pixel.getPixel(15),alignItems:'center',justifyContent:'center'}}>
                         <Image source={this.icon} style={{marginTop:Pixel.getPixel(-8)}}/>
                     </Image>
-                    <View style={{flexDirection:'row',marginLeft:Pixel.getPixel(5),width:width-Pixel.getPixel(95),justifyContent:'space-between',paddingRight: Pixel.getPixel(12),alignItems:'center'}}>
+                    <View style={{flexDirection:'row',marginLeft:Pixel.getPixel(5),width:width-Pixel.getPixel(105),justifyContent:'space-between',paddingRight: Pixel.getPixel(12),alignItems:'center'}}>
                         <View style={{flexDirection:'column',justifyContent: 'center'}}>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(15),lineHeight:Pixel.getPixel(21)}}>{data.sub_bank_name}</Text>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(18),lineHeight:Pixel.getPixel(23),marginTop:Pixel.getPixel(5)}}>{this.cardNO}</Text>
