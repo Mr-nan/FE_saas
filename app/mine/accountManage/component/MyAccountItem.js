@@ -257,6 +257,27 @@ export default class MyAccountItem extends BaseComponent {
         }
     };
 
+    parseFormatNum=(number,n)=>{
+        if(n != 0 ){
+            n = (n > 0 && n <= 20) ? n : 2;
+        }
+        number = parseFloat((number + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+        var sub_val = number.split(".")[0].split("").reverse();
+        var sub_xs = number.split(".")[1];
+
+        var show_html = "";
+        for (i = 0; i < sub_val.length; i++){
+            show_html += sub_val[i] + ((i + 1) % 3 == 0 && (i + 1) != sub_val.length ? "," : "");
+        }
+
+        if(n == 0 ){
+            return show_html.split("").reverse().join("");
+        }else{
+            return show_html.split("").reverse().join("") + "." + sub_xs;
+        }
+
+    }
+
     /**
      *   点击跳转方法
      *   type 315恒丰 316浙商
@@ -555,7 +576,7 @@ export default class MyAccountItem extends BaseComponent {
                                             textAlign: 'left',
                                             fontSize: Pixel.getFontPixel(26),
                                             color:'#333333',
-                                        }}>{this.state.data.balance}</Text>
+                                        }}>{this.parseFormatNum(this.state.data.balance,2)}</Text>
                             }
 
                         </View>

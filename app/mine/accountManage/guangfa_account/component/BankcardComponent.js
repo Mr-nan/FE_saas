@@ -42,15 +42,15 @@ export default class BankcardComponent extends BaseComponent{
                 marginLeft:Pixel.getPixel(15)
             }}>
                 <View style={{flexDirection:'row',width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30)) * 0.24}}>
-                    <Image source={this.iconbg} style={{marginLeft:Pixel.getPixel(5),marginTop:Pixel.getPixel(15),alignItems:'center',justifyContent:'center'}}>
-                        <Image source={this.icon} style={{marginTop:Pixel.getPixel(-8)}}/>
+                    <Image source={this.iconbg} style={{marginLeft:Pixel.getPixel(5),marginTop:Pixel.getPixel(13),alignItems:'center',justifyContent:'center'}}>
+                        <Image source={this.icon} style={{marginBottom:Pixel.getPixel(8)}}/>
                     </Image>
-                    <View style={{flexDirection:'row',marginLeft:Pixel.getPixel(5),width:width-Pixel.getPixel(105),justifyContent:'space-between',paddingRight: Pixel.getPixel(12),alignItems:'center'}}>
+                    <View style={{flexDirection:'row',width:width-Pixel.getPixel(105),alignItems:'center'}}>
                         <View style={{flexDirection:'column',justifyContent: 'center'}}>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(15),lineHeight:Pixel.getPixel(21)}}>{data.sub_bank_name}</Text>
                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(18),lineHeight:Pixel.getPixel(23),marginTop:Pixel.getPixel(5)}}>{this.cardNO}</Text>
                         </View>
-                        <View style={{justifyContent:'center'}}>
+                        <View style={{justifyContent:'center',position:'absolute',right:Pixel.getPixel(10),bottom:Pixel.getPixel(20)}}>
                             {
                                 data.status != 3 && <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>{this.statusType(data.status)}</Text>
                             }
