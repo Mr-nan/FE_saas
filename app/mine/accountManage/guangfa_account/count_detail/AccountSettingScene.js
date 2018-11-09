@@ -117,7 +117,7 @@ export default class AccountSettingScene extends BaseComponent{
                             rightButton={false}
                             inputTextStyle = {{marginLeft:Pixel.getPixel(45),paddingLeft:0}}
                             />
-                        <SubmitComponent title='确认修改' warpStyle={{marginTop:Pixel.getPixel(21),marginLeft:0,width:Pixel.getPixel(309)}}/>
+                        <SubmitComponent title='确认修改' btnType={2}  iconWrap={{marginTop:Pixel.getPixel(21),marginLeft:0,width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*0.17}}/>
                     </View> ) :
                     ( <KeyboardAvoidingView behavior={'position'}  keyboardVerticalOffset={this.state.topSize}>
                         <View style={{width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*1.2,backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
@@ -232,7 +232,7 @@ export default class AccountSettingScene extends BaseComponent{
                                 }
                             }}/>
                         <SubmitComponent title='确认修改' btn={()=>{this.nextCompany()}}  btnType={2} iconWrap ={{marginTop:Pixel.getPixel(30),marginLeft:0,width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*0.17}}
-                                         warpStyle={{width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*0.17}}/>
+                        />
                     </View>
                     </KeyboardAvoidingView>)
                 }

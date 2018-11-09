@@ -94,13 +94,13 @@ export default class GFRechargeScene extends BaseComponent{
     async copyPerson (){
         Clipboard.setString(this.state.name);
         let  str = await Clipboard.getString();
-        this.props.showToast('去粘贴');
+        this.props.showToast('复制成功');
         console.log('name',str);
     }
     async copyAccount(){
         Clipboard.setString(this.state.account);
         let  str = await Clipboard.getString();
-        this.props.showToast('去粘贴');
+        this.props.showToast('复制成功');
         console.log('account',str);
     }
     renderPlaceholderView = () => {

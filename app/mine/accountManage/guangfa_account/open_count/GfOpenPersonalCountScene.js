@@ -183,7 +183,7 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
         }else if(this.sData.cert_no.length != 18){
             this.props.showToast('请输入正确的身份证号');
             return;
-        }else if(isNaN(Number(this.sData.agent_mobile)) || this.sData.mobile.length != 11){
+        }else if(isNaN(Number(this.sData.mobile)) || this.sData.mobile.length != 11){
             this.props.showToast('请输入正确的手机号码');
             return;
         }else if(isNaN(Number(this.sData.bank_card_no)) || this.sData.bank_card_no == ''){

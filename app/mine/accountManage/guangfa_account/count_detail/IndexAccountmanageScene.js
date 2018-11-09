@@ -126,15 +126,15 @@ export default class IndexAccountmanageScene extends BaseComponent{
                         ):(
                             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3}}>
                                 <Image source={require('../../../../../images/mine/guangfa_account/tou-bg.png')} style={{width:width,height:width*0.47}}>
-                                    <View style={{flexDirection: 'row',marginTop: Pixel.getPixel(88),alignItems:'center',justifyContent:'space-between',marginLeft:Pixel.getPixel(34),marginRight: Pixel.getPixel(30,5)}}>
-                                        <View style={{flexDirection:'column',alignItems:'center',width:Pixel.getPixel(130)}}>
+                                    <View style={{flexDirection: 'row',marginTop: Pixel.getPixel(88),alignItems:'center',width:width}}>
+                                        <View style={{flexDirection:'column',alignItems:'center',width:width/2}}>
                                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>可用余额(元)</Text>
-                                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(22),lineHeight:Pixel.getPixel(26),fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>{this.state.accountData.balance}</Text>
+                                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(22),lineHeight:Pixel.getPixel(26),fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>{this.parseFormatNum(this.state.accountData.balance,2)}</Text>
                                         </View>
                                         <View style={{width:Pixel.getPixel(1),height:Pixel.getPixel(20),backgroundColor:'#ffffff'}}/>
-                                        <View style={{flexDirection:'column',alignItems:'center',width:Pixel.getPixel(130)}}>
+                                        <View style={{flexDirection:'column',alignItems:'center',width:width/2}}>
                                             <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(12),lineHeight:Pixel.getPixel(17)}}>冻结余额(元)</Text>
-                                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(22),lineHeight:Pixel.getPixel(26),fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>{this.state.accountData.frozen_balance}</Text>
+                                            <Text style={{color:'#ffffff',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(22),lineHeight:Pixel.getPixel(26),fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>{this.parseFormatNum(this.state.accountData.frozen_balance,2)}</Text>
                                         </View>
                                     </View>
                                 </Image>
@@ -152,11 +152,11 @@ export default class IndexAccountmanageScene extends BaseComponent{
                                     </View>
                                     <View style={{backgroundColor:'#ffffff',width:width}}>
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/yinghangka.png')} title="银行卡" isShowBottomLin={true} click={()=>{this.bankList()}}/>
-                                        {
-                                            this.state.accountData.account_open_type==1&&(
-                                                    <CellItem imageData={require('../../../../../images/mine/guangfa_account/jianquan.png')} title="小额鉴权" isShowBottomLin={true} click={()=>{this.small()}}/>
-                                            )
-                                        }
+                                        {/*{*/}
+                                            {/*this.state.accountData.account_open_type==1&&(*/}
+                                                    {/*<CellItem imageData={require('../../../../../images/mine/guangfa_account/jianquan.png')} title="小额鉴权" isShowBottomLin={true} click={()=>{this.small()}}/>*/}
+                                            {/*)*/}
+                                        {/*}*/}
 
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/jiaoyimingxi.png')} title="交易明细查询" isShowBottomLin={false} click={()=>{this.priceDetailAction()}}/>
                                     </View>
@@ -339,6 +339,26 @@ export default class IndexAccountmanageScene extends BaseComponent{
 
     }
 
+    parseFormatNum=(number,n)=>{
+        if(n != 0 ){
+            n = (n > 0 && n <= 20) ? n : 2;
+        }
+        number = parseFloat((number + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+        var sub_val = number.split(".")[0].split("").reverse();
+        var sub_xs = number.split(".")[1];
+
+        var show_html = "";
+        for (i = 0; i < sub_val.length; i++){
+            show_html += sub_val[i] + ((i + 1) % 3 == 0 && (i + 1) != sub_val.length ? "," : "");
+        }
+
+        if(n == 0 ){
+            return show_html.split("").reverse().join("");
+        }else{
+            return show_html.split("").reverse().join("") + "." + sub_xs;
+        }
+
+    }
     backPage=()=>{
         // DeviceEventEmitter.emit('myAccountSceneLoadData');
         this.backToRoute('MyAccountScene');
