@@ -56,6 +56,7 @@ import List from "../mine/myOrder/orderwuliu/list/List";
 import CredictManageScene from "../mine/kuaisushouxin/CredictManageScene";
 import CarSuperviseListScreen from "../mine/carSupervise/CarSuperviseListScreen";
 import CertificateManageScene from "../mine/certificateManage/CertificateManageScene";
+import OpenAccountList from "../mine/channelOpenAccount/OpenAccountList";
 
 var Pixel = new PixelUtil();
 
@@ -288,7 +289,13 @@ export default class MineScene extends BaseComponent {
                 "name": name
                 , "id": id
             },);
-        } else if (id == 74) {
+        } else if (id == 82) {
+            Car[0].cars.push({
+                "icon": require('../../images/mainImage/shouxinguanli.png'),
+                "name": name
+                , "id": id
+            },);
+        }else if (id == 74) {
 	        Car[0].cars.push({
 		        "icon": require('../../images/mainImage/shouxinguanli.png'),
 		        "name": name
@@ -746,6 +753,19 @@ export default class MineScene extends BaseComponent {
             case 80:
                 this.navigatorParams.name = 'CarSuperviseListScreen'
                 this.navigatorParams.component = CarSuperviseListScreen
+                break;
+            case 82:
+                StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data)=>{
+                    if(data.code === 1){
+                        let reuslt = JSON.parse(data.result)
+                        if(result.merge_id == 0){
+                            this.props.showToast('您还未授信')
+                        }else {
+                            this.navigatorParams.name = 'OpenAccountList'
+                            this.navigatorParams.component = OpenAccountList
+                        }
+                    }
+                })
                 break;
         }
         this.props.callBack(this.navigatorParams);
