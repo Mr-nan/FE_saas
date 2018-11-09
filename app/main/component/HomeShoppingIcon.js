@@ -35,7 +35,7 @@ export default class HomeShoppingIcon extends Component{
         super(props);
         this.width = width;
         this.height = height - Pixel.getBottomPixel(0);
-          this.originData ={leftGap: this.width-Pixel.getPixel(50),topGap:(this.height -Pixel.getPixel(50))/2};
+          this.originData ={leftGap: this.width-Pixel.getPixel(50),topGap:height-Pixel.getPixel(150)};
       }
 
 
