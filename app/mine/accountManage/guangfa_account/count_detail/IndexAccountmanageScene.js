@@ -152,11 +152,11 @@ export default class IndexAccountmanageScene extends BaseComponent{
                                     </View>
                                     <View style={{backgroundColor:'#ffffff',width:width}}>
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/yinghangka.png')} title="银行卡" isShowBottomLin={true} click={()=>{this.bankList()}}/>
-                                        {
-                                            this.state.accountData.account_open_type==1&&(
-                                                    <CellItem imageData={require('../../../../../images/mine/guangfa_account/jianquan.png')} title="小额鉴权" isShowBottomLin={true} click={()=>{this.small()}}/>
-                                            )
-                                        }
+                                        {/*{*/}
+                                            {/*this.state.accountData.account_open_type==1&&(*/}
+                                                    {/*<CellItem imageData={require('../../../../../images/mine/guangfa_account/jianquan.png')} title="小额鉴权" isShowBottomLin={true} click={()=>{this.small()}}/>*/}
+                                            {/*)*/}
+                                        {/*}*/}
 
                                         <CellItem imageData={require('../../../../../images/mine/guangfa_account/jiaoyimingxi.png')} title="交易明细查询" isShowBottomLin={false} click={()=>{this.priceDetailAction()}}/>
                                     </View>
