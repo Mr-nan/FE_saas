@@ -35,7 +35,7 @@ export default class HomeShoppingIcon extends Component{
         super(props);
         this.width = width;
         this.height = height - Pixel.getBottomPixel(0);
-          this.originData ={leftGap: this.width-Pixel.getPixel(50),topGap:height-Pixel.getPixel(150)};
+          this.originData ={leftGap:this.width-Pixel.getPixel(55),topGap:height-Pixel.getPixel(150)};
       }
 
 
@@ -91,28 +91,15 @@ export default class HomeShoppingIcon extends Component{
 
     render(){
         return(
-            <View style={{position:'absolute',left:this.originData.leftGap,top:this.originData.topGap}} {...this.panResponder.panHandlers}>
-                {
-                    IS_ANDROID ? (
-                            <TouchableOpacity style={{
-                                width: Pixel.getPixel(50),
-                                height: Pixel.getPixel(50),
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }} onPress={this.props.click}>
-                                <Image source={require('../../../images/mainImage/kefu.png')}/>
-                            </TouchableOpacity>
-                        ) : (
-                            <TouchableHighlight style={{
-                                width: Pixel.getPixel(50),
-                                height: Pixel.getPixel(50),
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }} onPress={this.props.click} underlayColor={'transparent'}>
-                                <Image source={require('../../../images/mainImage/kefu.png')}/>
-                            </TouchableHighlight>
-                        )
-                }
+            <View style={{position:'absolute',left:this.originData.leftGap,top:this.originData.topGap}}>
+                <TouchableOpacity style={{
+                    width: Pixel.getPixel(50),
+                    height: Pixel.getPixel(50),
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }} onPress={this.props.click} underlayColor={'transparent'}>
+                    <Image source={require('../../../images/mainImage/kefu.png')}/>
+                </TouchableOpacity>
 
             </View>
         )
