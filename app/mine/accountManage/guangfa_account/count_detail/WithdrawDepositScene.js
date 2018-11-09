@@ -134,11 +134,11 @@ export default class WithdrawDepositScene extends ZSBaseComponent {
                             paddingLeft: Pixel.getPixel(15),
                             paddingRight: Pixel.getPixel(15)
                         }} onPress={this.selectBank}>
-                            <View style={{flexDirection:'row'}}>
-                                <Image source={this.getBankImage(this.state.bankData.sub_bank_name)} style={{width:Pixel.getPixel(35),height:Pixel.getPixel(35)}}/>
+                            <View style={{flexDirection:'row',alignItems:'center'}}>
+                                <Image source={this.getBankImage(this.state.bankData.sub_bank_name)}/>
                                 <View style={{marginLeft: Pixel.getPixel(13),justifyContent:'center',flexDirection:'column'}}>
                                     <Text
-                                        style={{fontSize: Pixel.getFontPixel(15),color:FontAndColor.COLORA0}}>{this.state.bankData.sub_bank_name}</Text>
+                                        style={{fontSize: Pixel.getFontPixel(15),color:FontAndColor.COLORA0,width:Pixel.getPixel(220)}}>{this.state.bankData.sub_bank_name}</Text>
                                     <Text
                                         style={{color:'#666666',fontSize: Pixel.getFontPixel(14),marginTop:4}}>{this.cardNO}</Text>
                                 </View>
