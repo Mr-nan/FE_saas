@@ -27,7 +27,7 @@ import NavigationView from "../../../../component/AllNavigationView";
 export default class GFRechargeScene extends BaseComponent{
     constructor(props) {
         super(props);
-        this.person = '上海锋之行汽车金融信息\n'+'服务有限公司转账交易资\n'+'金托管账户';
+        this.person = '上海锋之行汽车金融信息服务有限公司转账交易资金托管账户';
         this.state = {
             renderPlaceholderOnly:'blank'
         }
@@ -61,7 +61,7 @@ export default class GFRechargeScene extends BaseComponent{
                         <View style={{marginTop:Pixel.getPixel(61),paddingLeft: Pixel.getPixel(18),paddingRight: Pixel.getPixel(18),height:Pixel.getPixel(60),width:Pixel.getPixel(345),flexDirection:'row',justifyContent:'space-between'}}>
                             <View style={{flexDirection:'row',alignItems:'flex-start',height:Pixel.getPixel(22),}}>
                                 <Text style={{color:'#999999',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(14),marginTop:Pixel.getPixel(5)}} allowFontScaling={false}> 收款人</Text>
-                                <Text style={{marginLeft:Pixel.getPixel(42),color:fontAndColor.COLORA0,backgroundColor:'transparent',fontSize:Pixel.getFontPixel(14),lineHeight:Pixel.getPixel(20)}} allowFontScaling={false}>{this.state.name}</Text>
+                                <Text style={{marginLeft:Pixel.getPixel(42),color:fontAndColor.COLORA0,backgroundColor:'transparent',width:Pixel.getPixel(165),fontSize:Pixel.getFontPixel(14),lineHeight:Pixel.getPixel(20)}} allowFontScaling={false}>{this.state.name}</Text>
                             </View>
                             <TouchableOpacity onPress={this.copyPerson.bind(this)} style={{width:Pixel.getPixel(46),height:Pixel.getPixel(23),backgroundColor:'rgba(8,195,197,0.1)',marginTop:Pixel.getPixel(5),borderRadius:Pixel.getPixel(25),alignItems:'center',justifyContent:'center'}}>
                                 <Text style={{color:'#05C5C2',backgroundColor:'transparent',fontSize:Pixel.getFontPixel(15)}}>复制</Text>
