@@ -41,11 +41,12 @@ let old_date = ''  //
 let rows = []   // 每个月的流水数据
 export default class Log extends BaseComponent {
 
-    componentWillUnmount() {
+    componentWillMount() {
+
         log_data = []
         page = 1;
         total_page = 1;
-        type = 'all'
+        type = this.props.type ? this.props.type : 'all';
         create_time = ''
         old_date = ''
         rows = []

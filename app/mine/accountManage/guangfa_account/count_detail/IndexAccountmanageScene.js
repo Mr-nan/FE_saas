@@ -299,7 +299,8 @@ export default class IndexAccountmanageScene extends BaseComponent{
             component:Log,
             params:{
                 account: this.state.accountData,
-                bankID:'gfyh'
+                bankID:'gfyh',
+                type:'3,4'
             }});
     }
 
