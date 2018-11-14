@@ -20,12 +20,12 @@
         "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_ic_clear_material.xml"
     },
     {
-        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable/abc_switch_thumb_material.xml",
-        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_switch_thumb_material.xml"
-    },
-    {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable/puw_bg_left_corners.xml",
         "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/src/main/res/drawable/puw_bg_left_corners.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable/abc_switch_thumb_material.xml",
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_switch_thumb_material.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable/abc_btn_check_material.xml",
@@ -80,12 +80,12 @@
         "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_btn_borderless_material.xml"
     },
     {
-        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable/abc_text_cursor_material.xml",
-        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_text_cursor_material.xml"
-    },
-    {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable/abc_seekbar_tick_mark_material.xml",
         "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_seekbar_tick_mark_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable/abc_text_cursor_material.xml",
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_text_cursor_material.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable/abc_list_selector_background_transition_holo_light.xml",

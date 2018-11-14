@@ -128,12 +128,12 @@
         "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/src/main/res/drawable-xhdpi/udesk_emoji_normal1.png"
     },
     {
-        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable-xhdpi-v4/udesk_im_default_user_avatar.png",
-        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/src/main/res/drawable-xhdpi/udesk_im_default_user_avatar.png"
-    },
-    {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable-xhdpi-v4/udesk_im_item_bg_left.9.png",
         "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/src/main/res/drawable-xhdpi/udesk_im_item_bg_left.9.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable-xhdpi-v4/udesk_im_default_user_avatar.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/src/main/res/drawable-xhdpi/udesk_im_default_user_avatar.png"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/drawable-xhdpi-v4/udesk_survy_normal.png",

@@ -8,12 +8,12 @@
         "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_cab_background_internal_bg.xml"
     },
     {
-        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable/abc_btn_colored_material.xml",
-        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_btn_colored_material.xml"
-    },
-    {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable/udesk_im_record_play_right.xml",
         "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/bundles/debug/res/drawable/udesk_im_record_play_right.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable/abc_btn_colored_material.xml",
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_btn_colored_material.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable/abc_ic_arrow_drop_right_black_24dp.xml",

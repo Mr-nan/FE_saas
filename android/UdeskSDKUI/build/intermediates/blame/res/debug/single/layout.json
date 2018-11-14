@@ -40,12 +40,12 @@
         "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/layout/notification_template_lines.xml"
     },
     {
-        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/layout/abc_activity_chooser_view.xml",
-        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/layout/abc_activity_chooser_view.xml"
-    },
-    {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/layout/abc_list_menu_item_icon.xml",
         "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/layout/abc_list_menu_item_icon.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/layout/abc_activity_chooser_view.xml",
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/layout/abc_activity_chooser_view.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/debug/layout/abc_action_mode_bar.xml",

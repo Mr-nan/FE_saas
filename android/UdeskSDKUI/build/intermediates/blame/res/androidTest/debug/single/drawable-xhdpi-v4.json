@@ -24,12 +24,12 @@
         "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/udesk_013.png"
     },
     {
-        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/udesk_radio_checkbox.png",
-        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/udesk_radio_checkbox.png"
-    },
-    {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/udesk_026.png",
         "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/udesk_026.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/udesk_radio_checkbox.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/udesk_radio_checkbox.png"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/abc_ic_star_half_black_36dp.png",
@@ -112,12 +112,12 @@
         "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable-xhdpi-v4/abc_cab_background_top_mtrl_alpha.9.png"
     },
     {
-        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/abc_tab_indicator_mtrl_alpha.9.png",
-        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable-xhdpi-v4/abc_tab_indicator_mtrl_alpha.9.png"
-    },
-    {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/abc_switch_track_mtrl_alpha.9.png",
         "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable-xhdpi-v4/abc_switch_track_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/abc_tab_indicator_mtrl_alpha.9.png",
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable-xhdpi-v4/abc_tab_indicator_mtrl_alpha.9.png"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/udesk_survy_press1.png",
