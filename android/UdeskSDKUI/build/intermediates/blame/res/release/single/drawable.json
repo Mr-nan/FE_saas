@@ -76,12 +76,12 @@
         "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/src/main/res/drawable/puw_bg_left_false_corners.xml"
     },
     {
-        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/release/drawable/abc_ratingbar_indicator_material.xml",
-        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_ratingbar_indicator_material.xml"
-    },
-    {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/release/drawable/abc_switch_thumb_material.xml",
         "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_switch_thumb_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/release/drawable/abc_ratingbar_indicator_material.xml",
+        "source": "/Users/zhengnan/.android/build-cache/30b797e77d3254292c483768d40bb7c638048e8d/output/res/drawable/abc_ratingbar_indicator_material.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/release/drawable/udesk_imgroup_bg_selector.xml",
