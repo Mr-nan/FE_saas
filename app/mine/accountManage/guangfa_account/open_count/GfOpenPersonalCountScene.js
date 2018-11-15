@@ -85,7 +85,7 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
         }
         return (
             <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3}}>
-                <NavigationView backIconClick={this.backPage} title={this.props.title}
+                <NavigationView backIconClick={this.backPage} title='开通个人账户'
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
                 <StatusBar barStyle="default"/>
                 <View style={styles.inputTextsStyleView}>
@@ -145,7 +145,7 @@ export default class GfOpenPersonalCountScene extends BaseComponent{
                     <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>请确认信息的准确性，开户时间为7*24小时 </Text>
                 </View>
                 <SubmitComponent btn ={()=>{this.submit();}}
-                                 title={this.props.btnText}
+                                 title='确认提交'
                                  btnType={3}
                                  iconWrap = {{marginTop:Pixel.getPixel(30)}}
                 />

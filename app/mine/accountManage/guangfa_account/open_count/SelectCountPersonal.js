@@ -61,7 +61,7 @@ export default class SelectCountPersonal extends BaseComponent{
                         name:'GfOpenPersonalCountScene',
                         component:GfOpenPersonalCountScene,
                         params:{callBack:()=>{this.props.callBack()
-                            },title:'开通个人账户',btnText:'确认提交'}
+                            }}
                     })
                 }} style={styles.openCountView} >
                     <View style={styles.header}>

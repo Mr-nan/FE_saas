@@ -70,7 +70,10 @@ export default class NoAccountScene extends BaseComponent{
                     }
 
                 </View>
-                {this.props.status != 0 ?  <SubmitComponent btn = {()=>{this.next()}} title='确定' btnType={2} iconWrap = {{marginLeft: 0,marginTop:Pixel.getPixel(7),width:width-Pixel.getPixel(50),height:(width-Pixel.getPixel(50))*0.17}} warpStyle={{width:Pixel.getPixel(320),height:Pixel.getPixel(44)}} /> :null }
+                {
+                    this.props.status != 0 && <SubmitComponent btn = {()=>{this.next()}} title='确定' btnType={2} iconWrap = {{marginLeft: 0,marginTop:Pixel.getPixel(7),width:width-Pixel.getPixel(50),height:(width-Pixel.getPixel(50))*0.17}} warpStyle={{width:Pixel.getPixel(320),height:Pixel.getPixel(44)}} />
+                }
+                {/*<SubmitComponent btn = {()=>{this.next()}} title='确定' btnType={2} iconWrap = {{marginLeft: 0,marginTop:Pixel.getPixel(7),width:width-Pixel.getPixel(50),height:(width-Pixel.getPixel(50))*0.17}} warpStyle={{width:Pixel.getPixel(320),height:Pixel.getPixel(44)}} />*/}
 
 
                 <NavigationView backIconClick={()=>{this.handleBack()}}

@@ -16,6 +16,7 @@ import {
     ScrollView,
     KeyboardAvoidingView,
     TouchableOpacity,
+    Platform
 
 } from 'react-native';
 
@@ -36,6 +37,7 @@ import  AllLoading from '../../../../component/AllLoading';
 
 const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
+const IS_ANDROID = Platform.OS === 'android';
 
 export default class GfOpenCompanyCountScene extends BaseComponent{
 
@@ -100,13 +102,23 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
         }
         return (
 
-            <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3}}>
-                <NavigationView backIconClick={this.backPage} title={this.props.title}
-                                wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
+            <View style={{flex: 1,backgroundColor:fontAndColor.COLORA3,paddingTop:Pixel.getTitlePixel(64)}}>
                 <StatusBar barStyle="default"/>
+                {
+                    IS_ANDROID ? (this.loadScrollView()):
+                        (<KeyboardAvoidingView  behavior={'position'}  keyboardVerticalOffset={this.state.topSize}>
+                            {this.loadScrollView()}
+                        </KeyboardAvoidingView>)
+                }
+                <NavigationView backIconClick={this.backPage} title='开通企业账户'
+                                wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
+           </View>
+        );
+    }
 
-                <ScrollView style={{marginTop:Pixel.getPixel(64)}}>
-                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.topSize}>
+    loadScrollView = () =>{
+        return(
+            <ScrollView >
                 <View style={{marginTop:Pixel.getPixel(15),backgroundColor:'#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15)}}>
                     <LoginInputText
                         ref = 'cust_name'
@@ -119,11 +131,9 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         rightButton={false}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(84),paddingLeft:0}}
                         foucsChange = {()=>{
-                            if(this.state.topSize == 5){
-                                this.setState({
-                                    topSize:-179
-                                })
-                            }
+                            this.setState({
+                                topSize:-250
+                            })
                         }}/>
                     <LoginInputText
                         ref ='cust_phone'
@@ -136,13 +146,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         rightButton={false}
                         maxLength={15}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(56),paddingLeft:0}}
-                        foucsChange={() => {
-                            if (this.state.topSize == 5) {
-                                this.setState({
-                                    topSize: -179
-                                });
-                            }
-                        }}/>
+                    />
                     <LoginInputText
                         ref = 'society_code'
                         textPlaceholder={'请输入社会信用代码'}
@@ -154,13 +158,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         rightButton={false}
                         maxLength={18}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}
-                        foucsChange={() => {
-                            if (this.state.topSize == 5) {
-                                this.setState({
-                                    topSize: -179
-                                });
-                            }
-                        }}/>
+                    />
                 </View>
                 <View style={{marginTop:Pixel.getPixel(10),backgroundColor:'#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15)}}>
                     <LoginInputText
@@ -173,13 +171,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         rightIcon={false}
                         rightButton={false}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(56),paddingLeft:0}}
-                        foucsChange={() => {
-                            if (this.state.topSize == 5) {
-                                this.setState({
-                                    topSize: -179
-                                });
-                            }
-                        }}/>
+                    />
                     <LoginInputText
                         ref='corporation_code'
                         textPlaceholder={'请输入法人身份证号'}
@@ -191,13 +183,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         rightButton={false}
                         maxLength={18}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(28),paddingLeft:0}}
-                        foucsChange={() => {
-                            if (this.state.topSize == 5) {
-                                this.setState({
-                                    topSize: -179
-                                });
-                            }
-                        }}/>
+                    />
                 </View>
                 <View style={{marginTop:Pixel.getPixel(10),backgroundColor:'#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15)}}>
                     <LoginInputText
@@ -210,13 +196,7 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         rightIcon={false}
                         rightButton={false}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(42),paddingLeft:0}}
-                        foucsChange={() => {
-                            if (this.state.topSize == -179) {
-                                this.setState({
-                                    topSize: 5
-                                });
-                            }
-                        }}/>
+                    />
                     <LoginInputText
                         ref = 'contact_code'
                         textPlaceholder={'请输入联系人身份证号'}
@@ -240,12 +220,18 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         maxLength={11}
                         inputTextStyle = {{marginLeft:Pixel.getPixel(56),paddingLeft:0}}
                         foucsChange={() => {
-                            if (this.state.topSize == -179) {
-                                this.setState({
-                                    topSize: 5
-                                });
-                            }
-                        }}/>
+                            this.setState({
+                                topSize: -50
+                            });
+
+                        }}
+                        onMyBlur = {()=>{
+                            console.log('111');
+                            this.setState({
+                                topSize:-250
+                            })
+                        }}
+                    />
                 </View>
                 <View style={{marginTop:Pixel.getPixel(10),backgroundColor:'#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15)}}>
                     <LoginInputText
@@ -261,11 +247,16 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         inputTextStyle = {{marginLeft:Pixel.getPixel(84),paddingLeft:0
                         }}
                         foucsChange={() => {
-                            if (this.state.topSize == -179) {
-                                this.setState({
-                                    topSize: 5
-                                });
-                            }
+                            this.setState({
+                                topSize: 0
+                            });
+
+                        }}
+                        onMyBlur = {()=>{
+                            console.log('111');
+                            this.setState({
+                                topSize:-250
+                            })
                         }}
                     />
                     <TouchableOpacity ref='bank_type' onPress={()=>{this.next()}} style={{flexDirection: 'row',flex:1,alignItems:'center',width:Pixel.getPixel(345),height:Pixel.getPixel(45)}}>
@@ -276,27 +267,24 @@ export default class GfOpenCompanyCountScene extends BaseComponent{
                         </View>
                     </TouchableOpacity>
                 </View>
-                    <View style={{flexDirection:'row',width:width,height:Pixel.getPixel(18),marginLeft:Pixel.getPixel(18),marginTop:Pixel.getPixel(19),alignItems:'flex-end' }}>
-                        <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
-                        <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>请确认信息的准确性，开户时间为7*24小时 </Text>
-                    </View>
-                    <SubmitComponent btnType={3} title={this.props.btnText} btn = {()=>{this.submit();}}/>
-                    </KeyboardAvoidingView>
-                    <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
+                <View style={{flexDirection:'row',width:width,height:Pixel.getPixel(18),marginLeft:Pixel.getPixel(18),marginTop:Pixel.getPixel(19),alignItems:'flex-end' }}>
+                    <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')}/>
+                    <Text allowFontScaling={false} style={{color:'#cccccc',fontSize:Pixel.getFontPixel(11),marginLeft:Pixel.getPixel(8),alignItems:'flex-end'}}>请确认信息的准确性，开户时间为7*24小时 </Text>
+                </View>
+                <SubmitComponent btnType={3} title='确认提交' btn = {()=>{this.submit();}}/>
+                <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
+                    StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data) => {
+                        if(data.code == 1 && data.result != null){
+                            let datas = JSON.parse(data.result);
+                            this.sData.enter_base_id = datas.company_base_id;
+                            this.sData.user_id = this.userID;
+                            this.sendData(this.sData);
+                        }
+                    })
 
-                        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data) => {
-                            if(data.code == 1 && data.result != null){
-                                let datas = JSON.parse(data.result);
-                                this.sData.enter_base_id = datas.company_base_id;
-                                this.sData.user_id = this.userID;
-                                this.sendData(this.sData);
-                            }
-                        })
-
-                    }}/>
-                </ScrollView>
-            </View>
-        );
+                }}/>
+            </ScrollView>
+        )
     }
 
     next = () =>{

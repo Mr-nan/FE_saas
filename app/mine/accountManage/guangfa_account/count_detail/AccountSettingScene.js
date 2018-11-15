@@ -14,7 +14,8 @@ import {
     StatusBar,
     Dimensions,
     KeyboardAvoidingView,
-    ScrollView
+    ScrollView,
+    Platform
 
 }from 'react-native';
 
@@ -30,6 +31,7 @@ import {request} from "../../../../utils/RequestUtil";
 import * as Urls from "../../../../constant/appUrls";
 import IndexAccountmanageScene from "./IndexAccountmanageScene";
 import WattingTenScendsScene from "./WattingTenScendsScene";
+const IS_ANDROID = Platform.OS === 'android'
 
 
 export default class AccountSettingScene extends BaseComponent{
@@ -119,125 +121,114 @@ export default class AccountSettingScene extends BaseComponent{
                             />
                         <SubmitComponent title='确认修改' btnType={2}  iconWrap={{marginTop:Pixel.getPixel(21),marginLeft:0,width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*0.17}}/>
                     </View> ) :
-                    ( <KeyboardAvoidingView behavior={'position'}  keyboardVerticalOffset={this.state.topSize}>
-                        <View style={{width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*1.2,backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
-                        shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(15),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
-                        <LoginInputText
-                            ref = 'companyName'
-                            exitValue={this.state.accountData.bank_card_name}
-                            leftText = '企业名称'
-                            leftIcon={false}
-                            import={false}
-                            clearValue={false}
-                            rightIcon={false}
-                            rightButton={false}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(89),paddingLeft:0}}
-                            editable = {true}
-                            foucsChange = {()=>{
-                                if(this.state.topSize == 5){
-                                    this.setState({
-                                        topSize:-179
-                                    })
-                                }
-                            }}
-                            />
-                        <LoginInputText
-                            ref = 'companyPhone'
-                            exitValue={this.state.accountData.enterprise_phone}
-                            leftText = '企业固定电话'
-                            leftIcon={false}
-                            import={false}
-                            clearValue={false}
-                            rightIcon={false}
-                            rightButton={false}
-                            maxLength={15}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}
-                            foucsChange = {()=>{
-                                if(this.state.topSize == 5){
-                                    this.setState({
-                                        topSize:-179
-                                    })
-                                }
-                            }}
-                            />
-                        <LoginInputText
-                            ref = 'corporation_name'
-                            exitValue={this.state.accountData.legal_real_name}
-                            leftText = '法人代表姓名'
-                            leftIcon={false}
-                            import={false}
-                            clearValue={false}
-                            rightIcon={false}
-                            rightButton={false}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}
-                            foucsChange = {()=>{
-                                if(this.state.topSize == 5){
-                                    this.setState({
-                                        topSize:-179
-                                    })
-                                }
-                            }}
-                            />
-                        <LoginInputText
-                            ref='corporation_code'
-                            exitValue={this.state.accountData.legal_cert_no}
-                            leftText = '法人代表身份证号'
-                            leftIcon={false}
-                            import={false}
-                            clearValue={false}
-                            rightIcon={false}
-                            rightButton={false}
-                            maxLength={18}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(33),paddingLeft:0}}
-                            foucsChange = {()=>{
-                                if(this.state.topSize == -179){
-                                    this.setState({
-                                        topSize:-5
-                                    })
-                                }
-                            }}/>
-                        <LoginInputText
-                            ref='contact_name'
-                            exitValue={this.state.accountData.agent_name}
-                            leftText = '联系人姓名'
-                            leftIcon={false}
-                            import={false}
-                            clearValue={false}
-                            rightIcon={false}
-                            rightButton={false}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(75),paddingLeft:0}}
-                            foucsChange = {()=>{
-                                if(this.state.topSize == -179){
-                                    this.setState({
-                                        topSize:5
-                                    })
-                                }
-                            }}/>
-                        <LoginInputText
-                            ref='contact_code'
-                            exitValue={this.state.accountData.agent_cert_no}
-                            leftText = '联系人身份证号'
-                            leftIcon={false}
-                            import={false}
-                            clearValue={false}
-                            rightIcon={false}
-                            rightButton={false}
-                            maxLength={18}
-                            inputTextStyle = {{marginLeft:Pixel.getPixel(47),paddingLeft:0}}
-                            foucsChange = {()=>{
-                                if(this.state.topSize == -179){
-                                    this.setState({
-                                        topSize:5
-                                    })
-                                }
-                            }}/>
-                        <SubmitComponent title='确认修改' btn={()=>{this.nextCompany()}}  btnType={2} iconWrap ={{marginTop:Pixel.getPixel(30),marginLeft:0,width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*0.17}}
-                        />
-                    </View>
-                    </KeyboardAvoidingView>)
+                    (
+
+                        IS_ANDROID ? (this.loadSetting()):(
+                            <KeyboardAvoidingView behavior={'position'}  keyboardVerticalOffset={this.state.topSize}>
+                                {this.loadSetting()}
+                            </KeyboardAvoidingView>
+                        )
+
+
+                    )
                 }
             </View>
             </ScrollView>
+        )
+    }
+
+    loadSetting = () =>{
+        return(
+            <View style={{width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*1.2,backgroundColor:'#ffffff',borderRadius:Pixel.getPixel(5),marginTop:Pixel.getPixel(-30),
+                shadowColor: '#9DA1B3',shadowOffset: {width:0,height:8},shadowOpacity:0.1,paddingLeft:Pixel.getPixel(15),paddingTop: Pixel.getPixel(15),paddingRight: Pixel.getPixel(16),alignItems:'center'}}>
+                <LoginInputText
+                    ref = 'companyName'
+                    exitValue={this.state.accountData.bank_card_name}
+                    leftText = '企业名称'
+                    leftIcon={false}
+                    import={false}
+                    clearValue={false}
+                    rightIcon={false}
+                    rightButton={false}
+                    inputTextStyle = {{marginLeft:Pixel.getPixel(89),paddingLeft:0}}
+                    editable = {true}
+                    foucsChange = {()=>{
+                        if(this.state.topSize == 5){
+                            this.setState({
+                                topSize:-179
+                            })
+                        }
+                    }}
+                />
+                <LoginInputText
+                    ref = 'companyPhone'
+                    exitValue={this.state.accountData.enterprise_phone}
+                    leftText = '企业固定电话'
+                    leftIcon={false}
+                    import={false}
+                    clearValue={false}
+                    rightIcon={false}
+                    rightButton={false}
+                    maxLength={15}
+                    inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}
+                />
+                <LoginInputText
+                    ref = 'corporation_name'
+                    exitValue={this.state.accountData.legal_real_name}
+                    leftText = '法人代表姓名'
+                    leftIcon={false}
+                    import={false}
+                    clearValue={false}
+                    rightIcon={false}
+                    rightButton={false}
+                    inputTextStyle = {{marginLeft:Pixel.getPixel(61),paddingLeft:0}}
+                />
+                <LoginInputText
+                    ref='corporation_code'
+                    exitValue={this.state.accountData.legal_cert_no}
+                    leftText = '法人代表身份证号'
+                    leftIcon={false}
+                    import={false}
+                    clearValue={false}
+                    rightIcon={false}
+                    rightButton={false}
+                    maxLength={18}
+                    inputTextStyle = {{marginLeft:Pixel.getPixel(33),paddingLeft:0}}/>
+                <LoginInputText
+                    ref='contact_name'
+                    exitValue={this.state.accountData.agent_name}
+                    leftText = '联系人姓名'
+                    leftIcon={false}
+                    import={false}
+                    clearValue={false}
+                    rightIcon={false}
+                    rightButton={false}
+                    inputTextStyle = {{marginLeft:Pixel.getPixel(75),paddingLeft:0}}/>
+                <LoginInputText
+                    ref='contact_code'
+                    exitValue={this.state.accountData.agent_cert_no}
+                    leftText = '联系人身份证号'
+                    leftIcon={false}
+                    import={false}
+                    clearValue={false}
+                    rightIcon={false}
+                    rightButton={false}
+                    maxLength={18}
+                    inputTextStyle = {{marginLeft:Pixel.getPixel(47),paddingLeft:0}}
+                    foucsChange = {()=>{
+                        this.setState({
+                            topSize:-50
+                        })
+                    }}
+                    onMyBlur = {()=>{
+                        this.setState({
+                            topSize:-179
+                        })
+                    }}
+                />
+                <SubmitComponent title='确认修改' btn={()=>{this.nextCompany()}}  btnType={2} iconWrap ={{marginTop:Pixel.getPixel(30),marginLeft:0,width:width-Pixel.getPixel(30),height:(width-Pixel.getPixel(30))*0.17}}
+                />
+            </View>
         )
     }
 

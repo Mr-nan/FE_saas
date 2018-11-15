@@ -83,9 +83,10 @@ export default class AuthenticatePublicScene extends BaseComponent{
                 <StatusBar barStyle='dark-content'/>
                 <NavigationView backIconClick={this.backPage} title='对公账户鉴权'
                                 wrapStyle={{backgroundColor:'white'}} titleStyle={{color:fontAndColor.COLORA0}}/>
-                <ListView style={{flex:1,marginTop: Pixel.getPixel(64),backgroundColor:'transparent'}}
+                <ListView style={{flex:1,marginTop: Pixel.getTitlePixel(64),backgroundColor:'transparent'}}
                           dataSource={this.state.source}
                           renderRow={this._renderRow}
+                          renderHeader={this._renderHeader}
                 />
             </View>
         )
@@ -98,6 +99,18 @@ export default class AuthenticatePublicScene extends BaseComponent{
 
 
      }
+
+    _renderHeader = () =>{
+        return(
+            <View style={{height:Pixel.getPixel(180),width:width,backgroundColor:'#ffffff',marginTop:Pixel.getPixel(15),alignItems: 'center'}}>
+                <Image source={require('../../../../../images/mine/guangfa_account/tishi.png')} style={{width:Pixel.getPixel(31),height:Pixel.getPixel(31),marginTop:Pixel.getPixel(19)}}/>
+                <Text allowFontScaling={false} style={{marginTop:Pixel.getPixel(15),color:fontAndColor.COLORA1,fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(20)}}>开通对公账户需进行小额鉴权，</Text>
+                <Text allowFontScaling={false} style={{color:'#999999',backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>请查看短信或登录开户时绑定的银行卡网银页面</Text>
+                <Text allowFontScaling={false} style={{color:'#999999',backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>查询打款金额，并进入到广发银行页面输入打款金额，</Text>
+                <Text allowFontScaling={false} style={{color:'#999999',backgroundColor:'transparent',fontSize:Pixel.getPixel(14),lineHeight:Pixel.getPixel(22)}}>银行审核通过后，方可完成企业开户</Text>
+            </View>
+        )
+    }
 
      next = (rowData,rowID) => {
         console.log('rowID',rowID);
