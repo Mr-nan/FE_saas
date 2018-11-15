@@ -291,7 +291,7 @@ export default class MineScene extends BaseComponent {
             },);
         } else if (id == 82) {
             Car[0].cars.push({
-                "icon": require('../../images/mainImage/shouxinguanli.png'),
+                "icon": require('../../images/mainImage/qudao.png'),
                 "name": name
                 , "id": id
             },);
@@ -777,6 +777,8 @@ export default class MineScene extends BaseComponent {
 
         this.props.callBack(this.navigatorParams);
     };
+
+
 
     // 每一行中的数据
     _renderRow = (rowData) => {
