@@ -56,6 +56,7 @@ import List from "../mine/myOrder/orderwuliu/list/List";
 import CredictManageScene from "../mine/kuaisushouxin/CredictManageScene";
 import CarSuperviseListScreen from "../mine/carSupervise/CarSuperviseListScreen";
 import CertificateManageScene from "../mine/certificateManage/CertificateManageScene";
+import OpenAccountList from "../mine/channelOpenAccount/OpenAccountList";
 
 var Pixel = new PixelUtil();
 
@@ -288,7 +289,13 @@ export default class MineScene extends BaseComponent {
                 "name": name
                 , "id": id
             },);
-        } else if (id == 74) {
+        } else if (id == 82) {
+            Car[0].cars.push({
+                "icon": require('../../images/mainImage/shouxinguanli.png'),
+                "name": name
+                , "id": id
+            },);
+        }else if (id == 74) {
 	        Car[0].cars.push({
 		        "icon": require('../../images/mainImage/shouxinguanli.png'),
 		        "name": name
@@ -651,6 +658,24 @@ export default class MineScene extends BaseComponent {
     }
 
     _navigatorPage = (rowData) => {
+
+        // 因为要异步获取本地数据，所以必须单独拿出来处理， 有问题请@丁永刚
+        if(rowData.id == 82){
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data)=>{
+                if(data.code === 1){
+                    let reuslt = JSON.parse(data.result)
+                    if(reuslt.merge_id == 0){
+                        this.props.showToast('您还未授信')
+                    }else {
+                        this.navigatorParams.name = 'OpenAccountList'
+                        this.navigatorParams.component = OpenAccountList
+                    }
+                    this.props.callBack(this.navigatorParams);
+                }
+            })
+            return;
+        }
+
         switch (rowData.id) {
             case 47:
                 this.toPage();
@@ -747,7 +772,9 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.name = 'CarSuperviseListScreen'
                 this.navigatorParams.component = CarSuperviseListScreen
                 break;
+
         }
+
         this.props.callBack(this.navigatorParams);
     };
 
