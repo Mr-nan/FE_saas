@@ -658,6 +658,24 @@ export default class MineScene extends BaseComponent {
     }
 
     _navigatorPage = (rowData) => {
+
+        // 因为要异步获取本地数据，所以必须单独拿出来处理， 有问题请@丁永刚
+        if(rowData.id == 82){
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data)=>{
+                if(data.code === 1){
+                    let reuslt = JSON.parse(data.result)
+                    if(reuslt.merge_id == 0){
+                        this.props.showToast('您还未授信')
+                    }else {
+                        this.navigatorParams.name = 'OpenAccountList'
+                        this.navigatorParams.component = OpenAccountList
+                    }
+                    this.props.callBack(this.navigatorParams);
+                }
+            })
+            return;
+        }
+
         switch (rowData.id) {
             case 47:
                 this.toPage();
@@ -754,20 +772,9 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.name = 'CarSuperviseListScreen'
                 this.navigatorParams.component = CarSuperviseListScreen
                 break;
-            case 82:
-                StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data)=>{
-                    if(data.code === 1){
-                        let reuslt = JSON.parse(data.result)
-                        if(result.merge_id == 0){
-                            this.props.showToast('您还未授信')
-                        }else {
-                            this.navigatorParams.name = 'OpenAccountList'
-                            this.navigatorParams.component = OpenAccountList
-                        }
-                    }
-                })
-                break;
+
         }
+
         this.props.callBack(this.navigatorParams);
     };
 

@@ -6,7 +6,7 @@
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
@@ -16,12 +16,12 @@
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+//export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
  */
-// export const BASEURL = 'https://stgatewayapi.dycd.com/';
+//export const BASEURL = 'https://stgatewayapi.dycd.com/';
 
 /**
  * 版本号1
@@ -2012,6 +2012,10 @@ export const SUISHOUJI_ACTIVE = BASEURL + "v2/credit.sui/accountActivate";
  *  随手记授权
  **/
 export const SUISHOUJI_AUTH = BASEURL + "v2/credit.sui/accountAuth";
+/**
+ *  随手记授权
+ **/
+export const CHANNEL_OPEN_STATUS = BASEURL + "v2/credit.Home/getChannelBankAccountInfo";
 
 
 

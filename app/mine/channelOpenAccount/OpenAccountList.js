@@ -64,7 +64,7 @@ export default class OpenAccountList extends BaseComponent {
 
             if(data.code == 1){
                 let result = JSON.parse(data.result)
-                request(Urls.CHANNEL_OPEN_STATUS, 'post', {merge_id:99}).then((response) => {
+                request(Urls.CHANNEL_OPEN_STATUS, 'post', {merge_id:result.merge_id}).then((response) => {
                     this.setState({
                         isRefreshing:false,
                         renderPlaceholderOnly:'success',
