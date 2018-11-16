@@ -130,6 +130,13 @@ export default class OpenAccountList extends BaseComponent {
                 style={{marginBottom:Pixel.getPixel(5),}}
                 onPress={()=>{
 
+
+                    if(data.account_status_check == 1){
+                        this.props.showToast('您已授权完成')
+                    }else {
+                        this.props.showToast('请联系后台人员')
+                    }
+
                 }}
             >
                 <View style={{
@@ -139,7 +146,7 @@ export default class OpenAccountList extends BaseComponent {
                     paddingHorizontal:Pixel.getPixel(15),
                     paddingVertical:Pixel.getPixel(20)
                 }} >
-                    <SaasText style={{flex:1}}>{data.channel_table_name+'-'+data.bankname}</SaasText>
+                    <SaasText style={{flex:1}}>{data.channel_name+'-'+data.bankname}</SaasText>
                     <SaasText style={{color:'red'}}>{data.account_status_str}</SaasText>
                     <Image style={{marginLeft:Pixel.getPixel(5)}} source={require('../../../images/mine/celljiantou.png')}/>
                 </View>
