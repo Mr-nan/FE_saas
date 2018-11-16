@@ -31,7 +31,9 @@ RCT_EXPORT_METHOD(openUdsk:(NSDictionary *)userData){
   sdkStyle.navBackButtonImage = [UIImage imageNamed:@"fan"];
   
   UdeskSDKManager *sdkManager = [[UdeskSDKManager alloc] initWithSDKStyle:sdkStyle sdkConfig:[UdeskSDKConfig customConfig]];
-  [sdkManager presentUdeskInViewController:[UIApplication sharedApplication].delegate.window.rootViewController completion:nil];
+  [sdkManager presentUdeskInViewController:[UIApplication sharedApplication].delegate.window.rootViewController completion:^{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+  }];
 }
 
 @end
