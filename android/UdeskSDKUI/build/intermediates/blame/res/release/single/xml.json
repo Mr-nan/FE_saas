@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/marongting/Desktop/2018.3.14/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/release/xml/udesk_provider_paths.xml",
+        "source": "/Users/marongting/Desktop/2018.3.14/FE_Saas/android/UdeskSDKUI/src/main/res/xml/udesk_provider_paths.xml"
+    },
+    {
+        "merged": "/Users/marongting/Desktop/2018.3.14/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/release/xml/preferences.xml",
+        "source": "/Users/marongting/.android/build-cache/8f91ef03521d6876b11651f82628dd6077ccb345/output/res/xml/preferences.xml"
+    }
+]

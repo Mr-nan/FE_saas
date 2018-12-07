@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/marongting/Desktop/2018.3.14/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/release/drawable-v21/abc_edit_text_material.xml",
+        "source": "/Users/marongting/.android/build-cache/c76f731418c43689b1f8316a9879fa24b9c96b0a/output/res/drawable-v21/abc_edit_text_material.xml"
+    },
+    {
+        "merged": "/Users/marongting/Desktop/2018.3.14/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/release/drawable-v21/abc_action_bar_item_background_material.xml",
+        "source": "/Users/marongting/.android/build-cache/c76f731418c43689b1f8316a9879fa24b9c96b0a/output/res/drawable-v21/abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "/Users/marongting/Desktop/2018.3.14/FE_Saas/android/UdeskSDKUI/build/intermediates/res/merged/release/drawable-v21/abc_btn_colored_material.xml",
+        "source": "/Users/marongting/.android/build-cache/c76f731418c43689b1f8316a9879fa24b9c96b0a/output/res/drawable-v21/abc_btn_colored_material.xml"
+    }
+]
