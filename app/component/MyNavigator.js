@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 var Platform = require('Platform');
 import RootScene from '../main/RootScene';
-
-export default class MyNavigator extends Component {
+// import RootScene from '../mine/accountManage/SelectBankScene';
+import {setAll} from '../constant/AllBackLogin';
+export default class  MyNavigator extends Component {
     render() {
         return (
             <Navigator
@@ -18,6 +19,7 @@ export default class MyNavigator extends Component {
                     name: 'rootScene'
                 }}
                 configureScene={(route) => {
+
                     if (Platform.OS === 'android') {
                         return Navigator.SceneConfigs.FloatFromBottomAndroid;
                     }
@@ -26,7 +28,11 @@ export default class MyNavigator extends Component {
                 renderScene={(route, navigator) => {
                     let Component = route.component;
                     if (route.component) {
-                        return <Component {...route.params} navigator={navigator}/>
+                        setAll(navigator);
+                        return <Component {...route.params} navigator={navigator}
+                                          showToast={(content)=>{this.props.showToast(content);}}
+                                          showModal={(value)=>{this.props.showModal(value);}}
+                                          showLoginModal={this.props.showLoginModal}/>
                     }
                 }}>
             </Navigator>

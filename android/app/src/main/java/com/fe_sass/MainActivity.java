@@ -2,6 +2,10 @@ package com.fe_sass;
 
 import com.facebook.react.ReactActivity;
 
+import com.theweflex.react.WeChatPackage;
+import java.util.Arrays;
+import java.util.List;
+import com.umeng.analytics.MobclickAgent;
 public class MainActivity extends ReactActivity {
 
     /**
@@ -12,4 +16,15 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "FE_Sass";
     }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+
 }

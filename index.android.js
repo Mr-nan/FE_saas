@@ -9,4 +9,5 @@ import {
 } from 'react-native';
 import root from './app/root';
 
+
 AppRegistry.registerComponent('FE_Sass', () => root);

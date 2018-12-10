@@ -1,4 +1,3 @@
-
 import {
     AsyncStorage
 } from 'react-native';
@@ -6,14 +5,16 @@ export default class StorageUtil {
 
     static ERRORCODE = "236407";
 
-    static mSetItem(keyName, keyValue) {
+    static mSetItem(keyName, keyValue, callBack) {
         AsyncStorage.setItem(keyName, keyValue, function (errs) {
             //TODO:错误处理
             if (errs) {
-                console.log('存储错误');
             }
             if (!errs) {
-                console.log('存储无误');
+                // console.log('存储无误');
+                if (callBack) {
+                    callBack();
+                }
             }
         });
     }
@@ -22,9 +23,9 @@ export default class StorageUtil {
         AsyncStorage.getItem(keyName, function (errs, result) {
                 //TODO:错误处理
                 if (!errs) {
-                    callBack(result);
+                    callBack({code: 1, result: result});
                 } else {
-                    callBack(StorageUtil.ERRORCODE);
+                    callBack({code: -1, error: StorageUtil.ERRORCODE});
                 }
             }
         );
@@ -33,7 +34,7 @@ export default class StorageUtil {
     static  mRemoveItem(keyName) {
         AsyncStorage.removeItem(keyName, function (errs) {
             if (!errs) {
-                console.log('移除成功');
+                // console.log('移除成功');
             }
         });
     }

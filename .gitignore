@@ -3,8 +3,7 @@
 .DS_Store
 
 # Xcode
-#
-build/
+ios/build
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -24,9 +23,9 @@ project.xcworkspace
 
 # Android/IntelliJ
 #
-build/
 .idea
 .gradle
+.tmp
 local.properties
 *.iml
 
@@ -39,7 +38,6 @@ yarn-error.log
 # BUCK
 buck-out/
 \.buckd/
-android/app/libs
 *.keystore
 
 # fastlane
@@ -52,3 +50,10 @@ android/app/libs
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
+/android/app/build
+/android/build
+/android/app/build
+/build
+diff_list
+# vscode
+.vscode
