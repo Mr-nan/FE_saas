@@ -15,28 +15,28 @@ export default class FLatListDemo extends Component {
         super(prpos);
         this.state={
             listDataSource:[
-                {t:"yang创建任务"},{:'tt'},
+                {t:"yang创建任务"},
+                {t:'tt'},
                 {t: '如何动态控制item的高度高度高度高度高度高度高度高度高度高度高度高度'}]
         }
     }
 
-    ListHeaderView(){
+    ListHeaderView=()=>{
         return(
             <View style={{backgroundColor:'white'}}>
-                <Text style={[styles.headerTitle,{top:15}]}>指派人:</Text>
-                <Text style={[styles.headerText,{top:15}]}>yang:</Text>
-                <Text style={[styles.headerTitle,{top:40}]}>审核人:</Text>
-                <Text style={[styles.headerText,{top:40}]}>yang:</Text>
-                <Text style={[styles.headerTitle,{top:65}]}>任务标题:</Text>
-                <Text style={[styles.headerText,{top:65}]}>我的任务</Text>
-                <Text style={[styles.headerTitle,{top:90}]}>任务描述</Text>
-                <Text style={[styles.headerText,{top:90}]}>任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述.......</Text>
+                <Text style={[styles.headerTitle,{marginTo:15}]}>指派人:</Text>
+                <Text style={[styles.headerText,{marginTo:15}]}>yang:</Text>
+                <Text style={[styles.headerTitle,{marginTo:40}]}>审核人:</Text>
+                <Text style={[styles.headerText,{marginTo:40}]}>yang:</Text>
+                <Text style={[styles.headerTitle,{marginTo:65}]}>任务标题:</Text>
+                <Text style={[styles.headerText,{marginTo:65}]}>我的任务</Text>
+                <Text style={[styles.headerTitle,{marginTo:90}]}>任务描述</Text>
+                <Text style={[styles.headerText,{marginTo:90}]}>任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述任务描述.......</Text>
             </View>
         )
     }
 
-    ListCell(itemData)
-    {
+    ListCell=(itemData)=> {
         /*style={styles.cellText}*/
         return(
             <View >
@@ -60,7 +60,7 @@ export default class FLatListDemo extends Component {
 let styles = StyleSheet.create({
     headerTitle:{
         position:'absolute',
-        left:15,
+        top:15,
         color:"#d2d2d2",
         width:100,
     },
