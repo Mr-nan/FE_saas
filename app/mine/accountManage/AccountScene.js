@@ -298,7 +298,7 @@ export  default class AccountScene extends BaseComponent {
                     <View style={{
                         width: 1, justifyContent: 'center',
                         alignItems: 'center', height: Pixel.getPixel(44)
-                    }}></View>
+                    }}/>
                     <TouchableOpacity onPress={() => {
                         this.toNextPage({name: 'RechargeScene', component: RechargeScene, params: {}})
                     }} activeOpacity={0.8}

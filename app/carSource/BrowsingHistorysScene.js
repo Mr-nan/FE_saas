@@ -72,12 +72,6 @@ export  default class BrowsingHistorysScene extends BaseComponent {
                                              toNextPage={(id)=>{this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}})}}/>
 
                 </ScrollableTabView>
-                <View style={{position: 'absolute',marginTop:Pixel.getPixel(54),flexDirection:'row'}}>
-                    <View style={{flex:1}}></View>
-                    <View
-                        style={{backgroundColor:fontAndColor.COLORA3,height:Pixel.getPixel(20),width:Pixel.getPixel(1)}}/>
-                    <View style={{flex:1}}></View>
-                </View>
                 <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
                         this.deleteAllCliiection();
                 }}/>

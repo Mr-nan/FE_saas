@@ -63,7 +63,10 @@ export default class MyCarCell extends Component {
 
         const {carCellData} = this.props;
         const carType = carCellData.status; // 1:审核中 2:已上架 3：已下架 4：已成交
-        const review_status = carCellData.review_status;
+        const review_status = carCellData.review_status;  // 0：未审核，1：通过，2：不通过
+        const in_valid_order = carCellData.in_valid_order; // 当前车辆是否在有效的订单中，0：否，1：是
+        console.log('carType:',carType,'review_status:',review_status);
+
         return(
             <TouchableOpacity onPress={()=>{this.cellClick(carCellData)}}>
                 <View style={[styles.container,styles.lineBottom]} >

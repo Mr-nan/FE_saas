@@ -310,7 +310,8 @@ export default class CardPhoneSmsScene extends ZSBaseComponent {
                     user_type: type,
                     bank_name: bank_name,
                     sub_bank_no: sub_bank_no,
-                    sub_bank_name:sub_bank_name
+                    sub_bank_name:sub_bank_name,
+                    customer_type:'B'
                 }
 
                 request(AppUrls.ZS_OPEN_ACCOUNT, 'POST', params).then((response) => {
@@ -395,7 +396,8 @@ export default class CardPhoneSmsScene extends ZSBaseComponent {
                     from_bank_id: bank_no,
                     mobile_no: mobile_no,
                     sub_acct_no: this.props.account.card_no,
-                    type: 0
+                    type: 0,
+                    customer_type:'B'
                 }
 
                 request(AppUrls.ZS_SEND_SMS_CODE, 'POST', params).then((response) => {

@@ -31,7 +31,7 @@ import StockManagementScene from "./carPublish/StockManagementScene";
 import  AllLoading from '../component/AllLoading';
 import NewCarPublishFirstScene from "./carPublish/NewCarPublishFirstScene";
 import SelectCarSourceView from './znComponent/SelectCarSourceView';
-
+import CarSearchModelsView from './znComponent/CarSearchModelsView';
 
 const Pixel = new PixelUtil();
 const ScreenWidth = Dimensions.get('window').width;
@@ -45,14 +45,18 @@ let carUpperFrameStatus = 1;
 let carDropFramePage = 1;
 let carDropFrameStatus = 1;
 
-let carSeekStr = '';
+let carSeekStr ='';
+let vin='';
+let model_id='';
+
 
 export default class CarNewNumberListScene extends BaseComponent {
-    render(){
 
+
+    render(){
         return(
             <View style={styles.rootContainer}>
-                <CarSeekView carSeekAction={this.carSeekAction}/>
+                <CarSeekView ref={(ref)=>{this.carSeekView = ref}} carSeekAction={this.carSeekAction}/>
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page?this.props.page:0}
@@ -82,6 +86,11 @@ export default class CarNewNumberListScene extends BaseComponent {
                             callEscText="否"
                             callBackText="是"/>
                 <SelectCarSourceView ref={(ref)=>{this.SelectCarSourceView = ref}} selectCarAction={this.selectAction} pushNewCarAction = {this.pushNewCarAction}/>
+                {
+                    this.state.carSearchModlesData.length>0 && <CarSearchModelsView closeClick={this.searchModelsViewCloseClick}
+                                                                                    cellClick={this.searchModelsViewCellClick}
+                                                                                    modelsData={this.state.carSearchModlesData}/>
+                }
             </View>
         )
     }
@@ -93,10 +102,14 @@ export default class CarNewNumberListScene extends BaseComponent {
         super(props);
         // 初始状态
 
-        carSeekStr  = '';
+        model_id ='';
+        vin = '';
+        carSeekStr='';
+
         this.state = {
             total_on_sale:0,
             total_sold:0,
+            carSearchModlesData:[]
         };
     }
 
@@ -116,9 +129,49 @@ export default class CarNewNumberListScene extends BaseComponent {
     }
 
     carSeekAction=(seekStr)=>{
-        carSeekStr=seekStr;
-        this.refs.upperFrameView && this.refs.upperFrameView.initFinish();
-        this.refs.dropFrameView && this.refs.dropFrameView.initFinish();
+        carSeekStr = seekStr;
+        vin = seekStr;
+        model_id='';
+        if(!seekStr){
+            this.loadHeadData();
+        }
+        this.props.showModal(true);
+        let url = AppUrls.CAR_SEARCH_MODELS;
+        request(url, 'post', {
+            model_name:seekStr,
+            rows:50,
+        }).then((response) => {
+
+            this.props.showModal(false);
+            console.log(response.mjson.data.list);
+            this.setState({
+                carSearchModlesData: response.mjson.data.list
+            })
+            this.loadHeadData();
+
+        }, (error) => {
+            this.props.showModal(false);
+            this.setState({
+                carSearchModlesData:[]
+            });
+        });
+
+    }
+
+    searchModelsViewCloseClick=()=>{
+        this.setState({carSearchModlesData:[]});
+        this.carSeekView && this.carSeekView.setInputValue('');
+        vin='';
+        model_id='';
+        carSeekStr = '';
+        this.loadHeadData();
+    }
+
+    searchModelsViewCellClick=(data)=>{
+        this.setState({carSearchModlesData:[]});
+        model_id = data.model_id;
+        vin="";
+        this.loadHeadData();
     }
 
     pushNewCarScene=()=>{
@@ -264,7 +317,8 @@ class MyCarSourceUpperFrameView extends BaseComponent {
             page: carUpperFramePage,
             pageCount: 10,
             auto_id: this.props.carData ? this.props.carData.id :'',
-            search_text:carSeekStr,
+            model_id:model_id,
+            vin:vin
         }).then((response) => {
 
             carUpperFrameData=response.mjson.data.list;
@@ -311,7 +365,8 @@ class MyCarSourceUpperFrameView extends BaseComponent {
             page: carUpperFramePage,
             pageCount: 10,
             auto_id: this.props.carData ? this.props.carData.id :'',
-            search_text:carSeekStr,
+            model_id:model_id,
+            vin:vin
 
         }).then((response) => {
             let carData = response.mjson.data.list;
@@ -474,7 +529,8 @@ class MyCarSourceDropFrameView extends BaseComponent {
             page: carDropFramePage,
             pageCount: 10,
             auto_id: this.props.carData ? this.props.carData.id :'',
-            search_text:carSeekStr,
+            model_id:model_id,
+            vin:vin
 
         }).then((response) => {
 
@@ -526,7 +582,8 @@ class MyCarSourceDropFrameView extends BaseComponent {
             page: carDropFramePage,
             pageCount: 10,
             auto_id: this.props.carData ? this.props.carData.id :'',
-            search_text:carSeekStr,
+            model_id:model_id,
+            vin:vin
 
         }).then((response) => {
 
@@ -636,6 +693,7 @@ class CarSeekView extends Component {
                     <View style={styles.navigatorSousuoView}>
                         <Image source={require('../../images/carSourceImages/sousuoicon.png')}/>
                         <TextInput
+                            ref={(ref)=>{this.input = ref}}
                             allowFontScaling={false}
                             underlineColorAndroid='transparent'
                             style={styles.navigatorSousuoText}
@@ -648,6 +706,13 @@ class CarSeekView extends Component {
             </View>
         )
     }
+
+    setInputValue=(text)=>{
+        this.input && this.input.setNativeProps({
+            text:text
+        });
+    }
+
 }
 
 const  styles = StyleSheet.create({
@@ -690,7 +755,7 @@ const  styles = StyleSheet.create({
         left:0,
         right:0,
         position: 'absolute',
-        bottom:0,
+        bottom:Pixel.getBottomPixel(0),
         backgroundColor:fontAndColor.COLORB0,
         justifyContent:'center',
         alignItems:'center',

@@ -41,7 +41,8 @@ export default class ChooseButton extends PureComponent {
             <TouchableHighlight onPress={this.props.onPressButton}>
                 <View style={[styles.itemBackground, this.props.itemBackground]}>
                     <Text allowFontScaling={false}  style={[styles.leftFont, this.props.leftFont]}>
-                        <Text allowFontScaling={false}  style={{color: FontAndColor.COLORB2}}>*</Text>{this.props.leftText}
+                        <Text allowFontScaling={false}  style={{color: FontAndColor.COLORB2}}>*</Text>
+                        {this.props.leftText}
                     </Text>
                     <Text allowFontScaling={false} style={styles.headerCellRight}>{this.state.dengjiren}</Text>
                     {

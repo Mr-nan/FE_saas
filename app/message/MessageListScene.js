@@ -71,7 +71,7 @@ export default class MessageListScene extends BaseComponent {
          renderPlaceholderOnly: 'success'
          });*/
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
+            if (data.code == 1 && data.result) {
                 let datas = JSON.parse(data.result);
                 this.companyId = datas.company_base_id;
                 StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {

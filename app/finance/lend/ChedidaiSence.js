@@ -35,7 +35,7 @@ import Picker from 'react-native-picker';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import {LendSuccessAlert} from './component/ModelComponent'
-const PostData = {
+let PostData = {
     apply_type: '8',
     loan_mny: '',
     loan_life: '',
@@ -43,7 +43,7 @@ const PostData = {
     remark: '',
 }
 
-const ShowData = {
+let ShowData = {
     companyName: '',
     lendType: '',
     type: '',
@@ -52,7 +52,7 @@ const ShowData = {
     tempMin: '',
     tempMax: ''
 }
-const verificationtips = {
+let verificationtips = {
     loan_mny: '请输入借款金额',
     remark: '请输入借款用途',
     use_time: '请选择用款时间',
@@ -78,6 +78,13 @@ export default class ChedidaiSence extends BaseComponent {
     dateBlob = ['30天', '90天', '180天', '360天'];
 
     initFinish() {
+        PostData = {
+            apply_type: '8',
+            loan_mny: '',
+            loan_life: '',
+            use_time: '',
+            remark: '',
+        };
         this.getData('');
 
     }
@@ -165,9 +172,9 @@ export default class ChedidaiSence extends BaseComponent {
         }
 
         if (infoComolete) {
-
+            // api: apis.CARLOAN_APPLY_LOAN,
             let maps = {
-                api: apis.CARLOAN_APPLY_LOAN,
+                api: apis.ACCOUNT_APPLY_LOAN,
                 apply_type: PostData.apply_type,
                 loan_mny: PostData.loan_mny,
                 remark: PostData.remark,
@@ -249,7 +256,7 @@ export default class ChedidaiSence extends BaseComponent {
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce}
                                       onPress={this.onPress}/>
                         <LendUseful onEndEidt={(text)=>{PostData.remark=text}}/>
-                        <LendRate rate={ShowData.rate}/>
+                        {PostData.loan_life !== '' && (<LendRate rate={ShowData.rate}/>)}
                     </KeyboardAvoidingView>
                 </ScrollView>
                 <CommenButton

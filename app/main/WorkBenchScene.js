@@ -144,32 +144,42 @@ export default class NonCreditScene extends BaseComponent {
     //认证功能验证
     _checkAuthen = (params)=>{
 
-
         this.isWorkBenchItemLose = true;
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    enterprise_id: datas.company_base_id,
-                    function_id: params.id,
-                    type:'app'
-                };
-                request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                if (res.result &&  res.result =='true') {
+
+                    StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                        if (data.code == 1 && data.result != null) {
+                            let datas = JSON.parse(data.result);
+                            let maps = {
+                                enterprise_id: datas.company_base_id,
+                                function_id: params.id,
+                                type:'app'
+                            };
+                            request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                                this.isWorkBenchItemLose = false;
+                                if(response.mjson.data.auth == 0){
+                                    this.props.callBack(params);
+                                }else{
+                                    this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth+'']);
+                                }
+                            }, (error) => {
+                                this.isWorkBenchItemLose = false;
+                                this.props.showToast(error.msg);
+                            });
+                        } else {
+                            this.isWorkBenchItemLose = false;
+                            this.props.showToast('获取企业信息失败');
+                        }
+                    });
+                }else {
                     this.isWorkBenchItemLose = false;
-                    if(response.mjson.data.auth == 0){
-                        this.props.callBack(params);
-                    }else{
-                        this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth+'']);
-                    }
-                }, (error) => {
-                    this.isWorkBenchItemLose = false;
-                    this.props.showToast(error.msg);
-                });
-            } else {
-                this.isWorkBenchItemLose = false;
-                this.props.showToast('获取企业信息失败');
+                    this.props.showLoginModal();
+                }
             }
-        });
+        );
+
+
     }
 
     _renderSeparator(sectionId, rowId) {

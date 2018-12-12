@@ -2,7 +2,7 @@
  * Created by zhengnan on 17/2/14.
  */
 
-import React, {Component, PureComponent} from 'react';
+import React, {Component} from 'react';
 
 import {
 
@@ -18,7 +18,7 @@ import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
-export default class CarInfoNavigationView extends PureComponent {
+export default class CarInfoNavigationView extends Component {
 
 
     // 构造
@@ -28,29 +28,32 @@ export default class CarInfoNavigationView extends PureComponent {
         this.state = {
 
             navigationBackgroundColor:null,
+            navigationTitleColor:null,
 
         };
       }
 
-      setNavigationBackgroindColor=(color)=>{
+      setNavigationBackgroindColor=(color,titleColor)=>{
 
           this.setState({
               navigationBackgroundColor:color,
+              navigationTitleColor:titleColor,
           });
       }
 
     render() {
 
-        const {title, backIconClick, renderRihtFootView,wrapStyle} = this.props;
+
+        const {title, backIconClick, renderRihtFootView,wrapStyle,titleStyle} = this.props;
 
         return (
             <View style={[styles.navigation,wrapStyle,this.state.navigationBackgroundColor && {backgroundColor:this.state.navigationBackgroundColor}]}>
                 <View style={styles.content}>
-                     <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
+                    <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
                                       onPress={backIconClick}>
-                    {backIconClick && <Image style={styles.backIcon} source={require('../../images/mainImage/navigatorBack.png')}/>}
-                     </TouchableOpacity>
-                    <Text allowFontScaling={false}  style={styles.titleText}>{title}</Text>
+                        {backIconClick && <Image style={styles.backIcon}  source={ wrapStyle? (wrapStyle.backgroundColor!='white'?require('../../images/mainImage/navigatorBack.png'):require('../../images/mainImage/fan.png')):require('../../images/mainImage/navigatorBack.png')}/>}
+                    </TouchableOpacity>
+                    <Text allowFontScaling={false}  style={[styles.titleText,titleStyle,this.state.navigationTitleColor && {color:this.state.navigationTitleColor}]}>{title}</Text>
                     <View style={styles.imageFoot}>
                         {
                             renderRihtFootView && renderRihtFootView()
@@ -65,7 +68,6 @@ export default class CarInfoNavigationView extends PureComponent {
 
 const styles = StyleSheet.create({
 
-
     content: {
         marginTop: Pixel.getTitlePixel(20),
         height: Pixel.getPixel(44),
@@ -79,6 +81,8 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(12),
         height: Pixel.getPixel(20),
         width: Pixel.getPixel(20),
+        // backgroundColor:'red'
+
     },
 
     titleText: {
@@ -86,6 +90,8 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
         textAlign: 'center',
         backgroundColor: 'transparent',
+        marginLeft:Pixel.getPixel(12)
+        // backgroundColor:'red'
 
     },
     imageFoot: {
@@ -93,7 +99,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        // backgroundColor:'red
+        // backgroundColor:'red',
         width: Pixel.getPixel(80),
         marginRight:Pixel.getPixel(15),
 

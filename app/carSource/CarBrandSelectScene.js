@@ -322,7 +322,6 @@ export default class CarBrandSelectScene extends BaseComponent {
             </TouchableOpacity>
         )
     }
-
     render() {
         if (this.state.renderPlaceholderOnly) {
             return (

@@ -71,34 +71,63 @@ export default class LogisticsModeForFinancing extends BaseComponent {
          });
          this.tagSelect[index].check = !this.tagSelect[index].check;
          this.tagRef.refreshData(this.tagSelect);*/
-        if (index === 0) {
-            // 使用物流  跳转到选择目的地页
-            this.toNextPage({
-                name: 'SelectDestination',
-                component: SelectDestination,
-                params: {
-                    orderId: this.props.orderDetail.id,
-                    vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
-                    callBack: this.updateOrdersTrans,
-                    maxLoanmny: this.props.financeInfo.max_loanmny  // 订单融资最大可贷额度
-                }
-
-            });
-        } else {
-            // 同城同市场
-            this.refs.chooseModal.changeShowType(true, '取消', '确定', '选择同城同市场需要风控人员后台审核确认，是否继续？',
-                () => {
-                    this.toNextPage({
-                            name: 'AddressManage',
-                            component: AddressManage,
-                            params: {
-                                callBack: this.isCarStoreCheck
+        if(this.props.buttonCU !='0'){
+            if (index === 0) {
+                // 使用物流  跳转到选择目的地页
+                // this.toNextPage({
+                //     name: 'SelectDestination',
+                //     component: SelectDestination,
+                //     params: {
+                //         orderId: this.props.orderDetail.id,
+                //         vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
+                //         callBack: this.updateOrdersTrans,
+                //         maxLoanmny: this.props.financeInfo.max_loanmny  // 订单融资最大可贷额度
+                //     }
+                //
+                // });
+                this.toPageXX(this.props.supervisetype)
+            } else {
+                // 同城同市场
+                this.refs.chooseModal.changeShowType(true, '取消', '确定', '选择同城同市场需要风控人员后台审核确认，是否继续？',
+                    () => {
+                        this.toNextPage({
+                                name: 'AddressManage',
+                                component: AddressManage,
+                                params: {
+                                    callBack: this.isCarStoreCheck
+                                }
                             }
-                        }
-                    );
-                });
+                        );
+                    });
+            }
+        }else {
+            this.props.showToast('请先设置借款金额');
         }
     };
+
+    toPageXX = (index) => {
+        if (index == 3) {//到库
+            this.logisticsType='3';
+            this.toStore='1'
+        }else {//到店
+            this.logisticsType='2';
+            this.toStore='0';
+        }
+        this.toNextPage({
+            name: 'FillWaybill',
+            component: FillWaybill,
+            params: {
+                toStore: this.toStore,
+                orderId: this.props.orderDetail.id,
+                vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
+                callBack: this.updateOrdersTrans,
+                maxLoanmny: this.props.financeInfo.max_loanmny,
+                logisticsType:this.logisticsType
+            }
+
+        });
+
+    }
 
     /**
      * 同城同市场
@@ -245,34 +274,34 @@ export default class LogisticsModeForFinancing extends BaseComponent {
             views =
                 <TouchableOpacity
                     onPress={() => {
-                        if (alreadyChoose.state < 2) {
-                            this.toNextPage({
-                                name: 'FillWaybill',
-                                component: FillWaybill,
-                                params: {
-                                    orderId: this.props.orderDetail.id,
-                                    logisticsType: this.state.ordersTrans.logistics_type,
-                                    vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
-                                    callBack: this.updateOrdersTrans
-                                }
-                            });
-                        } else {
-                            this.toNextPage({
-                                name: 'CheckWaybill',
-                                component: CheckWaybill,
-                                params: {
-                                    orderId: this.props.orderDetail.id,
-                                    transId: this.state.ordersTrans.id,
-                                    waybillState: alreadyChoose.waybillState
-                                }
-                            });
-                        }
+                            if (alreadyChoose.state < 2) {
+                                this.toNextPage({
+                                    name: 'FillWaybill',
+                                    component: FillWaybill,
+                                    params: {
+                                        orderId: this.props.orderDetail.id,
+                                        logisticsType: this.state.ordersTrans.logistics_type,
+                                        vType: this.props.orderDetail.orders_item_data[0].car_data.v_type,
+                                        callBack: this.updateOrdersTrans
+                                    }
+                                });
+                            } else {
+                                this.toNextPage({
+                                    name: 'CheckWaybill',
+                                    component: CheckWaybill,
+                                    params: {
+                                        orderId: this.props.orderDetail.id,
+                                        transId: this.state.ordersTrans.id,
+                                        waybillState: alreadyChoose.waybillState
+                                    }
+                                });
+                            }
                     }}>
                     <View style={{
                         height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center',
                         paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
                     }}>
-                        <Text >运单信息</Text>
+                        <Text >运单信息----</Text>
                         <View style={{flex: 1}}/>
                         <Text style={{color: fontAndColor.COLORB0}}>{alreadyChoose.waybillState}</Text>
                         <Image source={require('../../../../images/mainImage/celljiantou.png')}/>

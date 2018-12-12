@@ -40,6 +40,7 @@ import * as CarDeployData from './carData/CarDeployData';
 import ProvinceListScene from "./ProvinceListScene";
 import {CarSpecificationView} from './CarSpecificationScene';
 import CarNewInfoScene from "./CarNewInfoScene";
+import CarUserInfoScene from "./CarInfoScene";
 
 
 let Pixel = new PixelUtil();
@@ -71,7 +72,7 @@ const APIParameter = {
     emission_standards:0,
     nature_use:0,
     car_color:0,
-    model_name:'',
+    keyword:'',
     first_type:'',
     second_type:'',
     prov_id:0,
@@ -105,9 +106,9 @@ export  default  class CarNewListScene extends BaseComponent {
         super(props);
         // 初始状态
         const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
-
+        this.prov_id = 0;
+        this.isLoadCarInfo = false;
         this.state = {
-
             isRefreshing: false,
             dataSource: carSource,
             isHide: true,
@@ -199,7 +200,7 @@ export  default  class CarNewListScene extends BaseComponent {
         StorageUtil.mSetItem(storageKeyNames.NEED_NEW_CHECK_RECOMMEND,'false');
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
-            if(data.code == 1 && data.result != '')
+            if(data.code == 1 && data.result)
             {
                 let enters = JSON.parse(data.result);
                 this.prov_id = enters.prov_id;
@@ -264,6 +265,7 @@ export  default  class CarNewListScene extends BaseComponent {
 
         let url = AppUrls.CAR_INDEX;
         APIParameter.page = 1;
+
         request(url, 'post', APIParameter,()=>{
             this.props.backToLogin();
         })
@@ -286,6 +288,10 @@ export  default  class CarNewListScene extends BaseComponent {
                         isRefreshing: false,
                         renderPlaceholderOnly: 'success',
                     });
+                }
+
+                if(this.isLoadCarInfo){
+                    this.loadCarInfo();
                 }
 
             }, (error) => {
@@ -329,6 +335,73 @@ export  default  class CarNewListScene extends BaseComponent {
 
 
             });
+    }
+
+    //获取车源编号数据
+    loadCarInfo=()=>{
+        this.isLoadCarInfo = false;
+        this.props.showModal(true);
+        let url = AppUrls.CAR_INDEX;
+        request(url, 'post', APIParameter,()=>{
+            this.props.backToLogin();
+        })
+            .then((response) => {
+                this.props.showModal(false);
+
+               let list = response.mjson.data.list;
+               if(list.length>0){
+                   let carData = list[0];
+                   let navigatorParams = {
+                       name: "CarNewInfoScene",
+                       component: CarNewInfoScene,
+                       params: {
+                           carID: carData.id,
+                       }
+                   };
+
+                   if(carData.v_type == 1){
+                       navigatorParams = {
+                           name: "CarUserInfoScene",
+                           component: CarUserInfoScene,
+                           params: {
+                               carID: carData.id,
+                           }
+                       }
+                   }
+
+                   this.props.callBack(navigatorParams);
+               }
+
+
+
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.mjson.message);
+
+            });
+
+    }
+
+    pushCarInfoSceneAction=(carData)=>{
+        this.isLoadCarInfo = false;
+        let navigatorParams = {
+            name: "CarNewInfoScene",
+            component: CarNewInfoScene,
+            params: {
+                carID: carData.id,
+            }
+        };
+
+        if(carData.v_type == 1){
+            navigatorParams = {
+                name: "CarUserInfoScene",
+                component: CarUserInfoScene,
+                params: {
+                    carID: carData.id,
+                }
+            }
+        }
+        this.props.callBack(navigatorParams);
     }
 
     toEnd = () => {
@@ -643,20 +716,27 @@ export  default  class CarNewListScene extends BaseComponent {
         }
     }
 
+
+
     //  选择车型
-    checkedCarClick = (carObject) => {
+    checkedCarClick = (carObject,isOpenCarInfo) => {
 
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
 
         if(carObject.brand_id == 0 && carObject.series_id ==0)
         {
-            APIParameter.model_name = carObject.brand_name;
+            APIParameter.keyword = carObject.brand_name;
 
         }else {
 
-            APIParameter.model_name = '';
+            APIParameter.keyword = '';
 
+        }
+
+        if(/^\d+$/.test(carObject.brand_name) && carObject.brand_name.length>=11 && !isOpenCarInfo){
+            this.isLoadCarInfo = true;
+            // this.loadCarInfo();
         }
         this.setState({
             checkedCarType: {
@@ -675,8 +755,10 @@ export  default  class CarNewListScene extends BaseComponent {
 
         }else {
             this.setHeadViewType();
-
         }
+
+
+
 
     };
 
@@ -750,7 +832,7 @@ export  default  class CarNewListScene extends BaseComponent {
         });
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
-        APIParameter.model_name = '';
+        APIParameter.keyword = '';
         this.filterData();
     };
 
@@ -895,7 +977,7 @@ export  default  class CarNewListScene extends BaseComponent {
         APIParameter.second_type = '';
         APIParameter.car_color = 0;
         APIParameter.nature_use = 0;
-        APIParameter.model_name = '';
+        APIParameter.keyword = '';
         this.setHeadViewType();
 
 
@@ -1010,7 +1092,7 @@ export  default  class CarNewListScene extends BaseComponent {
                             pageSize={10}
                             enableEmptySections={true}
                             renderRow={(item,sectionID,rowID) =>
-                                <CarCell style={styles.carCell} carCellData={item} isNewCar={true} onPress={()=> this.carCellOnPres(item.id,sectionID,rowID)}/>
+                                <CarCell style={styles.carCell} carCellData={item} isNewCar={true} onPress={()=> this.pushCarInfoSceneAction(item)}/>
                             }
                             renderFooter={this.renderListFooter}
                             onEndReached={this.toEnd}

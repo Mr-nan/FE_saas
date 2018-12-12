@@ -115,11 +115,19 @@ export default class CarInfoScene extends BaseComponent {
         this.state = {
             imageArray: new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
-            residualsData: [],
-            carData: {imgs: []},
+            residualsData:[],
+            carData: {imgs:[]},
             currentImageIndex: 1,
             switchoverCarInfo: 0,
         };
+    }
+
+    componentDidMount() {
+
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
 
     initFinish = () => {
@@ -127,7 +135,7 @@ export default class CarInfoScene extends BaseComponent {
         this.isUserBoss = false;
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-            if (data.code == 1 && data.result != '') {
+            if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 for (let item of enters.enterprise_list[0].role_type){
                     if(item ==1 || item==6){
@@ -144,27 +152,16 @@ export default class CarInfoScene extends BaseComponent {
 
     }
 
+
+
     allRefresh=()=>{
         this.loadData();
     }
 
     loadData = () => {
 
-
-        /*        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-         if (data.code == 1 && data.result != '') {
-         let enters = JSON.parse(data.result);
-         this.loadCarData(enters.company_base_id);
-
-         } else {
-         this.loadCarData('');
-         }
-         });*/
-
-
-
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
-            if (data.code == 1 && data.result != '') {
+            if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 let company_base_ids = '';
                 for (let index in enters) {
@@ -238,7 +235,6 @@ export default class CarInfoScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             if (response.mycode == 1) {
                 this.setState({
                     residualsData: response.mjson.data,
@@ -269,7 +265,7 @@ export default class CarInfoScene extends BaseComponent {
         return (
             <View ref="carInfoScene" style={{flex: 1, backgroundColor: 'white'}}>
 
-                <ScrollView style={{marginBottom: Pixel.getPixel(44), backgroundColor: fontAndColor.COLORA3}}
+                <ScrollView style={{marginBottom: Pixel.getBottomPixel(44), backgroundColor: fontAndColor.COLORA3}}
                             scrollEventThrottle={200}
                             onScroll={this.setNavitgationBackgroundColor}
                 >
@@ -531,7 +527,14 @@ export default class CarInfoScene extends BaseComponent {
                     ref="navtigation"
                     wrapStyle={{backgroundColor: 'rgba(0,0,0,0)'}}
                     title="车源详情"
-                    backIconClick={this.backIconClick}
+                    backIconClick={()=>{
+                        if(this.props.isPoPo){
+                            this.backPage();
+                        }else {
+                            this.backIconClick();
+                        }
+                    }
+                    }
                     isStore={this.state.carData.is_collection == 0 ? false : true} addStoreAction={this.addStoreAction}
                     cancelStoreAction={this.cancelStoreAction} showShared={this.showShared}
                 />
@@ -714,6 +717,7 @@ export default class CarInfoScene extends BaseComponent {
 
     // 打开分享
     showShared = () => {
+
         this.refs.sharedView.isVisible(true);
     }
 
@@ -824,55 +828,73 @@ export default class CarInfoScene extends BaseComponent {
     // 添加收藏
     addStoreAction = (isStoreClick) => {
 
-        let url = AppUrls.BASEURL + 'v1/user.favorites/create';
-        request(url, 'post', {
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                if (res.result && res.result == 'true') {
+                    let url = AppUrls.BASEURL + 'v1/user.favorites/create';
+                    request(url, 'post', {
 
-            id: this.state.carData.id,
+                        id: this.state.carData.id,
 
-        }).then((response) => {
+                    }).then((response) => {
 
-            if (response.mycode == 1) {
+                        if (response.mycode == 1) {
 
-                isStoreClick(true);
-                this.props.showToast('收藏成功');
-            } else {
+                            isStoreClick(true);
+                            this.props.showToast('收藏成功');
+                        } else {
 
-                this.props.showToast(response.mycode.msg);
+                            this.props.showToast(response.mycode.msg);
+                        }
+
+                    }, (error) => {
+
+                        this.props.showToast('收藏失败');
+
+                    });
+                }else {
+                    this.props.showLoginModal();
+                }
             }
+        );
 
-        }, (error) => {
 
-            this.props.showToast('收藏失败');
-
-        });
 
     }
 
     // 取消收藏
     cancelStoreAction = (isStoreClick) => {
 
-        let url = AppUrls.BASEURL + 'v1/user.favorites/delete';
-        request(url, 'post', {
+        StorageUtil.mGetItem(StorageKeyNames.ISLOGIN, (res) => {
+                if (res.result && res.result == 'true') {
+                    let url = AppUrls.BASEURL + 'v1/user.favorites/delete';
+                    request(url, 'post', {
 
-            id: this.state.carData.id,
+                        id: this.state.carData.id,
 
-        }).then((response) => {
+                    }).then((response) => {
 
-            if (response.mycode == 1) {
+                        if (response.mycode == 1) {
 
-                isStoreClick(false);
-                this.props.showToast('取消收藏');
+                            isStoreClick(false);
+                            this.props.showToast('取消收藏');
 
-            } else {
+                        } else {
 
-                this.props.showToast(response.mycode.msg);
+                            this.props.showToast(response.mycode.msg);
+                        }
+
+                    }, (error) => {
+
+                        this.props.showToast('取消收藏失败');
+
+                    });
+                }else {
+                    this.props.showLoginModal();
+                }
             }
+        );
 
-        }, (error) => {
 
-            this.props.showToast('取消收藏失败');
-
-        });
 
     }
 
@@ -1508,7 +1530,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         height: Pixel.getPixel(44),
         position: 'absolute',
-        bottom: 0,
+        bottom:Pixel.getBottomPixel(0),
         left: 0,
         right: 0,
         borderTopColor: fontAndColor.COLORA4,

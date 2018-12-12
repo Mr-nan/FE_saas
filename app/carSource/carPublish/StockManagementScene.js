@@ -461,14 +461,14 @@ export default class StockManagementScene extends BaseComponent {
             this.carData.pictures = ""
         }
 
-        if(!this.props.dataID){
-            if(this.currentModelName){
-                if(this.currentModelName!=this.carData.model_id){
-                    this.props.showToast('该车架号所匹配出的车型与所选车型不一致');
-                    return;
-                }
-            }
-        }
+        // if(!this.props.dataID){
+        //     if(this.currentModelName){
+        //         if(this.currentModelName!=this.carData.model_id){
+        //             this.props.showToast('该车架号所匹配出的车型与所选车型不一致');
+        //             return;
+        //         }
+        //     }
+        // }
 
         // if (!this.carData.manufacture) {
         //     this.props.showToast('选择出厂日期');

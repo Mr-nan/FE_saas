@@ -2,9 +2,8 @@
  * Created by zhaojian 2017/2/8.
  */
 
-import  React, {Component, PropTypes} from  'react'
-import  {
-
+import React, {Component, PropTypes} from 'react'
+import {
     View,
     Text,
     ListView,
@@ -16,16 +15,18 @@ import  {
     RefreshControl,
     BackAndroid,
     Linking,
-    NativeModules
-} from  'react-native'
+    NativeModules,
+    Platform
+} from 'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
-import  PixelUtil from '../utils/PixelUtil'
+import PixelUtil from '../utils/PixelUtil'
+
 var Pixel = new PixelUtil();
 let page = 1;
 let status = 1;
-import  ViewPagers from './component/ViewPager'
-import  CarsViewPager from './component/CarsViewPager'
+import ViewPagers from './component/ViewPager'
+import CarsViewPager from './component/CarsViewPager'
 /*
  * 获取屏幕的宽和高
  **/
@@ -34,22 +35,27 @@ import BaseComponet from '../component/BaseComponent';
 import {request} from '../utils/RequestUtil';
 import CarInfoScene from '../carSource/CarInfoScene';
 import CarNewInfoScene from '../carSource/CarNewInfoScene';
-import  StorageUtil from '../utils/StorageUtil';
+import StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import WebScene from './WebScene';
-import  CarMySourceScene from '../carSource/CarMySourceScene';
+import CarMySourceScene from '../carSource/CarMySourceScene';
 import HomeJobItem from './component/HomeJobItem';
-import HomeRowButton from './component/HomeRowButton';
+import HomeShoppingIcon from './component/HomeShoppingIcon';
 import HomeAdvertisementButton from './component/HomeAdvertisementButton';
 import MessageListScene from "../message/MessageListScene";
-import  StringTransformUtil from  '../utils/StringTransformUtil';
+import StringTransformUtil from '../utils/StringTransformUtil';
+
 let stringTransform = new StringTransformUtil();
 import * as Urls from '../constant/appUrls';
 import AuthenticationModal from '../component/AuthenticationModal';
-let Platform = require('Platform');
+
 import EnterpriseCertificate from "../mine/certificateManage/EnterpriseCertificate";
 import PersonCertificate from "../mine/certificateManage/PersonCertificate";
 
+import SuishoujiIndicativeScene from './SuishoujiIndicativeScene';
+import ActivityView from './component/ActivityView';
+
+const IS_ANDROID = Platform.OS === 'android';
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
@@ -80,7 +86,9 @@ export default class HomeScene extends BaseComponet {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             headSource: [],
-            pageData: []
+            pageData: [],
+            newData: {list: []},
+            oldData: {list: []}
         };
         this.authenOptions = {
             '1': [true, '请先完成认证后再进行操作', '取消', '', '个人认证', this._gerenrenzheng],
@@ -138,50 +146,172 @@ export default class HomeScene extends BaseComponet {
 
     //认证功能验证
     _checkAuthen = (params) => {
+        StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
 
-        this.props.callBack(params);
-        return;
+                if (res.result && res.result == 'true') {
+                    this.isHomeJobItemLose = true;
+                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+                        if (data.code == 1 && data.result) {
+                            let datas = JSON.parse(data.result);
+                            let maps = {
+                                enterprise_id: datas.company_base_id,
+                                function_id: params.id,
+                                type: 'app'
+                            };
+                            request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                                this.isHomeJobItemLose = false;
+                                this.orderListData = response.mjson.data.items;
+                                if (response.mjson.data.auth == 0) {
+                                    this.props.callBack(params);
+                                } else {
+                                    this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth + '']);
+                                }
+                            }, (error) => {
+                                this.isHomeJobItemLose = false;
+                                this.props.showToast(error.msg);
+                            });
+                        } else {
+                            this.isHomeJobItemLose = false;
+                            this.props.showToast('获取企业信息失败');
+                        }
+                    });
 
-        this.isHomeJobItemLose = true;
-        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    enterprise_id: datas.company_base_id,
-                    function_id: params.id,
-                    type: 'app'
-                };
-                request(Urls.USER_IDENTITY_GET_INFO, 'post', maps).then((response) => {
+                } else {
                     this.isHomeJobItemLose = false;
-                    this.orderListData = response.mjson.data.items;
-                    if (response.mjson.data.auth == 0) {
-                        this.props.callBack(params);
-                    } else {
-                        this.refs.authenmodal.changeShowType(...this.authenOptions[response.mjson.data.auth + '']);
-                    }
-                }, (error) => {
-                    this.isHomeJobItemLose = false;
-                    this.props.showToast(error.msg);
-                });
-            } else {
-                this.isHomeJobItemLose = false;
-                this.props.showToast('获取企业信息失败');
+                    this.props.showLoginModal();
+                }
             }
-        });
+        );
+
+
     }
+
+
+    suishouji = (urls) => {
+
+        // finance.api.dev.dycd.com/api/v4/account/accountActivate 激活
+        // finance.api.dev.dycd.com/api/v4/account/accountAuth 授权
+        // finance.api.dev.dycd.com/api/v4/account/accountOpen 开户
+        // finance.api.dev.dycd.com/api/v4/account/borrowerInfo 开户状态
+
+        StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                if (res.result) {
+                    this.props.showModal(true)
+                    //查询状态
+                    request(Urls.SUISHOUJI_GETSTATUS, 'post', {merge_id: global.MERGE_ID}).then((response) => {
+
+                            // accountStatus	开户状态（flag为T才有值）	number	0:未开户; 1:开户中; 2:开户成功，3:开户失败 4：锁定
+                            // activateStatus	激活状态（flag为T才有值）	number	0 未激活，1 已激活，2：激活中 3：激活失败
+                            // authStatus	授权状态（flag为T才有值）	number	0：未授权 1：授权中 2：授权成功 3：授权失败
+
+
+                            if (response.mjson.data.flag === 'T') {
+
+                                if (response.mjson.data.accountStatus == 2) {  //开户成功, 走激活
+
+                                    if (response.mjson.data.activateStatus == 1) {  // 激活成功, 走授权
+
+                                        //授权
+                                        request(Urls.SUISHOUJI_AUTH, 'post', {merge_id: global.MERGE_ID}).then((response) => {
+
+                                            this.toSuiShouJiWeb(response);
+
+                                        }, (error) => {
+
+                                            this.props.showModal(false)
+                                            this.props.showToast(error.mjson.msg);
+                                        })
+                                    } else {
+                                        //激活
+                                        request(Urls.SUISHOUJI_ACTIVE, 'post', {merge_id: global.MERGE_ID}).then((response) => {
+                                            this.toSuiShouJiWeb(response);
+                                        }, (error) => {
+
+                                            this.props.showModal(false)
+                                            this.props.showToast(error.mjson.msg);
+                                        })
+                                    }
+                                } else {
+
+                                    // 开户
+                                    request(Urls.SUISHOUJI_OPEN, 'Post', {merge_id: global.MERGE_ID})
+                                        .then((response) => {
+                                                this.toSuiShouJiWeb(response);
+                                            },
+                                            (error) => {
+                                                this.props.showModal(false)
+                                                this.props.showToast(error.mjson.msg);
+                                            });
+                                }
+
+                            } else {
+                                this.props.showModal(false)
+                                this.props.showToast(response.mjson.data.remark);
+
+                            }
+
+                        }, (error) => {
+                            this.props.showModal(false)
+                            this.props.showToast(error.mjson.msg);
+
+                        }
+                    )
+                } else {
+                    this.props.showLoginModal();
+                }
+            }
+        );
+
+    }
+
+    toSuiShouJiWeb = (response) => {
+
+        this.props.showModal(false)
+        if (response.mjson.data.flag === 'T') {
+            this.props.callBack(
+                {
+                    name: 'WebScene',
+                    component: WebScene,
+                    params: {webUrl: response.mjson.data.url, title: '随手记'}
+                }
+            );
+        } else if (response.mjson.data.flag === 'F') {
+
+            this.props.callBack({
+                    name: 'SuishoujiIndicativeScene',
+                    component: SuishoujiIndicativeScene,
+                    params: {
+                        type: 1,
+                        status: 2,
+                        error: {
+                            msg: response.mjson.data.remark,
+                        }
+
+                    }
+                }
+            );
+        }
+    }
+
 
     _renderHeader = () => {
         return (
             <View>
                 <View style={{flexDirection: 'row'}}>
-                    <ViewPagers callBack={(urls)=> {
-                        this.props.callBack(
-                            {name: 'WebScene', component: WebScene, params: {webUrl: urls}}
+                    <ViewPagers callBack={(urls) => {
+
+                        if (urls == 'https://gatewayapi.dycd.com/suishouji') {
+                            this.suishouji(urls);
+                        }else {
+                            this.props.callBack(
+                                {name: 'WebScene', component: WebScene, params: {webUrl:urls}}
                             );
-                    }} items={this.state.allData} toNext={()=>{
-                         this.props.jumpScene('financePage','');
+                        }
+                    }}
+                                items={this.state.allData}
+                                toNext={() => {this.props.jumpScene('financePage', '');
                     }}/>
-                    <TouchableOpacity onPress={()=> {
+                    <TouchableOpacity onPress={() => {
                         this.props.jumpScene('carpage', 'true');
                     }} activeOpacity={0.8} style={{
                         backgroundColor: 'rgba(255,255,255,0.8)',
@@ -203,8 +333,21 @@ export default class HomeScene extends BaseComponet {
                             color: fontAndClolr.COLORA1
                         }}> 搜索您要找的车</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=> {
-                        this.props.callBack({name:'messagelistscene',component:MessageListScene,params:{}});
+                    <TouchableOpacity onPress={() => {
+
+                        StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                                if (res.result) {
+                                    this.props.callBack({
+                                        name: 'messagelistscene',
+                                        component: MessageListScene,
+                                        params: {}
+                                    });
+                                } else {
+                                    this.props.showLoginModal();
+                                }
+                            }
+                        );
+
                     }} activeOpacity={0.8} style={{
                         backgroundColor: '#00000000',
                         width: Pixel.getPixel(25),
@@ -213,37 +356,47 @@ export default class HomeScene extends BaseComponet {
                         marginTop: Pixel.getTitlePixel(26),
                         marginLeft: width - Pixel.getPixel(35),
                     }}>
-                        <Image style={{flex:1,resizeMode:'stretch'}}
+                        <Image style={{flex: 1, resizeMode: 'stretch'}}
                                source={require('../../images/workbench/ysjxx.png')}/>
                     </TouchableOpacity>
                 </View>
 
-                <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}
-                             callBack={(params)=>{
-                                 if(this.isHomeJobItemLose){return;}
-                                 this._checkAuthen(params)}
+                <HomeJobItem jumpScene={(ref, com) => {
+                    this.props.jumpScene(ref, com)
+                }}
+                             callBack={(params) => {
+                                 if (this.isHomeJobItemLose) {
+                                     return;
+                                 }
+                                 this._checkAuthen(params)
+                             }
                              }/>
                 {/*<HomeRowButton onPress={(id)=>{*/}
                 {/*this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});*/}
                 {/*}} list={this.carData}/>*/}
                 {
-                    this.state.newData && <CarsViewPager items={this.state.newData} toNext={(id)=>{
+                    this.state.newData && <CarsViewPager items={this.state.newData} toNext={(id) => {
                         this.pushNewCarInfoScene(id);
-                    }} more={()=>{
-                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);
+                    }} more={() => {
+                        this.props.jumpScene('carpage', storageKeyNames.NEED_CHECK_NEW_CAR);
                     }} title="推荐新车源" type="6"
                     />
                 }
                 {
-                    this.state.oldData && <CarsViewPager items={this.state.oldData} toNext={(id)=>{
-                       this.pushUserCarInfoScene(id);
-                    }} more={()=>{
-                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
-                    }} title="推荐二手车源" type="8"
-                    />
+                    this.state.oldData.list.length == 0 && this.state.newData.list.length == 0 ? null :
+                        <CarsViewPager items={this.state.oldData} toNext={(id) => {
+                            this.pushUserCarInfoScene(id);
+                        }} more={() => {
+                            this.props.jumpScene('carpage', storageKeyNames.NEED_CHECK_USER_CAR);
+                        }} title="推荐二手车源" type="8"
+                        />
                 }
-                <HomeAdvertisementButton click={()=>{
-                       this.props.callBack( {name: 'WebScene', component: WebScene, params: {webUrl: "http://u5559609.viewer.maka.im/k/9XENK1GL",title:'车行老板们想有钱有面儿有B格?'}});
+                <HomeAdvertisementButton click={() => {
+                    this.props.callBack({
+                        name: 'WebScene',
+                        component: WebScene,
+                        params: {webUrl: "http://u5559609.viewer.maka.im/k/9XENK1GL", title: '车行老板们想有钱有面儿有B格?'}
+                    });
                 }}/>
 
             </View>
@@ -277,7 +430,7 @@ export default class HomeScene extends BaseComponet {
     loadData = () => {
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != '') {
+            if (data.code == 1 && data.result) {
                 let enters = JSON.parse(data.result);
                 this.getData(enters.prov_id);
 
@@ -296,49 +449,30 @@ export default class HomeScene extends BaseComponet {
             this.props.backToLogin()
         })
             .then((response) => {
-                    // allList.push(...response.mjson.data.carList.list);
-                    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
-                        if (data.code == 1) {
-                            let datas = JSON.parse(data.result);
-                            if (datas.user_level == 2) {
-                                if (datas.enterprise_list[0].role_type == '1' || datas.enterprise_list[0].role_type == '6') {
-                                } else if (datas.enterprise_list[0].role_type == '2') {
-
-                                } else {
-
-                                }
-                            } else if (datas.user_level == 1) {
-
-                            } else {
-
-                            }
-                            if (allList.length <= 0) {
-                                this.setState({
-                                    renderPlaceholderOnly: 'success',
-                                    isRefreshing: false,
-                                    allData: response.mjson.data
-                                });
-                            } else {
-                                this.setState({
-                                    renderPlaceholderOnly: 'success',
-                                    isRefreshing: false,
-                                    allData: response.mjson.data
-                                });
-                            }
-                            this.carArray = []; // 初始化车源订阅数据
-                            this.getCarData(6);
-                            this.getCarSubscriptionData(5);
-                            this.getCarSubscriptionData(7);
-
-                        }
-                    });
+                    if (allList.length <= 0) {
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            isRefreshing: false,
+                            allData: response.mjson.data
+                        });
+                    } else {
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            isRefreshing: false,
+                            allData: response.mjson.data
+                        });
+                    }
+                    this.carArray = []; // 初始化车源订阅数据
+                    this.getCarData(6);
+                    this.getCarSubscriptionData(5);
+                    this.getCarSubscriptionData(7);
+                    // this.getActivityData();
                     status = response.mjson.data.carList.pageCount;
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     }
-
     getCarData(type) {
         let maps = {
             brand_id: 0,
@@ -367,6 +501,7 @@ export default class HomeScene extends BaseComponet {
             .then((response) => {
                     // this.carData = response.mjson.data.list;
                     if (type == 6) {
+
                         this.setState({
                             newData: response.mjson.data,
                         });
@@ -381,7 +516,6 @@ export default class HomeScene extends BaseComponet {
                 }
             )
     }
-
     // 获取订阅车源
     getCarSubscriptionData = (type) => {
         let maps = {
@@ -430,7 +564,6 @@ export default class HomeScene extends BaseComponet {
                 }
             )
     }
-
     setCarData = (carArray) => {
         let dataBlob = {}, sectionIDS = [], rowIDS = [], rows = [];
         for (var i = 0; i < carArray.length; i++) {
@@ -447,6 +580,31 @@ export default class HomeScene extends BaseComponet {
         this.setState({
             source: this.state.source.cloneWithRowsAndSections(dataBlob, sectionIDS, rowIDS),
         });
+    }
+    // 获取活动弹窗接口
+    getActivityData=()=>{
+
+        request(Urls.GET_JUMP_INFO, 'Post', {},)
+            .then((response) => {
+                    let  responseData = response.mjson.data;
+                    StorageUtil.mGetItem(storageKeyNames.ACTIVITY_ALTER+responseData.id, (data) => {
+                        if (data.code == 1 && data.result) {
+                            let enters = JSON.parse(data.result);
+
+                        } else {
+                            // 出现弹框 比较活动时间结束和当前时间
+                            let currentData = new  Date();
+                            let end_time = new  Date(responseData.end_time);
+                            if(currentData.getTime() < end_time.getTime())
+                            {
+                                this.ActivityView && this.ActivityView.setVisible(responseData);
+                            }
+                        }
+                    });
+                },
+                (error) => {
+
+                });
     }
 
 
@@ -470,7 +628,6 @@ export default class HomeScene extends BaseComponet {
         return (
 
             <View style={cellSheet.container}>
-
                 <ListView
                     enableEmptySections={true}
                     removeClippedSubviews={false}
@@ -493,20 +650,50 @@ export default class HomeScene extends BaseComponet {
                         />
                     }
                 />
-                <AuthenticationModal ref="authenmodal"/>
+                <HomeShoppingIcon click={()=> {
+                    StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                            if (res.result && res.result == 'true') {
+                                StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
+                                    if(userData.code ==1 && userData.result != null){
+                                        console.log(userData.result);
+                                        let myUser = JSON.parse(userData.result);
+                                        let myData={
+                                            id:+'userID'+myUser.base_user_id,
+                                            name:'姓名：'+myUser.boss_name,
+                                            phone:'电话：'+myUser.boss_tel
 
+                                        }
+
+                                        if(IS_ANDROID){
+                                          NativeModules.Udesk.openChat(myData);
+                                       }else {
+                                           NativeModules.ZNUdeskClass.openUdsk(myData);
+                                        }
+                                    }else {
+                                        this.props.showToast('获取用户信息失败');
+                                    }});
+
+                            }else {
+                                this.isHomeJobItemLose = false;
+                                this.props.showLoginModal();
+                            }
+                        }
+                    );
+                }}/>
+                <AuthenticationModal ref="authenmodal"/>
+                {/*<ActivityView ref={(ref)=>{this.ActivityView = ref}} click={this.activityViewClick}/>*/}
             </View>
         )
     }
 
-    refreshingData = () => {
+    refreshingData =()=> {
         allList = [];
         this.setState({isRefreshing: true});
         page = 1;
         this.loadData();
     };
 
-    homeOnPress = (title) => {
+    homeOnPress =(title)=> {
         if (title == '收车') {
             this.props.jumpScene('carpage', 'checkRecommend');
         } else if (title == '卖车') {
@@ -526,23 +713,23 @@ export default class HomeScene extends BaseComponet {
                 height: Pixel.getPixel(40),
                 backgroundColor: 'white',
                 alignItems: 'center',
-                marginTop:Pixel.getPixel(10)
+                marginTop: Pixel.getPixel(10)
             }}>
 
-                <View style={{marginLeft: Pixel.getPixel(10), flex:1,flexDirection:'row'}}>
+                <View style={{marginLeft: Pixel.getPixel(10), flex: 1, flexDirection: 'row'}}>
                     <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(15), fontWeight: 'bold',}}>
                         {sectionData}
                     </Text>
                 </View>
-                <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
+                <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={() => {
 
 
-                    if(sectionData=='新车订阅'){
+                    if (sectionData == '新车订阅') {
 
-                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_NEW_CAR);
+                        this.props.jumpScene('carpage', storageKeyNames.NEED_CHECK_NEW_CAR);
 
-                    }else {
-                        this.props.jumpScene('carpage',storageKeyNames.NEED_CHECK_USER_CAR);
+                    } else {
+                        this.props.jumpScene('carpage', storageKeyNames.NEED_CHECK_USER_CAR);
 
                     }
                 }}>
@@ -552,7 +739,8 @@ export default class HomeScene extends BaseComponet {
                     }}>
                         <Text allowFontScaling={false}
                               style={{color: 'gray', fontSize: Pixel.getFontPixel(12)}}>更多</Text>
-                        <Image source={require('../../images/mainImage/more.png')} style={{width: Pixel.getPixel(5), height: Pixel.getPixel(10), marginLeft: Pixel.getPixel(2),
+                        <Image source={require('../../images/mainImage/more.png')} style={{
+                            width: Pixel.getPixel(5), height: Pixel.getPixel(10), marginLeft: Pixel.getPixel(2),
                         }}/>
                     </View>
                 </TouchableOpacity>
@@ -571,10 +759,10 @@ export default class HomeScene extends BaseComponet {
             DIDIAN = '';
         }
         return (
-            <TouchableOpacity onPress={()=> {
-                if(movie.v_type==1){
+            <TouchableOpacity onPress={() => {
+                if (movie.v_type == 1) {
                     this.pushUserCarInfoScene(movie.id);
-                }else {
+                } else {
                     this.pushNewCarInfoScene(movie.id);
                 }
             }} activeOpacity={0.8} style={{
@@ -586,7 +774,7 @@ export default class HomeScene extends BaseComponet {
                 alignItems: 'center',
             }}>
                 <View
-                    style={{width: Pixel.getPixel(166), backgroundColor:'white', justifyContent: 'center'}}>
+                    style={{width: Pixel.getPixel(166), backgroundColor: 'white', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle}
                            source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 320 + ',h_' + 240} : require('../../images/carSourceImages/car_null_img.png')}/>
 
@@ -595,7 +783,11 @@ export default class HomeScene extends BaseComponet {
                     <Text allowFontScaling={false}
                           style={cellSheet.timeStyle}>{movie.v_type == 1 ? (this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里') : ((movie.car_color ? (movie.car_color.split("|")[0] + ' | ') : ' ') + movie.stock + '辆')}</Text>
                     <Text allowFontScaling={false}
-                          style={{color:fontAndClolr.COLORB2, fontSize:Pixel.getFontPixel(fontAndClolr.LITTLEFONT28), marginBottom:Pixel.getPixel(15)}}>{movie.dealer_price > 0 ? (stringTransform.carMoneyChange(movie.dealer_price) + '万') : ' '}</Text>
+                          style={{
+                              color: fontAndClolr.COLORB2,
+                              fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
+                              marginBottom: Pixel.getPixel(15)
+                          }}>{movie.dealer_price > 0 ? (stringTransform.carMoneyChange(movie.dealer_price) + '万') : ' '}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -632,6 +824,106 @@ export default class HomeScene extends BaseComponet {
         return (date.getFullYear() + "年" + (date.getMonth() + 1) + "月");
 
     };
+
+    activityViewClick=(contentData)=>{
+
+
+        // 非登录
+        if(contentData.login_type == 2){
+
+            StorageUtil.mSetItem(storageKeyNames.ACTIVITY_ALTER+contentData.id,contentData.end_time);
+            if(contentData.general_url!=''){
+                this.props.callBack(
+                    {name: 'WebScene', component: WebScene, params: {webUrl:contentData.general_url,title:'活动'}}
+                );
+            }
+            return;
+        }
+
+
+        StorageUtil.mGetItem(storageKeyNames.ISLOGIN, (res) => {
+                if (res.result && res.result == 'true') {
+                    StorageUtil.mSetItem(storageKeyNames.ACTIVITY_ALTER+contentData.id,contentData.end_time);
+                    if(contentData.general_url!='')
+                    {
+                        let home = contentData.general_url;
+                        StorageUtil.mGetItem(storageKeyNames.TOKEN, (data) => {
+                            let token = '';
+                            if (data.code === 1 && data.result) {
+                                token = data.result;
+                            }
+
+                            let url = home+'&user_token='+token;
+                            this.props.callBack(
+                                {name: 'WebScene', component: WebScene, params: {webUrl:url,title:'活动'}}
+                                    );
+                        });
+
+
+                    }else {
+                        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT,(resData)=>{
+                            if(resData.result){
+                                let data = JSON.parse(resData.result);
+                                if(data.is_done_credit!='1'){
+                                    // 已授信
+                                    // let home = Urls.OLD_USER_ACTIVITY_INVITE;
+                                    let home = contentData.old_url;
+                                    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
+                                        if (userData.code === 1 && userData.result) {
+                                            let boss_id = JSON.parse(userData.result).boss_id;
+                                            StorageUtil.mGetItem(storageKeyNames.TOKEN, (data) => {
+                                                let token = '';
+                                                if (data.code === 1 && data.result) {
+                                                    token = data.result;
+                                                }
+
+                                                let url = home+'compid='+global.companyBaseID+'&user_token='+token+'&boss_id='+boss_id;
+
+                                                this.props.callBack(
+                                                    {name: 'WebScene', component: WebScene, params: {webUrl:url,title:'老用户福利'}}
+                                                );
+                                            });
+                                        }else {
+                                            this.props.showToast('获取用户信息失败');
+                                        }
+
+                                    });
+
+                                }else {
+                                    // 未授信
+                                    // let home = Urls.NEW_USER_ACTIVITY_INVITE;
+                                    let home = contentData.new_url;
+                                    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (userData) => {
+                                        if (userData.code === 1 && userData.result) {
+                                            let boss_id = JSON.parse(userData.result).boss_id;
+                                            StorageUtil.mGetItem(storageKeyNames.TOKEN, (data) => {
+                                                let token = '';
+                                                if (data.code === 1 && data.result) {
+                                                    token = data.result;
+                                                }
+
+                                                let url = home+'compid='+global.companyBaseID+'&user_token='+token+'&boss_id='+boss_id;
+
+                                                this.props.callBack(
+                                                    {name: 'WebScene', component: WebScene, params: {webUrl:url,title:'新用户福利'}}
+                                                );
+                                            });
+                                        }else {
+                                            this.props.showToast('获取用户信息失败');
+                                        }
+
+                                    });
+                                }
+                            }
+
+                        });
+                    }
+                } else {
+                    this.props.showLoginModal();
+                }
+            }
+        );
+    }
 }
 
 

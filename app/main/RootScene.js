@@ -20,7 +20,7 @@ import LoginAndRegister from '../login/LoginAndRegister';
 import StorageUtil from '../utils/StorageUtil';
 import * as KeyNames from '../constant/storageKeyNames';
 import WelcomScene from './WelcomScene';
-import LoginGesture from '../login/LoginGesture';
+
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import  UpLoadScene from './UpLoadScene';
@@ -30,13 +30,14 @@ import codePush from 'react-native-code-push'
 import SQLiteUtil from "../utils/SQLiteUtil";
 import PromotionScene from "./PromotionScene";
 const SQLite = new SQLiteUtil();
-const versionCode = 32.0;
+const versionCode = 54.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
 import ErrorUtils from "ErrorUtils"
 import UmengPush from 'react-native-umeng-push';
 import YaoQingDeHaoLi from '../mine/setting/YaoQingDeHaoLi';
+import LoginGesture from '../login/LoginGesture';
 const IS_ANDROID = Platform.OS === 'android';
 
 export default class RootScene extends BaseComponent {
@@ -45,7 +46,6 @@ export default class RootScene extends BaseComponent {
         super(props);
 //获取DeviceToken
         UmengPush.getDeviceToken(deviceToken => {
-            console.log('deviceToken', deviceToken)
         });
 
 //接收到推送消息回调
@@ -105,16 +105,15 @@ export default class RootScene extends BaseComponent {
 
             }
 
-            console.log(message);
 
         });
     }
 
     componentDidMount() {
-        // codePush.sync();
-        // AppState.addEventListener("change", (newState) => {
-        //     newState === "active" && codePush.sync();
-        // });
+        codePush.sync();
+        AppState.addEventListener("change", (newState) => {
+            newState === "active" && codePush.sync();
+        });
 
 
         StorageUtil.mSetItem(KeyNames.NEED_TOAST_ERROR, '');
@@ -124,6 +123,8 @@ export default class RootScene extends BaseComponent {
         ErrorUtils.setGlobalHandler((e) => {　//发生异常的处理方法,当然如果是打包好的话可能你找都找不到是哪段代码出问题了
             this.props.showToast('' + e);
             StorageUtil.mGetItem(KeyNames.PHONE, (data) => {
+
+                if(data.code != 1 || !data.result) return;
                 let maps = {
                     phone: data.result,
                     message: '' + e
@@ -226,12 +227,12 @@ export default class RootScene extends BaseComponent {
                 StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                     if (res.result !== StorageUtil.ERRORCODE) {
                         if (res.result == null) {
-                            that.navigatorParams.component = LoginAndRegister;
-                            that.navigatorParams.name = 'LoginAndRegister';
+                            that.navigatorParams.component = MainPage;
+                            that.navigatorParams.name = 'MainPage';
                             that.toNextPage(that.navigatorParams);
+
                         } else {
                             if (res.result == "true") {
-
                                 StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
                                     let datas = JSON.parse(data.result);
                                     if (datas.user_level == 2) {
@@ -259,8 +260,8 @@ export default class RootScene extends BaseComponent {
                                     }
                                 });
                             } else {
-                                that.navigatorParams.component = LoginAndRegister;
-                                that.navigatorParams.name = 'LoginAndRegister';
+                                that.navigatorParams.component = MainPage;
+                                that.navigatorParams.name = 'MainPage';
                                 that.toNextPage(that.navigatorParams);
                             }
                         }

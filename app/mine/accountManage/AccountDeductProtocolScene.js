@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         backgroundColor:fontAndColor.COLORB0,
         left:0,
         right:0,
-        bottom:0,
+        bottom:Pixel.getBottomPixel(0),
         height:Pixel.getPixel(44),
         alignItems:'center',
         justifyContent:'center',

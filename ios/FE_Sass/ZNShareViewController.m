@@ -37,6 +37,7 @@
   self.hud.removeFromSuperViewOnHide = YES;
   self.hud.dimBackground = NO;
   
+  
   _shareResult = result;
   _shareArray = [NSMutableArray array];
   _currentShareIndex = 0;
@@ -97,6 +98,7 @@
     UIActivityViewController *activityVC = [[UIActivityViewController alloc]initWithActivityItems:shareItem applicationActivities:nil];
     
     activityVC.excludedActivityTypes=@[UIActivityTypePostToFacebook,UIActivityTypePostToTwitter, UIActivityTypePostToWeibo, UIActivityTypeMessage,UIActivityTypeMail,UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeAssignToContact,UIActivityTypeSaveToCameraRoll,UIActivityTypeAddToReadingList,UIActivityTypePostToFlickr,UIActivityTypePostToVimeo,UIActivityTypePostToTencentWeibo,UIActivityTypeAirDrop,UIActivityTypeOpenInIBooks];
+    
     
     [[UIApplication sharedApplication].delegate.window.rootViewController presentViewController:activityVC animated:YES completion:nil];
     

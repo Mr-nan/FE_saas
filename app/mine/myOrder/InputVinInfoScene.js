@@ -13,23 +13,29 @@ import {
     Image,
     Dimensions,
     TextInput
-} from  'react-native'
+} from 'react-native'
 
 const {width, height} = Dimensions.get('window');
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
+
 const Pixel = new PixelUtil();
 
 export default class InputVinInfoScene extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
-                <NavigatorView title='输入车架号' backIconClick={this.backPage} renderRihtFootView={this.renderRihtFootView}/>
+                <NavigatorView title='输入车架号' backIconClick={this.backPage}
+                               renderRihtFootView={this.renderRihtFootView}/>
 
                 <View style={styles.inputBar}>
-                    <TextInput style={{flex: 1, marginLeft: Pixel.getPixel(15), fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}} placeholder='请输入车架号'/>
+                    <TextInput style={{
+                        flex: 1,
+                        marginLeft: Pixel.getPixel(15),
+                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+                    }} placeholder='请输入车架号'/>
                     <Image
                         style={{marginRight: Pixel.getPixel(15)}}
                         source={require('../../../images/login/clear.png')}/>
@@ -46,7 +52,7 @@ export default class InputVinInfoScene extends BaseComponent {
                 }}
                 activeOpacity={0.9}
             >
-                <Text allowFontScaling={false}  style={{color: '#ffffff'}}>完成</Text>
+                <Text allowFontScaling={false} style={{color: '#ffffff'}}>完成</Text>
             </TouchableOpacity>
         )
     }

@@ -27,11 +27,22 @@ export default class AddressManageEditScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        this.item = this.props.item;
+        this.item = typeof this.props.screenItem !=='undefined'?this.props.screenItem:this.props.item;
+
+        console.log(this.item)
+
         this.pro_city = '';
         if(!this._isEmpty(this.item.province)){
             this.pro_city = this.item.province + this.item.city + this.item.district;
         }
+        //screenItem
+        // city:"北京"
+        // city_code:"110100"
+        // district:"朝阳区"
+        // district_code:"110105"
+        // province:"北京"
+        // province_code:"110000"
+
         this.state ={
             cityStatus:false,
             region_city:this.pro_city,
@@ -47,12 +58,14 @@ export default class AddressManageEditScene extends BaseComponent {
             this.item.contact_name = text;
         }else if(type === '2'){
             this.item.contact_phone = text;
+        }else if(type === '3'){
+            this.item.id_card = text;
         }
     };
 
     _onSave = ()=>{
         if(this._isEmpty(this.item.contact_name)){
-            this.props.showToast('请填写提车人');
+            this.props.showToast('请填写联系人');
             return;
         }
         if(this._isEmpty(this.item.contact_phone)){
@@ -67,6 +80,20 @@ export default class AddressManageEditScene extends BaseComponent {
             this.props.showToast('请选择详细地址');
             return;
         }
+        if(this._isEmpty(this.item.id_card)){
+            this.props.showToast('请填写身份证号码');
+            return;
+        }
+
+
+        if (typeof this.props.screenItem !== 'undefined'){
+
+            if(this.item.city_code != this.props.screenItem.city_code){
+                this.props.showToast('所选区域与发车/收车区域不符，请重新选择')
+                return;
+            }
+        }
+
         this.props.showModal(true);
         let maps = {
             company_id:global.companyBaseID,
@@ -81,7 +108,8 @@ export default class AddressManageEditScene extends BaseComponent {
             address:this.item.address,
             latitude:this.item.latitude,
             longitude:this.item.longitude,
-            is_default:'0'
+            is_default:'0',
+            id_card:this.item.id_card
         };
         let url = Urls.ADD_ADDRESS;
         if(this.props.isEdit){
@@ -104,7 +132,7 @@ export default class AddressManageEditScene extends BaseComponent {
     };
 
     _toAddress = ()=>{
-        if(this._isEmpty(this.item.province)){
+        if(this._isEmpty(this.item.district)){
             this.props.showToast('请先选择区域');
             return;
         }
@@ -152,6 +180,10 @@ export default class AddressManageEditScene extends BaseComponent {
     };
 
     _toProvince = ()=>{
+
+        if (typeof this.props.screenItem !== 'undefined'&&this.props.screenItem.district_code !== ""){
+            return;
+        }
         dismissKeyboard();
         this.setState({cityStatus:true});
     };
@@ -165,6 +197,22 @@ export default class AddressManageEditScene extends BaseComponent {
     };
 
     checkAreaClick = (cityRegion)=>{
+
+        if(typeof this.props.screenItem !== 'undefined'){
+
+            if (this.props.screenItem.district_code !== ""){
+                if( cityRegion.district_code !== this.props.screenItem.district_code ){
+                    this.props.showToast('区域不匹配')
+                    return;
+                }
+            }else if (this.props.screenItem.city_code !== "") {
+                if( cityRegion.city_code !== this.props.screenItem.city_code ){
+                    this.props.showToast('省市不匹配')
+                    return;
+                }
+            }
+        }
+
         this.item.province = cityRegion.provice_name;
         this.item.province_code = cityRegion.provice_code;
         this.item.city = cityRegion.city_name;
@@ -237,6 +285,17 @@ export default class AddressManageEditScene extends BaseComponent {
                               style={this.state.region_address ? styles.itemRightText : styles.itemRightText2}>{this.state.region_address ? this.state.region_address : '请选择'}</Text>
                         <Image style={styles.arrowStyle} source={arrow_img}/>
                     </TouchableOpacity>
+                </View>
+                <View style={styles.itemSeparator}/>
+                <View style={styles.itemView}>
+                    <Text style={styles.itemLeftText}>{'身份证号码'}</Text>
+                    <TextInput
+                        style={styles.itemRightText}
+                        underlineColorAndroid='transparent'
+                        placeholder={'请输入'}
+                        defaultValue={this.item.id_card}
+                        onChangeText={(text)=>{this._onTextChange('3',text)}}
+                    />
                 </View>
                 <TouchableOpacity style={styles.btnStyle}
                                   activeOpacity={0.6}

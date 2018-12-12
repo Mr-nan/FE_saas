@@ -133,7 +133,7 @@ export default class EnterpriseCertificate extends BaseComponent {
                             this.enterpriseData.enterprise_tel = PersonResule.company.contact_phone;
                             this.enterpriseData.enterprise_IDNo = PersonResule.company.legal_idno;
                             this.enterpriseData.businessLicense_IDNo = PersonResule.company.business_license;
-                            this.enterpriseData.qiyemingcheng = PersonResule.company.enterprise_name;
+                            // this.enterpriseData.qiyemingcheng = PersonResule.company.enterprise_name;
 
 
                             let shanghusuozaidi;
@@ -373,7 +373,6 @@ export default class EnterpriseCertificate extends BaseComponent {
             company_blame_phone: this.enterpriseData.enterprise_tel,
             idcard_blame_no: this.enterpriseData.enterprise_IDNo,
 
-            company_id: this.props.qiye_id,
             idcard_no: this.enterpriseData.zhuceren_IDNo,
             real_name: this.enterpriseData.zhuceren_name,
 
@@ -389,7 +388,7 @@ export default class EnterpriseCertificate extends BaseComponent {
                     }
                     this.timer = setTimeout(
                         () => {
-                            this.backPage();
+                            this.backToTop();
                         },
                         200
                     );
@@ -679,7 +678,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 
                 <View style={{width:width,height:Pixel.getPixel(10),backgroundColor:fontAndColor.COLORA3}}/>
                 {/*企业负责人身份证照片3张view*/}
-                <TouchableWithoutFeedback onPress={() => dismissKeyboard() }>
+                <TouchableWithoutFeedback >
                     <View style={{width: width,height: Pixel.getPixel(118),
 							backgroundColor: '#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15), }}>
 
@@ -777,7 +776,7 @@ export default class EnterpriseCertificate extends BaseComponent {
 
                 <View style={{width:width,height:Pixel.getPixel(10),backgroundColor:fontAndColor.COLORA3}}/>
                 {/*营业执照片view*/}
-                <TouchableWithoutFeedback onPress={() => dismissKeyboard() }>
+                <TouchableWithoutFeedback >
                     <View style={{width: width,height: Pixel.getPixel(88),flexDirection: 'row',alignItems: 'center',
 							backgroundColor: '#ffffff',paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15), }}>
 
@@ -978,7 +977,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        paddingTop: Pixel.getPixel(64),
+        paddingTop: Pixel.getTitlePixel(64),
     },
     alignTop: {
         marginTop: Pixel.getPixel(59)
@@ -1042,7 +1041,7 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORB0,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: Pixel.getPixel(15),
+        marginBottom: Pixel.getBottomPixel(15),
         borderRadius: Pixel.getFontPixel(2),
     },
     btnFont: {

@@ -70,13 +70,18 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.modelInfo = {};
         this.isCheckPrice = -1;
         this.carData = {'v_type': 1};
-
+        this.contractList=[];
         this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}];
+
+        this.is_seller_inWhite = false;
+        this.is_seller_inWhite_load = false;
+        this.is_buyer_inWhite = false;
+        this.is_buyer_inWhite_load = false;
 
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
+            isRefreshing: false,
         }
     }
 
@@ -381,9 +386,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     loadData = () => {
+
+
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
+
                 let datas = JSON.parse(data.result);
+
                 let maps = {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
@@ -414,14 +423,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 status = 0;
                             }
                         }
+
+
+                        this.checkeXintuoWhiteList(datas.company_base_id, this.orderDetail.buyer_company_id)
+
                         this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        this.setState({
-                            dataSource: ds.cloneWithRows(this.mList),
-                            isRefreshing: false,
-                            renderPlaceholderOnly: 'success'
-                        });
+
+
                     } else {
                         this.props.showToast(response.mjson.msg);
                         this.setState({
@@ -442,6 +451,81 @@ export default class SalesOrderDetailScene extends BaseComponent {
             }
         });
     };
+
+
+    //
+    checkeXintuoWhiteList= (buyerID, sellerID)=>{
+        // 查看买家是否在信托白名单
+        request(AppUrls.CAN_XINTUO, 'POST', {
+            enter_base_id: buyerID,
+            type: 0
+        }).then((response) => {
+            this.is_buyer_inWhite_load = true
+            this.is_buyer_inWhite = true;
+            this.loadContractList()
+        }, (error) => {
+            this.is_buyer_inWhite_load = true
+            this.loadContractList()
+            console.log(error.msg)
+        })
+
+        // 查看卖家是否在信托白名单
+        request(AppUrls.CAN_XINTUO, 'POST', {
+            enter_base_id: sellerID,
+            type: 0
+        }).then((response) => {
+            this.is_seller_inWhite_load  = true;
+            this.is_seller_inWhite = true;
+            this.loadContractList()
+        }, (error) => {
+            this.is_seller_inWhite_load  = true;
+            this.loadContractList()
+            console.log(error.msg)
+        })
+    }
+
+    loadContractList = () => {
+
+        if(this.is_seller_inWhite_load&&this.is_buyer_inWhite_load){
+
+            if (this.is_buyer_inWhite && this.is_seller_inWhite) {
+                request(AppUrls.AGREEMENT_LISTS, 'Post', {
+                    source_type: '3',
+                    fund_channel: '信托'
+                })
+                    .then((response) => {
+                        // this.props.showModal(false);
+
+                        this.contractList=response.mjson.data.list;
+
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(this.mList),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+
+                    }, (error) => {
+                        //this.props.showModal(false);
+                        this.props.showToast(error.mjson.msg);
+                    });
+            }else {
+
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.mList),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            }
+
+
+        }
+
+
+    }
+
+
 
     /**
      *  根据订单详情接口的 status 和 cancel_status 字段组合判断页面渲染
@@ -897,21 +981,26 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 );
                 break;
             case 7:
-                return (
-                    <View style={styles.bottomBar}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.refs.cancelModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
-                            }}>
-                            <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <ExplainModal ref='cancelModal' title='提示' buttonStyle={styles.expButton}
-                                      textStyle={styles.expText}
-                                      text='确定' content='订单尾款已结清联系客服取消订单'/>
-                    </View>
-                )
+
+                if(this.is_buyer_inWhite&&this.is_seller_inWhite){
+                    return <View/>
+                } else {
+                    return (
+                        <View style={styles.bottomBar}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.refs.cancelModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
+                                }}>
+                                <View style={styles.buttonCancel}>
+                                    <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <ExplainModal ref='cancelModal' title='提示' buttonStyle={styles.expButton}
+                                          textStyle={styles.expText}
+                                          text='确定' content='订单尾款已结清联系客服取消订单'/>
+                        </View>
+                    )
+                }
                 break;
             case 8:
                 return (
@@ -1037,7 +1126,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     this.mList = ['0', '1', '5', '7', '9'];
                     this.contactData = {
                         layoutTitle: '已完成',
-                        layoutContent: '车款可提现。',
+                        layoutContent: '车款可提现哦。',
                         setPrompt: false
                     };
                 }
@@ -1348,6 +1437,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
         } else if (rowData === '1') {
             return (
                 <ContactLayout
+                    toNextPage = {this.toNextPage}
+                    contractList = {this.contractList}
                     layoutTitle={this.contactData.layoutTitle ? this.contactData.layoutTitle : ''}
                     layoutContent={this.contactData.layoutContent ? this.contactData.layoutContent : ''}
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}

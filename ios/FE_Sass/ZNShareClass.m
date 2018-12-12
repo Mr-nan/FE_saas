@@ -8,6 +8,7 @@
 
 #import "ZNShareClass.h"
 #import "ZNShareViewController.h"
+#import "Udesk.h"
 
 @implementation ZNShareClass
 {
@@ -27,6 +28,7 @@ RCT_REMAP_METHOD(shareAction,
       
       if(!error){
         resolve(resultStr);
+        
       }else{
         reject(@"分享失败",@"0",error);
       }
@@ -34,5 +36,7 @@ RCT_REMAP_METHOD(shareAction,
   });
 
 }
+
+
 
 @end

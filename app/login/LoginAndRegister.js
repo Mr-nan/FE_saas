@@ -13,10 +13,17 @@ import {
 import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
-import LoginScene from "./LoginScene";
+// import LoginScene from "./LoginScene";
+import LoginScene from "./NewLoginScreen";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
 import QuotaApplication from './QuotaApplication';
+import FastCreditTwo from '../mine/kuaisushouxin/NewCarCreditEnterpriseInfoCheck'
+import Authentication from '../mine/kuaisushouxin/Authentication'
+
+import FinanceCreditApplyScene from "../main/FinanceCreditApplyScene";
+import NonCreditScene from "../main/NonCreditScene";
+import BusinessAddress from "../mine/kuaisushouxin/BusinessAddress";
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');

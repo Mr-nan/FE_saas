@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Toast from './Toast';
 import Confirm from './Confirm';
+import ShowLoginView from  './ShowLoginView';
 /**
  * from @zhaojian
  *
@@ -26,7 +27,8 @@ export default  class ShowToast extends PureComponent {
         super(props);
         this.state = {
             msg: "",
-            height: 0
+            height: 0,
+            isShowLoginPushView:false,
         }
     }
 
@@ -69,6 +71,13 @@ export default  class ShowToast extends PureComponent {
         }
     }
 
+    showLoginViewAction=()=>{
+
+        this.setState({height: height},() => {
+            this.showLoginView &&   this.showLoginView.showAction();
+        });
+    }
+
     render() {
         if (this.state.height == 0) {
             return (<View></View>);
@@ -79,7 +88,9 @@ export default  class ShowToast extends PureComponent {
                 <Confirm ref='confirm' leftFunc={this.props.leftCallBack} rightFunc={this.props.rightCallBack}
                          btnLeftText={this.props.leftText}
                          btnRightText={this.props.rightText} title={this.props.title} msg={this.props.msg}></Confirm>
+                <ShowLoginView ref={(ref)=>{this.showLoginView=ref}} cancelClick={()=>{this.setState({height:0})}} confirmClick={()=>{this.setState({height:0})}}/>
             </TouchableOpacity>
         )
     }
 }
+

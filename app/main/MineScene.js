@@ -18,6 +18,7 @@ import * as fontAndClolr from '../constant/fontAndColor';
 import MycarScene from '../carSource/CarMySourceScene';
 import PixelUtil from '../utils/PixelUtil'
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
+import SCBZJScene from '../mine/shuchebaozhengjin/SCBZJScene';
 
 import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
@@ -51,6 +52,11 @@ import AddressManageListScene from '../mine/addressManage/AddressManageListScene
 import GetCarerManageListScene from '../mine/getCarerManage/GetCarerManageListScene';
 import GetPermissionUtil from '../utils/GetPermissionUtil';
 import BaseComponent from '../component/BaseComponent';
+import List from "../mine/myOrder/orderwuliu/list/List";
+import CredictManageScene from "../mine/kuaisushouxin/CredictManageScene";
+import CarSuperviseListScreen from "../mine/carSupervise/CarSuperviseListScreen";
+import CertificateManageScene from "../mine/certificateManage/CertificateManageScene";
+import OpenAccountList from "../mine/channelOpenAccount/OpenAccountList";
 
 var Pixel = new PixelUtil();
 
@@ -59,6 +65,7 @@ let firstType = '-1';
 let lastType = '-1';
 let haveOrder = 0;
 let un_pay_count = 0;
+let noPayNumber = 0;
 const GetPermission = new GetPermissionUtil();
 let componyname = '';
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
@@ -87,12 +94,10 @@ const options = {
 
 export default class MineScene extends BaseComponent {
 
-
     handleBack = () => {
         NativeModules.VinScan.goBack();
         return true;
     }
-
 
     componentDidMount() {
         try {
@@ -111,12 +116,13 @@ export default class MineScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
-        //    拿到所有的json数据
+        // 拿到所有的json数据
         this.isLogistics = 1;
         this.singleCar = 1;
         this.state = {
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
+            isRefreshing: false,
+            noPayNumber:0,
         };
     }
 
@@ -146,6 +152,7 @@ export default class MineScene extends BaseComponent {
             lastType = '-1';
             haveOrder = 0;
             un_pay_count = 0;
+            noPayNumber = 0;
             componyname = '';
 
             this.renzhengData = {
@@ -170,13 +177,6 @@ export default class MineScene extends BaseComponent {
                 }],
             };
 
-            this.mColor = {
-                //0-> 未审核 1->审核中 2->通过  3->未通过
-                0: 'gray',
-                1: 'black',
-                2: 'black',
-                3: 'red'
-            }
             this.getData();
         });
 
@@ -193,29 +193,27 @@ export default class MineScene extends BaseComponent {
                         this.initData(minList[i].id, minList[i].name);
                     }
                     let jsonData = user_list;
-
-                    //    定义变量
+                    // 定义变量
                     let dataBlob = {},
                         sectionIDs = [],
                         rowIDs = [];
                     for (let i = 0; i < jsonData.length; i++) {
-                        //    1.拿到所有的sectionId
+                        // 1.拿到所有的sectionId
                         sectionIDs.push(i);
 
-                        //    2.把组中的内容放入dataBlob内容中
+                        // 2.把组中的内容放入dataBlob内容中
                         dataBlob[i] = jsonData[i].title;
 
-                        //    3.设置改组中每条数据的结构
+                        // 3.设置改组中每条数据的结构
                         rowIDs[i] = [];
 
-                        //    4.取出改组中所有的数据
+                        // 4.取出改组中所有的数据
                         let cars = jsonData[i].cars;
 
-                        //    5.便利cars,设置每组的列表数据
+                        // 5.便利cars,设置每组的列表数据
                         for (let j = 0; j < cars.length; j++) {
-                            //    改组中的每条对应的rowId
+                            // 改组中的每条对应的rowId
                             rowIDs[i].push(j);
-
                             // 把每一行中的内容放入dataBlob对象中
                             dataBlob[i + ':' + j] = cars[j];
                         }
@@ -235,16 +233,7 @@ export default class MineScene extends BaseComponent {
                         }
                     );
 
-
-
-
-
-
-
                     DeviceEventEmitter.emit('mb_show', '完成');
-
-
-
 
                     /*   获取用户账户状态更新蒙层状态    专用       */
                     StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
@@ -256,9 +245,7 @@ export default class MineScene extends BaseComponent {
                             };
                             request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                                 .then((response) => {
-
                                         let account_status = response.mjson.data.account.status;
-
                                         this.setState({
                                             source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
                                             name: datas.real_name,
@@ -267,21 +254,16 @@ export default class MineScene extends BaseComponent {
                                             renderPlaceholderOnly: 'success',
                                             isRefreshing: false
                                         });
-
-
                                         if (account_status == '0') {
                                             DeviceEventEmitter.emit('mb_show', '未开通');
-
                                         } else if (account_status == '1') {
                                             DeviceEventEmitter.emit('mb_show', '未绑卡');
-
                                         } else if (account_status == '2') {
 
                                         } else if (account_status == '3') {
                                             DeviceEventEmitter.emit('mb_show', '已激活');
                                         }
-                                    },
-                                    (error) => {
+                                    }, (error) => {
                                         this.setState({
                                             renderPlaceholderOnly: 'error',
                                             isRefreshing: false
@@ -289,9 +271,6 @@ export default class MineScene extends BaseComponent {
                                     });
                         }
                     });
-
-                    /*   获取用户账户状态更新蒙层状态    专用       */
-
                 });
 
             } else {
@@ -304,13 +283,31 @@ export default class MineScene extends BaseComponent {
     }
 
     initData = (id, name) => {
-
         if (id == 47) {
             Car[0].cars.push({
                 "icon": require('../../images/mainImage/zhanghuguanli.png'),
                 "name": name
                 , "id": id
             },);
+        } else if (id == 82) {
+            Car[0].cars.push({
+                "icon": require('../../images/mainImage/qudao.png'),
+                "name": name
+                , "id": id
+            },);
+        }else if (id == 74) {
+	        Car[0].cars.push({
+		        "icon": require('../../images/mainImage/shouxinguanli.png'),
+		        "name": name
+		        , "id": id
+	        },);
+        }else if (id =='76') {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/my_order.png'),
+                "name": name
+                , "id": id
+            },);
+
         } else if (id == 48) {
             Car[0].cars.push({
                 "icon": require('../../images/mainImage/yuangongguanli.png'),
@@ -353,6 +350,12 @@ export default class MineScene extends BaseComponent {
                 "name": name
                 , "id": id
             },);
+        }else if (id == 78) { //赎车保证金
+            Car[1].cars.push({
+                "icon": require('../../images/mine/mine_scbjz.png'),
+                "name": name
+                , "id": id
+            },);
         } else if (id == 53) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/shoucangjilu.png'),
@@ -378,170 +381,112 @@ export default class MineScene extends BaseComponent {
                 , "id": id
             },);
 
-        }
-        else if (id == 58) {
+        } else if (id == 58) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/my_yqdhl.png'),
                 "name": name
                 , "id": id
             },);
-        }
-        else if (id == 67) {
+        } else if (id == 67) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/supervision_fee.png'),
+                "name": name
+                , "id": id
+            },);
+        }else if (id == 80) {
+            Car[2].cars.push({
+                "icon": require('../../images/mainImage/jie-icon.png'),
                 "name": name
                 , "id": id
             },);
         }
     }
     getData = () => {
+        this.getUnpay_num();
         Car = [
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/zhanghuguanli.png'),
-                    //     "name": "账户管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/yuangongguanli.png'),
-                    //     "name": "员工管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/switchcompony.png'),
-                    //     "name": "切换公司"
-                    // },
-                ],
+                "cars": [],
                 "title": "section0"
             },
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
-                    //     "name": "优惠券管理"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/hetongguanli.png'),
-                    //     "name": "合同管理"
-                    // },
-                ],
+                "cars": [],
                 "title": "section1"
             },
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/myCarSource.png'),
-                    //     "name": "我的车源"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/my_order.png'),
-                    //     "name": "我的订单"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/shoucangjilu.png'),
-                    //     "name": "收藏记录"
-                    // },
-                    // {
-                    //     "icon": require('../../images/mainImage/liulanlishi.png'),
-                    //     "name": "浏览历史"
-                    // },
-
-                ],
+                "cars": [],
                 "title": "section2"
             },
             {
-                "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/shezhi.png'),
-                    //     "name": "设置"
-                    // },
-                ],
+                "cars": [],
                 "title": "section3"
             },
             {
-                "cars": [
-                    {
-                        "icon": require('../../images/mainImage/shezhi.png'),
-                        "name": "blank"
-                    },
-                ],
+                "cars": [],
                 "title": "section3"
             },
         ]
 
+        request(Urls.USER_GETINFO, 'Post', {})
+            .then((newUserData) => {
+                StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(newUserData.mjson.data));
+                StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                    if (data.code == 1 && data.result != null) {
+                        let datas = JSON.parse(data.result);
+                        BASE_ID = [];
+                        BASE_ID.push(datas.company_base_id);
 
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let datas = JSON.parse(data.result);
-                BASE_ID = [];
-                BASE_ID.push(datas.company_base_id);
+                        StorageUtil.mGetItem(StorageKeyNames.BASE_USER_ID, (data2) => {
 
-                StorageUtil.mGetItem(StorageKeyNames.BASE_USER_ID, (data2) => {
-
-                    if (data2.code == 1 && data2.result != null) {
-                        BASE_ID.push(data2.result)
-                        let maps = {
-                            base_id: BASE_ID,
-                        };
-                        request(Urls.GETCHECKSTATUS, 'post', maps).then((response) => {
-
-
-                            if (response.mycode == "1") {
-                                let dataResult = response.mjson.data;
-
-                                this.renzhengData.enterpriseRenZheng = dataResult[BASE_ID[0]];
-                                this.renzhengData.personRenZheng = dataResult[BASE_ID[1]];
-
-                                this.toCompany();
-
+                            if (data2.code == 1 && data2.result != null) {
+                                BASE_ID.push(data2.result)
+                                let maps = {
+                                    enterprise_id: datas.company_base_id,
+                                };
+                                request(Urls.NEW_AUTH, 'post', maps).then((response) => {
+                                    if (response.mycode == "1") {
+                                        this.authData = response.mjson.data;
+                                        this.renzhengData.enterpriseRenZheng = this.authData.enterprise_list.length>0?2:1;
+                                        this.renzhengData.personRenZheng = this.authData.person.person_auth;
+                                        this.toCompany();
+                                    } else {
+                                        this.setState({
+                                            renderPlaceholderOnly: 'error',
+                                            isRefreshing: false
+                                        });
+                                    }
+                                }, (error) => {
+                                    this.props.showToast(error.mjson.msg);
+                                    this.setState({
+                                        renderPlaceholderOnly: 'error',
+                                        isRefreshing: false
+                                    });
+                                });
                             } else {
+                                this.props.showToast('获取个人信息失败');
                                 this.setState({
                                     renderPlaceholderOnly: 'error',
                                     isRefreshing: false
                                 });
                             }
-                        }, (error) => {
-                            this.props.showToast(error.msg);
-                            this.setState({
-                                renderPlaceholderOnly: 'error',
-                                isRefreshing: false
-                            });
                         });
-
                     } else {
-                        this.props.showToast('获取个人信息失败');
+                        this.props.showToast('获取企业信息失败');
                         this.setState({
                             renderPlaceholderOnly: 'error',
                             isRefreshing: false
                         });
                     }
                 });
-            } else {
-                this.props.showToast('获取企业信息失败');
+
+            }, (error) => {
+                this.props.showToast('获取个人信息失败');
                 this.setState({
                     renderPlaceholderOnly: 'error',
                     isRefreshing: false
                 });
-            }
-        });
-
-        // StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-        //     if (data.code == 1) {
-        //         let datas = JSON.parse(data.result);
-        //         if(datas.user_level=='0'){
-        //             this.noCompany();
-        //         }else{
-        // this.toCompany();
+            });
 
 
-        //         }
-        //     }
-        // });
-
-    }
-
-    noCompany = () => {
-        lastType = 'error';
-        this.changeData();
     }
 
     toCompany = () => {
@@ -560,7 +505,6 @@ export default class MineScene extends BaseComponent {
                 };
                 request(Urls.ACCOUNT_HOME, 'Post', maps)
                     .then((response) => {
-                            haveOrder = response.mjson.data.order.tradeing_count;
                             un_pay_count = parseInt(response.mjson.data.supervise.un_pay_count);
                             if (response.mjson.data.account == null || response.mjson.data.account.length <= 0) {
                                 lastType = 'error';
@@ -569,8 +513,7 @@ export default class MineScene extends BaseComponent {
                             }
                             // lastType = '3';、
                             this.getLogisticsKey();
-                        },
-                        (error) => {
+                        }, (error) => {
                             this.getLogisticsKey();
                         });
             }
@@ -579,12 +522,27 @@ export default class MineScene extends BaseComponent {
 
 
     /**
+     * 按状态统计订单数量
+     **/
+    getUnpay_num = () => {
+        let url = Urls.LOGISTICS_SWITCH;
+        let maps = {
+            // 0未支付/2已支付/3支付成功/4支付失败
+            status:'0'
+        };
+        request(url, 'post', maps).then((response) => {
+            noPayNumber = parseInt(response.mjson.data);
+            // this.isLogistics = response.mjson.data.a;
+            // this.singleCar = response.mjson.data.b;
+        }, (error) => {
+        });
+    };
+
+    /**
      *   订单物流开关接口
      **/
     getLogisticsKey = () => {
-        let maps = {
-
-        };
+        let maps = {};
         let url = Urls.LOGISTICS_SWITCH;
         request(url, 'post', maps).then((response) => {
             this.isLogistics = response.mjson.data.a;
@@ -612,16 +570,12 @@ export default class MineScene extends BaseComponent {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
-
                 <View style={styles.container}>
-
                     {this.loadView()}
-
                 </View>
             )
         }
         return (
-
             <View style={styles.container}>
                 <ImageSource galleryClick={this._galleryClick}
                              cameraClick={this._cameraClick}
@@ -651,7 +605,6 @@ export default class MineScene extends BaseComponent {
     }
 
     navigatorParams = {
-
         name: 'AccountManageScene',
         component: AccountManageScene,
         params: {}
@@ -665,8 +618,6 @@ export default class MineScene extends BaseComponent {
          //firstType = lastType;
          this.props.callBack(this.navigatorParams);
      };
-
-
 
     /**
      *   更新 lastType;
@@ -707,11 +658,39 @@ export default class MineScene extends BaseComponent {
     }
 
     _navigatorPage = (rowData) => {
+
+        // 因为要异步获取本地数据，所以必须单独拿出来处理， 有问题请@丁永刚
+        if(rowData.id == 82){
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT,(data)=>{
+                if(data.code === 1){
+                    let reuslt = JSON.parse(data.result)
+                    if(reuslt.merge_id == 0){
+                        this.props.showToast('您还未授信')
+                    }else {
+                        this.navigatorParams.name = 'OpenAccountList'
+                        this.navigatorParams.component = OpenAccountList
+                    }
+                    this.props.callBack(this.navigatorParams);
+                }
+            })
+            return;
+        }
+
         switch (rowData.id) {
             case 47:
                 this.toPage();
                 return;
                 break;
+	        case 74:
+	            if(this.renzhengData.enterpriseRenZheng !== 2){
+		            this.props.showToast('授信前需已完成企业认证，请先完成企业认证，谢谢！');
+		            return;
+		            break;
+	            }else {
+		            this.navigatorParams.name = 'CredictManageScene'
+		            this.navigatorParams.component = CredictManageScene
+		            break;
+                }
             case 49:
                 this.props.toSelect();
                 return;
@@ -725,6 +704,13 @@ export default class MineScene extends BaseComponent {
             case 51:
                 this.navigatorParams.name = 'ContractManageScene'
                 this.navigatorParams.component = ContractManageScene
+                this.navigatorParams.params = {
+                    from: 'xs'
+                }
+                break;
+            case 78://赎车保证金
+                this.navigatorParams.name = 'SCBZJScene'
+                this.navigatorParams.component = SCBZJScene
                 this.navigatorParams.params = {
                     from: 'xs'
                 }
@@ -777,12 +763,22 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.name = 'SupervisionFeeScene'
                 this.navigatorParams.component = SupervisionFeeScene
                 this.navigatorParams.params = {callBack: this.updateType};
-
                 break;
+            case 76:
+                this.navigatorParams.name = 'List'
+                this.navigatorParams.component = List
+                break;
+            case 80:
+                this.navigatorParams.name = 'CarSuperviseListScreen'
+                this.navigatorParams.component = CarSuperviseListScreen
+                break;
+
         }
 
         this.props.callBack(this.navigatorParams);
     };
+
+
 
     // 每一行中的数据
     _renderRow = (rowData) => {
@@ -801,10 +797,8 @@ export default class MineScene extends BaseComponent {
         } else {
             return (
                 <TouchableOpacity style={styles.rowView} onPress={() => {
-
                     this._navigator(rowData)
                 }}>
-
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
                     <Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
@@ -836,10 +830,18 @@ export default class MineScene extends BaseComponent {
                             <Text style={{color:'#FC6855', fontSize:12}}> {un_pay_count + '笔待付'}</Text>
                         </View> : <View/>}
 
-
+                    {rowData.name == '合同管理' && noPayNumber > 0 ?
+                        <View style={{
+                            marginRight: Pixel.getPixel(15),
+                            width: Pixel.getPixel(65),
+                            height: Pixel.getPixel(25),
+                            backgroundColor: '#FDEEEB',
+                            alignItems:'center',
+                            justifyContent:'center',
+                            borderRadius: 14}}>
+                            <Text style={{color:'#FC6855', fontSize:12}}> {noPayNumber + '笔待付'}</Text>
+                        </View> : <View/>}
                     <Image source={cellJianTou} style={styles.rowjiantouImage}/>
-
-
                 </TouchableOpacity>
             );
         }
@@ -868,7 +870,6 @@ export default class MineScene extends BaseComponent {
                                                 .then((response) => {
                                                         haveOrder = response.mjson.data.order.tradeing_count;
                                                         lastType = response.mjson.data.account.status;
-
                                                         console.log(lastType + '-----------')
                                                         if (lastType == '0') {
                                                             DeviceEventEmitter.emit('mb_show', '未开通');
@@ -895,9 +896,7 @@ export default class MineScene extends BaseComponent {
                                                         }
                                                         firstType = lastType;
                                                     },
-                                                    (error) => {
-
-                                                    });
+                                                    (error) => {});
                                         }
                                     });
                                 }
@@ -921,98 +920,59 @@ export default class MineScene extends BaseComponent {
 
     _renderHeader = () => {
         return (
-            <View style={{width:width}}>
-                <View style={styles.headerViewStyle}>
-                    <TouchableOpacity style={[styles.headerImageStyle]}>
-                        <Image
-                            source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
-                            style={{
-                                width: Pixel.getPixel(65),
-                                height: Pixel.getPixel(65), resizeMode: 'stretch'
-                            }}
-                        />
-                    </TouchableOpacity>
-                    <Text allowFontScaling={false} style={styles.headerNameStyle}>
-                        {this.state.name}
-                    </Text>
-                    <Text allowFontScaling={false} style={styles.headerPhoneStyle}>
-                        {componyname}
-                    </Text>
+                <Image style={styles.headerViewStyle} source={require('../../images/mine/bg.png')}>
+                    <Image style={{width:Pixel.getPixel(62),height:Pixel.getPixel(69),marginLeft:Pixel.getPixel(21)}} source={require('../../images/mine/xiaoren.png')}/>
+                    <View style={{marginLeft:Pixel.getPixel(21),justifyContent:'space-between',height:Pixel.getPixel(80)}}>
+                        <Text allowFontScaling={false} style={styles.headerNameStyle}>
+                            {this.state.name}
+                        </Text>
+                        <Text allowFontScaling={false} style={styles.headerPhoneStyle}>
+                            {componyname}
+                        </Text>
+                        <View style={{flexDirection:'row'}}>
+                            {
+                                this.renzhengData.enterpriseRenZheng ==2  && (
+                                <View style={{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),backgroundColor:'rgba(255,255,255,0.3)',borderWidth:StyleSheet.hairlineWidth,borderColor:'#3170d6'}}>
+                                <Text style={{color:'white', fontSize:Pixel.getPixel(13)}}>企业认证</Text>
+                                </View>
+                                )
+                            }
+                            {
+                                this.renzhengData.personRenZheng ==2 &&(
+                                    <View style={[{width:Pixel.getPixel(72),height:Pixel.getPixel(26),justifyContent:'center',alignItems:'center',borderRadius:Pixel.getPixel(4),
+                                        backgroundColor:'rgba(255,255,255,0.3)',borderWidth:StyleSheet.hairlineWidth,borderColor:'#3170d6'},this.renzhengData.enterpriseRenZheng ==2 && {marginLeft:Pixel.getPixel(12)}]}>
+                                        <Text style={{color:'white', fontSize:Pixel.getPixel(13)}}>个人认证</Text>
+                                    </View>
+                                )
+                            }
 
-                </View>
-                {this.renzhengData.RenZhengVisiable != true ? null : <View
-                        style={{width:width,height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
+                        </View>
+                    </View>
+                    {
+                        this.renzhengData.RenZhengVisiable && (
+                            <TouchableOpacity style={{top:Pixel.getPixel(58),
+                                right:-Pixel.getPixel(15), position: 'absolute'}} onPress={()=>{this.props.callBack({
+                                name:'CertificateManageScene',
+                                component:CertificateManageScene,
+                                params:{
+                                    allRefresh:this.allRefresh,
+                                    baseID:BASE_ID[0],
+                                    authData:this.authData,
+                                }
 
-                        <TouchableOpacity onPress={() => {
-                        if(this.renzhengData.personRenZheng == 2 || this.renzhengData.personRenZheng == 1){
-                            //0-> 未审核 1->审核中 2->通过  3->未通过
+                            })}}>
+                                <View style={{width:Pixel.getPixel(95),height:Pixel.getPixel(28),borderRadius:Pixel.getPixel(14),backgroundColor:'rgba(0,0,0,0.3)',
+                                    flexDirection:'row',
+                                    alignItems:'center'
+                                }}>
+                                    <Text style={{color:'white', fontSize:Pixel.getPixel(13),marginLeft:Pixel.getPixel(16),marginRight:Pixel.getPixel(7)}}>去认证</Text>
+                                    <Image source={require('../../images/mine/baise-jiantou.png')}/>
+                                </View>
+                            </TouchableOpacity>
+                        )
+                    }
 
-                        }else {
-                            this._gerenrenzheng();
-                        }
-                    }} activeOpacity={0.8}
-                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-                            <Image
-                                source={this.renzhengData.personRenZheng == 2  ? require('../../images/login/gerenyirenzheng.png') : require('../../images/login/gerenweirenzheng.png')}
-                                style={{
-                                width: Pixel.getPixel(27),
-                                height: Pixel.getPixel(20),
-                                resizeMode: 'stretch',
-                                marginLeft:Pixel.getPixel(37)
-                            }}
-                            />
-                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>个人
-
-                                <Text allowFontScaling={false}
-                                      style={{color:this.mColor[this.renzhengData.personRenZheng]}}
-
-                                >
-                                    {this._getRenZhengResult(this.renzhengData.personRenZheng)}
-
-                                </Text>
-                            </Text>
-                        </TouchableOpacity>
-
-                        <Image source={require('../../images/login/xuxian.png')}
-                               style={{width:Pixel.getPixel(1),height :Pixel.getPixel(22),}}/>
-
-                        <TouchableOpacity onPress={() => {
-                        if(this.renzhengData.enterpriseRenZheng == 2  || this.renzhengData.enterpriseRenZheng == 1){
-                            //0-> 未审核 1->审核中 2->通过  3->未通过
-
-
-                        }else {
-                            this._qiyerenzheng();
-                        }
-                    }} activeOpacity={0.8}
-                                          style={{width:Pixel.getPixel(375/2.0-1),height :Pixel.getPixel(40),backgroundColor:'white',flexDirection:'row',alignItems:'center'}}>
-                            <Image
-                                source={this.renzhengData.enterpriseRenZheng == 2  ? require('../../images/login/qiyeyirenzheng.png') : require('../../images/login/qiyeweirenzheng.png')}
-                                style={{
-                                width: Pixel.getPixel(27),
-                                height: Pixel.getPixel(20),
-                                resizeMode: 'stretch',
-                                marginLeft:Pixel.getPixel(37)
-                            }}
-                            />
-                            <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(7)}}>企业
-
-                                <Text allowFontScaling={false}
-
-                                      style={{color:this.mColor[this.renzhengData.enterpriseRenZheng]}}
-
-                                >
-                                    {this._getRenZhengResult(this.renzhengData.enterpriseRenZheng)}
-
-                                </Text>
-                            </Text>
-
-                        </TouchableOpacity>
-
-                    </View>}
-
-
-            </View>
+                </Image>
         )
     }
 
@@ -1038,10 +998,6 @@ export default class MineScene extends BaseComponent {
         this.navigatorParams.component = EnterpriseCertificate
         this.navigatorParams.params.callBack = this.allRefresh
         this.navigatorParams.params.qiye_id = BASE_ID[0]
-        console.log('1111111111111111111');
-
-        console.log(this.navigatorParams.params.qiye_id);
-        console.log('1111111111111111111');
         this.props.callBack(this.navigatorParams);
     };
     _getRenZhengResult = (result) => {
@@ -1062,7 +1018,6 @@ export default class MineScene extends BaseComponent {
         this.navigatorParams.name = 'PersonCertificate'
         this.navigatorParams.component = PersonCertificate
         this.navigatorParams.params.callBack = this.allRefresh
-
         this.props.callBack(this.navigatorParams);
     };
 
@@ -1106,39 +1061,28 @@ export default class MineScene extends BaseComponent {
 
 
 const styles = StyleSheet.create({
-
-
     headerViewStyle: {
-
-        height: Pixel.getPixel(190),
+        height: Pixel.getPixel(144),
         width: width,
-        backgroundColor: fontAndClolr.COLORB0,
-        alignItems: 'center',
-
+        flexDirection:'row',
+        alignItems:'center',
+        paddingTop:Pixel.getPixel(20)
     },
-    headerImageStyle: {
 
-        width: Pixel.getPixel(65),
-        height: Pixel.getPixel(65),
-        marginTop: Pixel.getPixel(45),
-        justifyContent: 'center',
-        alignItems: 'center',
-
-    },
     headerNameStyle: {
-
         color: 'white',
-        fontSize: Pixel.getFontPixel(15),
-        marginTop: Pixel.getPixel(10),
-        marginBottom: Pixel.getPixel(10),
-        fontWeight: 'bold'
+        fontSize: Pixel.getFontPixel(16),
+        fontWeight: 'bold',
+        backgroundColor: '#00000000',
+
     },
     headerPhoneStyle: {
         color: 'white',
         fontSize: Pixel.getFontPixel(12),
+        backgroundColor: '#00000000',
+
     },
     container: {
-
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
         backgroundColor: fontAndClolr.COLORA3,
@@ -1157,8 +1101,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
-        borderBottomColor: fontAndClolr.COLORA4,
-        borderBottomWidth: 1
+        borderBottomColor: '#E6E6E6',
+        borderBottomWidth: StyleSheet.hairlineWidth
     },
     rowLeftImage: {
         width: Pixel.getPixel(26),
@@ -1170,14 +1114,11 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(15),
         height: Pixel.getPixel(15),
         marginRight: Pixel.getPixel(15),
-
     },
     rowTitle: {
         flex: 1,
         fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
         marginLeft: Pixel.getPixel(20),
         color: '#000',
-
     }
-
 });

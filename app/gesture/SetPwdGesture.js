@@ -10,7 +10,7 @@ import PixelUtil from "../utils/PixelUtil";
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
-const Top = Height - Width;
+const Top = Pixel.getTitlePixel(64)+Pixel.getPixel(200);
 const Radius = Width / 12;
 const Left = (Width - Radius * 8) / 2
 
@@ -316,13 +316,16 @@ export default class SetPwdGesture extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: FontAndColor.COLORA3,
+        height:Radius*8,
+        width:Width,
     },
     bodyStyle: {
         position: 'absolute',
         left: Left,
-        top: Top,
-        width: Width,
+        top: 0,
+        width: Radius * 8,
+        height:Radius * 8,
+
     },
 });

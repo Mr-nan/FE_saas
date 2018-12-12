@@ -181,8 +181,9 @@ export  default  class carSourceListScene extends BaseComponent {
     }
 
     checkedCarClick=(carObject)=>{
-        this.carUserListScene && this.carUserListScene.checkedCarClick(carObject);
-        this.carNewListScene && this.carNewListScene.checkedCarClick(carObject);
+
+        this.carUserListScene && this.carUserListScene.checkedCarClick(carObject,true);
+        this.carNewListScene && this.carNewListScene.checkedCarClick(carObject,false);
     }
 
     render() {

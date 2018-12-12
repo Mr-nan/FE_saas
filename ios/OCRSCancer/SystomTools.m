@@ -14,7 +14,6 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(openAppaleShop){
  
-
     NSString *str = [NSString stringWithFormat:@"https://itunes.apple.com/us/app/%E7%AC%AC1%E8%BD%A6%E8%B4%B7/id1071762059?l=zh&ls=1&mt=8"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
 }

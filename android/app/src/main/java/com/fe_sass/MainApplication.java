@@ -1,6 +1,8 @@
 package com.fe_sass;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.baidu.mapapi.CoordType;
@@ -30,6 +32,8 @@ import com.theweflex.react.WeChatPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.share.wechat.ShareWechatPackage;
 
+import cn.udesk.UdeskPackage;
+
 
 public class MainApplication extends UmengPushApplication implements ReactApplication {
 
@@ -49,23 +53,31 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-          new SQLitePluginPackage(),
-          new UmengPushPackage(),
-          new ImagePickerPackage(),
-          new PickerViewPackage(),
-          new ReactNativeWheelPickerPackage(),
-          new WeChatPackage(),
-          new VinScanPackage(),
-          new QrScanPackage(),
-          new CustomCameraPackage(),
-          new RNSpinkitPackage(),
-          new CodePush("xmOhd_I_phLbpA3a4AKSbAMFaN5DVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG),
-          new GrowingIOPackage(),
-          new ShareWechatPackage()
+              new MainReactPackage(),
+              new SQLitePluginPackage(),
+              new UmengPushPackage(),
+              new ImagePickerPackage(),
+              new PickerViewPackage(),
+              new ReactNativeWheelPickerPackage(),
+              new WeChatPackage(),
+              new VinScanPackage(),
+              new QrScanPackage(),
+              new CustomCameraPackage(),
+              new RNSpinkitPackage(),
+              new CodePush("xmOhd_I_phLbpA3a4AKSbAMFaN5DVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG),
+              new GrowingIOPackage(),
+              new ShareWechatPackage(),
+              new UdeskPackage()
+
       );
     }
   };
+
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+    MultiDex.install(this);
+  }
+
 
   @Override
   public ReactNativeHost getReactNativeHost() {

@@ -1,5 +1,5 @@
-export const VERSON_NAME = "4.9.0"; // 版本名
-export const VERSON_CODE = "32"; // 版本号
+export const VERSON_NAME = "6.0.4"; // 版本名
+export const VERSON_CODE = "54"; // 版本号
 export const ISLOGIN = "islogin";//标识用户是否登录
 export const CAR_SEARCH = "car_search";
 export const CITY_SEARCH = "city_search";
@@ -29,6 +29,7 @@ export const NEED_CHECK_USER_CAR = "checkUserCar";        // 选择二手车列�
 export const NEED_USER_CHECK_RECOMMEND = "userCarcheckRecommend";   // 取消二手车推荐车源
 export const NEED_NEW_CHECK_RECOMMEND = "newCarcheckRecommend";   // 取消新车推荐车源
 export const NEED_TOAST_ERROR = "need_toast_error";   // 登录界面是否需要弹出异常提示
+export const ACTIVITY_ALTER = "Activity";   // 首页活动弹窗提示
 /* message start*/
 export const ADVERTISEMENT_LAST_MESSAGE_TIME = "advertisement_last_message_time"; //车市头条数据库中缓存的最近一条数据的时间
 export const SYSTEMS_LAST_MESSAGE_TIME = "systems_last_message_time"; //系统消息数据库中缓存的最近一条数据的时间
@@ -72,3 +73,4 @@ export const HF_MINE_DID_BIND_BANKCARD = 'account_did_bind_bankcard';    //我�
 export const HF_TRANSACTION_LOG = 'transaction_log';    //账户流水时间筛选按钮蒙层01234
 export const INVOICE_TITLE = "INVOICE_TITLE";   // 发票抬头
 export const TAXPAYER_IDENTIFICATION_NUMBER = "TAXPAYER_IDENTIFICATION_NUMBER";   // 纳税人识别号
+export const LOGISTIC_ORDER_ALERT_SHOW = "LOGISTIC_ORDER_ALERT_SHOW";   //运单支付是是否显示提醒

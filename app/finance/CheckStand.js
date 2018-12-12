@@ -32,6 +32,9 @@ import * as webBackUrl from "../constant/webBackUrl";
 import AccountWebScene from "../mine/accountManage/AccountWebScene";
 import DDApplyLendScene from "./lend/DDApplyLendScene";
 import ChooseModal from "../mine/myOrder/component/ChooseModal";
+import SaasText from "../mine/accountManage/zheshangAccount/component/SaasText";
+import TrustAccountContractScene from "../mine/accountManage/trustAccount/TrustAccountContractScene";
+
 const Pixel = new PixelUtil();
 
 export default class CheckStand extends BaseComponent {
@@ -43,10 +46,18 @@ export default class CheckStand extends BaseComponent {
         this.isShowFinancing = 0;
         this.creditBalanceMny = 0;
         this.isConfigUserAuth = 0;
+
+        this.is_seller_inWhite = false;
+        this.is_buyer_inWhite = false;
+
+
+        this.contractList = []
         this.state = {
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
+            isRefreshing: false,
+
         }
+
     }
 
     componentDidMount() {
@@ -64,10 +75,41 @@ export default class CheckStand extends BaseComponent {
         this.loadData();
     };
 
+    componentWillUnmount() {
+    }
+
+
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
+
                 let datas = JSON.parse(data.result);
+
+                // 查看买家是否在信托白名单
+                request(AppUrls.CAN_XINTUO, 'POST', {
+                    enter_base_id: datas.company_base_id,
+                    type: 0
+                }).then((response) => {
+                    this.is_buyer_inWhite = true;
+                    this.loadContractList()
+
+                }, (error) => {
+                    console.log(error.msg)
+                })
+
+                // 查看卖家是否在信托白名单
+                // request(AppUrls.CAN_XINTUO, 'POST', {
+                //     enter_base_id: this.props.seller_company_id,
+                //     type: 0
+                // }).then((response) => {
+                //     this.is_seller_inWhite = true;
+                //     this.loadContractList()
+                //
+                // }, (error) => {
+                //     console.log(error.msg)
+                // })
+
+
                 this.isDoneCredit = datas.is_done_credit;
                 this.creditBalanceMny = datas.credit_balance_mny;
                 let maps = {
@@ -83,7 +125,7 @@ export default class CheckStand extends BaseComponent {
                         } else {
                             this.setState({
                                 isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
+                                renderPlaceholderOnly: 'success',
                             });
                         }
                     } else {
@@ -105,6 +147,47 @@ export default class CheckStand extends BaseComponent {
             }
         });
     };
+
+    loadContractList = () => {
+
+        if (this.is_buyer_inWhite && this.is_seller_inWhite) {
+            request(AppUrls.AGREEMENT_LISTS, 'Post', {
+                source_type: '3',
+                fund_channel: '信托'
+            })
+                .then((response) => {
+                    // this.props.showModal(false);
+                    for (let i = 0; i < response.mjson.data.list.length; i++) {
+                        if (response.mjson.data.list[i].name.indexOf('机动车辆买卖合同') !== -1 || response.mjson.data.list[i].name.indexOf('信托利益分配申请及代为支付指令函') !== -1) {
+                            this.contractList.push(<Text
+                                key={i + 'contractList'}
+                                allowFontScaling={false}
+                                onPress={() => {
+                                    this.openContractScene('合同', response.mjson.data.list[i].url)
+                                    console.log(response.mjson.data.list[i].url)
+                                }}
+                                style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: fontAndColor.COLORB4,
+                                    lineHeight: Pixel.getPixel(20)
+                                }}>
+                                《{response.mjson.data.list[i].name}》
+                            </Text>);
+
+                        }
+
+                    }
+                    let a = this.contractList[this.contractList.length - 1];
+                    this.contractList.splice(0, 0, a);
+                    this.contractList.pop()
+
+                }, (error) => {
+                    //this.props.showModal(false);
+                    this.props.showToast(error.mjson.msg);
+                });
+        }
+    }
+
 
     /**
      *   检查此订单卖家是否是"线下支付"白名单用户
@@ -251,23 +334,31 @@ export default class CheckStand extends BaseComponent {
                     let url = AppUrls.FINANCE;
                     request(url, 'post', maps).then((response) => {
                         if (response.mjson.code === 1) {
-                            this.isShowFinancing = 1;
+                            if(response.mjson.data.data.response.minpaymentloanlimtflags == '1' &&
+                                response.mjson.data.code == '0'){
+                                this.isShowFinancing = 1;
+                            }else{
+                                this.isShowFinancing = 0;
+                            }
                             this.setState({
                                 isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
+                                renderPlaceholderOnly: 'success',
+
                             });
                         } else {
                             this.isShowFinancing = 0;
                             this.setState({
                                 isRefreshing: false,
-                                renderPlaceholderOnly: 'success'
+                                renderPlaceholderOnly: 'success',
+
                             });
                         }
                     }, (error) => {
                         this.isShowFinancing = 0;
                         this.setState({
                             isRefreshing: false,
-                            renderPlaceholderOnly: 'success'
+                            renderPlaceholderOnly: 'success',
+
                         });
                     });
                 }
@@ -275,7 +366,8 @@ export default class CheckStand extends BaseComponent {
                 this.isShowFinancing = 0;
                 this.setState({
                     isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
+                    renderPlaceholderOnly: 'success',
+
                 });
             }
         });
@@ -309,8 +401,10 @@ export default class CheckStand extends BaseComponent {
                     <Text allowFontScaling={false} style={styles.title}>运单费用：</Text>
                     <Text allowFontScaling={false} style={styles.content}>{this.props.transAmount}元</Text>
                 </View>
-                <View style={{height: Pixel.getPixel(10),
-                    backgroundColor: fontAndColor.COLORA3}}/>
+                <View style={{
+                    height: Pixel.getPixel(10),
+                    backgroundColor: fontAndColor.COLORA3
+                }}/>
                 <View style={styles.accountBar}>
                     <Text allowFontScaling={false} style={styles.title}>账户：</Text>
                     <Text allowFontScaling={false}
@@ -420,6 +514,20 @@ export default class CheckStand extends BaseComponent {
         //return this.normalPay();
     };
 
+    /**
+     *   跳转合同预览页
+     **/
+    openContractScene = (name, url) => {
+        this.toNextPage({
+            name: 'TrustAccountContractScene',
+            component: TrustAccountContractScene,
+            params: {
+                title: name,
+                webUrl: url
+            }
+        })
+    };
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -438,7 +546,30 @@ export default class CheckStand extends BaseComponent {
                                   parentStyle={styles.loginBtnStyle}
                                   childStyle={styles.loginButtonTextStyle}
                                   mOnPress={this.goPay}/>
-                        {this.props.isSellerFinance == 0 && this.props.payType == 2 && !this.props.logisticsType &&
+
+                        {
+                            this.contractList.length > 0 ?
+                                <View
+                                    style={{marginHorizontal: Pixel.getPixel(15), marginBottom: Pixel.getPixel(35)}}
+                                >
+                                    <SaasText>
+                                        <SaasText
+                                            style={{
+                                                color: fontAndColor.COLORA1,
+                                                fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
+                                            }}
+                                        >
+                                            付款即表示您已同意
+                                        </SaasText>
+                                        {this.contractList}
+                                    </SaasText>
+                                </View>
+
+
+                                : null
+                        }
+
+                        {this.props.isSellerFinance == 0 && this.props.payType == 2 && !this.props.logisticsType &&this.isConfigUserAuth == 1&&
                         (<MyButton buttonType={MyButton.TEXTBUTTON}
                                    content={'鼎诚融资代付'}
                                    parentStyle={[styles.loginBtnStyle, {marginTop: Pixel.getPixel(0)}]}
@@ -497,7 +628,7 @@ export default class CheckStand extends BaseComponent {
                                 color: fontAndColor.COLORA1,
                                 marginTop: Pixel.getPixel(10)
                             }}>车辆交易背景下的，基于车辆买卖订单的，对买车人购车的融资业务。</Text>
-                        </View> }
+                        </View>}
                         <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton}
                                       textStyle={styles.expText}
                                       text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
@@ -638,30 +769,46 @@ export default class CheckStand extends BaseComponent {
                     let datas = JSON.parse(data.result);
                     let mergeId = datas.merge_id;
                     let maps = {
-                        //api: AppUrls.ADD_PLATFORM_ORDER_CAR,
-                        merge_id: mergeId,
-                        platform_car_id: this.props.carId,
-                        platform_order_number: this.props.orderNo,
-                        register_seller_user_id: this.props.sellerId
+                        company_id: datas.company_base_id,
+                        order_id: this.props.orderId,
                     };
-                    let url = AppUrls.ADD_PLATFORM_ORDER_CAR;
+                    let url = AppUrls.ORDER_HOME_BALANCEPAYSTATUS;
                     request(url, 'Post', maps).then((response) => {
                         if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                            if (response.mjson.data.status === 1) {
-                                this.props.showModal(false);
-                                this.toNextPage({
-                                    name: 'DDApplyLendScene',
-                                    component: DDApplyLendScene,
-                                    params: {
-                                        orderNo: this.props.orderNo,
-                                        orderId: this.props.orderId,
-                                        callBack: this.props.callBack,
-                                        sceneName: 'CheckStand'
+                            // if (response.mjson.data.status === 1) {
+                                let maps = {
+                                    merge_id: mergeId,
+                                    platform_car_id: this.props.carId,
+                                    platform_order_number: this.props.orderNo,
+                                    register_seller_user_id: this.props.sellerId
+                                };
+                                let url = AppUrls.ADD_PLATFORM_ORDER_CAR;
+                                request(url, 'Post', maps).then((response) => {
+                                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                                        if (response.mjson.data.status === 1) {
+                                            this.props.showModal(false);
+                                            this.toNextPage({
+                                                name: 'DDApplyLendScene',
+                                                component: DDApplyLendScene,
+                                                params: {
+                                                    orderNo: this.props.orderNo,
+                                                    orderId: this.props.orderId,
+                                                    callBack: this.props.callBack,
+                                                    sceneName: 'CheckStand'
+                                                }
+                                            });
+                                        } else {
+                                            this.props.showToast(response.mjson.msg);
+                                        }
+                                    } else {
+                                        this.props.showToast(response.mjson.msg);
                                     }
+                                }, (error) => {
+                                    this.props.showToast('添加订单融资车辆失败');
                                 });
-                            } else {
-                                this.props.showToast(response.mjson.msg);
-                            }
+                            // } else {
+                            //     this.props.showToast(response.mjson.msg);
+                            // }
                         } else {
                             this.props.showToast(response.mjson.msg);
                         }
@@ -680,15 +827,15 @@ export default class CheckStand extends BaseComponent {
      *  支付分发
      */
     goPay = () => {
-/*        if (this.props.payType == 1 || this.props.payType == 2) {
-            if (this.props.payFull) {
-                this.goFullPay();
-            } else {
-                this.goDepositPay();
-            }
-        } else {
-            this.goInitialPay();
-        }*/
+        /*        if (this.props.payType == 1 || this.props.payType == 2) {
+                    if (this.props.payFull) {
+                        this.goFullPay();
+                    } else {
+                        this.goDepositPay();
+                    }
+                } else {
+                    this.goInitialPay();
+                }*/
         if (this.props.payType == 1) {
             this.goDepositPay();
         } else if (this.props.payType == 2) {
@@ -917,7 +1064,7 @@ const styles = StyleSheet.create({
         width: width - Pixel.getPixel(30),
         backgroundColor: fontAndColor.COLORB0,
         marginTop: Pixel.getPixel(30),
-        marginBottom: Pixel.getPixel(30),
+        marginBottom: Pixel.getPixel(10),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),
