@@ -6,6 +6,9 @@ import android.util.Log;
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.react.ReactApplication;
+import com.theweflex.react.WeChatPackage;
+import cn.reactnative.modules.update.UpdatePackage;
+import com.liuchungui.react_native_umeng_push.UmengPushPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -50,6 +53,9 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new WeChatPackage(),
+            new UpdatePackage(),
+            new UmengPushPackage(),
           new SQLitePluginPackage(),
           new UmengPushPackage(),
           new ImagePickerPackage(),
