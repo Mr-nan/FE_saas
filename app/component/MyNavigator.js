@@ -7,7 +7,7 @@ import {
     TouchableHighlight
 } from 'react-native';
 var Platform = require('Platform');
-// import RootScene from '../FLatListDemo';
+import RootScene from '../main/RootScene';
 import {setAll} from '../constant/AllBackLogin';
 export default class  MyNavigator extends Component {
     render() {
